@@ -1,0 +1,30 @@
+REQUIREMENTS REVIEW MEETING
+===========================
+
+Attendees:
+Eric
+Subha
+Anand
+Huaitian
+Yuri
+Shine
+Michael
+T.J.
+
+- Add feature (post 1.0) for cross-study queries
+
+	- e.g. I found correlation between survival and EGFR expression, does this hold in other studies?
+
+- Gene lists should be associated to the user, not the user/study (reporter list also)
+
+	- Come back to defining a shareable "gene profile"
+	
+- How do we handle removal of data from a study
+
+	- Inform user that data was removed from list?
+	
+- What if gene in list in genomic query not included in platform?
+
+	- Inform user???
+	
+- Use annotations from caBIO?

@@ -1,0 +1,60 @@
+REQUIREMENTS REVIEW MEETING
+===========================
+
+Attendees:
+Eric
+Subha
+Anand
+Huaitian
+Yuri
+Shine
+
+- Inforsense is another translational research tool (may be worth looking at)
+
+- Yuri noted that curation of shared annotation is important to get right and difficult.
+
+- Study may be created with any subset of high-level data types (genomic, clinical, etc.)
+
+	- At least one required
+	
+- Nice to have: display reason why certain analysis methods aren't available (e.g.: you don't have expression data)
+
+- Add asynch requirement for study data loading.
+
+- Queries and lists should have clear descriptions (include large description of query)
+
+- TODO: document how normal samples are pulled in and annotated (revise requirements)
+
+	- Need to get clarification around samples in general
+	
+- Check out the caNanoLab tree-control
+
+- Form with all possible searchable criteria may be more user-friendly than add-a-criterion approach
+
+- May want to have a "free-form" search (google-like, single field) that figures out what the user is looking for
+
+- Allow user to define preferred (default) list of columns for searchs
+
+- System should have knowledge about sensible defaults for sort order, fields
+
+- Shared queries in tree also Queries --> Users --> Shared Queries
+
+	- add query to My Favorites
+	
+- Revisit and refine expression criteria in Manage Queries
+
+- Export query results
+
+- Make sure that query use case includes organize into folders
+
+- geWorkbench and GenePattern are the two external tools we'll interface with
+
+	- !!!No internal analysis service / tools
+	
+	- Need to see if geWorkbench provides an API to perform / retrieve analysis
+	
+- Will add changes by COB today
+
+- Subha and Yuri will review by COB tomorrow
+
+- Some analysis methods may require that there is no interception between two (or more) groups

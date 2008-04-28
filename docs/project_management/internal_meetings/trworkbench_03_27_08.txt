@@ -1,0 +1,47 @@
+TrWorkbench Use-Case Model Discussion
+3/27/2008
+==========================================
+
+Attendees:
+Eric
+Shine
+Subha
+Anand
+Huatien
+T.J. (by phone)
+
+- We need to ensure that terminology determines difference between study data and investigator data
+
+- Bench scientist and physician scientist may have different workflows, potentially different actors.
+
+- Silver API is in scope!
+
+- Add new data in scope for 1.0, and add new data element in scope for 1.0
+
+- Save groupings, data sets in scope for 1.0; recording workflow (analysis configuration) not in scope for 1.0
+
+- !!! We need to account for security for protected (identifying) data (e.g. genotype data)
+
+- We will have shared queries, etc.
+
+- Always at least some clinical and some genomic data
+
+- Systems in scope for data retrieval
+	- Clinical
+		- delimited text
+		- CTODS
+	- Genomic
+		- caArray (2.0)
+		- ? Binary file (for computed data). R file?
+	- Imaging
+		- delimited text (for image annotations)
+		- NCIA
+		
+- caTissue not in scope.
+		
+- Follow up with Subha on details for TCGA Mutation Data scenario
+
+- Genomic data in scope for 1.0 (Still in flux, Subha will decide by 4/3). Send reminder on tuesday.
+	- Expression
+	- Mutation
+	- Copy number

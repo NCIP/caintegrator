@@ -1,0 +1,111 @@
+ARCHITECTURE
+=================
+
+Hibernate
+
+Struts 2
+
+- Find out if we need to caCORE
+
+	-- Assuming not, go EJB3, Hibernate or JPA annotations
+	
+
+NetCDF or ?
+
+	- R binary to integrate with current analysis tools
+	
+	- Check format consumed by external analysis tools
+	
+Postgres
+
+
+
+PROCESS
+=================
+
+Ant vs. Maven
+
+Peer review
+	- Try it for E1, re-evaluate afterward
+
+SCHEDULE
+=================
+
+- June 23 - 25 is caBIG annual meeting; Subha would like a demo
+
+	- 9 weeks from now
+	
+- 2 four week elaboration iterations
+
+	- 4/21 - 5/16
+	- 5/19 - 6/13
+
+GOALS FOR E1
+=================
+
+- HTP Data storage/representation
+- Completed data model
+- Query
+- Complete end-to-end development environment
+- Complete documentation of inception use cases plus identified below in tasks
+- Integration of one analysis method with GenePattern (stretch)
+
+
+GOALS FOR E2
+=================
+- Load data from external system and text
+- Additional analysis integration
+- Security
+- Grid service API
+
+TASKS FOR E1
+=================
+
+REQUIREMENTS
+	- Revise Inception Use Cases (Eric)
+		- Gene Expression (Browse)
+	- Elaboration Use Case definition
+		- Imaging 
+		- Methylation data
+		- Update study
+		- Security requirements
+	- geWorkbench integration exploration (T.J.)
+	- See if we can Matt for UI (Shine)
+
+ANALYSIS & DESIGN
+	- Identify subsystems (Michael)
+		- Identify risk characteristics
+	- Use-case design (Michael, Eric some)
+	- Object model
+		- 
+	- Implementation model (Michael)
+
+IMPLEMENTATION
+	- ??
+	- HTP data management
+	- Query
+	- JUnit testing
+
+TEST
+	- Selenium testing framework (Eric)
+
+DEPLOYMENT
+	- Get DEV environment
+		- ARC document (Shine)
+
+PROJECT MANAGEMENT
+	- Risk List (Shine)
+	- Iteration Plan (Shine)
+	- Create listserv (Shine)
+	- Manage communications (Skype/GTalk, Shine)
+	- Investigate getting caIntegrator folk (Shine)
+
+CHANGE & CONFIGURATION MANAGEMENT
+	- Set up defect tracker (Eric)
+	- Set up feature request tracker (Eric)
+
+ENVIRONMENT
+	- Eclipse configuration (Eric) checkout MyEclipse
+	- CI environment (Eric)
+	- Maven (Eric)
+	

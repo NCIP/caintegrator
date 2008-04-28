@@ -1,0 +1,64 @@
+- Output from analysis may create new groupings or lists (gene lists, for example)
+
+- Allow for arbitrary creation of lists / groupings (not just query results)
+
+	- Gene lists may be several hundred long (allow for delimited text upload)
+	
+- KM Plot & T-Test (grouping) example
+
+	- Select some samples (subset of all) -- (e.g. all brain tumor samples only)
+	
+		- remove outlier, etc.
+		
+		- ...and survival less than 2 years
+		
+	- Define subgroups (1 each for line on KM plot)
+	
+		- Compare Grade III to Grade IV (example)
+		
+	- Example, use T-Test to get or refine gene list
+	
+		- Input: matrix of expression values by genes and by samples (in 2 groups)
+		
+		- Result: p-value, ratio or fold change per gene
+		
+		- Output: Gene list filtered by user selected threshhold of one of the above.
+		
+- Copy and update data set definitions
+	 - Record how created in order to recreate lists
+
+- Static and dynamic (query based) lists
+		
+- Group examples
+
+	- Above: samples by grade
+	
+	- Based on arbitrary clinical attributes (images or subjects)
+	
+	- Unsupervised clustering (to generate groups)
+	
+		- Takes ungrouped data and creates n number of groups
+		
+	- Arbitrarily user-defined groups
+	
+	- Male / female or left / right hemisphere
+	
+	- Pick only samples with blood pressure, etc...
+	
+- Want research investigator to be able to add attributes to existing data
+
+	- Example, cell lines grown in different media -- this wasn't captured in clinical or genomic apps
+	
+		- Actually, creation of sample lists, etc. is sufficient for this
+		
+- Description text search may be helpful (maybe not)
+
+- Sample name pattern may be useful
+		
+- Tools
+
+	- Lots of R modules
+	
+	- in caIntegrator (implemented -- runs through R)
+	
+	- GenePattern

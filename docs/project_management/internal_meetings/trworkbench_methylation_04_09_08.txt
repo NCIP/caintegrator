@@ -1,0 +1,108 @@
+4/9/08 METHYLATION DATA REQUIREMENTS OVERVIEW
+=============================================
+
+Methylation 101
+
+	Methylation is to C preceding a T
+
+	Transcription factor attachs to promoter and begins transcription.
+
+	In front of or behind promoter you may have CpG (C-phospate-G) islands.
+
+		- Depends who you ask, but defined as 300bp > 50% CG
+
+	Methylation has several functions
+
+		- Indicates which is original DNA and which is copy
+
+		- Regulates expression
+	
+	Amplification can't be used for methylation data
+	
+	Two assays to check for methylation
+	
+		- (Always do bisulfite mod before)
+	
+		- Short oligo probes targeted to methylation (Agilent 71mers)
+		
+			- probes come in two forms SO (short oligo) Methylated and SO-non-methylated
+			
+			- 10 micrograms and up of DNA required
+		
+		- Methylation IP (Immuno Precipitation)
+		
+			- Chop up 10 ug of DNA (smash it up to about 200-300bp chunks)
+			
+			- Some pieces are methylated some are not
+			
+			- Use antibody that binds to Methylated
+			
+			- Antibody is heavy falls to bottom, you get 1 ug of all methylated chunks
+			
+		- 100 ug of DNA --> Bisulfate it --> nPCR (?what's this)
+		
+			- Put result in Affymetrix promoter array (tiling arrays)
+			
+				- Affy tiling arrays go 5k bp back from 1st transcribed exon (21-mer followed by 35mer, repeat)
+				
+					- Tiling arrays always used for sequencing
+		
+	- Original assay was Methylation Specific PCR (MSPCR)
+	
+		- Bisulfite modification to CpG islands
+			
+			- Everything not methylated changed to a T
+			
+				from: * *
+				      CGCGAAGGCCCG
+				to    CGCGAAGGCCTG
+				
+		- Problem is methylation must be right where primer is located
+		
+	- Often don't know where promoters are for genes
+	
+	- For promoter region let's say half of the CpG islands are methylated; is the promoter methylated?
+	
+		- Answer is dependent on whether CpG is transcription binding site
+		
+		- Need to look at expression data as well to see if transcription was turned off
+		
+	- Methylation is not the most common transcription inhibitor
+	
+		- Actually chromatin mechanism to fold DNA more common, but harder to study
+		
+	- Example: methylation is mechanism that prevents production of sex hormones prior to puberty
+	
+	- Need to look at both methylation and hypomethylation (loss of methylation)
+	
+	- Look at % probes methylated --> expression of gene compared against normals
+	
+	- Can also do copy number -- expression correlation to find methylation
+	
+	- Methylation data not shown on global scale, shown on gene by gene scale (across samples)
+	
+- Ideal representation of how to show methylation data ("what I want")
+
+	- % probes methylated for a particular gene (gives me an idea, but not necessarily reliable)
+	
+	- For a single gene and single sample, show side by side bar graph of % probes methylated and mRNA expression
+	
+	- For a single gene and all samples, plot % probes meth vs. expression level
+	
+		- Select samples in clusters:
+		
+			- View spreadsheet probes vs. samples
+
+	- View bar graph: all samples / one gene
+	
+		- y axis % of samples methylated
+		
+		- x axis: probes
+		
+	- Look at any of the above, 2 side by side (or separate colors, but not preferred) of 2 clinical values
+	
+		- e.g. outcome; high survival vs. low survival
+		
+- Have seen papers that describe high throughput methylation methodology, but haven't seen papers that have found biological results from these methodologies.
+
+	

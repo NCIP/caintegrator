@@ -1,0 +1,21 @@
+TECH STACK
+====================
+caCORE 4.0 techstack
+
+JAVA PLATFORM
+====================
+1.5.0.10
+
+
+IDE
+====================
+
+Start with Eclipse 3.3: Eclipse IDE for Java EE Developers:
+- Windows: http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/europa/winter/eclipse-jee-europa-winter-win32.zip
+- Mac: http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/europa/winter/eclipse-jee-europa-winter-macosx-carbon.tar.gz
+
+Optionally install MyEclipse 6.0 plug-ins
+
+Install Subclipse plug-in
+- URL is http://subclipse.tigris.org/update_1.2.x
+- Deselect Integration option for Buckminsters

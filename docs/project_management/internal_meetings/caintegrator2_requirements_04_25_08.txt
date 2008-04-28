@@ -1,0 +1,70 @@
+GENOMIC REQUIREMENTS MEETING
+============================
+
+Attendees:
+- Eric
+- Shine
+- Subha
+- Yuri
+
+AGENDA
+=============================
+- Purpose
+	- Get good enough understanding
+	- Good enough is good enough
+	- Now is not the time for imagination, now is time for specification
+
+- Review areas to be described
+	- Browse Data (genomic)
+	- Manage Queries
+	
+	- Show entities in model (sample, array data, timepoint, subject)
+	
+- Describe Browse Data use case
+
+- Describe Manage Queries use case
+
+
+DECISIONS
+=============================
+
+- Allow true, public browsing
+	
+QUESTIONS
+=============================
+- My assumption is that some query results are in terms of actual expression values, some in terms of samples or array data files. Valid?
+
+
+- The Browse Data metaphor implies only looking at entities
+	- Yes, no array data shown in Browse Data.
+	
+
+BROWSE DATA
+=============================
+
+- Useful for Study Manager to allow cross-entity properties:
+	e.g. For sample list show subject annotation (disease)
+	
+- Browse Samples
+	sample id, patient id, available data (type (expression, copy #, etc.) and platform), study manager selected annotation (on any entity)
+	
+- Browse Arrays
+	simmilar to above
+
+MANAGE QUERIES
+=============================
+
+Genomic criteria:
+	Gene or Gene List
+	Chromosome + start + end
+	GO
+	Pathway
+	Probeset (reporter)
+	
+
+Genomic results:
+	samples x reporters showing normalized expression data
+
+- We want to add Drug to target Gene annotation and query ability
+
+- Fold change search is not a requirement.
