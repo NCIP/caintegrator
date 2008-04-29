@@ -1,6 +1,6 @@
 TECH STACK
 ====================
-caCORE 4.0 techstack
+caCORE 4.0 tech stack
 
 JAVA PLATFORM
 ====================
@@ -23,4 +23,15 @@ Install Subclipse plug-in
 
 ANT
 ====================
-Ant 1.7.0
+Ensure Ant 1.7.0 is installed
+
+Create local.properties in the caintegrator2/software/build directory
+
+
+
+TODO
+======================
+
+- Export or explain Eclipse configuration properties
+
+    - Spaces for tabs.
