@@ -1,0 +1,30 @@
+<!-- *********************************************************************** -->
+<!-- ** PROJECT:   caIntegrator 2                                         ** -->
+<!-- *********************************************************************** -->
+
+<project name="caintegrator2" default="continuous-integration" basedir="..">
+
+    <!-- ******************************************************************* -->
+    <!-- ** PROPERTIES                                                    ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Main -->
+    <property name="root.dir" value="${basedir}/.." />
+    <property name="docs.dir" value="${root.dir}/docs" />
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="lib.dir" value="${basedir}/lib" />
+    <property name="resource.dir" value="${build.dir}/resources" />
+    <property name="target.dir" value="${build.dir}/target" />
+    <property name="site.dir" value="${build.dir}/site" />
+
+	
+    <!-- ******************************************************************* -->
+    <!-- ** MAIN TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="continuous-integration">
+    </target>
+
+    <target name="nightly-build" depends="continuous-integration" />
+
+</project>
