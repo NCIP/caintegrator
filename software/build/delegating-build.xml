@@ -4,17 +4,28 @@
 
 <project name="caintegrator2-cruisecontrol" default="build" basedir="../..">
 
-    <taskdef resource="svntask.properties"/>
-
     <property name="build.dir" value="${basedir}/software/build" />
+    <property name="lib.dir" value="${basedir}/software/lib" />
 
     <property file="${build.dir}/local.properties" />
+    
+    <property name="svnant.jar" value="${lib.dir}/svnant.jar" />
+    <property name="svnClientAdapter.jar" value="${lib.dir}/svnClientAdapter.jar" />
+    <property name="svnjavahl.jar" value="${lib.dir}/svnjavahl.jar" />
 
-    <target name="build">
+	<path id="project.classpath">
+	    <pathelement location="${svnjavahl.jar}" /> 
+	    <pathelement location="${svnant.jar}" />
+	    <pathelement location="${svnClientAdapter.jar}" />
+	</path>
+
+    <taskdef resource="svntask.properties" classpathref="project.classpath"/>
+    
+    <target name="continuous-integration">
         <svn username="${svn.username}" password="${svn.password}">
             <update dir="${basedir}" />
         </svn>
-        <copy todir="${basedir}/../.." file="software/build/cruisecontrol_config.xml" />
+        <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
         <ant antfile="build/build.xml"
             dir="software"
             target="continuous-integration" />
@@ -22,6 +33,21 @@
             <copy message="Tagging with ${label}"
                 srcurl="http://gforge.nci.nih.gov/svnroot/caintegrator2/trunk"
                 desturl="http://gforge.nci.nih.gov/svnroot/caintegrator2/tags/continuous-integration/${label}" />
+        </svn>
+    </target>
+    
+    <target name="nightly-build">
+        <svn username="${svn.username}" password="${svn.password}">
+            <update dir="${basedir}" />
+        </svn>
+        <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
+        <ant antfile="build/build.xml"
+            dir="software"
+            target="nightly-build" />
+        <svn username="${svn.username}" password="${svn.password}">
+            <copy message="Tagging with ${label}"
+                srcurl="http://gforge.nci.nih.gov/svnroot/caintegrator2/trunk"
+                desturl="http://gforge.nci.nih.gov/svnroot/caintegrator2/tags/nightly/${label}" />
         </svn>
     </target>
 
