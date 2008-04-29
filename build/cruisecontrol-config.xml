@@ -50,6 +50,9 @@
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
             <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}">
                 <always address="etavela@5amsolutions.com" />
+                <always address="mholck@scenpro.com" />
+                <always address="tandrews@scenpro.com" />
+                <always address="jacobss2@mail.nih.gov" />
             </htmlemail>
         </publishers>
 
@@ -87,6 +90,9 @@
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
             <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}">
                 <always address="etavela@5amsolutions.com" />
+                <always address="mholck@scenpro.com" />
+                <always address="tandrews@scenpro.com" />
+                <always address="jacobss2@mail.nih.gov" />
             </htmlemail>
         </publishers>
 
