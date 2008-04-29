@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+
+	<!-- 									 -->
+	<!--  Entry point for the Code Generator -->
+	<!-- 									 -->
+	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
+		<constructor-arg ref="UMLModel"></constructor-arg>
+		<constructor-arg index="1">
+			<list>
+				<ref bean="LogicalModelValidator"/>
+				<ref bean="ModelMappingValidator"/>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<list>
+				<ref bean="HibernateMappingTransformer"/>
+				<ref bean="BeanTransformer"/>
+				<ref bean="EHCacheTransformer"/>
+				<ref bean="HibernateCfgTransformer"/>
+				<ref bean="XmlMappingMarshallerTransformer"/>
+				<ref bean="XmlMappingUnmarshallerTransformer"/>
+				<ref bean="SchemaTransformer"/>	
+				<ref bean="WSDDTransformer"/>							
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 									 -->
+	<!--  XMI File Reader/UML Model Loader	 -->
+	<!-- 									 -->
+	<bean name="UMLModel" factory-bean="UMLModelLoader" factory-method="getUMLModel" singleton="true"/>
+	<bean name="UMLModelLoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
+		<constructor-arg value="models/@MODEL_FILE@"></constructor-arg>
+		<constructor-arg value="@MODEL_FILE_TYPE@"></constructor-arg>
+	</bean>
+
+	<bean name="UMLModelFileProperties" class="java.util.Properties">
+		<constructor-arg>
+			<props>
+				<prop key="Logical Model">@LOGICAL_MODEL@</prop>
+				<prop key="Data Model">@DATA_MODEL@</prop>
+				<prop key="Include Package">@INCLUDE_PACKAGE@</prop>
+				<prop key="Exclude Package">@EXCLUDE_PACKAGE@</prop>
+				<prop key="Exclude Name">@EXCLUDE_NAME@</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+	<!-- 									 -->
+	<!--  Code Generation Validator			 -->
+	<!-- 									 -->
+	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator">
+		<property name="enabled" value="@VALIDATE_LOGICAL_MODEL@"/>
+		<property name="name" value="Logical Model Validator"/>
+	</bean>
+	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator">
+		<property name="enabled" value="@VALIDATE_MODEL_MAPPING@"/>
+		<property name="name" value="Model Mapping Validator"/>		
+	</bean>
+
+	<!-- 									 -->
+	<!--  Transformers						 -->
+	<!-- 									 -->
+	<bean name="HibernateMappingTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateMappingTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>				
+				<property name="suffix" value=".hbm.xml"/>						
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="Hibernate Mapping Transformer"/>			
+	</bean>
+
+	<bean name="BeanTransformer" class="gov.nih.nci.codegen.transformer.jet.POJOTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>				
+				<property name="suffix" value=".java"/>									
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_BEANS@"/>
+		<property name="name" value="Bean Transformer"/>		
+	</bean>
+	
+	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="fileName" value="ehcache.xml"/>				
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="CACHE_PATH" value="@CACHE_PATH@"/>
+			</map>
+		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="EHCache Transformer"/>		
+	</bean>
+
+	<bean name="HibernateCfgTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateCfgTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="fileName" value="hibernate.cfg.xml"/>				
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="HIBERNATE_PROPERTIES">
+					<map>
+						<!--@DB_JNDI_URL_START@-->
+						<entry key="connection.datasource" value="@DB_JNDI_URL@"/>
+						<!--@DB_JNDI_URL_END@-->
+						
+						<!--@DB_CONNECTION_POOL_START@-->
+						<entry key="connection.driver_class" value="@DB_DRIVER@"/>
+						<entry key="connection.url" value="@DB_CONNECTION_URL@"/>
+						<entry key="connection.username" value="@DB_USERNAME@"/>
+						<entry key="connection.password" value="@DB_PASSWORD@"/>
+
+						<entry key="connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/>
+						<entry key="c3p0.max_size" value="10"/>
+						<entry key="c3p0.min_size" value="2"/>
+						<entry key="c3p0.timeout" value="5000"/>
+						<entry key="c3p0.max_statements" value="100"/>
+						<entry key="c3p0.idle_test_period" value="3000"/>
+						<entry key="c3p0.acquire_increment" value="2"/>
+						<entry key="c3p0.validate" value="false"/>
+						<!--@DB_CONNECTION_POOL_END@-->
+
+						<entry key="hibernate.show_sql" value="false"/>
+						<entry key="dialect" value="@DB_DIALECT@"/>
+						<entry key="max_fetch_depth" value="1"/>
+						<entry key="cglib.use_reflection_optimizer" value="false"/>
+						<entry key="jdbc.batch_versioned_data" value="true"/>
+						<entry key="jdbc.use_streams_for_binary" value="true"/>
+						<entry key="cache.use_query_cache" value="false"/>
+						<entry key="cache.provider_class" value="org.hibernate.cache.EhCacheProvider"/>
+
+					</map>
+				</entry>
+				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="@INCLUDE_SEARCH_EVENT_LISTENER@"/>
+			</map>
+		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="Hibernate Config Transformer"/>		
+	</bean>
+
+	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
+		<property name="includeAssociations" value="true"/>
+		<property name="includeFieldHandler" value="true"/>
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />		
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="fileName" value="xml-mapping.xml"/>					
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
+		<property name="name" value="XML Mapping (Marshaller) Transformer"/>
+	</bean>
+
+	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
+		<property name="includeAssociations" value="true"/>
+		<property name="includeFieldHandler" value="false"/>
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="fileName" value="unmarshaller-xml-mapping.xml"/>						
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
+		<property name="name" value="XML Mapping (Unmarshaller) Transformer"/>		
+	</bean>
+	
+	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="suffix" value=".xsd"/>					
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_XSD@"/>
+		<property name="name" value="Schema (XSD) Transformer"/>		
+	</bean>	
+
+
+	<bean name="WSDDTransformer" class="gov.nih.nci.codegen.transformer.jet.WSDDTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+  				<property name="outputDir" value="@OUTPUTDIR@"/>	
+				<property name="fileName" value="server-config.wsdd"/>	
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="WEBSERVICE_NAME" value="@WEBSERVICE_NAME@"/>
+			</map>
+		</property>
+		<property name="enabled" value="@GENERATE_WSDD@"/>
+		<property name="name" value="Web Services Deployment Descriptor (WSDD) Transformer"/>		
+	</bean>	
+	
+</beans>
