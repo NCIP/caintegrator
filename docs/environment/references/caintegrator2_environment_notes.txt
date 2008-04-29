@@ -4,7 +4,7 @@ caCORE 4.0 techstack
 
 JAVA PLATFORM
 ====================
-1.5.0.10
+JDK 1.5.0.10
 
 
 IDE
@@ -18,4 +18,9 @@ Optionally install MyEclipse 6.0 plug-ins
 
 Install Subclipse plug-in
 - URL is http://subclipse.tigris.org/update_1.2.x
-- Deselect Integration option for Buckminsters
+- Deselect Integration option for Buckminster
+
+
+ANT
+====================
+Ant 1.7.0
