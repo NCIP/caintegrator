@@ -48,7 +48,7 @@
         <publishers>
             <artifactspublisher dir="projects\${project.name}\software\build\site" dest="artifacts\${project.name}" />
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
-            <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}">
+            <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}" skipusers="true">
                 <always address="etavela@5amsolutions.com" />
                 <always address="mholck@scenpro.com" />
                 <always address="tandrews@scenpro.com" />
@@ -88,7 +88,7 @@
         <publishers>
             <artifactspublisher dir="projects\${project.name}\software\build\site" dest="artifacts\${project.name}" />
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
-            <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}">
+            <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}" skipusers="true">
                 <always address="etavela@5amsolutions.com" />
                 <always address="mholck@scenpro.com" />
                 <always address="tandrews@scenpro.com" />
