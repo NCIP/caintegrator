@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="caCORESDK" basedir="." default="build-system">
+
+	<description>Build script for caCORE SDK</description>
+
+	<!--***********************************************************************
+	*** Load the build properties from the file
+	*********************************************************************** -->
+	<property file="local.properties"  />
+	<property file="conf/deploy.properties"  />
+	<property file="build.properties"  />
+	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
+	<property file="${system.dir}/build.properties" prefix="system"  />
+	
+	<!--***********************************************************************
+	*** Import utility script
+	*********************************************************************** -->
+	<import file="build-scripts\build-utils.xml"/>
+	<import file="${codegen.dir}\build.xml"/>
+	<import file="${system.dir}\build.xml"/>
+	
+	<!--***********************************************************************
+	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
+	*********************************************************************** -->
+	<path id="codegen.runtime">
+		<fileset dir="${codegen.dir}\dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement path="${output.codegen.config.dir}"/>
+	</path>
+
+	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
+	<path id="basedir.path">
+		<pathelement path="${basedir}" />
+	</path>
+
+	<pathconvert targetos="unix" property="basedir.unix" refid="basedir.path" />
+
+	<!--***********************************************************************
+	*** HIDE/SHOW DB CONNECTION PROPERTIES TO BE USED IN HIBERNATE CONFIGURATION
+	*********************************************************************** -->
+	<condition property="JNDI_START" value="" else="${xml.comment.start}">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="JNDI_END" value="" else="${xml.comment.end}">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="DB_CONNECTION_START" value="${xml.comment.start}" else="">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="DB_CONNECTION_END" value="${xml.comment.end}" else="">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="CSM_JNDI_START" value="" else="${xml.comment.start}">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_JNDI_END" value="" else="${xml.comment.end}">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_DB_CONNECTION_START" value="${xml.comment.start}" else="">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_DB_CONNECTION_END" value="${xml.comment.end}" else="">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+
+	<condition property="SECURITY_START" value="" else="${xml.comment.start}">
+		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
+		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="server-exclude-list" value="log4j*.jar" else="">
+		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+	</condition>
+	
+	
+	<!--***********************************************************************
+	*** Prepares the output directory structure
+	*********************************************************************** -->
+	<target name="init" >
+		<SDKecho message="${ant.project.name}: Preparing directories"/>
+		<mkdir dir="${output.dir}"/>
+		<mkdir dir="${output.project.dir}"/>
+		<mkdir dir="${output.src.dir}"/>
+		<mkdir dir="${output.conf.dir}"/>
+		<mkdir dir="${output.codegen.config.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.jar.dir}"/>
+		<mkdir dir="${build.doc.dir}"/>
+		<mkdir dir="${package.dir}"/>
+		<mkdir dir="${package.client.remote.dir}"/>
+		<mkdir dir="${package.client.remote.lib.dir}"/>
+		<mkdir dir="${package.client.remote.conf.dir}"/>
+		<mkdir dir="${package.client.local.dir}"/>
+		<mkdir dir="${package.client.local.lib.dir}"/>
+		<mkdir dir="${package.system.dir}"/>
+		<mkdir dir="${package.client.ws.dir}"/>
+		<mkdir dir="${package.client.ws.lib.dir}"/>
+		<mkdir dir="${package.client.ws.conf.dir}"/>
+	
+		<copy todir="${output.conf.dir}" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<replace dir="${output.conf.dir}">
+			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
+			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
+			<replacefilter token="@MODEL_FILE_TYPE@" value="${MODEL_FILE_TYPE}" />
+			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
+			<replacefilter token="@DATA_MODEL@" value="${DATA_MODEL}" />
+			<replacefilter token="@INCLUDE_PACKAGE@" value="${INCLUDE_PACKAGE}" />
+			<replacefilter token="@EXCLUDE_PACKAGE@" value="${EXCLUDE_PACKAGE}" />
+			<replacefilter token="@EXCLUDE_NAME@" value="${EXCLUDE_NAME}" />
+			<replacefilter token="@NAMESPACE_PREFIX@" value="${NAMESPACE_PREFIX}" />	
+			<replacefilter token="@CACHE_PATH@" value="${CACHE_PATH}" />	
+			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_START@${xml.comment.end}" value="${JNDI_START}" />	
+			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_END@${xml.comment.end}" value="${JNDI_END}" />	
+			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_START@${xml.comment.end}" value="${DB_CONNECTION_START}" />	
+			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_END@${xml.comment.end}" value="${DB_CONNECTION_END}" />	
+			<replacefilter token="@DB_JNDI_URL@" value="${DB_JNDI_URL}" />	
+			<replacefilter token="@DB_DRIVER@" value="${DB_DRIVER}" />	
+			<replacefilter token="@DB_CONNECTION_URL@" value="${DB_CONNECTION_URL}" />	
+			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
+			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
+			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
+			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
+			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
+			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
+			<replacefilter token="@GENERATE_BEANS@" value="${GENERATE_BEANS}"/>
+			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
+			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
+			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
+			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
+			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_START@${xml.comment.end}" value="${CSM_JNDI_START}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_END@${xml.comment.end}" value="${CSM_JNDI_END}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_CONNECTION_POOL_START@${xml.comment.end}" value="${CSM_DB_CONNECTION_START}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_CONNECTION_POOL_END@${xml.comment.end}" value="${CSM_DB_CONNECTION_END}" />	
+			<replacefilter token="@CSM_DB_JNDI_URL@" value="${CSM_DB_JNDI_URL}" />	
+			<replacefilter token="@CSM_DB_DRIVER@" value="${CSM_DB_DRIVER}" />	
+			<replacefilter token="@CSM_DB_CONNECTION_URL@" value="${CSM_DB_CONNECTION_URL}" />	
+			<replacefilter token="@CSM_DB_USERNAME@" value="${CSM_DB_USERNAME}" />	
+			<replacefilter token="@CSM_DB_PASSWORD@" value="${CSM_DB_PASSWORD}" />	
+			<replacefilter token="@CSM_DB_DIALECT@" value="${CSM_DB_DIALECT}" />
+			<replacefilter token="@CSM_PROJECT_NAME@" value="${CSM_PROJECT_NAME}" />
+			<replacefilter token="${xml.comment.start}@SECURITY_START@${xml.comment.end}" value="${SECURITY_START}" />	
+			<replacefilter token="${xml.comment.start}@SECURITY_END@${xml.comment.end}" value="${SECURITY_END}" />	
+			<replacefilter token="@INSTANCE_LEVEL_SECURITY@" value="${INSTANCE_LEVEL_SECURITY}" />
+			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
+			<replacefilter token="@INCLUDE_SEARCH_EVENT_LISTENER@" value="${INCLUDE_SEARCH_EVENT_LISTENER}" />			
+			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
+		</replace>
+		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
+	</target>
+
+	<!--***********************************************************************
+	*** Cleans the generated directories and files created following the 
+	*** execution of the build-system target.
+	*********************************************************************** -->
+	<target name="clean" description="Cleans the generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
+		<delete dir="${output.dir}"/>
+		<delete dir="${release.dir}"/>
+		<property name="clean-all-performed" value="true"/>
+	</target>
+
+	<!--***********************************************************************
+	*** Cleans the generated directories and files of both the main and child projects
+	*********************************************************************** -->
+	<target name="clean-all" depends="clean" description="Cleans the child projects and generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
+		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
+		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
+		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
+	</target>
+
+	<!--***********************************************************************
+	*** Prepare 
+	*********************************************************************** -->
+	<target name="prepare-condition-codegen" >
+		<SDKecho message="${ant.project.name}: Checking the condition for codegen project build"/>
+		<condition property="prepare-required-codegen">
+			<not>
+				<available file="${codegen.dir}/${codegen.dist.dir}/${codegen.file.output.name}"/>
+			</not>
+		</condition>
+	</target>
+
+	<target name="prepare-codegen" depends="prepare-condition-codegen" if="prepare-required-codegen">
+		<SDKecho message="${ant.project.name}: Preparing the codegen project"/>
+		<ant antfile="${codegen.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
+
+	<target name="prepare-condition-system" >
+		<SDKecho message="${ant.project.name}: Checking the condition for system project build"/>
+		<condition property="prepare-required-system">
+			<and>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.client.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.core.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.web.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.ws.name}"/></not>
+			</and>
+		</condition>
+	</target>
+
+	<target name="prepare-system" depends="prepare-condition-system" if="prepare-required-system">
+		<SDKecho message="${ant.project.name}: Preparing the system project"/>
+		<ant antfile="${system.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
+	
+	<target name="prepare" depends="prepare-codegen,prepare-system"/>
+	
+	<!--***********************************************************************
+	*** Runs the Code Generator 
+	*********************************************************************** -->
+	<target name="codegen" depends="prepare-codegen,init" description="Runs the Code Generator">
+		<SDKecho message="${ant.project.name}: Running the code generator"/>
+		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true">
+			<arg value="${codegen.config.file}" />
+			<classpath refid="codegen.runtime" />
+		</java>
+	</target>
+
+	<!--***********************************************************************
+	*** Compiles the generated beans 
+	*********************************************************************** -->
+	<target name="compile-beans" depends="codegen" description="Compiles the generated beans">
+		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
+		<javac srcdir="${output.src.dir}" destdir="${build.classes.dir}" debug="true">
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+
+	<!--***********************************************************************
+	*** Packages the generated artifacts 
+	*********************************************************************** -->
+	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system" description="Packages the generated ORM and bean artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>
+		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<fileset dir="${output.src.dir}" includes="**/*.java" />
+		</jar>
+		<jar destfile="${build.jar.dir}\${orm.file}" basedir="${output.src.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<include name="**/*.hbm.xml"/>
+			<include name="*.cfg.xml"/>
+			<include name="ehcache.xml"/>
+			<exclude name="${csm.security.config.file}"/>
+		</jar>
+	</target>
+
+	<target name="package-system" depends="package-remote-client,package-local-client,package-webapp,package-ws-client" description="Packages the system">
+		<SDKecho message="${ant.project.name}: Packaging the system artifacts"/>
+	</target>	
+
+	<target name="package-remote-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the remote client"/>
+
+		<copy todir="${package.client.remote.conf.dir}">
+			<fileset dir="${output.src.dir}">
+				<include name="*.xsd"/>
+				<include name="*xml-mapping*.*"/>
+			</fileset>
+		</copy>
+		<copy todir="${package.client.remote.lib.dir}">
+			<fileset dir="${system.dir}\${system.dist.dir}">
+				<include name="${system.file.output.client.name}"/>
+			</fileset>
+			
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="acegi*.*"/>
+				<include name="asm*.*"/>
+				<include name="antlr*.*"/>
+				<include name="cglib*.*"/>
+				<include name="commons-codec*.*"/>
+				<include name="commons-collection*.*"/>
+				<include name="commons-logging*.*"/>
+				<include name="hibernate*.*"/>
+				<include name="log4j*.*"/>
+				<include name="spring*.*"/>
+				<include name="castor*.*"/>
+				<include name="xercesImpl*.*"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+		</copy>
+		<copy todir="${package.client.remote.dir}">
+			<fileset dir="${system.config.client.remote.dir}"/>
+		</copy>
+	</target>
+
+	<target name="package-local-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the local client"/>
+		<copy todir="${package.client.local.lib.dir}">
+			<fileset dir="${system.dir}\${system.dist.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="${system.file.output.core.name}"/>
+			</fileset>
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="acegi*.*"/>
+				<include name="asm*.*"/>
+				<include name="antlr*.*"/>
+				<include name="c3p0*.*"/>
+				<include name="cglib*.*"/>
+				<include name="commons-codec*.*"/>
+				<include name="commons-collection*.*"/>
+				<include name="commons-logging*.*"/>
+				<include name="csmapi*.*"/>
+				<include name="clm*.*"/>
+				<include name="dom4j*.*"/>
+				<include name="ehcache*.*"/>
+				<include name="hibernate*.*"/>
+				<include name="jta*.*"/>	
+				<include name="jdom*.*"/>	
+				<include name="log4j*.*"/>
+				<include name="mysql*.*"/>
+				<include name="ojdbc*.*"/>
+				<include name="spring*.*"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
+		</copy>
+		<copy todir="${package.client.local.dir}">
+			<fileset dir="${system.config.client.local.dir}"/>
+		</copy>
+		<copy todir="${package.client.local.conf.dir}">
+			<fileset dir="${system.config.web.classes.dir}">
+				<include name="${application.config.file}"/>
+				<include name="${application.config.security.file}"/>
+			</fileset>
+			<fileset dir="${output.src.dir}">
+				<include name="${csm.security.config.file}"/>
+			</fileset>
+		</copy>
+	</target>	
+
+	<target name="package-webapp" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the webapp"/>
+		<war destfile="${package.system.dir}\${PROJECT_NAME}.war" webxml="${build.conf.web-inf.dir}\web.xml">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
+			<lib dir="${build.jar.dir}" includes="${bean.file}" />
+			<lib dir="${build.jar.dir}" includes="${orm.file}" />
+			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar">
+				<exclude name="${server-exclude-list}"/>
+				<exclude name="servlet.jar"/>
+				<exclude name="commons-logging*.*"/>
+				<exclude name="xercesImpl*.*"/>
+			</lib>
+			<fileset dir="${build.conf.system.web.dir}">
+				<include name="**/*"/>
+				<exclude name="**/web.xml"/>
+			</fileset>
+			<fileset dir="${system.dir}\${system.web.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${build.dir}">
+				<include name="docs/**/*"/>
+			</fileset>
+			<classes dir="${output.src.dir}">
+				<include name="${csm.security.config.file}"/>
+			</classes>
+			<webinf dir="${output.src.dir}">
+				<include name="server-config.wsdd"/>
+			</webinf>
+		</war>
+	</target>	
+	
+	<target name="package-ws-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the Web Service client"/>
+		<copy todir="${package.client.ws.lib.dir}">
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="axis*.*"/>
+				<include name="commons-discovery*.*"/>
+				<include name="commons-logging*.*"/>
+				<include name="jaxrpc*.*"/>
+				<include name="saaj*.*"/>
+				<include name="wsdl4j*.*"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+		</copy>
+		<copy todir="${package.client.ws.dir}">
+			<fileset dir="${system.config.client.ws.dir}"/>
+		</copy>
+	</target>	
+	
+	<!--***********************************************************************
+	*** Generates Javadocs for the Java Beans
+	*********************************************************************** -->
+	<target name="doc" depends="codegen" description="Generates javadocs for the domain Java beans">
+		<SDKecho message="${ant.project.name}: Generating javadocs for the beans"/>
+		<javadoc packagenames="*" destdir="${build.doc.dir}" author="true"
+			private="true" version="true" use="true" windowtitle="${PROJECT_NAME} API Documentation"
+			doctitle="${PROJECT_NAME} API Documentation" useexternalfile="yes" verbose="false">
+		    <bottom><![CDATA[<i>This API was generated by the <a href='http://ncicb.nci.nih.gov/NCICB/infrastructure/cacoresdk'>caCORE Software Development Kit</a>.</i>]]></bottom>
+			<fileset dir="${output.src.dir}" includes="**/*.java"/>
+		</javadoc>
+	</target>
+
+
+	<!--***********************************************************************
+	*** Generates the system using properties set within /conf/deploy.properties
+	*********************************************************************** -->
+	<target name="build-system" depends="clean,package-codegen-artifacts, doc, package-system" description="Generates complete system">
+		<SDKecho message="${ant.project.name}: Completed the system build"/>
+	</target>
+
+	
+	<!--***********************************************************************
+	*** Dumps the current Code Generator properties  
+	*********************************************************************** -->
+	<target name="show-properties" description="Dumps a list of all currently set Code Generator properties">
+		<echoproperties destfile="antproperties.txt"/>
+		<echo>Properties were dumped to 'antproperties.txt'</echo>
+	</target>
+	
+	<!--***********************************************************************
+	*** Creates release packages for the SDK  
+	*********************************************************************** -->
+	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system" description="Creates release packages">
+		<SDKecho message="${ant.project.name}: Creates release packages"/>
+		<mkdir dir="${release.dir}"/>
+		<zip destfile="${release.binary.file}" whenempty="skip">
+			<zipfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
+				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
+				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="bin"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
+				<exclude name="${system.dir}/${system.src.dir}"/>
+				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</zipfileset>
+		</zip>
+
+		<zip destfile="${release.src.file}" whenempty="skip">
+			<zipfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="**/build/**/*"/>
+				<exclude name="**/dist/**/*"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</zipfileset>
+		</zip>
+	
+		<tar destfile="${release.binary.tar.file}" >
+			<tarfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
+				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
+				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="bin"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
+				<exclude name="${system.dir}/${system.src.dir}"/>
+				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</tarfileset>
+		</tar>
+	
+		<tar destfile="${release.src.tar.file}" >
+			<tarfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="**/build/**/*"/>
+				<exclude name="**/dist/**/*"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</tarfileset>
+		</tar>
+		
+	</target>
+	
+	<target name="copy-sdk" if="anthill.artifacts.dir" description="Copy SDK target required for ANTHILL">
+		<copy todir="${anthill.artifacts.dir}">
+			<fileset dir="../../">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+</project>
