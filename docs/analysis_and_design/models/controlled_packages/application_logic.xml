@@ -12,7 +12,7 @@
 				<UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false"/>
 				<UML:Package name="Application Logic" xmi.id="EAPK_91B314D8_2DB5_4cec_966C_CC1822BA58D7" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 					<UML:ModelElement.stereotype>
-						<UML:Stereotype xmi.idref="EAID_2BDF5275_0452_458e_B642_0DD21E566A6A"/>
+						<UML:Stereotype xmi.idref="EAID_B5381AC6_C623_4c99_8F25_62A9E0BE99B4"/>
 					</UML:ModelElement.stereotype>
 					<UML:ModelElement.taggedValue>
 						<UML:TaggedValue tag="parent" value="EAID_F633EB45_6F16_413d_BFC9_411E2B9618C7"/>
@@ -20,7 +20,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-18 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\application_logic.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-01 09:20:16"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-01 14:03:35"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-04-18 11:04:59"/>
 						<UML:TaggedValue tag="version" value="1.0"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
@@ -705,7 +705,7 @@
 						</UML:Package>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
-				<UML:Stereotype xmi.id="EAID_2BDF5275_0452_458e_B642_0DD21E566A6A" name="layer" isRoot="false" isLeaf="false" isAbstract="false">
+				<UML:Stereotype xmi.id="EAID_B5381AC6_C623_4c99_8F25_62A9E0BE99B4" name="layer" isRoot="false" isLeaf="false" isAbstract="false">
 					<UML:Stereotype.baseClass>Package</UML:Stereotype.baseClass>
 				</UML:Stereotype>
 				<UML:DataType xmi.id="eaxmiid0" name="Query" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
@@ -783,7 +783,7 @@
 				<UML:TaggedValue tag="diagram_guid" value="EAID_FA832CD4_2CBB_4407_BC3D_075459E399B0"/>
 			</UML:ModelElement.taggedValue>
 		</UML:DiagramElement>
-		<UML:DiagramElement geometry="Left=119;Top=766;Right=132;Bottom=806;" subject="EAID_00874C6F_7C4D_46d2_80C7_0120A4D3C1CC" seqno="1" style="DUID=E293264F;LBL=CX=91:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;">
+		<UML:DiagramElement geometry="Left=130;Top=775;Right=143;Bottom=815;" subject="EAID_00874C6F_7C4D_46d2_80C7_0120A4D3C1CC" seqno="1" style="DUID=E293264F;LBL=CX=91:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="diagram_guid" value="EAID_FA832CD4_2CBB_4407_BC3D_075459E399B0"/>
 			</UML:ModelElement.taggedValue>
@@ -793,7 +793,7 @@
 				<UML:TaggedValue tag="diagram_guid" value="EAID_7A208FB9_455E_4262_8F8F_267207D7C787"/>
 			</UML:ModelElement.taggedValue>
 		</UML:DiagramElement>
-		<UML:DiagramElement geometry="Left=70;Top=699;Right=180;Bottom=767;" subject="EAID_FA817B7F_E9C9_4993_97AD_F6AAE78F3020" seqno="9" style="DUID=E2793AD8;">
+		<UML:DiagramElement geometry="Left=81;Top=708;Right=191;Bottom=776;" subject="EAID_FA817B7F_E9C9_4993_97AD_F6AAE78F3020" seqno="9" style="DUID=E2793AD8;">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="diagram_guid" value="EAID_FA832CD4_2CBB_4407_BC3D_075459E399B0"/>
 			</UML:ModelElement.taggedValue>
