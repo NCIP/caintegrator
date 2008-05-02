@@ -16,7 +16,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-17 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.annotation.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-02 16:29:59"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-02 16:30:48"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-04-18 13:49:12"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -50,12 +50,12 @@
 								<UML:TaggedValue tag="status" value="Proposed"/>
 								<UML:TaggedValue tag="ea_localid" value="2170"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="eventflags" value="ATT=f307;LNK=249b;"/>
+								<UML:TaggedValue tag="eventflags" value="LNK=249b;ATT=c9d4;"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3E4F1B0F-ED7E-4e11-95B5-89E0A3D1416C}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={4A41E2D4-2E7E-4012-89F8-8BCD869B9263}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 							<UML:Classifier.feature>
-								<UML:Attribute name="CaDsrPublicID" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+								<UML:Attribute name="caDsrPublicID" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
 									<UML:Attribute.initialValue>
 										<UML:Expression/>
 									</UML:Attribute.initialValue>
@@ -80,7 +80,7 @@
 										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:Attribute>
-								<UML:Attribute name="CaDsrVersion" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+								<UML:Attribute name="caDsrVersion" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
 									<UML:Attribute.initialValue>
 										<UML:Expression/>
 									</UML:Attribute.initialValue>
@@ -105,7 +105,7 @@
 										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:Attribute>
-								<UML:Attribute name="DisplayName" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+								<UML:Attribute name="displayName" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
 									<UML:Attribute.initialValue>
 										<UML:Expression/>
 									</UML:Attribute.initialValue>
@@ -226,12 +226,12 @@
 								<UML:TaggedValue tag="status" value="Proposed"/>
 								<UML:TaggedValue tag="ea_localid" value="2177"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="eventflags" value="ATT=a148;LNK=c4c0;"/>
+								<UML:TaggedValue tag="eventflags" value="LNK=c4c0;ATT=f25b;"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={679EBC2F-4EB2-4592-8723-8FD7BF09B1FA}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={91CBB7FF-8189-4e7a-8C21-39E6E59FB12E}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 							<UML:Classifier.feature>
-								<UML:Attribute name="Value" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+								<UML:Attribute name="value" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
 									<UML:Attribute.initialValue>
 										<UML:Expression/>
 									</UML:Attribute.initialValue>
@@ -244,7 +244,7 @@
 										<UML:TaggedValue tag="containment" value="Not Specified"/>
 										<UML:TaggedValue tag="ordered" value="0"/>
 										<UML:TaggedValue tag="collection" value="false"/>
-										<UML:TaggedValue tag="position" value="1000"/>
+										<UML:TaggedValue tag="position" value="0"/>
 										<UML:TaggedValue tag="lowerBound" value="1"/>
 										<UML:TaggedValue tag="upperBound" value="1"/>
 										<UML:TaggedValue tag="duplicates" value="0"/>
@@ -371,7 +371,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-04-28 09:56:34"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-02 16:30:19"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-02 16:31:36"/>
 				<UML:TaggedValue tag="package" value="EAPK_9457A822_5701_4a84_8F26_EE8F965AC6C2"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
