@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-01 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\perform_data_analysis_ucr.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-01 14:07:52"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-02 09:11:53"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-01 14:07:52"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -124,14 +124,14 @@
 						</UML:Collaboration>
 						<UML:Comment name="Note" xmi.id="EAID_C84AE212_0583_4ad2_ACF9_E8CC5337ABCC" visibility="public" namespace="EAPK_93134383_65DA_42a1_8464_12FC597560C6">
 							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="documentation" value="1.    Research Investigator will say that he wants to create a new analysis job configuration.&#xA;2.    Research Investigator will specify the type of job (gene pattern, geWorkbench, etc), the sample ids, reporter ids, and the files associated with the study that correspond to the array data and annotation  data.  It could be possible that there is one file for array data and one file for annotation data per study, so the research investigator might not need to define this, but only the study of interest.&#xA;3.    Research Investigator will save the analysis job by giving it a unique name and description.&#xA;4.    Research Investigator, at any time, can update an analysis job that is owned by them.&#xA;5.    Research Investigator will run the analysis job and retrieve a task ID that links to the Gene Pattern server after the job is completed for use."/>
+								<UML:TaggedValue tag="documentation" value="1.    Research Investigator indicates that he wants to create a new analysis job.&#xA;2.    Research Investigator will specify the type of job (gene pattern, geWorkbench, etc), the sample ids, reporter ids, and the files associated with the study that correspond to the array data and annotation  data.  It could be possible that there is one file for array data and one file for annotation data per study, so the research investigator might not need to define this, but only the study of interest, this is TBD.&#xA;3.    Research Investigator will save the analysis job by giving it a unique name and description.&#xA;4.    Research Investigator, at any time, can update an analysis job that is owned by them.&#xA;5.    Research Investigator will run the analysis job and retrieve a task ID that links to the Gene Pattern server after the job is completed for use."/>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="Note"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="package" value="EAPK_93134383_65DA_42a1_8464_12FC597560C6"/>
 								<UML:TaggedValue tag="date_created" value="2008-05-02 08:44:09"/>
-								<UML:TaggedValue tag="date_modified" value="2008-05-02 09:01:09"/>
+								<UML:TaggedValue tag="date_modified" value="2008-05-02 09:12:26"/>
 								<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 								<UML:TaggedValue tag="tagged" value="0"/>
 								<UML:TaggedValue tag="package_name" value="Perform Data Analysis"/>
@@ -169,7 +169,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-01 14:22:27"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-02 09:02:15"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-02 09:12:55"/>
 				<UML:TaggedValue tag="package" value="EAPK_93134383_65DA_42a1_8464_12FC597560C6"/>
 				<UML:TaggedValue tag="type" value="Sequence"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
