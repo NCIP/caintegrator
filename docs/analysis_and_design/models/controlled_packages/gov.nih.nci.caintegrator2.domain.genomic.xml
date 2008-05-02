@@ -16,7 +16,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.genomic.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-01 14:01:56"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-02 16:01:22"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-01 13:46:09"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -564,33 +564,6 @@
 								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4669B83A-8B17-46b7-B178-3865EE071D95}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={C21645F1-71BE-4169-B61A-91949EBDA38E}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
-						<UML:Collaboration xmi.id="EAID_3E5B7798_9510_41cc_A817_F935574F15E8_Collaboration" name="Collaborations">
-							<UML:Namespace.ownedElement>
-								<UML:ClassifierRole xmi.id="EAID_E8FDFD03_019A_4c68_8493_A804EFABF4EF" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Object"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="version" value="1.0"/>
-										<UML:TaggedValue tag="classifier" value="EAID_AC055A24_A944_4dee_AC68_1A09179EE819"/>
-										<UML:TaggedValue tag="package" value="EAPK_3E5B7798_9510_41cc_A817_F935574F15E8"/>
-										<UML:TaggedValue tag="classname" value="ArrayDataMatrix"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-01 13:47:54"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-01 13:47:54"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package_name" value="gov.nih.nci.caintegrator2.domain.genomic"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="ea_localid" value="2160"/>
-										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
-							</UML:Namespace.ownedElement>
-							<UML:Collaboration.interaction/>
-						</UML:Collaboration>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
 			</UML:Namespace.ownedElement>
