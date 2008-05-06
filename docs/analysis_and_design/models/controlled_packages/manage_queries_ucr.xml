@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-30 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\manage_queries_ucr.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-01 14:02:35"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-06 12:33:10"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
@@ -632,7 +632,7 @@
 								<UML:TaggedValue tag="ea_sourceType" value="Collaboration"/>
 								<UML:TaggedValue tag="ea_targetType" value="UseCase"/>
 								<UML:TaggedValue tag="ea_sourceID" value="2123"/>
-								<UML:TaggedValue tag="ea_targetID" value="110"/>
+								<UML:TaggedValue tag="ea_targetID" value="2229"/>
 								<UML:TaggedValue tag="src_visibility" value="Public"/>
 								<UML:TaggedValue tag="src_aggregation" value="0"/>
 								<UML:TaggedValue tag="src_isOrdered" value="false"/>
@@ -744,21 +744,32 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-04-30 15:28:13"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-01 13:53:05"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-06 12:40:21"/>
 				<UML:TaggedValue tag="package" value="EAPK_F11D8E96_F045_4ce8_8AB4_0C42745E3FAA"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
 				<UML:TaggedValue tag="ea_localid" value="265"/>
-				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=850;DocSize.cy=1098;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.0;ExplicitNavigability=0;"/>
+				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=0;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=850;DocSize.cy=1098;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.0;ExplicitNavigability=0;"/>
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=UML 2.0;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=131;Top=508;Right=144;Bottom=548;" subject="EAID_00874C6F_7C4D_46d2_80C7_0120A4D3C1CC" seqno="1" style="DUID=E293264F;LBL=CX=91:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;"/>
-				<UML:DiagramElement geometry="Left=468;Top=619;Right=578;Bottom=706;" subject="EAID_4EB60DE7_DBA5_4fae_B0B2_93B0B50BE868" seqno="2" style="DUID=56D196FD;"/>
-				<UML:DiagramElement geometry="Left=121;Top=181;Right=248;Bottom=312;" subject="EAID_46F4A248_6BF8_4785_9AC8_EB1984BB5776" seqno="3" style="DUID=672458C4;"/>
-				<UML:DiagramElement geometry="Left=289;Top=172;Right=480;Bottom=327;" subject="EAID_EF9246D0_4D4C_4205_B2FE_2A7378075ACD" seqno="4" style="DUID=6EE2A978;"/>
-				<UML:DiagramElement geometry="Left=513;Top=419;Right=672;Bottom=548;" subject="EAID_3DC0412A_D80D_4d73_ABC6_9E8FDCA3A127" seqno="5" style="DUID=2FED8E29;"/>
-				<UML:DiagramElement geometry="Left=65;Top=547;Right=214;Bottom=676;" subject="EAID_FA817B7F_E9C9_4993_97AD_F6AAE78F3020" seqno="6" style="DUID=8DA42FAB;ShowIFace=1;ShowDepIFace=1;"/>
+				<UML:DiagramElement geometry="Left=70;Top=138;Right=83;Bottom=178;" subject="EAID_AA679385_9828_424d_91B4_4FE3E33A1725" seqno="1" style="DUID=4B94B3D4;LBL=CX=136:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;"/>
+				<UML:DiagramElement geometry="Left=475;Top=131;Right=488;Bottom=171;" subject="EAID_C640CD26_BDE3_4c3f_8C1B_39227E7F4F41" seqno="2" style="DUID=53BBEA08;LBL=CX=95:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;"/>
+				<UML:DiagramElement geometry="Left=265;Top=470;Right=278;Bottom=510;" subject="EAID_FADF2B38_2372_4c36_900B_6BA38D0640E5" seqno="3" style="DUID=CE623B94;LBL=CX=93:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;"/>
+				<UML:DiagramElement geometry="Left=706;Top=163;Right=719;Bottom=203;" subject="EAID_00874C6F_7C4D_46d2_80C7_0120A4D3C1CC" seqno="4" style="DUID=E293264F;LBL=CX=91:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:ALT=0:ROT=0;"/>
+				<UML:DiagramElement geometry="Left=240;Top=356;Right=355;Bottom=426;" subject="EAID_3FE39C09_CD04_4c6f_AD8D_31B4543FD7F9" seqno="5" style="DUID=11479289;"/>
+				<UML:DiagramElement geometry="Left=211;Top=509;Right=321;Bottom=583;" subject="EAID_4EB60DE7_DBA5_4fae_B0B2_93B0B50BE868" seqno="6" style="DUID=56D196FD;ShowIFace=1;"/>
+				<UML:DiagramElement geometry="Left=230;Top=40;Right=357;Bottom=119;" subject="EAID_46F4A248_6BF8_4785_9AC8_EB1984BB5776" seqno="7" style="DUID=672458C4;"/>
+				<UML:DiagramElement geometry="Left=36;Top=177;Right=227;Bottom=293;" subject="EAID_EF9246D0_4D4C_4205_B2FE_2A7378075ACD" seqno="8" style="DUID=6EE2A978;ShowIFace=1;"/>
+				<UML:DiagramElement geometry="Left=420;Top=170;Right=579;Bottom=260;" subject="EAID_3DC0412A_D80D_4d73_ABC6_9E8FDCA3A127" seqno="9" style="DUID=2FED8E29;ShowIFace=1;"/>
+				<UML:DiagramElement geometry="Left=640;Top=202;Right=789;Bottom=292;" subject="EAID_FA817B7F_E9C9_4993_97AD_F6AAE78F3020" seqno="10" style="DUID=8DA42FAB;ShowIFace=1;ShowDepIFace=1;"/>
+				<UML:DiagramElement geometry="SX=57;SY=-41;EX=-4;EY=-16;EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_C61FC3C5_97A4_4cad_AFB3_163DB4CACF2F" style="Mode=2;EOID=CE623B94;SOID=2FED8E29;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=1;SY=10;EX=1;EY=10;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_B1AE2FAE_7DDD_4df5_8370_964EC753FC55" style="Mode=2;EOID=E293264F;SOID=2FED8E29;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=-77;SY=-57;EX=-1;EY=-18;EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_19F3F933_9223_486c_AF9A_BBC470C82DDC" style="Mode=2;EOID=CE623B94;SOID=6EE2A978;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_BA5FAFD1_9D2E_44f9_91B5_42ED961B7BBC" style="Mode=2;EOID=53BBEA08;SOID=672458C4;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_0B68BCFF_978F_4fd2_88FF_9BC07EF6B177" style="Mode=2;EOID=11479289;SOID=2FED8E29;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_8C0F8766_A25F_4c86_A22C_6A7B52D036E7" style="Mode=2;EOID=11479289;SOID=6EE2A978;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_C45FB00F_0452_48e9_BE99_036150142C9B" style="Mode=2;EOID=4B94B3D4;SOID=672458C4;Hidden=0;"/>
 			</UML:Diagram.element>
 		</UML:Diagram>
 		<UML:Diagram name="Manage Queries: Basic Flow" xmi.id="EAID_8AFBD44C_BEBC_4655_8A22_A722118FBB23" diagramType="SequenceDiagram" owner="EAPK_F11D8E96_F045_4ce8_8AB4_0C42745E3FAA" toolName="Enterprise Architect 2.5">
@@ -775,15 +786,15 @@
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;INT_ARGS=;INT_RET=;INT_ATT=;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=715;Top=492;Right=830;Bottom=547;" subject="EAID_34F4F5B8_94B8_41bc_947E_DEBD6996021A" seqno="1" style="DUID=234D4D09;"/>
-				<UML:DiagramElement geometry="Left=5;Top=2;Right=264;Bottom=334;" subject="EAID_C43A534E_B84D_4af6_8056_CD322462A3EA" seqno="2" style="DUID=E0379579;"/>
-				<UML:DiagramElement geometry="Left=697;Top=50;Right=797;Bottom=515;" subject="EAID_5D27C149_B817_4682_B8BF_51078F9A12AC" seqno="3" style="DUID=DBB90693;"/>
-				<UML:DiagramElement geometry="Left=1083;Top=50;Right=1183;Bottom=515;" subject="EAID_DB0B2645_71CA_4080_81ED_902BFA2B83DA" seqno="4" style="DUID=AC45AAC1;"/>
-				<UML:DiagramElement geometry="Left=923;Top=50;Right=1069;Bottom=515;" subject="EAID_2E876315_661A_49ca_B8F8_9CA2A1581A49" seqno="5" style="DUID=9F9B7EE4;"/>
-				<UML:DiagramElement geometry="Left=808;Top=50;Right=908;Bottom=515;" subject="EAID_A2B29B51_12AA_40bc_9E55_51AE5B8CFD94" seqno="6" style="DUID=7814C4F9;"/>
+				<UML:DiagramElement geometry="Left=413;Top=50;Right=555;Bottom=515;" subject="EAID_D4F01B07_F022_469f_8F88_A168AB051585" seqno="1" style="DUID=BE5BCCE1;"/>
+				<UML:DiagramElement geometry="Left=715;Top=492;Right=830;Bottom=547;" subject="EAID_34F4F5B8_94B8_41bc_947E_DEBD6996021A" seqno="2" style="DUID=234D4D09;"/>
+				<UML:DiagramElement geometry="Left=808;Top=50;Right=908;Bottom=515;" subject="EAID_A2B29B51_12AA_40bc_9E55_51AE5B8CFD94" seqno="3" style="DUID=7814C4F9;"/>
+				<UML:DiagramElement geometry="Left=5;Top=2;Right=264;Bottom=334;" subject="EAID_C43A534E_B84D_4af6_8056_CD322462A3EA" seqno="4" style="DUID=E0379579;"/>
+				<UML:DiagramElement geometry="Left=1083;Top=50;Right=1183;Bottom=515;" subject="EAID_DB0B2645_71CA_4080_81ED_902BFA2B83DA" seqno="5" style="DUID=AC45AAC1;"/>
+				<UML:DiagramElement geometry="Left=923;Top=50;Right=1069;Bottom=515;" subject="EAID_2E876315_661A_49ca_B8F8_9CA2A1581A49" seqno="6" style="DUID=9F9B7EE4;"/>
 				<UML:DiagramElement geometry="Left=576;Top=50;Right=676;Bottom=515;" subject="EAID_59311A08_A915_4e86_8F84_383C0BC562DD" seqno="7" style="DUID=BE1A8E4F;"/>
-				<UML:DiagramElement geometry="Left=290;Top=50;Right=380;Bottom=515;" subject="EAID_44EA9D1A_5F1B_4d21_8C34_B370EDC10CF7" seqno="8" style="DUID=991EDC9D;"/>
-				<UML:DiagramElement geometry="Left=413;Top=50;Right=555;Bottom=515;" subject="EAID_D4F01B07_F022_469f_8F88_A168AB051585" seqno="9" style="DUID=BE5BCCE1;"/>
+				<UML:DiagramElement geometry="Left=697;Top=50;Right=797;Bottom=515;" subject="EAID_5D27C149_B817_4682_B8BF_51078F9A12AC" seqno="8" style="DUID=DBB90693;"/>
+				<UML:DiagramElement geometry="Left=290;Top=50;Right=380;Bottom=515;" subject="EAID_44EA9D1A_5F1B_4d21_8C34_B370EDC10CF7" seqno="9" style="DUID=991EDC9D;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_1E2F965F_AF79_4a52_85F8_C898194FB841" style=";Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_979FDE57_2EE8_4cf1_9D6C_CBD343923E42" style=";Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_E9B42A9D_8880_4c52_94CE_084BE75F103B" style=";Hidden=0;"/>
