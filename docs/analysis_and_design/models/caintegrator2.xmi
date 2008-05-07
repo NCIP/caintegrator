@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-05-07 13:26:12">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-05-07 13:32:12">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -62,7 +62,7 @@
 							<UML:Namespace.ownedElement>
 								<UML:Collaboration xmi.id="EAID_DEA413E8_C7EC_4252_9B0F_6644874D097A_Collaboration" name="Collaborations">
 									<UML:Namespace.ownedElement>
-										<UML:ClassifierRole name="gov.nih.nci.caintegrator2.helloworld" xmi.id="EAID_21CB8DC0_5150_4478_83D6_D94799968068" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+										<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.helloworld" xmi.id="EAID_21CB8DC0_5150_4478_83D6_D94799968068" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="isSpecification" value="false"/>
 												<UML:TaggedValue tag="ea_stype" value="Package"/>
@@ -70,7 +70,7 @@
 												<UML:TaggedValue tag="version" value="1.0"/>
 												<UML:TaggedValue tag="package" value="EAPK_DEA413E8_C7EC_4252_9B0F_6644874D097A"/>
 												<UML:TaggedValue tag="date_created" value="2008-05-07 13:22:10"/>
-												<UML:TaggedValue tag="date_modified" value="2008-05-07 13:22:10"/>
+												<UML:TaggedValue tag="date_modified" value="2008-05-07 13:31:23"/>
 												<UML:TaggedValue tag="gentype" value="Java"/>
 												<UML:TaggedValue tag="tagged" value="0"/>
 												<UML:TaggedValue tag="package2" value="EAID_21CB8DC0_5150_4478_83D6_D94799968068"/>
@@ -107,11 +107,12 @@
 									</UML:Namespace.ownedElement>
 									<UML:Collaboration.interaction/>
 								</UML:Collaboration>
-								<UML:Package name="gov.nih.nci.caintegrator2.helloworld" xmi.id="EAPK_21CB8DC0_5150_4478_83D6_D94799968068" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+								<UML:Package name="gov.nih.nci.caintegrator2.domain.helloworld" xmi.id="EAPK_21CB8DC0_5150_4478_83D6_D94799968068" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 									<UML:ModelElement.taggedValue>
 										<UML:TaggedValue tag="created" value="2008-05-07 00:00:00"/>
 										<UML:TaggedValue tag="modified" value="2008-05-07 00:00:00"/>
 										<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="isprotected" value="FALSE"/>
 										<UML:TaggedValue tag="usedtd" value="FALSE"/>
 										<UML:TaggedValue tag="logxml" value="FALSE"/>
@@ -132,7 +133,7 @@
 												<UML:TaggedValue tag="date_modified" value="2008-05-07 13:22:23"/>
 												<UML:TaggedValue tag="gentype" value="Java"/>
 												<UML:TaggedValue tag="tagged" value="0"/>
-												<UML:TaggedValue tag="package_name" value="gov.nih.nci.caintegrator2.helloworld"/>
+												<UML:TaggedValue tag="package_name" value="gov.nih.nci.caintegrator2.domain.helloworld"/>
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
@@ -257,17 +258,17 @@
 				<UML:DataType xmi.id="eaxmiid0" name="Long" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 			</UML:Namespace.ownedElement>
 		</UML:Model>
-		<UML:Diagram name="gov.nih.nci.caintegrator2.helloworld" xmi.id="EAID_8FBAABA5_63C3_4024_A470_962728A7759E" diagramType="ClassDiagram" owner="EAPK_21CB8DC0_5150_4478_83D6_D94799968068" toolName="Enterprise Architect 2.5">
+		<UML:Diagram name="gov.nih.nci.caintegrator2.domain.helloworld" xmi.id="EAID_8FBAABA5_63C3_4024_A470_962728A7759E" diagramType="ClassDiagram" owner="EAPK_21CB8DC0_5150_4478_83D6_D94799968068" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-07 13:22:28"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-07 13:24:57"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-07 13:31:44"/>
 				<UML:TaggedValue tag="package" value="EAPK_21CB8DC0_5150_4478_83D6_D94799968068"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
 				<UML:TaggedValue tag="ea_localid" value="115"/>
-				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=850;DocSize.cy=1098;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=;ExplicitNavigability=0;"/>
-				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
+				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=850;DocSize.cy=1098;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.0;ExplicitNavigability=0;"/>
+				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=UML 2.0;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
 				<UML:DiagramElement geometry="Left=187;Top=105;Right=277;Bottom=175;" subject="EAID_F6C5D72A_11E9_4ead_9E4D_C82A60C607B3" seqno="1" style="DUID=D796223A;"/>
