@@ -2,7 +2,7 @@
 <!-- ** SCTR DELEGATING BUILD FILE FOR CRUISECONTROL                      ** -->
 <!-- *********************************************************************** -->
 
-<project name="caintegrator2-cruisecontrol" default="build" basedir="../..">
+<project name="caintegrator2-cruisecontrol" default="continuous-integration" basedir="../..">
 
     <property name="build.dir" value="${basedir}/software/build" />
     <property name="lib.dir" value="${basedir}/software/lib" />
