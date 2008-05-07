@@ -27,7 +27,7 @@
         </svn>
         <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
         <ant antfile="build/build.xml"
-            dir="software"
+            dir="software/build"
             target="continuous-integration" />
         <svn username="${svn.username}" password="${svn.password}">
             <copy message="Tagging with ${label}"
@@ -42,7 +42,7 @@
         </svn>
         <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
         <ant antfile="build/build.xml"
-            dir="software"
+            dir="software/build"
             target="nightly-build" />
         <svn username="${svn.username}" password="${svn.password}">
             <copy message="Tagging with ${label}"
