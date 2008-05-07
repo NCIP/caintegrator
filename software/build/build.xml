@@ -2,29 +2,71 @@
 <!-- ** PROJECT:   caIntegrator 2                                         ** -->
 <!-- *********************************************************************** -->
 
-<project name="caintegrator2" default="continuous-integration" basedir="..">
+<project name="caintegrator2" default="continuous-integration" basedir=".">
 
     <!-- ******************************************************************* -->
     <!-- ** PROPERTIES                                                    ** -->
     <!-- ******************************************************************* -->
 
     <!-- Main -->
-    <property name="root.dir" value="${basedir}/.." />
+    <property name="root.dir" value="${basedir}/../.." />
     <property name="docs.dir" value="${root.dir}/docs" />
-    <property name="build.dir" value="${basedir}/build" />
-    <property name="lib.dir" value="${basedir}/lib" />
+    <property name="software.dir" value="${root.dir}/software" />
+    <property name="build.dir" value="${software.dir}/build" />
+    <property name="lib.dir" value="${software.dir}/lib" />
+    <property name="build.lib.dir" value="${build.dir}/lib" />
     <property name="resource.dir" value="${build.dir}/resources" />
     <property name="target.dir" value="${build.dir}/target" />
     <property name="site.dir" value="${build.dir}/site" />
+    <property name="bda-utils.dir" value="${build.dir}/bda-utils" />
+    
+    <property name="cainterator2-cacore.dir" value="${software.dir}/caintegrator-cacore" />
+    
+    <!-- Environment properties -->
+    <property environment="env" />
+    <property file="${build.dir}/local.properties" />
+    <property file="${build.dir}/default.properties" />
 
-	
+    <!-- ******************************************************************* -->
+    <!-- ** ENVIRONMENT / BUILD TARGETS                                   ** -->
+    <!-- ******************************************************************* -->
+
+    <available file="${bda-utils.dir}/bda-build-utils-1.0.xml" property="bda.exists" /> 
+
+    <mkdir dir="${build.lib.dir}"/>
+    <ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="retrieve-bda">
+        <property name="bda-utils.dir" value="${bda-utils.dir}"/>
+        <property name="lib.dir" value="${build.lib.dir}"/>
+    </ant>
+        
+    <import file="${bda-utils.dir}/bda-build-utils-1.0.xml" />
+
+    
     <!-- ******************************************************************* -->
     <!-- ** MAIN TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
-    <target name="continuous-integration">
-    </target>
+    <target name="continuous-integration" depends="clean,build" />
 
     <target name="nightly-build" depends="continuous-integration" />
+
+    <target name="clean" depends="clean:caintegrator2-cacore" />
+
+    <target name="build" depends="build:caintegrator2-cacore" />
+
+    
+    <!-- ******************************************************************* -->
+    <!-- ** CAINTEGRATOR2-CACORE TARGETS                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="clean:caintegrator2-cacore">
+        <delete file="${cainterator2-cacore.dir}/models/caintegrator2.xmi" />
+        <ant inheritAll="false" inheritRefs="false" dir="${cainterator2-cacore.dir}" antfile="${cainterator2-cacore.dir}/build.xml" target="clean" /> 
+    </target>
+
+    <target name="build:caintegrator2-cacore">
+        <copy file="${docs.dir}/analysis_and_design/models/caintegrator2.xmi" tofile="${cainterator2-cacore.dir}/models/caintegrator2.xmi" />
+        <ant inheritAll="false" inheritRefs="false" dir="${cainterator2-cacore.dir}" antfile="${cainterator2-cacore.dir}/build.xml" target="build-system" /> 
+    </target>
 
 </project>
