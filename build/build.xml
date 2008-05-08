@@ -2,10 +2,10 @@
 <!-- ** PROJECT:   caIntegrator 2                                         ** -->
 <!-- *********************************************************************** -->
 
-<project name="caintegrator2" default="continuous-integration" basedir=".">
+<project name="caintegrator2" default="continuous-integration" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="antlib:org.apache.tools.ant">
 
     <!-- ******************************************************************* -->
-    <!-- ** PROPERTIES                                                    ** -->
+    <!-- ** PROPERTIES / PATHS                                            ** -->
     <!-- ******************************************************************* -->
 
     <!-- Main -->
@@ -18,55 +18,204 @@
     <property name="resource.dir" value="${build.dir}/resources" />
     <property name="target.dir" value="${build.dir}/target" />
     <property name="site.dir" value="${build.dir}/site" />
-    <property name="bda-utils.dir" value="${build.dir}/bda-utils" />
-    
-    <property name="cainterator2-cacore.dir" value="${software.dir}/caintegrator-cacore" />
-    
+
     <!-- Environment properties -->
     <property environment="env" />
     <property file="${build.dir}/local.properties" />
     <property file="${build.dir}/default.properties" />
 
-    <!-- ******************************************************************* -->
-    <!-- ** ENVIRONMENT / BUILD TARGETS                                   ** -->
-    <!-- ******************************************************************* -->
+    <!-- Libraries -->
+    <property name="junit.jar" value="${lib.dir}/junit-4.4.jar" />
 
-    <available file="${bda-utils.dir}/bda-build-utils-1.0.xml" property="bda.exists" /> 
+    <!-- Paths -->
+    <path id="test.dependencies.path">
+        <pathelement location="${junit.jar}" />
+    </path>
 
-    <mkdir dir="${build.lib.dir}"/>
+    <!-- ******************************************************************* -->
+    <!-- ** ENVIRONMENT / BUILD / TASKDEFS                                ** -->
+    <!-- ******************************************************************* -->
+    
+    <!-- ant-contrib -->
+    <property name="ant-contrib.jar" value="${lib.dir}/ant-contrib-1.0b3.jar" />
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${ant-contrib.jar}" />
+
+    <!-- Ivy -->
+    <property name="ivy.jar" value="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
+    <property name="bda-utils.dir" value="${build.dir}/bda-utils" />
+
+    <mkdir dir="${build.lib.dir}" />
     <ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="retrieve-bda">
-        <property name="bda-utils.dir" value="${bda-utils.dir}"/>
-        <property name="lib.dir" value="${build.lib.dir}"/>
+        <property name="bda-utils.dir" value="${bda-utils.dir}" />
+        <property name="lib.dir" value="${build.lib.dir}" />
     </ant>
-        
+
     <import file="${bda-utils.dir}/bda-build-utils-1.0.xml" />
 
-    
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
+
+    <target name="init-ivy">
+        <!-- ivy:settings file="${basedir}/ivy-settings.xml" />
+        <ivy:retrieve /-->
+    </target>
+
+    <!-- Cobertura -->
+    <property name="cobertura.dir" value="${site.dir}/cobertura" />
+    <property name="cobertura.file" value="${cobertura.dir}/cobertura.ser" />
+    <property name="cobertura-functional.file" value="${cobertura.dir}/cobertura-functional.ser" />
+    <property name="cobertura-merged.file" value="${cobertura.dir}/cobertura-merged.ser" />
+
+    <path id="cobertura.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="cobertura.jar" />
+            <include name="asm-2.2.1.jar" />
+            <include name="asm-tree-2.2.1.jar" />
+            <include name="jakarta-oro-2.0.8.jar" />
+            <include name="log4j-1.2.9.jar" />
+        </fileset>
+    </path>
+
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
     <!-- ******************************************************************* -->
     <!-- ** MAIN TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
-    <target name="continuous-integration" depends="clean,build" />
+    <target name="continuous-integration" depends="clean,init-ivy,build,test" />
 
     <target name="nightly-build" depends="continuous-integration" />
 
-    <target name="clean" depends="clean:caintegrator2-cacore" />
+    <target name="clean" depends="clean:caintegrator2-cacore,
+        clean:caintegrator2.war" />
 
-    <target name="build" depends="build:caintegrator2-cacore" />
+    <target name="build" depends="caintegrator2.war" />
 
-    
+    <target name="test" depends="test:unit" />
+
+
     <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2-CACORE TARGETS                                  ** -->
+    <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
     <!-- ******************************************************************* -->
+
+    <property name="caintegrator2-cacore.dir" value="${software.dir}/caintegrator-cacore" />
+    <property name="caintegrator2-cacore.build.jar.dir" value="${caintegrator2-cacore.dir}/output/caintegrator2/build/jar" />
+    <property name="caintegrator2-beans.jar" value="${caintegrator2-cacore.build.jar.dir}/caintegrator2-beans.jar" />
+    <property name="caintegrator2-orm.jar" value="${caintegrator2-cacore.build.jar.dir}/caintegrator2-orm.jar" />
+
+    <target name="caintegrator2-beans.jar" depends="build:caintegrator2-cacore" />
+    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore" />
 
     <target name="clean:caintegrator2-cacore">
-        <delete file="${cainterator2-cacore.dir}/models/caintegrator2.xmi" />
-        <ant inheritAll="false" inheritRefs="false" dir="${cainterator2-cacore.dir}" antfile="${cainterator2-cacore.dir}/build.xml" target="clean" /> 
+        <delete file="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
+        <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="clean" />
     </target>
 
     <target name="build:caintegrator2-cacore">
-        <copy file="${docs.dir}/analysis_and_design/models/caintegrator2.xmi" tofile="${cainterator2-cacore.dir}/models/caintegrator2.xmi" />
-        <ant inheritAll="false" inheritRefs="false" dir="${cainterator2-cacore.dir}" antfile="${cainterator2-cacore.dir}/build.xml" target="build-system" /> 
+        <copy file="${docs.dir}/analysis_and_design/models/caintegrator2.xmi" tofile="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
+        <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="build-system" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="caintegrator2.war.dir" value="${software.dir}/caintegrator2-war" />
+    <property name="caintegrator2.war.java.src.dir" value="${caintegrator2.war.dir}/src/main/java" />
+    <property name="caintegrator2.war.web.src.dir" value="${caintegrator2.war.dir}/src/main/web" />
+    <property name="caintegrator2.war.test.src.dir" value="${caintegrator2.war.dir}/src/test/java" />
+    <property name="caintegrator2.war.target.dir" value="${caintegrator2.war.dir}/target" />
+    <property name="caintegrator2.war.java.classes.dir" value="${caintegrator2.war.target.dir}/classes" />
+    <property name="caintegrator2.war.instrumented.classes.dir" value="${caintegrator2.war.target.dir}/instrumented-classes" />
+    <property name="caintegrator2.war.test.classes.dir" value="${caintegrator2.war.target.dir}/test-classes" />
+    <property name="caintegrator2.war" value="${caintegrator2.war.target.dir}/caintegrator2.war" />
+
+    <path id="caintegrator2.war.dependencies.path">
+        <pathelement location="${caintegrator2.war.java.classes.dir}" />
+        <pathelement location="${caintegrator2-beans.jar}" />
+        <pathelement location="${caintegrator2-orm.jar}" />
+    </path>
+
+    <path id="caintegrator2.war.test.dependencies.path">
+        <path refid="caintegrator2.war.dependencies.path" />
+        <path refid="test.dependencies.path" />
+        <pathelement location="${caintegrator2.war.test.classes.dir}" />
+    </path>
+    
+    <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
+
+    <target name="clean:caintegrator2.war">
+        <delete dir="${caintegrator2.war.target.dir}" />
+    </target>
+
+    <target name="caintegrator2.war" depends="caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
+        <war destfile="${caintegrator2.war}" webxml="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml">
+            <fileset dir="${caintegrator2.war.web.src.dir}">
+                <exclude name="WEB-INF/**" />
+            </fileset>
+            <classes dir="${caintegrator2.war.java.classes.dir}" />
+        </war>
+    </target>
+
+    <target name="compile:caintegrator2.war" depends="caintegrator2-beans.jar,caintegrator2-orm.jar">
+        <mkdir dir="${caintegrator2.war.java.classes.dir}" />
+        <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" />
+    </target>
+
+    <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:caintegrator2.war">
+        <run-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
+            xml.output.dir="${caintegrator2.war.target.dir}/junit" 
+            instrumented.classes="${caintegrator2.war.instrumented.classes.dir}" 
+            classpath="${caintegrator2.war.test.dependencies.path}" />
+    </target>
+    
+    <target name="test:instrument:caintegrator2.war" depends="compile:caintegrator2.war">
+         <cobertura-instrument todir="${caintegrator2.war.instrumented.classes.dir}" datafile="${cobertura.file}">
+             <fileset dir="${caintegrator2.war.java.classes.dir}">
+                 <include name="gov/nih/nci/caintegrator2/**" />
+             </fileset>
+         </cobertura-instrument>
+     </target>
+
+    <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war">
+        <mkdir dir="${caintegrator2.war.test.classes.dir}" />
+        <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** TEST TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- JUnit Test Targets -->
+    <target name="test:unit" depends="test:unit:caintegrator2.war,
+      test:junit-report,
+      test:cobertura-report,
+      test:cobertura-check">
+        <fail if="junit.failure" message="There were JUnit failures." />
+        <fail if="cobertura.failure" message="Test coverage was insufficient (see Cobertura report)." />
+    </target>
+
+    <target name="test:junit-report">
+        <mkdir dir="${site.dir}/junit/unit" />
+        <junitreport todir="${site.dir}/junit/unit">
+            <fileset dir="${caintegrator2.war.target.dir}/junit">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${site.dir}/junit/unit" />
+        </junitreport>
+    </target>
+
+    <!-- Cobertura Test Targets -->
+    <target name="test:cobertura-report">
+        <cobertura-report format="xml" destdir="${site.dir}/cobertura/unit" datafile="${cobertura.file}">
+            <fileset dir="${caintegrator2.war.java.src.dir}" />
+        </cobertura-report>
+        <cobertura-report format="html" destdir="${site.dir}/cobertura/unit" datafile="${cobertura.file}">
+            <fileset dir="${caintegrator2.war.java.src.dir}" />
+        </cobertura-report>
+    </target>
+
+    <target name="test:cobertura-check">
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
     </target>
 
 </project>
