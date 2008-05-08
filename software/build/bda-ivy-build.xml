@@ -14,8 +14,10 @@
 			<include name="ivy-2.0.0-beta2.jar" />
 		</fileset>
 	</path>
+    
+    <available file="${bda-utils.dir}/bda-build-utils-1.0.xml" property="bda.exists" /> 
 
-	<target name="retrieve-bda">
+	<target name="retrieve-bda" unless="bda.exists">
 		<mkdir dir="${lib.dir}"/>
 		<get src="${ivy.src.url}" dest="${ivy.dest.file}"/>
 		<get src="${ivy-core.src.url}" dest="${ivy-core.dest.file}"/>
