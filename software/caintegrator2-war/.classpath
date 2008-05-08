@@ -10,5 +10,15 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/caintegrator2-cacore/output/caintegrator2/build/jar/caintegrator2-beans.jar" sourcepath="/caintegrator2-cacore/output/caintegrator2/src">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/caintegrator2-cacore/output/caintegrator2/build/jar/caintegrator2-orm.jar" sourcepath="/caintegrator2-cacore/output/caintegrator2/src">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
