@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="1.0">
+    <info organisation="ncicb" module="caintegrator2" />
+    <dependencies>
+        <dependency name="junit" rev="4.4" />
+    </dependencies>
+</ivy-module>
