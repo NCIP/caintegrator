@@ -1,0 +1,14 @@
+•	May 15th – Elaboration iteration 2 planning 
+•	May 22nd – Model Review (Internal)
+•	Mid June (Review with External folks)
+		Vision document will be updated (Will be added to E2 plan)
+		Use Case details will be elaborated (E2 plan)
+•	caBIG annual meeting (June 23rd-25th)
+		Think about ideas for user discussions and collect inputs/requirements
+		Demo/booth for caIntegrator2
+•	Other items
+		Will/Michael Harris will work on CMA/Cross Study and Gene Summary Page use cases
+		A selected set of Gene Summary Page will be made demo-able for E2 
+		Shine to follow-up with availability of Matt 
+		For the initial version, proof-of-concept for CTODS data will be implemented. But actual data (Rembrandt clinical, VASARI etc) may be introduced using spreadsheet loading.
+
