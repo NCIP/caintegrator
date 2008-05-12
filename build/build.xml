@@ -40,6 +40,21 @@
     <property name="ant-contrib.jar" value="${lib.dir}/ant-contrib-1.0b3.jar" />
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${ant-contrib.jar}" />
 
+    <!-- Checkstyle -->
+    <property name="checkstyle.jar" value="${lib.dir}/checkstyle-all-4.4.jar" />
+    <taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar}" />
+    <property name="checkstyle.config" value="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
+
+    <!-- PMD -->
+    <path id="pmd.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="asm-3.1.jar" />
+            <include name="jaxen-1.1.1.jar" />
+            <include name="pmd-4.2.1.jar" />
+        </fileset>
+    </path>
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
+
     <!-- Ivy -->
     <property name="ivy.jar" value="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
     <property name="bda-utils.dir" value="${build.dir}/bda-utils" />
@@ -81,16 +96,33 @@
     <!-- ** MAIN TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
-    <target name="continuous-integration" depends="clean,init-ivy,build,test" />
+    <target name="continuous-integration" 
+        depends="clean,init-ivy,build,check,test" 
+        description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
-    <target name="nightly-build" depends="continuous-integration" />
+    <target name="nightly-build" 
+        depends="continuous-integration" 
+        description="Builds and deploys caIntegrator 2 and performs the complete suite of tests." />
 
-    <target name="clean" depends="clean:caintegrator2-cacore,
-        clean:caintegrator2.war" />
+    <target name="clean" 
+        depends="clean:caintegrator2-cacore,
+        clean:caintegrator2.war"
+        description="Removes all generated artifacts from the working directory." />
 
-    <target name="build" depends="caintegrator2.war" />
+    <target name="build" 
+        depends="caintegrator2.war"
+        description="Compiles all production source code and assembles artifacts." />
 
-    <target name="test" depends="test:unit" />
+    <target name="check" 
+        depends="check:checkstyle,check:pmd"
+        description="Runs quality checks on the source code.">
+        <fail if="checkstyle.failure" message="There were Checkstyle failures." />
+        <fail if="pmd.failure" message="There were PMD failures." />
+    </target>
+
+    <target name="test" 
+        depends="test:unit"
+        description="Executes all unit and functional tests." />
 
 
     <!-- ******************************************************************* -->
@@ -182,6 +214,16 @@
     </target>
 
     <!-- ******************************************************************* -->
+    <!-- ** CLASSPATHS                                                    ** -->
+    <!-- ******************************************************************* -->
+
+    <path id="caintegrator2.full.classpath">
+        <pathelement location="${caintegrator2.war.java.classes.dir}" />
+        <pathelement location="${caintegrator2-beans.jar}" />
+        <pathelement location="${caintegrator2-orm.jar}" />
+    </path>
+
+    <!-- ******************************************************************* -->
     <!-- ** TEST TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
@@ -218,4 +260,41 @@
         <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
     </target>
 
+    <!-- ******************************************************************* -->
+    <!-- ** CHECK TARGETS                                                 ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="check:checkstyle" depends="build">
+        <mkdir dir="${site.dir}/checkstyle" />
+        <checkstyle config="${checkstyle.config}" 
+            failureProperty="checkstyle.failure" 
+            failOnViolation="false" 
+            maxerrors="0" 
+            maxwarnings="0"
+            classpathref="caintegrator2.full.classpath" >
+            <formatter type="xml" tofile="${site.dir}/checkstyle/checkstyle.xml" />
+            <fileset dir="${caintegrator2.war.java.src.dir}" includes="**/*.java" />
+        </checkstyle>
+        <xslt in="${site.dir}/checkstyle/checkstyle.xml" out="${site.dir}/checkstyle/checkstyle.html" style="${resource.dir}/checkstyle/checkstyle-frames.xsl">
+            <param name="output.dir" expression="${site.dir}/checkstyle" />
+        </xslt>
+    </target>
+
+    <target name="check:pmd">
+        <mkdir dir="${site.dir}/pmd" />
+
+        <pmd failonerror="false" rulesetfiles="${resource.dir}/pmd/pmd-ruleset.xml" failurespropertyname="pmd.failure" targetjdk="1.5">
+            <formatter type="xml" toFile="${site.dir}/pmd/pmd-report.xml" toConsole="false" />
+            <fileset dir="${caintegrator2.war.java.src.dir}">
+                <include name="**/*.java" />
+            </fileset>
+        </pmd>
+
+        <xslt in="${site.dir}/pmd/pmd-report.xml" out="${site.dir}/pmd/pmd-report.html" style="${resource.dir}/pmd/pmd-report-per-class.xslt">
+        </xslt>
+    </target>
+
+    <target name="check:pmd:update-eclipse-projects">
+        <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${caintegrator2.war.dir}/.ruleset" />
+    </target>
 </project>
