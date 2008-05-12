@@ -16,7 +16,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.application.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-12 12:49:31"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-12 14:04:03"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-01 13:40:33"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -583,11 +583,33 @@
 								<UML:TaggedValue tag="status" value="Proposed"/>
 								<UML:TaggedValue tag="ea_localid" value="2377"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="eventflags" value="ATT=201d;LNK=1420;"/>
+								<UML:TaggedValue tag="eventflags" value="LNK=1420;ATT=5930;"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={D9CC5139-ADCE-46c7-A54B-1E47C7C4D03B}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={7F4C7FD9-9B16-456d-B29E-CF539DE2D2A4}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 							<UML:Classifier.feature>
+								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+									<UML:Attribute.initialValue>
+										<UML:Expression/>
+									</UML:Attribute.initialValue>
+									<UML:StructuralFeature.type>
+										<UML:Classifier xmi.idref="eaxmiid0"/>
+									</UML:StructuralFeature.type>
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="type" value="Long"/>
+										<UML:TaggedValue tag="derived" value="0"/>
+										<UML:TaggedValue tag="containment" value="Not Specified"/>
+										<UML:TaggedValue tag="ordered" value="0"/>
+										<UML:TaggedValue tag="collection" value="false"/>
+										<UML:TaggedValue tag="position" value="0"/>
+										<UML:TaggedValue tag="lowerBound" value="1"/>
+										<UML:TaggedValue tag="upperBound" value="1"/>
+										<UML:TaggedValue tag="duplicates" value="0"/>
+										<UML:TaggedValue tag="ea_guid" value="{0632D3BC-64E3-4fe9-BD8E-7185AB3961D9}"/>
+										<UML:TaggedValue tag="ea_localid" value="1997"/>
+										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+									</UML:ModelElement.taggedValue>
+								</UML:Attribute>
 								<UML:Attribute name="type" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
 									<UML:Attribute.initialValue>
 										<UML:Expression/>
@@ -601,7 +623,7 @@
 										<UML:TaggedValue tag="containment" value="Not Specified"/>
 										<UML:TaggedValue tag="ordered" value="0"/>
 										<UML:TaggedValue tag="collection" value="false"/>
-										<UML:TaggedValue tag="position" value="0"/>
+										<UML:TaggedValue tag="position" value="1"/>
 										<UML:TaggedValue tag="lowerBound" value="1"/>
 										<UML:TaggedValue tag="upperBound" value="1"/>
 										<UML:TaggedValue tag="duplicates" value="0"/>
@@ -623,7 +645,7 @@
 										<UML:TaggedValue tag="containment" value="Not Specified"/>
 										<UML:TaggedValue tag="ordered" value="0"/>
 										<UML:TaggedValue tag="collection" value="false"/>
-										<UML:TaggedValue tag="position" value="3"/>
+										<UML:TaggedValue tag="position" value="2"/>
 										<UML:TaggedValue tag="lowerBound" value="1"/>
 										<UML:TaggedValue tag="upperBound" value="1"/>
 										<UML:TaggedValue tag="duplicates" value="0"/>
@@ -1160,7 +1182,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-04-15 13:32:06"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-12 12:55:31"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-12 14:04:54"/>
 				<UML:TaggedValue tag="package" value="EAPK_5040D3D8_7EB6_4c71_A073_50E716E8D7B3"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
