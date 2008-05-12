@@ -93,19 +93,19 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobConfiguration;
  * readable by any external analysis tools such as Gene Pattern.
  */
 public interface AnalysisManagementService {
-	
+
     /**
      * Creates an AnalysisJobConfiguration, persists to database, and returns job.
      * 
      * @return job
      */
-	AnalysisJobConfiguration createJobConfiguration();
-	
-	/**
-	 * Updates a given AnalysisJobConfiguration, persists to database.
-	 * 
-	 * @param job job to update
-	 */
-	void updateJobConfiguration(AnalysisJobConfiguration job);
+    AnalysisJobConfiguration createJobConfiguration();
+
+    /**
+     * Updates a given AnalysisJobConfiguration, persists to database.
+     * 
+     * @param job job to update
+     */
+    void updateJobConfiguration(AnalysisJobConfiguration job);
 
 }

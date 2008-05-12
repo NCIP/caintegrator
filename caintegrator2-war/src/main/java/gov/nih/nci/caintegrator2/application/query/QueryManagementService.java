@@ -96,19 +96,18 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 public interface QueryManagementService {
 
     /**
-     * Given a workspace, we create a query
+     * Given a workspace, we create a query and persist.
      * 
      * @param workspace The UserWorkspace which we want a query to be created for.
-     * @return
+     * @return the query object that is created.
      */
     Query createQuery(UserWorkspace workspace);
     
     /**
-     * Updates a query and persists
+     * Updates a query and persists.
      * 
      * @param query item to update
      */
     void updateQuery(Query query);
-
 
 }

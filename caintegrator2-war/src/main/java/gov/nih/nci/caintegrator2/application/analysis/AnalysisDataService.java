@@ -92,13 +92,14 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobConfiguration;
  * Interface to the service which handles analysis data.
  */
 public interface AnalysisDataService {
-	
-	/**
-	 * This will submit a task to the external analysis tool and the return 
-	 * is a String of the Task id that is being run.
-	 * 
-	 * @param job
-	 */
-	String execute(AnalysisJobConfiguration job);
+
+    /**
+     * This will submit a task to the external analysis tool and the return is a String of the Task id that is being
+     * run.
+     *
+     * @param job the job to be executed
+     * @return the string of the task ID that is run.
+     */
+    String execute(AnalysisJobConfiguration job);
 
 }

@@ -93,13 +93,11 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
  * Interface to the service which handles query data.
  */
 public interface QueryDataService {
-	
 
     /**
-     * Executes a query against the DAO and returns the QueryResult
+     * Executes a query against the DAO and returns the QueryResult.
      * @param query this is the query to execute.
      * @return result from the DAO
      */
-	QueryResult execute(Query query);
-
+    QueryResult execute(Query query);
 }
