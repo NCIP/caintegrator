@@ -90,6 +90,12 @@
         </fileset>
     </path>
 
+    <!-- Build Output Site -->
+    <target name="clean:site">
+        <delete dir="${site.dir}" />
+    </target>
+
+
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
     <!-- ******************************************************************* -->
@@ -106,7 +112,8 @@
 
     <target name="clean" 
         depends="clean:caintegrator2-cacore,
-        clean:caintegrator2.war"
+        clean:caintegrator2.war,
+        clean:site"
         description="Removes all generated artifacts from the working directory." />
 
     <target name="build" 
@@ -165,6 +172,8 @@
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
+        <pathelement location="${lib.dir}/struts2-core-2.0.11.1.jar" />
+        <pathelement location="${lib.dir}/xwork-2.0.4.jar" />
     </path>
 
     <path id="caintegrator2.war.test.dependencies.path">
@@ -184,6 +193,14 @@
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
             </fileset>
+            <lib dir="${caintegrator2-cacore.build.jar.dir}">
+                <include name="caintegrator2-beans.jar"/>
+                <include name="caintegrator2-orm.jar"/>
+            </lib>
+            <lib dir="${lib.dir}">
+                <include name="struts2-core-2.0.11.1.jar" />
+                <include name="xwork-2.0.4.jar" />
+            </lib>
             <classes dir="${caintegrator2.war.java.classes.dir}" />
         </war>
     </target>
