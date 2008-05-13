@@ -21,7 +21,7 @@
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
 						<UML:TaggedValue tag="logxml" value="FALSE"/>
-						<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;CheckedOutOffline=0;CRC=0;"/>
+						<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;CheckedOutOffline=0;VCCFG=trworkbench;CRC=0;"/>
 						<UML:TaggedValue tag="batchsave" value="0"/>
 						<UML:TaggedValue tag="batchload" value="0"/>
 						<UML:TaggedValue tag="phase" value="1.0"/>
@@ -7487,7 +7487,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-13 12:18:45"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-13 13:02:36"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-13 13:03:04"/>
 				<UML:TaggedValue tag="package" value="EAPK_D9FCBD56_E0A6_4940_A3E5_0CED28E8C133"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
