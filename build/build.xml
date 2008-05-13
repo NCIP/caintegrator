@@ -207,7 +207,7 @@
 
     <target name="compile:caintegrator2.war" depends="caintegrator2-beans.jar,caintegrator2-orm.jar">
         <mkdir dir="${caintegrator2.war.java.classes.dir}" />
-        <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" />
+        <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
 
     <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:caintegrator2.war">
@@ -227,7 +227,7 @@
 
     <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war">
         <mkdir dir="${caintegrator2.war.test.classes.dir}" />
-        <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" />
+        <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
     </target>
 
     <!-- ******************************************************************* -->
