@@ -95,7 +95,14 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
  * Interface to the subsystem used store and retrieve microarray data.
  */
 public interface ArrayDataService {
-
+    
+    /**
+     * Stores the values of an <code>ArrayDataMatrix</code> for later search and retrieval.
+     * 
+     * @param matrix the data matrix to store.
+     */
+    void save(ArrayDataMatrix matrix);
+    
     /**
      * Retrieves the normalized data values from the given arrays for the given reporters.
      * 
