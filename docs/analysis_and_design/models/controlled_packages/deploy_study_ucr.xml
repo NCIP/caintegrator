@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-15 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\deploy_study_ucr.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-16 15:08:50"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-16 15:45:17"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-16 15:01:09"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -71,9 +71,10 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="classifier" value="EAID_1E0732A2_718D_4376_B956_B33EDD2C7461"/>
 										<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
+										<UML:TaggedValue tag="owner" value="EAID_E4C4E701_2C52_4088_8A78_02AFFAC14793"/>
 										<UML:TaggedValue tag="classname" value="DataSource"/>
 										<UML:TaggedValue tag="date_created" value="2008-05-16 15:15:56"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:15:56"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:45:23"/>
 										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Deploy Study"/>
@@ -126,9 +127,10 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="classifier" value="EAID_1808628D_5192_4164_ACD5_A39A2C4997BA"/>
 										<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
+										<UML:TaggedValue tag="owner" value="EAID_E4C4E701_2C52_4088_8A78_02AFFAC14793"/>
 										<UML:TaggedValue tag="classname" value="caDSR"/>
 										<UML:TaggedValue tag="date_created" value="2008-05-16 15:15:22"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:15:22"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:45:22"/>
 										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Deploy Study"/>
@@ -153,9 +155,10 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="classifier" value="EAID_28ECD423_F3BC_4679_A116_1F4FDBAF45F2"/>
 										<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
+										<UML:TaggedValue tag="owner" value="EAID_E4C4E701_2C52_4088_8A78_02AFFAC14793"/>
 										<UML:TaggedValue tag="classname" value="DataTableLoader"/>
 										<UML:TaggedValue tag="date_created" value="2008-05-16 15:16:12"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:16:12"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:45:24"/>
 										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Deploy Study"/>
@@ -177,9 +180,10 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="classifier" value="EAID_4EB60DE7_DBA5_4fae_B0B2_93B0B50BE868"/>
 										<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
+										<UML:TaggedValue tag="owner" value="EAID_E4C4E701_2C52_4088_8A78_02AFFAC14793"/>
 										<UML:TaggedValue tag="classname" value="caIntegrator2 DAO"/>
 										<UML:TaggedValue tag="date_created" value="2008-05-16 15:16:33"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:16:33"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-16 15:45:21"/>
 										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Deploy Study"/>
@@ -1758,7 +1762,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-16 15:03:47"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-16 15:44:59"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-16 15:45:35"/>
 				<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
