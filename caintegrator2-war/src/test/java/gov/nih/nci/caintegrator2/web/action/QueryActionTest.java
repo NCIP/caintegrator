@@ -85,19 +85,46 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.query.QueryDataService;
+import gov.nih.nci.caintegrator2.application.query.QueryDataServiceImpl;
 
+import org.junit.Before;
 import org.junit.Test;
 
+
 /**
- * Test class.
+ * Test class for QueryAction.
  */
 public class QueryActionTest {
 
+    private QueryAction myAction;
+    private QueryDataService myQueryDataService;
+    
+    @Before
+    public void setup() {
+        myAction = new QueryAction();
+        myQueryDataService = new QueryDataServiceImpl();
+    }
+    
     @Test
-    public void testExecute() {
-        QueryAction myAction = new QueryAction();
-        assertEquals("success", myAction.execute());
+    public void testCreateQuery() {
+        // Test getter and setters
+        myAction.setQueryDataService(myQueryDataService);
+        assertEquals(myQueryDataService, myAction.getQueryDataService());
+        
+        assertEquals("success", myAction.createQuery());
+
+    }
+    
+    @Test
+    public void testAddCriterion() {
+        assertEquals("success", myAction.addCriterion());
+    }
+    
+    @Test
+    public void testExecuteQuery() {
+        assertEquals("success", myAction.executeQuery());
     }
 
 }
