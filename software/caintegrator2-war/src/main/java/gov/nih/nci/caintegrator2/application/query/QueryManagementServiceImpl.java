@@ -83,72 +83,47 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.query.QueryDataService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-
-import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 /**
- * Action class to handle queries.
+ * Implementation of the QueryManagementService interface.
  */
-public class QueryAction extends ActionSupport {
-
-    private QueryDataService queryDataService;
-    private QueryManagementService queryManagementService;
+public class QueryManagementServiceImpl implements QueryManagementService {
     
+    private Query query;
+
     /**
-     * Creates a query.
-     * @return value
+     * Creates a query based on work space, not sure if just a UserWorkspace is sufficient to creating a query.
+     * @param workspace user's work space
+     * @return query that is created
      */
-    public String createQuery() {
-        return "success";
-    }
-    
-    /**
-     * Add criteria to a query.
-     * @return value
-     */
-    public String addCriterion() {
-        return "success";
-    }
-    /**
-     * Executes a query.
-     * @return value
-     */
-    public String executeQuery() {
-        return "success";
+    public Query createQuery(UserWorkspace workspace) {
+        return null;
     }
 
     /**
-     * @return the queryDataService
+     * Updates a query and persists.
+     * 
+     * @param q query to update
      */
-    public QueryDataService getQueryDataService() {
-        return queryDataService;
+    public void updateQuery(Query q) {
+        setQuery(q);
     }
 
     /**
-     * @param queryDataService the queryDataService to set
+     * @return the query
      */
-    public void setQueryDataService(QueryDataService queryDataService) {
-        this.queryDataService = queryDataService;
+    public Query getQuery() {
+        return query;
     }
 
     /**
-     * @return the queryManagementService
+     * @param query the query to set
      */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
+    public void setQuery(Query query) {
+        this.query = query;
     }
-
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
-    }
-    
-
 }
-

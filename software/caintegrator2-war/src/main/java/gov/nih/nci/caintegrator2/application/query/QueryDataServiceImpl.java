@@ -83,72 +83,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.query.QueryDataService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-
-import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
 /**
- * Action class to handle queries.
+ * This data service executes and returns back queries.  It is the link between
+ * the DAO's and the controller.
  */
-public class QueryAction extends ActionSupport {
+public class QueryDataServiceImpl implements QueryDataService {
 
-    private QueryDataService queryDataService;
-    private QueryManagementService queryManagementService;
-    
-    /**
-     * Creates a query.
-     * @return value
-     */
-    public String createQuery() {
-        return "success";
-    }
-    
-    /**
-     * Add criteria to a query.
-     * @return value
-     */
-    public String addCriterion() {
-        return "success";
-    }
-    /**
-     * Executes a query.
-     * @return value
-     */
-    public String executeQuery() {
-        return "success";
-    }
 
     /**
-     * @return the queryDataService
+     * Executes a query against the DAO and returns the QueryResult.
+     * @param query to be executed.
+     * @return the result of the query execution.
      */
-    public QueryDataService getQueryDataService() {
-        return queryDataService;
+    public QueryResult execute(Query query) {
+        return null;
     }
-
-    /**
-     * @param queryDataService the queryDataService to set
-     */
-    public void setQueryDataService(QueryDataService queryDataService) {
-        this.queryDataService = queryDataService;
-    }
-
-    /**
-     * @return the queryManagementService
-     */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
-    }
-
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
-    }
-    
 
 }
-
