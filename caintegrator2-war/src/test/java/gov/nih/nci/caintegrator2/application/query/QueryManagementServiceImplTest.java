@@ -83,72 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.query.QueryDataService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Action class to handle queries.
+ * Test class for QueryManagementServiceImpl
  */
-public class QueryAction extends ActionSupport {
-
-    private QueryDataService queryDataService;
-    private QueryManagementService queryManagementService;
+public class QueryManagementServiceImplTest {
     
-    /**
-     * Creates a query.
-     * @return value
-     */
-    public String createQuery() {
-        return "success";
-    }
+    private QueryManagementServiceImpl queryManagementService;
+    private UserWorkspace userWorkspace;
+    private Query query;
     
-    /**
-     * Add criteria to a query.
-     * @return value
-     */
-    public String addCriterion() {
-        return "success";
-    }
-    /**
-     * Executes a query.
-     * @return value
-     */
-    public String executeQuery() {
-        return "success";
+    @Before
+    public void setup() {
+        queryManagementService = new QueryManagementServiceImpl();
+        userWorkspace = new UserWorkspace();
+        query = new Query();
+        query.setId(Long.valueOf(1));
     }
 
-    /**
-     * @return the queryDataService
-     */
-    public QueryDataService getQueryDataService() {
-        return queryDataService;
-    }
-
-    /**
-     * @param queryDataService the queryDataService to set
-     */
-    public void setQueryDataService(QueryDataService queryDataService) {
-        this.queryDataService = queryDataService;
-    }
-
-    /**
-     * @return the queryManagementService
-     */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
-    }
-
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
-    }
     
+    @Test
+    public void testCreateQuery() {
+        // Test getter and setters
+        queryManagementService.setQuery(query);
+        assertEquals(query, queryManagementService.getQuery());
+
+        // test createQuery method.
+        Query myQuery = queryManagementService.createQuery(userWorkspace);
+        assertEquals(myQuery, null);
+    }
+
+    
+    @Test
+    public void testUpdateQuery() {
+       queryManagementService.updateQuery(query);
+       assertEquals(query, queryManagementService.getQuery());
+    }
 
 }
-
