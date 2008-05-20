@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\object_model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:13:26"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:32"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
@@ -34,48 +34,6 @@
 					<UML:Namespace.ownedElement>
 						<UML:Collaboration xmi.id="EAID_B1200253_F940_4271_811A_C4F5C288A8FD_Collaboration" name="Collaborations">
 							<UML:Namespace.ownedElement>
-								<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.imaging" xmi.id="EAID_20FA4D9E_AC6C_4ba8_9D2E_88218072251B" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Package"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-07 11:06:59"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-07 11:06:59"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package2" value="EAID_20FA4D9E_AC6C_4ba8_9D2E_88218072251B"/>
-										<UML:TaggedValue tag="package_name" value="Object Model"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="191"/>
-										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
-								<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.genomic" xmi.id="EAID_3E5B7798_9510_41cc_A817_F935574F15E8" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Package"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-07 11:06:51"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-07 11:06:51"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package2" value="EAID_3E5B7798_9510_41cc_A817_F935574F15E8"/>
-										<UML:TaggedValue tag="package_name" value="Object Model"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="195"/>
-										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
 								<UML:ClassifierRole name="gov" xmi.id="EAID_46440B3F_0C40_4168_90B1_1CB4CD2A64FE" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
 									<UML:ModelElement.taggedValue>
 										<UML:TaggedValue tag="isSpecification" value="false"/>
@@ -92,70 +50,7 @@
 										<UML:TaggedValue tag="phase" value="1.0"/>
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="ea_localid" value="220"/>
-										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
-								<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.application" xmi.id="EAID_5040D3D8_7EB6_4c71_A073_50E716E8D7B3" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Package"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-07 11:06:35"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-07 11:06:35"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package2" value="EAID_5040D3D8_7EB6_4c71_A073_50E716E8D7B3"/>
-										<UML:TaggedValue tag="package_name" value="Object Model"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="200"/>
-										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
-								<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.annotation" xmi.id="EAID_9457A822_5701_4a84_8F26_EE8F965AC6C2" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Package"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-07 11:06:20"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-07 11:06:20"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package2" value="EAID_9457A822_5701_4a84_8F26_EE8F965AC6C2"/>
-										<UML:TaggedValue tag="package_name" value="Object Model"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="196"/>
-										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
-									</UML:ModelElement.taggedValue>
-								</UML:ClassifierRole>
-								<UML:ClassifierRole name="gov.nih.nci.caintegrator2.domain.translational" xmi.id="EAID_B6EEA980_F020_4dd7_902C_E90A9936D671" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
-									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="isSpecification" value="false"/>
-										<UML:TaggedValue tag="ea_stype" value="Package"/>
-										<UML:TaggedValue tag="ea_ntype" value="0"/>
-										<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
-										<UML:TaggedValue tag="date_created" value="2008-05-07 11:07:05"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-07 11:07:05"/>
-										<UML:TaggedValue tag="gentype" value="Java"/>
-										<UML:TaggedValue tag="tagged" value="0"/>
-										<UML:TaggedValue tag="package2" value="EAID_B6EEA980_F020_4dd7_902C_E90A9936D671"/>
-										<UML:TaggedValue tag="package_name" value="Object Model"/>
-										<UML:TaggedValue tag="phase" value="1.0"/>
-										<UML:TaggedValue tag="complexity" value="1"/>
-										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="204"/>
+										<UML:TaggedValue tag="ea_localid" value="227"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
@@ -176,7 +71,7 @@
 										<UML:TaggedValue tag="phase" value="1.0"/>
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Proposed"/>
-										<UML:TaggedValue tag="ea_localid" value="217"/>
+										<UML:TaggedValue tag="ea_localid" value="232"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
@@ -200,7 +95,7 @@
 								<UML:TaggedValue tag="phase" value="1.0"/>
 								<UML:TaggedValue tag="complexity" value="1"/>
 								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="ea_localid" value="2686"/>
+								<UML:TaggedValue tag="ea_localid" value="2715"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 							</UML:ModelElement.taggedValue>
@@ -221,7 +116,7 @@
 								<UML:TaggedValue tag="phase" value="1.0"/>
 								<UML:TaggedValue tag="complexity" value="1"/>
 								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="ea_localid" value="2687"/>
+								<UML:TaggedValue tag="ea_localid" value="2716"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 							</UML:ModelElement.taggedValue>
@@ -231,9 +126,13 @@
 								<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
 								<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 								<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+								<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:30"/>
+								<UML:TaggedValue tag="lastsavedate" value="2008-05-20 08:33:30"/>
 								<UML:TaggedValue tag="isprotected" value="FALSE"/>
 								<UML:TaggedValue tag="usedtd" value="FALSE"/>
 								<UML:TaggedValue tag="logxml" value="FALSE"/>
+								<UML:TaggedValue tag="batchsave" value="0"/>
+								<UML:TaggedValue tag="batchload" value="0"/>
 								<UML:TaggedValue tag="phase" value="1.0"/>
 								<UML:TaggedValue tag="status" value="Proposed"/>
 								<UML:TaggedValue tag="complexity" value="1"/>
@@ -258,7 +157,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="221"/>
+												<UML:TaggedValue tag="ea_localid" value="228"/>
 												<UML:TaggedValue tag="ea_eleType" value="package"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 											</UML:ModelElement.taggedValue>
@@ -271,9 +170,13 @@
 										<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
 										<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 										<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+										<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:30"/>
+										<UML:TaggedValue tag="lastsavedate" value="2008-05-20 08:33:30"/>
 										<UML:TaggedValue tag="isprotected" value="FALSE"/>
 										<UML:TaggedValue tag="usedtd" value="FALSE"/>
 										<UML:TaggedValue tag="logxml" value="FALSE"/>
+										<UML:TaggedValue tag="batchsave" value="0"/>
+										<UML:TaggedValue tag="batchload" value="0"/>
 										<UML:TaggedValue tag="phase" value="1.0"/>
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="complexity" value="1"/>
@@ -298,7 +201,7 @@
 														<UML:TaggedValue tag="phase" value="1.0"/>
 														<UML:TaggedValue tag="complexity" value="1"/>
 														<UML:TaggedValue tag="status" value="Proposed"/>
-														<UML:TaggedValue tag="ea_localid" value="222"/>
+														<UML:TaggedValue tag="ea_localid" value="229"/>
 														<UML:TaggedValue tag="ea_eleType" value="package"/>
 														<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 													</UML:ModelElement.taggedValue>
@@ -311,9 +214,13 @@
 												<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
 												<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 												<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+												<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:30"/>
+												<UML:TaggedValue tag="lastsavedate" value="2008-05-20 08:33:30"/>
 												<UML:TaggedValue tag="isprotected" value="FALSE"/>
 												<UML:TaggedValue tag="usedtd" value="FALSE"/>
 												<UML:TaggedValue tag="logxml" value="FALSE"/>
+												<UML:TaggedValue tag="batchsave" value="0"/>
+												<UML:TaggedValue tag="batchload" value="0"/>
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
@@ -338,7 +245,7 @@
 																<UML:TaggedValue tag="phase" value="1.0"/>
 																<UML:TaggedValue tag="complexity" value="1"/>
 																<UML:TaggedValue tag="status" value="Proposed"/>
-																<UML:TaggedValue tag="ea_localid" value="223"/>
+																<UML:TaggedValue tag="ea_localid" value="230"/>
 																<UML:TaggedValue tag="ea_eleType" value="package"/>
 																<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 															</UML:ModelElement.taggedValue>
@@ -351,9 +258,13 @@
 														<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
 														<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 														<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+														<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:30"/>
+														<UML:TaggedValue tag="lastsavedate" value="2008-05-20 08:33:30"/>
 														<UML:TaggedValue tag="isprotected" value="FALSE"/>
 														<UML:TaggedValue tag="usedtd" value="FALSE"/>
 														<UML:TaggedValue tag="logxml" value="FALSE"/>
+														<UML:TaggedValue tag="batchsave" value="0"/>
+														<UML:TaggedValue tag="batchload" value="0"/>
 														<UML:TaggedValue tag="phase" value="1.0"/>
 														<UML:TaggedValue tag="status" value="Proposed"/>
 														<UML:TaggedValue tag="complexity" value="1"/>
@@ -378,7 +289,7 @@
 																		<UML:TaggedValue tag="phase" value="1.0"/>
 																		<UML:TaggedValue tag="complexity" value="1"/>
 																		<UML:TaggedValue tag="status" value="Proposed"/>
-																		<UML:TaggedValue tag="ea_localid" value="224"/>
+																		<UML:TaggedValue tag="ea_localid" value="231"/>
 																		<UML:TaggedValue tag="ea_eleType" value="package"/>
 																		<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																	</UML:ModelElement.taggedValue>
@@ -391,9 +302,13 @@
 																<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
 																<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 																<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+																<UML:TaggedValue tag="lastloaddate" value="2008-05-20 08:33:30"/>
+																<UML:TaggedValue tag="lastsavedate" value="2008-05-20 08:33:30"/>
 																<UML:TaggedValue tag="isprotected" value="FALSE"/>
 																<UML:TaggedValue tag="usedtd" value="FALSE"/>
 																<UML:TaggedValue tag="logxml" value="FALSE"/>
+																<UML:TaggedValue tag="batchsave" value="0"/>
+																<UML:TaggedValue tag="batchload" value="0"/>
 																<UML:TaggedValue tag="phase" value="1.0"/>
 																<UML:TaggedValue tag="status" value="Proposed"/>
 																<UML:TaggedValue tag="complexity" value="1"/>
@@ -402,6 +317,106 @@
 															<UML:Namespace.ownedElement>
 																<UML:Collaboration xmi.id="EAID_5E5B903F_B952_4d63_88D2_8D2803AC173A_Collaboration" name="Collaborations">
 																	<UML:Namespace.ownedElement>
+																		<UML:ClassifierRole name="genomic" xmi.id="EAID_0FEA0011_CB25_4ba4_A1A1_26B15A1F2B01" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+																			<UML:ModelElement.taggedValue>
+																				<UML:TaggedValue tag="isSpecification" value="false"/>
+																				<UML:TaggedValue tag="ea_stype" value="Package"/>
+																				<UML:TaggedValue tag="ea_ntype" value="0"/>
+																				<UML:TaggedValue tag="package" value="EAPK_5E5B903F_B952_4d63_88D2_8D2803AC173A"/>
+																				<UML:TaggedValue tag="date_created" value="2008-05-20 08:34:01"/>
+																				<UML:TaggedValue tag="date_modified" value="2008-05-20 08:34:01"/>
+																				<UML:TaggedValue tag="gentype" value="Java"/>
+																				<UML:TaggedValue tag="tagged" value="0"/>
+																				<UML:TaggedValue tag="package2" value="EAID_0FEA0011_CB25_4ba4_A1A1_26B15A1F2B01"/>
+																				<UML:TaggedValue tag="package_name" value="domain"/>
+																				<UML:TaggedValue tag="phase" value="1.0"/>
+																				<UML:TaggedValue tag="complexity" value="1"/>
+																				<UML:TaggedValue tag="status" value="Proposed"/>
+																				<UML:TaggedValue tag="ea_localid" value="237"/>
+																				<UML:TaggedValue tag="ea_eleType" value="package"/>
+																				<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+																			</UML:ModelElement.taggedValue>
+																		</UML:ClassifierRole>
+																		<UML:ClassifierRole name="annotation" xmi.id="EAID_63E343E0_F4F1_4a35_B44F_A5A44EB884A5" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+																			<UML:ModelElement.taggedValue>
+																				<UML:TaggedValue tag="isSpecification" value="false"/>
+																				<UML:TaggedValue tag="ea_stype" value="Package"/>
+																				<UML:TaggedValue tag="ea_ntype" value="0"/>
+																				<UML:TaggedValue tag="package" value="EAPK_5E5B903F_B952_4d63_88D2_8D2803AC173A"/>
+																				<UML:TaggedValue tag="date_created" value="2008-05-20 08:33:49"/>
+																				<UML:TaggedValue tag="date_modified" value="2008-05-20 08:33:49"/>
+																				<UML:TaggedValue tag="gentype" value="Java"/>
+																				<UML:TaggedValue tag="tagged" value="0"/>
+																				<UML:TaggedValue tag="package2" value="EAID_63E343E0_F4F1_4a35_B44F_A5A44EB884A5"/>
+																				<UML:TaggedValue tag="package_name" value="domain"/>
+																				<UML:TaggedValue tag="phase" value="1.0"/>
+																				<UML:TaggedValue tag="complexity" value="1"/>
+																				<UML:TaggedValue tag="status" value="Proposed"/>
+																				<UML:TaggedValue tag="ea_localid" value="235"/>
+																				<UML:TaggedValue tag="ea_eleType" value="package"/>
+																				<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+																			</UML:ModelElement.taggedValue>
+																		</UML:ClassifierRole>
+																		<UML:ClassifierRole name="translational" xmi.id="EAID_D8FCDBB3_66DD_4d2d_8008_FAAAF2DD716C" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+																			<UML:ModelElement.taggedValue>
+																				<UML:TaggedValue tag="isSpecification" value="false"/>
+																				<UML:TaggedValue tag="ea_stype" value="Package"/>
+																				<UML:TaggedValue tag="ea_ntype" value="0"/>
+																				<UML:TaggedValue tag="package" value="EAPK_5E5B903F_B952_4d63_88D2_8D2803AC173A"/>
+																				<UML:TaggedValue tag="date_created" value="2008-05-20 08:34:16"/>
+																				<UML:TaggedValue tag="date_modified" value="2008-05-20 08:34:16"/>
+																				<UML:TaggedValue tag="gentype" value="Java"/>
+																				<UML:TaggedValue tag="tagged" value="0"/>
+																				<UML:TaggedValue tag="package2" value="EAID_D8FCDBB3_66DD_4d2d_8008_FAAAF2DD716C"/>
+																				<UML:TaggedValue tag="package_name" value="domain"/>
+																				<UML:TaggedValue tag="phase" value="1.0"/>
+																				<UML:TaggedValue tag="complexity" value="1"/>
+																				<UML:TaggedValue tag="status" value="Proposed"/>
+																				<UML:TaggedValue tag="ea_localid" value="239"/>
+																				<UML:TaggedValue tag="ea_eleType" value="package"/>
+																				<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+																			</UML:ModelElement.taggedValue>
+																		</UML:ClassifierRole>
+																		<UML:ClassifierRole name="imaging" xmi.id="EAID_E165BCC9_1012_42f6_8925_8B3BDBD27B97" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+																			<UML:ModelElement.taggedValue>
+																				<UML:TaggedValue tag="isSpecification" value="false"/>
+																				<UML:TaggedValue tag="ea_stype" value="Package"/>
+																				<UML:TaggedValue tag="ea_ntype" value="0"/>
+																				<UML:TaggedValue tag="package" value="EAPK_5E5B903F_B952_4d63_88D2_8D2803AC173A"/>
+																				<UML:TaggedValue tag="date_created" value="2008-05-20 08:34:08"/>
+																				<UML:TaggedValue tag="date_modified" value="2008-05-20 08:34:08"/>
+																				<UML:TaggedValue tag="gentype" value="Java"/>
+																				<UML:TaggedValue tag="tagged" value="0"/>
+																				<UML:TaggedValue tag="package2" value="EAID_E165BCC9_1012_42f6_8925_8B3BDBD27B97"/>
+																				<UML:TaggedValue tag="package_name" value="domain"/>
+																				<UML:TaggedValue tag="phase" value="1.0"/>
+																				<UML:TaggedValue tag="complexity" value="1"/>
+																				<UML:TaggedValue tag="status" value="Proposed"/>
+																				<UML:TaggedValue tag="ea_localid" value="238"/>
+																				<UML:TaggedValue tag="ea_eleType" value="package"/>
+																				<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+																			</UML:ModelElement.taggedValue>
+																		</UML:ClassifierRole>
+																		<UML:ClassifierRole name="application" xmi.id="EAID_E4A672F1_8D11_44b2_BC44_33BF7EFDC884" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
+																			<UML:ModelElement.taggedValue>
+																				<UML:TaggedValue tag="isSpecification" value="false"/>
+																				<UML:TaggedValue tag="ea_stype" value="Package"/>
+																				<UML:TaggedValue tag="ea_ntype" value="0"/>
+																				<UML:TaggedValue tag="package" value="EAPK_5E5B903F_B952_4d63_88D2_8D2803AC173A"/>
+																				<UML:TaggedValue tag="date_created" value="2008-05-20 08:33:54"/>
+																				<UML:TaggedValue tag="date_modified" value="2008-05-20 08:33:54"/>
+																				<UML:TaggedValue tag="gentype" value="Java"/>
+																				<UML:TaggedValue tag="tagged" value="0"/>
+																				<UML:TaggedValue tag="package2" value="EAID_E4A672F1_8D11_44b2_BC44_33BF7EFDC884"/>
+																				<UML:TaggedValue tag="package_name" value="domain"/>
+																				<UML:TaggedValue tag="phase" value="1.0"/>
+																				<UML:TaggedValue tag="complexity" value="1"/>
+																				<UML:TaggedValue tag="status" value="Proposed"/>
+																				<UML:TaggedValue tag="ea_localid" value="236"/>
+																				<UML:TaggedValue tag="ea_eleType" value="package"/>
+																				<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+																			</UML:ModelElement.taggedValue>
+																		</UML:ClassifierRole>
 																		<UML:ClassifierRole name="analysis" xmi.id="EAID_F732D7EF_3F0A_48a6_9322_E5A885FAB34F" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
 																			<UML:ModelElement.taggedValue>
 																				<UML:TaggedValue tag="isSpecification" value="false"/>
@@ -431,6 +446,101 @@
 																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
 																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\analysis.xml"/>
+																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
+																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
+																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+																		<UML:TaggedValue tag="logxml" value="FALSE"/>
+																		<UML:TaggedValue tag="batchsave" value="0"/>
+																		<UML:TaggedValue tag="batchload" value="0"/>
+																		<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;"/>
+																		<UML:TaggedValue tag="phase" value="1.0"/>
+																		<UML:TaggedValue tag="status" value="Proposed"/>
+																		<UML:TaggedValue tag="complexity" value="1"/>
+																		<UML:TaggedValue tag="ea_stype" value="Public"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Package>
+																<UML:Package name="annotation" xmi.id="EAPK_63E343E0_F4F1_4a35_B44F_A5A44EB884A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
+																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\annotation.xml"/>
+																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
+																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
+																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+																		<UML:TaggedValue tag="logxml" value="FALSE"/>
+																		<UML:TaggedValue tag="batchsave" value="0"/>
+																		<UML:TaggedValue tag="batchload" value="0"/>
+																		<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;"/>
+																		<UML:TaggedValue tag="phase" value="1.0"/>
+																		<UML:TaggedValue tag="status" value="Proposed"/>
+																		<UML:TaggedValue tag="complexity" value="1"/>
+																		<UML:TaggedValue tag="ea_stype" value="Public"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Package>
+																<UML:Package name="application" xmi.id="EAPK_E4A672F1_8D11_44b2_BC44_33BF7EFDC884" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
+																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\application.xml"/>
+																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
+																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
+																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+																		<UML:TaggedValue tag="logxml" value="FALSE"/>
+																		<UML:TaggedValue tag="batchsave" value="0"/>
+																		<UML:TaggedValue tag="batchload" value="0"/>
+																		<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;"/>
+																		<UML:TaggedValue tag="phase" value="1.0"/>
+																		<UML:TaggedValue tag="status" value="Proposed"/>
+																		<UML:TaggedValue tag="complexity" value="1"/>
+																		<UML:TaggedValue tag="ea_stype" value="Public"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Package>
+																<UML:Package name="genomic" xmi.id="EAPK_0FEA0011_CB25_4ba4_A1A1_26B15A1F2B01" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
+																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\genomic.xml"/>
+																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
+																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
+																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+																		<UML:TaggedValue tag="logxml" value="FALSE"/>
+																		<UML:TaggedValue tag="batchsave" value="0"/>
+																		<UML:TaggedValue tag="batchload" value="0"/>
+																		<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;"/>
+																		<UML:TaggedValue tag="phase" value="1.0"/>
+																		<UML:TaggedValue tag="status" value="Proposed"/>
+																		<UML:TaggedValue tag="complexity" value="1"/>
+																		<UML:TaggedValue tag="ea_stype" value="Public"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Package>
+																<UML:Package name="imaging" xmi.id="EAPK_E165BCC9_1012_42f6_8925_8B3BDBD27B97" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
+																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\imaging.xml"/>
+																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
+																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
+																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
+																		<UML:TaggedValue tag="logxml" value="FALSE"/>
+																		<UML:TaggedValue tag="batchsave" value="0"/>
+																		<UML:TaggedValue tag="batchload" value="0"/>
+																		<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;"/>
+																		<UML:TaggedValue tag="phase" value="1.0"/>
+																		<UML:TaggedValue tag="status" value="Proposed"/>
+																		<UML:TaggedValue tag="complexity" value="1"/>
+																		<UML:TaggedValue tag="ea_stype" value="Public"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Package>
+																<UML:Package name="translational" xmi.id="EAPK_D8FCDBB3_66DD_4d2d_8008_FAAAF2DD716C" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="created" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="modified" value="2008-05-20 00:00:00"/>
+																		<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
+																		<UML:TaggedValue tag="xmlpath" value="controlled_packages\translational.xml"/>
 																		<UML:TaggedValue tag="isprotected" value="FALSE"/>
 																		<UML:TaggedValue tag="usedtd" value="FALSE"/>
 																		<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
@@ -490,7 +600,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="219"/>
+												<UML:TaggedValue tag="ea_localid" value="234"/>
 												<UML:TaggedValue tag="ea_eleType" value="package"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 											</UML:ModelElement.taggedValue>
@@ -511,7 +621,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="218"/>
+												<UML:TaggedValue tag="ea_localid" value="233"/>
 												<UML:TaggedValue tag="ea_eleType" value="package"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 											</UML:ModelElement.taggedValue>
@@ -552,7 +662,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2697"/>
+												<UML:TaggedValue tag="ea_localid" value="2731"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4C7B6F0E-84CD-4095-A799-97DED981A353}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={4E338352-A573-40d8-A9C6-CB16E6A13F66}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
@@ -573,7 +683,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2698"/>
+												<UML:TaggedValue tag="ea_localid" value="2732"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B3BE6954-CFA7-4f02-AD37-1F82C73CC01F}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={7BD77069-1A1C-4167-865D-B489317F1636}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
@@ -594,7 +704,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2699"/>
+												<UML:TaggedValue tag="ea_localid" value="2733"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={507D5CDC-985D-4bf9-8E4A-FFE86B6423BF}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={99F0C7A9-A559-4729-9872-79BCDA4F9BCF}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
@@ -615,9 +725,9 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2700"/>
+												<UML:TaggedValue tag="ea_localid" value="2734"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
-												<UML:TaggedValue tag="$ea_attsclassified" value="{4A56CDB3-DF4E-4898-8A72-3568F30AB4D8}"/>
+												<UML:TaggedValue tag="$ea_attsclassified" value="{4A56CDB3-DF4E-4898-8A72-3568F30AB4D8},{B704DAF0-8C30-4f32-9EC8-3FEBE2BB9DBC}"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={11353FE8-1204-4401-AAF1-FB243CDA0A0F}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={A3A9968E-E59A-4fd9-AF97-F3C8ABD9E969}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
@@ -637,8 +747,9 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2701"/>
+												<UML:TaggedValue tag="ea_localid" value="2735"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
+												<UML:TaggedValue tag="$ea_attsclassified" value="{13DA5CF7-1B4C-48a6-9D60-25ED6D430641},{E52AC8B1-EF3D-4067-B9BB-05B8E5DBED5C},{5353586E-8502-411d-80DC-9B8A7533E00E},{917D1E3C-110E-4f11-AB5E-58B751E58E1C},{A788CE81-73B6-480b-9A1C-B3D4E4A72B0D},{CB82B454-A4DB-44aa-ACDD-CC532BBFDB74},{8590B780-D464-4e44-9575-9304F27BFAF5},{73C8172E-D6CD-448f-BC4C-18586DC9813D}"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={CF89C2E3-6C3B-4189-8BE6-8B16547B2AB3}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={C2B85B45-ACFF-4118-8A39-3533353E25AB}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
@@ -658,7 +769,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2702"/>
+												<UML:TaggedValue tag="ea_localid" value="2736"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={1A174A0B-72A5-41b0-9727-7155EDF9E2F3}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={F12F2CB8-32F3-422f-A036-13C8295002A4}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
@@ -699,7 +810,7 @@
 												<UML:TaggedValue tag="phase" value="1.0"/>
 												<UML:TaggedValue tag="complexity" value="1"/>
 												<UML:TaggedValue tag="status" value="Proposed"/>
-												<UML:TaggedValue tag="ea_localid" value="2703"/>
+												<UML:TaggedValue tag="ea_localid" value="2737"/>
 												<UML:TaggedValue tag="ea_eleType" value="element"/>
 												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={2D3C01DA-35FE-422c-BB4D-35080CDE6EBB}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={EF770897-AF4B-4e84-9337-3850B45C244F}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
@@ -708,116 +819,6 @@
 									</UML:Namespace.ownedElement>
 								</UML:Package>
 							</UML:Namespace.ownedElement>
-						</UML:Package>
-						<UML:Package name="gov.nih.nci.caintegrator2.domain.annotation" xmi.id="EAPK_9457A822_5701_4a84_8F26_EE8F965AC6C2" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
-							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="created" value="2008-04-17 00:00:00"/>
-								<UML:TaggedValue tag="modified" value="2008-04-17 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
-								<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.annotation.xml"/>
-								<UML:TaggedValue tag="lastloaddate" value="2008-05-12 16:01:05"/>
-								<UML:TaggedValue tag="lastsavedate" value="2008-04-18 13:49:12"/>
-								<UML:TaggedValue tag="isprotected" value="FALSE"/>
-								<UML:TaggedValue tag="usedtd" value="FALSE"/>
-								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="FALSE"/>
-								<UML:TaggedValue tag="tpos" value="0"/>
-								<UML:TaggedValue tag="batchsave" value="0"/>
-								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="CheckedOutOffline=0;VCCFG=trworkbench;"/>
-								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="complexity" value="1"/>
-								<UML:TaggedValue tag="ea_stype" value="Public"/>
-							</UML:ModelElement.taggedValue>
-						</UML:Package>
-						<UML:Package name="gov.nih.nci.caintegrator2.domain.application" xmi.id="EAPK_5040D3D8_7EB6_4c71_A073_50E716E8D7B3" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
-							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="created" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
-								<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.application.xml"/>
-								<UML:TaggedValue tag="lastloaddate" value="2008-05-13 09:24:16"/>
-								<UML:TaggedValue tag="lastsavedate" value="2008-05-01 13:40:33"/>
-								<UML:TaggedValue tag="isprotected" value="FALSE"/>
-								<UML:TaggedValue tag="usedtd" value="FALSE"/>
-								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="FALSE"/>
-								<UML:TaggedValue tag="tpos" value="0"/>
-								<UML:TaggedValue tag="batchsave" value="0"/>
-								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;CheckedOutOffline=0;"/>
-								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="complexity" value="1"/>
-								<UML:TaggedValue tag="ea_stype" value="Public"/>
-							</UML:ModelElement.taggedValue>
-						</UML:Package>
-						<UML:Package name="gov.nih.nci.caintegrator2.domain.genomic" xmi.id="EAPK_3E5B7798_9510_41cc_A817_F935574F15E8" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
-							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="created" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
-								<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.genomic.xml"/>
-								<UML:TaggedValue tag="lastloaddate" value="2008-05-13 15:19:50"/>
-								<UML:TaggedValue tag="lastsavedate" value="2008-05-01 13:46:09"/>
-								<UML:TaggedValue tag="isprotected" value="FALSE"/>
-								<UML:TaggedValue tag="usedtd" value="FALSE"/>
-								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="FALSE"/>
-								<UML:TaggedValue tag="tpos" value="0"/>
-								<UML:TaggedValue tag="batchsave" value="0"/>
-								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="VCCFG=trworkbench;CheckedOutOffline=0;"/>
-								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="complexity" value="1"/>
-								<UML:TaggedValue tag="ea_stype" value="Public"/>
-							</UML:ModelElement.taggedValue>
-						</UML:Package>
-						<UML:Package name="gov.nih.nci.caintegrator2.domain.imaging" xmi.id="EAPK_20FA4D9E_AC6C_4ba8_9D2E_88218072251B" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
-							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="created" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
-								<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.imaging.xml"/>
-								<UML:TaggedValue tag="lastloaddate" value="2008-05-12 16:03:10"/>
-								<UML:TaggedValue tag="lastsavedate" value="2008-04-28 10:57:40"/>
-								<UML:TaggedValue tag="isprotected" value="FALSE"/>
-								<UML:TaggedValue tag="usedtd" value="FALSE"/>
-								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="FALSE"/>
-								<UML:TaggedValue tag="tpos" value="0"/>
-								<UML:TaggedValue tag="batchsave" value="0"/>
-								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="CheckedOutOffline=0;VCCFG=trworkbench;"/>
-								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="complexity" value="1"/>
-								<UML:TaggedValue tag="ea_stype" value="Public"/>
-							</UML:ModelElement.taggedValue>
-						</UML:Package>
-						<UML:Package name="gov.nih.nci.caintegrator2.domain.translational" xmi.id="EAPK_B6EEA980_F020_4dd7_902C_E90A9936D671" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
-							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="created" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="modified" value="2008-04-15 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
-								<UML:TaggedValue tag="xmlpath" value="controlled_packages\gov.nih.nci.caintegrator2.domain.translational.xml"/>
-								<UML:TaggedValue tag="lastloaddate" value="2008-05-16 15:13:41"/>
-								<UML:TaggedValue tag="lastsavedate" value="2008-04-28 10:56:03"/>
-								<UML:TaggedValue tag="isprotected" value="FALSE"/>
-								<UML:TaggedValue tag="usedtd" value="FALSE"/>
-								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="FALSE"/>
-								<UML:TaggedValue tag="tpos" value="0"/>
-								<UML:TaggedValue tag="batchsave" value="0"/>
-								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="CheckedOutOffline=0;VCCFG=trworkbench;"/>
-								<UML:TaggedValue tag="phase" value="1.0"/>
-								<UML:TaggedValue tag="status" value="Proposed"/>
-								<UML:TaggedValue tag="complexity" value="1"/>
-								<UML:TaggedValue tag="ea_stype" value="Public"/>
-							</UML:ModelElement.taggedValue>
 						</UML:Package>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
@@ -831,7 +832,7 @@
 				<UML:TaggedValue tag="package" value="EAPK_B1200253_F940_4271_811A_C4F5C288A8FD"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
-				<UML:TaggedValue tag="ea_localid" value="339"/>
+				<UML:TaggedValue tag="ea_localid" value="342"/>
 				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=;ExplicitNavigability=0;"/>
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;Layout=;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
@@ -848,7 +849,7 @@
 				<UML:TaggedValue tag="package" value="EAPK_ACAE6661_63C7_4918_AF08_CADDD71CC6A9"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
-				<UML:TaggedValue tag="ea_localid" value="340"/>
+				<UML:TaggedValue tag="ea_localid" value="343"/>
 				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=;ExplicitNavigability=0;"/>
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;Layout=;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
