@@ -220,6 +220,7 @@
             <lib dir="${lib.dir}">
                 <include name="commons-logging-1.0.4.jar" />
                 <include name="netcdf-2.2.22.jar" />
+                <include name="postgresql-8.2-508.jdbc3.jar" />
             </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
