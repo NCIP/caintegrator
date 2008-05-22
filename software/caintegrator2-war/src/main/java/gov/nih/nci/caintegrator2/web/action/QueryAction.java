@@ -95,6 +95,8 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class QueryAction extends ActionSupport {
 
+    private static final long serialVersionUID = 1L;
+    
     private QueryDataService queryDataService;
     private QueryManagementService queryManagementService;
     
