@@ -9,15 +9,15 @@
     <!-- ******************************************************************* -->
 
     <!-- Main -->
-    <property name="root.dir" value="${basedir}/../.." />
-    <property name="docs.dir" value="${root.dir}/docs" />
-    <property name="software.dir" value="${root.dir}/software" />
-    <property name="build.dir" value="${software.dir}/build" />
-    <property name="lib.dir" value="${software.dir}/lib" />
-    <property name="build.lib.dir" value="${build.dir}/lib" />
-    <property name="resource.dir" value="${build.dir}/resources" />
-    <property name="target.dir" value="${build.dir}/target" />
-    <property name="site.dir" value="${build.dir}/site" />
+    <property name="root.dir" location="${basedir}/../.." />
+    <property name="docs.dir" location="${root.dir}/docs" />
+    <property name="software.dir" location="${root.dir}/software" />
+    <property name="build.dir" location="${software.dir}/build" />
+    <property name="lib.dir" location="${software.dir}/lib" />
+    <property name="build.lib.dir" location="${build.dir}/lib" />
+    <property name="resource.dir" location="${build.dir}/resources" />
+    <property name="target.dir" location="${build.dir}/target" />
+    <property name="site.dir" location="${build.dir}/site" />
 
     <!-- Environment properties -->
     <property environment="env" />
@@ -25,7 +25,7 @@
     <property file="${build.dir}/default.properties" />
 
     <!-- Libraries -->
-    <property name="junit.jar" value="${lib.dir}/junit-4.4.jar" />
+    <property name="junit.jar" location="${lib.dir}/junit-4.4.jar" />
 
     <!-- Paths -->
     <path id="test.dependencies.path">
@@ -37,13 +37,13 @@
     <!-- ******************************************************************* -->
     
     <!-- ant-contrib -->
-    <property name="ant-contrib.jar" value="${lib.dir}/ant-contrib-1.0b3.jar" />
+    <property name="ant-contrib.jar" location="${lib.dir}/ant-contrib-1.0b3.jar" />
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${ant-contrib.jar}" />
 
     <!-- Checkstyle -->
-    <property name="checkstyle.jar" value="${lib.dir}/checkstyle-all-4.4.jar" />
+    <property name="checkstyle.jar" location="${lib.dir}/checkstyle-all-4.4.jar" />
     <taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar}" />
-    <property name="checkstyle.config" value="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
+    <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
 
     <!-- PMD -->
     <path id="pmd.classpath">
@@ -56,13 +56,13 @@
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
 
     <!-- Ivy -->
-    <property name="ivy.jar" value="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
-    <property name="bda-utils.dir" value="${build.dir}/bda-utils" />
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
+    <property name="bda-utils.dir" location="${build.dir}/bda-utils" />
 
     <mkdir dir="${build.lib.dir}" />
     <ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="retrieve-bda">
-        <property name="bda-utils.dir" value="${bda-utils.dir}" />
-        <property name="lib.dir" value="${build.lib.dir}" />
+        <property name="bda-utils.dir" location="${bda-utils.dir}" />
+        <property name="lib.dir" location="${build.lib.dir}" />
     </ant>
 
     <import file="${bda-utils.dir}/bda-build-utils-1.0.xml" />
@@ -75,10 +75,10 @@
     </target>
 
     <!-- Cobertura -->
-    <property name="cobertura.dir" value="${site.dir}/cobertura" />
-    <property name="cobertura.file" value="${cobertura.dir}/cobertura.ser" />
-    <property name="cobertura-functional.file" value="${cobertura.dir}/cobertura-functional.ser" />
-    <property name="cobertura-merged.file" value="${cobertura.dir}/cobertura-merged.ser" />
+    <property name="cobertura.dir" location="${site.dir}/cobertura" />
+    <property name="cobertura.file" location="${cobertura.dir}/cobertura.ser" />
+    <property name="cobertura-functional.file" location="${cobertura.dir}/cobertura-functional.ser" />
+    <property name="cobertura-merged.file" location="${cobertura.dir}/cobertura-merged.ser" />
 
     <path id="cobertura.classpath">
         <fileset dir="${lib.dir}">
@@ -140,16 +140,16 @@
     <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
     <!-- ******************************************************************* -->
 
-    <property name="caintegrator2-cacore.dir" value="${software.dir}/caintegrator-cacore" />
-    <property name="caintegrator2-cacore.system.dir" value="${caintegrator2-cacore.dir}/system" />
-    <property name="caintegrator2-cacore.system.dist.dir" value="${caintegrator2-cacore.system.dir}/dist" />
-    <property name="caintegrator2-cacore.system.lib.dir" value="${caintegrator2-cacore.system.dir}/lib" />
-    <property name="caintegrator2-cacore.output.dir" value="${caintegrator2-cacore.dir}/output/caintegrator2" />
-    <property name="caintegrator2-cacore.output.src.dir" value="${caintegrator2-cacore.output.dir}/src" />
-    <property name="caintegrator2-cacore.build.jar.dir" value="${caintegrator2-cacore.output.dir}/build/jar" />
-    <property name="caintegrator2-beans.jar" value="${caintegrator2-cacore.build.jar.dir}/caintegrator2-beans.jar" />
-    <property name="caintegrator2-orm.jar" value="${caintegrator2-cacore.build.jar.dir}/caintegrator2-orm.jar" />
-    <property name="csm.security.config.file" value="sdk.csm.new.hibernate.cfg.xml" />
+    <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
+    <property name="caintegrator2-cacore.system.dir" location="${caintegrator2-cacore.dir}/system" />
+    <property name="caintegrator2-cacore.system.dist.dir" location="${caintegrator2-cacore.system.dir}/dist" />
+    <property name="caintegrator2-cacore.system.lib.dir" location="${caintegrator2-cacore.system.dir}/lib" />
+    <property name="caintegrator2-cacore.output.dir" location="${caintegrator2-cacore.dir}/output/caintegrator2" />
+    <property name="caintegrator2-cacore.output.src.dir" location="${caintegrator2-cacore.output.dir}/src" />
+    <property name="caintegrator2-cacore.build.jar.dir" location="${caintegrator2-cacore.output.dir}/build/jar" />
+    <property name="caintegrator2-beans.jar" location="${caintegrator2-cacore.build.jar.dir}/caintegrator2-beans.jar" />
+    <property name="caintegrator2-orm.jar" location="${caintegrator2-cacore.build.jar.dir}/caintegrator2-orm.jar" />
+    <property name="csm.security.config.file" location="sdk.csm.new.hibernate.cfg.xml" />
     
     <target name="caintegrator2-beans.jar" depends="build:caintegrator2-cacore" />
     <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore" />
@@ -168,16 +168,16 @@
     <!-- ** CAINTEGRATOR2.WAR                                             ** -->
     <!-- ******************************************************************* -->
 
-    <property name="caintegrator2.war.dir" value="${software.dir}/caintegrator2-war" />
-    <property name="caintegrator2.war.java.src.dir" value="${caintegrator2.war.dir}/src/main/java" />
-    <property name="caintegrator2.war.resources.src.dir" value="${caintegrator2.war.dir}/src/main/resources" />
-    <property name="caintegrator2.war.web.src.dir" value="${caintegrator2.war.dir}/src/main/web" />
-    <property name="caintegrator2.war.test.src.dir" value="${caintegrator2.war.dir}/src/test/java" />
-    <property name="caintegrator2.war.target.dir" value="${caintegrator2.war.dir}/target" />
-    <property name="caintegrator2.war.java.classes.dir" value="${caintegrator2.war.target.dir}/classes" />
-    <property name="caintegrator2.war.instrumented.classes.dir" value="${caintegrator2.war.target.dir}/instrumented-classes" />
-    <property name="caintegrator2.war.test.classes.dir" value="${caintegrator2.war.target.dir}/test-classes" />
-    <property name="caintegrator2.war" value="${caintegrator2.war.target.dir}/caintegrator2.war" />
+    <property name="caintegrator2.war.dir" location="${software.dir}/caintegrator2-war" />
+    <property name="caintegrator2.war.java.src.dir" location="${caintegrator2.war.dir}/src/main/java" />
+    <property name="caintegrator2.war.resources.src.dir" location="${caintegrator2.war.dir}/src/main/resources" />
+    <property name="caintegrator2.war.web.src.dir" location="${caintegrator2.war.dir}/src/main/web" />
+    <property name="caintegrator2.war.test.src.dir" location="${caintegrator2.war.dir}/src/test/java" />
+    <property name="caintegrator2.war.target.dir" location="${caintegrator2.war.dir}/target" />
+    <property name="caintegrator2.war.java.classes.dir" location="${caintegrator2.war.target.dir}/classes" />
+    <property name="caintegrator2.war.instrumented.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes" />
+    <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
+    <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator2.war" />
 
     <path id="caintegrator2.war.dependencies.path">
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
@@ -350,10 +350,10 @@
     <!-- ** DEPLOYMENT TARGETS                                            ** -->
     <!-- ******************************************************************* -->
     
-    <property name="jboss.home" value="${env.JBOSS_HOME}" />
+    <property name="jboss.home" location="${env.JBOSS_HOME}" />
     <property name="jboss.server.name" value="default" />
-    <property name="jboss.server.dir" value="${jboss.home}/server/${jboss.server.name}" />
-    <property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
+    <property name="jboss.server.dir" location="${jboss.home}/server/${jboss.server.name}" />
+    <property name="jboss.deploy.dir" location="${jboss.server.dir}/deploy" />
     
     <target name="deploy:jboss" depends="caintegrator2.war">
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
