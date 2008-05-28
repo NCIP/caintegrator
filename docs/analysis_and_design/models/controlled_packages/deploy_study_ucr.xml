@@ -16,7 +16,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-15 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\deploy_study_ucr.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2008-05-27 14:59:20"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-27 17:05:03"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-16 15:01:09"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
@@ -129,7 +129,7 @@
 										<UML:TaggedValue tag="stereotype" value="subsystem"/>
 										<UML:TaggedValue tag="ea_localid" value="2975"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=048b;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fbd0;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -153,7 +153,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="ea_localid" value="2920"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=04aa;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fbe0;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -181,7 +181,7 @@
 										<UML:TaggedValue tag="stereotype" value="subsystem"/>
 										<UML:TaggedValue tag="ea_localid" value="2918"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=04aa;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fbe0;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -205,7 +205,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="ea_localid" value="2626"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=049a;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fbd0;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -280,7 +280,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="ea_localid" value="2917"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=049a;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fbd0;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -304,7 +304,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="ea_localid" value="2973"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=044c;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=fb82;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
@@ -1511,19 +1511,19 @@
 								<UML:TaggedValue tag="eventflags" value="LNK=f403;"/>
 								<UML:TaggedValue tag="diagram" value="EAID_9B5C3A35_4B8B_43b0_98FE_C6C7ADE19DE4"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=3;"/>
-								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={A8F02306-FBB7-4410-837D-ED03BF8D3620}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PAR;Name=for each AnnotationDefinitionDescriptor;Size=40;@ENDPAR;$DES;$CLT={A7817700-BD79-4bc3-9EA2-57F7D1CF6137}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={A8F02306-FBB7-4410-837D-ED03BF8D3620}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PAR;Name=for each AnnotationFieldDescriptor;Size=40;@ENDPAR;$DES;$CLT={A7817700-BD79-4bc3-9EA2-57F7D1CF6137}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
 						<UML:Comment xmi.id="EAID_BF715CC0_E1FA_42dd_8304_D2C86FE8AF2D" visibility="public" namespace="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74">
 							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="documentation" value="Notes:&#xA;- Need to design CTODS import realization in a later iteration."/>
+								<UML:TaggedValue tag="documentation" value="Notes:&#xA;- Need to design CTODS import realization in a later iteration.&#xA;- Find out if clinical annotation needs timepoints&#xA;- First pass based on the name (findExistingDefnitions) add findExistingDefinition(name:String)"/>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="Note"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
 								<UML:TaggedValue tag="date_created" value="2008-05-27 09:59:43"/>
-								<UML:TaggedValue tag="date_modified" value="2008-05-27 10:00:04"/>
+								<UML:TaggedValue tag="date_modified" value="2008-05-27 17:23:32"/>
 								<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 								<UML:TaggedValue tag="tagged" value="0"/>
 								<UML:TaggedValue tag="package_name" value="Deploy Study"/>
@@ -1660,7 +1660,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-16 15:03:54"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-27 10:00:08"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-27 17:24:39"/>
 				<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
@@ -1669,7 +1669,7 @@
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=100;Top=310;Right=580;Bottom=544;" subject="EAID_BF715CC0_E1FA_42dd_8304_D2C86FE8AF2D" seqno="1" style="DUID=0A7B13E1;"/>
+				<UML:DiagramElement geometry="Left=101;Top=309;Right=581;Bottom=543;" subject="EAID_BF715CC0_E1FA_42dd_8304_D2C86FE8AF2D" seqno="1" style="DUID=0A7B13E1;"/>
 				<UML:DiagramElement geometry="Left=132;Top=98;Right=264;Bottom=186;" subject="EAID_E4C4E701_2C52_4088_8A78_02AFFAC14793" seqno="2" style="DUID=ADBEF9C2;"/>
 				<UML:DiagramElement geometry="Left=419;Top=105;Right=524;Bottom=175;" subject="EAID_378AD178_7D67_4c4f_AAE0_27376185CBB7" seqno="3" style="DUID=649A6D98;"/>
 				<UML:DiagramElement geometry="EDGE=2;$LLB=;LLT=;LMT=;LMB=CX=54:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=;LRB=;Path=;" subject="EAID_BE5EB1D8_B75A_447d_A08B_BC578B354C01" style="Mode=3;EOID=649A6D98;SOID=ADBEF9C2;Hidden=0;"/>
@@ -1716,7 +1716,7 @@
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-26 14:36:03"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-27 16:26:52"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-27 17:17:05"/>
 				<UML:TaggedValue tag="package" value="EAPK_50DC2BA7_2AB1_476d_9FC0_8843125BAB74"/>
 				<UML:TaggedValue tag="type" value="Sequence"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
