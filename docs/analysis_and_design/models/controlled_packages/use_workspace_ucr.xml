@@ -16,6 +16,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-27 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="controlled_packages\use_workspace_ucr.xml"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-27 16:40:07"/>
 						<UML:TaggedValue tag="isprotected" value="FALSE"/>
 						<UML:TaggedValue tag="usedtd" value="FALSE"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
@@ -711,14 +712,14 @@
 						</UML:Class>
 						<UML:Comment xmi.id="EAID_A7E4EDE4_C7AE_47e9_BCF3_B7F4CB2CC906" visibility="public" namespace="EAPK_D22D4B17_684F_4368_A112_DEB6EB087271">
 							<UML:ModelElement.taggedValue>
-								<UML:TaggedValue tag="documentation" value="Notes:&#xA;- Need to incorporate authorization mechanism in a later iteration"/>
+								<UML:TaggedValue tag="documentation" value="Notes:&#xA;- Need to incorporate authorization mechanism in a later iteration&#xA;- Need to complete Subscribe to Study"/>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="Note"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="package" value="EAPK_D22D4B17_684F_4368_A112_DEB6EB087271"/>
 								<UML:TaggedValue tag="date_created" value="2008-05-27 09:37:27"/>
-								<UML:TaggedValue tag="date_modified" value="2008-05-27 09:38:03"/>
+								<UML:TaggedValue tag="date_modified" value="2008-05-27 16:40:26"/>
 								<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 								<UML:TaggedValue tag="tagged" value="0"/>
 								<UML:TaggedValue tag="package_name" value="Use Workspace"/>
