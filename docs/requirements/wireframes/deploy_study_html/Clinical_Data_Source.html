@@ -1,0 +1,80 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:95px; top:130px; width:616px; height:301px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:624px; height:309px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Clinical_Data_Source_files/u0.png',sizingMethod='scale');
+"><img style="width:624px; height:309px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Clinical_Data_Source_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:95px; top:130px; width:616px; height:301px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:142px; width:611px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:95px; top:130px; width:615px; height:300px"  >
+
+<DIV id=u2 style="position:absolute; left:269px; top:144px; width:270px; height:24px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u2_rtf><span style=" font-family:'Arial'; color:#000000; font-size:21px;">Add Clinical Data Source</span></DIV></DIV>
+<DIV id=u3 style="position:absolute; left:256px; top:175px; width:290px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" color:#000000; font-size:13px;">Study Name: Rembrandt/VASARI Integration</span></DIV></DIV>
+<INPUT id=u4  type=text value="" style="position:absolute; left:406px; top:205px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<INPUT id=u5  type=text value="" style="position:absolute; left:406px; top:236px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<INPUT id=u6  type=text value="" style="position:absolute; left:406px; top:266px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<INPUT id=u7  type=text value="" style="position:absolute; left:406px; top:296px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<DIV id=u8 style="position:absolute; left:300px; top:210px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u8_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">CTODs grid URL</span></DIV></DIV>
+<DIV id=u9 style="position:absolute; left:293px; top:241px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u9_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">CTODs username</span></DIV></DIV>
+<DIV id=u10 style="position:absolute; left:293px; top:271px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u10_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">CTODs password</span></DIV></DIV>
+<DIV id=u11 style="position:absolute; left:330px; top:300px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" color:#000000; font-size:13px;">Protocol ID</span></DIV></DIV>
+<DIV id=u12 style="position:absolute; left:376px; top:332px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u12_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">OR</span></DIV></DIV>
+<INPUT id=u13  type=text value="" style="position:absolute; left:406px; top:360px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<INPUT id=u14  type=submit value="Browse..." style="position:absolute; left:586px; top:359px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u15 style="position:absolute; left:265px; top:364px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u15_rtf><span style=" color:#000000; font-size:13px;">Tab-delimited Text File</span></DIV></DIV>
+<INPUT id=u16  type=submit value="Verify Connection" style="position:absolute; left:124px; top:249px; width:130px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u17  type=submit value="Parse File" style="position:absolute; left:124px; top:359px; width:130px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u18container style="position:absolute; left:405px; top:393px; width:31px; height:16px; ; ; text-align: left " >
+<DIV id=u19 style="position:absolute; left:16px; top:0px; width:13px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u19_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:405px; top:393px; width:31px; height:16px; ; ; text-align: left " ><INPUT id=u18 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u20 style="position:absolute; left:275px; top:393px; width:125px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u20_rtf><span style=" color:#000000; font-size:13px;">File Has Header Line</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Clinical_Data_Source_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

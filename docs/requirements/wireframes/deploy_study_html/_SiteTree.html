@@ -1,0 +1,158 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><link href="Resources/axurerpprototype.css" type="text/css" rel="stylesheet"></HEAD>
+<BODY>
+<A href=# onclick='parent.CloseSitemap()' style='font-size:8pt'>Close Frames</A><br><br>
+
+<SCRIPT LANGUAGE="JavaScript">
+image1 = new Image();
+image1.src = 'Resources/plus.gif';
+
+function CloseSitemap()
+{
+	parent.URL = parent.mainFrame.URL
+}
+
+function ToggleDiv(node, id)
+{
+	sibling = document.getElementById(id);
+	if (sibling.style.display == 'none')
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/minus.gif";
+			}
+		}
+
+		sibling.style.display = '';
+	}
+	else
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/plus.gif";
+			}
+		}
+		sibling.style.display = 'none';
+	}
+}
+
+var currentPage = null;
+
+function highlight(id)
+{
+	if (currentPage != null)
+	{
+		currentPage.style.backgroundColor = '#EEEEFF';
+		currentPage.style.paddingLeft = '0px';
+		currentPage.style.paddingRight = '0px';
+		currentPage.style.border = '0px solid #666666';
+	}
+	
+	currentPage = document.getElementById(id);
+    if (currentPage) {
+	    currentPage.style.backgroundColor = '#DDDDDD';
+	    currentPage.style.paddingLeft = '3px';
+	    currentPage.style.paddingRight = '3px';
+	    currentPage.style.border = '1px solid #666666';
+    }
+}
+
+</SCRIPT>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd97348729c0e848cba23aea16ffd49005')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A href="Home.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p97348729c0e848cba23aea16ffd49005">Home</SPAN></A><DIV id="d97348729c0e848cba23aea16ffd49005">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="New_Study.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pdfe7065644fc4519b641310b560d0979">New Study</SPAN></A><DIV id="tddfe7065644fc4519b641310b560d0979">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Clinical_Data_Source.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p8a0955bf0aad4ad2a5fc4836b67e92c8">Clinical Data Source</SPAN></A><DIV id="td8a0955bf0aad4ad2a5fc4836b67e92c8">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Clinical_Data_Field_Definition.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pef8e7db118d34cb584a01a0988700cd9">Clinical Data Field Definition</SPAN></A><DIV id="tdef8e7db118d34cb584a01a0988700cd9">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Clinical_Data_Access_Control.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pa06b8f3165b7426a848932b01db49847">Clinical Data Access Control</SPAN></A><DIV id="tda06b8f3165b7426a848932b01db49847">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Genomic_Data_Source.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p4ec8823a9ee94ef29f84541439e80eb1">Genomic Data Source</SPAN></A><DIV id="td4ec8823a9ee94ef29f84541439e80eb1">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Genomic_Data_Patient_Mapping.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p58dfde49657541c5a4482bd26d53fbdc">Genomic Data Patient Mapping</SPAN></A><DIV id="td58dfde49657541c5a4482bd26d53fbdc">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Imaging_Data_Source.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p551b136b9f3b473fa87a433a214a1cc7">Imaging Data Source</SPAN></A><DIV id="td551b136b9f3b473fa87a433a214a1cc7">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Image_Data_Patient_Mapping.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p96cce0fd106a48629ac6c368f88b32bb">Image Data Patient Mapping</SPAN></A><DIV id="td96cce0fd106a48629ac6c368f88b32bb">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Imaging_Annotation_Field_Definition.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p1adb33c9d58742b288b0a4988e9ae697">Imaging Annotation Field Definition</SPAN></A><DIV id="td1adb33c9d58742b288b0a4988e9ae697">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Imaging_Annotation_Access_Control.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p1ab879b18eee4dd09cb0c7ec1cbb3775">Imaging Annotation Access Control</SPAN></A><DIV id="td1ab879b18eee4dd09cb0c7ec1cbb3775">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Study_Manager.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p690e3ee7ffde4f6eaa6126647702e519">Study Manager</SPAN></A><DIV id="td690e3ee7ffde4f6eaa6126647702e519">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE></BODY></HTML>
