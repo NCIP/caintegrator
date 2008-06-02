@@ -23,6 +23,7 @@
     <property environment="env" />
     <property file="${build.dir}/local.properties" />
     <property file="${build.dir}/default.properties" />
+    <property file="${envpropertyfile}" />
 
     <!-- Libraries -->
     <property name="junit.jar" location="${lib.dir}/junit-4.4.jar" />
@@ -31,6 +32,13 @@
     <path id="test.dependencies.path">
         <pathelement location="${junit.jar}" />
     </path>
+
+    <!-- Filtersets -->
+    <filterset id="caintegrator2.filterset" onmissingfiltersfile="warn">
+        <filtersfile file="${build.dir}/local.properties" />
+        <filtersfile file="${build.dir}/default.properties" />
+        <filtersfile file="${envpropertyfile}" />
+    </filterset>
 
     <!-- ******************************************************************* -->
     <!-- ** BUILD / TASKDEFS                                              ** -->
@@ -220,7 +228,7 @@
             <lib dir="${lib.dir}">
                 <include name="commons-logging-1.0.4.jar" />
                 <include name="netcdf-2.2.22.jar" />
-                <include name="postgresql-8.2-508.jdbc3.jar" />
+                <include name="mysql-connector-java-5.0.5-bin.jar" />
             </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
@@ -259,6 +267,44 @@
     <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war">
         <mkdir dir="${caintegrator2.war.test.classes.dir}" />
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** DATABASE TARGETS                                              ** -->
+    <!-- ******************************************************************* -->
+    
+    <property name="caintegrator2db.dir" location="${software.dir}/caintegrator2db" />
+    <property name="caintegrator2db.sql.src.dir" location="${caintegrator2db.dir}/src/main/sql" />
+    <property name="caintegrator2db.sql.target.dir" location="${caintegrator2db.dir}/target/sql" />
+
+    <target name="database:init-sql">
+        <mkdir dir="${caintegrator2db.sql.target.dir}" />
+        <copy todir="${caintegrator2db.sql.target.dir}">
+            <filterset refid="caintegrator2.filterset" />
+            <fileset dir="${caintegrator2db.sql.src.dir}" includes="**/*.sql" />
+        </copy>
+    </target>
+
+    <target name="database:drop-tables" description="Drop caIntegrator 2 schema">
+        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-caintegrator2-tables.sql" />
+    </target>
+
+    <target name="database:create-tables" description="Create caIntegrator 2 schema">
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-caintegrator2-tables.sql" />
+    </target>
+
+    <target name="database:reinitialize-tables" depends="database:drop-tables,database:create-tables" description="Drop &amp; recreate caIntegrator 2 schema" />
+
+    <target name="database:reinitialize" depends="database:init-sql" description="Completely reset caIntegrator 2 by dropping database, recreating, and creating schema, and populating with initial data">
+        <antcall target="database:recreate-database" />
+        <antcall target="database:create-tables" />
+    </target>
+
+    <target name="database:recreate-database" description="Drops and recreates caarraydb database">
+        <run-sql-script database.url="${database.system.url}" 
+            database.user="${database.system.user}" 
+            database.password="${database.system.password}" 
+            sql.file="${caintegrator2db.sql.target.dir}/create-caintegrator2-database-and-user.sql" />
     </target>
 
     <!-- ******************************************************************* -->
