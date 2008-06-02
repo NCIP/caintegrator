@@ -135,6 +135,10 @@
         <fail if="pmd.failure" message="There were PMD failures." />
     </target>
 
+    <target name="database" 
+        depends="database:reinitialize"
+        description="Drops any exisisting instance of the caintegrator2 database; creates and populates a new instance." />
+
     <target name="test" 
         depends="test:unit"
         description="Executes all unit and functional tests." />
