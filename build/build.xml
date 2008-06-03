@@ -143,6 +143,7 @@
         depends="test:unit"
         description="Executes all unit and functional tests." />
 
+
     <target name="deploy"
         depends="deploy:jboss"
         description="Deploys the caIntegrator 2 application to JBoss." />
@@ -185,6 +186,7 @@
     <property name="caintegrator2.war.resources.src.dir" location="${caintegrator2.war.dir}/src/main/resources" />
     <property name="caintegrator2.war.web.src.dir" location="${caintegrator2.war.dir}/src/main/web" />
     <property name="caintegrator2.war.test.src.dir" location="${caintegrator2.war.dir}/src/test/java" />
+    <property name="caintegrator2.war.resources.test.dir" location="${caintegrator2.war.dir}/src/test/resources" />
     <property name="caintegrator2.war.target.dir" location="${caintegrator2.war.dir}/target" />
     <property name="caintegrator2.war.java.classes.dir" location="${caintegrator2.war.target.dir}/classes" />
     <property name="caintegrator2.war.instrumented.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes" />
@@ -197,6 +199,8 @@
         <pathelement location="${caintegrator2-orm.jar}" />
         <pathelement location="${lib.dir}/commons-logging-1.0.4.jar" />
         <pathelement location="${lib.dir}/netcdf-2.2.22.jar" />
+        <pathelement location="${lib.dir}/log4j-1.2.9.jar" />
+        <pathelement location="${lib.dir}/opencsv-1.8.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/xwork-2.0-beta-1.jar" />
     </path>
@@ -205,6 +209,7 @@
         <path refid="caintegrator2.war.dependencies.path" />
         <path refid="test.dependencies.path" />
         <pathelement location="${caintegrator2.war.test.classes.dir}" />
+        <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
     
     <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
@@ -231,8 +236,10 @@
             </lib>
             <lib dir="${lib.dir}">
                 <include name="commons-logging-1.0.4.jar" />
+                <include name="log4j-1.2.9.jar" />
                 <include name="netcdf-2.2.22.jar" />
                 <include name="mysql-connector-java-5.0.5-bin.jar" />
+                <include name="opencsv-1.8.jar" />
             </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
