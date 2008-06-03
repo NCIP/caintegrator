@@ -58,6 +58,8 @@ var u19 = document.getElementById('u19');
 gv_vAlignTable['u19'] = 'top';
 var u13 = document.getElementById('u13');
 
+var u31 = document.getElementById('u31');
+gv_vAlignTable['u31'] = 'top';
 var u22 = document.getElementById('u22');
 gv_vAlignTable['u22'] = 'top';
 var u12 = document.getElementById('u12');
