@@ -1,0 +1,8 @@
+1.	Security level – needs further evaluation (Level 1/Level 2 etc) . For this release if you have access to study, you can see everything.
+2.	CTODS integration is not part of this release, but will be shown as a future functionality. Future integration with COPPA will be evaluated when COPPA is ready. 
+3.	Patient to Sample mapping instead of Patient to Files for Genomic Data Patient Mapping page
+4.	Rembrandt clinical data from production (already transformed from MD Anderson report) will be used as a clinical data
+5.	Annotation data (Gene/Reporter etc) for this release will be loaded manually 
+6.	Using annotation from caBIO will be evaluated. 
+7.	‘Field Definition’ pages will be changed so that the field definitions are shown as rows for better UI. 
+8.	A help feature (documentation or other means) will be provided so that Study Manager can get details of other systems (URL, UserID, Password, Port etc) 

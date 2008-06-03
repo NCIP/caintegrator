@@ -1,0 +1,16 @@
+Wire-frames
+	Modifications to wireframe (caDSR, Add ‘Deploy Study’, Remove CTODS etc) and start review with Subha – Will
+	Model changes to handle NCIA metadata and annotations data - Eric
+Use Case Realization 
+Follow-up questions from Model Review/Use Case realization 
+		Model changes (and wireframe) to handle multiple timepoints for clinical data – Eric/Will
+
+I will schedule a separate meeting with team to go over rest of the items and schedule 
+	
+caBIG Annual meeting
+            - Poster
+	- Demo
+External Stakeholder Review of Use Cases
+	- Update and review Vision Document
+	- Internal Review of Use Cases
+	- Story board
