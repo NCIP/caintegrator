@@ -44,8 +44,6 @@ function OnLoad() {
 
 var u20 = document.getElementById('u20');
 gv_vAlignTable['u20'] = 'top';
-var u51 = document.getElementById('u51');
-gv_vAlignTable['u51'] = 'top';
 var u36 = document.getElementById('u36');
 gv_vAlignTable['u36'] = 'top';
 var u31 = document.getElementById('u31');
@@ -68,13 +66,9 @@ var u0 = document.getElementById('u0');
 
 var u26 = document.getElementById('u26');
 gv_vAlignTable['u26'] = 'top';
-var u49 = document.getElementById('u49');
-
 var u35 = document.getElementById('u35');
 
 var u29 = document.getElementById('u29');
-
-var u54 = document.getElementById('u54');
 
 var u8 = document.getElementById('u8');
 gv_vAlignTable['u8'] = 'top';
@@ -90,24 +84,16 @@ var u44 = document.getElementById('u44');
 gv_vAlignTable['u44'] = 'top';
 var u33 = document.getElementById('u33');
 
-var u50 = document.getElementById('u50');
-
 var u22 = document.getElementById('u22');
 gv_vAlignTable['u22'] = 'top';
-var u52 = document.getElementById('u52');
-
 var u13 = document.getElementById('u13');
 
 var u47 = document.getElementById('u47');
-gv_vAlignTable['u47'] = 'top';
+
 var u12 = document.getElementById('u12');
 gv_vAlignTable['u12'] = 'top';
 var u41 = document.getElementById('u41');
 
-var u53 = document.getElementById('u53');
-gv_vAlignTable['u53'] = 'top';
-var u57 = document.getElementById('u57');
-gv_vAlignTable['u57'] = 'top';
 var u21 = document.getElementById('u21');
 
 var u37 = document.getElementById('u37');
@@ -115,14 +101,12 @@ var u37 = document.getElementById('u37');
 var u7 = document.getElementById('u7');
 
 var u40 = document.getElementById('u40');
-gv_vAlignTable['u40'] = 'top';
+
 var u17 = document.getElementById('u17');
 
 var u5 = document.getElementById('u5');
 
 var u15 = document.getElementById('u15');
-
-var u56 = document.getElementById('u56');
 
 var u3 = document.getElementById('u3');
 gv_vAlignTable['u3'] = 'top';
@@ -135,7 +119,7 @@ var u43 = document.getElementById('u43');
 var u16 = document.getElementById('u16');
 gv_vAlignTable['u16'] = 'top';
 var u39 = document.getElementById('u39');
-
+gv_vAlignTable['u39'] = 'top';
 var u19 = document.getElementById('u19');
 
 var u9 = document.getElementById('u9');
@@ -146,8 +130,6 @@ var u24 = document.getElementById('u24');
 gv_vAlignTable['u24'] = 'top';
 var u46 = document.getElementById('u46');
 gv_vAlignTable['u46'] = 'top';
-var u55 = document.getElementById('u55');
-gv_vAlignTable['u55'] = 'top';
 var u38 = document.getElementById('u38');
 gv_vAlignTable['u38'] = 'top';
 var u18 = document.getElementById('u18');

@@ -45,11 +45,11 @@ function OnLoad() {
 var u10 = document.getElementById('u10');
 
 var u5 = document.getElementById('u5');
-
+gv_vAlignTable['u5'] = 'top';
 var u0 = document.getElementById('u0');
 
 var u3 = document.getElementById('u3');
-gv_vAlignTable['u3'] = 'top';
+
 var u9 = document.getElementById('u9');
 
 var u6 = document.getElementById('u6');
