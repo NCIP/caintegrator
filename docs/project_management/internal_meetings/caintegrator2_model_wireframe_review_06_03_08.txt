@@ -6,3 +6,7 @@
 6.	Using annotation from caBIO will be evaluated. 
 7.	‘Field Definition’ pages will be changed so that the field definitions are shown as rows for better UI. 
 8.	A help feature (documentation or other means) will be provided so that Study Manager can get details of other systems (URL, UserID, Password, Port etc) 
+9. 	Remove 'File Has Header Line' option.  It always has a header line.
+10. 	For the pages that assign field types/names to file input, show the header line from the file with each column. 
+11. 	Need to be able to only load a subset of samples for a caArray experiment.  Do this by only mapping some data files to samples.
+
