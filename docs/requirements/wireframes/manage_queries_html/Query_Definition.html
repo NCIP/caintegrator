@@ -1,0 +1,246 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:83px; top:163px; width:738px; height:468px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:746px; height:476px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Query_Definition_files/u0.png',sizingMethod='scale');
+"><img style="width:746px; height:476px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Query_Definition_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:83px; top:163px; width:738px; height:468px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:225.5px; width:733px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:83px; top:163px; width:737px; height:467px"  >
+
+<DIV id=ou2 style="position:absolute; left:109px; top:341px; width:682px; height:216px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:690px; height:224px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Query_Definition_files/u2.png',sizingMethod='scale');
+"><img style="width:690px; height:224px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Query_Definition_files/u2.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u2container style="position:absolute; left:109px; top:341px; width:682px; height:216px;; overflow:visible;">
+
+<DIV id=u3 style="position:absolute; left:2px; top:99.5px; width:677px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:109px; top:341px; width:681px; height:215px"  >
+
+<DIV id=u4 style="position:absolute; left:365px; top:180px; width:260px; height:24px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" color:#000000; font-size:21px;">Query Definition</span></DIV></DIV>
+<DIV id=u5 style="position:absolute; left:335px; top:207px; width:240px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Study: Rembrandt/VASARI Integration</span></DIV></DIV>
+<DIV id=u6container style="position:absolute; left:121px; top:367px; width:30px; height:16px; ; ; text-align: left " >
+<DIV id=u7 style="position:absolute; left:16px; top:0px; width:12px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u7_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">(</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:121px; top:367px; width:30px; height:16px; ; ; text-align: left " ><INPUT id=u6 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u8container style="position:absolute; left:652px; top:366px; width:26px; height:16px; ; ; text-align: left " >
+<DIV id=u9 style="position:absolute; left:16px; top:0px; width:8px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u9_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">)</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:652px; top:366px; width:26px; height:16px; ; ; text-align: left " ><INPUT id=u8 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u10container style="position:absolute; left:684px; top:367px; width:50px; height:16px; ; ; text-align: left " >
+<DIV id=u11 style="position:absolute; left:16px; top:0px; width:32px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">AND</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:684px; top:367px; width:50px; height:16px; ; ; text-align: left " ><INPUT id=u10 name="u10" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=u12container style="position:absolute; left:734px; top:367px; width:57px; height:16px; ; ; text-align: left " >
+<DIV id=u13 style="position:absolute; left:16px; top:0px; width:39px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u13_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">OR</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:734px; top:367px; width:57px; height:16px; ; ; text-align: left " ><INPUT id=u12 name="u12" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<SELECT id=u14  style="position:absolute; left:147px; top:365px; width:140px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Clinical Criteria">Clinical Criteria</OPTION>
+<OPTION  value="Blood Pressure Systolic">Blood Pressure Systolic</OPTION>
+<OPTION  value="Blood Pressure Diastolic">Blood Pressure Diastolic</OPTION>
+<OPTION selected value="Gender">Gender</OPTION>
+<OPTION  value="Race">Race</OPTION>
+</SELECT>
+
+<SELECT id=u15  style="position:absolute; left:417px; top:365px; width:226px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Male">Male</OPTION>
+<OPTION  value="Female">Female</OPTION>
+</SELECT>
+
+<DIV id=u16container style="position:absolute; left:121px; top:399px; width:30px; height:16px; ; ; text-align: left " >
+<DIV id=u17 style="position:absolute; left:16px; top:0px; width:12px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u17_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">(</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:121px; top:399px; width:30px; height:16px; ; ; text-align: left " ><INPUT id=u16 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u18container style="position:absolute; left:652px; top:398px; width:26px; height:16px; ; ; text-align: left " >
+<DIV id=u19 style="position:absolute; left:16px; top:0px; width:8px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u19_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">)</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:652px; top:398px; width:26px; height:16px; ; ; text-align: left " ><INPUT id=u18 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u20container style="position:absolute; left:684px; top:399px; width:50px; height:16px; ; ; text-align: left " >
+<DIV id=u21 style="position:absolute; left:16px; top:0px; width:32px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u21_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">AND</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:684px; top:399px; width:50px; height:16px; ; ; text-align: left " ><INPUT id=u20 name="u20" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=u22container style="position:absolute; left:734px; top:399px; width:57px; height:16px; ; ; text-align: left " >
+<DIV id=u23 style="position:absolute; left:16px; top:0px; width:39px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u23_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">OR</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:734px; top:399px; width:57px; height:16px; ; ; text-align: left " ><INPUT id=u22 name="u22" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<SELECT id=u24  style="position:absolute; left:294px; top:397px; width:116px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="equals">equals</OPTION>
+<OPTION  value="does not equal">does not equal</OPTION>
+<OPTION  value="contains substring">contains substring</OPTION>
+</SELECT>
+
+<INPUT id=u25  type=submit value="Add New Query Criteria" style="position:absolute; left:432px; top:501px; width:259px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<SELECT id=u26  style="position:absolute; left:200px; top:503px; width:220px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="All Criteria">All Criteria</OPTION>
+<OPTION  value="Image Annotation Criteria">Image Annotation Criteria</OPTION>
+<OPTION  value="Clinical Criteria">Clinical Criteria</OPTION>
+<OPTION selected value="Gene Expression Criteria">Gene Expression Criteria</OPTION>
+</SELECT>
+
+<INPUT id=u27  type=text value="Kinases Involved in Large Tumor Formation in Men" style="position:absolute; left:312px; top:237px; width:358px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<DIV id=u28 style="position:absolute; left:233px; top:241px; width:87px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u28_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Query Name</span></DIV></DIV>
+<DIV id=u29container style="position:absolute; left:121px; top:430px; width:30px; height:16px; ; ; text-align: left " >
+<DIV id=u30 style="position:absolute; left:16px; top:0px; width:12px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u30_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">(</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:121px; top:430px; width:30px; height:16px; ; ; text-align: left " ><INPUT id=u29 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u31container style="position:absolute; left:652px; top:429px; width:26px; height:16px; ; ; text-align: left " >
+<DIV id=u32 style="position:absolute; left:16px; top:0px; width:8px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u32_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">)</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:652px; top:429px; width:26px; height:16px; ; ; text-align: left " ><INPUT id=u31 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u33container style="position:absolute; left:684px; top:430px; width:50px; height:16px; ; ; text-align: left " >
+<DIV id=u34 style="position:absolute; left:16px; top:0px; width:32px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u34_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">AND</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:684px; top:430px; width:50px; height:16px; ; ; text-align: left " ><INPUT id=u33 name="u33" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=u35container style="position:absolute; left:734px; top:430px; width:57px; height:16px; ; ; text-align: left " >
+<DIV id=u36 style="position:absolute; left:16px; top:0px; width:39px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u36_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">OR</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:734px; top:430px; width:57px; height:16px; ; ; text-align: left " ><INPUT id=u35 name="u35" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<SELECT id=u37  style="position:absolute; left:147px; top:428px; width:140px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Image Annotation Criteria">Image Annotation Criteria</OPTION>
+<OPTION selected value="Tumor Area">Tumor Area</OPTION>
+<OPTION  value="Tumor Estimated Volume">Tumor Estimated Volume</OPTION>
+<OPTION  value="Tumor Well-differentiated?">Tumor Well-differentiated?</OPTION>
+</SELECT>
+
+<INPUT id=u38  type=text value="Kinase" style="position:absolute; left:417px; top:395px; width:226px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<SELECT id=u39  style="position:absolute; left:294px; top:428px; width:116px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="greater than">greater than</OPTION>
+<OPTION  value="equals">equals</OPTION>
+<OPTION  value="less than">less than</OPTION>
+<OPTION  value="greater than or equal">greater than or equal</OPTION>
+<OPTION  value="less than or equal">less than or equal</OPTION>
+<OPTION  value="does not equal">does not equal</OPTION>
+<OPTION  value="correlates with">correlates with</OPTION>
+</SELECT>
+
+<SELECT id=u40  style="position:absolute; left:294px; top:365px; width:116px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="equals">equals</OPTION>
+<OPTION  value="does not equal">does not equal</OPTION>
+<OPTION  value="contains substring">contains substring</OPTION>
+</SELECT>
+
+<INPUT id=u41  type=text value="400" style="position:absolute; left:417px; top:427px; width:226px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<INPUT id=u42  type=submit value="Continue" style="position:absolute; left:521px; top:578px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u43  type=submit value="Back" style="position:absolute; left:280px; top:578px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u44container style="position:absolute; left:121px; top:460px; width:30px; height:16px; ; ; text-align: left " >
+<DIV id=u45 style="position:absolute; left:16px; top:0px; width:12px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u45_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">(</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:121px; top:460px; width:30px; height:16px; ; ; text-align: left " ><INPUT id=u44 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u46container style="position:absolute; left:652px; top:459px; width:26px; height:16px; ; ; text-align: left " >
+<DIV id=u47 style="position:absolute; left:16px; top:0px; width:8px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u47_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">)</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:652px; top:459px; width:26px; height:16px; ; ; text-align: left " ><INPUT id=u46 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u48container style="position:absolute; left:684px; top:460px; width:50px; height:16px; ; ; text-align: left " >
+<DIV id=u49 style="position:absolute; left:16px; top:0px; width:32px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u49_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">AND</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:684px; top:460px; width:50px; height:16px; ; ; text-align: left " ><INPUT id=u48 name="u48" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=u50container style="position:absolute; left:734px; top:460px; width:57px; height:16px; ; ; text-align: left " >
+<DIV id=u51 style="position:absolute; left:16px; top:0px; width:39px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u51_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">OR</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:734px; top:460px; width:57px; height:16px; ; ; text-align: left " ><INPUT id=u50 name="u50" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<SELECT id=u52  style="position:absolute; left:294px; top:458px; width:116px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="greater than">greater than</OPTION>
+<OPTION  value="equals">equals</OPTION>
+<OPTION  value="less than">less than</OPTION>
+<OPTION  value="greater than or equal">greater than or equal</OPTION>
+<OPTION  value="less than or equal">less than or equal</OPTION>
+<OPTION  value="does not equal">does not equal</OPTION>
+<OPTION selected value="correlates with">correlates with</OPTION>
+</SELECT>
+
+<SELECT id=u53  style="position:absolute; left:147px; top:457px; width:140px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Gene Expression Criteria">Gene Expression Criteria</OPTION>
+<OPTION  value="Mean Overexpression Ratio">Mean Overexpression Ratio</OPTION>
+<OPTION  value="Min Overexpression Ratio">Min Overexpression Ratio</OPTION>
+<OPTION  value="Max Overexpression Ratio">Max Overexpression Ratio</OPTION>
+<OPTION  value="Gene Name">Gene Name</OPTION>
+<OPTION  value="Gene Cellular Role">Gene Cellular Role</OPTION>
+<OPTION  value="Gene Functional Role">Gene Functional Role</OPTION>
+<OPTION selected value="Expression Level">Expression Level</OPTION>
+</SELECT>
+
+<SELECT id=u54  style="position:absolute; left:148px; top:397px; width:140px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Gene Expression Criteria">Gene Expression Criteria</OPTION>
+<OPTION  value="Mean Overexpression Ratio">Mean Overexpression Ratio</OPTION>
+<OPTION  value="Min Overexpression Ratio">Min Overexpression Ratio</OPTION>
+<OPTION  value="Max Overexpression Ratio">Max Overexpression Ratio</OPTION>
+<OPTION selected value="Gene Name">Gene Name</OPTION>
+<OPTION  value="Gene Cellular Role">Gene Cellular Role</OPTION>
+<OPTION  value="Gene Functional Role">Gene Functional Role</OPTION>
+<OPTION  value="Expression Level">Expression Level</OPTION>
+</SELECT>
+
+<SELECT id=u55  style="position:absolute; left:417px; top:458px; width:226px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Tumor Area">Tumor Area</OPTION>
+<OPTION  value="Tumor Volume">Tumor Volume</OPTION>
+<OPTION  value="Expression Level">Expression Level</OPTION>
+<OPTION  value="Age">Age</OPTION>
+</SELECT>
+
+<TEXTAREA id=u56  style="position:absolute; left:312px; top:267px; width:358px; height:63px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"  >This query will help to explore the hypothesis that some kinases play a role in formation of large tumors in the male population</TEXTAREA>
+
+<DIV id=u57 style="position:absolute; left:201px; top:288px; width:110px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u57_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Query Description</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Query_Definition_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

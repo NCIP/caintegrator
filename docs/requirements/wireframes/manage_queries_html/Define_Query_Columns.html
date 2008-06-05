@@ -1,0 +1,189 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:61px; top:157px; width:791px; height:352px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:799px; height:360px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Query_Columns_files/u0.png',sizingMethod='scale');
+"><img style="width:799px; height:360px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Query_Columns_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:61px; top:157px; width:791px; height:352px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:167.5px; width:786px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:61px; top:157px; width:790px; height:351px"  >
+
+<DIV id=u2 style="position:absolute; left:341px; top:180px; width:358px; height:24px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u2_rtf><span style=" color:#000000; font-size:21px;">Define Query Columns</span></DIV></DIV>
+<DIV id=u3 style="position:absolute; left:335px; top:207px; width:240px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Study: Rembrandt/VASARI Integration</span></DIV></DIV>
+<INPUT id=u4  type=submit value="Continue" style="position:absolute; left:513px; top:452px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u5  type=submit value="Back" style="position:absolute; left:283px; top:452px; width:90px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u6 style="position:absolute; left:282px; top:226px; width:350px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u6_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Query: Kinases Involved in Large Tumor Formation in Men</span></DIV></DIV>
+<SELECT id=u7  size=2  style="position:absolute; left:88px; top:275px; width:175px; height:100px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u8container style="position:absolute; left:93px; top:280px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u9 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u9_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Age</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:93px; top:280px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u8 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u10container style="position:absolute; left:93px; top:300px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u11 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Height</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:93px; top:300px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u10 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u12container style="position:absolute; left:93px; top:319px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u13 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u13_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Weight</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:93px; top:319px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u12 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u14container style="position:absolute; left:93px; top:337px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u15 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u15_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Pulse Rate</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:93px; top:337px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u14 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u16container style="position:absolute; left:93px; top:355px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u17 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u17_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Karnofsky Score</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:93px; top:355px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u16 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u18 style="position:absolute; left:114px; top:256px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u18_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Subject Anntotations</span></DIV></DIV>
+<SELECT id=u19  size=2  style="position:absolute; left:274px; top:275px; width:175px; height:100px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u20container style="position:absolute; left:279px; top:280px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u21 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u21_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Sample Type</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:279px; top:280px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u20 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u22container style="position:absolute; left:279px; top:300px; width:146px; height:16px; ; ; text-align: left " >
+<DIV id=u23 style="position:absolute; left:16px; top:0px; width:128px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u23_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Collection Protocol</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:279px; top:300px; width:146px; height:16px; ; ; text-align: left " ><INPUT id=u22 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u24container style="position:absolute; left:279px; top:319px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u25 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u25_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Sample Name</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:279px; top:319px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u24 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u26container style="position:absolute; left:279px; top:337px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u27 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u27_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Location</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:279px; top:337px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u26 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u28container style="position:absolute; left:279px; top:355px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u29 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u29_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Owner</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:279px; top:355px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u28 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u30 style="position:absolute; left:300px; top:256px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u30_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Sample Anntotations</span></DIV></DIV>
+<SELECT id=u31  size=2  style="position:absolute; left:460px; top:275px; width:175px; height:100px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u32container style="position:absolute; left:465px; top:280px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u33 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u33_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Sample Type</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:465px; top:280px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u32 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u34container style="position:absolute; left:465px; top:300px; width:146px; height:16px; ; ; text-align: left " >
+<DIV id=u35 style="position:absolute; left:16px; top:0px; width:128px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u35_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Collection Protocol</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:465px; top:300px; width:146px; height:16px; ; ; text-align: left " ><INPUT id=u34 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u36container style="position:absolute; left:465px; top:319px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u37 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u37_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Sample Name</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:465px; top:319px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u36 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u38container style="position:absolute; left:465px; top:337px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u39 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u39_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Location</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:465px; top:337px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u38 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u40container style="position:absolute; left:465px; top:355px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u41 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u41_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Owner</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:465px; top:355px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u40 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u42 style="position:absolute; left:486px; top:256px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u42_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Image Annotations</span></DIV></DIV>
+<SELECT id=u43  size=2  style="position:absolute; left:643px; top:275px; width:175px; height:100px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u44container style="position:absolute; left:648px; top:280px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u45 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u45_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Gene Name</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:648px; top:280px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u44 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u46container style="position:absolute; left:648px; top:300px; width:146px; height:16px; ; ; text-align: left " >
+<DIV id=u47 style="position:absolute; left:16px; top:0px; width:128px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u47_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Gene Symbol</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:648px; top:300px; width:146px; height:16px; ; ; text-align: left " ><INPUT id=u46 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u48container style="position:absolute; left:648px; top:319px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u49 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u49_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Functional Role</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:648px; top:319px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u48 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u50container style="position:absolute; left:648px; top:337px; width:121px; height:16px; ; ; text-align: left " >
+<DIV id=u51 style="position:absolute; left:16px; top:0px; width:103px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u51_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Cellular Process</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:648px; top:337px; width:121px; height:16px; ; ; text-align: left " ><INPUT id=u50 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u52container style="position:absolute; left:648px; top:355px; width:137px; height:16px; ; ; text-align: left " >
+<DIV id=u53 style="position:absolute; left:16px; top:0px; width:119px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u53_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Subcellular Location</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:648px; top:355px; width:137px; height:16px; ; ; text-align: left " ><INPUT id=u52 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u54 style="position:absolute; left:669px; top:256px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u54_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Gene Annotations</span></DIV></DIV>
+<INPUT id=u55  type=submit value="All" style="position:absolute; left:122px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u56  type=submit value="All" style="position:absolute; left:306px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u57  type=submit value="All" style="position:absolute; left:494px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u58  type=submit value="None" style="position:absolute; left:552px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u59  type=submit value="All" style="position:absolute; left:676px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u60  type=submit value="None" style="position:absolute; left:734px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u61 style="position:absolute; left:324px; top:409px; width:400px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u61_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Select columns to include in the query results</span></DIV></DIV>
+<INPUT id=u62  type=submit value="None" style="position:absolute; left:364px; top:381px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u63  type=submit value="None" style="position:absolute; left:180px; top:380px; width:50px; height:15px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Define_Query_Columns_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

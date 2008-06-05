@@ -1,0 +1,102 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><link href="Resources/axurerpprototype.css" type="text/css" rel="stylesheet"></HEAD>
+<BODY>
+<A href=# onclick='parent.CloseSitemap()' style='font-size:8pt'>Close Frames</A><br><br>
+
+<SCRIPT LANGUAGE="JavaScript">
+image1 = new Image();
+image1.src = 'Resources/plus.gif';
+
+function CloseSitemap()
+{
+	parent.URL = parent.mainFrame.URL
+}
+
+function ToggleDiv(node, id)
+{
+	sibling = document.getElementById(id);
+	if (sibling.style.display == 'none')
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/minus.gif";
+			}
+		}
+
+		sibling.style.display = '';
+	}
+	else
+	{
+		if (node.childNodes.length > 0)
+		{
+			if (node.childNodes[0].tagName == "IMG")
+			{
+				node.childNodes[0].src = "Resources/plus.gif";
+			}
+		}
+		sibling.style.display = 'none';
+	}
+}
+
+var currentPage = null;
+
+function highlight(id)
+{
+	if (currentPage != null)
+	{
+		currentPage.style.backgroundColor = '#EEEEFF';
+		currentPage.style.paddingLeft = '0px';
+		currentPage.style.paddingRight = '0px';
+		currentPage.style.border = '0px solid #666666';
+	}
+	
+	currentPage = document.getElementById(id);
+    if (currentPage) {
+	    currentPage.style.backgroundColor = '#DDDDDD';
+	    currentPage.style.paddingLeft = '3px';
+	    currentPage.style.paddingRight = '3px';
+	    currentPage.style.border = '1px solid #666666';
+    }
+}
+
+</SCRIPT>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD nowrap><A onclick="ToggleDiv(this, 'd2fa187be6d184292b12bf5d6f1437369')"><IMG SRC="Resources/minus.gif"></A>&nbsp;&nbsp;<A href="Home.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p2fa187be6d184292b12bf5d6f1437369">Home</SPAN></A><DIV id="d2fa187be6d184292b12bf5d6f1437369">
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Query_Definition.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p9f651d4550904c93aab3782fdcc5de28">Query Definition</SPAN></A><DIV id="td9f651d4550904c93aab3782fdcc5de28">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Test_Query_Results.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="pab5eb68d0f68441d88306b089148bdf4">Test Query Results</SPAN></A><DIV id="tdab5eb68d0f68441d88306b089148bdf4">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Define_Query_Columns.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p173119120b4a425dac276f7a3aa2d7c2">Define Query Columns</SPAN></A><DIV id="td173119120b4a425dac276f7a3aa2d7c2">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD WIDTH="30" nowrap>&nbsp;</TD>
+		<TD nowrap><A href="Define_Query_Sorting.html" target="mainFrame"><IMG class="plusminus" SRC="Resources/page.gif" border=0><SPAN id="p63393aa0d6c443eaa4065ef9a4c29de4">Define Query Sorting</SPAN></A><DIV id="td63393aa0d6c443eaa4065ef9a4c29de4">
+			</DIV>
+		</TD>
+	</TR>
+</TABLE>
+			</DIV>
+		</TD>
+	</TR>
+</TABLE></BODY></HTML>

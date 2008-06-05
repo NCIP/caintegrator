@@ -1,0 +1,397 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:73px; top:130px; width:738px; height:491px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:746px; height:499px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Test_Query_Results_files/u0.png',sizingMethod='scale');
+"><img style="width:746px; height:499px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Test_Query_Results_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:73px; top:130px; width:738px; height:491px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:237px; width:733px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:73px; top:130px; width:737px; height:490px"  >
+
+<SELECT id=u2  size=2  style="position:absolute; left:686px; top:256px; width:26px; height:162px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u3 style="position:absolute; left:354px; top:147px; width:260px; height:24px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" color:#000000; font-size:21px;">Test Query Results</span></DIV></DIV>
+<DIV id=u4 style="position:absolute; left:335px; top:174px; width:240px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Study: Rembrandt/VASARI Integration</span></DIV></DIV>
+<INPUT id=u5  type=submit value="Continue" style="position:absolute; left:500px; top:562px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u6  type=submit value="Back" style="position:absolute; left:280px; top:562px; width:90px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u7 style="position:absolute; left:192px; top:256px; width:505px; height:165px;">
+
+<span style="position:absolute; left:-3px; top:-3px; width:509px; height:169px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Test_Query_Results_files/u7.png',sizingMethod='scale');
+"><img style="width:509px; height:169px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Test_Query_Results_files/u7.png" border="0" alt=""></span>
+
+</DIV>
+
+<DIV id=u7container style="position:absolute; left:192px; top:256px; width:505px; height:165px; overflow:visible">
+
+<DIV id=u8container style="position:absolute; left:0px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u9 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u9_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12345</span></DIV></DIV>
+</DIV>
+<IMG id=u8 src="Resources/transparent.gif" style="position:absolute; left:0px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u10container style="position:absolute; left:100px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u11 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u10 src="Resources/transparent.gif" style="position:absolute; left:100px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u12container style="position:absolute; left:200px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u13 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u13_rtf><span style=" color:#000000; font-size:13px;">450</span></DIV></DIV>
+</DIV>
+<IMG id=u12 src="Resources/transparent.gif" style="position:absolute; left:200px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u14container style="position:absolute; left:300px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u15 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u15_rtf><span style=" color:#000000; font-size:13px;">PTK7</span></DIV></DIV>
+</DIV>
+<IMG id=u14 src="Resources/transparent.gif" style="position:absolute; left:300px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u16container style="position:absolute; left:400px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u17 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u17_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">35000</span></DIV></DIV>
+</DIV>
+<IMG id=u16 src="Resources/transparent.gif" style="position:absolute; left:400px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u18container style="position:absolute; left:0px; top:20px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u19 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u19_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12345</span></DIV></DIV>
+</DIV>
+<IMG id=u18 src="Resources/transparent.gif" style="position:absolute; left:0px; top:20px; width:100px; height:20px"  >
+
+<DIV id=u20container style="position:absolute; left:100px; top:20px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u21 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u21_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u20 src="Resources/transparent.gif" style="position:absolute; left:100px; top:20px; width:100px; height:20px"  >
+
+<DIV id=u22container style="position:absolute; left:200px; top:20px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u23 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u23_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">450</span></DIV></DIV>
+</DIV>
+<IMG id=u22 src="Resources/transparent.gif" style="position:absolute; left:200px; top:20px; width:100px; height:20px"  >
+
+<DIV id=u24container style="position:absolute; left:300px; top:20px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u25 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u25_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">PTK2B</span></DIV></DIV>
+</DIV>
+<IMG id=u24 src="Resources/transparent.gif" style="position:absolute; left:300px; top:20px; width:100px; height:20px"  >
+
+<DIV id=u26container style="position:absolute; left:400px; top:20px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u27 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u27_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">37000</span></DIV></DIV>
+</DIV>
+<IMG id=u26 src="Resources/transparent.gif" style="position:absolute; left:400px; top:20px; width:100px; height:20px"  >
+
+<DIV id=u28container style="position:absolute; left:0px; top:40px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u29 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u29_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12345</span></DIV></DIV>
+</DIV>
+<IMG id=u28 src="Resources/transparent.gif" style="position:absolute; left:0px; top:40px; width:100px; height:20px"  >
+
+<DIV id=u30container style="position:absolute; left:100px; top:40px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u31 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u31_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u30 src="Resources/transparent.gif" style="position:absolute; left:100px; top:40px; width:100px; height:20px"  >
+
+<DIV id=u32container style="position:absolute; left:200px; top:40px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u33 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u33_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">450</span></DIV></DIV>
+</DIV>
+<IMG id=u32 src="Resources/transparent.gif" style="position:absolute; left:200px; top:40px; width:100px; height:20px"  >
+
+<DIV id=u34container style="position:absolute; left:300px; top:40px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u35 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u35_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">PHKB</span></DIV></DIV>
+</DIV>
+<IMG id=u34 src="Resources/transparent.gif" style="position:absolute; left:300px; top:40px; width:100px; height:20px"  >
+
+<DIV id=u36container style="position:absolute; left:400px; top:40px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u37 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u37_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">45000</span></DIV></DIV>
+</DIV>
+<IMG id=u36 src="Resources/transparent.gif" style="position:absolute; left:400px; top:40px; width:100px; height:20px"  >
+
+<DIV id=u38container style="position:absolute; left:0px; top:60px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u39 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u39_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12349</span></DIV></DIV>
+</DIV>
+<IMG id=u38 src="Resources/transparent.gif" style="position:absolute; left:0px; top:60px; width:100px; height:20px"  >
+
+<DIV id=u40container style="position:absolute; left:100px; top:60px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u41 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u41_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u40 src="Resources/transparent.gif" style="position:absolute; left:100px; top:60px; width:100px; height:20px"  >
+
+<DIV id=u42container style="position:absolute; left:200px; top:60px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u43 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u43_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">550</span></DIV></DIV>
+</DIV>
+<IMG id=u42 src="Resources/transparent.gif" style="position:absolute; left:200px; top:60px; width:100px; height:20px"  >
+
+<DIV id=u44container style="position:absolute; left:300px; top:60px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u45 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u45_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">PTK7</span></DIV></DIV>
+</DIV>
+<IMG id=u44 src="Resources/transparent.gif" style="position:absolute; left:300px; top:60px; width:100px; height:20px"  >
+
+<DIV id=u46container style="position:absolute; left:400px; top:60px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u47 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u47_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">37000</span></DIV></DIV>
+</DIV>
+<IMG id=u46 src="Resources/transparent.gif" style="position:absolute; left:400px; top:60px; width:100px; height:20px"  >
+
+<DIV id=u48container style="position:absolute; left:0px; top:80px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u49 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u49_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12349</span></DIV></DIV>
+</DIV>
+<IMG id=u48 src="Resources/transparent.gif" style="position:absolute; left:0px; top:80px; width:100px; height:20px"  >
+
+<DIV id=u50container style="position:absolute; left:100px; top:80px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u51 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u51_rtf><span style=" color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u50 src="Resources/transparent.gif" style="position:absolute; left:100px; top:80px; width:100px; height:20px"  >
+
+<DIV id=u52container style="position:absolute; left:200px; top:80px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u53 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u53_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">550</span></DIV></DIV>
+</DIV>
+<IMG id=u52 src="Resources/transparent.gif" style="position:absolute; left:200px; top:80px; width:100px; height:20px"  >
+
+<DIV id=u54container style="position:absolute; left:300px; top:80px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u55 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u55_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">GK</span></DIV></DIV>
+</DIV>
+<IMG id=u54 src="Resources/transparent.gif" style="position:absolute; left:300px; top:80px; width:100px; height:20px"  >
+
+<DIV id=u56container style="position:absolute; left:400px; top:80px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u57 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u57_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">89000</span></DIV></DIV>
+</DIV>
+<IMG id=u56 src="Resources/transparent.gif" style="position:absolute; left:400px; top:80px; width:100px; height:20px"  >
+
+<DIV id=u58container style="position:absolute; left:0px; top:100px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u59 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u59_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12399</span></DIV></DIV>
+</DIV>
+<IMG id=u58 src="Resources/transparent.gif" style="position:absolute; left:0px; top:100px; width:100px; height:20px"  >
+
+<DIV id=u60container style="position:absolute; left:100px; top:100px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u61 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u61_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u60 src="Resources/transparent.gif" style="position:absolute; left:100px; top:100px; width:100px; height:20px"  >
+
+<DIV id=u62container style="position:absolute; left:200px; top:100px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u63 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u63_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">670</span></DIV></DIV>
+</DIV>
+<IMG id=u62 src="Resources/transparent.gif" style="position:absolute; left:200px; top:100px; width:100px; height:20px"  >
+
+<DIV id=u64container style="position:absolute; left:300px; top:100px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u65 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u65_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">GK</span></DIV></DIV>
+</DIV>
+<IMG id=u64 src="Resources/transparent.gif" style="position:absolute; left:300px; top:100px; width:100px; height:20px"  >
+
+<DIV id=u66container style="position:absolute; left:400px; top:100px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u67 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u67_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">45000</span></DIV></DIV>
+</DIV>
+<IMG id=u66 src="Resources/transparent.gif" style="position:absolute; left:400px; top:100px; width:100px; height:20px"  >
+
+<DIV id=u68container style="position:absolute; left:0px; top:120px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u69 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u69_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12399</span></DIV></DIV>
+</DIV>
+<IMG id=u68 src="Resources/transparent.gif" style="position:absolute; left:0px; top:120px; width:100px; height:20px"  >
+
+<DIV id=u70container style="position:absolute; left:100px; top:120px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u71 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u71_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u70 src="Resources/transparent.gif" style="position:absolute; left:100px; top:120px; width:100px; height:20px"  >
+
+<DIV id=u72container style="position:absolute; left:200px; top:120px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u73 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u73_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">670</span></DIV></DIV>
+</DIV>
+<IMG id=u72 src="Resources/transparent.gif" style="position:absolute; left:200px; top:120px; width:100px; height:20px"  >
+
+<DIV id=u74container style="position:absolute; left:300px; top:120px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u75 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u75_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">PTK7</span></DIV></DIV>
+</DIV>
+<IMG id=u74 src="Resources/transparent.gif" style="position:absolute; left:300px; top:120px; width:100px; height:20px"  >
+
+<DIV id=u76container style="position:absolute; left:400px; top:120px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u77 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u77_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">49000</span></DIV></DIV>
+</DIV>
+<IMG id=u76 src="Resources/transparent.gif" style="position:absolute; left:400px; top:120px; width:100px; height:20px"  >
+
+<DIV id=u78container style="position:absolute; left:0px; top:140px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u79 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u79_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">12399</span></DIV></DIV>
+</DIV>
+<IMG id=u78 src="Resources/transparent.gif" style="position:absolute; left:0px; top:140px; width:100px; height:20px"  >
+
+<DIV id=u80container style="position:absolute; left:100px; top:140px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u81 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u81_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Male</span></DIV></DIV>
+</DIV>
+<IMG id=u80 src="Resources/transparent.gif" style="position:absolute; left:100px; top:140px; width:100px; height:20px"  >
+
+<DIV id=u82container style="position:absolute; left:200px; top:140px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u83 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u83_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">670</span></DIV></DIV>
+</DIV>
+<IMG id=u82 src="Resources/transparent.gif" style="position:absolute; left:200px; top:140px; width:100px; height:20px"  >
+
+<DIV id=u84container style="position:absolute; left:300px; top:140px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u85 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u85_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">CK</span></DIV></DIV>
+</DIV>
+<IMG id=u84 src="Resources/transparent.gif" style="position:absolute; left:300px; top:140px; width:100px; height:20px"  >
+
+<DIV id=u86container style="position:absolute; left:400px; top:140px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u87 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u87_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">56000</span></DIV></DIV>
+</DIV>
+<IMG id=u86 src="Resources/transparent.gif" style="position:absolute; left:400px; top:140px; width:100px; height:20px"  >
+
+</DIV>
+<DIV id=u88 style="position:absolute; left:212px; top:493px; width:497px; height:48px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u88_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">This result shows only select columns.&nbsp; Use these results to verify that the query is running as intended.&nbsp; You will be allowed to define the query columns on the next screen so continue if you need to view all columns to verify the query results.</span></DIV></DIV>
+<DIV id=u89 style="position:absolute; left:192px; top:231px; width:505px; height:25px;">
+
+<span style="position:absolute; left:-3px; top:-3px; width:509px; height:29px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Test_Query_Results_files/u89.png',sizingMethod='scale');
+"><img style="width:509px; height:29px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Test_Query_Results_files/u89.png" border="0" alt=""></span>
+
+</DIV>
+
+<DIV id=u89container style="position:absolute; left:192px; top:231px; width:505px; height:25px; overflow:visible">
+
+<DIV id=u90container style="position:absolute; left:0px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u91 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u91_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Id</span></DIV></DIV>
+</DIV>
+<IMG id=u90 src="Resources/transparent.gif" style="position:absolute; left:0px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u92container style="position:absolute; left:100px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u93 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u93_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Gender</span></DIV></DIV>
+</DIV>
+<IMG id=u92 src="Resources/transparent.gif" style="position:absolute; left:100px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u94container style="position:absolute; left:200px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u95 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u95_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Tumor Size</span></DIV></DIV>
+</DIV>
+<IMG id=u94 src="Resources/transparent.gif" style="position:absolute; left:200px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u96container style="position:absolute; left:300px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u97 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u97_rtf><span style=" color:#000000; font-size:13px;">Gene Symbol</span></DIV></DIV>
+</DIV>
+<IMG id=u96 src="Resources/transparent.gif" style="position:absolute; left:300px; top:0px; width:100px; height:20px"  >
+
+<DIV id=u98container style="position:absolute; left:400px; top:0px; width:101px; height:21px;; overflow:visible;">
+
+<DIV id=u99 style="position:absolute; left:2px; top:2px; width:96px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u99_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Expression</span></DIV></DIV>
+</DIV>
+<IMG id=u98 src="Resources/transparent.gif" style="position:absolute; left:400px; top:0px; width:100px; height:20px"  >
+
+</DIV>
+<DIV id=u100 style="position:absolute; left:346px; top:433px; width:190px; height:48px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u100_rtf><div style="text-align:center"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">1207 Total Rows Returned<br>35 Patients<br>96 Genes</span></div></DIV></DIV>
+<DIV id=u101 style="position:absolute; left:272px; top:193px; width:350px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u101_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Query: Kinases Involved in Large Tumor Formation in Men</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Test_Query_Results_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>
