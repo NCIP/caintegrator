@@ -1,0 +1,6 @@
+1. EA Support - Shine to check with Anand to see if we have any support for EA. DDL generation doesn't work for MySQL. Eric to upgraqde to EA new version.
+2. Eric to send RUP template to Michael
+3. Data for Clinical - Shine to work on this. Add a new task.
+4. Matt - CSS - Shine to work with Matt to CSS/HTML in few days
+5. caDSR - caCORE issues.
+6. Unit test - Eric advised to write unti tests with no dependency to external systsems (like NCIA,caArray)
