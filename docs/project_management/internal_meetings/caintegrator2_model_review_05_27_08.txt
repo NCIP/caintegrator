@@ -1,0 +1,8 @@
+1.	Create a package model 
+2.	Image association for In-Vitro (NCIA is In Vivo)
+3.	Attributes for time-point  - Type (baseline, surgery), Connect it to some vocabulary?
+4.	Need for Study<->TimePoint 
+5.	Change ImageStudy to ImageSeriesAcquisition/Group?
+6.      Add ID of OriginSystem as an attribute
+7.      Array can have multiple Sample
+8.      Support for roll-up based query. Gene Centric View or Position Centric view. 
