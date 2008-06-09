@@ -91,122 +91,88 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * This is what will load data from a delimited text file.
  */
-public class DelimitedTextAnnotationHelper {
+class DelimitedTextAnnotationHelper {
     
-    private static final Logger LOGGER = Logger.getLogger(DelimitedTextAnnotationHelper.class);
     private final File file;
     private List<AnnotationFieldDescriptor> annotationFieldDescriptors;
     private CSVReader reader;
-    private final Map<String, Integer> descriptorPosition;
-    /**
-     * Sets our CSVReader to the file.
-     * @param file - file to read.
-     */
-    public DelimitedTextAnnotationHelper(File file) {
-        descriptorPosition = new HashMap<String, Integer>();
-        annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
+    private String[] currentLineValues;
+    private final Map<String, Integer> descriptorPosition = new HashMap<String, Integer>();
+    
+    DelimitedTextAnnotationHelper(File file) {
         this.file = file;
+        resetReader();
+    }
+
+    private void resetReader() {
         try {
             reader = new CSVReader(new FileReader(file));
         } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+            throw new IllegalStateException("Unexpected failure: unable to reset file", e);
         }
-
     }
-    
-    /**
-     * Validates that the file is properly formed.
-     * @return - ValidationResult of parsed file.
-     */
-    public ValidationResult validateFile() {
+
+
+    ValidationResult validateFile() {
         ValidationResult result = new ValidationResult();
         // Need to through file and validate.
         result.setValid(true);
         return result;
     }
 
-    /**
-     * Loads the descriptors from the file.
-     * @return List of AnnotationFieldDescriptors from the file.
-     */
-    public List<AnnotationFieldDescriptor> getDescriptors() {
-        try {
-            // Create a seperate CSVReader for the annotation descriptors.
-            CSVReader descriptorReader = new CSVReader(new FileReader(file));
-            annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
-            List<String> topLine = Arrays.asList(descriptorReader.readNext());
-            for (String annotation : topLine) {
-                AnnotationFieldDescriptor annotationFieldDesc = new AnnotationFieldDescriptor();
-                annotationFieldDesc.setName(annotation);
-                annotationFieldDescriptors.add(annotationFieldDesc);
-                // Add in to the hashmap our position for later reference.
-                descriptorPosition.put(annotationFieldDesc.getName(), annotationFieldDescriptors.size() - 1);
-            }
-            descriptorReader.close();
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+    List<AnnotationFieldDescriptor> getDescriptors() {
+        if (annotationFieldDescriptors == null) {
+            loadDescriptors();
         }
         return annotationFieldDescriptors;
     }
-    
-    /**
-     * Skips over the column headers and gets to the actual data, assumes that there's
-     * one line of headers and then real data underneath that line.
-     */
-    public void positionAtData() {
-        
-            try {
-                // Make sure our annotationFieldDescriptors have been initialized.
-                if (annotationFieldDescriptors.isEmpty()) {
-                    getDescriptors();
-                }
-                // Create a new csv reader and skip the first line.
-                reader = new CSVReader(new FileReader(file));
-                reader.readNext();
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e.getMessage());
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage());
-            }
-    }
 
     /**
-     * Makes sure our reader has more lines.
-     * @return - The string representation of the line, it will be null if end of file is reached.
+     * @throws IOException
      */
-    public String[] nextDataLine() {
-        String[] myLine;
+    private void loadDescriptors() {
+        resetReader();
+        loadNextLine();
+        annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>(currentLineValues.length);
+        for (int index = 0; index < currentLineValues.length; index++) {
+            AnnotationFieldDescriptor annotationFieldDesc = new AnnotationFieldDescriptor();
+            annotationFieldDesc.setName(currentLineValues[index]);
+            annotationFieldDescriptors.add(annotationFieldDesc);
+            descriptorPosition.put(annotationFieldDesc.getName(), index);
+        }            
+    }
+    
+    void positionAtData() {
+        // Make sure our annotationFieldDescriptors have been initialized.
+        getDescriptors();
+        resetReader();
+        loadNextLine();
+    }
+    
+    void loadNextLine() {
         try {
-            myLine = reader.readNext(); 
-            return myLine;
+            currentLineValues = reader.readNext();            
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-            return null;
+            throw new IllegalStateException("Unexpected failure: unable to read validated file", e);
         }
     }
 
-    /**
-     * Given an AnnotationDescriptor and a Line, we can get the value at that line.
-     * @param descriptor - THe annotation Descriptor.
-     * @param line - the line that we are interested in.
-     * @return The string value for that Annotation Descriptor.
-     */
-    public String getDataValue(AnnotationFieldDescriptor descriptor, String[] line) {
-        return line[descriptorPosition.get(descriptor.getName())];
+    public boolean hasNextDataLine() {
+        loadNextLine();
+        return currentLineValues != null;
+    }
+
+    String getDataValue(AnnotationFieldDescriptor descriptor) {
+        return currentLineValues[descriptorPosition.get(descriptor.getName())];
     }
 
 }

@@ -92,55 +92,34 @@ import java.io.File;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ * Entry point to the StudyManagementService subsystem.
  */
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     
-    private StudyConfiguration configuration;
-    
     /**
-     * Default constructor.
-     */
-    StudyManagementServiceImpl() {
-        configuration = new StudyConfiguration();
-    }
-    
-    /**
-     * Creates a study.
-     * 
-     * @return StudyConfiguration for newly created study.
+     * {@inheritDoc}
      */
     public StudyConfiguration createStudy() {
-        configuration = new StudyConfiguration();
-        Study study = new Study();
-        configuration.setStudy(study);
+        StudyConfiguration configuration = new StudyConfiguration(new Study());
         // Need to save persistent objects when we have a database.
         return configuration;
     }
 
     /**
-     * Updates study.
-     * 
-     * @param studyConfiguration
-     *            study to update.
+     * {@inheritDoc}
      */
     public void update(StudyConfiguration studyConfiguration) {
-        configuration = studyConfiguration;
         // Need to persist to database.
     }
 
     /**
-     * Sets annotation file for use and loads the descriptors.
-     * 
-     * @param annotationFile -
-     *            annotation file to use.
+     * {@inheritDoc}
      */
-    public void setClinicalAnnotation(File annotationFile) {
+    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile) {
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
-            new DelimitedTextClinicalSourceConfiguration(annotationFile, configuration);
-        configuration.setVisibility(Visibility.PUBLIC);
+            new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
         ValidationResult validationResult = clinicalSourceConfig.validate();
 
         if (validationResult.isValid()) {
@@ -153,21 +132,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     }
 
     /**
-     * Loads clinical annotations given a study configuration.
-     * 
-     * @param studyConfiguration -
-     *            study configuration to load.
+     * {@inheritDoc}
      */
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         studyConfiguration.getClinicalConfiguration().loadAnnontation();
-    }
-    
-    /**
-     * Unsure if this is necessary, but I need it to do test cases w/o the database?
-     * @return the configuration
-     */
-    public StudyConfiguration getConfiguration() {
-        return configuration;
     }
 
 
