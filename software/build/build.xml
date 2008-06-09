@@ -323,6 +323,7 @@
     <!-- ******************************************************************* -->
 
     <path id="caintegrator2.full.classpath">
+        <path refid="caintegrator2.war.dependencies.path" />
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
@@ -414,6 +415,27 @@
     
     <target name="deploy:jboss" depends="caintegrator2.war">
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
+    </target>
+
+    <!-- ******************************************************************* -->
+    <!-- ** DOCUMENATION TARGETS                                          ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="javadoc" depends="javadoc:full,javadoc:client" description="Generates javadoc for all source code" />
+
+    <target name="javadoc:full" depends="build:caintegrator2-cacore">
+        <mkdir dir="${site.dir}/docs/api" />
+        <javadoc destdir="${site.dir}/docs/api" classpathref="caintegrator2.full.classpath">
+            <packageset dir="${caintegrator2.war.java.src.dir}" />
+            <packageset dir="${caintegrator2-cacore.output.src.dir}" />
+        </javadoc>
+    </target>
+
+    <target name="javadoc:client" depends="build:caintegrator2-cacore">
+        <mkdir dir="${site.dir}/docs/client-api" />
+        <javadoc destdir="${site.dir}/docs/client-api" classpathref="caintegrator2.full.classpath">
+            <packageset dir="${caintegrator2-cacore.output.src.dir}" />
+        </javadoc>
     </target>
 
 </project>
