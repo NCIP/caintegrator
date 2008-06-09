@@ -109,17 +109,13 @@ public class DelimitedTextAnnotationHelperTest {
      */
     @Before
     public void setUp() throws Exception {
-        File testFile = new File(DelimitedTextAnnotationHelperTest.class.getResource("/csvtestclinical.csv").getFile());
-        annotationHelper = new DelimitedTextAnnotationHelper(testFile);
+        annotationHelper = createHelper("/csvtestclinical.csv");
         setupTestAnnotations();
     }
-
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#DelimitedTextAnnotationHelper(java.io.File)}.
-     */
-    @Test
-    public void testDelimitedTextAnnotationHelper() {
-        assertTrue(true);
+    
+    private DelimitedTextAnnotationHelper createHelper(String filePath) {
+        File testFile = new File(DelimitedTextAnnotationHelperTest.class.getResource(filePath).getFile());
+        return new DelimitedTextAnnotationHelper(testFile);
     }
 
     /**
@@ -128,7 +124,9 @@ public class DelimitedTextAnnotationHelperTest {
     @Test
     public void testValidateFile() {
         assertTrue(annotationHelper.validateFile().isValid());
-        
+        assertTrue(createHelper("/csvtestclinical-no-data.csv").validateFile().isValid());
+        // assertFalse(createHelper("/csvtestclinical-missing-value.csv").validateFile().isValid());
+        // assertFalse(createHelper("/emptyfile.txt").validateFile().isValid());
     }
 
     /**
@@ -149,7 +147,7 @@ public class DelimitedTextAnnotationHelperTest {
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#nextDataLine()}.
+     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#hasNextDataLine()}.
      */
     @Test
     public void testReadingData() {
@@ -157,43 +155,19 @@ public class DelimitedTextAnnotationHelperTest {
         // First position our helper at the data.
         annotationHelper.positionAtData();
         
-        String[] row1 = annotationHelper.nextDataLine();
-        if(row1 != null) {
-            String testId1 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0), row1);
-            assertEquals("100", testId1);
-            
-            String testCol1Row1 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1), row1);
-            assertEquals("1", testCol1Row1);
-            
-            String testCol2Row1 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2), row1);
-            assertEquals("g", testCol2Row1);
-            
-            String testCol3Row1 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3), row1);
-            assertEquals("N", testCol3Row1);
-        } else {
-            fail();
-        }
+        assertTrue(annotationHelper.hasNextDataLine());
+        assertEquals("100", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0)));
+        assertEquals("1", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1)));
+        assertEquals("g", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("N", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3)));
         
-        String[] row2 = annotationHelper.nextDataLine();
-        if(row2 != null) {
-            String testId2 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0), row2);
-            assertEquals("101", testId2);
-            
-            String testCol1Row2 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1), row2);
-            assertEquals("3", testCol1Row2);
-            
-            String testCol2Row2 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2), row2);
-            assertEquals("g", testCol2Row2);
-            
-            String testCol3Row2 = annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3), row2);
-            assertEquals("Y", testCol3Row2);
-        } else {
-            fail();
-        }
+        assertTrue(annotationHelper.hasNextDataLine());
+        assertEquals("101", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0)));
+        assertEquals("3", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1)));
+        assertEquals("g", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("Y", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3)));
         
-        // When we are out of lines, we should get back a null string[].
-        String[] line3 = annotationHelper.nextDataLine();
-        assertNull(line3);
+        assertFalse(annotationHelper.hasNextDataLine());
     }
 
     private void setupTestAnnotations() {

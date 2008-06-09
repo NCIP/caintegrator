@@ -92,68 +92,49 @@ import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import java.io.File;
 
 /**
- * 
+ * Holds configuration information for annotation stored in a CSV text file.
  */
 public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSourceConfiguration {
     
-    private final DelimitedTextAnnotationHelper annotationHelper;
+    private transient DelimitedTextAnnotationHelper annotationHelper;
+    private File annotationFile;
 
-    /**
-     * When creating the source, must have a File and StudyConfiguration.  
-     * @param file - file for the clinical source to use.
-     * @param configuration - StudyConfiguration for the study of interest.
-     */
-    public DelimitedTextClinicalSourceConfiguration(File file, StudyConfiguration configuration) {
+    DelimitedTextClinicalSourceConfiguration() {
+        super();
+    }
+    
+    DelimitedTextClinicalSourceConfiguration(File file, StudyConfiguration configuration) {
         super(configuration);
-        File clinicalFile = file;
-        annotationHelper = new DelimitedTextAnnotationHelper(clinicalFile);
+        setAnnotationFile(file);
     }
 
-    /**
-     * Validates the file.
-     * @return ValidationResult to return.
-     */
-    public ValidationResult validate() {
-        return annotationHelper.validateFile();
+    ValidationResult validate() {
+        return getAnnotationHelper().validateFile();
     }
 
-    /**
-     * Calls the annotationHelper to get the descriptors from the file and 
-     * sets the AnnotationDescriptors list.
-     */
-    public void loadDescriptors() {
-        
-        setAnnotationDescriptors(annotationHelper.getDescriptors());
-
+    void loadDescriptors() {
+        getAnnotationDescriptors().addAll(getAnnotationHelper().getDescriptors());
     }
 
     /**
      * Loads the AnnotationValues from the file and persists.
      */
     public void loadAnnontation() {
-        annotationHelper.positionAtData();
-        String[] currentLine;
-        while ((currentLine = annotationHelper.nextDataLine()) != null) {
-            String idValue = annotationHelper.getDataValue(getIdentifierDescriptor(), currentLine);
-            
+        getAnnotationHelper().positionAtData();
+        while (getAnnotationHelper().hasNextDataLine()) {
             Subject subject = new Subject();
-            subject.setId(Long.valueOf(idValue));
-            
-            StudySubjectAssignment studySubjectAssignemnt = new StudySubjectAssignment();
-            studySubjectAssignemnt.setSubject(subject);
-            // Does this need to know about the study as well as the subject?
-            studySubjectAssignemnt.setStudy(getStudyConfiguration().getStudy());
-            
-            // Need to add in a check to see if the annotationDescriptor is null before looping.
+            StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+            studySubjectAssignment.setSubject(subject);
+            studySubjectAssignment.setStudy(getStudyConfiguration().getStudy());
+            // Uncomment the following after the next generation of 
+            // studySubjectAssignment.setIdentifier(getAnnotationHelper().getDataValue(getIdentifierDescriptor()));
             for (AnnotationFieldDescriptor annotationDescriptor : this.getAnnotationDescriptors()) {
-                // Skip the identifier descriptor
-                if (annotationDescriptor.getName().equals(getIdentifierDescriptor().getName())) {
+                if (annotationDescriptor.equals(getIdentifierDescriptor())) {
                     continue;
                 }
-                String value = annotationHelper.getDataValue(annotationDescriptor, currentLine);
+                String value = getAnnotationHelper().getDataValue(annotationDescriptor);
                 AnnotationValue annotationValue = new AnnotationValue();
                 annotationValue.setValue(value);
-                // Probably need to make sure that the annotationDefinition exists for this mapping somewhere.
                 annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
                 // Here's where I need to persist that annotationValue.
             }
@@ -165,8 +146,31 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
      * @return ClinicalSourceType
      */
     public ClinicalSourceType getType() {
+        return ClinicalSourceType.DELIMITED_TEXT;
+    }
 
-        return null;
+    /**
+     * @return the annotationFile
+     */
+    public File getAnnotationFile() {
+        return annotationFile;
+    }
+
+    /**
+     * @param annotationFile the annotationFile to set
+     */
+    private void setAnnotationFile(File annotationFile) {
+        this.annotationFile = annotationFile;
+    }
+
+    /**
+     * @return the annotationHelper
+     */
+    private DelimitedTextAnnotationHelper getAnnotationHelper() {
+        if (annotationHelper == null) {
+            annotationHelper = new DelimitedTextAnnotationHelper(getAnnotationFile());
+        }
+        return annotationHelper;
     }
 
 }
