@@ -192,7 +192,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/opencsv-1.8.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/opencsv-1.8.jar" sourcepath="/caintegrator2-lib/src/opencsv-1.8-src.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

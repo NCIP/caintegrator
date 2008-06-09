@@ -85,21 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Stores information about the sources of <code>Subject</code> annotation for this <code>Study</code> and provides
+ * functionality to work with the configured sources.
  */
 public abstract class AbstractClinicalSourceConfiguration {
     
-
-    
-    private List<AnnotationFieldDescriptor> annotationDescriptors;
-    
+    private List<AnnotationFieldDescriptor> annotationDescriptors = new ArrayList<AnnotationFieldDescriptor>();
     private AnnotationFieldDescriptor identifierDescriptor;
-    
     private StudyConfiguration studyConfiguration;
 
+    AbstractClinicalSourceConfiguration() {
+        super();
+    }
+
+    AbstractClinicalSourceConfiguration(StudyConfiguration configuration) {
+        studyConfiguration = configuration;
+        configuration.setClinicalConfiguration(this);
+    }
+    
     abstract ValidationResult validate();
 
     abstract void loadDescriptors();
@@ -107,16 +114,6 @@ public abstract class AbstractClinicalSourceConfiguration {
     abstract ClinicalSourceType getType();
 
     abstract void loadAnnontation();
-    
-    /**
-     * Sets our StudyConfiguration object as well as sets the StudyConfiguration's
-     * clinical source to this. 
-     * @param configuration - StudyConfiguration object for the source.
-     */
-    public AbstractClinicalSourceConfiguration(StudyConfiguration configuration) {
-        studyConfiguration = configuration;
-        configuration.setClinicalConfiguration(this);
-    }
 
     /**
      * @return the annotationDescriptors
@@ -128,7 +125,8 @@ public abstract class AbstractClinicalSourceConfiguration {
     /**
      * @param annotationDescriptors the annotationDescriptors to set
      */
-    public void setAnnotationDescriptors(List<AnnotationFieldDescriptor> annotationDescriptors) {
+    @SuppressWarnings({ "PMD.UnusedPrivateMethod", "unused" })
+    private void setAnnotationDescriptors(List<AnnotationFieldDescriptor> annotationDescriptors) {
         this.annotationDescriptors = annotationDescriptors;
     }
 

@@ -107,7 +107,7 @@ public class DelimitedTextClinicalSourceConfigurationTest {
      */
     @Before
     public void setUp() throws Exception {
-        StudyConfiguration studyConfig = new StudyConfiguration();
+        StudyConfiguration studyConfig = new StudyConfiguration(new Study());
         File testFile = new File(DelimitedTextClinicalSourceConfiguration.class.getResource("/csvtestclinical.csv").getFile());
         // Create the identifier descriptor for our test file.
         identifierDescriptor = new AnnotationFieldDescriptor();
@@ -146,9 +146,8 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     @Test
     public void testLoadAnnontation() {
         
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
         studyConfiguration.setClinicalConfiguration(clinicalSourceConfiguration);
-        studyConfiguration.setStudy(new Study());
         
         clinicalSourceConfiguration.setStudyConfiguration(studyConfiguration);
         

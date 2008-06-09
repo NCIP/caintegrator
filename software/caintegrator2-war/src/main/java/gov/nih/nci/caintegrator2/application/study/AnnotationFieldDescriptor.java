@@ -88,7 +88,8 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 /**
- * 
+ * Contains the information about a particular annotation field prior to association to an 
+ * <code>AnnotationDefinition</code>.
  */
 public class AnnotationFieldDescriptor {
     

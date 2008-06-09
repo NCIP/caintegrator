@@ -94,32 +94,32 @@ public interface StudyManagementService {
     
     /**
      * Creates a study.
-     * @return StudyConfiguration for newly created study.
+     * 
+     * @return StudyConfiguration for newly created study
      */
     StudyConfiguration createStudy();
     
     /**
      * Updates study.
-     * @param studyConfiguration study to update.
+     * 
+     * @param studyConfiguration study to update
      */
     void update(StudyConfiguration studyConfiguration);
     
     /**
      * Sets annotation file for use.
-     * @param annotationFile - annotation file to use.
+     * 
+     * @param studyConfiguration add the annotation file to this study
+     * @param annotationFile annotation file to use
      */
-    void setClinicalAnnotation(File annotationFile);
+    void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile);
     
 
     /**
      * Loads clinical annotations given a study configuration.
-     * @param studyConfiguration - study configuration to load.
+     * 
+     * @param studyConfiguration study configuration to load
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
     
-    /**
-     * @return the configuration
-     */
-    StudyConfiguration getConfiguration();
-
 }

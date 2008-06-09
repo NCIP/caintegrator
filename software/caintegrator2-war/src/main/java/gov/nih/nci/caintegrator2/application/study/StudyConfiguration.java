@@ -88,20 +88,26 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
- * 
+ * Holds data about the sources of study data and authorization for access to data.
  */
 public class StudyConfiguration {
+    
     private Visibility visibility;
     private Study study;
     private AbstractClinicalSourceConfiguration clinicalConfiguration;
+    
 
-    /**
-     * 
-     * @param clinicalConfiguration
-     */
+    StudyConfiguration() {
+        super();
+    }
+
+    StudyConfiguration(Study study) {
+        this();
+        setStudy(study);
+    }
+ 
     void setClinicalConfiguration(AbstractClinicalSourceConfiguration clinicalConfiguration) {
         this.clinicalConfiguration = clinicalConfiguration;
-        
     }
 
     /**
@@ -125,10 +131,7 @@ public class StudyConfiguration {
         return study;
     }
 
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
+    private void setStudy(Study study) {
         this.study = study;
     }
 

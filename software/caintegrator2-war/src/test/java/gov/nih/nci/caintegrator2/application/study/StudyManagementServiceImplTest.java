@@ -98,8 +98,8 @@ import org.junit.Test;
  * 
  */
 public class StudyManagementServiceImplTest {
+    
     private StudyManagementService studyManagementService;
-    private StudyConfiguration studyConfiguration;
     private File testFile;
     
     /**
@@ -108,7 +108,6 @@ public class StudyManagementServiceImplTest {
     @Before
     public void setUp() throws Exception {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
-        
         studyManagementService = new StudyManagementServiceImpl();
                 
     }
@@ -118,7 +117,9 @@ public class StudyManagementServiceImplTest {
      */
     @Test
     public void testCreateStudy() {
-        studyConfiguration = studyManagementService.createStudy();
+        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
+        assertNotNull(studyConfiguration);
+        assertNotNull(studyConfiguration.getStudy());
     }
 
     /**
@@ -126,7 +127,7 @@ public class StudyManagementServiceImplTest {
      */
     @Test
     public void testUpdate() {
-        StudyConfiguration configTest = new StudyConfiguration();
+        StudyConfiguration configTest = new StudyConfiguration(new Study());
         studyManagementService.update(configTest);
         assertTrue(true);
     }
@@ -137,12 +138,8 @@ public class StudyManagementServiceImplTest {
     @Test
     public void testSetClinicalAnnotationAndLoadData() {
         // Set Clinical Annotations
-        studyManagementService.setClinicalAnnotation(testFile);
-        
-        // I have to retrieve the studyConfiguration because to call loadClinicalAnnotation
-        // I have to give it a studyConfiguration.  Eventually this should be persisted and
-        // I might not need a getConfiguration() method.
-        studyConfiguration = studyManagementService.getConfiguration();
+        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
+        studyManagementService.setClinicalAnnotation(studyConfiguration, testFile);
         
         
         // Artificially set the clinicalConfiguration.identifierDescriptor
@@ -153,26 +150,6 @@ public class StudyManagementServiceImplTest {
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 
         
         // Now it's impossible to tell if the annotations got loaded because nothing is persisted yet.
-        
-    }
-
-
-    
-    @Test
-    public void testGetSet() {
-        
-        // First we will test that the constructor for clinicalSource sets the studyConfiguration properly.
-        studyConfiguration = new StudyConfiguration();
-        DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration(testFile, studyConfiguration);
-        assertEquals(studyConfiguration, clinicalSource.getStudyConfiguration());
-        assertEquals(studyConfiguration.getClinicalConfiguration(), clinicalSource);
-        
-        
-        studyConfiguration.setStudy(new Study());
-        studyConfiguration.getStudy();
-        
-        studyConfiguration.setVisibility(Visibility.PUBLIC);
-        studyConfiguration.getVisibility();
         
     }
 
