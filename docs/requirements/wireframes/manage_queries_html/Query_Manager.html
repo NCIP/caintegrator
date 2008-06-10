@@ -1,0 +1,80 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:83px; top:190px; width:738px; height:381px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:746px; height:389px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Query_Manager_files/u0.png',sizingMethod='scale');
+"><img style="width:746px; height:389px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Query_Manager_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:83px; top:190px; width:738px; height:381px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:182px; width:733px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:83px; top:190px; width:737px; height:380px"  >
+
+<DIV id=u2 style="position:absolute; left:369px; top:217px; width:260px; height:40px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u2_rtf><span style=" color:#000000; font-size:21px;">Query Manager</span></DIV></DIV>
+<DIV id=u3 style="position:absolute; left:335px; top:244px; width:240px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Study: Rembrandt/VASARI Integration</span></DIV></DIV>
+<SELECT id=u4  size=2  style="position:absolute; left:263px; top:285px; width:417px; height:135px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+</SELECT>
+
+<DIV id=u5 style="position:absolute; left:289px; top:304px; width:370px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" color:#000000; font-size:13px;">Kinases Involved in Large Tumor Formation in Men [Shared]</span></DIV></DIV>
+<DIV id=u6 style="position:absolute; left:289px; top:321px; width:338px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u6_rtf><span style=" color:#000000; font-size:13px;">Fast-Progressing Tumors in Older Women</span></DIV></DIV>
+<DIV id=u7 style="position:absolute; left:286px; top:358px; width:338px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u7_rtf><span style=" color:#000000; font-size:13px;">Genes Correlated with Contract Enhancement</span></DIV></DIV>
+<DIV style="position:absolute; left:286px; top:320px; width:374px; height:20px; ; ; text-align: left ;">
+</DIV>
+<IMG id=u8 src="Resources/transparent.gif" style="position:absolute; left:286px; top:320px; width:374px; height:20px"  >
+
+<INPUT id=u9  type=submit value="Edit" style="position:absolute; left:265px; top:438px; width:50px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u10  type=submit value="Copy" style="position:absolute; left:341px; top:438px; width:50px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u11  type=submit value="Delete" style="position:absolute; left:491px; top:437px; width:50px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u12 style="position:absolute; left:286px; top:374px; width:338px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u12_rtf><span style=" color:#000000; font-size:13px;">Copy of Genes Correlated with Contract Enhancement</span></DIV></DIV>
+<INPUT id=u13  type=submit value="Share/Unshare" style="position:absolute; left:566px; top:437px; width:111px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u14 style="position:absolute; left:271px; top:290px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u14_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">- Tumor Size Queries</span></DIV></DIV>
+<DIV id=u15 style="position:absolute; left:270px; top:341px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u15_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">- Gene Queries</span></DIV></DIV>
+<DIV id=u16 style="position:absolute; left:268px; top:391px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u16_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">+ Image Queries</span></DIV></DIV>
+<INPUT id=u17  type=submit value="New Top-Level Folder" style="position:absolute; left:295px; top:477px; width:160px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u18  type=submit value="New Child Folder" style="position:absolute; left:491px; top:477px; width:160px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u19  type=submit value="Move" style="position:absolute; left:417px; top:437px; width:50px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Query_Manager_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

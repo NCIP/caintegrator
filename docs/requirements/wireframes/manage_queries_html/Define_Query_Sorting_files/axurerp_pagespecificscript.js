@@ -110,6 +110,8 @@ var u61 = document.getElementById('u61');
 
 var u103 = document.getElementById('u103');
 gv_vAlignTable['u103'] = 'top';
+var u107 = document.getElementById('u107');
+
 var u84 = document.getElementById('u84');
 gv_vAlignTable['u84'] = 'top';
 var u52 = document.getElementById('u52');
@@ -204,6 +206,8 @@ var u56 = document.getElementById('u56');
 gv_vAlignTable['u56'] = 'top';
 var u95 = document.getElementById('u95');
 gv_vAlignTable['u95'] = 'top';
+var u108 = document.getElementById('u108');
+gv_vAlignTable['u108'] = 'top';
 var u54 = document.getElementById('u54');
 gv_vAlignTable['u54'] = 'top';
 var u7 = document.getElementById('u7');
