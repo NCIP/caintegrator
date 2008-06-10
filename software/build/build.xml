@@ -73,7 +73,7 @@
         <property name="lib.dir" location="${build.lib.dir}" />
     </ant>
 
-    <import file="${bda-utils.dir}/bda-build-utils-1.0.xml" />
+    <import file="${bda-utils.dir}/bda-build-utils-0.1.xml" />
 
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
 
