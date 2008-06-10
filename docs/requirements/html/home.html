@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<title>caIntegrator2 - Home</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<link rel="address bar icon" href="favicon.ico" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="common/caintegrator2.css" />
+		<script type="text/javascript" src="common/js/pde.js"></script>
+	</head>
+	
+	<body>
+		
+		<a href="#content" id="navskip">Skip to Page Content</a>
+		
+		<div id="wrapper" class="curate">
+			
+			<!--NCI/NIH Header-->
+			
+			<div id="nciheader">		
+				
+				<div id="ncilogo"><a href="http://www.cancer.gov"><img src="images/logotype.gif" width="283" height="37" alt="Logo: National Cancer Institute" /></a></div>	
+				<div id="nihtag"><a href="http://www.cancer.gov"><img src="images/tagline.gif" width="295" height="37" alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a></div>
+				
+			</div>
+			
+			<!--/NCI/NIH Header-->
+			
+			<!--PO-Curate Header-->			
+			
+			<div id="appheader">
+			
+				<div id="mainlogo"><a href="home.html"><img src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a></div>
+				
+				
+				<div id="userarea_wrapper">
+				
+					<div id="user">Welcome, <a href="account.html">username</a>  |  <a href="logout.html">Logout</a></div>
+					
+					<div id="mystudies">
+						<label for="studynav">My Studies:</label>
+						<select name="studynav" id="studynav">
+							<option>VASARI</option>
+							<option>Other studies</option>
+						</select>
+					</div>
+				
+				</div>
+				
+				
+			</div>
+			
+			<!--/PO-Curate Header-->		
+		
+			<!--Work Area-->
+				
+			<div id="main">				
+				
+				<div id="contentwrapper">
+				
+					<!--Content-->
+					
+					<div id="content">						
+						
+						<!--Page Help-->
+						
+						<div class="pagehelp"><a href="#" class="help"></a></div>
+						
+						<!--/Page Help-->			
+						
+						<!--ADD CONTENT HERE-->
+						
+						<h1>Welcome to <strong>VASARI</strong> Powered by caIntegrator2</h1>
+						
+						<div class="box">
+							<h2>About VASARI</h2>
+							<p>
+								<strong>Description:</strong> <strong>V</strong>isually <strong>A</strong>ssembled <strong>A</strong>ccess to <strong>R</strong>embrandt <strong>I</strong>mages
+								(<strong>VASARI</strong>) seeks to integrate neuroimaging analysis with clinical genomic data from the Rembrandt collection. The Rembrandt (REpository of Molecular BRAin Neoplasia Data) database contains images and tumor specimen information, including SNP array,
+								expression array, proteomics, and clinical data . 
+							</p>
+						</div>
+						
+						<div class="box">
+						
+							<h2 class="darker">Search VASARI</h2>
+							
+							<!--Global Search-->
+							
+							<div class="bigsearch_wrapper">
+							
+								<div class="bigsearch">
+								
+									<label for="searcharea">Search</label>
+									
+									<select name="searcharea" id="searcharea">
+										<option>All Study Data</option>
+										<option>Subjects</option>
+										<option>Samples</option>
+										<option>Array Data</option>
+										<option>Images</option>
+									</select>
+									
+									<input type="text" name="keyword" id="keyword" size="40" title="Keyword" value="&#40;Keyword&#41;" onfocus = "if (this.value == '&#40;Keyword&#41;') this.value='';"  />
+									
+									<input type="submit" value="Search" />
+									
+								</div>
+								
+							</div>
+							
+							<!--/Global Search-->
+							
+						</div>
+						
+						<div class="box">
+							<h2>How to Use This Site</h2>
+							<p>
+								Explore this caIntegrator2-powered study by clicking on the navigational links on left side of the page. 
+							</p>
+							<ul>
+								<li><strong>Study Elements</strong> contains browsable lists of the primary components of the study. </li>
+								<li><strong>Study Data</strong> contains global, shared and user-saved Queries and Data Lists.</li>
+								<li><strong>Analysis Tools</strong> provides advanced analysis tools as well as integration with external analysis packages. For more information read the <a href="#">Tutorial</a> and <a href="#">User Guide</a>.</li>
+							</ul>
+						</div>
+						
+						<!--/ADD CONTENT HERE-->
+						
+					</div>
+							
+					<div class="clear"><br /></div>
+					
+				</div>
+				
+				<!--/Content-->
+				
+				<!--Left Navigation Column-->
+				
+				<div id="leftnav">
+					
+					<!--Study Logo-->
+					
+					<div id="study_logo"><img src="images/logo_sample_study.gif" alt="Study Logo" /></div>
+					
+					<!--/Study Logo-->
+					
+					<!--Menu-->
+					
+					<ul class="menu">
+						<li class="stdnav"><div>VASARI</div>
+							<ul>
+								<li><a href="home.html" class="selected">Homepage</a></li>
+								<li class="stdnav"><a href="search.html">Advanced Search</a></li>
+							</ul>
+						</li>
+						<li class="stdnav"><div>Study Elements</div>
+							<ul>
+								<li><a href="study_elements/subjects.html">Subjects</a></li>
+								<li><a href="study_elements/samples.html">Samples</a></li>
+								<li><a href="study_elements/array_data.html">Array Data</a></li>
+								<li><a href="study_elements/images.html">Images</a></li>
+							</ul>
+						</li>
+						
+						<!--Tree Control-->
+						
+						<li class="treenav"><div>Study Data</div>
+							<ul class="pde">
+								<li><a href="#">Queries</a>
+									<ul>
+										<li><a href="#">Global Queries</a>
+											<ul>
+												<li><a href="#" class="queries">Sample Global Query A</a></li>
+												<li><a href="#" class="queries">Sample Global Query B</a></li>
+												<li><a href="#" class="queries">Sample Global Query C</a></li>
+											</ul>
+										</li>
+										<li><a href="#">Shared Queries</a>
+											<ul>
+												<li><a href="#" class="queries">Sample Shared Query A</a></li>
+												<li><a href="#" class="queries">Sample Shared Query B</a></li>
+												<li><a href="#" class="queries">Sample Shared Query C</a></li>
+											</ul>
+										</li>
+										<li><a href="#">My Queries</a>
+											<ul>
+												<li><a href="#" class="queries">My Sample Query A</a></li>
+												<li><a href="#" class="queries">My Sample Query B</a></li>
+												<li><a href="#" class="queries">My Sample Query C</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="#">Data Lists</a>
+									<ul>
+										<li><a href="#">Global Data Lists</a>
+											<ul>
+												<li><a href="#" class="lists">Sample Global Data List A</a></li>
+												<li><a href="#" class="lists">Sample Global Data List B</a></li>
+												<li><a href="#" class="lists">Sample Global Data List C</a></li>
+											</ul>
+										</li>
+										<li><a href="#">Shared Data Lists</a>
+											<ul>
+												<li><a href="#" class="lists">Sample Shared Data List A</a></li>
+												<li><a href="#" class="lists">Sample Shared Data List B</a></li>
+												<li><a href="#" class="lists">Sample Shared Data List C</a></li>
+											</ul>
+										</li>
+										<li><a href="#">My Data Lists</a>
+											<ul>
+												<li><a href="#" class="lists">My Sample Data List A</a></li>
+												<li><a href="#" class="lists">My Sample Data List B</a></li>
+												<li><a href="#" class="lists">My Sample Data List C</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						
+						<!--/Tree Control-->
+						
+						<li class="stdnav"><div>Analysis Tools</div>
+							<ul>
+								<li><a href="analysis_tools/generate_km_plot.html">Generate KM Plot</a></li>
+								<li><a href="analysis_tools/generate_heat_map.html">Generate Heat Map</a></li>
+								<li><a href="analysis_tools/genepattern_analysis.html">GenePattern Analysis</a></li>
+							</ul>
+						</li>
+						<li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
+							<ul>
+								<li><a href="#">Deploy New Study</a></li>
+								<li><a href="#">Support</a></li>
+								<li><a href="#">Tutorials</a></li>
+								<li><a href="#">User Guide</a></li>
+							</ul>
+						</li>
+					</ul>
+					
+					<!--/Menu-->
+								
+				</div>
+								
+				<!--/Left Navigation Column-->
+				
+			</div>			
+			
+			<!--/Work Area-->		
+		
+			<!--Footer-->
+			
+			<div id="footerwrapper">
+				
+				<div id="footernav">
+				
+					<div id="footer">
+					
+						<a href="contact.htm">CONTACT US</a>
+						<a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
+						<a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
+						<a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
+						<a href="help.htm" class="last">SUPPORT</a>	
+					
+					</div>
+					
+				</div>
+	
+				<div id="partnerlogos">				
+					<a href="http://www.cancer.gov"><img src="images/footer_nci.gif" width="63" height="31" alt="Logo: National Cancer Institute" /></a>
+					<a href="http://www.dhhs.gov"><img src="images/footer_hhs.gif" width="39" height="31" alt="Logo: Department of Health and Human Services" /></a>
+					<a href="http://www.nih.gov"><img src="images/footer_nih.gif" width="46" height="31" alt="Logo: National Institutes of Health" /></a>
+					<a href="http://www.usa.gov"><img src="images/footer_usagov.gif" width="91" height="31" alt="Logo: USA.gov" /></a>
+				</div>
+	
+			</div>
+			
+			<!--/Footer-->
+		
+		</div>
+			
+	</body>
+	
+</html>
