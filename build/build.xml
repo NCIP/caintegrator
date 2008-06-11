@@ -201,6 +201,14 @@
         <pathelement location="${lib.dir}/netcdf-2.2.22.jar" />
         <pathelement location="${lib.dir}/log4j-1.2.9.jar" />
         <pathelement location="${lib.dir}/opencsv-1.8.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/caarray-client.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/caGrid-1.1-data-stubs.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/commons-collections-3.2.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/ejb3-persistence.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/hibernate-annotations.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/jbossall-client.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/jboss-ejb3x.jar" />
+        <pathelement location="${lib.dir}/caarray-lib/nci-commons-core-1.0.9.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/xwork-2.0-beta-1.jar" />
     </path>
