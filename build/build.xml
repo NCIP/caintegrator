@@ -14,6 +14,7 @@
     <property name="software.dir" location="${root.dir}/software" />
     <property name="build.dir" location="${software.dir}/build" />
     <property name="lib.dir" location="${software.dir}/lib" />
+    <property name="ncia.lib.dir" location="${lib.dir}/ncia-lib" />
     <property name="build.lib.dir" location="${build.dir}/lib" />
     <property name="resource.dir" location="${build.dir}/resources" />
     <property name="target.dir" location="${build.dir}/target" />
@@ -209,6 +210,44 @@
         <pathelement location="${lib.dir}/caarray-lib/jbossall-client.jar" />
         <pathelement location="${lib.dir}/caarray-lib/jboss-ejb3x.jar" />
         <pathelement location="${lib.dir}/caarray-lib/nci-commons-core-1.0.9.jar" />
+        <pathelement location="${lib.dir}/freestylesearch.jar" />
+        <pathelement location="${lib.dir}/caDSR-beans.jar" />
+        <pathelement location="${ncia.lib.dir}/activation.jar" />
+        <pathelement location="${ncia.lib.dir}/addressing-1.0.jar" />
+        <pathelement location="${ncia.lib.dir}/axis.jar" />
+        <pathelement location="${ncia.lib.dir}/bcprov-jdk15-138.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-core-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/data-common-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-dataExtensions-style-cacore32-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-data-stubs-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-data-utils-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-metadata-common-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-metadata-security-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-client-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-common-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-stubs-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-Transfer-client-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/caGrid-Transfer-stubs-1.2.jar" />
+        <pathelement location="${ncia.lib.dir}/castor-1.0.2.jar" />
+        <pathelement location="${ncia.lib.dir}/cog-axis.jar" />
+        <pathelement location="${ncia.lib.dir}/cog-jglobus.jar" />
+        <pathelement location="${ncia.lib.dir}/commons-discovery.jar" />
+        <pathelement location="${ncia.lib.dir}/concurrent.jar" />
+        <pathelement location="${ncia.lib.dir}/mai.jar" />
+        <pathelement location="${ncia.lib.dir}/ncia-client.jar" />
+        <pathelement location="${ncia.lib.dir}/NCIACoreService-client.jar" />
+        <pathelement location="${ncia.lib.dir}/NCIACoreService-common.jar" />
+        <pathelement location="${ncia.lib.dir}/NCIACoreService-stubs.jar" />
+        <pathelement location="${ncia.lib.dir}/wsdl4j-1.5.1.jar" />
+        <pathelement location="${ncia.lib.dir}/wsrf_core_stubs_enum.jar" />
+        <pathelement location="${ncia.lib.dir}/wsrf_core.jar" />
+        <pathelement location="${ncia.lib.dir}/wss4j.jar" />
+        <pathelement location="${ncia.lib.dir}/xalan.jar" />
+        <pathelement location="${ncia.lib.dir}/xercesImpl.jar" />
+        <pathelement location="${ncia.lib.dir}/xmlsec.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/wsdl4j-1.5.1.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/xwork-2.0-beta-1.jar" />
     </path>
@@ -216,6 +255,9 @@
     <path id="caintegrator2.war.test.dependencies.path">
         <path refid="caintegrator2.war.dependencies.path" />
         <path refid="test.dependencies.path" />
+        <pathelement location="${ncia.lib.dir}/NCIACoreService-client.jar" />
+         <pathelement location="${ncia.lib.dir}/NCIACoreService-common.jar" />
+         <pathelement location="${ncia.lib.dir}/NCIACoreService-stubs.jar" />
         <pathelement location="${caintegrator2.war.test.classes.dir}" />
         <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
@@ -241,6 +283,7 @@
                 <exclude name="servlet.jar"/>
                 <exclude name="commons-logging*.*"/>
                 <exclude name="xercesImpl*.*"/>
+                <exclude name="axis.jar"/>
             </lib>
             <lib dir="${lib.dir}">
                 <include name="commons-logging-1.0.4.jar" />
@@ -248,7 +291,10 @@
                 <include name="netcdf-2.2.22.jar" />
                 <include name="mysql-connector-java-5.0.5-bin.jar" />
                 <include name="opencsv-1.8.jar" />
+                <include name="freestylesearch.jar"/>
+                <include name="caDSR-beans.jar"/>
             </lib>
+            <lib dir="${ncia.lib.dir}" includes ="*.jar"/>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
             </classes>
@@ -335,6 +381,8 @@
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
+        <!-- axis.jar is included for the MalformedURIException for Checkstyle -->
+        <pathelement location="${ncia.lib.dir}/axis.jar" />
     </path>
 
     <!-- ******************************************************************* -->
@@ -371,7 +419,7 @@
     </target>
 
     <target name="test:cobertura-check">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="55" totallinerate="65" />
     </target>
 
     <!-- ******************************************************************* -->
