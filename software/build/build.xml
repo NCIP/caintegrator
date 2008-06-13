@@ -282,18 +282,20 @@
                 <exclude name="servlet.jar"/>
                 <exclude name="commons-logging*.*"/>
                 <exclude name="xercesImpl*.*"/>
-                <!-- exclude name="axis.jar"/ -->
             </lib>
             <lib dir="${lib.dir}">
-                <include name="commons-logging-1.0.4.jar" />
-                <include name="log4j-1.2.9.jar" />
                 <include name="netcdf-2.2.22.jar" />
                 <include name="mysql-connector-java-5.0.5-bin.jar" />
                 <include name="opencsv-1.8.jar" />
                 <include name="freestylesearch.jar"/>
                 <include name="caDSR-beans.jar"/>
             </lib>
-            <!-- lib dir="${ncia.lib.dir}" includes ="*.jar"/ -->
+            <lib dir="${ncia.lib.dir}">
+                <include name="NCIACoreService-client.jar" />
+                <include name="NCIACoreService-common.jar" />
+                <include name="NCIACoreService-stubs.jar" />
+                <!-- <include name="ncia-client.jar" /> -->
+           </lib>
             <lib dir="${lib.dir}/caarray-lib">
                 <include name="caarray-client.jar" />
                 <include name="nci-commons-core-1.0.9.jar" />
