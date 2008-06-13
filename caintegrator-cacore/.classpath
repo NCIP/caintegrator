@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="codegen/dist/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="codegen/dist/mmbase.jar"/>
 	<classpathentry kind="lib" path="codegen/dist/sdk-codegen.jar"/>
-	<classpathentry kind="lib" path="codegen/dist/spring.jar"/>
+	<classpathentry kind="lib" path="codegen/dist/spring.jar" sourcepath="/caintegrator2-lib/src/spring-src.zip"/>
 	<classpathentry kind="lib" path="codegen/dist/xmi.in.out.jar"/>
 	<classpathentry kind="lib" path="codegen/templates/lib/eclipse-codegen.jar"/>
 	<classpathentry kind="lib" path="codegen/templates/lib/eclipse-emf-common.jar"/>
