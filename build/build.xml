@@ -234,7 +234,7 @@
         <pathelement location="${ncia.lib.dir}/commons-discovery.jar" />
         <pathelement location="${ncia.lib.dir}/concurrent.jar" />
         <pathelement location="${ncia.lib.dir}/mai.jar" />
-        <pathelement location="${ncia.lib.dir}/ncia-client.jar" />
+        <pathelement location="${ncia.lib.dir}/ncia-client-modified.jar" />
         <pathelement location="${ncia.lib.dir}/NCIACoreService-client.jar" />
         <pathelement location="${ncia.lib.dir}/NCIACoreService-common.jar" />
         <pathelement location="${ncia.lib.dir}/NCIACoreService-stubs.jar" />
@@ -294,7 +294,7 @@
                 <include name="NCIACoreService-client.jar" />
                 <include name="NCIACoreService-common.jar" />
                 <include name="NCIACoreService-stubs.jar" />
-                <!-- <include name="ncia-client.jar" /> -->
+                <include name="ncia-client-modified.jar" />
            </lib>
             <lib dir="${lib.dir}/caarray-lib">
                 <include name="caarray-client.jar" />
