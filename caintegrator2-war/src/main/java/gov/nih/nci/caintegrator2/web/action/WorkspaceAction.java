@@ -83,41 +83,100 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
-import java.util.List;
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.userdetails.UserDetails;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Struts 2 action for user workspace access and management.
+ */
+public class WorkspaceAction {
 
+    private static final long serialVersionUID = 1L;
 
-public class CaArrayFacadeTest {
-
-    private CaArrayFacade caArrayFacade;
+    private static final String WORKSPACE_STUDY = "workspaceStudy";
+    private static final String WORKSPACE_NO_STUDY = "workspaceNoStudy";
     
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTest.class); 
-        caArrayFacade = (CaArrayFacade) context.getBean("CaArrayFacade"); 
+    private WorkspaceService workspaceService;
+    private UserWorkspace workspace;
+    private StudySubscription openStudySubscription;
+
+    /**
+     * Opens the current user's workspace.
+     * 
+     * @return forward to workspace.
+     */
+    public String openWorkspace() {
+        String username = getUsername();
+        workspace = getWorkspaceService().getWorkspace(username);
+        if (workspace.getDefaultSubscription() != null) {
+            setOpenStudySubscription(workspace.getDefaultSubscription());
+            return WORKSPACE_STUDY;
+        } else {
+            return WORKSPACE_NO_STUDY;
+        }
     }
 
-    @Test
-    public void testGetSamples() throws ConnectionException {
-        List<Sample> samples = caArrayFacade.getSamples("samples", null);
-        assertFalse(samples.isEmpty());
-        assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));
-        assertTrue(samples.get(1).getName().equals("sample1") || samples.get(1).getName().equals("sample2"));
-        samples = caArrayFacade.getSamples("no-samples", null);
-        assertTrue(samples.isEmpty());
-        samples = caArrayFacade.getSamples("no-experiment", null);
-        assertTrue(samples.isEmpty()); 
+    private String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        if (authentication != null) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+        }
+        return username;
+    }
+
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
+    }
+
+    /**
+     * @return the workspaceService
+     */
+    public WorkspaceService getWorkspaceService() {
+        return workspaceService;
+    }
+
+    /**
+     * @return the workspace
+     */
+    public UserWorkspace getWorkspace() {
+        return workspace;
+    }
+
+    /**
+     * @param workspace the workspace to set
+     */
+    public void setWorkspace(UserWorkspace workspace) {
+        this.workspace = workspace;
+    }
+
+    /**
+     * @return the openStudySubscription
+     */
+    public StudySubscription getOpenStudySubscription() {
+        return openStudySubscription;
+    }
+
+    /**
+     * @param openStudySubscription the openStudySubscription to set
+     */
+    public void setOpenStudySubscription(StudySubscription openStudySubscription) {
+        this.openStudySubscription = openStudySubscription;
     }
 
 }

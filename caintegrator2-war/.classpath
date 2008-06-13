@@ -157,7 +157,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-cacore/system/lib/spring.jar">
+	<classpathentry kind="lib" path="/caintegrator2-cacore/system/lib/spring.jar" sourcepath="/caintegrator2-lib/src/spring-src.zip">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
