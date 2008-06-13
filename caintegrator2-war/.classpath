@@ -297,7 +297,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/ncia-lib/ncia-client.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/ncia-lib/ncia-client-modified.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
