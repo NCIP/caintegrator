@@ -248,6 +248,8 @@
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/wsdl4j-1.5.1.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/acegi-security-1.0.4.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/spring.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/xwork-2.0-beta-1.jar" />
     </path>
@@ -255,9 +257,6 @@
     <path id="caintegrator2.war.test.dependencies.path">
         <path refid="caintegrator2.war.dependencies.path" />
         <path refid="test.dependencies.path" />
-        <pathelement location="${ncia.lib.dir}/NCIACoreService-client.jar" />
-         <pathelement location="${ncia.lib.dir}/NCIACoreService-common.jar" />
-         <pathelement location="${ncia.lib.dir}/NCIACoreService-stubs.jar" />
         <pathelement location="${caintegrator2.war.test.classes.dir}" />
         <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
@@ -283,7 +282,7 @@
                 <exclude name="servlet.jar"/>
                 <exclude name="commons-logging*.*"/>
                 <exclude name="xercesImpl*.*"/>
-                <exclude name="axis.jar"/>
+                <!-- exclude name="axis.jar"/ -->
             </lib>
             <lib dir="${lib.dir}">
                 <include name="commons-logging-1.0.4.jar" />
@@ -294,7 +293,11 @@
                 <include name="freestylesearch.jar"/>
                 <include name="caDSR-beans.jar"/>
             </lib>
-            <lib dir="${ncia.lib.dir}" includes ="*.jar"/>
+            <!-- lib dir="${ncia.lib.dir}" includes ="*.jar"/ -->
+            <lib dir="${lib.dir}/caarray-lib">
+                <include name="caarray-client.jar" />
+                <include name="nci-commons-core-1.0.9.jar" />
+            </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
             </classes>
