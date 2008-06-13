@@ -1,0 +1,15 @@
+Status update
+	Implementation (Deploy Study) – To be completed by Tuesday June 17th.
+	Wire Frames – Matt working on for ‘browse study’, Will working on ‘Manage queries’. These wire-frames, along with ‘Deploy Study implementation’ will be used for caBIG Demo
+Issues
+	Clinical Data (time point vs. multiple visit/sequences)  - Yuri to find out details on existing Rembrandt data (time-point vs. sequences). Shine to provide a simpler file for testing.
+	External System dependencies (NCIA, caArray, caDSR) – 
+	VASARI (image mapping)  - Shine to follow-up with VASARI team about non-existence of image series on the provided sample data. 
+	QA POC – Shine to find out the details. 
+Reviews
+	Vision document - Not reviewed. Recommended to conduct after caBIG meeting. 
+	Requirements Management Plan – Shine/Will to add features on tracker. Subha will prioritize based on these, for future iterations/releases.
+	External review – use cases - Recommended to postpone this after caBIG meeting.
+caBIG Annual meeting 
+	Demo  - Wire-frames for (a) Use Workspace (b)Browse Study (c) Manage Queries (d) Perform Analysis  and implemented version of Deploy Study. Shine to check with Subha to see if this okay. 
+	Poster  - Will to help on scientific use-cases and putting the poster together with Shine. A draft expected for review early next week. Shine to get the details for poster presentation. 
