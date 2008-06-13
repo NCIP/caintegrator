@@ -85,39 +85,64 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
+import gov.nih.nci.caarray.domain.project.Experiment;
+import gov.nih.nci.caarray.domain.sample.Sample;
+import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class ServiceStubFactory implements CaArrayServiceFactory {
 
-
-public class CaArrayFacadeTest {
-
-    private CaArrayFacade caArrayFacade;
-    
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTest.class); 
-        caArrayFacade = (CaArrayFacade) context.getBean("CaArrayFacade"); 
+    public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
+        return new SearchServiceStub();
     }
 
-    @Test
-    public void testGetSamples() throws ConnectionException {
-        List<Sample> samples = caArrayFacade.getSamples("samples", null);
-        assertFalse(samples.isEmpty());
-        assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));
-        assertTrue(samples.get(1).getName().equals("sample1") || samples.get(1).getName().equals("sample2"));
-        samples = caArrayFacade.getSamples("no-samples", null);
-        assertTrue(samples.isEmpty());
-        samples = caArrayFacade.getSamples("no-experiment", null);
-        assertTrue(samples.isEmpty()); 
+    private static class SearchServiceStub implements CaArraySearchService {
+
+        @SuppressWarnings("unchecked")
+        public <T extends AbstractCaArrayObject> List<T> search(T arg0) {
+            if (arg0 instanceof Experiment) {
+                return (List<T>) returnExperiments((Experiment) arg0);
+            } else {
+                return (List<T>) returnSamples((Sample) arg0);
+            }
+        }
+
+        private List<Sample> returnSamples(Sample searchSample) {
+            List<Sample> samples 
+                 = new ArrayList<Sample>();
+            samples.add(searchSample);
+            return samples;
+        }
+
+        private List<Experiment> returnExperiments(Experiment searchExperiment) {
+            List<Experiment> experiments = new ArrayList<Experiment>();
+            if (searchExperiment.getPublicIdentifier().equals("samples")) {
+                Experiment experiment = new Experiment();
+                Sample sample1 = new Sample();
+                sample1.setName("sample1");
+                experiment.getSamples().add(sample1);
+                Sample sample2 = new Sample();
+                sample2.setName("sample2");
+                experiment.getSamples().add(sample2);
+                experiments.add(experiment);
+            } else if (searchExperiment.getPublicIdentifier().equals("no-samples")) {
+                Experiment experiment = new Experiment();
+                experiments.add(experiment);
+            }
+            return experiments;        
+        }
+
+
+        public List<?> search(CQLQuery arg0) {
+            return null;
+        }
+
     }
 
 }

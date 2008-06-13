@@ -83,41 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
-
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+public class WorkspaceActionTest {
 
-public class CaArrayFacadeTest {
-
-    private CaArrayFacade caArrayFacade;
+    private WorkspaceAction workspaceAction;
     
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTest.class); 
-        caArrayFacade = (CaArrayFacade) context.getBean("CaArrayFacade"); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("workspace-action-test-config.xml", WorkspaceActionTest.class); 
+        workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException {
-        List<Sample> samples = caArrayFacade.getSamples("samples", null);
-        assertFalse(samples.isEmpty());
-        assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));
-        assertTrue(samples.get(1).getName().equals("sample1") || samples.get(1).getName().equals("sample2"));
-        samples = caArrayFacade.getSamples("no-samples", null);
-        assertTrue(samples.isEmpty());
-        samples = caArrayFacade.getSamples("no-experiment", null);
-        assertTrue(samples.isEmpty()); 
+    public void testOpenWorkspace() {
+        Authentication authentication = new AbstractAuthenticationToken(null) {
+
+            private static final long serialVersionUID = 1L;
+
+            public Object getCredentials() {
+                return null;
+            }
+
+            public Object getPrincipal() {
+                return "username";
+            }
+
+            
+        };
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        assertEquals("workspaceStudy", workspaceAction.openWorkspace());
+        assertNotNull(workspaceAction.getWorkspace());
+        assertNotNull(workspaceAction.getOpenStudySubscription());
     }
 
 }

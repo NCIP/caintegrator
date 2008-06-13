@@ -9,6 +9,7 @@
             /WEB-INF/classes/application-config-web.xml
             /WEB-INF/classes/application-config-security.xml
             /WEB-INF/classes/application-config-web-security.xml
+            /WEB-INF/classes/caintegrator2-config.xml
         </param-value>
     </context-param>
     
@@ -113,7 +114,7 @@
     </mime-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
 </web-app>
