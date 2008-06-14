@@ -212,6 +212,7 @@
         <pathelement location="${lib.dir}/caarray-lib/nci-commons-core-1.0.9.jar" />
         <pathelement location="${lib.dir}/freestylesearch.jar" />
         <pathelement location="${lib.dir}/caDSR-beans.jar" />
+        <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
         <pathelement location="${ncia.lib.dir}/activation.jar" />
         <pathelement location="${ncia.lib.dir}/addressing-1.0.jar" />
         <pathelement location="${ncia.lib.dir}/axis.jar" />
@@ -251,7 +252,6 @@
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/acegi-security-1.0.4.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/spring.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/xwork-2.0-beta-1.jar" />
     </path>
 
     <path id="caintegrator2.war.test.dependencies.path">
@@ -289,6 +289,11 @@
                 <include name="opencsv-1.8.jar" />
                 <include name="freestylesearch.jar"/>
                 <include name="caDSR-beans.jar"/>
+                <include name="tiles-api-2.0.6.jar"/>
+                <include name="tiles-jsp-2.0.6.jar"/>
+                <include name="tiles-core-2.0.6.jar"/>
+                <include name="struts2-tiles-plugin-2.1.2.jar"/>
+                <include name="xwork-2.1.1.jar"/>
             </lib>
             <lib dir="${ncia.lib.dir}">
                 <include name="NCIACoreService-client.jar" />
@@ -304,9 +309,12 @@
                 <include name="${csm.security.config.file}"/>
             </classes>
             <classes dir="${caintegrator2.war.java.classes.dir}" />
-            <classes dir="${caintegrator2.war.resources.src.dir}" />
+            <classes dir="${caintegrator2.war.resources.src.dir}"/>
             <webinf dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="server-config.wsdd"/>
+            </webinf>
+            <webinf dir="${caintegrator2.war.resources.src.dir}">
+                <include name="tiles.xml"/>
             </webinf>
             <webinf dir="${caintegrator2.war.web.src.dir}/WEB-INF">
                 <exclude name="web.xml"/>
