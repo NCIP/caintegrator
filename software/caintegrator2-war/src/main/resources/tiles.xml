@@ -5,7 +5,20 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
        
 <tiles-definitions>
-
-  <definition name="workspaceStudy" template="/workspace.jsp"/>
-
+    <!-- Templates -->
+    <definition name="cssBaseDef" template="/WEB-INF/jsp/cssLayout.jsp">
+        <!--  the common criteria  -->
+        <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/globalHeader_tile.jsp" />
+        <put-attribute name="leftNavMenu" value="/WEB-INF/jsp/tiles/leftNavMenu_tile.jsp" />
+        <put-attribute name="globalFooter" value="/WEB-INF/jsp/tiles/globalFooter_tile.jsp" />
+        
+        <!--  page specific criteria  -->
+        <put-attribute name="content" value="" />        
+    </definition>
+    
+    <!-- Pages -->
+    <definition name="workspaceStudy" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/workspaceHome_tile.jsp"/>
+    </definition>
+    
 </tiles-definitions>
