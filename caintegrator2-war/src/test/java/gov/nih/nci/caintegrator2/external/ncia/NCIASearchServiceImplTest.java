@@ -92,7 +92,7 @@ import org.junit.Test;
 
 
 public class NCIASearchServiceImplTest {
-    private static final String NCIA_GRID_TEST_URL = "http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?";
+    static final String NCIA_GRID_TEST_URL = "http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?";
 
     @Test(expected = ConnectionException.class)
     public void testCreateNCIACoreService() throws ConnectionException {
