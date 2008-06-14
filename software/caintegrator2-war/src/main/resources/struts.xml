@@ -6,10 +6,15 @@
 
     <package name="caintegrator2" extends="struts-default">
 
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+        </result-types>
+        
         <action name="Workspace" method="openWorkspace" class="workspaceAction">
-            <result name="workspaceStudy">workspace.jsp</result>
+            <result name="workspaceStudy" type="tiles">workspaceStudy</result>
             <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>
         </action>
+        
 
     </package>
 </struts>
