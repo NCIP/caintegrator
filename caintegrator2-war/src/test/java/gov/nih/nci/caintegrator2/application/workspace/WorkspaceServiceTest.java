@@ -85,35 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
-/**
- * Implementation entry point for the WorkspaceService subsystem.
- */
-public class WorkspaceServiceImpl implements WorkspaceService {
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class WorkspaceServiceTest {
     
-    private CaIntegrator2Dao dao;
+    private WorkspaceService workspaceService;
 
-    /**
-     * {@inheritDoc}
-     */
-    public UserWorkspace getWorkspace(String username) {
-        return dao.getWorkspace("1".equals(username) ? username : "1");
+    @Before
+    public void setUp() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
+        workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
     }
 
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+    @Test
+    public void testGetWorkspace() {
+        UserWorkspace workspace = workspaceService.getWorkspace("username");
+        assertNotNull(workspace);
     }
 
 }

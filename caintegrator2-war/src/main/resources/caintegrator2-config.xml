@@ -4,7 +4,8 @@
 
     <!-- Actions -->
 
-    <bean id="workspaceAction" 
+    <bean id="workspaceAction"
+        name="WorkspaceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">
         <property name="workspaceService">
@@ -15,8 +16,20 @@
     <!-- Subsystems -->
 
     <bean id="workspaceService" 
+        name="WorkspaceService"
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl" 
         singleton="true">
+        <property name="dao">
+            <ref local="dao"/>
+        </property>
+    </bean>
+    
+    <bean id="dao" 
+        name="CaIntegrator2DAO"
+        class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
+        <property name="applicationService">
+            <ref bean="ApplicationServiceImpl" />
+        </property>
     </bean>
 
     <bean id="caArrayFacade" 
