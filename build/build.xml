@@ -20,6 +20,12 @@
     <property name="target.dir" location="${build.dir}/target" />
     <property name="site.dir" location="${build.dir}/site" />
 
+    <!-- Main caCORE properties; required for taskdefs -->
+    <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
+    <property name="caintegrator2-cacore.system.dir" location="${caintegrator2-cacore.dir}/system" />
+    <property name="caintegrator2-cacore.system.dist.dir" location="${caintegrator2-cacore.system.dir}/dist" />
+    <property name="caintegrator2-cacore.system.lib.dir" location="${caintegrator2-cacore.system.dir}/lib" />
+
     <!-- Environment properties -->
     <property environment="env" />
     <property file="${build.dir}/local.properties" />
@@ -53,6 +59,27 @@
     <property name="checkstyle.jar" location="${lib.dir}/checkstyle-all-4.4.jar" />
     <taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar}" />
     <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
+
+    <!-- Hibernate -->
+    <path id="hibernatetool.classpath">
+        <fileset dir="${caintegrator2-cacore.system.lib.dir}">
+            <include name="commons-collections-3.2.jar" />
+            <include name="hibernate3.jar" />
+            <include name="freemarker-2.3.4.jar" />
+            <include name="pmd-4.2.1.jar" />
+            <include name="dom4j-1.4.jar" />
+        </fileset>
+        <fileset dir="${lib.dir}">
+            <include name="commons-logging-1.0.4.jar" />
+            <include name="commons-logging-1.0.4.jar" />
+            <include name="ejb3-persistence.jar" />
+            <include name="hibernate-annotations.jar" />
+            <include name="hibernate-commons-annotations.jar" />
+            <include name="hibernate-tools-3.2.2.beta1.jar" />
+            <include name="mysql-connector-java-5.0.5-bin.jar" />
+        </fileset>
+    </path>
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
 
     <!-- PMD -->
     <path id="pmd.classpath">
@@ -153,11 +180,6 @@
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
     <!-- ******************************************************************* -->
-
-    <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
-    <property name="caintegrator2-cacore.system.dir" location="${caintegrator2-cacore.dir}/system" />
-    <property name="caintegrator2-cacore.system.dist.dir" location="${caintegrator2-cacore.system.dir}/dist" />
-    <property name="caintegrator2-cacore.system.lib.dir" location="${caintegrator2-cacore.system.dir}/lib" />
     <property name="caintegrator2-cacore.output.dir" location="${caintegrator2-cacore.dir}/output/caintegrator2" />
     <property name="caintegrator2-cacore.output.src.dir" location="${caintegrator2-cacore.output.dir}/src" />
     <property name="caintegrator2-cacore.build.jar.dir" location="${caintegrator2-cacore.output.dir}/build/jar" />
@@ -166,7 +188,6 @@
     <property name="csm.security.config.file" location="sdk.csm.new.hibernate.cfg.xml" />
     
     <target name="caintegrator2-beans.jar" depends="build:caintegrator2-cacore" />
-    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore" />
 
     <target name="clean:caintegrator2-cacore">
         <delete file="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
@@ -198,21 +219,21 @@
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
+        <pathelement location="${lib.dir}/caDSR-beans.jar" />
         <pathelement location="${lib.dir}/commons-logging-1.0.4.jar" />
+        <pathelement location="${lib.dir}/ejb3-persistence.jar" />
+        <pathelement location="${lib.dir}/freestylesearch.jar" />
+        <pathelement location="${lib.dir}/hibernate-annotations.jar" />
+        <pathelement location="${lib.dir}/hibernate-validator.jar" />
         <pathelement location="${lib.dir}/netcdf-2.2.22.jar" />
         <pathelement location="${lib.dir}/log4j-1.2.9.jar" />
         <pathelement location="${lib.dir}/opencsv-1.8.jar" />
+        <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
         <pathelement location="${lib.dir}/caarray-lib/caarray-client.jar" />
         <pathelement location="${lib.dir}/caarray-lib/caGrid-1.1-data-stubs.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/commons-collections-3.2.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/ejb3-persistence.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/hibernate-annotations.jar" />
         <pathelement location="${lib.dir}/caarray-lib/jbossall-client.jar" />
         <pathelement location="${lib.dir}/caarray-lib/jboss-ejb3x.jar" />
         <pathelement location="${lib.dir}/caarray-lib/nci-commons-core-1.0.9.jar" />
-        <pathelement location="${lib.dir}/freestylesearch.jar" />
-        <pathelement location="${lib.dir}/caDSR-beans.jar" />
-        <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
         <pathelement location="${ncia.lib.dir}/activation.jar" />
         <pathelement location="${ncia.lib.dir}/addressing-1.0.jar" />
         <pathelement location="${ncia.lib.dir}/axis.jar" />
@@ -248,6 +269,7 @@
         <pathelement location="${ncia.lib.dir}/xmlsec.jar" />
         <pathelement location="${caintegrator2-cacore.system.dist.dir}/sdk-client-framework.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/acegi-security-1.0.4.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/commons-collections-3.2.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/hibernate3.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
@@ -286,14 +308,17 @@
                 <exclude name="xercesImpl*.*"/>
             </lib>
             <lib dir="${lib.dir}">
-                <include name="netcdf-2.2.22.jar" />
-                <include name="mysql-connector-java-5.0.5-bin.jar" />
-                <include name="opencsv-1.8.jar" />
-                <include name="freestylesearch.jar"/>
                 <include name="caDSR-beans.jar"/>
+                <include name="ejb3-persistence.jar" />
+                <include name="freestylesearch.jar"/>
+                <include name="hibernate-annotations.jar" />
+                <include name="hibernate-validator.jar" />
+                <include name="mysql-connector-java-5.0.5-bin.jar" />
+                <include name="netcdf-2.2.22.jar" />
+                <include name="opencsv-1.8.jar" />
                 <include name="tiles-api-2.0.6.jar"/>
-                <include name="tiles-jsp-2.0.6.jar"/>
                 <include name="tiles-core-2.0.6.jar"/>
+                <include name="tiles-jsp-2.0.6.jar"/>
                 <include name="struts2-tiles-plugin-2.1.2.jar"/>
                 <include name="xwork-2.1.1.jar"/>
             </lib>
@@ -305,8 +330,6 @@
            </lib>
             <lib dir="${lib.dir}/caarray-lib">
                 <include name="caarray-client.jar" />
-                <include name="ejb3-persistence.jar" />
-                <include name="hibernate-annotations.jar" />
                 <include name="nci-commons-core-1.0.9.jar" />
             </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
@@ -356,6 +379,26 @@
     </target>
 
     <!-- ******************************************************************* -->
+    <!-- ** CAINTEGRATOR2-ORM.JAR                                         ** -->
+    <!-- ******************************************************************* -->
+    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore">
+        <delete file="${caintegrator2-orm.jar}" />
+        <jar destfile="${caintegrator2-orm.jar}">
+            <manifest>
+                <attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+            </manifest>
+            <fileset dir="${caintegrator2-cacore.output.src.dir}">
+                <include name="**/*.hbm.xml"/>
+                <include name="ehcache.xml"/>
+            </fileset>
+            <fileset dir="${caintegrator2.war.resources.src.dir}">
+                <include name="**/*.hbm.xml"/>
+                <include name="hibernate.cfg.xml"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <!-- ******************************************************************* -->
     <!-- ** DATABASE TARGETS                                              ** -->
     <!-- ******************************************************************* -->
     
@@ -372,11 +415,17 @@
     </target>
 
     <target name="database:drop-tables" description="Drop caIntegrator 2 schema">
-        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-caintegrator2-tables.sql" />
+        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-main-tables.sql" />
+        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-supporting-tables.sql" />
     </target>
 
     <target name="database:create-tables" description="Create caIntegrator 2 schema">
-        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-caintegrator2-tables.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-main-tables.sql" />
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-supporting-tables.sql" />
+    </target>
+
+    <target name="database:create-tables-generated" depends="database:generate-sql">
+        <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-tables-generated.sql" />
     </target>
 
     <target name="database:reinitialize-tables" depends="database:drop-tables,database:create-tables" description="Drop &amp; recreate caIntegrator 2 schema" />
@@ -386,11 +435,30 @@
         <antcall target="database:create-tables" />
     </target>
 
+        <target name="database:reinitialize-generated" depends="database:init-sql" description="Completely reset caIntegrator 2 by dropping database, recreating, and creating schema (from generated files), and populating with initial data">
+            <antcall target="database:recreate-database" />
+            <antcall target="database:create-tables-generated" />
+        </target>
+
     <target name="database:recreate-database" description="Drops and recreates caarraydb database">
         <run-sql-script database.url="${database.system.url}" 
             database.user="${database.system.user}" 
             database.password="${database.system.password}" 
-            sql.file="${caintegrator2db.sql.target.dir}/create-caintegrator2-database-and-user.sql" />
+            sql.file="${caintegrator2db.sql.target.dir}/create-database-and-user.sql" />
+    </target>
+
+    <target name="database:generate-sql" depends="compile:caintegrator2.war">
+        <hibernatetool destdir="${caintegrator2db.sql.target.dir}">
+            <configuration configurationfile="${caintegrator2.war.resources.src.dir}/hibernate.cfg.xml" />
+            <hbm2ddl drop="false" create="true" export="false" outputfilename="create-tables-generated.sql" />
+            <hbm2ddl drop="true" create="false" export="false" outputfilename="drop-tables-generated.sql" />
+            <classpath>
+                <pathelement location="${caintegrator2-beans.jar}" />
+                <pathelement location="${caintegrator2-orm.jar}" />
+                <pathelement location="${caintegrator2.war.java.classes.dir}" />
+                <pathelement location="${caintegrator2.war.resources.src.dir}" />
+            </classpath>
+        </hibernatetool>
     </target>
 
     <!-- ******************************************************************* -->
