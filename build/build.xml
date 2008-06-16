@@ -246,12 +246,14 @@
         <pathelement location="${ncia.lib.dir}/xalan.jar" />
         <pathelement location="${ncia.lib.dir}/xercesImpl.jar" />
         <pathelement location="${ncia.lib.dir}/xmlsec.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/wsdl4j-1.5.1.jar" />
+        <pathelement location="${caintegrator2-cacore.system.dist.dir}/sdk-client-framework.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/acegi-security-1.0.4.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/hibernate3.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/spring.jar" />
         <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
+        <pathelement location="${caintegrator2-cacore.system.lib.dir}/wsdl4j-1.5.1.jar" />
     </path>
 
     <path id="caintegrator2.war.test.dependencies.path">
@@ -303,6 +305,8 @@
            </lib>
             <lib dir="${lib.dir}/caarray-lib">
                 <include name="caarray-client.jar" />
+                <include name="ejb3-persistence.jar" />
+                <include name="hibernate-annotations.jar" />
                 <include name="nci-commons-core-1.0.9.jar" />
             </lib>
             <classes dir="${caintegrator2-cacore.output.src.dir}">
@@ -338,6 +342,10 @@
          <cobertura-instrument todir="${caintegrator2.war.instrumented.classes.dir}" datafile="${cobertura.file}">
              <fileset dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
+                 <!-- Excludes for classes that can only be tested in integration tests -->
+                 <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
              </fileset>
          </cobertura-instrument>
      </target>
@@ -432,7 +440,7 @@
     </target>
 
     <target name="test:cobertura-check">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="55" totallinerate="65" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
     </target>
 
     <!-- ******************************************************************* -->
