@@ -112,7 +112,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-cacore/system/lib/hibernate3.jar">
+	<classpathentry kind="lib" path="/caintegrator2-cacore/system/lib/hibernate3.jar" sourcepath="/caintegrator2-lib/src/hibernate-3.2-src.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -402,7 +402,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/caarray-lib/nci-commons-core-1.0.9.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/caarray-lib/nci-commons-core-1.0.9.jar" sourcepath="/caintegrator2-lib/src/nci-commons-1.0.9-src.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
