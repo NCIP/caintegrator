@@ -83,37 +83,57 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
- * Implementation entry point for the WorkspaceService subsystem.
+ * Implementation of the DAO.
  */
-public class WorkspaceServiceImpl implements WorkspaceService {
+public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
     
-    private CaIntegrator2Dao dao;
+    private static final Logger LOGGER = Logger.getLogger(CaIntegrator2DaoImpl.class);
+
+    private ApplicationService applicationService;
 
     /**
      * {@inheritDoc}
      */
     public UserWorkspace getWorkspace(String username) {
-        return dao.getWorkspace("1".equals(username) ? username : "1");
+        // Real implementation requires checking ownership in CSM
+        HQLCriteria hqlCriteria = new HQLCriteria("from UserWorkspace");
+        try {
+            List<Object> results = applicationService.query(hqlCriteria);
+            if (results.isEmpty()) {
+                return null;
+            } else {
+                return (UserWorkspace) results.get(0);
+            }
+        } catch (ApplicationException e) {
+            LOGGER.error(e);
+            throw new DaoSystemException(e);
+        }
     }
 
     /**
-     * @return the dao
+     * @return the applicationService
      */
-    public CaIntegrator2Dao getDao() {
-        return dao;
+    public ApplicationService getApplicationService() {
+        return applicationService;
     }
 
     /**
-     * @param dao the dao to set
+     * @param applicationService the applicationService to set
      */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+    public void setApplicationService(ApplicationService applicationService) {
+        this.applicationService = applicationService;
     }
 
 }

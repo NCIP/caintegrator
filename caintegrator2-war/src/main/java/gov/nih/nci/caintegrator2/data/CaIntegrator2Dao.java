@@ -83,37 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 /**
- * Implementation entry point for the WorkspaceService subsystem.
+ * Main DAO interface for storage and retrieval of persistent entities.
  */
-public class WorkspaceServiceImpl implements WorkspaceService {
+public interface CaIntegrator2Dao {
     
-    private CaIntegrator2Dao dao;
-
     /**
-     * {@inheritDoc}
+     * Returns the workspace belonging to the specified user.
+     * 
+     * @param username retrieve workspace for this user.
+     * @return the user's workspace
      */
-    public UserWorkspace getWorkspace(String username) {
-        return dao.getWorkspace("1".equals(username) ? username : "1");
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
+    UserWorkspace getWorkspace(String username);
 
 }
