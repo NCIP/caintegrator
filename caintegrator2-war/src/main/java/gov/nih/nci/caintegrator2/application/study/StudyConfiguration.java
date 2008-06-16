@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
  */
 public class StudyConfiguration {
     
+    private Long id;
     private Visibility visibility;
     private Study study;
     private AbstractClinicalSourceConfiguration clinicalConfiguration;
@@ -105,7 +106,25 @@ public class StudyConfiguration {
         this();
         setStudy(study);
     }
- 
+
+    /**
+     * Returns the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     *
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     void setClinicalConfiguration(AbstractClinicalSourceConfiguration clinicalConfiguration) {
         this.clinicalConfiguration = clinicalConfiguration;
     }
@@ -141,4 +160,5 @@ public class StudyConfiguration {
     public AbstractClinicalSourceConfiguration getClinicalConfiguration() {
         return clinicalConfiguration;
     }
+
 }
