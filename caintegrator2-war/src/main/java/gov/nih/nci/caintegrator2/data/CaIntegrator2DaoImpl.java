@@ -86,54 +86,54 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Implementation of the DAO.
  */
 public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
     
-    private static final Logger LOGGER = Logger.getLogger(CaIntegrator2DaoImpl.class);
-
-    private ApplicationService applicationService;
+    private HibernateTemplate hibernateTemplate;
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public UserWorkspace getWorkspace(String username) {
-        // Real implementation requires checking ownership in CSM
-        HQLCriteria hqlCriteria = new HQLCriteria("from UserWorkspace");
-        try {
-            List<Object> results = applicationService.query(hqlCriteria);
-            if (results.isEmpty()) {
-                return null;
-            } else {
-                return (UserWorkspace) results.get(0);
-            }
-        } catch (ApplicationException e) {
-            LOGGER.error(e);
-            throw new DaoSystemException(e);
+        // Real implementation requires checking ownership in CSM using username argument
+        List results = hibernateTemplate.find("from UserWorkspace");
+        if (results.isEmpty()) {
+            return null;
+        } else {
+            return (UserWorkspace) results.get(0);
         }
     }
 
     /**
-     * @return the applicationService
+     * {@inheritDoc}
      */
-    public ApplicationService getApplicationService() {
-        return applicationService;
+    public void save(Object persistentObject) {
+        hibernateTemplate.saveOrUpdate(persistentObject);
     }
 
     /**
-     * @param applicationService the applicationService to set
+     * Sets the session factory.
+     * 
+     * @param sessionFactory the session factory
      */
-    public void setApplicationService(ApplicationService applicationService) {
-        this.applicationService = applicationService;
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        hibernateTemplate = new HibernateTemplate(sessionFactory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object get(Long id, Class objectClass) {
+        return hibernateTemplate.get(objectClass, id);
     }
 
 }

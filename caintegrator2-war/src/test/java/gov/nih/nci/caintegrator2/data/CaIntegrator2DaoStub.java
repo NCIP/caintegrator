@@ -93,4 +93,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return new UserWorkspace();
     }
 
+    public void save(Object entity) {
+        // no-op
+    }
+
+    public Object get(Long id, Class objectClass) {
+        return null;
+    }
+
 }
