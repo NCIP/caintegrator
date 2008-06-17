@@ -91,17 +91,14 @@ import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageStudy;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.ncia.domain.Image;
-import gov.nih.nci.ncia.domain.Patient;
-import gov.nih.nci.ncia.domain.Series;
-import gov.nih.nci.ncia.domain.Study;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
@@ -110,19 +107,12 @@ public class NCIAFacadeTest {
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTest.class);
     NCIAFacade nciaFacade;
     ServerConnectionProfile connection;
-    NCIAServiceFactory nciaServiceFactory;
-    private static final String NCIA_GRID_TEST_URL = "http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?";
     
-
     @Before
     public void setUp() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTest.class); 
         connection = new ServerConnectionProfile();
-        connection.setUrl(NCIA_GRID_TEST_URL);
-        // Uncomment to have the factory use a real instance instead of the fake instance.
-        //nciaServiceFactory = new NCIAServiceFactoryImpl();
-        nciaServiceFactory = new ServiceStubFactory();
-        NCIAFacadeImpl nciaFacadeImpl = new NCIAFacadeImpl();
-        nciaFacadeImpl.setNciaServiceFactory(nciaServiceFactory);
+        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("NCIAFacade");
         nciaFacade = nciaFacadeImpl;
     }
 
@@ -136,10 +126,12 @@ public class NCIAFacadeTest {
                 LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
                 assertEquals("Project1", allProjects.get(0));
                 assertEquals("Project2", allProjects.get(1));
+                assertTrue(true);
             } else {
                 LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
+                fail();
             }
-            assertTrue(true);
+            
         } catch (ConnectionException e) {
             LOGGER.error("Failed to connect");
             fail();
@@ -166,64 +158,5 @@ public class NCIAFacadeTest {
         }
         
     }
-    
-    private static class ServiceStubFactory implements NCIAServiceFactory {
-
-        public NCIASearchService createNCIASearchService(ServerConnectionProfile profile) throws ConnectionException {
-            return new ServiceClientStub();
-        }
-
-    }
-    private static class ServiceClientStub implements NCIASearchService {
         
-
-        public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException {
-            Image i = new Image();
-            i.setId(123);
-            
-            List<Image> images = new ArrayList<Image>();
-            images.add(i);
-            return images;
-        }
-
-        
-        public List<Series> retrieveImageSeriesCollectionFromStudy(String studyInstanceUID) throws ConnectionException {
-            Series s = new Series();
-            s.setSeriesInstanceUID("SERIESUID");
-            s.setId(123);
-            List<Series> series = new ArrayList<Series>();
-            series.add(s);
-            return series;
-        }
-
-        
-        public List<Study> retrieveStudyCollectionFromPatient(String patientId) throws ConnectionException {
-            Study s = new Study();
-            s.setStudyInstanceUID("STUDYUID");
-            s.setStudyDescription("DESCRIPTION");
-            List<Study> studies = new ArrayList<Study>();
-            studies.add(s);
-            return studies;
-        }
-
-        
-        public List<Patient> retrievePatientCollectionFromDataProvenanceProject(String provenanceProject)
-                throws ConnectionException {
-            Patient p = new Patient();
-            p.setPatientId("PATIENTID");
-            p.setPatientName("PATIENTNAME");
-            List<Patient> patients = new ArrayList<Patient>();
-            patients.add(p);
-            return patients;
-        }
-
-        
-        public List<String> retrieveAllTrialDataProvenanceProjects() throws ConnectionException {
-            List<String> projects = new ArrayList<String>();
-            projects.add("Project1");
-            projects.add("Project2");
-            return projects;
-        }
-
-    }
 }
