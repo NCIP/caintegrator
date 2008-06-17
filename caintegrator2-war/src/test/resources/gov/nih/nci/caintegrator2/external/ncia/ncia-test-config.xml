@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+
+    <bean name="NCIAFacade" class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl" singleton="true">
+        <property name="nciaServiceFactory">
+            <ref local="nciaServiceStubFactory"/>
+        </property>
+    </bean>
+    
+    <bean name="NCIAFacadeIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl" singleton="true">
+        <property name="nciaServiceFactory">
+            <ref local="nciaServiceFactoryIntegration"/>
+        </property>
+    </bean>
+    
+    <bean id="nciaServiceStubFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceStubFactory" />
+
+    <bean id="nciaServiceFactoryIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
+        
+    <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+        <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" />
+    </bean>
+    
+</beans>

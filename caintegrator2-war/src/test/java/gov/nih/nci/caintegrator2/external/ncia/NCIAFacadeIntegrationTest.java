@@ -85,24 +85,76 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
-public class NCIASearchServiceImplTest {
+/**
+ * 
+ */
+public class NCIAFacadeIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeIntegrationTest.class);
+    NCIAFacade nciaFacade;
+    ServerConnectionProfile connection;
     
-    @Test(expected = ConnectionException.class)
-    public void testCreateNCIACoreService() throws ConnectionException {
-        ServerConnectionProfile profile = new ServerConnectionProfile();
-        profile.setHostname("localhost");
-        profile.setPort(1234);
-        profile.setUsername("dummy_username");
-        profile.setPassword("dummy_password");
-        NCIAServiceFactoryImpl nciaServiceClient = new NCIAServiceFactoryImpl();
-        nciaServiceClient.createNCIASearchService(profile);
-
+    @Before
+    public void setUp() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeIntegrationTest.class); 
+        connection = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("NCIAFacadeIntegration");
+        nciaFacade = nciaFacadeImpl;
     }
 
+
+    @Test
+    public void testGetAllTrialDataProvenanceProjects() {
+        List<String> allProjects;
+        try {
+            allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
+            if (!allProjects.isEmpty()) {
+                LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
+                assertTrue(true);
+            } else {
+                LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
+                fail();
+            }
+            
+        } catch (ConnectionException e) {
+            LOGGER.error("Failed to connect");
+            fail();
+        }
+    }
+
+
+    // Test below is commented out because getting all projects for "RIDER" takes a very long time...
+    // might want to uncomment it later if we find a reasonable size project name to use.
+//    @Test
+//    public void testGetImageSeriesAcquisition() {
+//        String trialDataProvenanceProject = "RIDER";
+//        List<ImageStudy> imageStudies;
+//        try {
+//            imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
+//            if (!imageStudies.isEmpty()){
+//                LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
+//            } else {
+//                LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
+//            }
+//            assertTrue(true);
+//        } catch (ConnectionException e) {
+//            LOGGER.error(e.getMessage());
+//            fail();
+//            
+//        }
+//        
+//    }
+        
 }

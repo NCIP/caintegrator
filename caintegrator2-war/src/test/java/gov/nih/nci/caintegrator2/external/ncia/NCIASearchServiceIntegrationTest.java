@@ -85,24 +85,46 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.ncia.domain.Image;
+import gov.nih.nci.ncia.domain.Patient;
+import gov.nih.nci.ncia.domain.Series;
+import gov.nih.nci.ncia.domain.Study;
+
+import java.util.List;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-public class NCIASearchServiceImplTest {
-    
-    @Test(expected = ConnectionException.class)
-    public void testCreateNCIACoreService() throws ConnectionException {
-        ServerConnectionProfile profile = new ServerConnectionProfile();
-        profile.setHostname("localhost");
-        profile.setPort(1234);
-        profile.setUsername("dummy_username");
-        profile.setPassword("dummy_password");
-        NCIAServiceFactoryImpl nciaServiceClient = new NCIAServiceFactoryImpl();
-        nciaServiceClient.createNCIASearchService(profile);
+public class NCIASearchServiceIntegrationTest {
 
+    @Test
+    public void testRetrieveRealObjects() throws ConnectionException {
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceIntegrationTest.class); 
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
+        
+        NCIASearchService searchService;
+
+        searchService = nciaServiceClient.createNCIASearchService(profile);
+
+        assertNotNull(searchService.retrieveAllTrialDataProvenanceProjects());
+
+        List<Patient> patients = searchService.retrievePatientCollectionFromDataProvenanceProject("RIDER"); 
+        assertNotNull(patients);
+        
+        List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());
+        assertNotNull(studies);
+        
+        List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
+        assertNotNull(series);
+        
+        List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
+        assertNotNull(images);
     }
 
 }
