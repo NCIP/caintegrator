@@ -440,7 +440,7 @@
             <antcall target="database:create-tables-generated" />
         </target>
 
-    <target name="database:recreate-database" description="Drops and recreates caarraydb database">
+    <target name="database:recreate-database" description="Drops and recreates caintegrator2 database">
         <run-sql-script database.url="${database.system.url}" 
             database.user="${database.system.user}" 
             database.password="${database.system.password}" 
@@ -563,7 +563,7 @@
     </target>
 
     <!-- ******************************************************************* -->
-    <!-- ** DOCUMENATION TARGETS                                          ** -->
+    <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->
 
     <target name="javadoc" depends="javadoc:full,javadoc:client" description="Generates javadoc for all source code" />
