@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+
+    <bean name="CaIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="SessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="SessionFactory" name="SessionFactory"
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation">
+            <value>classpath:hibernate.cfg.xml</value>
+        </property>
+    </bean>
+
+</beans>
