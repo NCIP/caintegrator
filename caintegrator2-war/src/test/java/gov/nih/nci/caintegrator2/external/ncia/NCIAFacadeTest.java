@@ -112,7 +112,7 @@ public class NCIAFacadeTest {
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTest.class); 
         connection = new ServerConnectionProfile();
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("NCIAFacade");
+        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacade");
         nciaFacade = nciaFacadeImpl;
     }
 
