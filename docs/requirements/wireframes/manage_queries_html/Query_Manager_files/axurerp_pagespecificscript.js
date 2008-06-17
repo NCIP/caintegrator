@@ -74,6 +74,8 @@ var u6 = document.getElementById('u6');
 gv_vAlignTable['u6'] = 'top';
 var u9 = document.getElementById('u9');
 
+var u20 = document.getElementById('u20');
+
 var u1 = document.getElementById('u1');
 gv_vAlignTable['u1'] = 'center';
 var u11 = document.getElementById('u11');

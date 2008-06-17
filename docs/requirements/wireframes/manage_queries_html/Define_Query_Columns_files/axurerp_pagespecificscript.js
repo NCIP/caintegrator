@@ -42,12 +42,16 @@ function OnLoad() {
 
 }
 
+var u71 = document.getElementById('u71');
+gv_vAlignTable['u71'] = 'center';
 var u20 = document.getElementById('u20');
 
 var u64 = document.getElementById('u64');
 
 var u51 = document.getElementById('u51');
 gv_vAlignTable['u51'] = 'top';
+var u70 = document.getElementById('u70');
+
 var u36 = document.getElementById('u36');
 
 var u31 = document.getElementById('u31');
@@ -60,14 +64,20 @@ var u27 = document.getElementById('u27');
 gv_vAlignTable['u27'] = 'top';
 var u6 = document.getElementById('u6');
 gv_vAlignTable['u6'] = 'top';
+var u67 = document.getElementById('u67');
+gv_vAlignTable['u67'] = 'center';
 var u4 = document.getElementById('u4');
 
+var u73 = document.getElementById('u73');
+gv_vAlignTable['u73'] = 'center';
 var u2 = document.getElementById('u2');
 gv_vAlignTable['u2'] = 'top';
 var u10 = document.getElementById('u10');
 
 var u0 = document.getElementById('u0');
 
+var u69 = document.getElementById('u69');
+gv_vAlignTable['u69'] = 'center';
 var u26 = document.getElementById('u26');
 
 var u49 = document.getElementById('u49');
@@ -84,9 +94,13 @@ var u8 = document.getElementById('u8');
 
 var u34 = document.getElementById('u34');
 
+var u68 = document.getElementById('u68');
+
 var u14 = document.getElementById('u14');
 
 var u48 = document.getElementById('u48');
+
+var u72 = document.getElementById('u72');
 
 var u28 = document.getElementById('u28');
 
@@ -100,8 +114,12 @@ var u22 = document.getElementById('u22');
 
 var u52 = document.getElementById('u52');
 
+var u66 = document.getElementById('u66');
+
 var u13 = document.getElementById('u13');
 gv_vAlignTable['u13'] = 'top';
+var u75 = document.getElementById('u75');
+gv_vAlignTable['u75'] = 'center';
 var u47 = document.getElementById('u47');
 gv_vAlignTable['u47'] = 'top';
 var u12 = document.getElementById('u12');
@@ -150,6 +168,8 @@ var u9 = document.getElementById('u9');
 gv_vAlignTable['u9'] = 'top';
 var u30 = document.getElementById('u30');
 gv_vAlignTable['u30'] = 'top';
+var u74 = document.getElementById('u74');
+
 var u60 = document.getElementById('u60');
 
 var u24 = document.getElementById('u24');
