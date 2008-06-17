@@ -3,9 +3,7 @@
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
     <!-- Actions -->
-
     <bean id="workspaceAction"
-        name="WorkspaceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">
         <property name="workspaceService">
@@ -16,19 +14,25 @@
     <!-- Subsystems -->
 
     <bean id="workspaceService" 
-        name="WorkspaceService"
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl" 
         singleton="true">
         <property name="dao">
-            <ref local="dao"/>
+            <ref local="caIntegrator2Dao"/>
         </property>
     </bean>
-    
-    <bean id="dao" 
-        name="CaIntegrator2DAO"
-        class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
-        <property name="applicationService">
-            <ref bean="ApplicationServiceImpl" />
+
+    <bean id="caIntegrator2Dao"
+        class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl" 
+        singleton="true">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="sessionFactory" 
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation">
+            <value>classpath:hibernate.cfg.xml</value>
         </property>
     </bean>
 

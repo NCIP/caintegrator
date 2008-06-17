@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app id="caIntegrator2" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app id="caIntegrator2" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
     <display-name>caIntegrator 2</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/classes/application-config.xml
-            /WEB-INF/classes/application-config-web.xml
-            /WEB-INF/classes/application-config-security.xml
-            /WEB-INF/classes/application-config-web-security.xml
+            /WEB-INF/classes/application-config.xml /WEB-INF/classes/application-config-web.xml
+            /WEB-INF/classes/application-config-security.xml /WEB-INF/classes/application-config-web-security.xml
             /WEB-INF/classes/caintegrator2-config.xml
         </param-value>
     </context-param>
-    
-    
-    <filter> 
-        <filter-name>struts2</filter-name> 
+
+
+    <filter>
+        <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
             <param-name>actionPackages</param-name>
             <param-value>gov.nih.nci.system.struts.action</param-value>
         </init-param>
-    </filter> 
+    </filter>
+    
+    <filter>
+        <filter-name>sessionFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+    </filter>
 
     <!--
-    <filter>
+        <filter>
         <filter-name>AcegiFilters</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
         <init-param>
-            <param-name>targetClass</param-name>
-            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        <param-name>targetClass</param-name>
+        <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
         </init-param>
-    </filter>
+        </filter>
+        
+        <filter-mapping>
+        <filter-name>AcegiFilters</filter-name>
+        <url-pattern>/*</url-pattern>
+        </filter-mapping>   
+    -->
 
     <filter-mapping>
-      <filter-name>AcegiFilters</filter-name>
-      <url-pattern>/*</url-pattern>
-    </filter-mapping>   
-    -->
-    
-    <filter-mapping> 
-        <filter-name>struts2</filter-name> 
-        <url-pattern>/*</url-pattern> 
-    </filter-mapping> 
+        <filter-name>sessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -50,11 +60,9 @@
 
     <servlet>
         <servlet-name>httpinvoker</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>  
+    </servlet>
 
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
@@ -64,24 +72,24 @@
 
     <servlet>
         <servlet-name>AxisServlet</servlet-name>
-        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class> 
+        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>GetXML</servlet-name>
-        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>         
+        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>GetHTML</servlet-name>
-        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>         
+        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>httpinvoker</servlet-name>
         <url-pattern>/http/*</url-pattern>
     </servlet-mapping>
-     
+
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/services/AdminService</url-pattern>
@@ -91,18 +99,18 @@
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
-        
-    
+
+
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>*.jws</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>GetXML</servlet-name>
         <url-pattern>/GetXML</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>GetHTML</servlet-name>
         <url-pattern>/GetHTML</url-pattern>
@@ -116,9 +124,9 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    
+
     <listener>
         <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
     </listener>
-    
+
 </web-app>

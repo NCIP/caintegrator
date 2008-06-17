@@ -93,6 +93,22 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 public interface CaIntegrator2Dao {
     
     /**
+     * Saves the object given.
+     * 
+     * @param persistentObject the object to save.
+     */
+    void save(Object persistentObject);
+    
+    /**
+     * Returns the persistent object with the id given.
+     * 
+     * @param id id of the object to retrieve
+     * @param objectClass the class of the object to retrieve
+     * @return the requested object.
+     */
+    Object get(Long id, Class objectClass);
+    
+    /**
      * Returns the workspace belonging to the specified user.
      * 
      * @param username retrieve workspace for this user.
