@@ -101,14 +101,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * 
  */
-public class NCIAFacadeIntegrationTest {
-    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeIntegrationTest.class);
+public class NCIAFacadeTestIntegration {
+    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTestIntegration.class);
     NCIAFacade nciaFacade;
     ServerConnectionProfile connection;
     
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeIntegrationTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTestIntegration.class); 
         connection = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
         NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacadeIntegration");
         nciaFacade = nciaFacadeImpl;
