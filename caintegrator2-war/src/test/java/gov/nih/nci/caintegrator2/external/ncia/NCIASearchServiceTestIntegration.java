@@ -100,11 +100,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-public class NCIASearchServiceIntegrationTest {
+public class NCIASearchServiceTestIntegration {
 
     @Test
     public void testRetrieveRealObjects() throws ConnectionException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceIntegrationTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
         ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
         NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         
