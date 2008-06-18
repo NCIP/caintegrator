@@ -85,47 +85,37 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.AbstractAuthenticationToken;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class WorkspaceActionTest {
-
-    private WorkspaceAction workspaceAction;
+/**
+ * Action used to create and edit studies by a Study Manager.
+ */
+public class DefineStudyAction {
     
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", WorkspaceActionTest.class); 
-        workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
+    private StudyManagementService service;
+    private StudyConfiguration studyConfiguration;
+
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+    
+    /**
+     * Creates a new study.
+     */
+    public void createStudy() {
+        studyConfiguration = service.createStudy();
     }
 
-    @Test
-    public void testOpenWorkspace() {
-        Authentication authentication = new AbstractAuthenticationToken(null) {
-
-            private static final long serialVersionUID = 1L;
-
-            public Object getCredentials() {
-                return null;
-            }
-
-            public Object getPrincipal() {
-                return "username";
-            }
-
-            
-        };
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        assertEquals("workspaceStudy", workspaceAction.openWorkspace());
-        assertNotNull(workspaceAction.getWorkspace());
-        assertNotNull(workspaceAction.getOpenStudySubscription());
+    /**
+     * @param service the service to set
+     */
+    public void setService(StudyManagementService service) {
+        this.service = service;
     }
+
 
 }

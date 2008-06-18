@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -97,13 +98,14 @@ import org.apache.log4j.Logger;
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
+    private CaIntegrator2Dao dao;
     
     /**
      * {@inheritDoc}
      */
     public StudyConfiguration createStudy() {
         StudyConfiguration configuration = new StudyConfiguration(new Study());
-        // Need to save persistent objects when we have a database.
+        dao.save(configuration);
         return configuration;
     }
 
@@ -111,7 +113,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void update(StudyConfiguration studyConfiguration) {
-        // Need to persist to database.
+        dao.save(studyConfiguration);
     }
 
     /**
@@ -136,6 +138,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         studyConfiguration.getClinicalConfiguration().loadAnnontation();
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
     }
 
 
