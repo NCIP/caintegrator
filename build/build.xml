@@ -63,7 +63,12 @@
     <!-- Hibernate -->
     <path id="hibernatetool.classpath">
         <fileset dir="${caintegrator2-cacore.system.lib.dir}">
+            <include name="antlr-2.7.6.jar" />
+            <include name="asm.jar" />
+            <include name="c3p0-0.9.0.jar" />
+            <include name="cglib-2.1.3.jar" />
             <include name="commons-collections-3.2.jar" />
+            <include name="ehcache-1.2.2.jar" />
             <include name="hibernate3.jar" />
             <include name="freemarker-2.3.4.jar" />
             <include name="pmd-4.2.1.jar" />
@@ -282,6 +287,8 @@
     <path id="caintegrator2.war.test.dependencies.path">
         <path refid="caintegrator2.war.dependencies.path" />
         <path refid="test.dependencies.path" />
+        <path refid="hibernatetool.classpath" />
+        <pathelement location="${lib.dir}/spring-mock.jar" />
         <pathelement location="${caintegrator2.war.test.classes.dir}" />
         <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
