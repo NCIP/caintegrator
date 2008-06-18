@@ -143,7 +143,7 @@
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
     <target name="nightly-build" 
-        depends="continuous-integration" 
+        depends="continuous-integration,test:integration" 
         description="Builds and deploys caIntegrator 2 and performs the complete suite of tests." />
 
     <target name="clean" 
@@ -211,7 +211,8 @@
     <property name="caintegrator2.war.resources.test.dir" location="${caintegrator2.war.dir}/src/test/resources" />
     <property name="caintegrator2.war.target.dir" location="${caintegrator2.war.dir}/target" />
     <property name="caintegrator2.war.java.classes.dir" location="${caintegrator2.war.target.dir}/classes" />
-    <property name="caintegrator2.war.instrumented.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes" />
+    <property name="caintegrator2.war.instrumented.unit.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/unit" />
+    <property name="caintegrator2.war.instrumented.integration.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/integration" />
     <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
     <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator2.war" />
 
@@ -354,21 +355,36 @@
         <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
 
-    <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:caintegrator2.war">
+    <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:unit:caintegrator2.war">
         <run-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
-            instrumented.classes="${caintegrator2.war.instrumented.classes.dir}" 
+            instrumented.classes="${caintegrator2.war.instrumented.unit.classes.dir}" 
+            classpath="${caintegrator2.war.test.dependencies.path}" />
+    </target>
+
+    <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:integration:caintegrator2.war">
+        <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
+            xml.output.dir="${caintegrator2.war.target.dir}/junit" 
+            instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
     
-    <target name="test:instrument:caintegrator2.war" depends="compile:caintegrator2.war">
-         <cobertura-instrument todir="${caintegrator2.war.instrumented.classes.dir}" datafile="${cobertura.file}">
+    <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war">
+         <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
              <fileset dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
                  <!-- Excludes for classes that can only be tested in integration tests -->
                  <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
+             </fileset>
+         </cobertura-instrument>
+     </target>
+    
+    <target name="test:instrument:integration:caintegrator2.war" depends="compile:caintegrator2.war">
+         <cobertura-instrument todir="${caintegrator2.war.instrumented.integration.classes.dir}" datafile="${cobertura.file}">
+             <fileset dir="${caintegrator2.war.java.classes.dir}">
+                 <include name="gov/nih/nci/caintegrator2/**" />
              </fileset>
          </cobertura-instrument>
      </target>
@@ -487,6 +503,11 @@
         <fail if="cobertura.failure" message="Test coverage was insufficient (see Cobertura report)." />
     </target>
 
+    <target name="test:integration" depends="test:integration:caintegrator2.war,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+
     <target name="test:junit-report">
         <mkdir dir="${site.dir}/junit/unit" />
         <junitreport todir="${site.dir}/junit/unit">
@@ -494,6 +515,16 @@
                 <include name="TEST-*.xml" />
             </fileset>
             <report format="frames" todir="${site.dir}/junit/unit" />
+        </junitreport>
+    </target>
+
+    <target name="test:junit-report-integration">
+        <mkdir dir="${site.dir}/junit/integration" />
+        <junitreport todir="${site.dir}/junit/integration">
+            <fileset dir="${caintegrator2.war.target.dir}/junit">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${site.dir}/junit/integration" />
         </junitreport>
     </target>
 
@@ -582,5 +613,41 @@
             <packageset dir="${caintegrator2-cacore.output.src.dir}" />
         </javadoc>
     </target>
+
+    
+    <!-- ******************************************************************* -->
+    <!-- ** MACRODEFS                                                     ** -->
+    <!-- ******************************************************************* -->
+
+    <macrodef name="run-integration-junit-tests">
+        <attribute name="test.src.dir" />
+        <attribute name="xml.output.dir" />
+        <attribute name="classpath" default="" />
+        <attribute name="instrumented.classes" default="" />
+
+        <sequential>
+            <mkdir dir="@{xml.output.dir}" />
+            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="256m">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.file}" />
+                <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
+                <sysproperty key="server.port" value="${jboss.server.port}" />
+                <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
+                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
+
+                <classpath>
+                    <pathelement path="@{instrumented.classes}" />
+                    <pathelement path="@{classpath}" />
+                    <path refid="cobertura.classpath" />
+                </classpath>
+                <formatter type="xml" />
+                <batchtest todir="@{xml.output.dir}">
+                    <fileset dir="@{test.src.dir}">
+                        <include name="**/*TestIntegration.java" />
+                        <exclude name="**/Abstract*TestIntegration.java" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
 
 </project>
