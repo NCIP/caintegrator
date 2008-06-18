@@ -83,49 +83,26 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.io.File;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.AbstractAuthenticationToken;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class StudyManagementServiceStub implements StudyManagementService {
 
-public class WorkspaceActionTest {
+    public StudyConfiguration createStudy() {
+        return new StudyConfiguration();
+    }
 
-    private WorkspaceAction workspaceAction;
+    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
+        // no-op
+    }
+
+    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile) {
+        // no-op
+    }
+
+    public void update(StudyConfiguration studyConfiguration) {
+        // no-op
+    }
     
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", WorkspaceActionTest.class); 
-        workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
-    }
-
-    @Test
-    public void testOpenWorkspace() {
-        Authentication authentication = new AbstractAuthenticationToken(null) {
-
-            private static final long serialVersionUID = 1L;
-
-            public Object getCredentials() {
-                return null;
-            }
-
-            public Object getPrincipal() {
-                return "username";
-            }
-
-            
-        };
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        assertEquals("workspaceStudy", workspaceAction.openWorkspace());
-        assertNotNull(workspaceAction.getWorkspace());
-        assertNotNull(workspaceAction.getOpenStudySubscription());
-    }
-
 }

@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 
             
 <div id="leftnav">
@@ -18,7 +19,14 @@
                 <li class="stdnav"><a href="search.html">Advanced Search</a></li>
             </ul>
         </li>
-        <li class="stdnav"><div>Study Elements</div>
+        <li class="stdnav"><div>Study Management</div>
+            <ul>
+                <li><a href="study_elements/subjects.html">Manage Studies</a></li>
+                <li><s:url id="createStudyUrl" action="createStudy" />
+                <a href="${createStudyUrl}">Create New Study</a></li>
+            </ul>
+        </li>
+         <li class="stdnav"><div>Study Elements</div>
             <ul>
                 <li><a href="study_elements/subjects.html">Subjects</a></li>
                 <li><a href="study_elements/samples.html">Samples</a></li>
