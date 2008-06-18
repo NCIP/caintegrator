@@ -600,6 +600,29 @@
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
 
+    <target name="deploy:jsp" description="Copies all current JSP code to the deployed application for quick update">
+        <for param="toDir">
+            <path>
+                <dirset dir="${jboss.deploy.dir}/../tmp/deploy" includes="tmp*caintegrator2-exp.war" />
+            </path>
+            <sequential>
+                <copy todir="@{toDir}">
+                    <fileset dir="${caintegrator2.war.web.src.dir}">
+                        <include name="**/*.jsp" />
+                        <include name="**/*.jspf" />
+                        <include name="**/*.css" />
+                        <include name="**/*.js" />
+                        <include name="**/*.jpg" />
+                        <include name="**/*.gif" />
+                        <include name="**/*.png" />
+                        <include name="**/*.faces" />
+                        <include name="**/*.tag" />
+                        <include name="**/*.tagf" />
+                    </fileset>
+                </copy>
+            </sequential>
+        </for>
+    </target>
     <!-- ******************************************************************* -->
     <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->
