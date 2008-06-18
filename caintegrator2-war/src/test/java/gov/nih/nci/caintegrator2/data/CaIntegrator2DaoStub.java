@@ -97,7 +97,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         // no-op
     }
 
-    public Object get(Long id, Class objectClass) {
+    public <T> T get(Long id, Class<T> objectClass) {
         return null;
     }
 

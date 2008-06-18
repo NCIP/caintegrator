@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import gov.nih.nci.caintegrator2.domain.imaging.ImageStudy;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -113,7 +113,7 @@ public interface NCIAFacade {
      * @return ImageStudy will be ImageSeriesAcquisition after it gets mapped.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<ImageStudy> getImageSeriesAcquisition(String trialDataProvenanceProject, 
+    List<ImageSeriesAcquisition> getImageSeriesAcquisition(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException;
 
 }

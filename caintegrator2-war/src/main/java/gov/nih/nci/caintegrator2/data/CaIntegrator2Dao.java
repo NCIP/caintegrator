@@ -102,11 +102,12 @@ public interface CaIntegrator2Dao {
     /**
      * Returns the persistent object with the id given.
      * 
+     * @param <T> type of object being returned.
      * @param id id of the object to retrieve
      * @param objectClass the class of the object to retrieve
      * @return the requested object.
      */
-    Object get(Long id, Class objectClass);
+    <T> T get(Long id, Class<T> objectClass);
     
     /**
      * Returns the workspace belonging to the specified user.

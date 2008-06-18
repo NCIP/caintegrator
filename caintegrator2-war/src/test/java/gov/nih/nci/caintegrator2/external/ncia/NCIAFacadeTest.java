@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.external.ncia;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageStudy;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -142,7 +142,7 @@ public class NCIAFacadeTest {
     @Test
     public void testGetImageSeriesAcquisition() {
         String trialDataProvenanceProject = "RIDER";
-        List<ImageStudy> imageStudies;
+        List<ImageSeriesAcquisition> imageStudies;
         try {
             imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
             if (!imageStudies.isEmpty()){

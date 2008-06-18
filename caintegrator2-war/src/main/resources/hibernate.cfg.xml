@@ -29,8 +29,10 @@
         <mapping resource="gov/nih/nci/caintegrator2/application/study/StudyConfiguration.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/analysis/AnalysisMethod.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/AnnotationDefinition.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/CommonDataElement.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/PermissableValue.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/AnnotationValue.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/SubjectAnnotation.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/UserWorkspace.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/Query.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/Criteria.hbm.xml" />
@@ -45,9 +47,10 @@
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/Platform.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/ArrayDataMatrix.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/AbstractReporter.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/ReporterSet.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/imaging/ImageSeries.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/imaging/Image.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/imaging/ImageStudy.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/imaging/ImageSeriesAcquisition.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/Timepoint.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/StudySubjectAssignment.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/Study.hbm.xml" />
