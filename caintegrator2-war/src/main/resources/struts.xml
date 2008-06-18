@@ -9,8 +9,16 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
         </result-types>
+   
+        <action name="createStudy" method="createStudy" class="defineStudyAction">
+            <result type="tiles">newStudy</result>
+        </action>
         
-        <action name="Workspace" method="openWorkspace" class="workspaceAction">
+        <action name="home" method="openHomepage" class="homepageAction">
+            <result name="homepage" type="tiles">homepage</result>
+        </action>
+        
+        <action name="workspace" method="openWorkspace" class="workspaceAction">
             <result name="workspaceStudy" type="tiles">workspaceStudy</result>
             <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>
         </action>

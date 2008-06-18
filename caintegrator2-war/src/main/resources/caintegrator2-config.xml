@@ -11,7 +11,28 @@
         </property>
     </bean>
 
+    <bean id="homepageAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
+    </bean>
+
+    <bean id="defineStudyAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.DefineStudyAction">
+        <property name="service">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <!-- Subsystems -->
+
+    <bean id="studyManagementService" 
+        class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl" 
+        singleton="true">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+    </bean>
 
     <bean id="workspaceService" 
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl" 

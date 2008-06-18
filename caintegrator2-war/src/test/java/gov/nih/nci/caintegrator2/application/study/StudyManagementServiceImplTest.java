@@ -85,36 +85,30 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * 
- */
 public class StudyManagementServiceImplTest {
     
     private StudyManagementService studyManagementService;
     private File testFile;
-    
-    /**
-     * @throws java.lang.Exception
-     */
+
     @Before
     public void setUp() throws Exception {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
-        studyManagementService = new StudyManagementServiceImpl();
+        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
+        studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
                 
     }
     
-    /**
-     * Test method.  
-     */
     @Test
     public void testCreateStudy() {
         StudyConfiguration studyConfiguration = studyManagementService.createStudy();
@@ -122,19 +116,13 @@ public class StudyManagementServiceImplTest {
         assertNotNull(studyConfiguration.getStudy());
     }
 
-    /**
-     * Test method. 
-     */
     @Test
     public void testUpdate() {
         StudyConfiguration configTest = new StudyConfiguration(new Study());
         studyManagementService.update(configTest);
         assertTrue(true);
     }
-
-    /**
-     * Test method. 
-     */
+    
     @Test
     public void testSetClinicalAnnotationAndLoadData() {
         // Set Clinical Annotations

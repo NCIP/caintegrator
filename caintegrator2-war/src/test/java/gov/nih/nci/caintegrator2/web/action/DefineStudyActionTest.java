@@ -85,47 +85,27 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class WorkspaceActionTest {
-
-    private WorkspaceAction workspaceAction;
+public class DefineStudyActionTest {
     
+    private DefineStudyAction defineStudyAction;
+
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", WorkspaceActionTest.class); 
-        workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
+        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction"); 
     }
 
     @Test
-    public void testOpenWorkspace() {
-        Authentication authentication = new AbstractAuthenticationToken(null) {
-
-            private static final long serialVersionUID = 1L;
-
-            public Object getCredentials() {
-                return null;
-            }
-
-            public Object getPrincipal() {
-                return "username";
-            }
-
-            
-        };
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        assertEquals("workspaceStudy", workspaceAction.openWorkspace());
-        assertNotNull(workspaceAction.getWorkspace());
-        assertNotNull(workspaceAction.getOpenStudySubscription());
+    public void testCreateStudy() {
+        defineStudyAction.createStudy();
+        assertNotNull(defineStudyAction.getStudyConfiguration());
     }
 
 }

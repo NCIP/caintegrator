@@ -1,3 +1,4 @@
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 
 <!--NCI/NIH Header-->
