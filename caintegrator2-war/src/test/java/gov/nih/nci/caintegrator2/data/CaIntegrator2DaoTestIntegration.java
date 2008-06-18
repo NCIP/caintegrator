@@ -106,9 +106,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         caIntegrator2Dao.save(workspace);
         
         UserWorkspace workspace2 = this.caIntegrator2Dao.getWorkspace("Anything.");
-        if(workspace2.getId() != workspace.getId()) {
-            fail();
-        }
+        assertEquals(workspace.getId(), workspace2.getId());
         
     }
 
