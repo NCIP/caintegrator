@@ -132,8 +132,9 @@ public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    public Object get(Long id, Class objectClass) {
-        return hibernateTemplate.get(objectClass, id);
+    @SuppressWarnings("unchecked")
+    public <T> T get(Long id, Class<T> objectClass) {
+        return (T) hibernateTemplate.get(objectClass, id);
     }
 
 }

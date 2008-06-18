@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.external.ncia;
 
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageStudy;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.ncia.domain.Image;
@@ -119,17 +119,17 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * {@inheritDoc}
      */
-    public List<ImageStudy> getImageSeriesAcquisition(String trialDataProvenanceProject, 
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisition(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException {
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<Patient> patientCollection;
-        List<ImageStudy> imageSeriesAcquisitionCollection = new ArrayList<ImageStudy>();
+        List<ImageSeriesAcquisition> imageSeriesAcquisitionCollection = new ArrayList<ImageSeriesAcquisition>();
         patientCollection = client.retrievePatientCollectionFromDataProvenanceProject(trialDataProvenanceProject);
         int patientCounter = 0;
         // Get all patients
         for (Patient p : patientCollection) {
             LOGGER.info(++patientCounter + " PATIENT - " + p.getPatientName());
-            ImageStudy imageSeriesAcquisition = new ImageStudy();
+            ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
             imageSeriesAcquisitionCollection.add(imageSeriesAcquisition);
             // This is where you set imageSeriesAcquisition.setNCIAPatientId (When we get that attribute)
             List<Study> studyCollection = client.retrieveStudyCollectionFromPatient(p.getPatientId());
@@ -142,7 +142,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
 
     private void retrieveNCIAStudy(NCIASearchService client, 
                                Patient p, 
-                               ImageStudy imageSeriesAcquisition,
+                               ImageSeriesAcquisition imageSeriesAcquisition,
                                List<Study> studyCollection) 
     throws ConnectionException {
         for (Study study : studyCollection) {
@@ -186,10 +186,11 @@ public class NCIAFacadeImpl implements NCIAFacade {
     
     
     // Image study will be ImageSeriesAcquisition soon.
-    private void convertStudyToImageSeriesAcquisition(ImageStudy imageStudy, Patient patient, Study study) {
+    private void convertStudyToImageSeriesAcquisition(ImageSeriesAcquisition imageSeriesAcquisition, Patient patient, 
+            Study study) {
         // Fill this in properly later.
         Long id = Long.valueOf("1312");
-        imageStudy.setId(id);
+        imageSeriesAcquisition.setId(id);
         // These are pointless.
         patient.getId();
         study.getId();
