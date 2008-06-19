@@ -144,6 +144,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public void deployStudy(StudyConfiguration studyConfiguration) {
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        dao.save(studyConfiguration);
+    }
+
+    /**
      * @param dao the dao to set
      */
     public void setDao(CaIntegrator2Dao dao) {

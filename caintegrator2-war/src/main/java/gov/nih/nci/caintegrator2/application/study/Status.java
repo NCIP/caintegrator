@@ -83,49 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class DefineStudyActionTest {
+/**
+ * Indicates the current status of a study configuration.
+ */
+public enum Status {
     
-    private DefineStudyAction defineStudyAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
-    }
-
-    @Test
-    public void testCreateStudy() {
-        assertEquals("editStudy", defineStudyAction.createStudy());
-        assertTrue(studyManagementServiceStub.createStudyCalled);
-        assertNotNull(defineStudyAction.getStudyConfiguration());
-        assertNotNull(defineStudyAction.getStudy());
-    }
-
-    @Test
-    public void testSaveStudy() {
-        defineStudyAction.createStudy();
-        defineStudyAction.saveStudy();
-        assertTrue(studyManagementServiceStub.updateStudyCalled);
-    }
-
-    @Test
-    public void testDeployStudy() {
-        defineStudyAction.createStudy();
-        defineStudyAction.deployStudy();
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
-    }
+    /**
+     * Not yet deployed.
+     */
+    NOT_DEPLOYED,
+    
+    /**
+     * Currently deployed.
+     */
+    DEPLOYED
 
 }

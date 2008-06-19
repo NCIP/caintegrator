@@ -87,13 +87,14 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
  * Action used to create and edit studies by a Study Manager.
  */
 public class DefineStudyAction {
     
-    private static final String NEW_STUDY = "newStudy";
+    private static final String EDIT_STUDY = "editStudy";
     
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
@@ -104,6 +105,13 @@ public class DefineStudyAction {
     public StudyConfiguration getStudyConfiguration() {
         return studyConfiguration;
     }
+
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return getStudyConfiguration().getStudy();
+    }
     
     /**
      * Creates a new study.
@@ -112,7 +120,27 @@ public class DefineStudyAction {
      */
     public String createStudy() {
         studyConfiguration = service.createStudy();
-        return NEW_STUDY;
+        return EDIT_STUDY;
+    }
+    
+    /**
+     * Deploys the current study.
+     * 
+     * @return the Struts result.
+     */
+    public String deployStudy() {
+        service.deployStudy(getStudyConfiguration());
+        return EDIT_STUDY;
+    }
+    
+    /**
+     * Saves the current study.
+     * 
+     * @return the Struts result.
+     */
+    public String saveStudy() {
+        service.update(getStudyConfiguration());
+        return EDIT_STUDY;
     }
 
     /**
