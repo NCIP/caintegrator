@@ -87,6 +87,9 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
@@ -96,7 +99,8 @@ public class StudyConfiguration {
     private Visibility visibility;
     private Status status = Status.NOT_DEPLOYED;
     private Study study;
-    private AbstractClinicalSourceConfiguration clinicalConfiguration;
+    private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
+         new ArrayList<AbstractClinicalSourceConfiguration>();
     
 
     StudyConfiguration() {
@@ -126,8 +130,27 @@ public class StudyConfiguration {
         this.id = id;
     }
 
-    void setClinicalConfiguration(AbstractClinicalSourceConfiguration clinicalConfiguration) {
-        this.clinicalConfiguration = clinicalConfiguration;
+    /**
+     * @return the clinicalConfigurationCollection
+     */
+    public List<AbstractClinicalSourceConfiguration> getClinicalConfigurationCollection() {
+        return clinicalConfigurationCollection;
+    }
+
+    /**
+     * @param clinicalConfigurationCollection the clinicalConfigurationCollection to set
+     */
+    public void setClinicalConfigurationCollection(
+                List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection) {
+        this.clinicalConfigurationCollection = clinicalConfigurationCollection;
+    }
+    
+    /**
+     * Adds a configuration to the collection.
+     * @param configuration - Configuration file to add to the list.
+     */
+    public void addClinicalConfiguration(AbstractClinicalSourceConfiguration configuration) {
+        this.clinicalConfigurationCollection.add(configuration);
     }
 
     /**
@@ -153,13 +176,6 @@ public class StudyConfiguration {
 
     private void setStudy(Study study) {
         this.study = study;
-    }
-
-    /**
-     * @return the clinicalConfiguration
-     */
-    public AbstractClinicalSourceConfiguration getClinicalConfiguration() {
-        return clinicalConfiguration;
     }
 
     /**
