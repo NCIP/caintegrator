@@ -443,11 +443,14 @@
     <target name="database:drop-tables" description="Drop caIntegrator 2 schema">
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-main-tables.sql" />
         <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-supporting-tables.sql" />
+	  <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.target.dir}/drop-csm-tables.sql" />
     </target>
 
     <target name="database:create-tables" description="Create caIntegrator 2 schema">
         <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-main-tables.sql" />
         <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-supporting-tables.sql" />
+	  <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/create-csm-tables.sql" />
+	  <run-sql-script sql.file="${caintegrator2db.sql.target.dir}/prime-csm-tables.sql" />
     </target>
 
     <target name="database:create-tables-generated" depends="database:generate-sql">
