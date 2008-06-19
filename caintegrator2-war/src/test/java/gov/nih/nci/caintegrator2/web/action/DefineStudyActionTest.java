@@ -104,7 +104,7 @@ public class DefineStudyActionTest {
 
     @Test
     public void testCreateStudy() {
-        defineStudyAction.createStudy();
+        assertEquals("newStudy", defineStudyAction.createStudy());
         assertNotNull(defineStudyAction.getStudyConfiguration());
     }
 
