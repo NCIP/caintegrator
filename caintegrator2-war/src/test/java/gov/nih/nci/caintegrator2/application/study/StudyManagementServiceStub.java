@@ -95,6 +95,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean deployStudyCalled;
     public boolean createStudyCalled;
     public boolean updateStudyCalled;
+    public boolean addGenomicSourceCalled;
 
     public StudyConfiguration createStudy() {
         createStudyCalled = true;
@@ -121,6 +122,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deployStudyCalled = false;
         createStudyCalled = false;
         updateStudyCalled = false;
+        addGenomicSourceCalled = false;
+    }
+
+    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
+        addGenomicSourceCalled = true;
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        return genomicDataSourceConfiguration;
     }
     
 }

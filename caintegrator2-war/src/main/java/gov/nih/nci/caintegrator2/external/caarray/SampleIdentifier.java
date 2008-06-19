@@ -83,57 +83,42 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.external.caarray;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class DefineStudyActionTest {
+/**
+ * Uniquely identifies a sample in caArray.
+ */
+public class SampleIdentifier {
     
-    private DefineStudyAction defineStudyAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+    private String experimentIdentifier;
+    private String sampleName;
+    
+    /**
+     * @return the experimentIdentifier
+     */
+    public String getExperimentIdentifier() {
+        return experimentIdentifier;
     }
-
-    @Test
-    public void testCreateStudy() {
-        assertEquals("editStudy", defineStudyAction.createStudy());
-        assertTrue(studyManagementServiceStub.createStudyCalled);
-        assertNotNull(defineStudyAction.getStudyConfiguration());
-        assertNotNull(defineStudyAction.getStudy());
+    
+    /**
+     * @param experimentIdentifier the experimentIdentifier to set
+     */
+    public void setExperimentIdentifier(String experimentIdentifier) {
+        this.experimentIdentifier = experimentIdentifier;
     }
-
-    @Test
-    public void testSaveStudy() {
-        defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.saveStudy());
-        assertTrue(studyManagementServiceStub.updateStudyCalled);
+    
+    /**
+     * @return the sampleName
+     */
+    public String getSampleName() {
+        return sampleName;
     }
-
-    @Test
-    public void testDeployStudy() {
-        defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.deployStudy());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
-    }
-
-    @Test
-    public void testAddGenomicSource() {
-        defineStudyAction.createStudy();
-        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        assertNotNull(defineStudyAction.getGenomicDataSource());
+    
+    /**
+     * @param sampleName the sampleName to set
+     */
+    public void setSampleName(String sampleName) {
+        this.sampleName = sampleName;
     }
 
 }

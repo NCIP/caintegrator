@@ -22,15 +22,19 @@
         
         <!--  Study Actions -->
    
+        <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
+            <result name="editGenomicSource" type="tiles">editGenomicSource</result>
+        </action>
+   
+        <action name="deployStudy" method="deployStudy" class="defineStudyAction">
+            <result name="editStudy" type="tiles">editStudy</result>
+        </action>
+   
         <action name="createStudy" method="createStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
         <action name="saveStudy" method="saveStudy" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
-        </action>
-   
-        <action name="deployStudy" method="deployStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
         

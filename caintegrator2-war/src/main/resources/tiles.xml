@@ -17,12 +17,16 @@
     </definition>
 
     <!-- Pages -->
-    <definition name="homepage" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
+    <definition name="editGenomicSource" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
     </definition>
 
     <definition name="editStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
+    </definition>
+
+    <definition name="homepage" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
     </definition>
 
     <definition name="workspaceStudy" extends="cssBaseDef">

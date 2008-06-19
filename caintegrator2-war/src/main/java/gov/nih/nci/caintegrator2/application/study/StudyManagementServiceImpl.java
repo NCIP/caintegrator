@@ -126,18 +126,18 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setClinicalAnnotation(StudyConfiguration studyConfiguration, List<File> annotationFileCollection) {
         
         for (File annotationFile : annotationFileCollection) {
-            DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
-                new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-            ValidationResult validationResult = clinicalSourceConfig.validate();
-    
-            if (validationResult.isValid()) {
-                clinicalSourceConfig.loadDescriptors();
-                // Need to persist StudyConfiguration
-                // Only way to tell if the clinical source config is proper.
-            } else {
-                LOGGER.error(validationResult.getInvalidMessage());
-            }
+        DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
+            new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
+        ValidationResult validationResult = clinicalSourceConfig.validate();
+
+        if (validationResult.isValid()) {
+            clinicalSourceConfig.loadDescriptors();
+            // Need to persist StudyConfiguration
+            // Only way to tell if the clinical source config is proper.
+        } else {
+            LOGGER.error(validationResult.getInvalidMessage());
         }
+    }
     }
 
     /**
@@ -146,7 +146,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
-        configuration.loadAnnontation();
+            configuration.loadAnnontation();
         }
     }
 
@@ -157,11 +157,22 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.setStatus(Status.DEPLOYED);
         dao.save(studyConfiguration);
     }
+
     /**
      * @param dao the dao to set
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        dao.save(studyConfiguration);
+        return genomicDataSourceConfiguration;
     }
 
 

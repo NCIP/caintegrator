@@ -111,8 +111,8 @@ public class StudyManagementServiceImplTest {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
         ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
-		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();                
+        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub.clear();
     }
     
     @Test
@@ -129,7 +129,7 @@ public class StudyManagementServiceImplTest {
         studyManagementService.update(configTest);
         assertTrue(daoStub.saveCalled);
     }
-    
+
     @Test
     public void testDeploy() {
         StudyConfiguration configTest = new StudyConfiguration(new Study());
@@ -156,6 +156,16 @@ public class StudyManagementServiceImplTest {
         
         // Now it's impossible to tell if the annotations got loaded because nothing is persisted yet.
         
+    }
+    
+    @Test 
+    public void testAddGenomicSource() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = 
+            studyManagementService.addGenomicSource(studyConfiguration);
+        assertNotNull(genomicDataSourceConfiguration);
+        assertTrue(studyConfiguration.getGenomicDataSources().contains(genomicDataSourceConfiguration));
+        assertTrue(daoStub.saveCalled);
     }
 
 }
