@@ -89,16 +89,32 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
+    public boolean getCalled;
+    public boolean saveCalled;
+
     public UserWorkspace getWorkspace(String username) {
         return new UserWorkspace();
     }
 
     public void save(Object entity) {
-        // no-op
+        saveCalled = true;
+    }
+    
+    public void clear() {
+        getCalled = false;
+        saveCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
-        return null;
+        getCalled = true;
+        T object;
+        try {
+            object = objectClass.newInstance();
+            objectClass.getMethod("setId", new Class[] {Long.class}).invoke(object, id);
+            return object;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

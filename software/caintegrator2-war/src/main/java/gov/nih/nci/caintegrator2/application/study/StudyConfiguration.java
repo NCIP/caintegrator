@@ -94,6 +94,7 @@ public class StudyConfiguration {
     
     private Long id;
     private Visibility visibility;
+    private Status status = Status.NOT_DEPLOYED;
     private Study study;
     private AbstractClinicalSourceConfiguration clinicalConfiguration;
     
@@ -159,6 +160,20 @@ public class StudyConfiguration {
      */
     public AbstractClinicalSourceConfiguration getClinicalConfiguration() {
         return clinicalConfiguration;
+    }
+
+    /**
+     * @return the status
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }

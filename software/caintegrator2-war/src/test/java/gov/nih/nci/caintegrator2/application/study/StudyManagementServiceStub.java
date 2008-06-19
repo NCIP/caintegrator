@@ -85,12 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
 import java.io.File;
 
 public class StudyManagementServiceStub implements StudyManagementService {
 
+    public boolean deployStudyCalled;
+    public boolean createStudyCalled;
+    public boolean updateStudyCalled;
+
     public StudyConfiguration createStudy() {
-        return new StudyConfiguration();
+        createStudyCalled = true;
+        return new StudyConfiguration(new Study());
     }
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
@@ -102,7 +109,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void update(StudyConfiguration studyConfiguration) {
-        // no-op
+        updateStudyCalled = true;
+    }
+
+    public void deployStudy(StudyConfiguration studyConfiguration) {
+        deployStudyCalled = true;
+    }
+
+    public void clear() {
+        deployStudyCalled = false;
+        createStudyCalled = false;
+        updateStudyCalled = false;
     }
     
 }
