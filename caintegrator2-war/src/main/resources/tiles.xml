@@ -21,8 +21,8 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
     </definition>
 
-    <definition name="newStudy" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/newStudy_tile.jsp" />
+    <definition name="editStudy" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
     </definition>
 
     <definition name="workspaceStudy" extends="cssBaseDef">

@@ -14,7 +14,8 @@
     <ul class="menu">
         <li class="stdnav"><div>VASARI</div>
             <ul>
-                <li><a href="home.html" class="selected">Homepage</a></li>
+                <li><s:url id="workspaceUrl" action="workspace" />
+                <a href="${workspaceUrl}">Workspace</a></li>
                 <li class="stdnav"><a href="search.html">Advanced Search</a></li>
             </ul>
         </li>
