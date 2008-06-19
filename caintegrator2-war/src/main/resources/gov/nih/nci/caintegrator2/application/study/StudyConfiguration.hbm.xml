@@ -7,7 +7,17 @@
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
+		
+		<property name="visibility" type="integer" column="VISIBILITY"/>
+		
+		<property name="status" type="integer" column="STATUS"/>
 
+        <set name="clinicalConfigurationCollection" lazy="true">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
+        </set>
+        
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
 		    lazy="proxy" unique="true" cascade="save-update" />
 	</class>

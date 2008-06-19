@@ -92,6 +92,8 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -109,8 +111,8 @@ public class StudyManagementServiceImplTest {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
         ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
+		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub.clear();                
     }
     
     @Test
@@ -127,7 +129,7 @@ public class StudyManagementServiceImplTest {
         studyManagementService.update(configTest);
         assertTrue(daoStub.saveCalled);
     }
-
+    
     @Test
     public void testDeploy() {
         StudyConfiguration configTest = new StudyConfiguration(new Study());
@@ -140,13 +142,15 @@ public class StudyManagementServiceImplTest {
     public void testSetClinicalAnnotationAndLoadData() {
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        studyManagementService.setClinicalAnnotation(studyConfiguration, testFile);
+        List<File> testFiles = new ArrayList<File>();
+        testFiles.add(testFile);
+        studyManagementService.setClinicalAnnotation(studyConfiguration, testFiles);
         
         
         // Artificially set the clinicalConfiguration.identifierDescriptor
         AnnotationFieldDescriptor identifier = new AnnotationFieldDescriptor();
         identifier.setName("ID");
-        studyConfiguration.getClinicalConfiguration().setIdentifierDescriptor(identifier);
+        studyConfiguration.getClinicalConfigurationCollection().get(0).setIdentifierDescriptor(identifier);
         // Load Clinical Annotation Values
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 
         

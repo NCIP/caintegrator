@@ -147,7 +147,7 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     public void testLoadAnnontation() {
         
         StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        studyConfiguration.setClinicalConfiguration(clinicalSourceConfiguration);
+        studyConfiguration.addClinicalConfiguration(clinicalSourceConfiguration);
         
         clinicalSourceConfiguration.setStudyConfiguration(studyConfiguration);
         
