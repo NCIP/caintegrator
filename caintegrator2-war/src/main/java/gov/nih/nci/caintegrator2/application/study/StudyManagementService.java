@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * 
@@ -110,9 +111,9 @@ public interface StudyManagementService {
      * Sets annotation file for use.
      * 
      * @param studyConfiguration add the annotation file to this study
-     * @param annotationFile annotation file to use
+     * @param annotationFileCollection annotation files to use
      */
-    void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile);
+    void setClinicalAnnotation(StudyConfiguration studyConfiguration, List<File> annotationFileCollection);
     
 
     /**
@@ -121,12 +122,11 @@ public interface StudyManagementService {
      * @param studyConfiguration study configuration to load
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
-
+    
     /**
      * Deploys or redeploys a study.
      * 
      * @param studyConfiguration the study configuration to deploy
      */
     void deployStudy(StudyConfiguration studyConfiguration);
-    
 }

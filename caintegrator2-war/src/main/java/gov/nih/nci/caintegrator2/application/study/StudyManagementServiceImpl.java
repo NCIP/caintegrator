@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
@@ -122,17 +123,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile) {
-        DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
-            new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-        ValidationResult validationResult = clinicalSourceConfig.validate();
-
-        if (validationResult.isValid()) {
-            clinicalSourceConfig.loadDescriptors();
-            // Need to persist StudyConfiguration
-            // Only way to tell if the clinical source config is proper.
-        } else {
-            LOGGER.error(validationResult.getInvalidMessage());
+    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, List<File> annotationFileCollection) {
+        
+        for (File annotationFile : annotationFileCollection) {
+            DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
+                new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
+            ValidationResult validationResult = clinicalSourceConfig.validate();
+    
+            if (validationResult.isValid()) {
+                clinicalSourceConfig.loadDescriptors();
+                // Need to persist StudyConfiguration
+                // Only way to tell if the clinical source config is proper.
+            } else {
+                LOGGER.error(validationResult.getInvalidMessage());
+            }
         }
     }
 
@@ -140,7 +144,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        studyConfiguration.getClinicalConfiguration().loadAnnontation();
+        for (AbstractClinicalSourceConfiguration configuration 
+                : studyConfiguration.getClinicalConfigurationCollection()) {
+        configuration.loadAnnontation();
+        }
     }
 
     /**
@@ -150,7 +157,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.setStatus(Status.DEPLOYED);
         dao.save(studyConfiguration);
     }
-
     /**
      * @param dao the dao to set
      */

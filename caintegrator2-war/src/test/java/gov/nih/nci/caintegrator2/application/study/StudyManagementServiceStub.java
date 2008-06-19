@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.util.List;
 
 public class StudyManagementServiceStub implements StudyManagementService {
 
@@ -104,7 +105,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         // no-op
     }
 
-    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, File annotationFile) {
+    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, List<File> annotationFile) {
         // no-op
     }
 

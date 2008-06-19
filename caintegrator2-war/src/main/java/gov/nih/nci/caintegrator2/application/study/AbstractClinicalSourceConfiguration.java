@@ -104,7 +104,7 @@ public abstract class AbstractClinicalSourceConfiguration {
 
     AbstractClinicalSourceConfiguration(StudyConfiguration configuration) {
         studyConfiguration = configuration;
-        configuration.setClinicalConfiguration(this);
+        configuration.addClinicalConfiguration(this);
     }
     
     abstract ValidationResult validate();
