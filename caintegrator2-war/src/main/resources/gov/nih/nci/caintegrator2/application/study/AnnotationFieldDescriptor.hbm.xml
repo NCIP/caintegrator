@@ -14,7 +14,7 @@
         
         <property name="type" type="string" column="TYPE"/>
         
-		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="STUDY_ID"
+		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID"
 		    lazy="proxy" unique="true" cascade="save-update" />
 	</class>
 </hibernate-mapping>

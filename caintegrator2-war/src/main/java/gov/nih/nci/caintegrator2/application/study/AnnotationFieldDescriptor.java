@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
  */
 public class AnnotationFieldDescriptor {
     
+    private Long id;
     private String name;
     private String[] keywords;
     private AnnotationFieldType type;
@@ -153,6 +154,20 @@ public class AnnotationFieldDescriptor {
      */
     public void setDefinition(AnnotationDefinition definition) {
         this.definition = definition;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 

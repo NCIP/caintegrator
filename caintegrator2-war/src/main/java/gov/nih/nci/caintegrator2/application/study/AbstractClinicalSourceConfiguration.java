@@ -94,6 +94,7 @@ import java.util.List;
  */
 public abstract class AbstractClinicalSourceConfiguration {
     
+    private Long id;
     private List<AnnotationFieldDescriptor> annotationDescriptors = new ArrayList<AnnotationFieldDescriptor>();
     private AnnotationFieldDescriptor identifierDescriptor;
     private StudyConfiguration studyConfiguration;
@@ -156,6 +157,20 @@ public abstract class AbstractClinicalSourceConfiguration {
      */
     public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
         this.studyConfiguration = studyConfiguration;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
