@@ -144,11 +144,11 @@
     <!-- ******************************************************************* -->
 
     <target name="continuous-integration" 
-        depends="clean,init-ivy,build,check,test" 
+        depends="clean,init-ivy,build,check,test:unit" 
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
     <target name="nightly-build" 
-        depends="continuous-integration,test:integration" 
+        depends="continuous-integration,database:reinitialize,test:integration" 
         description="Builds and deploys caIntegrator 2 and performs the complete suite of tests." />
 
     <target name="clean" 
@@ -173,7 +173,7 @@
         description="Drops any exisisting instance of the caintegrator2 database; creates and populates a new instance." />
 
     <target name="test" 
-        depends="test:unit"
+        depends="test:unit,test:integration"
         description="Executes all unit and functional tests." />
 
 
