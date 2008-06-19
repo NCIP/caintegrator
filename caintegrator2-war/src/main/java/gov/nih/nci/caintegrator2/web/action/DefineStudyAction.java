@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
  */
 public class DefineStudyAction {
     
+    private static final String NEW_STUDY = "newStudy";
+    
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
 
@@ -105,9 +107,12 @@ public class DefineStudyAction {
     
     /**
      * Creates a new study.
+     * 
+     * @return the Struts result.
      */
-    public void createStudy() {
+    public String createStudy() {
         studyConfiguration = service.createStudy();
+        return NEW_STUDY;
     }
 
     /**

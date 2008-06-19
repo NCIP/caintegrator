@@ -1,7 +1,6 @@
 <!DOCTYPE struts PUBLIC
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
-
 <struts>
 
     <package name="caintegrator2" extends="struts-default">
@@ -11,7 +10,7 @@
         </result-types>
    
         <action name="createStudy" method="createStudy" class="defineStudyAction">
-            <result type="tiles">newStudy</result>
+            <result name="newStudy" type="tiles">newStudy</result>
         </action>
         
         <action name="home" method="openHomepage" class="homepageAction">
@@ -23,6 +22,6 @@
             <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>
         </action>
         
-
     </package>
+    
 </struts>
