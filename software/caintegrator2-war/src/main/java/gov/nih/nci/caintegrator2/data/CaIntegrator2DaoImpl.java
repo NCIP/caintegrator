@@ -89,15 +89,13 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * Implementation of the DAO.
  */
-public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
+public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
-    private HibernateTemplate hibernateTemplate;
 
     /**
      * {@inheritDoc}
@@ -105,7 +103,7 @@ public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
     @SuppressWarnings("unchecked")
     public UserWorkspace getWorkspace(String username) {
         // Real implementation requires checking ownership in CSM using username argument
-        List results = hibernateTemplate.find("from UserWorkspace");
+        List results = getHibernateTemplate().find("from UserWorkspace");
         if (results.isEmpty()) {
             return null;
         } else {
@@ -117,16 +115,7 @@ public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
      * {@inheritDoc}
      */
     public void save(Object persistentObject) {
-        hibernateTemplate.saveOrUpdate(persistentObject);
-    }
-
-    /**
-     * Sets the session factory.
-     * 
-     * @param sessionFactory the session factory
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        hibernateTemplate = new HibernateTemplate(sessionFactory);
+        getHibernateTemplate().saveOrUpdate(persistentObject);
     }
 
     /**
@@ -134,7 +123,7 @@ public class CaIntegrator2DaoImpl implements CaIntegrator2Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Long id, Class<T> objectClass) {
-        return (T) hibernateTemplate.get(objectClass, id);
+        return (T) getHibernateTemplate().get(objectClass, id);
     }
 
 }
