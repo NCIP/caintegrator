@@ -121,5 +121,12 @@ public interface StudyManagementService {
      * @param studyConfiguration study configuration to load
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
+
+    /**
+     * Deploys or redeploys a study.
+     * 
+     * @param studyConfiguration the study configuration to deploy
+     */
+    void deployStudy(StudyConfiguration studyConfiguration);
     
 }

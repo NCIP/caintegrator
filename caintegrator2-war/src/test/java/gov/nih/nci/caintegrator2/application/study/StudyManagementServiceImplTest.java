@@ -85,8 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -100,13 +102,15 @@ public class StudyManagementServiceImplTest {
     
     private StudyManagementService studyManagementService;
     private File testFile;
+    private CaIntegrator2DaoStub daoStub;
 
     @Before
     public void setUp() throws Exception {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
         ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
-                
+        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub.clear();
     }
     
     @Test
@@ -114,13 +118,22 @@ public class StudyManagementServiceImplTest {
         StudyConfiguration studyConfiguration = studyManagementService.createStudy();
         assertNotNull(studyConfiguration);
         assertNotNull(studyConfiguration.getStudy());
+        assertTrue(daoStub.saveCalled);
     }
 
     @Test
     public void testUpdate() {
         StudyConfiguration configTest = new StudyConfiguration(new Study());
         studyManagementService.update(configTest);
-        assertTrue(true);
+        assertTrue(daoStub.saveCalled);
+    }
+
+    @Test
+    public void testDeploy() {
+        StudyConfiguration configTest = new StudyConfiguration(new Study());
+        studyManagementService.deployStudy(configTest);
+        assertEquals(Status.DEPLOYED, configTest.getStatus());
+        assertTrue(daoStub.saveCalled);
     }
     
     @Test
