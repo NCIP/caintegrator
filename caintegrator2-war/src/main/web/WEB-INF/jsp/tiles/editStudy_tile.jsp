@@ -13,11 +13,30 @@
     
     <h1>Edit Study</h1>
     
-    <s:form action="saveStudy">
-        <s:textfield label="Study Name" name="study.shortTitleText" />
-        <s:textarea label="Study Description" name="study.longTitleText" />
-        <s:submit action="saveStudy" value="Save" />
-        <s:submit action="deployStudy" value="Deploy" />
+    <s:form>
+    <s:textfield label="Study Name" name="study.shortTitleText" />
+    <s:textarea label="Study Description" name="study.longTitleText" />
+    <s:submit action="saveStudy" value="Save" />
+    <s:submit action="deployStudy" value="Deploy" />
+    
+    <table>
+        <tr>
+            <th colspan="2">Genomic Data Sources</th>
+        </tr>
+        <tr>
+            <th>Server</th>
+            <th>Experiment Identifier</th>
+        </tr>
+        <s:iterator value="studyConfiguration.genomicDataSources" status="status">
+        <tr>
+            <td><s:property value="serverProfile.hostname" /></td>
+            <td><s:property value="experimentIdentifier" /></td>
+        </tr>
+        </s:iterator>
+        <tr>
+            <th colspan="2"><s:submit action="addGenomicSource" value="Add" /></th>
+        </tr>
+    </table>
     </s:form>
             
 </div>

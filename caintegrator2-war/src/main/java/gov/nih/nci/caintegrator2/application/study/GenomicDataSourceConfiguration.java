@@ -83,57 +83,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
-public class DefineStudyActionTest {
+/**
+ * Records sample and array data retrieval information.
+ */
+public class GenomicDataSourceConfiguration {
+
+    private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
+    private String experimentIdentifier;
+    private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
+
+    /**
+     * @return the experimentIdentifier
+     */
+    public String getExperimentIdentifier() {
+        return experimentIdentifier;
+    }
     
-    private DefineStudyAction defineStudyAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+    /**
+     * @return the sampleIdentifiers
+     */
+    public List<SampleIdentifier> getSampleIdentifiers() {
+        return sampleIdentifiers;
     }
 
-    @Test
-    public void testCreateStudy() {
-        assertEquals("editStudy", defineStudyAction.createStudy());
-        assertTrue(studyManagementServiceStub.createStudyCalled);
-        assertNotNull(defineStudyAction.getStudyConfiguration());
-        assertNotNull(defineStudyAction.getStudy());
+    /**
+     * @return the serverProfile
+     */
+    public ServerConnectionProfile getServerProfile() {
+        return serverProfile;
     }
 
-    @Test
-    public void testSaveStudy() {
-        defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.saveStudy());
-        assertTrue(studyManagementServiceStub.updateStudyCalled);
+    /**
+     * @param experimentIdentifier the experimentIdentifier to set
+     */
+    public void setExperimentIdentifier(String experimentIdentifier) {
+        this.experimentIdentifier = experimentIdentifier;
     }
 
-    @Test
-    public void testDeployStudy() {
-        defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.deployStudy());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
+    @SuppressWarnings("unused")
+    private void setServerProfile(ServerConnectionProfile serverProfile) {
+        this.serverProfile = serverProfile;
     }
 
-    @Test
-    public void testAddGenomicSource() {
-        defineStudyAction.createStudy();
-        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        assertNotNull(defineStudyAction.getGenomicDataSource());
+    @SuppressWarnings("unused")
+    private void setSampleIdentifiers(List<SampleIdentifier> sampleIdentifiers) {
+        this.sampleIdentifiers = sampleIdentifiers;
     }
-
+    
 }

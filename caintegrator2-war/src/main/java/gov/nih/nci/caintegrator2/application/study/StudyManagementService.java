@@ -122,11 +122,20 @@ public interface StudyManagementService {
      * @param studyConfiguration study configuration to load
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
-    
+
     /**
      * Deploys or redeploys a study.
      * 
      * @param studyConfiguration the study configuration to deploy
      */
     void deployStudy(StudyConfiguration studyConfiguration);
+
+    /**
+     * Adds a new, initialized genomic data source to the study.
+     * 
+     * @param studyConfiguration study configuration to add genomic data source to.
+     * @return the new genomic data source configuration object.
+     */
+    GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration);
+    
 }

@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
  * Holds data about the sources of study data and authorization for access to data.
@@ -101,6 +101,7 @@ public class StudyConfiguration {
     private Study study;
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
          new ArrayList<AbstractClinicalSourceConfiguration>();
+    private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
     
 
     StudyConfiguration() {
@@ -190,6 +191,18 @@ public class StudyConfiguration {
      */
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    /**
+     * @return the genomicDataSources
+     */
+    public List<GenomicDataSourceConfiguration> getGenomicDataSources() {
+        return genomicDataSources;
+    }
+
+    @SuppressWarnings("unused")
+    private void setGenomicDataSources(List<GenomicDataSourceConfiguration> genomicDataSources) {
+        this.genomicDataSources = genomicDataSources;
     }
 
 }

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -95,23 +96,13 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 public class DefineStudyAction {
     
     private static final String EDIT_STUDY = "editStudy";
+    private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
     
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
+    private GenomicDataSourceConfiguration genomicDataSource;
 
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return getStudyConfiguration().getStudy();
-    }
+    // STUDY ACTIONS
     
     /**
      * Creates a new study.
@@ -142,6 +133,41 @@ public class DefineStudyAction {
         service.update(getStudyConfiguration());
         return EDIT_STUDY;
     }
+    
+    // GENOMIC DATA ACTIONS
+    
+    /**
+     * Adds a new genomic data source.
+     * 
+     * @return the Struts result.
+     */
+    public String addGenomicSource() {
+        genomicDataSource = service.addGenomicSource(getStudyConfiguration());
+        return EDIT_GENOMIC_SOURCE;
+    }
+    
+    // ACTION PROPERTY GETTERS
+
+    /**
+     * @return the genomicDataSource
+     */
+    public GenomicDataSourceConfiguration getGenomicDataSource() {
+        return genomicDataSource;
+    }
+
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return getStudyConfiguration().getStudy();
+    }
 
     /**
      * @param service the service to set
@@ -149,6 +175,5 @@ public class DefineStudyAction {
     public void setService(StudyManagementService service) {
         this.service = service;
     }
-
 
 }
