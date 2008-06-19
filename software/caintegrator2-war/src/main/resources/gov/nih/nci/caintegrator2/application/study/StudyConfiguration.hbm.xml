@@ -5,9 +5,10 @@
 		<cache usage="read-write" />
         
 		<id name="id" type="long" column="ID">
-			<generator class="assigned" />
+			<generator class="native" />
 		</id>
-        
-        <many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" unique="true"/>
+
+		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
+		    lazy="proxy" unique="true" cascade="save-update" />
 	</class>
 </hibernate-mapping>

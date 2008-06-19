@@ -91,10 +91,13 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Entry point to the StudyManagementService subsystem.
  */
+@Transactional(propagation = Propagation.REQUIRED)
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);

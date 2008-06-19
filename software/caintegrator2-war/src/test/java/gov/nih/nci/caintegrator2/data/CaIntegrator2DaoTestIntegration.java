@@ -100,25 +100,29 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     }
 
     @Test
-    public void testSaveWorkspace() {
+    public void testGetWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
-        workspace.setId(Long.valueOf(123));
         caIntegrator2Dao.save(workspace);
-        
+
         UserWorkspace workspace2 = this.caIntegrator2Dao.getWorkspace("Anything.");
         assertEquals(workspace.getId(), workspace2.getId());
         
     }
 
     @Test
-    public void testSaveStudy() {
+    public void testSave() {
         Study study1 = new Study();
-        study1.setId(Long.valueOf(12345));
+        study1.setLongTitleText("longTitleText");
+        study1.setShortTitleText("shortTitleText");
+        assertNull(study1.getId());
         caIntegrator2Dao.save(study1);
+        assertNotNull(study1.getId());
         
-        Study study2 = caIntegrator2Dao.get(Long.valueOf(12345), Study.class);
+        Study study2 = caIntegrator2Dao.get(study1.getId(), Study.class);
         
         assertEquals(study1, study2);
+        assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
+        assertEquals(study1.getLongTitleText(), study2.getLongTitleText());
     }
 
     /**
