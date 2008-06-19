@@ -11,7 +11,7 @@
     
     <!--ADD CONTENT HERE-->
     
-    <h1>Create a New Study</h1>
+    <h1>Edit Study</h1>
     
     <s:form action="saveStudy">
         <s:textfield label="Study Name" name="study.shortTitleText" />
