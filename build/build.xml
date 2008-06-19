@@ -176,7 +176,6 @@
         depends="test:unit,test:integration"
         description="Executes all unit and functional tests." />
 
-
     <target name="deploy"
         depends="deploy:jboss"
         description="Deploys the caIntegrator 2 application to JBoss." />
@@ -488,6 +487,10 @@
                 <pathelement location="${caintegrator2.war.resources.src.dir}" />
             </classpath>
         </hibernatetool>
+    </target>
+    
+    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes">
+        <java classname="gov.nih.nci.caintegrator2.data.DataGenerator" classpathref="caintegrator2.war.test.dependencies.path" />
     </target>
 
     <!-- ******************************************************************* -->
