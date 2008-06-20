@@ -289,7 +289,7 @@
         <path refid="hibernatetool.classpath" />
         <pathelement location="${lib.dir}/spring-mock.jar" />
         <pathelement location="${caintegrator2.war.test.classes.dir}" />
-        <pathelement location="${caintegrator2.war.resources.src.dir}" />
+        <pathelement location="${caintegrator2.war.resources.src.dir}" />        
         <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
     
@@ -384,6 +384,7 @@
                  <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
              </fileset>
          </cobertura-instrument>
      </target>
