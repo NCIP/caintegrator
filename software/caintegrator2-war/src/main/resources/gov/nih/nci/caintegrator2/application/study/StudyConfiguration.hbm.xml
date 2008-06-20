@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.application.study">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Visibility" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+	   <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Visibility</param> 
+	</typedef> 
+	
+	<typedef name="Status" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.Status</param> 
+    </typedef> 
+
 	<class name="StudyConfiguration" table="STUDY_CONFIGURATION" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
         
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
+	
+		<property name="visibility" type="Visibility" column="VISIBILITY"/>
 		
-		<property name="visibility" type="integer" column="VISIBILITY"/>
-		
-		<property name="status" type="integer" column="STATUS"/>
-
-        <set name="clinicalConfigurationCollection" lazy="true">
+		<property name="status" type="Status" column="STATUS"/>
+	
+        <list name="clinicalConfigurationCollection" lazy="true" inverse="true">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" />
+            <index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
-        </set>
+        </list>
         
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
-		    lazy="proxy" unique="true" cascade="save-update" />
+		    lazy="proxy" cascade="save-update" />
 	</class>
 </hibernate-mapping>

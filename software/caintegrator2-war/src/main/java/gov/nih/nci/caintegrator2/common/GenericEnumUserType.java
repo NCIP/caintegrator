@@ -83,91 +83,178 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import org.hibernate.HibernateException;
+import org.hibernate.type.NullableType;
+import org.hibernate.type.TypeFactory;
+import org.hibernate.usertype.ParameterizedType;
+import org.hibernate.usertype.UserType;
 
 /**
- * Contains the information about a particular annotation field prior to association to an 
- * <code>AnnotationDefinition</code>.
+ * Got this from http://www.hibernate.org/272.html.  It is to persist our enum types 
+ * in hibernate and is only referenced in hbm.xml files.
  */
-public class AnnotationFieldDescriptor {
+@SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessiveMethodLength" })
+public class GenericEnumUserType implements UserType, ParameterizedType {
+    private static final String DEFAULT_IDENTIFIER_METHOD_NAME = "name";
+    private static final String DEFAULT_VALUE_OF_METHOD_NAME = "valueOf";
     
-    private Long id;
-    private String name;
-    private String keywords;
-    private AnnotationFieldType type;
-    private AnnotationDefinition definition;
+    @SuppressWarnings("unchecked")
+    private Class<? extends Enum> enumClass;
+    private Method identifierMethod;
+    private Method valueOfMethod;
+    private NullableType type;
+    private int[] mySqlTypes;
 
     /**
-     * @return the name
+     * {@inheritDoc}
      */
-    public String getName() {
-        return name;
+    public void setParameterValues(Properties parameters) {
+        String enumClassName = parameters.getProperty("enumClass");
+        Class<?> identifierType;
+        try {
+            enumClass = Class.forName(enumClassName).asSubclass(Enum.class);
+        } catch (ClassNotFoundException cfne) {
+            throw new HibernateException("Enum class not found", cfne);
+        }
+
+        String identifierMethodName = parameters.getProperty("identifierMethod", DEFAULT_IDENTIFIER_METHOD_NAME);
+
+        try {
+            identifierMethod = enumClass.getMethod(identifierMethodName, new Class[0]);
+            identifierType = identifierMethod.getReturnType();
+        } catch (Exception e) {
+            throw new HibernateException("Failed to obtain identifier method", e);
+        }
+
+        type = (NullableType) TypeFactory.basic(identifierType.getName());
+
+        if (type == null) {
+            throw new HibernateException("Unsupported identifier type " + identifierType.getName());
+        }
+
+        mySqlTypes = new int[] {type.sqlType()};
+
+        String valueOfMethodName = parameters.getProperty("valueOfMethod", DEFAULT_VALUE_OF_METHOD_NAME);
+
+        try {
+            valueOfMethod = enumClass.getMethod(valueOfMethodName, new Class[] {identifierType});
+        } catch (Exception e) {
+            throw new HibernateException("Failed to obtain valueOf method", e);
+        }
     }
 
     /**
-     * @param name the name to set
+     * {@inheritDoc}
      */
-    public void setName(String name) {
-        this.name = name;
+    @SuppressWarnings("unchecked")
+    public Class returnedClass() {
+        return enumClass;
     }
 
     /**
-     * @return the keywords
+     * {@inheritDoc}
      */
-    public String getKeywords() {
-       return keywords;
+    public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws SQLException {  
+        Object identifier = type.get(rs, names[0]);
+        if (rs.wasNull()) {
+            return null;
+        }
+        
+        try {
+            return valueOfMethod.invoke(enumClass, new Object[] {identifier});
+        } catch (Exception e) {
+            throw new HibernateException("Exception while invoking valueOf method '" 
+                    + valueOfMethod.getName() + "' of " + "enumeration class '" + enumClass + "'", e);
+        }
     }
 
     /**
-     * @param keywords the keywords to set
+     * {@inheritDoc}
      */
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
+    public void nullSafeSet(PreparedStatement st, Object value, int index) throws SQLException {
+        try {
+            if (value == null) {
+                st.setNull(index, type.sqlType());
+            } else {
+                Object identifier = identifierMethod.invoke(value, new Object[0]);
+                type.set(st, identifier, index);
+            }
+        } catch (Exception e) {
+            throw new HibernateException("Exception while invoking identifierMethod '" 
+                    + identifierMethod.getName() + "' of " + "enumeration class '" + enumClass + "'", e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public int[] sqlTypes() {
+        return mySqlTypes.clone();
     }
 
     /**
-     * @return the type
+     * {@inheritDoc}
      */
-    public AnnotationFieldType getType() {
-        return type;
+    public Object assemble(Serializable cached, Object owner) {
+        return cached;
     }
 
     /**
-     * @param type the type to set
+     * {@inheritDoc}
      */
-    public void setType(AnnotationFieldType type) {
-        this.type = type;
+    public Object deepCopy(Object value) {
+        return value;
     }
 
     /**
-     * @return the definition
+     * {@inheritDoc}
      */
-    public AnnotationDefinition getDefinition() {
-        return definition;
+    public Serializable disassemble(Object value) {
+        return (Serializable) value;
     }
 
     /**
-     * @param definition the definition to set
+     * {@inheritDoc}
      */
-    public void setDefinition(AnnotationDefinition definition) {
-        this.definition = definition;
+    public boolean equals(Object x, Object y) {
+        if (x != null && y != null) {
+            return x.equals(y);
+        } 
+        if (x == null && y == null) {
+            return true;
+        }
+        return false;
     }
 
     /**
-     * @return the id
+     * {@inheritDoc}
      */
-    public Long getId() {
-        return id;
+    public int hashCode(Object x) {
+        return x.hashCode();
     }
 
     /**
-     * @param id the id to set
+     * {@inheritDoc}
      */
-    public void setId(Long id) {
-        this.id = id;
+    public boolean isMutable() {
+        return false;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public Object replace(Object original, Object target, Object owner) {
+        return original;
+    }
 }

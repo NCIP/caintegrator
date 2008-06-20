@@ -132,8 +132,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
         if (validationResult.isValid()) {
             clinicalSourceConfig.loadDescriptors();
-            // Need to persist StudyConfiguration
-            // Only way to tell if the clinical source config is proper.
+            dao.save(clinicalSourceConfig);
         } else {
             LOGGER.error(validationResult.getInvalidMessage());
         }
