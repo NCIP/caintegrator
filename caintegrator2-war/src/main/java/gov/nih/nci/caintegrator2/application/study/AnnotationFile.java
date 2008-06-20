@@ -101,7 +101,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * Represents a CSV annotation text file.
  */
 public class AnnotationFile {
-    
+    private Long id;
     private String path;
     private List<FileColumn> columns = new ArrayList<FileColumn>();
     private FileColumn identifierColumn;
@@ -354,6 +354,20 @@ public class AnnotationFile {
      */
     public void setIdentifierColumnIndex(int index) {
         setIdentifierColumn(getColumns().get(index));
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
