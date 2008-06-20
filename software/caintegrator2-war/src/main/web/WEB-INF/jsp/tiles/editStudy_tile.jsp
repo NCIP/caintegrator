@@ -21,6 +21,25 @@
     
     <table>
         <tr>
+            <th colspan="2">Clinical Data Sources</th>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
+        <tr>
+            <td><s:property value="type" /></td>
+            <td><s:property value="description" /></td>
+        </tr>
+        </s:iterator>
+        <tr>
+            <th colspan="2"><s:submit action="addClinicalSource" value="Add" /></th>
+        </tr>
+    </table>
+    
+    <table>
+        <tr>
             <th colspan="2">Genomic Data Sources</th>
         </tr>
         <tr>

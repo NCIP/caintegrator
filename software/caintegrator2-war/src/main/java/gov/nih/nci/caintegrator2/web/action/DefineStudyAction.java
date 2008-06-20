@@ -97,6 +97,7 @@ public class DefineStudyAction {
     
     private static final String EDIT_STUDY = "editStudy";
     private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
+    private static final String EDIT_CLINICAL_SOURCE = "editClinicalSource";
     
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
@@ -132,6 +133,17 @@ public class DefineStudyAction {
     public String saveStudy() {
         service.update(getStudyConfiguration());
         return EDIT_STUDY;
+    }
+    
+    // CLINICAL DATA ACTIONS
+    
+    /**
+     * Adds a new clinical data source.
+     * 
+     * @return the Struts result.
+     */
+    public String addClinicalSource() {
+        return EDIT_CLINICAL_SOURCE;
     }
     
     // GENOMIC DATA ACTIONS
