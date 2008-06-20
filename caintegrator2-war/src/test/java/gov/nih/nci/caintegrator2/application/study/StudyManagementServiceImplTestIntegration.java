@@ -85,89 +85,58 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-/**
- * Contains the information about a particular annotation field prior to association to an 
- * <code>AnnotationDefinition</code>.
- */
-public class AnnotationFieldDescriptor {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+public class StudyManagementServiceImplTestIntegration extends AbstractTransactionalSpringContextTests{
     
-    private Long id;
-    private String name;
-    private String keywords;
-    private AnnotationFieldType type;
-    private AnnotationDefinition definition;
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    private StudyManagementService studyManagementService;
+    
+    public StudyManagementServiceImplTestIntegration() {
+        // Set this to false if you want to see the change occur in the database and not be rolled back.
+        this.setDefaultRollback(true);
     }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    protected String[] getConfigLocations() {
+        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
     }
-
+    
     /**
-     * @return the keywords
+     * @param caIntegrator2Dao the caIntegrator2Dao to set
      */
-    public String getKeywords() {
-       return keywords;
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
-
-    /**
-     * @param keywords the keywords to set
-     */
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
+    
+    @Test
+    public void testSetClinicalAnnotationAndLoadData() {
+        
+        File testFile = new File(StudyManagementServiceImplTestIntegration.class.getResource("/csvtestclinical.csv").getFile());
+        
+        // Set Clinical Annotations
+        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
+        List<File> testFiles = new ArrayList<File>();
+        testFiles.add(testFile);
+        studyManagementService.setClinicalAnnotation(studyConfiguration, testFiles);
+        
+        // Need to now test to see if we can load the annotation values.
+        // Problem is, we don't have a studyConfiguration
+        // Artificially set the clinicalConfiguration.identifierDescriptor
+//        AnnotationFieldDescriptor identifier = new AnnotationFieldDescriptor();
+//        identifier.setName("ID");
+//        studyConfiguration.getClinicalConfigurationCollection().get(0).setIdentifierDescriptor(identifier);
+//        // Load Clinical Annotation Values
+//        studyManagementService.loadClinicalAnnotation(studyConfiguration); 
+        
+        // Now it's impossible to tell if the annotations got loaded because nothing is persisted yet.
+        
     }
-
-    /**
-     * @return the type
-     */
-    public AnnotationFieldType getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(AnnotationFieldType type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the definition
-     */
-    public AnnotationDefinition getDefinition() {
-        return definition;
-    }
-
-    /**
-     * @param definition the definition to set
-     */
-    public void setDefinition(AnnotationDefinition definition) {
-        this.definition = definition;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
 }
