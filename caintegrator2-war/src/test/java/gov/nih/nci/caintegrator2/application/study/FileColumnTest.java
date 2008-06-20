@@ -99,9 +99,13 @@ public class FileColumnTest {
     public void testCompareTo() {
         FileColumn column0 = new FileColumn();
         column0.setPosition((short) 0);
+        column0.setId(Long.valueOf(1));
+        column0.setName("Test");
         FileColumn column1 = new FileColumn();
         column1.setPosition((short) 1);
+        column1.setId(Long.valueOf(1));
         FileColumn column2 = new FileColumn();
+        column2.setId(Long.valueOf(1));
         column2.setPosition((short) 2);
         List<FileColumn> columns = new ArrayList<FileColumn>();
         columns.add(column1);

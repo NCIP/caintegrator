@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
+import java.util.Collection;
+
 /**
  * Contains the information about a particular annotation field prior to association to an 
  * <code>AnnotationDefinition</code>.
@@ -95,7 +97,7 @@ public class AnnotationFieldDescriptor {
     
     private Long id;
     private String name;
-    private String keywords;
+    private Collection<String> keywords;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
 
@@ -116,14 +118,14 @@ public class AnnotationFieldDescriptor {
     /**
      * @return the keywords
      */
-    public String getKeywords() {
+    public Collection<String> getKeywords() {
        return keywords;
     }
 
     /**
      * @param keywords the keywords to set
      */
-    public void setKeywords(String keywords) {
+    public void setKeywords(Collection<String> keywords) {
         this.keywords = keywords;
     }
 

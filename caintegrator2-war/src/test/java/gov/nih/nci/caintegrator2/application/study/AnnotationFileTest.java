@@ -166,6 +166,7 @@ public class AnnotationFileTest {
     @Test
     public void testPositionAtData() throws ValidationException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
+        annotationFile.setId(Long.valueOf(1));
         assertTrue(annotationFile.hasNextDataLine());
         assertEquals("100", annotationFile.getDataValue(annotationFile.getColumns().get(0)));
         assertTrue(annotationFile.hasNextDataLine());
@@ -208,14 +209,17 @@ public class AnnotationFileTest {
         testAnnotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
         
         AnnotationFieldDescriptor testAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
+        testAnnotationFieldDescriptor.setId(Long.valueOf(1));
         testAnnotationFieldDescriptor.setName("Col1");
         testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
         
         testAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
+        testAnnotationFieldDescriptor.setId(Long.valueOf(2));
         testAnnotationFieldDescriptor.setName("Col2");
         testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
         
         testAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
+        testAnnotationFieldDescriptor.setId(Long.valueOf(3));
         testAnnotationFieldDescriptor.setName("Col3");
         testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
     }

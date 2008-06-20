@@ -89,7 +89,7 @@ package gov.nih.nci.caintegrator2.application.study;
  * Represents a column in a <code>DelimitedTextFile</code>.
  */
 public class FileColumn implements Comparable<FileColumn> {
-    
+    private long id;
     private int position;
     private String name;
     private AnnotationFieldDescriptor fieldDescriptor;
@@ -141,6 +141,20 @@ public class FileColumn implements Comparable<FileColumn> {
      */
     public void setFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
         this.fieldDescriptor = fieldDescriptor;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
 }
