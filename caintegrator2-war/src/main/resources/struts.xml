@@ -9,8 +9,11 @@
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
         </result-types>
         
+        <interceptors>
+            <interceptor name="fileUpload" class="org.apache.struts2.interceptor.FileUploadInterceptor"/>
+        </interceptors>
+
         <!--  Navigation Actions -->
-        
         <action name="home" method="openHomepage" class="homepageAction">
             <result name="homepage" type="tiles">homepage</result>
         </action>
@@ -22,8 +25,11 @@
         
         <!--  Study Actions -->
    
-        <action name="addClinicalSource" method="addClinicalSource" class="defineStudyAction">
-            <result name="editClinicalSource" type="tiles">editClinicalSource</result>
+        <action name="addClinicalFile" method="addClinicalFile" class="defineStudyAction">
+            <interceptor-ref name="fileUpload"/>
+            <interceptor-ref name="basicStack"/>            
+            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
+            <result name="invalidFile" type="tiles">editStudy</result>
         </action>
    
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
