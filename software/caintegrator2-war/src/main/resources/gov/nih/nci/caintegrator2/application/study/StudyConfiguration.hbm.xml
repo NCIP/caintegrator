@@ -22,7 +22,7 @@
 		
 		<property name="status" type="Status" column="STATUS"/>
 	
-        <list name="clinicalConfigurationCollection" lazy="true" inverse="true">
+        <list name="clinicalConfigurationCollection" lazy="true" inverse="true" cascade="save-update">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" />
             <index column="LIST_INDEX"/>
