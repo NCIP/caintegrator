@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
  * Holds data about the sources of study data and authorization for access to data.
@@ -100,7 +100,8 @@ public class StudyConfiguration {
     private Status status = Status.NOT_DEPLOYED;
     private Study study;
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
-         new ArrayList<AbstractClinicalSourceConfiguration>();
+        new ArrayList<AbstractClinicalSourceConfiguration>();
+   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
     
 
@@ -142,7 +143,7 @@ public class StudyConfiguration {
      * @param clinicalConfigurationCollection the clinicalConfigurationCollection to set
      */
     public void setClinicalConfigurationCollection(
-                List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection) {
+            List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection) {
         this.clinicalConfigurationCollection = clinicalConfigurationCollection;
     }
     

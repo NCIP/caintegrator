@@ -217,7 +217,7 @@ public class DelimitedTextAnnotationHelperTest {
         testAFD.setDefinition(ad);
         testAFD.getDefinition();
         
-        testAFD.setKeywords(new String[]{"test"});
+        testAFD.setKeywords("test, this, out");
         testAFD.getKeywords();
         
         testAFD.setName("test");

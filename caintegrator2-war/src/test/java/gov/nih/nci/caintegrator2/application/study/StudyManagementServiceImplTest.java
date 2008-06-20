@@ -111,8 +111,8 @@ public class StudyManagementServiceImplTest {
         testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
         ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
+		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub.clear();                
     }
     
     @Test
@@ -129,7 +129,7 @@ public class StudyManagementServiceImplTest {
         studyManagementService.update(configTest);
         assertTrue(daoStub.saveCalled);
     }
-
+    
     @Test
     public void testDeploy() {
         StudyConfiguration configTest = new StudyConfiguration(new Study());
@@ -149,8 +149,12 @@ public class StudyManagementServiceImplTest {
         
         // Artificially set the clinicalConfiguration.identifierDescriptor
         AnnotationFieldDescriptor identifier = new AnnotationFieldDescriptor();
+        // Assuming the identifier is ID
         identifier.setName("ID");
-        studyConfiguration.getClinicalConfigurationCollection().get(0).setIdentifierDescriptor(identifier);
+        for(AbstractClinicalSourceConfiguration iter : studyConfiguration.getClinicalConfigurationCollection() ) {
+            iter.setIdentifierDescriptor(identifier);
+        }
+
         // Load Clinical Annotation Values
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 
         
