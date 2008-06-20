@@ -86,60 +86,65 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.domain.translational.Subject;
 
-import java.io.File;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Holds configuration information for annotation stored in a CSV text file.
  */
 public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSourceConfiguration {
     
-    private transient DelimitedTextAnnotationHelper annotationHelper;
-    private File annotationFile;
+    private AnnotationFile annotationFile;
 
     DelimitedTextClinicalSourceConfiguration() {
         super();
     }
     
-    DelimitedTextClinicalSourceConfiguration(File file, StudyConfiguration configuration) {
+    DelimitedTextClinicalSourceConfiguration(AnnotationFile annotationFile, StudyConfiguration configuration) {
         super(configuration);
-        setAnnotationFile(file);
+        setAnnotationFile(annotationFile);
     }
 
     ValidationResult validate() {
-        return getAnnotationHelper().validateFile();
+        return getAnnotationFile().validate();
     }
 
     void loadDescriptors() {
-        getAnnotationDescriptors().addAll(getAnnotationHelper().getDescriptors());
+        Set<AnnotationFieldDescriptor> existingDescriptors = getStudyConfiguration().getAllExistingDescriptors();
+        getAnnotationFile().loadDescriptors(existingDescriptors);
+        getAnnotationDescriptors().addAll(getAnnotationFile().getDescriptors());
     }
 
     /**
      * Loads the AnnotationValues from the file and persists.
      */
     public void loadAnnontation() {
-        getAnnotationHelper().positionAtData();
-        while (getAnnotationHelper().hasNextDataLine()) {
-            Subject subject = new Subject();
-            StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
-            studySubjectAssignment.setSubject(subject);
-            studySubjectAssignment.setStudy(getStudyConfiguration().getStudy());
-            // Uncomment the following after the next generation of 
-            // studySubjectAssignment.setIdentifier(getAnnotationHelper().getDataValue(getIdentifierDescriptor()));
-            for (AnnotationFieldDescriptor annotationDescriptor : this.getAnnotationDescriptors()) {
-                if (annotationDescriptor.equals(getIdentifierDescriptor())) {
-                    continue;
-                }
-                String value = getAnnotationHelper().getDataValue(annotationDescriptor);
-                AnnotationValue annotationValue = new AnnotationValue();
-                annotationValue.setValue(value);
-                annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
-                // Here's where I need to persist that annotationValue.
-            }
+        getAnnotationFile().positionAtData();
+        while (getAnnotationFile().hasNextDataLine()) {
+            String identifier = getAnnotationFile().getDataValue(getAnnotationFile().getIdentifierColumn());
+            StudySubjectAssignment subjectAssignment = getStudyConfiguration().getOrCreateSubjectAssignment(identifier);
+            loadAnnotation(subjectAssignment);
         }
         
+    }
+
+    private void loadAnnotation(StudySubjectAssignment subjectAssignment) {
+        for (AnnotationFieldDescriptor annotationDescriptor : getAnnotationDescriptors()) {
+            String value = getAnnotationFile().getDataValue(annotationDescriptor);
+            AnnotationValue annotationValue = new AnnotationValue();
+            annotationValue.setValue(value);
+            annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+            SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
+            subjectAnnotation.setAnnotationValue(annotationValue);
+            if (getAnnotationFile().getTimepointColumn() != null) {
+                String timepointValue = getAnnotationFile().getDataValue(getAnnotationFile().getTimepointColumn());
+                subjectAnnotation.setTimepoint(getStudyConfiguration().getOrCreateTimepoint(timepointValue));
+            }
+            subjectAssignment.getSubjectAnnotation().add(subjectAnnotation);
+        }
     }
 
     /**
@@ -152,25 +157,31 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     /**
      * @return the annotationFile
      */
-    public File getAnnotationFile() {
+    public AnnotationFile getAnnotationFile() {
         return annotationFile;
     }
 
     /**
      * @param annotationFile the annotationFile to set
      */
-    private void setAnnotationFile(File annotationFile) {
+    private void setAnnotationFile(AnnotationFile annotationFile) {
         this.annotationFile = annotationFile;
     }
 
     /**
-     * @return the annotationHelper
+     * {@inheritDoc}
      */
-    private DelimitedTextAnnotationHelper getAnnotationHelper() {
-        if (annotationHelper == null) {
-            annotationHelper = new DelimitedTextAnnotationHelper(getAnnotationFile());
-        }
-        return annotationHelper;
+    @Override
+    public String getDescription() {
+        return getAnnotationFile().getFile().getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
+        return getAnnotationFile().getDescriptors();
     }
 
 }

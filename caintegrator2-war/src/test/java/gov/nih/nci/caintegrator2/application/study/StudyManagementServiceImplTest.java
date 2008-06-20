@@ -92,8 +92,6 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -139,21 +137,12 @@ public class StudyManagementServiceImplTest {
     }
     
     @Test
-    public void testSetClinicalAnnotationAndLoadData() {
+    public void testSetClinicalAnnotationAndLoadData() throws ValidationException {
         // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        List<File> testFiles = new ArrayList<File>();
-        testFiles.add(testFile);
-        studyManagementService.setClinicalAnnotation(studyConfiguration, testFiles);
-        
-        
-        // Artificially set the clinicalConfiguration.identifierDescriptor
-        AnnotationFieldDescriptor identifier = new AnnotationFieldDescriptor();
-        // Assuming the identifier is ID
-        identifier.setName("ID");
-        for(AbstractClinicalSourceConfiguration iter : studyConfiguration.getClinicalConfigurationCollection() ) {
-            iter.setIdentifierDescriptor(identifier);
-        }
+        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, testFile);
+        sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
 
         // Load Clinical Annotation Values
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 

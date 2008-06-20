@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,8 +94,6 @@ import java.util.List;
 public abstract class AbstractClinicalSourceConfiguration {
     
     private Long id;
-    private List<AnnotationFieldDescriptor> annotationDescriptors = new ArrayList<AnnotationFieldDescriptor>();
-    private AnnotationFieldDescriptor identifierDescriptor;
     private StudyConfiguration studyConfiguration;
 
     AbstractClinicalSourceConfiguration() {
@@ -104,7 +101,7 @@ public abstract class AbstractClinicalSourceConfiguration {
     }
 
     AbstractClinicalSourceConfiguration(StudyConfiguration configuration) {
-        studyConfiguration = configuration;
+        setStudyConfiguration(configuration);
         configuration.addClinicalConfiguration(this);
     }
     
@@ -115,35 +112,18 @@ public abstract class AbstractClinicalSourceConfiguration {
     abstract ClinicalSourceType getType();
 
     abstract void loadAnnontation();
+    
+    /**
+     * Returns a brief description of this clinical source.
+     * 
+     * @return the brief description;
+     */
+    public abstract String getDescription();
 
     /**
      * @return the annotationDescriptors
      */
-    public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
-        return annotationDescriptors;
-    }
-
-    /**
-     * @param annotationDescriptors the annotationDescriptors to set
-     */
-    @SuppressWarnings({ "PMD.UnusedPrivateMethod", "unused" })
-    private void setAnnotationDescriptors(List<AnnotationFieldDescriptor> annotationDescriptors) {
-        this.annotationDescriptors = annotationDescriptors;
-    }
-
-    /**
-     * @return the identifierDescriptor
-     */
-    public AnnotationFieldDescriptor getIdentifierDescriptor() {
-        return identifierDescriptor;
-    }
-
-    /**
-     * @param identifierDescriptor the identifierDescriptor to set
-     */
-    public void setIdentifierDescriptor(AnnotationFieldDescriptor identifierDescriptor) {
-        this.identifierDescriptor = identifierDescriptor;
-    }
+    public abstract List<AnnotationFieldDescriptor> getAnnotationDescriptors();
 
     /**
      * @return the studyConfiguration
@@ -152,10 +132,7 @@ public abstract class AbstractClinicalSourceConfiguration {
         return studyConfiguration;
     }
 
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+    private void setStudyConfiguration(StudyConfiguration studyConfiguration) {
         this.studyConfiguration = studyConfiguration;
     }
 

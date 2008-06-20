@@ -87,9 +87,10 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.io.File;
-import java.util.List;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
@@ -101,6 +102,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class StudyManagementServiceImpl implements StudyManagementService {
 
+    @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private CaIntegrator2Dao dao;
     
@@ -109,6 +111,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public StudyConfiguration createStudy() {
         StudyConfiguration configuration = new StudyConfiguration(new Study());
+        configuration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         dao.save(configuration);
         return configuration;
     }
@@ -123,20 +126,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void setClinicalAnnotation(StudyConfiguration studyConfiguration, List<File> annotationFileCollection) {
-        
-        for (File annotationFile : annotationFileCollection) {
+    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
+            File file) throws ValidationException {
+        AnnotationFile annotationFile = AnnotationFile.load(file);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-        ValidationResult validationResult = clinicalSourceConfig.validate();
-
-        if (validationResult.isValid()) {
-            clinicalSourceConfig.loadDescriptors();
-            dao.save(clinicalSourceConfig);
-        } else {
-            LOGGER.error(validationResult.getInvalidMessage());
-        }
-    }
+        studyConfiguration.addClinicalConfiguration(clinicalSourceConfig);
+        dao.save(studyConfiguration);
+        return clinicalSourceConfig;
     }
 
     /**
