@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.application.study">
+    <!-- Create typedef's for the enums -->
+    <typedef name="AnnotationFieldType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.study.AnnotationFieldType</param> 
+    </typedef> 
 	<class name="AnnotationFieldDescriptor" table="ANNOTATION_FIELD_DESCRIPTOR" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
         
@@ -10,9 +14,12 @@
 		
         <property name="name" type="string" column="NAME"/>
         
-        <property name="keywords" type="string" column="KEYWORDS"/>
+        <set name="keywords" table="ANNOTATION_FIELD_DESCRIPTOR_KEYWORDS">
+            <key column="descriptor_id"/>
+            <element column="keyword" type="string"/>
+         </set>
         
-        <property name="type" type="string" column="TYPE"/>
+        <property name="type" type="AnnotationFieldType" column="TYPE"/>
         
 		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID"
 		    lazy="proxy" cascade="save-update" />

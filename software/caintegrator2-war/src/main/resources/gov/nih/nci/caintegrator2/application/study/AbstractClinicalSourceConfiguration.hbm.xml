@@ -7,21 +7,13 @@
 			<generator class="native" />
 		</id>
 		
-		<list name="annotationDescriptors" cascade="all">
-            <cache usage="read-write" />
-            <key column="CLINICAL_SOURCE_CONFIGURATION_ID" />
-            <index column="LIST_INDEX"/>
-            <one-to-many class="gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor"/>
-        </list>
-		
-        <many-to-one name="identifierDescriptor" class="gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor" column="ANNOTATION_FIELD_DESCRIPTOR_ID"
-            lazy="proxy" cascade="save-update" />
         <many-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration" column="STUDY_CONFIGURATION_ID"
             lazy="proxy" cascade="save-update" />
             
         <joined-subclass name="DelimitedTextClinicalSourceConfiguration" 
                          table="DELIMITED_TEXT_CLINICAL_SOURCE_CONFIGURATION" lazy="true">
-            <key column="ID" />            
+            <key column="ID" />    
+            <many-to-one name="annotationFile" class="gov.nih.nci.caintegrator2.application.study.AnnotationFile" column="ANNOTATION_FILE_ID" lazy="proxy" />        
         </joined-subclass>
         
         
