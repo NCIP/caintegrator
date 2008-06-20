@@ -42,6 +42,32 @@ create table FILE_COLUMN (
     primary key (ID)
 ) ENGINE=InnoDB;
 
+create table GENOMIC_DATA_SOURCE_CONFIGURATION (
+    ID bigint not null auto_increment, 
+    SERVER_CONNECTION_PROFILE_ID bigint, 
+    EXPERIMENT_IDENTIFIER varchar(255), 
+    primary key (ID)
+) ENGINE=InnoDB;
+
+create table SAMPLE_IDENTIFIER (
+    ID bigint not null auto_increment, 
+    EXPERIMENT_IDENTIFIER varchar(255), 
+    SAMPLE_NAME varchar(255), 
+    GENOMIC_DATA_SOURCE_CONFIGURATION_ID bigint, 
+    LIST_INDEX integer, 
+    primary key (ID)
+) ENGINE=InnoDB;
+
+create table SERVER_CONNECTION_PROFILE (
+    ID bigint not null auto_increment, 
+    HOSTNAME varchar(255), 
+    PORT integer, URL varchar(255), 
+    USERNAME varchar(255), 
+    PASSWORD varchar(255), 
+    primary key (ID)
+) ENGINE=InnoDB;
+
+
 create table STUDY_CONFIGURATION (
     ID bigint not null auto_increment, 
     VISIBILITY varchar(255), 
@@ -89,6 +115,14 @@ alter table FILE_COLUMN
     add index FK7BBDF37968A868E8 (ANNOTATION_FILE_ID), 
     add constraint FK7BBDF37968A868E8 foreign key (ANNOTATION_FILE_ID) references ANNOTATION_FILE (ID);
     
+alter table GENOMIC_DATA_SOURCE_CONFIGURATION 
+    add index FK2A39D650C19B6B47 (SERVER_CONNECTION_PROFILE_ID), 
+    add constraint FK2A39D650C19B6B47 foreign key (SERVER_CONNECTION_PROFILE_ID) references SERVER_CONNECTION_PROFILE (ID);
+
+alter table SAMPLE_IDENTIFIER 
+    add index FKE882B65E2BC1B9C2 (GENOMIC_DATA_SOURCE_CONFIGURATION_ID), 
+    add constraint FKE882B65E2BC1B9C2 foreign key (GENOMIC_DATA_SOURCE_CONFIGURATION_ID) references GENOMIC_DATA_SOURCE_CONFIGURATION (ID);
+
 alter table STUDY_CONFIGURATION 
     add index FK1CC8D8C0A0CEA12A (STUDY_ID), 
     add constraint FK1CC8D8C0A0CEA12A foreign key (STUDY_ID) references STUDY (ID);
