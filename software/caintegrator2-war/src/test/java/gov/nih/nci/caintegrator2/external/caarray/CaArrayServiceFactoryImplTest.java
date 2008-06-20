@@ -97,6 +97,7 @@ public class CaArrayServiceFactoryImplTest {
     public void testCreateSearchService() throws ConnectionException {
         CaArrayServiceFactoryImpl factoryImpl = new CaArrayServiceFactoryImpl();
         ServerConnectionProfile profile = new ServerConnectionProfile();
+        profile.setId(Long.valueOf(1));
         profile.setHostname("localhost");
         profile.setPort(1234);
         profile.setUsername("dummy_username");
