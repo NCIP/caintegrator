@@ -16,6 +16,7 @@
 
     <rule ref="rulesets/codesize.xml" >
         <exclude name="ExcessivePublicCount" />
+        <exclude name="TooManyMethods" />
     </rule>
 
     <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
@@ -23,6 +24,7 @@
             <property name="minimum" value="30" />
         </properties>
     </rule>
+
     <rule ref="rulesets/codesize.xml/ExcessiveClassLength">
         <properties>
             <property name="minimum" value="500" />
