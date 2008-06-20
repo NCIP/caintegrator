@@ -18,6 +18,7 @@
     <s:textarea label="Study Description" name="study.longTitleText" />
     <s:submit action="saveStudy" value="Save" />
     <s:submit action="deployStudy" value="Deploy" />
+    </s:form>
     
     <table>
         <tr>
@@ -27,17 +28,25 @@
             <th>Type</th>
             <th>Description</th>
         </tr>
+        <s:form >
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
         <tr>
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
         </tr>
         </s:iterator>
+        </s:form>
         <tr>
-            <th colspan="2"><s:submit action="addClinicalSource" value="Add" /></th>
+            <th colspan="2">
+                <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
+                    <s:file name="clinicalFile" label="File" accept="text/plain" />
+                    <s:submit value="Add Clinical Data File"/>
+                </s:form>
+            </th>
         </tr>
     </table>
     
+    <s:form>
     <table>
         <tr>
             <th colspan="2">Genomic Data Sources</th>
