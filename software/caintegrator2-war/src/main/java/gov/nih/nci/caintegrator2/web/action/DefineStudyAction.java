@@ -85,24 +85,36 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
+import java.io.File;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
  * Action used to create and edit studies by a Study Manager.
  */
-public class DefineStudyAction {
+public class DefineStudyAction extends ActionSupport {
+    
+    private static final long serialVersionUID = 1L;
     
     private static final String EDIT_STUDY = "editStudy";
     private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
-    private static final String EDIT_CLINICAL_SOURCE = "editClinicalSource";
+    private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
     
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
     private GenomicDataSourceConfiguration genomicDataSource;
-
+    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
+    private File clinicalFile;
+    private String clinicalFileContentType;
+    private String clinicalFileFilename;
+    
     // STUDY ACTIONS
     
     /**
@@ -142,8 +154,15 @@ public class DefineStudyAction {
      * 
      * @return the Struts result.
      */
-    public String addClinicalSource() {
-        return EDIT_CLINICAL_SOURCE;
+    public String addClinicalFile() {
+        try {
+            setClinicalSourceConfiguration(service.addClinicalAnnotationFile(getStudyConfiguration(), 
+                    getClinicalFile()));
+            return EDIT_CLINICAL_FILE;
+        } catch (ValidationException e) {
+            addFieldError("upload", "Invalid file: " + e.getResult().getInvalidMessage());
+            return EDIT_STUDY;
+        }
     }
     
     // GENOMIC DATA ACTIONS
@@ -186,6 +205,62 @@ public class DefineStudyAction {
      */
     public void setService(StudyManagementService service) {
         this.service = service;
+    }
+
+    /**
+     * @return the clinicalSourceConfiguration
+     */
+    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
+        return clinicalSourceConfiguration;
+    }
+
+    /**
+     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
+     */
+    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
+        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
+    }
+
+    /**
+     * @return the clinicalFile
+     */
+    public File getClinicalFile() {
+        return clinicalFile;
+    }
+
+    /**
+     * @param clinicalFile the clinicalFile to set
+     */
+    public void setClinicalFile(File clinicalFile) {
+        this.clinicalFile = clinicalFile;
+    }
+
+    /**
+     * @return the clinicalFileContentType
+     */
+    public String getClinicalFileContentType() {
+        return clinicalFileContentType;
+    }
+
+    /**
+     * @param clinicalFileContentType the clinicalFileContentType to set
+     */
+    public void setClinicalFileContentType(String clinicalFileContentType) {
+        this.clinicalFileContentType = clinicalFileContentType;
+    }
+
+    /**
+     * @return the clinicalFileFilename
+     */
+    public String getClinicalFileFilename() {
+        return clinicalFileFilename;
+    }
+
+    /**
+     * @param clinicalFileFilename the clinicalFileFilename to set
+     */
+    public void setClinicalFileFilename(String clinicalFileFilename) {
+        this.clinicalFileFilename = clinicalFileFilename;
     }
 
 }
