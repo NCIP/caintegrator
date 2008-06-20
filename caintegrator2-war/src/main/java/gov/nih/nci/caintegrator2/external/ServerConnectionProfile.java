@@ -89,7 +89,7 @@ package gov.nih.nci.caintegrator2.external;
  * Profile for connecting.
  */
 public class ServerConnectionProfile {
-    
+    private Long id;
     private String hostname;
     private int port;
     private String url;
@@ -164,6 +164,20 @@ public class ServerConnectionProfile {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

@@ -89,7 +89,7 @@ package gov.nih.nci.caintegrator2.external.caarray;
  * Uniquely identifies a sample in caArray.
  */
 public class SampleIdentifier {
-    
+    private Long id;
     private String experimentIdentifier;
     private String sampleName;
     
@@ -119,6 +119,20 @@ public class SampleIdentifier {
      */
     public void setSampleName(String sampleName) {
         this.sampleName = sampleName;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

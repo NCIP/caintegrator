@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
  * Records sample and array data retrieval information.
  */
 public class GenomicDataSourceConfiguration {
-
+    private Long id;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
@@ -136,6 +136,20 @@ public class GenomicDataSourceConfiguration {
     @SuppressWarnings("unused")
     private void setSampleIdentifiers(List<SampleIdentifier> sampleIdentifiers) {
         this.sampleIdentifiers = sampleIdentifiers;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }
