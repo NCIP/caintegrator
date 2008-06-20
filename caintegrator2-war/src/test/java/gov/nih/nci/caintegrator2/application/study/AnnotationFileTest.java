@@ -140,7 +140,8 @@ public class AnnotationFileTest {
         checkInvalid(getFile(INVALID_FILE_MISSING_VALUE), "Number of values inconsistent with header line.");
         checkInvalid(getFile(INVALID_FILE_EMPTY), "The data file was empty.");
         checkInvalid(getFile(INVALID_FILE_NO_DATA), "The data file contained no data (header line only).");
-        checkInvalid(new File(INVALID_FILE_DOESNT_EXIST), "The file nofile.txt could not be found");
+        File doesntExist = new File(INVALID_FILE_DOESNT_EXIST);
+        checkInvalid(doesntExist, "The file " + doesntExist.getAbsolutePath() + " could not be found");
     }
 
     private void checkInvalid(File file, String expectedMessage) {
