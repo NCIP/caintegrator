@@ -87,97 +87,126 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- */
-public class DelimitedTextAnnotationHelperTest {
 
-    private DelimitedTextAnnotationHelper annotationHelper;
+public class AnnotationFileTest {
+
+    private static final String VALID_FILE = "/csvtestclinical.csv";
+    private static final String VALID_FILE_TIMEPOINT = "/csvtestclinical-timepoint.csv";
+    private static final String INVALID_FILE_MISSING_VALUE = "/csvtestclinical-missing-value.csv";
+    private static final String INVALID_FILE_EMPTY = "/emptyfile.txt";
+    private static final String INVALID_FILE_NO_DATA = "/csvtestclinical-no-data.csv";
+    private static final String INVALID_FILE_DOESNT_EXIST = "/nofile.txt";
+    
     private List<AnnotationFieldDescriptor> testAnnotationFieldDescriptors;
     
-    /**
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
-        annotationHelper = createHelper("/csvtestclinical.csv");
         setupTestAnnotations();
     }
     
-    private DelimitedTextAnnotationHelper createHelper(String filePath) {
-        File testFile = new File(DelimitedTextAnnotationHelperTest.class.getResource(filePath).getFile());
-        return new DelimitedTextAnnotationHelper(testFile);
+    private AnnotationFile createAnnotationFile(String filePath) throws ValidationException {
+        return createAnnotationFile(getFile(filePath));
+    }
+    
+    private File getFile(String filePath) {
+        return new File(AnnotationFileTest.class.getResource(filePath).getFile());
+    }
+
+    private AnnotationFile createAnnotationFile(File file) throws ValidationException {
+        return AnnotationFile.load(file);
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#validateFile()}.
+     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextannotationFile#validateFile()}.
+     * @throws ValidationException 
      */
     @Test
-    public void testValidateFile() {
-        assertTrue(annotationHelper.validateFile().isValid());
-        assertTrue(createHelper("/csvtestclinical-no-data.csv").validateFile().isValid());
-        // assertFalse(createHelper("/csvtestclinical-missing-value.csv").validateFile().isValid());
-        // assertFalse(createHelper("/emptyfile.txt").validateFile().isValid());
+    public void testLoad() throws ValidationException {
+        AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
+        assertNotNull(annotationFile);
+        assertEquals(4, annotationFile.getColumns().size());
+        assertEquals("ID", annotationFile.getColumns().get(0).getName());
+        assertEquals("Col1", annotationFile.getColumns().get(1).getName());
+        assertEquals("Col2", annotationFile.getColumns().get(2).getName());
+        assertEquals("Col3", annotationFile.getColumns().get(3).getName());
+        checkInvalid(getFile(INVALID_FILE_MISSING_VALUE), "Number of values inconsistent with header line.");
+        checkInvalid(getFile(INVALID_FILE_EMPTY), "The data file was empty.");
+        checkInvalid(getFile(INVALID_FILE_NO_DATA), "The data file contained no data (header line only).");
+        checkInvalid(new File(INVALID_FILE_DOESNT_EXIST), "The file /nofile.txt could not be found");
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#getDescriptors()}.
-     */
-    @Test
-    public void testGetDescriptors() {
-        assertTrue(validateAnnotationFieldDescriptor(testAnnotationFieldDescriptors, annotationHelper.getDescriptors()));
+    private void checkInvalid(File file, String expectedMessage) {
+        try {
+            createAnnotationFile(file);
+            fail("ValidationException expected");
+        } catch (ValidationException e) {
+            assertEquals(expectedMessage, e.getResult().getInvalidMessage());
+        }
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#positionAtData()}.
-     */
     @Test
-    public void testPositionAtData() {
-        annotationHelper.positionAtData();
-        assertTrue(true);
+    public void testGetDescriptors() throws ValidationException {
+        AnnotationFile annotationFile = createAnnotationFile(VALID_FILE_TIMEPOINT);
+        annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
+        annotationFile.setTimepointColumn(annotationFile.getColumns().get(1));
+        List<AnnotationFieldDescriptor> emptyList = Collections.emptyList();
+        annotationFile.loadDescriptors(emptyList);
+        validateAnnotationFieldDescriptor(testAnnotationFieldDescriptors, annotationFile.getDescriptors());
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextAnnotationHelper#hasNextDataLine()}.
-     */
     @Test
-    public void testReadingData() {
+    public void testPositionAtData() throws ValidationException {
+        AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
+        assertTrue(annotationFile.hasNextDataLine());
+        assertEquals("100", annotationFile.getDataValue(annotationFile.getColumns().get(0)));
+        assertTrue(annotationFile.hasNextDataLine());
+        assertEquals("101", annotationFile.getDataValue(annotationFile.getColumns().get(0)));
+        assertFalse(annotationFile.hasNextDataLine());
+        annotationFile.positionAtData();
+        assertTrue(annotationFile.hasNextDataLine());
+        assertEquals("100", annotationFile.getDataValue(annotationFile.getColumns().get(0)));
+    }
+
+    @Test
+    public void testDataValue() throws ValidationException {
+        AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
+        annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
+        annotationFile.positionAtData();
+        annotationFile.loadDescriptors(testAnnotationFieldDescriptors);
         
-        // First position our helper at the data.
-        annotationHelper.positionAtData();
+        assertTrue(annotationFile.hasNextDataLine());
+        assertEquals("100", annotationFile.getDataValue(annotationFile.getIdentifierColumn()));
+        assertEquals("1", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(0)));
+        assertEquals("g", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(1)));
+        assertEquals("N", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("1", annotationFile.getDataValue(annotationFile.getColumns().get(1)));
+        assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2)));
+        assertEquals("N", annotationFile.getDataValue(annotationFile.getColumns().get(3)));
         
-        assertTrue(annotationHelper.hasNextDataLine());
-        assertEquals("100", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0)));
-        assertEquals("1", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1)));
-        assertEquals("g", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2)));
-        assertEquals("N", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3)));
+        assertTrue(annotationFile.hasNextDataLine());
+        assertEquals("101", annotationFile.getDataValue(annotationFile.getIdentifierColumn()));
+        assertEquals("3", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(0)));
+        assertEquals("g", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(1)));
+        assertEquals("Y", annotationFile.getDataValue(testAnnotationFieldDescriptors.get(2)));
+        assertEquals("3", annotationFile.getDataValue(annotationFile.getColumns().get(1)));
+        assertEquals("g", annotationFile.getDataValue(annotationFile.getColumns().get(2)));
+        assertEquals("Y", annotationFile.getDataValue(annotationFile.getColumns().get(3)));
         
-        assertTrue(annotationHelper.hasNextDataLine());
-        assertEquals("101", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(0)));
-        assertEquals("3", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(1)));
-        assertEquals("g", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(2)));
-        assertEquals("Y", annotationHelper.getDataValue(testAnnotationFieldDescriptors.get(3)));
-        
-        assertFalse(annotationHelper.hasNextDataLine());
+        assertFalse(annotationFile.hasNextDataLine());
     }
 
     private void setupTestAnnotations() {
         testAnnotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
         
         AnnotationFieldDescriptor testAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
-        testAnnotationFieldDescriptor.setName("ID");
-        testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
-        
-        testAnnotationFieldDescriptor = new AnnotationFieldDescriptor();
         testAnnotationFieldDescriptor.setName("Col1");
         testAnnotationFieldDescriptors.add(testAnnotationFieldDescriptor);
         
@@ -191,49 +220,14 @@ public class DelimitedTextAnnotationHelperTest {
     }
     
     
-    private boolean validateAnnotationFieldDescriptor(
+    private void validateAnnotationFieldDescriptor(
                 List<AnnotationFieldDescriptor> testAnnotations, 
                 List<AnnotationFieldDescriptor> realAnnotations) {
-        boolean equal = true;
-        
         for (int x = 0; x < testAnnotations.size(); x++) {
             AnnotationFieldDescriptor testAnnotationDescriptor = testAnnotations.get(x);
             AnnotationFieldDescriptor realAnnotationDescriptor = realAnnotations.get(x);
-            if(!testAnnotationDescriptor.getName().equals(realAnnotationDescriptor.getName())) {
-                equal = false;
-            }
+            assertEquals(testAnnotationDescriptor.getName(), realAnnotationDescriptor.getName());
         }
-        
-        
-        return equal;
     }
     
-    @Test
-    public void testGetSet() {
-        AnnotationFieldDescriptor testAFD = new AnnotationFieldDescriptor();
-        AnnotationDefinition ad = new AnnotationDefinition();
-        ValidationResult result = new ValidationResult();
-        
-        testAFD.setDefinition(ad);
-        testAFD.getDefinition();
-        
-        testAFD.setKeywords("test, this, out");
-        testAFD.getKeywords();
-        
-        testAFD.setName("test");
-        testAFD.getName();
-        
-        testAFD.setType(AnnotationFieldType.CHOICE);
-        testAFD.getType();
-        
-        result.setValid(true);
-        result.isValid();
-        
-        result.setInvalidMessage("test");
-        result.getInvalidMessage();
-        
-        
-        
-    }
-
 }

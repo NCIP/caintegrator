@@ -85,11 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.assertTrue;
-
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.io.File;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -108,48 +108,33 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     @Before
     public void setUp() throws Exception {
         StudyConfiguration studyConfig = new StudyConfiguration(new Study());
+        studyConfig.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         File testFile = new File(DelimitedTextClinicalSourceConfiguration.class.getResource("/csvtestclinical.csv").getFile());
+        AnnotationFile annotationFile = AnnotationFile.load(testFile);
         // Create the identifier descriptor for our test file.
         identifierDescriptor = new AnnotationFieldDescriptor();
         identifierDescriptor.setName("ID");
-        clinicalSourceConfiguration = new DelimitedTextClinicalSourceConfiguration(testFile, studyConfig);
-        clinicalSourceConfiguration.setIdentifierDescriptor(identifierDescriptor);
+        clinicalSourceConfiguration = new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfig);
+        clinicalSourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#validate()}.
-     */
     @Test
     public void testValidate() {
         clinicalSourceConfiguration.validate();
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#loadDescriptors()}.
-     */
     @Test
     public void testLoadDescriptors() {
         clinicalSourceConfiguration.loadDescriptors();
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#getType()}.
-     */
     @Test
     public void testGetType() {
         clinicalSourceConfiguration.getType();
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#loadAnnontation()}.
-     */
     @Test
     public void testLoadAnnontation() {
-        
-        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        studyConfiguration.addClinicalConfiguration(clinicalSourceConfiguration);
-        
-        clinicalSourceConfiguration.setStudyConfiguration(studyConfiguration);
         
         // First load descriptors
         clinicalSourceConfiguration.loadDescriptors();
@@ -157,24 +142,5 @@ public class DelimitedTextClinicalSourceConfigurationTest {
         // Now load annotations.
         clinicalSourceConfiguration.loadAnnontation();
     }
-
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#getIdentifierDescriptor()}.
-     */
-    @Test
-    public void testGetIdentifierDescriptor() {
-        clinicalSourceConfiguration.getIdentifierDescriptor();
-        assertTrue(true);
-    }
-
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration#setIdentifierDescriptor(gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor)}.
-     */
-    @Test
-    public void testSetIdentifierDescriptor() {
-        clinicalSourceConfiguration.setIdentifierDescriptor(new AnnotationFieldDescriptor());
-    }
-
-
 
 }

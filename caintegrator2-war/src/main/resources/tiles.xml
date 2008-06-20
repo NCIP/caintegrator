@@ -17,6 +17,10 @@
     </definition>
 
     <!-- Pages -->
+    <definition name="editClinicalSource" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editClinicalSource_tile.jsp" />
+    </definition>
+
     <definition name="editGenomicSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
     </definition>

@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 /**
- * 
+ * Communicates whether or not a set of data were valid.
  */
 public class ValidationResult {
     
@@ -118,6 +118,7 @@ public class ValidationResult {
      * @param invalidMessage the invalidMessage to set
      */
     public void setInvalidMessage(String invalidMessage) {
+        valid = (invalidMessage == null);
         this.invalidMessage = invalidMessage;
     }
     

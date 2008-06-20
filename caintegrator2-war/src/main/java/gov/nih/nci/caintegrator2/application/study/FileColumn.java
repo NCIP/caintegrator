@@ -85,55 +85,62 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-
-import java.io.File;
-
-public class StudyManagementServiceStub implements StudyManagementService {
-
-    public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
-
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
-    }
-
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
-    }
-
-
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = true;
-        addGenomicSourceCalled = false;
-    }
-
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile) throws ValidationException {
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
+/**
+ * Represents a column in a <code>DelimitedTextFile</code>.
+ */
+public class FileColumn implements Comparable<FileColumn> {
+    
+    private int position;
+    private String name;
+    private AnnotationFieldDescriptor fieldDescriptor;
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
     
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the position
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(FileColumn column) {
+        return position - column.position;
+    }
+
+    /**
+     * @return the fieldDescriptor
+     */
+    public AnnotationFieldDescriptor getFieldDescriptor() {
+        return fieldDescriptor;
+    }
+
+    /**
+     * @param fieldDescriptor the fieldDescriptor to set
+     */
+    public void setFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
+        this.fieldDescriptor = fieldDescriptor;
+    }
+
 }

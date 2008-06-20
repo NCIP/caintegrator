@@ -85,10 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Subject;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Holds data about the sources of study data and authorization for access to data.
@@ -100,9 +108,11 @@ public class StudyConfiguration {
     private Status status = Status.NOT_DEPLOYED;
     private Study study;
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
-        new ArrayList<AbstractClinicalSourceConfiguration>();
-   
+        new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
+
+    private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
+    private transient Map<String, Timepoint> nameToTimepointMap;
     
 
     StudyConfiguration() {
@@ -204,6 +214,75 @@ public class StudyConfiguration {
     @SuppressWarnings("unused")
     private void setGenomicDataSources(List<GenomicDataSourceConfiguration> genomicDataSources) {
         this.genomicDataSources = genomicDataSources;
+    }
+
+    Set<AnnotationFieldDescriptor> getAllExistingDescriptors() {
+        Set<AnnotationFieldDescriptor> existingDescriptors = new HashSet<AnnotationFieldDescriptor>();
+        for (AbstractClinicalSourceConfiguration clinicalSourceConfiguration : clinicalConfigurationCollection) {
+            existingDescriptors.addAll(clinicalSourceConfiguration.getAnnotationDescriptors());
+        }
+        return existingDescriptors;
+    }
+
+    StudySubjectAssignment getOrCreateSubjectAssignment(String identifier) {
+        if (getIdentifierToSubjectAssignmentMap().containsKey(identifier)) {
+            return getIdentifierToSubjectAssignmentMap().get(identifier);
+        } else {
+            return createSubjectAssignment(identifier);
+        }
+    }
+
+    private StudySubjectAssignment createSubjectAssignment(String identifier) {
+        StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+        studySubjectAssignment.setSubject(new Subject());
+        studySubjectAssignment.setStudy(getStudy());
+        studySubjectAssignment.setIdentifier(identifier);
+        studySubjectAssignment.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        getIdentifierToSubjectAssignmentMap().put(identifier, studySubjectAssignment);
+        return studySubjectAssignment;
+    }
+
+    private Map<String, StudySubjectAssignment> getIdentifierToSubjectAssignmentMap() {
+        if (identifierToSubjectAssignmentMap == null) {
+            loadIdentifierToSubjectAssignmentMap();
+        }
+        return identifierToSubjectAssignmentMap;
+    }
+    
+    private void loadIdentifierToSubjectAssignmentMap() {
+        identifierToSubjectAssignmentMap = new HashMap<String, StudySubjectAssignment>();
+        for (StudySubjectAssignment assignment : getStudy().getAssignmentCollection()) {
+            identifierToSubjectAssignmentMap.put(assignment.getIdentifier(), assignment);
+        }
+    }
+
+    Timepoint getOrCreateTimepoint(String name) {
+        if (getNameToTimepointMap().containsKey(name)) {
+            return getNameToTimepointMap().get(name);
+        } else {
+            return createTimepoint(name);
+        }
+    }
+
+    private Timepoint createTimepoint(String name) {
+        Timepoint timepoint = new Timepoint();
+        timepoint.setName(name);
+        getNameToTimepointMap().put(name, timepoint);
+        return timepoint;
+    }
+
+    private Map<String, Timepoint> getNameToTimepointMap() {
+        if (nameToTimepointMap == null) {
+            loadNameToTimepointMap();
+        }
+        return nameToTimepointMap;
+    }
+    
+    private void loadNameToTimepointMap() {
+        nameToTimepointMap = new HashMap<String, Timepoint>();
+        for (Timepoint timepoint : getStudy().getTimepointCollection()) {
+            nameToTimepointMap.put(timepoint.getName(), timepoint);
+        }
     }
 
 }

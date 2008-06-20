@@ -22,6 +22,10 @@
         
         <!--  Study Actions -->
    
+        <action name="addClinicalSource" method="addClinicalSource" class="defineStudyAction">
+            <result name="editClinicalSource" type="tiles">editClinicalSource</result>
+        </action>
+   
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
         </action>

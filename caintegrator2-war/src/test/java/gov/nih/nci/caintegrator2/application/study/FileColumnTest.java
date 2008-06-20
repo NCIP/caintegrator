@@ -85,55 +85,32 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.assertEquals;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class StudyManagementServiceStub implements StudyManagementService {
+import org.junit.Test;
 
-    public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
+public class FileColumnTest {
 
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
+    @Test
+    public void testCompareTo() {
+        FileColumn column0 = new FileColumn();
+        column0.setPosition((short) 0);
+        FileColumn column1 = new FileColumn();
+        column1.setPosition((short) 1);
+        FileColumn column2 = new FileColumn();
+        column2.setPosition((short) 2);
+        List<FileColumn> columns = new ArrayList<FileColumn>();
+        columns.add(column1);
+        columns.add(column0);
+        columns.add(column2);
+        Collections.sort(columns);
+        assertEquals(column0, columns.get(0));
+        assertEquals(column1, columns.get(1));
+        assertEquals(column2, columns.get(2));
     }
 
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
-    }
-
-
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = true;
-        addGenomicSourceCalled = false;
-    }
-
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile) throws ValidationException {
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
-    }
-    
 }
