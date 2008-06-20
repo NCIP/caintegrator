@@ -103,7 +103,7 @@ public class AnnotationFileTest {
     private static final String INVALID_FILE_MISSING_VALUE = "/csvtestclinical-missing-value.csv";
     private static final String INVALID_FILE_EMPTY = "/emptyfile.txt";
     private static final String INVALID_FILE_NO_DATA = "/csvtestclinical-no-data.csv";
-    private static final String INVALID_FILE_DOESNT_EXIST = "/nofile.txt";
+    private static final String INVALID_FILE_DOESNT_EXIST = "nofile.txt";
     
     private List<AnnotationFieldDescriptor> testAnnotationFieldDescriptors;
     
@@ -140,7 +140,7 @@ public class AnnotationFileTest {
         checkInvalid(getFile(INVALID_FILE_MISSING_VALUE), "Number of values inconsistent with header line.");
         checkInvalid(getFile(INVALID_FILE_EMPTY), "The data file was empty.");
         checkInvalid(getFile(INVALID_FILE_NO_DATA), "The data file contained no data (header line only).");
-        checkInvalid(new File(INVALID_FILE_DOESNT_EXIST), "The file /nofile.txt could not be found");
+        checkInvalid(new File(INVALID_FILE_DOESNT_EXIST), "The file nofile.txt could not be found");
     }
 
     private void checkInvalid(File file, String expectedMessage) {
