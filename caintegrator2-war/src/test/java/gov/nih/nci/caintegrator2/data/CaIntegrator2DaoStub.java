@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import java.util.List;
+
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
@@ -115,6 +118,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
+        
+        return null;
     }
 
 }
