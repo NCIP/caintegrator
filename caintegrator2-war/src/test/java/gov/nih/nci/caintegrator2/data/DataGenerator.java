@@ -85,9 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.Collection;
+import java.util.TreeSet;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -102,6 +108,7 @@ public class DataGenerator {
     private CaIntegrator2Dao dao;
     private Study study;
     private StudySubscription studySubscription;
+    private AnnotationDefinition ad;
     
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("dao-test-config.xml", DataGenerator.class); 
@@ -122,6 +129,8 @@ public class DataGenerator {
         addStudy();
         addStudySubscription();
         addUserWorkspace();
+        addAnnotationDefinition();
+        addAnnotationFieldDescriptor();
     }
     
     private void addStudy() {
@@ -140,8 +149,31 @@ public class DataGenerator {
     private void addUserWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
         workspace.setDefaultSubscription(studySubscription);
+        Collection <StudySubscription> studies = new TreeSet<StudySubscription>();
+        studies.add(studySubscription);
+        workspace.setSubscriptionCollection(studies);
         dao.save(workspace);
         
+    }
+    
+    private void addAnnotationDefinition() {
+        ad = new AnnotationDefinition();
+        ad.setDisplayName("Cognitive Heart Failure");
+        ad.setType("boolean");
+        dao.save(ad);
+    }
+    
+    private void addAnnotationFieldDescriptor() {
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        afd.setDefinition(ad);
+        Collection<String> keywords = new TreeSet<String>();
+        keywords.add("cognitive");
+        keywords.add("heart");
+        keywords.add("failure");
+        afd.setKeywords(keywords);
+        afd.setName("Cognitive Heart Failure");
+        afd.setType(AnnotationFieldType.CHOICE);
+        dao.save(afd);
     }
 
 
