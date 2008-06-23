@@ -85,8 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -123,6 +130,48 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(study1, study2);
         assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
         assertEquals(study1.getLongTitleText(), study2.getLongTitleText());
+    }
+    
+    @Test 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength"})
+    public void testFindMatches() {
+        // First load 2 AnnotationFieldDescriptors.
+        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        Collection<String> keywords = new TreeSet<String>();
+        keywords.add("cognitive");
+        keywords.add("heart");
+        keywords.add("failure");
+        afd.setKeywords(keywords);
+        afd.setName("Cognitive Heart Failure");
+        afd.setType(AnnotationFieldType.CHOICE);
+        caIntegrator2Dao.save(afd);
+        
+        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
+        Collection<String> keywords2 = new TreeSet<String>();
+        keywords2.add("smoking");
+        keywords2.add("status");
+        afd2.setKeywords(keywords2);
+        afd2.setName("Smoking Status");
+        afd2.setType(AnnotationFieldType.CHOICE);
+        caIntegrator2Dao.save(afd2);
+        
+        // Now search for our item on the string "cognitive"
+        List<String> searchWords = new ArrayList<String>();
+        searchWords.add("CoGnItIvE");
+        List<AnnotationFieldDescriptor> afds1 = caIntegrator2Dao.findMatches(searchWords);
+        
+        assertNotNull(afds1);
+        
+        // Now search for our item on the strings cognitive AND smoking
+        searchWords.add("smoking");
+        List<AnnotationFieldDescriptor> afds2 = caIntegrator2Dao.findMatches(searchWords);
+        assertEquals(1, afds2.size() - afds1.size());
+        
+        
+        List<String> searchWords2 = new ArrayList<String>();
+        searchWords2.add("afdsefda");
+        List<AnnotationFieldDescriptor> afds3 = caIntegrator2Dao.findMatches(searchWords2);
+        assertEquals(0, afds3.size());
     }
 
     /**

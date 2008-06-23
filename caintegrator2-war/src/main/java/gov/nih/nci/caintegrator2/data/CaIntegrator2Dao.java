@@ -85,7 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+
+import java.util.List;
 
 /**
  * Main DAO interface for storage and retrieval of persistent entities.
@@ -116,5 +119,12 @@ public interface CaIntegrator2Dao {
      * @return the user's workspace
      */
     UserWorkspace getWorkspace(String username);
+    
+    /**
+     * Returns a list of AnnotationFieldDescriptors that match the keywords.
+     * @param keywords - keywords to search on.
+     * @return - list of annotation field descriptors that match.
+     */
+    List<AnnotationFieldDescriptor> findMatches(List<String> keywords);
 
 }

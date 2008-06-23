@@ -85,8 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -126,4 +128,28 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return (T) getHibernateTemplate().get(objectClass, id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
+        List<AnnotationFieldDescriptor> annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
+        List<AnnotationFieldDescriptor> results = getHibernateTemplate().find("from AnnotationFieldDescriptor");
+        for (AnnotationFieldDescriptor afd : results) {
+            if (containsKeyword(afd, keywords)) {
+                annotationFieldDescriptors.add(afd);
+            }
+        }
+        return annotationFieldDescriptors;
+    }
+
+    private boolean containsKeyword(AnnotationFieldDescriptor afd, List<String> keywords) {
+        for (String keyword : keywords) {
+            if (afd.getKeywords().contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
