@@ -411,9 +411,6 @@
     <!-- ******************************************************************* -->
     <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore">
         <delete file="${caintegrator2-orm.jar}" />
-        <replace dir="${caintegrator2-cacore.output.src.dir}" 
-            token="generator class=&quot;assigned&quot;"
-            value="generator class=&quot;native&quot;" />
         <jar destfile="${caintegrator2-orm.jar}">
             <manifest>
                 <attribute name="Generated-By" value="caCORE SDK Code Generator"/>
