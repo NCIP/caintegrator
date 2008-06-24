@@ -97,7 +97,7 @@ import java.util.Vector;
 public class SearchStub extends Search {
     
     @Override    
-    public Vector<SearchResults> findReturningSearchResults(String arg0) {
+    public Vector<SearchResults> findReturningSearchResults(final String keywords) {
         String testLiteral = "test";
         SearchResults searchResults = new SearchResults(SearchAC.valueOf(1),
         testLiteral,
@@ -111,7 +111,12 @@ public class SearchStub extends Search {
         1,
         testLiteral,
         3,
-        testLiteral);
+        testLiteral) {
+            @Override
+            public String getPreferredDefinition() {
+                return keywords;
+            }  
+        };
         
         Vector<SearchResults> searchResultsVector = new Vector<SearchResults>();
         searchResultsVector.add(searchResults);

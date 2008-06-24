@@ -158,7 +158,7 @@ public class DataGenerator {
     
     private void addAnnotationDefinition() {
         ad = new AnnotationDefinition();
-        ad.setDisplayName("Cognitive Heart Failure");
+        ad.setDisplayName("Congestive Heart Failure");
         ad.setType("boolean");
         dao.save(ad);
     }
@@ -167,11 +167,11 @@ public class DataGenerator {
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setDefinition(ad);
         Collection<String> keywords = new TreeSet<String>();
-        keywords.add("cognitive");
+        keywords.add("congestive");
         keywords.add("heart");
         keywords.add("failure");
         afd.setKeywords(keywords);
-        afd.setName("Cognitive Heart Failure");
+        afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
         dao.save(afd);
     }
