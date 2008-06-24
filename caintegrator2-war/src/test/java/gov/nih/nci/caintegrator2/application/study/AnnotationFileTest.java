@@ -95,15 +95,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import static gov.nih.nci.caintegrator2.TestDataFiles.*;
+
 
 public class AnnotationFileTest {
-
-    private static final String VALID_FILE = "/csvtestclinical.csv";
-    private static final String VALID_FILE_TIMEPOINT = "/csvtestclinical-timepoint.csv";
-    private static final String INVALID_FILE_MISSING_VALUE = "/csvtestclinical-missing-value.csv";
-    private static final String INVALID_FILE_EMPTY = "/emptyfile.txt";
-    private static final String INVALID_FILE_NO_DATA = "/csvtestclinical-no-data.csv";
-    private static final String INVALID_FILE_DOESNT_EXIST = "nofile.txt";
     
     private List<AnnotationFieldDescriptor> testAnnotationFieldDescriptors;
     
@@ -112,14 +107,6 @@ public class AnnotationFileTest {
         setupTestAnnotations();
     }
     
-    private AnnotationFile createAnnotationFile(String filePath) throws ValidationException {
-        return createAnnotationFile(getFile(filePath));
-    }
-    
-    private File getFile(String filePath) {
-        return new File(AnnotationFileTest.class.getResource(filePath).getFile());
-    }
-
     private AnnotationFile createAnnotationFile(File file) throws ValidationException {
         return AnnotationFile.load(file);
     }
@@ -137,11 +124,10 @@ public class AnnotationFileTest {
         assertEquals("Col1", annotationFile.getColumns().get(1).getName());
         assertEquals("Col2", annotationFile.getColumns().get(2).getName());
         assertEquals("Col3", annotationFile.getColumns().get(3).getName());
-        checkInvalid(getFile(INVALID_FILE_MISSING_VALUE), "Number of values inconsistent with header line.");
-        checkInvalid(getFile(INVALID_FILE_EMPTY), "The data file was empty.");
-        checkInvalid(getFile(INVALID_FILE_NO_DATA), "The data file contained no data (header line only).");
-        File doesntExist = new File(INVALID_FILE_DOESNT_EXIST);
-        checkInvalid(doesntExist, "The file " + doesntExist.getAbsolutePath() + " could not be found");
+        checkInvalid(INVALID_FILE_MISSING_VALUE, "Number of values inconsistent with header line.");
+        checkInvalid(INVALID_FILE_EMPTY, "The data file was empty.");
+        checkInvalid(INVALID_FILE_NO_DATA, "The data file contained no data (header line only).");
+        checkInvalid(INVALID_FILE_DOESNT_EXIST, "The file " + INVALID_FILE_DOESNT_EXIST.getAbsolutePath() + " could not be found");
     }
 
     private void checkInvalid(File file, String expectedMessage) {

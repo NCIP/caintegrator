@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-
-import java.io.File;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -116,11 +115,9 @@ public class StudyManagementServiceImplTestIntegration extends AbstractTransacti
     @Test
     public void testSetClinicalAnnotationAndLoadData() throws ValidationException {
         
-        File testFile = new File(StudyManagementServiceImplTestIntegration.class.getResource("/csvtestclinical.csv").getFile());
-        
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = studyManagementService.addClinicalAnnotationFile(studyConfiguration, testFile);
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE);
         assertNotNull(sourceConfiguration);
         
         // Need to now test to see if we can load the annotation values.
