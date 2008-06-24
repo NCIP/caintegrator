@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
 import org.junit.Before;
@@ -94,7 +95,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DefineStudyActionTest {
-    
+
+    private static final String EDIT_STUDY = "editStudy";
     private DefineStudyAction defineStudyAction;
     private StudyManagementServiceStub studyManagementServiceStub;
 
@@ -108,7 +110,7 @@ public class DefineStudyActionTest {
 
     @Test
     public void testCreateStudy() {
-        assertEquals("editStudy", defineStudyAction.createStudy());
+        assertEquals(EDIT_STUDY, defineStudyAction.createStudy());
         assertTrue(studyManagementServiceStub.createStudyCalled);
         assertNotNull(defineStudyAction.getStudyConfiguration());
         assertNotNull(defineStudyAction.getStudy());
@@ -117,14 +119,14 @@ public class DefineStudyActionTest {
     @Test
     public void testSaveStudy() {
         defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.saveStudy());
+        assertEquals(EDIT_STUDY, defineStudyAction.saveStudy());
         assertTrue(studyManagementServiceStub.updateStudyCalled);
     }
 
     @Test
     public void testDeployStudy() {
         defineStudyAction.createStudy();
-        assertEquals("editStudy", defineStudyAction.deployStudy());
+        assertEquals(EDIT_STUDY, defineStudyAction.deployStudy());
         assertTrue(studyManagementServiceStub.deployStudyCalled);
     }
 
@@ -134,6 +136,14 @@ public class DefineStudyActionTest {
         assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
         assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
         assertNotNull(defineStudyAction.getGenomicDataSource());
+    }
+    
+    @Test
+    public void testAddClinicalFile() {
+        defineStudyAction.setClinicalFile(TestDataFiles.VALID_FILE);
+        assertEquals("editClinicalFile", defineStudyAction.addClinicalFile());
+        defineStudyAction.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
+        assertEquals(EDIT_STUDY, defineStudyAction.addClinicalFile());
     }
 
 }

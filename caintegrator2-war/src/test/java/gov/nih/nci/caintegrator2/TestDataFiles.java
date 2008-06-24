@@ -83,61 +83,30 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFileTest;
 
 import java.io.File;
 
-public class StudyManagementServiceStub implements StudyManagementService {
-
-    public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
-
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
-    }
-
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
-    }
-
-
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = true;
-        addGenomicSourceCalled = false;
-    }
-
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile) throws ValidationException {
-        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
-            throw new ValidationException(new ValidationResult());
-        }
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
-    }
+public class TestDataFiles {
     
+    public static final String VALID_FILE_RESOURCE_PATH = "/csvtestclinical.csv";
+    public static final String VALID_FILE_TIMEPOINT_RESOURCE_PATH = "/csvtestclinical-timepoint.csv";
+    public static final String INVALID_FILE_MISSING_VALUE_RESOURCE_PATH = "/csvtestclinical-missing-value.csv";
+    public static final String INVALID_FILE_EMPTY_RESOURCE_PATH = "/emptyfile.txt";
+    public static final String INVALID_FILE_NO_DATA_RESOURCE_PATH = "/csvtestclinical-no-data.csv";
+    public static final String INVALID_FILE_DOESNT_EXIST_PATH = "nofile.txt";
+    
+    public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
+    public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
+    public static final File INVALID_FILE_MISSING_VALUE = getFile(INVALID_FILE_MISSING_VALUE_RESOURCE_PATH);
+    public static final File INVALID_FILE_EMPTY = getFile(INVALID_FILE_EMPTY_RESOURCE_PATH);
+    public static final File INVALID_FILE_NO_DATA = getFile(INVALID_FILE_NO_DATA_RESOURCE_PATH);
+    public static final File INVALID_FILE_DOESNT_EXIST= new File(INVALID_FILE_DOESNT_EXIST_PATH);
+
+    private static File getFile(String resourcePath) {
+        return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());
+    }
+
 }

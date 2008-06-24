@@ -113,8 +113,7 @@ public class WorkspaceAction {
      * @return forward to workspace.
      */
     public String openWorkspace() {
-        String username = getUsername();
-        workspace = getWorkspaceService().getWorkspace(username);
+        setWorkspace(getWorkspaceService().getWorkspace(getUsername()));
         if (workspace.getDefaultSubscription() != null) {
             setOpenStudySubscription(workspace.getDefaultSubscription());
             return WORKSPACE_STUDY;
@@ -158,10 +157,7 @@ public class WorkspaceAction {
         return workspace;
     }
 
-    /**
-     * @param workspace the workspace to set
-     */
-    public void setWorkspace(UserWorkspace workspace) {
+    private void setWorkspace(UserWorkspace workspace) {
         this.workspace = workspace;
     }
 

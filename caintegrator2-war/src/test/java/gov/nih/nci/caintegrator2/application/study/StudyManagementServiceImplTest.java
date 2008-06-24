@@ -88,11 +88,10 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
-
-import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -102,12 +101,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class StudyManagementServiceImplTest {
     
     private StudyManagementService studyManagementService;
-    private File testFile;
     private CaIntegrator2DaoStub daoStub;
 
     @Before
     public void setUp() throws Exception {
-        testFile = new File(StudyManagementServiceImplTest.class.getResource("/csvtestclinical.csv").getFile());
         ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
@@ -142,7 +139,7 @@ public class StudyManagementServiceImplTest {
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = studyManagementService.createStudy();
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, testFile);
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE);
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
 
         // Load Clinical Annotation Values
