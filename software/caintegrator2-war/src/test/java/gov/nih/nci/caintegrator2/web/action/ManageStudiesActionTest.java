@@ -83,57 +83,79 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.web.action;
 
-import java.util.Collections;
-import java.util.List;
+import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
+public class ManageStudiesActionTest {
 
-    public boolean getCalled;
-    public boolean saveCalled;
-    public boolean getManagedStudiesCalled;
-    public boolean findMatchesCalled;
+    private static final String EDIT_STUDY = "editStudy";
+    private ManageStudiesAction manageStudiesAction;
+    private StudyManagementServiceStub studyManagementServiceStub;
 
-    public UserWorkspace getWorkspace(String username) {
-        return new UserWorkspace();
+    @Before
+    public void setUp() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", ManageStudiesActionTest.class); 
+        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    public void save(Object entity) {
-        saveCalled = true;
+    @Test
+    public void testCreateStudy() {
+        assertEquals(EDIT_STUDY, manageStudiesAction.createStudy());
+        assertTrue(studyManagementServiceStub.createStudyCalled);
+        assertNotNull(manageStudiesAction.getStudyConfiguration());
+        assertNotNull(manageStudiesAction.getStudy());
+    }
+
+    @Test
+    public void testSaveStudy() {
+        manageStudiesAction.createStudy();
+        assertEquals(EDIT_STUDY, manageStudiesAction.saveStudy());
+        assertTrue(studyManagementServiceStub.updateStudyCalled);
+    }
+
+    @Test
+    public void testDeployStudy() {
+        manageStudiesAction.createStudy();
+        assertEquals(EDIT_STUDY, manageStudiesAction.deployStudy());
+        assertTrue(studyManagementServiceStub.deployStudyCalled);
+    }
+
+    @Test
+    public void testAddGenomicSource() {
+        manageStudiesAction.createStudy();
+        assertEquals("editGenomicSource", manageStudiesAction.addGenomicSource());
+        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
+        assertNotNull(manageStudiesAction.getGenomicDataSource());
     }
     
-    public void clear() {
-        getCalled = false;
-        saveCalled = false;
-        findMatchesCalled = false;
-        getManagedStudiesCalled = false;
-    }
-
-    public <T> T get(Long id, Class<T> objectClass) {
-        getCalled = true;
-        T object;
-        try {
-            object = objectClass.newInstance();
-            objectClass.getMethod("setId", new Class[] {Long.class}).invoke(object, id);
-            return object;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+    @Test
+    public void testAddClinicalFile() {
+        manageStudiesAction.setClinicalFile(TestDataFiles.VALID_FILE);
+        assertEquals("editClinicalFile", manageStudiesAction.addClinicalFile());
+        manageStudiesAction.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
+        assertEquals(EDIT_STUDY, manageStudiesAction.addClinicalFile());
     }
     
-    public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
-        findMatchesCalled = true;
-        return Collections.emptyList();
+    @Test
+    public void testManageStudies() {
+        assertEquals("manageStudies", manageStudiesAction.manageStudies());
+        assertNotNull(manageStudiesAction.getStudyConfigurations());
+        assertTrue(studyManagementServiceStub.manageStudiesCalled);
     }
-
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        getManagedStudiesCalled = true;
-        return Collections.emptyList();
+    
+    @Test
+    public void testEditStudy() {
+        assertEquals("editStudy", manageStudiesAction.editStudy());
     }
 
 }

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
@@ -169,6 +170,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         dao.save(studyConfiguration);
         return genomicDataSourceConfiguration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StudyConfiguration> getManagedStudies(String username) {
+        return dao.getManagedStudies(username);
     }
 
 

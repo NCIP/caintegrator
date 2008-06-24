@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * 
@@ -138,5 +139,13 @@ public interface StudyManagementService {
      * @return the new genomic data source configuration object.
      */
     GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration);
+
+    /**
+     * Returns the studies managed by the Study Manager indicated by username.
+     * 
+     * @param username get studies managed by this user
+     * @return the list of managed studies.
+     */
+    List<StudyConfiguration> getManagedStudies(String username);
     
 }

@@ -89,10 +89,6 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.UserDetails;
-
 /**
  * Struts 2 action for user workspace access and management.
  */
@@ -113,27 +109,13 @@ public class WorkspaceAction {
      * @return forward to workspace.
      */
     public String openWorkspace() {
-        setWorkspace(getWorkspaceService().getWorkspace(getUsername()));
+        setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
         if (workspace.getDefaultSubscription() != null) {
             setOpenStudySubscription(workspace.getDefaultSubscription());
             return WORKSPACE_STUDY;
         } else {
             return WORKSPACE_NO_STUDY;
         }
-    }
-
-    private String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if (authentication != null) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-        }
-        return username;
     }
 
     /**

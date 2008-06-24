@@ -21,7 +21,8 @@
         </li>
         <li class="stdnav"><div>Study Management</div>
             <ul>
-                <li><a href="study_elements/subjects.html">Manage Studies</a></li>
+                <li><s:url id="manageStudiesUrl" action="manageStudies" />
+                <a href="${manageStudiesUrl}">Manage Studies</a></li>
                 <li><s:url id="createStudyUrl" action="createStudy" />
                 <a href="${createStudyUrl}">Create New Study</a></li>
             </ul>
