@@ -85,32 +85,25 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.io.File;
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- */
 public class DelimitedTextClinicalSourceConfigurationTest {
 
     DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
     AnnotationFieldDescriptor identifierDescriptor;
     
-    /**
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
         StudyConfiguration studyConfig = new StudyConfiguration(new Study());
         studyConfig.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
-        File testFile = new File(DelimitedTextClinicalSourceConfiguration.class.getResource("/csvtestclinical.csv").getFile());
-        AnnotationFile annotationFile = AnnotationFile.load(testFile);
+        AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE);
         // Create the identifier descriptor for our test file.
         identifierDescriptor = new AnnotationFieldDescriptor();
         identifierDescriptor.setName("ID");
