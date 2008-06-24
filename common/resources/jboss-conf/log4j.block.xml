@@ -1,0 +1,7 @@
+	<category name="org.hibernate">
+		<priority value="FATAL"/>
+	</category>
+	<category name="gov.nih.nci">
+		<priority value="ERROR"/>
+	</category>
+
