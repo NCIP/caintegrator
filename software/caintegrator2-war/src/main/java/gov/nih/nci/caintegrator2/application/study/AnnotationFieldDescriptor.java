@@ -85,16 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
  * <code>AnnotationDefinition</code>.
  */
 public class AnnotationFieldDescriptor {
-    
+    private static final int PERCENT_TO_NUMBER = 100;
     private Long id;
     private String name;
     private Collection<String> keywords;
@@ -169,6 +171,21 @@ public class AnnotationFieldDescriptor {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * Gets the match score for this descriptor based on keywords.
+     * @param matchKeywords - keywords to match on.
+     * @return numeric value of matching words between (1-100)
+     */
+    public int getMatchScore(List<String> matchKeywords) {
+        int numMatched = 0;
+        for (String word : matchKeywords) {
+            if (Cai2Util.containsIgnoreCase(keywords, word)) {
+                numMatched++;
+            }
+        }
+        return Math.round(((float) numMatched / (float) matchKeywords.size()) * PERCENT_TO_NUMBER);
     }
 
 
