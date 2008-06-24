@@ -1,0 +1,1113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+$Id: build.xml 4753 2008-05-15 18:24:16Z saksass $
+$HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
+-->
+<project name="build-caintegrator2" default="build:all" basedir="." 
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+	>
+	<description>
+		Builds the application.
+	</description>
+
+	<!-- Property file related properties and tasks -->
+	<property name="project.name" value="caintegrator2"/>
+	<property environment="env" />
+	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
+	<property file="local.properties" />
+	<property file="project.properties" />
+	<!-- Should not be required for builds.
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	-->
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}" />
+	<!-- added for remote deployments since file is copied to root of install dir -->
+	<basename property="properties.file.name" file="${properties.file}"/>
+
+	<!-- Default values in case property file is not used -->
+	<property name="application.base.path" value="${user.home}/apps"/>
+
+	<!-- Generic build time properties -->
+	<property name="bda.version" value="0.2"/>
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="resources.dir" value="${basedir}/resources" />
+	<property name="reports.dir" value="${basedir}/reports" />
+	<property name="temp.dir" value="${basedir}/temp" />
+	<property name="ivy.settings.file" location="ivy-bda-settings.xml" />
+	<property name="ivy.bda-testing.file" location="ivy-bda-testing.xml" />
+	<property name="ivy.file" value="ivy-2.0.0-beta2.jar"/>
+	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar"/>
+
+
+	<!-- Used by dist:*:prep to copy resource files to distribution area -->
+	<property name="common.src.dir" value="${basedir}/${common.dist.relative.dir}" />
+
+	<!-- Used by dist:*:prep to determin list of files to use for incremental build process.
+		Directory and files must be in svn to work.
+	-->
+	<property name="db-install.src.dir" value="${basedir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.src.dir" value="${basedir}/${db-upgrade.dist.relative.dir}" />
+	
+	<!-- Properties that relate to how to call build targets from sub-projects-->
+	<!-- Working directory passed to Ant tasks -->
+	<property name="caintegrator-cacore.base.dir" value="${basedir}/caintegrator-cacore"/>
+	<property name="caintegrator2-war.base.dir" value="${basedir}/caintegrator2-war"/>
+
+	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
+	<property name="caintegrator2-war.build.file" value="build.xml"/>
+	<property name="caintegrator-cacore.build.file" value="build.xml"/>
+	
+	<!-- The target name that should be called from the sub-project build file -->
+	<property name="caintegrator-cacore.build.target" value="run"/>
+	<property name="caintegrator2-war.build.target" value="run"/>
+    
+	<!-- Distribution Structure properties, used to copy files into the distribution area.
+       		Use project.propertie relative dir names becasue they are used by install also-->
+	<property name="target.dir" value="${basedir}/target" />
+	<property name="caintegrator-cacore.target.dir" value="${target.dir}/${caintegrator-cacore.dist.relative.dir}" />
+	<property name="caintegrator2-war.target.dir" value="${target.dir}/${caintegrator2-war.dist.relative.dir}" />
+	<property name="tools.target.dir" value="${target.dir}/${tools.dist.relative.dir}" />
+	<property name="common.target.dir" value="${target.dir}/${common.dist.relative.dir}" />
+	<property name="db-install.target.dir" value="${target.dir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.target.dir" value="${target.dir}/${db-upgrade.dist.relative.dir}" />
+	<property name="jboss-conf.target.dir" value="${target.dir}/${jboss-conf.dist.relative.dir}" />
+
+	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
+	<property name="jboss.dest.file" value="${tools.target.dir}/${jboss.binaries.file}"/>
+
+	<!-- Where the sub-projects should deploy thier artifacts.  This relative from thier *.base.dir above.  We need to use this because thier basedir is not the same as this project's basedir. -->
+	<property name="caintegrator-cacore.dist.dir" value="../${caintegrator-cacore.target.dir}" />
+	<property name="caintegrator2-war.dist.dir" value="${caintegrator2-war.target.dir}" />
+
+	<!-- Properties related to creating the distribution -->
+	<property name="dist.dir" value="dist"/>
+
+	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
+	<property name="install.target" value="install"/>
+	<property name="upgrade.target" value="upgrade"/>
+	
+	<!-- Where grand stores it's outputed pdf reports of build files -->
+	<property name="grand.rpt.dir" value="common/grand"/>
+
+	<!-- Testing & static-analysis properties -->
+	<property name="caintegrator2-war.java.dir" value="${caintegrator2-war.base.dir}/src"/>
+	<property name="caintegrator-cacore.java.dir" value="${caintegrator-cacore.base.dir}/src"/>
+
+	<property name="caintegrator2-war.classes.dir" value="${caintegrator2-war.base.dir}/target/classes"/>
+	<property name="caintegrator-cacore.classes.dir" value="${caintegrator-cacore.base.dir}/target/classes"/>
+
+	<!-- common directory to retrieve resources used by static-analysis tools -->
+	<property name="common.dir" value="common"/>
+
+	<!-- Reporting directories for testing and static-analysis reports -->
+	<property name="reports.dir" value="reports"/>
+	<property name="reports.simian.dir" value="${reports.dir}/simian"/>
+	<property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
+	<property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
+	<property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
+	<property name="reports.cobertura.dir" value="${reports.dir}/cobertura"/>
+	<property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
+
+	<!-- Additional properties required by cobertura -->
+	<property name="instrumented.dir" value="${basedir}/instrumented" />
+	<property name="cobertura.ser.file" value="${instrumented.dir}/cobertura.ser" />
+	<property name="cobertura.reports.dir" value="${reports.dir}/cobertura"/>
+
+	<!-- retrive ivy files then retrieve bda files and librarires -->
+	<mkdir dir="lib"/>
+	<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml"
+		target="retrieve-bda">
+		<property name="bda-utils.dir" value="${bda-utils.dir}"/>
+		<property name="lib.dir" value="${lib.dir}"/>
+	</ant>
+
+	<!-- Paths -->
+	<path id="bda-utils.classpath">
+		<fileset dir="${bda-utils.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="ivy.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="${ivy.file}" />
+			<include name="${ivy-cacore.file}" />
+		</fileset>
+	</path>
+
+	<!-- Task definitions -->
+	<taskdef resource="simiantask.properties" classpathref="bda-utils.classpath" />
+	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/antunit-1.0.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath" />
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.classpath"/>
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- Includes- include BDA marcos -->
+	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+
+	<!-- Start logging --> 
+	<mkdir dir="${log.dir}" />
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm" />
+	</tstamp>
+	<record name="${log.dir}/install-${install.time}.log" action="start"/>
+
+	<!-- Targets -->
+	<target name="diagnostics" description="diagnostics">
+		<echoproperties/>
+		<diagnostics/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${target.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<delete dir="${temp.dir}"/>
+	</target>
+
+	<target name="init" >
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${target.dir}"/>
+		<mkdir dir="${caintegrator-cacore.target.dir}"/>
+		<mkdir dir="${caintegrator2-war.target.dir}"/>
+		<mkdir dir="${common.target.dir}"/>
+		<mkdir dir="${tools.target.dir}"/>
+		<mkdir dir="${temp.dir}"/>
+		<available file="${jboss.dest.file}" property="jboss.tools.exists"/>
+	</target>
+
+	<target name="ivy:clean" description="Clean">
+		<ivy:settings file="${ivy.settings.file}" />
+		<ivy:cleancache />
+		<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml"
+			target="ivy-cleancache">
+			<property name="bda-utils.dir" value="${bda-utils.dir}"/>
+			<property name="lib.dir" value="${lib.dir}"/>
+		</ant>
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.test.file}"
+			target="ivy-clean"
+			dir="${caintegrator-cacore.base.dir}" />
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
+			target="ivy-clean"
+			dir="${caintegrator2-war.base.dir}"/>
+		
+	</target>
+
+	<target name="build:caintegrator2" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="build.xml"
+			target="caintegrator2.war"
+			dir="build" >
+			<property name="caintegrator2.war" value="${caintegrator2-war.target.dir}/caintegrator2.war" />
+		</ant>
+	</target>
+
+	<!-- Wrapper build target, call appropriate builds for sub-projects -->
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
+		depends="
+		clean,
+		init,
+		build:caintegrator2-war
+		"/>
+
+	<!-- Build generic-query-grid sub-project produces project level artifact -->
+	<target name="build:caintegrator-cacore" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.build.file}"
+			target="${caintegrator-cacore.build.target}"
+			dir="${caintegrator-cacore.base.dir}" >
+			<!-- ignore this since it does not need to be in distribution
+			<property name="dist" value="${caintegrator-cacore.dist.dir}" />
+			-->
+		</ant>
+	</target>
+
+	<target name="build:caintegrator2-war" depends="init, build:caintegrator-cacore">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
+			target="${caintegrator2-war.build.target}"
+			dir="${caintegrator2-war.base.dir}" >
+			<property name="dist.dir" value="${caintegrator2-war.dist.dir}" />
+		</ant>
+	</target>
+
+	<!--
+	<target name="compile:all" description="Used by static-analysis, required since dist target cleans up generated classes that are required by some static analysis tools"
+		depends="
+			init,
+			compile:caintegrator-cacore,
+			compile:caintegrator2-war
+			"/>
+	-->
+
+	<target name="compile:all" description="Used by static-analysis, required since dist target cleans up generated classes that are required by some static analysis tools"
+		depends="
+			init
+			"/>
+
+	<target name="compile:caintegrator-cacore" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.build.file}"
+			target="compile"
+			dir="${caintegrator-cacore.base.dir}"/>
+	</target>
+
+	<target name="compile:caintegrator2-war" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
+			target="compile"
+			dir="${caintegrator2-war.base.dir}"/>
+	</target>
+
+	<!-- Produces all distributions: installer, upgrader and source -->
+	<target name="dist" description="Makes all distributions: installer, upgrader and source"
+		depends="
+		build:all,
+		dist:installer,
+		dist:upgrader,
+		dist:src"
+	      	/>
+
+	<target name="dist:src">
+		<!-- Add tasks here to zip up src into a distribution, may require some additoinal properties for distribution name" -->
+	</target>
+
+	<!-- Wrapper target that downloads all required binaries from Common Tools Repository -->
+	<target name="dist:tools:retrieve" description="Downloads binary support tools form common tools repository"
+		depends="
+		init,
+		dist:tools:retrieve:jboss
+		" />
+
+	<!-- Downloads jboss from tools repository and compares checksum, based on properties set in project.properties -->
+	<target name="dist:tools:retrieve:jboss" unless="jboss.tools.exists">
+		<get src="${jboss.src.url}"
+			dest="${jboss.dest.file}"/>
+		<get src="${jboss.src.url}.MD5"
+			dest="${jboss.dest.file}.MD5"/>
+		<checksum file="${jboss.dest.file}" verifyProperty="jboss.cksum.ok"/>
+		<if>
+			<equals arg1="${jboss.cksum.ok}" arg2="true"/>
+			<then>
+				<echo message="Downloaded jboss sucessfully"/>
+			</then>
+			<else>
+				<fail message="Failed to download jboss file sucessfully."/>
+			</else>
+		</if>
+	</target>
+
+	<!-- Copies install time resources into distribution tree -->
+	<target name="dist:installer:prep" depends="dist:tools:retrieve">
+		<!-- added for incremental database build -->
+		<!-- Need to call database-build-filelist once for each type of database you support.
+			db-upgrade.* propertes are stored in project.properties because they are used in both
+			install.xml and build.xml
+		-->
+		<database-build-filelist 
+			sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}"
+			build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}"
+			incr.sql.dir="${db-upgrade.src.dir}/mysql" />
+		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
+
+		<!-- Copy install related xml and properties files -->
+		<copy todir="${target.dir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="install.xml" />
+				<include name="install.properties" />
+				<include name="*properties.template" />
+				<include name="project.properties" />
+			</fileset>
+		</copy> 
+		<!-- Set default target on install xml to install -->
+		<replaceregexp file="${target.dir}/install.xml" byline="true"
+			match="(.project.*default=.)\w+(.\s+.*)"
+			replace="\1install\2"/>
+		<replaceregexp file="${target.dir}/install.xml" byline="true"
+			match="(.*property name=.\$\{properties.file\} value=.)[\w\.\d\-\_]+(.\s+.*)"
+			replace="\1install.properties\2"/>
+		<!-- Rename install.xml to build.xml so manual installs will not need to include the -f optoin on ant, simplifying the install proces. -->
+		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml"/>
+
+		<!-- Copy over BDA macrodefs and librarires -->
+		<copy todir="${target.dir}/bda-utils" overwrite="true">
+			<fileset dir="${bda-utils.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<!-- This  copies common files over, common files are currently resource files like
+			jboss configuration files and database scripts
+		-->
+		<copy todir="${common.target.dir}" overwrite="true">
+			<fileset dir="${common.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy> 
+	</target>
+
+	<!-- Creates the installer distribution used by automated or manual remote installations -->
+	<target name="dist:installer" depends="dist:installer:prep">
+		<delete file="${dist.dir}/${caintegrator2-war.install.zip.file}"/>
+		<zip destfile="${dist.dir}/${caintegrator2-war.install.zip.file}" basedir="${target.dir}"/>
+	</target>
+
+	<!-- Copies install time resources into distribution tree -->
+	<target name="dist:upgrader:prep">
+		<!-- Cleans up files copied by dist:*:prep targets to ensure only required files are present becaue this target is run after dist:installer:prep -->
+		<delete dir="${tools.target.dir}"/>
+		<delete>
+			<fileset dir="${target.dir}">
+				<include name="*.xml" />
+				<include name="*properties*" />
+			</fileset>
+		</delete>
+
+		<!-- added for incremental database build -->
+		<!-- Need to call database-build-filelist once for each type of database you support.
+			db-upgrade.* propertes are stored in project.properties because they are used in both
+			install.xml and build.xml
+		-->
+		<database-build-filelist 
+			sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}"
+			build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}"
+			incr.sql.dir="${db-upgrade.src.dir}/mysql" />
+		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
+
+		<!-- Copy install related xml and properties files -->
+		<copy todir="${target.dir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="install.xml" />
+				<include name="upgrade.properties" />
+				<include name="*properties.template" />
+				<include name="project.properties" />
+			</fileset>
+		</copy> 
+		<!-- Change default target of install.xml to upgrade -->
+		<replaceregexp file="${target.dir}/install.xml" byline="true"
+			match="(.project.*default=.)\w+(.\s+.*)"
+			replace="\1upgrade\2"/>
+		<replaceregexp file="${target.dir}/install.xml" byline="true"
+			match="(.*property name=.properties.file. value=.)[\w\.\d\-\_\$\{\}\/]+(.\s*\/.*)"
+			replace="\1upgrade.properties\2"/>
+		<!-- Rename install.xml to build.xml to simply install but not having to provide -f option to ant command line -->
+		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml"/>
+
+		<!-- Copy BDA macrodefs and library files -->
+		<copy todir="${target.dir}/bda-utils" overwrite="true">
+			<fileset dir="${bda-utils.dir}">
+				<exclude name="**/*.zip"/>
+			</fileset>
+		</copy>
+
+		<!-- This  copies common files over, common files are currently resource files like
+			jboss configuration files and database scripts
+		-->
+		<copy todir="${common.target.dir}" overwrite="true">
+			<fileset dir="${common.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy> 
+	</target>
+
+	<!-- Creates upgrader distribution -->
+	<target name="dist:upgrader" depends="dist:upgrader:prep">
+		<delete file="${dist.dir}/${caintegrator2-war.upgrade.zip.file}"/>
+		<zip destfile="${dist.dir}/${caintegrator2-war.upgrade.zip.file}" basedir="${target.dir}"/>
+
+	</target>
+
+
+	<!-- Installs the application locally. Requires a local instance of mysql. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from exec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. This target will use differnt properties based on linux (linux-install.properties) or windows (windows-install.properties) installs. It only supports using those properties files for now, so if you want to change install time properites edit these files. -->
+	<target name="deploy:local:install" depends="dist:installer:prep" description="Installs the application and required binaries on the local machine, used for developer desktops and ci environments" >
+		<!-- deploy:local fails about basedirectory in real strange place macrodefs:319, this should fix it -->
+		<mkdir dir="${target.dir}/lib"/>
+
+		<!-- Copies over all files so linux and windows properties are present -->
+		<copy todir="${target.dir}">
+			<fileset dir="${basedir}">
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		<exec os="Linux, Max OS X" executable="ant" dir="${target.dir}">
+			<!-- use alternate properties file since default has replace values -->
+			<arg value="-Dproperties.file=linux-install.properties"/>
+			<!-- force reinstall of database and jboss without prompting -->
+			<arg value="-Dforce.reinstall=true"/>
+			<arg value="${install.target}"/>
+		</exec> 
+		<exec os="Windows XP, Windows 2000, Windows 2003"
+			executable="ant.bat" dir="${target.dir}">
+			<!-- use alternate properties file since default has replace values -->
+			<arg value="-Dproperties.file=windows-install.properties"/>
+			<!-- force reinstall of database and jboss without prompting -->
+			<arg value="-Dforce.reinstall=true"/>
+			<arg value="${install.target}"/>
+		</exec> 
+
+	</target>
+
+	<!-- Upgrades the application locally. Requires a local instance of mysql. Will use the target from install.xml specified in ${upgrade.target} (defaults to upgrade unless passed in on command line).  Calls ant from exec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. This target will use differnt properties based on linux (linux-install.properties) or windows (windows-install.properties) upgrades. It only supports using those properties files for now, so if you want to change install time properites edit these files. -->
+	<target name="deploy:local:upgrade" depends="dist:upgrader:prep" description="Upgrades the application on the local machine, used for developer desktops and ci environments" >
+		<!-- deploy:local fails about basedirectory in real strange place macrodefs:319, this should fix it -->
+		<mkdir dir="${target.dir}/lib"/>
+
+		<!-- Copies over all files so linux and windows properties are present -->
+		<copy todir="${target.dir}">
+			<fileset dir="${basedir}">
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- ci.server property is set at run time.  Since both the developer workstaton
+			and ci.server use the same install targets and we need to start the servers on
+			one  and not the other, this condition will remove the property from the
+			properties file.
+		-->
+		<if>
+			<isset property="ci.server"/>
+			<then>
+				<replaceregexp file="${target.dir}/linux-upgrade.properties" byline="true"
+					match="exclude.start.servers=true"
+					replace=""/>
+				<replaceregexp file="${target.dir}/windows-upgrade.properties" byline="true"
+					match="exclude.start.servers=true"
+					replace=""/>
+			</then>
+		</if>
+
+		<exec os="Linux, Max OS X" executable="ant" dir="${target.dir}">
+			<!-- use alternate properties file since default has replace values -->
+			<arg value="-Dproperties.file=linux-upgrade.properties"/>
+			<!-- force reinstall of database and jboss without prompting -->
+			<arg value="-Dforce.reinstall=true"/>
+			<arg value="-Dlocal.install=true"/>
+			<arg value="${upgrade.target}"/>
+		</exec> 
+		<exec os="Windows XP, Windows 2000, Windows 2003"
+			executable="ant.bat" dir="${target.dir}">
+			<!-- use alternate properties file since default has replace values -->
+			<arg value="-Dproperties.file=windows-upgrade.properties"/>
+			<!-- force reinstall of database and jboss without prompting -->
+			<arg value="-Dforce.reinstall=true"/>
+			<arg value="-Dlocal.install=true"/>
+			<arg value="${upgrade.target}"/>
+		</exec> 
+		<echo message="The server is not started as part of local deployment.  You will need to run $JBOSS_HOME/bin/run.bat (or run.sh if you are linux)."/>
+	</target>
+
+	<macrodef name="deploy-files">
+		<attribute name="ssh.user" default="${ssh.server.username}"/>
+		<attribute name="ssh.host" default="${ssh.server.hostname}"/>
+		<attribute name="remote.directory.property.name" default="ssh.dir.temp"/>
+		<attribute name="properties.file" default="${properties.file}"/>
+		<attribute name="dist.dir" default="${dist.dir}"/>
+		<attribute name="dist.file" />
+		<sequential>
+			<!-- Validate remote directory is valid -->
+			<propertycopy name="remote.dir" from="@{remote.directory.property.name}" />
+			<check-valid-directory-name
+				directory.property="remote.dir"
+				/>
+			<!-- Delete/re-create remote directory -->
+			<remote-ssh remotesshcommand="rm -rf ${remote.dir};mkdir -p ${remote.dir}" />
+			<!-- work around for issue where basedir is required but is not currently used -->
+			<remote-ssh remotesshcommand="mkdir -p ${remote.dir}/lib" />
+
+			<!-- copy distribution and prop file to remote system -->
+			<remote-scp remoteScpFileToCopy="@{dist.dir}/@{dist.file}" remoteScpToDir="@{ssh.user}@@@{ssh.host}:${remote.dir}" />
+			<remote-scp remoteScpFileToCopy="@{properties.file}" remoteScpToDir="@{ssh.user}@@@{ssh.host}:${remote.dir}" />
+			<!-- Extract zip file -->
+			<remote-ssh remotesshcommand="cd ${remote.dir}; unzip -q @{dist.file}" />
+		</sequential>
+	</macrodef>
+
+	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
+	<target name="deploy:remote:install"
+		depends="
+		build:all,
+		dist:installer
+		">
+		<deploy-files
+			dist.file="${caintegrator2-war.install.zip.file}"
+			/>
+		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
+	</target>
+
+	<!-- Upgrades the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${upgrade.target} (defaults to upgrade unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point upgrader to correct enviornment to upgrade -->
+	<target name="deploy:remote:upgrade"
+		depends="
+		build:all,
+		dist:upgrader
+		">
+		<deploy-files
+			dist.file="${upgrade.zip.file}"
+			/>
+		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
+	</target>
+
+	<target name="usage" description="Explains how to use this build script">
+		<echo message="To run a remote upgrade type: ant deploy:remote:upgrade -Dproperties.file=[path to environment proeprty file]" />
+	</target>
+
+	<!-- Scorches checkout area and then checks out the generic project from svn. Serval propeties influence what is checked out.  Each of the properites have defaults, which will check out trunk.  This target uses the svn-co macro from bda -->
+	<target name="svn:co">
+		<property name="svn.project.base.url" value="http://gforge.nci.nih.gov/svnroot/generic"/>
+		<property name="svn.project.name" value="generic"/>
+		<property name="svn.tag" value="trunk"/>
+		<property name="svn.co.base.dir" value="${user.home}/tmp"/>
+
+		<svn-co
+			svn.project.base.url="${svn.project.base.url}"
+			svn.project.name="${svn.project.name}"
+			svn.tag="${svn.tag}"
+			svn.co.base.dir="${svn.co.base.dir}"
+			/>
+	</target>
+	<!-- this target generates visio like diagrams of the build files -->
+	<target name="report:grand" description="Generates grand graphs for build.xml files">
+		<report-grand
+			build.file.location="build.xml"
+			output.file.dir="."
+			output.file.name="${grand.rpt.dir}/generic-root-build.xml"
+			/>
+	</target>
+
+	<!-- Beginning static-analysis and testing section of build script -->
+
+	<!-- Wrapper target to call download ivy projects for static analysis tools.  The ivy:retrieves are done separately to ensure that there is on library conflicts among the static analysis tools.  The retrieved files are written to separate directories because the conf names are defined uniquely in projectroot/software/static-analysis:ivy-bda-testing.xml. -->
+	<target name="static-analysis:ivy-init" 
+		depends="
+		static-analysis:ivy-settings,
+		static-analysis:ivy-test-selenium,
+		static-analysis:ivy-test-junit,
+		static-analysis:ivy-test-cobertura,
+		static-analysis:ivy-test-javancss,
+		static-analysis:ivy-test-checkstyle,
+		static-analysis:ivy-test-pmd
+		"/>
+	<target name="static-analysis:ivy-settings">
+		<property name="ivy.dep.file" value="${ivy.bda-testing.file}"/>
+		<ivy:settings file="${ivy.settings.file}" />
+	</target>
+	<target name="static-analysis:ivy-test-selenium" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-selenium" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
+	</target>
+	<target name="static-analysis:ivy-test-junit" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-junit" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
+	</target>
+	<target name="static-analysis:ivy-test-cobertura" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-cobertura" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
+	</target>
+	<target name="static-analysis:ivy-test-javancss" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-javancss" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
+	</target>
+	<target name="static-analysis:ivy-test-checkstyle" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-checkstyle" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
+	</target>
+	<target name="static-analysis:ivy-test-pmd" depends="static-analysis:ivy-settings" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-pmd" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-pmd" />
+	</target>
+
+
+	<!-- This is a wrapper target for all static analysis targets -->
+	<target name="static-analysis" description="Performs static analysis"
+		depends="
+		static-analysis:ivy-init,
+		static-analysis:init,
+		static-analysis:findbugs-init,
+		static-analysis:simian,
+		static-analysis:pmd,
+		static-analysis:checkstyle,
+		static-analysis:javancss,
+		static-analysis:cobertura,
+		static-analysis:findbugs
+		"/>
+
+	<!-- Creates paths and  directories -->
+	<target name="static-analysis:init">
+		<path id="ivy.classpath">
+			<fileset dir="${common.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.selenium.classpath">
+			<fileset dir="${lib.dir}/test-selenium">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.junit.classpath">
+			<fileset dir="${lib.dir}/test-junit">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.cobertura.classpath">
+			<fileset dir="${lib.dir}/test-cobertura">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.javancss.classpath">
+			<fileset dir="${lib.dir}/test-javancss">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.checkstyle.classpath">
+			<fileset dir="${lib.dir}/test-checkstyle">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="project.test.pmd.classpath">
+			<fileset dir="${lib.dir}/test-pmd">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<delete dir="${reports.dir}"/>
+		<mkdir dir="${reports.dir}"/>
+		<mkdir dir="${reports.simian.dir}"/>
+		<mkdir dir="${reports.pmd.dir}"/>
+		<mkdir dir="${reports.checkstyle.dir}"/>
+		<mkdir dir="${reports.javancss.dir}"/>
+		<mkdir dir="${reports.cobertura.dir}"/>
+		<mkdir dir="${reports.findbugs.dir}"/>
+		<delete dir="${instrumented.dir}"/>
+		<mkdir dir="${instrumented.dir}"/>
+	</target>
+
+	<!-- Findbugs is realy a full application that has ant support.  This target downloads the binaries for this distribution for use by ant target.  Additionaly setups a jboss installation to uses in the classpath of findbugs to cover runtime libraries -->
+	<target name="static-analysis:findbugs-init" depends="dist:tools:retrieve:jboss">
+		<property name="findbugs.home.dir" value="${lib.dir}/${findbugs.binaries.relative.dir}"/>
+		<if>
+			<not>
+				<available file="${findbugs.home.dir}/lib/findbugs.jar"/>
+			</not>
+			<then>
+				<echo message="Findbugs is missing, downloading and isnstalling in ${findbugs.home.dir}"/>
+				<get src="${findbugs.src.url}"
+					dest="${temp.dir}/${findbugs.binaries.file}"/>
+				<unzip dest="${lib.dir}" src="${temp.dir}/${findbugs.binaries.file}" />
+			</then>
+		</if>
+		<property name="test.jboss.dir" value="${temp.dir}/${jboss.binaries.relative.dir}"/>
+		<if>
+			<not>
+				<available file="${test.jboss.dir}/lib/jboss-system.jar"/>
+			</not>
+			<then>
+				<mkdir dir="${test.jboss.dir}"/>
+				<unzip dest="${temp.dir}" src="${jboss.dest.file}"/>
+			</then>
+		</if>
+
+		<path id="project.test.findbugs.classpath">
+			<fileset dir="${findbugs.home.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+	<!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.
+	-->
+	<!-- Runs Simian a code duplication reporter.
+		You can find additional information about simian at:
+		http://www.redhillconsulting.com.au/products/simian/installation.html
+		-->
+	<target name="static-analysis:simian" depends="static-analysis:init" description="Performs code duplication analysis">
+		<static-analysis-simian
+			simian.src.dir="${caintegrator2-war.java.dir}"
+			simian.rpt.dir="${reports.simian.dir}"
+			simian.report-xsl.file="${common.dir}/simian/simian.xsl"
+			simian.xml.name="simian-caintegrator2-war.xml"
+			simian.html.name="simian-caintegrator2-war.html"
+			/>
+
+		<!--
+		<static-analysis-simian
+			simian.src.dir="${caintegrator-cacore.java.dir}"
+			simian.rpt.dir="${reports.simian.dir}"
+			simian.report-xsl.file="${common.dir}/simian/simian.xsl"
+			simian.xml.name="simian-caintegrator-cacore.xml"
+			simian.html.name="simian-caintegrator-cacore.html"
+			/>
+		-->
+	</target>
+	<macrodef name="static-analysis-simian">
+		<attribute name="simian.src.dir"/>
+		<attribute name="simian.rpt.dir"/>
+		<attribute name="simian.report-xsl.file"/>
+		<attribute name="simian.xml.name" default="simian.xml"/>
+		<attribute name="simian.html.name" default="simian.html"/>
+		<sequential>
+			<simian>
+				<fileset dir="@{simian.src.dir}" includes="**/*.java"/>
+				<formatter type="xml" toFile="@{simian.rpt.dir}/@{simian.xml.name}"/>
+			</simian>
+			<xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
+		</sequential>
+	</macrodef>
+	 
+	<!-- Runs PMD a tool which compares code to a set of rules to identfiey violations (bugs, dead code, sub-optimal code, overcomplicated and duplicate code.  Sample rule sets and xslt reporting files are included in automation/software/bda-build-template/common/pmd.
+		You can find additional information about PMD at:
+		http://pmd.sourceforge.net/
+	-->
+	<!-- Added some functionality to make pmd reports work in hudson.  First it needed a structure of sub-project-name/target/pmd.rpt.file.  Second needed to change the path to source the relative path to the job in hudson.  This will generally be ${project.name}/${sub-project.name} assuming that the hudson check is done like this svn co http://gforge.nci.nih.gov/svnroot/${project.name}/trunk/software ${project.name}. Also that the ${sub-project.name} is the directory where the sub-project source is.
+	-->
+	<target name="static-analysis:pmd"
+		depends="
+		static-analysis:ivy-init,
+		static-analysis:init
+		">
+		<static-analysis-pmd
+			pmd.src.dir="${caintegrator2-war.java.dir}"
+			pmd.rpt.dir="${reports.pmd.dir}"
+			pmd.project.name="${project.name}"
+			pmd.sub-project.name="caintegrator2-war"
+			pmd.report-xsl.file="${common.dir}/pmd/pmd-report.xslt"
+			pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
+			pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset-basic.xml"
+			pmd.xml.name="pmd-caintegrator2-war.xml"
+			pmd.html.name="pmd-caintegrator2-war.html"
+			/>
+		<!--
+		<static-analysis-pmd
+			pmd.src.dir="${caintegrator-cacore.java.dir}"
+			pmd.rpt.dir="${reports.pmd.dir}"
+			pmd.project.name="${project.name}"
+			pmd.sub-project.name="caintegrator-cacore"
+			pmd.report-xsl.file="${common.dir}/pmd/pmd-report.xslt"
+			pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
+			pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset-basic.xml"
+			pmd.xml.name="pmd-caintegrator-cacore.xml"
+			pmd.html.name="pmd-caintegrator-cacore.html"
+			/>
+		-->
+	</target>
+
+	<macrodef name="static-analysis-pmd">
+		<attribute name="pmd.src.dir"/>
+		<attribute name="pmd.rpt.dir"/>
+		<attribute name="pmd.project.name"/>
+		<attribute name="pmd.sub-project.name"/>
+		<attribute name="pmd.report-preprocessor.file"/>
+		<attribute name="pmd.report-xsl.file"/>
+		<attribute name="pmd.rule-set.file"/>
+		<attribute name="pmd.xml.name" default="pmd.xml"/>
+		<attribute name="pmd.html.name" default="pmd.html"/>
+		<sequential>
+			<property name="pmd.sub-project.rpt.dir" value="@{pmd.rpt.dir}/@{pmd.sub-project.name}/target"/>
+			<mkdir dir="${pmd.sub-project.rpt.dir}"/>
+			<taskdef name="pmd" 
+				classname="net.sourceforge.pmd.ant.PMDTask"
+				classpathref="project.test.pmd.classpath"/>
+			<pmd shortFilenames="true" 
+				rulesetfiles="@{pmd.rule-set.file}">
+				<formatter type="xml"
+					toFile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" />
+				<fileset dir="@{pmd.src.dir}">
+					<include name="**/*.java"/>
+				</fileset>
+			</pmd>
+			<move file="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}" tofile="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"/>
+			<xslt taskname="pmd"
+				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
+				out="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
+				style="@{pmd.report-preprocessor.file}">
+				<param name="relative.path" expression="@{pmd.project.name}/@{pmd.sub-project.name}"/>
+			</xslt>
+
+			<xslt taskname="pmd"
+				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
+				out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
+				style="@{pmd.report-xsl.file}"/>
+		</sequential>
+	</macrodef>
+
+	<!-- Runs JavaNCSS a tool that identifies code Cyclomatic Complexity.
+		You can find additional information about JavaNCSS at:
+		http://www.kclee.de/clemens/java/javancss/
+		-->
+	<target name="static-analysis:javancss"
+		depends="
+		static-analysis:ivy-init,
+		static-analysis:init
+		">
+		<static-analysis-javancss
+			javancss.src.dir="${caintegrator2-war.java.dir}"
+			javancss.rpt.dir="${reports.javancss.dir}"
+			javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
+			javancss.xml.name="javancss_metrics_caintegrator2-war.xml"
+			javancss.html.name="javancss_report_caintegrator2-war.html"
+			/>
+		<!--
+		<static-analysis-javancss
+			javancss.src.dir="${caintegrator-cacore.java.dir}"
+			javancss.rpt.dir="${reports.javancss.dir}"
+			javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
+			javancss.xml.name="javancss_metrics_caintegrator-cacore.xml"
+			javancss.html.name="javancss_report_caintegrator-cacore.html"
+			/>
+		-->
+	</target>
+
+	<macrodef name="static-analysis-javancss">
+		<attribute name="javancss.src.dir"/>
+		<attribute name="javancss.rpt.dir"/>
+		<attribute name="javancss.report-xsl.file"/>
+		<attribute name="javancss.xml.name" default="javancss.xml"/>
+		<attribute name="javancss.html.name" default="javancss.html"/>
+		<sequential>
+			<taskdef name="javancss" classpathref="project.test.javancss.classpath" classname="javancss.JavancssAntTask" />
+			<javancss srcdir="@{javancss.src.dir}"
+				includes="**/*.java"
+				excludes="**/*test*/*"
+				generatereport="true"
+				outputfile="@{javancss.rpt.dir}/@{javancss.xml.name}"
+				ccnPerFuncMax="10"
+				format="xml">
+			</javancss>
+			<xslt taskname="javancss"
+				in="@{javancss.rpt.dir}/@{javancss.xml.name}"
+				out="@{javancss.rpt.dir}/@{javancss.html.name}"
+				style="@{javancss.report-xsl.file}"/>
+		</sequential>
+	</macrodef>
+
+	<!-- Runs CheckStyle is a codeing standard violation reporter.  
+		You can find additional information about checkstyle at:
+		http://checkstyle.sourceforge.net/
+		-->
+	<target name="static-analysis:checkstyle" 
+		depends="
+		static-analysis:ivy-init,
+		static-analysis:init
+		">
+		<static-analysis-checkstyle
+			checkstyle.src.dir="${caintegrator2-war.java.dir}"
+			checkstyle.rpt.dir="${reports.checkstyle.dir}"
+			checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-simple.xsl"
+			checkstyle.config.file="${common.dir}/checkstyle/checkstyle_minimal.xml"
+			checkstyle.xml.name="checkstyle-caintegrator2-war.xml"
+			checkstyle.html.name="checkstyle-caintegrator2-war.html"
+			/>
+		<!-- 
+		<static-analysis-checkstyle
+			checkstyle.src.dir="${caintegrator-cacore.java.dir}"
+			checkstyle.rpt.dir="${reports.checkstyle.dir}"
+			checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-simple.xsl"
+			checkstyle.config.file="${common.dir}/checkstyle/checkstyle_minimal.xml"
+			checkstyle.xml.name="checkstyle-caintegrator-cacore.xml"
+			checkstyle.html.name="checkstyle-caintegrator-cacore.html"
+			/>
+		-->
+	</target>
+
+	<macrodef name="static-analysis-checkstyle">
+		<attribute name="checkstyle.src.dir"/>
+		<attribute name="checkstyle.rpt.dir"/>
+		<attribute name="checkstyle.report-xsl.file"/>
+		<attribute name="checkstyle.config.file"/>
+		<attribute name="checkstyle.xml.name" default="checkstyle.xml"/>
+		<attribute name="checkstyle.html.name" default="checkstyle.html"/>
+		<sequential>
+			<taskdef resource="checkstyletask.properties"
+				uri="antlib:com.puppycrawl.tools.checkstyle"
+				classpathref="project.test.checkstyle.classpath"/>
+			<cs:checkstyle config="@{checkstyle.config.file}"
+				failOnViolation="false">
+				<formatter type="xml" 
+					tofile="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"/>
+				<fileset dir="@{checkstyle.src.dir}">
+					<include name="**/*.java"/>
+				</fileset>
+			</cs:checkstyle>
+			<xslt taskname="checkstyle"
+				in="@{checkstyle.rpt.dir}/@{checkstyle.xml.name}"
+				out="@{checkstyle.rpt.dir}/@{checkstyle.html.name}"
+				style="@{checkstyle.report-xsl.file}"
+				/>
+		</sequential>
+	</macrodef>
+
+	<!-- Runs Findbugs a tool that attempts to find bugs.
+		You can find additional information about findbugs at:
+		http://findbugs.sourceforge.net/
+		-->
+	<target name="static-analysis:findbugs" 
+		depends="
+		compile:all,
+		static-analysis:ivy-init,
+		static-analysis:findbugs-init,
+		static-analysis:init
+		">
+		<mkdir dir="${reports.findbugs.dir}/caintegrator2-war"/>
+		<mkdir dir="${reports.findbugs.dir}/caintegrator-cacore"/>
+
+		<static-analysis-findbugs
+			findbugs.home.dir="${findbugs.home.dir}"
+			findbugs.src.dir="${caintegrator2-war.java.dir}"
+			findbugs.classes.dir="${caintegrator2-war.classes.dir}"
+			findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator2-war"
+			findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
+			findbugs.app.classpath.dir="${lib.dir}/caintegrator2-war/runtime"
+			findbugs.jboss.classpath.dir="${test.jboss.dir}"
+			findbugs.xml.name="findbugs-caintegrator2-war.xml"
+			findbugs.html.name="findbugs-caintegrator2-war.html"
+			/>
+		<!-- 
+		<static-analysis-findbugs
+			findbugs.home.dir="${findbugs.home.dir}"
+			findbugs.src.dir="${caintegrator-cacore.java.dir}"
+			findbugs.classes.dir="${caintegrator-cacore.classes.dir}"
+			findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator-cacore"
+			findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
+			findbugs.app.classpath.dir="${lib.dir}/api/runtime"
+			findbugs.jboss.classpath.dir="${test.jboss.dir}"
+			findbugs.xml.name="findbugs-caintegrator-cacore.xml"
+			findbugs.html.name="findbugs-caintegrator-cacore.html"
+			/>
+		-->
+	</target>
+
+	<macrodef name="static-analysis-findbugs">
+		<attribute name="findbugs.home.dir"/>
+		<attribute name="findbugs.src.dir"/>
+		<attribute name="findbugs.rpt.dir"/>
+		<attribute name="findbugs.classes.dir"/>
+		<attribute name="findbugs.report-xsl.file"/>
+		<attribute name="findbugs.app.classpath.dir"/>
+		<attribute name="findbugs.jboss.classpath.dir"/>
+		<attribute name="findbugs.xml.name" default="findbugs.xml"/>
+		<attribute name="findbugs.html.name" default="findbugs.html"/>
+		<sequential>
+			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
+	
+			<findbugs home="@{findbugs.home.dir}"
+				output="xml:withMessages"
+				outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+				jvmargs="-Xms128m -Xmx512m"
+				>
+				<auxClasspath>
+					<fileset dir="@{findbugs.app.classpath.dir}">
+						<include name="**/*.jar" />
+					</fileset>
+					<fileset dir="@{findbugs.jboss.classpath.dir}">
+						<include name="**/*.jar" />
+					</fileset>
+				</auxClasspath>
+				
+				<sourcePath path="@{findbugs.src.dir}" />
+				<class location="@{findbugs.classes.dir}" />
+			</findbugs>
+			<xslt taskname="findbugs"
+				in="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
+				out="@{findbugs.rpt.dir}/@{findbugs.html.name}"
+				style="@{findbugs.report-xsl.file}"
+				/>
+		</sequential>
+	</macrodef>
+		
+	<!-- Runs Cobertura a code coveragetool.
+		You can find additional information about cobertura at:
+		http://cobertura.sourceforge.net/
+		-->
+	<target name="static-analysis:cobertura" 
+		depends="
+		compile:all,
+		static-analysis:ivy-init,
+		static-analysis:init
+		">
+		<mkdir dir="${basedir}/instrumented/caintegrator-cacore"/>
+		<mkdir dir="${basedir}/instrumented/caintegrator2-war"/>
+		<static-analysis-cobertura
+			cobertura.src.dir="${caintegrator2-war.java.dir}"
+			cobertura.classes.dir="${caintegrator2-war.classes.dir}"
+			cobertura.rpt.dir="${reports.cobertura.dir}/caintegrator2-war"
+			cobertura.instrumented.dir="${basedir}/instrumented/caintegrator2-war"
+			cobertura.report-xsl.file="${common.dir}/cobertura/cobertura-simple.xsl"
+			cobertura.ser.file="cobertura.ser"
+			cobertura.config.file="${common.dir}/cobertura/cobertura.xml"
+			/>
+		<!--
+		<static-analysis-cobertura
+			cobertura.src.dir="${caintegrator-cacore.java.dir}"
+			cobertura.classes.dir="${caintegrator-cacore.classes.dir}"
+			cobertura.rpt.dir="${reports.cobertura.dir}/caintegrator-cacore"
+			cobertura.instrumented.dir="${basedir}/instrumented/caintegrator-cacore"
+			cobertura.report-xsl.file="${common.dir}/cobertura/cobertura-simple.xsl"
+			cobertura.ser.file="cobertura.ser"
+			cobertura.config.file="${common.dir}/cobertura/cobertura.xml"
+			/>
+		-->
+	</target>
+
+	<macrodef name="static-analysis-cobertura">
+		<attribute name="cobertura.src.dir"/>
+		<attribute name="cobertura.rpt.dir"/>
+		<attribute name="cobertura.classes.dir"/>
+		<attribute name="cobertura.instrumented.dir"/>
+		<attribute name="cobertura.report-xsl.file"/>
+		<attribute name="cobertura.ser.file"/>
+		<attribute name="cobertura.config.file"/>
+		<sequential>
+			<taskdef classpathref="project.test.cobertura.classpath" resource="tasks.properties" />
+			<cobertura-instrument todir="@{cobertura.instrumented.dir}" datafile="@{cobertura.instrumented.dir}/@{cobertura.ser.file}">
+				<fileset dir="@{cobertura.classes.dir}">
+					<include name="**" />
+				</fileset>
+			</cobertura-instrument>
+	
+			<cobertura-report datafile="@{cobertura.instrumented.dir}/@{cobertura.ser.file}" format="html" destdir="@{cobertura.rpt.dir}">
+				<fileset dir="@{cobertura.src.dir}">
+					<include name="**/*.java" />
+				</fileset>
+			</cobertura-report>
+
+			<cobertura-check failureproperty="cobertura.failure" datafile="@{cobertura.instrumented.dir}/@{cobertura.ser.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="25" totallinerate="30" />
+		</sequential>
+	</macrodef>
+
+	<!-- Wrapper test target, call appropriate test for sub-projects -->
+	<!-- 
+	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
+		depends="
+		clean,
+		init,
+		test:caintegrator-cacore,
+		test:caintegrator2-war
+		"/>
+	-->
+
+	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
+		depends="
+		clean,
+		init,
+		test:caintegrator2-war
+		"/>
+
+
+	<!-- Build generic-query-grid sub-project produces project level artifact -->
+	<target name="test:caintegrator-cacore" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.test.file}"
+			target="test"
+			dir="${caintegrator-cacore.base.dir}" >
+			<property name="dist" value="${caintegrator-cacore.dist.dir}" />
+		</ant>
+	</target>
+
+	<target name="test:caintegrator2-war" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
+			target="test"
+			dir="${caintegrator2-war.base.dir}" >
+			<property name="dist.dir" value="${caintegrator2-war.dist.dir}" />
+		</ant>
+	</target>
+
+</project>

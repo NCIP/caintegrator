@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+$Id: install.xml 4757 2008-05-15 20:43:31Z zengje $
+$HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/install.xml $
+-->
+<project name="caintegrator-cacore-caintegrator2-war-installer" default="upgrade" basedir="." 
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	>
+	<description>
+		TBD
+	</description>
+
+	<!-- Properties file related properties and tasks -->
+	<property environment="env" />
+	<property file="project.properties"/>
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}" />
+	
+	<!-- Generic properties -->
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="working.dir" value="${basedir}/working" />
+	<property name="temp.dir" value="${working.dir}/temp" />
+
+
+	<!-- Install Time properties -->
+	<!-- Source and target directories -->
+	<property name="bda-utils.dir.src" value="${bda-utils.dir}" />
+	<property name="tools.dir.src" value="${basedir}/${tools.dist.relative.dir}" />
+	<property name="common.dir.src" value="${basedir}/${common.dist.relative.dir}" />
+	<property name="common.dir.target" value="${working.dir}/${common.dist.relative.dir}" />
+	<property name="db-install.target.dir" value="${working.dir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.dir.target" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
+	<property name="jboss-conf.dir.target" value="${working.dir}/${jboss-conf.dist.relative.dir}" />
+
+	<!-- *-ds.xml and WAR -->
+	<property name="caintegrator2-war.dir.dist" value="${basedir}/${caintegrator2-war.dist.relative.dir}" />
+	<property name="caintegrator2-war.ds.file" value="cai2-ds.xml" />
+	<property name="caintegrator2-war.war.file" value="caintegrator2.war" />
+
+	<!-- Paths -->
+	<path id="bda-utils.classpath">
+		<fileset dir="${bda-utils.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<!-- Task definitions -->
+	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/antunit-1.0.jar" />
+		</classpath>
+	</taskdef>
+	<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath" />
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${bda-utils.dir}/bcel-5.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-httpclient-3.0.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-logging-1.0.4.jar"/>
+			<pathelement location="${bda-utils.dir}/ivy-1.3.1.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- Conditionals -->
+	<available file="${jboss.home}/server/${jboss.server.name}/conf/jboss-service.xml" property="jboss.exists"/>
+	<!-- caintegrator2-war can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
+	<switch value="${database.type}">
+		<case value="mysql">
+			<property name="database.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+			<property name="is.mysql" value="true"/>
+			<property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.5.jar"/>
+			<property name="database.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="db-upgrade.list.file" value="${db-upgrade.mysql.list.file}"/>
+			<property name="db-upgrade.conf.file" value="${db-upgrade.mysql.conf.file}"/>
+		</case>
+		<default>
+			<fail message="Invalid database type ${database.type}"/>
+		</default>
+	</switch>
+
+	<!-- figure out whether to use install-properties.template or upgrade-proprties.template based on the name of the properties file -->
+	<propertyregex property="properties.file.type"
+		input="${properties.file}"
+		regexp=".*(install|upgrade).*"
+		select="\1"
+		/>
+	<echo message="Properties file type = ${properties.file.type}"/>
+	<switch value="${properties.file.type}">
+		<case value="install">
+			<property name="properties.template.file" value="install-properties.template" />
+		</case>
+		<case value="install">
+			<property name="properties.template.file" value="upgrade-properties.template" />
+		</case>
+		<default>
+			<fail message="Property file name must include 'install' or 'upgrade' so it can be determined which properties template should be used. If you are not certain include 'upgrade' in the name of your proeprties file."/>
+		</default>
+	</switch>
+
+	<!-- Includes-->
+	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+
+	<!-- Generated and used by database incremental build process, copied deploy:*:prep of build.xml -->
+	<import file="db-integrate.xml" />
+
+	<!-- Read db configs from existing ds.xml if it exists for use in upgrade installs, if already set in properties file values from properties file will be used -->
+	<available file="${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file}" property="ds.exists"/>
+	<if>
+		<isset property="ds.exists"/>
+		<then>
+			<jboss-read-dbconfig
+				jboss.ds-xml.file="${caintegrator2-war.ds.file}"
+				/>
+		</then>
+		<else>
+			<echo message="Warning- could not find ${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file}"/>
+		</else>
+	</if>
+
+	<!-- There is any issue with copying files with a filtersfile, any properties with a value of
+		another property do not get expanded (xx=${yy} @xx@ will be replaced with ${yy} not the
+		value).  I have defined a filter set below for these properties, I then two two copies
+		one to the resource.dir.temp using the filterset and then one to the desired directory 
+		with the filter file.  If you add new properties that refer to other properties in the
+		properties file please add them to the filterset-pre below.
+	     Also you should include properties that are declared in this file, like database info below.
+	-->
+	<property name="resource.dir.temp" value="${working.dir}/tmp" />
+	<filterset id="filterset.pre">
+		<filter token="application.base.path" value="${application.base.path}"/>
+		<filter token="application.url" value="${application.url}"/>
+		<filter token="database.url" value="${database.url}"/>
+		<filter token="database.system.url" value="${database.system.url}"/>
+		<filter token="jboss.home" value="${jboss.home}"/>
+		<!-- added internal properties that may be used in a filtered copy -->
+		<filter token="database.driver" value="${database.driver}"/>
+		<filter token="database.dialect" value="${database.dialect}"/>
+		<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
+	</filterset>
+	
+
+	<!-- Start logging --> 
+	<mkdir dir="${log.dir}" />
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm" />
+	</tstamp>
+	<record name="${log.dir}/install-${install.time}.log" action="start"/>
+
+
+	<!-- Installer section -->
+	<target name="diag">
+		<echoproperties/>
+	</target>
+
+	<!-- Clean up destination directory -->
+	<target name="install:clean" description="Removes all files from the local filesystem">
+		<sleep seconds="5" />
+		<delete dir="${application.base.path}" quiet="false" />
+	</target>
+
+	<!-- Does directory management and copy some files with filtering to ensure token expansion -->
+	<target name="install:init" description="Does directory management to initialize install">
+		<mkdir dir="${working.dir}" />
+		<delete dir="${working.dir}"/>
+		<mkdir dir="${working.dir}" />
+		<mkdir dir="${resource.dir.temp}"/>
+		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in filterset.pre and then copy with filter files -->
+		<copy todir="${resource.dir.temp}" filtering="true">
+			<fileset dir="${common.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="filterset.pre"/>
+		</copy> 
+		<copy todir="${common.dir.target}" filtering="true">
+			<fileset dir="${resource.dir.temp}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy> 
+	</target>
+
+	<!-- Wrapper install database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database also calls upgrade:database -->
+	<target name="install:database" description="Re-creates database and users from baseline and applys incremental database changes." unless="exclude.database"
+		depends="
+		install:init
+		">
+		<switch value="${database.type}">
+			<case value="mysql">
+				<database-create/>
+				<for list="${db.install.mysql.file.list}" param="db.install.mysql.file">
+					<sequential>
+						<run-sql-script
+							database.url="${database.url}"
+							database.user="${database.user}"
+							database.password="${database.password}"
+							sql.file="${db-install.target.dir}/${database.type}/@{db.install.mysql.file}"
+							/>
+					</sequential>
+				</for>
+			</case>
+		</switch>
+		<antcall target="upgrade:database" inheritAll="false"/>
+	</target>
+
+	<target name="install:jboss:binaries" description="Unzip JBoss binary" unless="exclude.jboss">
+		<unzip dest="${application.base.path}" src="${tools.dir.src}/${jboss.binaries.file}" />
+		<if>    
+			<os family="unix"/>
+			<then>  
+				<chmod dir="${jboss.home}/bin" perm="ugo+rx" 
+					includes="**/*.sh"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:jboss:caintegrator2-war" description="Deploy caintegrator2-war caintegrator2-war.ear, caintegrator2-war-api.war and common libraries" unless="exclude.jboss">
+		<!-- added to ensure working.dirs are fresh for our install -->
+		<delete dir="${jboss.home}/server/${jboss.server.name}/tmp"/>
+		<delete dir="${jboss.home}/server/${jboss.server.name}/work"/>
+
+		<copy file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
+		<copy file="${bda-utils.dir}/clm-3.2.jar" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
+		<copy file="${database.driver.file}" todir="${jboss.home}/server/${jboss.server.name}/lib" overwrite="true" />
+		
+		<!-- Replace this with file from ivy when project is ivy'fied -->
+	</target>
+
+	<target name="install:jboss:caintegrator2-war:configure" description="Configure caintegrator2-war application" unless="exclude.jboss">
+		<copy file="${jboss-conf.dir.target}/${caintegrator2-war.ds.file}" todir="${jboss.home}/server/${jboss.server.name}/deploy" overwrite="true" />
+	</target>
+
+	<!-- Wrapper target to configure jboss container, not deployed application -->
+	<target name="install:jboss:configure" description="Configure caintegrator2-war" unless="exclude.jboss"
+		depends="install:jboss:binaries,
+		-install:jboss:configure:ports,
+		-install:jboss:configure:login-conf,
+		-install:jboss:configure:log4j,
+		-install:jboss:configure:update-shutdown
+		"/>
+
+	<!-- Configure ports used by JBOSS (either bindings or editing jboss config.files) -->
+	<target name="-install:jboss:configure:ports" description="Configure caintegrator2-war" unless="exclude.jboss">
+		<jboss-bindings
+			jboss.server.bindingfile.location="${jboss.home}/server/${jboss.server.name}/conf/bindings.xml"
+			/>
+	</target>
+
+	<!-- Add custom login-config.xml content from snippet from caintegrator2-war/software/resources/deploy/login-config.${auth.type}-block.xml -->
+	<target name="-install:jboss:configure:login-conf" unless="exclude.jboss">
+		<if>    
+			<equals arg1="${authentication.type}" arg2="ldap"/>
+			<then>  
+				<property name="login-config.block.file" value="${jboss-conf.dir.target}/login-config.ldap-block.xml"/>
+			</then> 
+			<else>  
+				<if>    
+					<equals arg1="${authentication.type}" arg2="db"/>
+					<then>  
+						<property name="login-config.block.file" value="${jboss-conf.dir.target}/login-config.db-block.xml"/>
+					</then> 
+					<else>  
+						<fail message="${authentication.type} is not a valid authentiation type, please change to db or ldap and re-run the build."/>
+					</else> 
+				</if>   
+			</else> 
+		</if>   
+		<echo message="Inserting ${login-config.block.file} into ${jboss.home}/server/${jboss.server.name}/conf/login-config.xml"/>
+		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/conf/login-config.xml" verbose="false">
+			<insertbranch path="//policy" srcxmlfile="${login-config.block.file}" srcpath="//application-policy" />
+		</xmlconfig>
+	</target>
+
+	<!-- Configure MQ settings based on contents of ncia/software/resrouces/deploy/jbossmq-destinations-service.block.xml -->
+	<target name="-install:jboss:configure:jbossmq-dest" unless="exclude.jboss">
+		<property name="jboss-mq.block.file" value="${resource.dir.target}/jbossmq-destinations-service.block.xml"/>
+		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/deploy/jms/jbossmq-destinations-service.xml" verbose="false">
+			<insertbranch path="//server" srcxmlfile="${jboss-mq.block.file}" srcpath="//mbean[1]" />
+			<insertbranch path="//server" srcxmlfile="${jboss-mq.block.file}" srcpath="//mbean[2]" />
+		</xmlconfig>
+	</target>
+
+
+	<!-- Configure log4j settings based on contents of caintegrator2-war/software/resrouces/deploy/log4j.block.xml -->
+	<target name="-install:jboss:configure:log4j" unless="exclude.jboss">
+		<!-- xml namespace issue, work with levent
+		<property name="search.pattern" value="^.\!DOCTYPE.*"/>
+		<property name="replace.pattern.temp" value="&lt;\!DOCTYPE server &gt;"/>
+		<property name="jboss.log4j.file" value="${jboss.home}/server/${jboss.server.name}/conf/log4j.xml"/>
+		<copy tofile="${jboss.log4j.file}.orig" file="${jboss.log4j.file}"/>
+		<loadfile
+			property="jboss.log4j.doctype"
+			srcFile="${jboss.log4j.file}">
+			<filterchain>
+				<linecontainsregexp>
+					<regexp pattern="${search.pattern}"/>
+				</linecontainsregexp>
+			</filterchain>
+		</loadfile>
+
+		<replaceregexp file="${jboss.home}/server/default/conf/log4j.xml" byline="true"
+			match="${search.pattern}"
+			replace="${replace.pattern.temp}"/>
+
+		<copy tofile="${jboss.log4j.file}.afterdoctype" file="${jboss.log4j.file}"/>
+
+		<property name="log4j.block.file" value="${jboss-conf.dir.target}/log4j.block.xml"/>
+
+		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/conf/log4j.xml" verbose="true">
+			<insertbranch path="//" srcxmlfile="${log4j.block.file}" srcpath="//category[1]" />
+			<insertbranch path="//" srcxmlfile="${log4j.block.file}" srcpath="//category[2]" />
+		</xmlconfig>
+
+		<copy tofile="${jboss.log4j.file}.afterinsblock" file="${jboss.log4j.file}"/>
+		<replaceregexp file="${jboss.home}/server/default/conf/log4j.xml" byline="true"
+			match="${search.pattern}"
+			replace="${jboss.log4j.doctype}"/>
+		-->	
+	</target>
+
+	<!-- Calls to bda macros for basic functionality -->
+	<target name="install:jboss:stop" if="jboss.exists" unless="exclude.jboss">
+		<jboss-stop-jboss jboss.server.jndi.port="${jboss.server.jndi.port}"/>
+		<jboss-stop-jboss />
+	</target>
+	<target name="install:jboss:start"  unless="exclude.jboss">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<jboss-start-jboss />
+			</then>
+		</if>
+	</target>
+	<target name="install:validation:pre-install">
+		<validate-pre-install />
+	</target>
+	<target name="install:validation:pre-install:ports">
+		<validate-ports-preinstall />
+	</target>
+	<target name="install:validation:post-install">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<validate-post-install />
+			</then>
+		</if>
+	</target>
+	<target name="-install:jboss:configure:update-shutdown" unless="exclude.jboss">
+		<jboss-update-shutdown />
+	</target>
+
+	<!-- Wrapper target to deploy JBOSS container -->
+	<target name="install:jboss" unless="exclude.jboss"
+		depends="
+		install:validation:pre-install,
+		install:jboss:stop,
+		install:validation:pre-install:ports,
+		install:clean,
+		install:init,
+		install:jboss:binaries,
+		install:jboss:caintegrator2-war:re-configure,
+		install:jboss:caintegrator2-war,
+		install:jboss:caintegrator2-war:configure,
+		install:jboss:configure,
+		install:jboss:start
+		" />
+
+	<!-- Wrapper target to deploy all containers to one server -->
+	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application" 
+		depends="
+		install:validation:pre-install,
+		install:jboss:stop,
+		install:validation:pre-install:ports,
+		install:clean,
+		install:init,
+		install:database,
+		install:jboss,
+		install:jboss:start,
+		install:validation:post-install
+		"/>
+
+	<!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
+	<target name="install:jboss:caintegrator2-war:re-configure" unless="exclude.jboss">
+		<delete dir="${working.dir}/caintegrator2-war"/>
+		<unzip src="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
+		<copy todir="${working.dir}/caintegrator2-war/WEB-INF/classes" file="${jboss-conf.dir.target}/hibernate.cfg.xml"/>
+
+		<move file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" tofile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}.orig"/>
+		<war destfile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" compress="false" webxml="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
+			<fileset dir="${working.dir}/caintegrator2-war">
+				<include name="*/**" />
+			</fileset>
+		</war>
+	</target>
+
+	<!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
+	<target name="upgrade:jboss" unless="exclude.jboss"
+		depends="
+		install:validation:pre-install,
+		install:jboss:stop,
+		install:init,
+		install:jboss:caintegrator2-war:re-configure,
+		install:jboss:caintegrator2-war,
+		install:jboss:start
+		" />
+
+	<!-- Wrapper target to upgrade all container. Does not install or configure binaries -->
+	<target name="upgrade" description="Deploys application and runs incremental database build" 
+		depends="
+		upgrade:init,
+		install:validation:pre-install,
+		install:jboss:stop,
+		install:init,
+		upgrade:database,
+		upgrade:jboss,
+		install:validation:post-install
+		"/>
+
+	<!-- Wrapper upgrade database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database. -->
+	<target name="upgrade:database" description="Apply incremental DB changes" unless="exclude.database"
+		depends="
+		install:init,
+		upgrade:init
+		">
+		<!-- **figure out the changes/scripts based upon current version IN the database, if any ** -->
+		<switch value="${database.type}">
+			<case value="mysql">
+				<if>
+					<available file="${db-upgrade.list.file}"/>
+					<then>
+						<property name="db.continue" value="true"/>
+						<database-create-control-table
+							database.url="${database.url}"
+							database.user="${database.user}"
+							database.password="${database.password}"
+							/>
+						<database-identify-scripts
+							sqlfiles.list.file="${db-upgrade.list.file}"
+							build.properties.file="${db-upgrade.conf.file}"
+							database.sql.dir="${db-upgrade.dir.target}"
+							/>
+					</then>
+					<else>
+						<echo message="Could not find an incremental file list file ${db-upgrade.list.file}, there must not be any incrmental updates."/>
+					</else>
+				</if>
+			</case>
+		</switch>
+		<echo  message="db.continue=${db.continue}"/>
+		<if>
+			<isset property="db.continue"/>
+			<then>
+				<!-- **make the changes to the db aka invoke the proper scripts ** -->
+				<antcall target="database-integrate" />
+				<!-- ** make sure the versioning information IN the database is updated to reflect what we just did ** -->
+				<database-update-version-table
+					database.driver="${database.driver}"
+					database.url="${database.url}"
+					database.user="${database.user}"
+					database.password="${database.password}"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="upgrade:init">
+		<echo  message="Checking if database properties exist.  If they do not on an upgrade install then ${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file} may not exist."/>
+		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
+		<properties-exist properties.list="${db.prop.list}"/>
+	</target>
+</project>
