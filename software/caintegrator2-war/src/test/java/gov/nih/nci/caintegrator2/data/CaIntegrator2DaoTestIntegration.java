@@ -138,11 +138,11 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // First load 2 AnnotationFieldDescriptors.
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         Collection<String> keywords = new TreeSet<String>();
-        keywords.add("cognitive");
+        keywords.add("congestive");
         keywords.add("heart");
         keywords.add("failure");
         afd.setKeywords(keywords);
-        afd.setName("Cognitive Heart Failure");
+        afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
         caIntegrator2Dao.save(afd);
         
@@ -157,7 +157,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // Now search for our item on the string "cognitive"
         List<String> searchWords = new ArrayList<String>();
-        searchWords.add("CoGnItIvE");
+        searchWords.add("ConGEStIVE");
         List<AnnotationFieldDescriptor> afds1 = caIntegrator2Dao.findMatches(searchWords);
         
         assertNotNull(afds1);

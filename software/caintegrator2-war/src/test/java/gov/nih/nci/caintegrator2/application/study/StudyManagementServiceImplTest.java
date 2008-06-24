@@ -91,7 +91,6 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -154,14 +153,7 @@ public class StudyManagementServiceImplTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = 
             studyManagementService.addGenomicSource(studyConfiguration);
-        genomicDataSourceConfiguration.setId(Long.valueOf(1));
-        // Eventually test to make sure the genomicDataSourceConfiguration's sampleIdentifier's 
-        // match what we have.  For now this is added to pass cobertura.
-        SampleIdentifier sampleIdentifier = new SampleIdentifier();
-        sampleIdentifier.setId(Long.valueOf(1));
-        sampleIdentifier.setExperimentIdentifier("123");
-        sampleIdentifier.setSampleName("test");
-        
+        genomicDataSourceConfiguration.setId(Long.valueOf(1));        
         assertNotNull(genomicDataSourceConfiguration);
         assertTrue(studyConfiguration.getGenomicDataSources().contains(genomicDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
