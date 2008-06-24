@@ -97,6 +97,7 @@ import java.util.Vector;
 public class SearchStub extends Search {
     
     @Override    
+    @SuppressWarnings("PMD")
     public Vector<SearchResults> findReturningSearchResults(final String keywords) {
         String testLiteral = "test";
         SearchResults searchResults = new SearchResults(SearchAC.valueOf(1),
