@@ -85,65 +85,31 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.userdetails.UserDetails;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class DefineStudyActionTest {
-
-    private static final String EDIT_STUDY = "editStudy";
-    private DefineStudyAction defineStudyAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
-    }
-
-    @Test
-    public void testCreateStudy() {
-        assertEquals(EDIT_STUDY, defineStudyAction.createStudy());
-        assertTrue(studyManagementServiceStub.createStudyCalled);
-        assertNotNull(defineStudyAction.getStudyConfiguration());
-        assertNotNull(defineStudyAction.getStudy());
-    }
-
-    @Test
-    public void testSaveStudy() {
-        defineStudyAction.createStudy();
-        assertEquals(EDIT_STUDY, defineStudyAction.saveStudy());
-        assertTrue(studyManagementServiceStub.updateStudyCalled);
-    }
-
-    @Test
-    public void testDeployStudy() {
-        defineStudyAction.createStudy();
-        assertEquals(EDIT_STUDY, defineStudyAction.deployStudy());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
-    }
-
-    @Test
-    public void testAddGenomicSource() {
-        defineStudyAction.createStudy();
-        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        assertNotNull(defineStudyAction.getGenomicDataSource());
-    }
+/**
+ * Providers helper methods to access authentication and authorization data.
+ */
+final class SecurityHelper {
     
-    @Test
-    public void testAddClinicalFile() {
-        defineStudyAction.setClinicalFile(TestDataFiles.VALID_FILE);
-        assertEquals("editClinicalFile", defineStudyAction.addClinicalFile());
-        defineStudyAction.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
-        assertEquals(EDIT_STUDY, defineStudyAction.addClinicalFile());
+    private SecurityHelper() {
+        super();
+    }
+
+    static String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        if (authentication != null) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+        }
+        return username;
     }
 
 }

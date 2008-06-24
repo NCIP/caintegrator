@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.util.List;
@@ -126,5 +127,13 @@ public interface CaIntegrator2Dao {
      * @return - list of annotation field descriptors that match.
      */
     List<AnnotationFieldDescriptor> findMatches(List<String> keywords);
+
+    /**
+     * Returns the studies managed by this user.
+     * 
+     * @param username return studies managed by this user.
+     * @return the list of studies.
+     */
+    List<StudyConfiguration> getManagedStudies(String username);
 
 }

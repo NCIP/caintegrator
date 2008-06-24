@@ -28,7 +28,7 @@
             <th>Type</th>
             <th>Description</th>
         </tr>
-        <s:form >
+        <s:form>
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
         <tr>
             <td><s:property value="type" /></td>

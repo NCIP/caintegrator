@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 public class StudyManagementServiceStub implements StudyManagementService {
 
@@ -97,6 +99,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean updateStudyCalled;
     public boolean addGenomicSourceCalled;
     public boolean addClinicalAnnotationFileCalled;
+    public boolean manageStudiesCalled;
 
     public StudyConfiguration createStudy() {
         createStudyCalled = true;
@@ -120,8 +123,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deployStudyCalled = false;
         createStudyCalled = false;
         updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = true;
+        addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;
+        manageStudiesCalled = false;
     }
 
     public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
@@ -138,6 +142,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
         addClinicalAnnotationFileCalled = true;
         return new DelimitedTextClinicalSourceConfiguration();
+    }
+
+    public List<StudyConfiguration> getManagedStudies(String username) {
+        manageStudiesCalled = true;
+        return Collections.emptyList();
     }
     
 }

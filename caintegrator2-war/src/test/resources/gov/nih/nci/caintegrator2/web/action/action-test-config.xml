@@ -4,9 +4,9 @@
 
     <!-- Actions -->
 
-    <bean id="defineStudyAction"
+    <bean id="manageStudiesAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.DefineStudyAction">
+        class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>
