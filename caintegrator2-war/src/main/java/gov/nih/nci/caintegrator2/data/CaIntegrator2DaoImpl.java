@@ -86,9 +86,12 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -140,16 +143,19 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 annotationFieldDescriptors.add(afd);
             }
         }
+        Collections.sort(annotationFieldDescriptors, new MatchScoreComparator(keywords));
         return annotationFieldDescriptors;
     }
 
     private boolean containsKeyword(AnnotationFieldDescriptor afd, List<String> keywords) {
         for (String keyword : keywords) {
-            if (afd.getKeywords().contains(keyword)) {
+            if (Cai2Util.containsIgnoreCase(afd.getKeywords(), keyword)) {
                 return true;
             }
         }
         return false;
     }
+    
+
     
 }
