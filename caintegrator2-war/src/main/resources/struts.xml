@@ -25,26 +25,30 @@
         
         <!--  Study Actions -->
    
-        <action name="addClinicalFile" method="addClinicalFile" class="defineStudyAction">
+        <action name="addClinicalFile" method="addClinicalFile" class="manageStudiesAction">
             <interceptor-ref name="fileUpload"/>
             <interceptor-ref name="basicStack"/>            
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
             <result name="invalidFile" type="tiles">editStudy</result>
         </action>
    
-        <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
+        <action name="addGenomicSource" method="addGenomicSource" class="manageStudiesAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
         </action>
    
-        <action name="deployStudy" method="deployStudy" class="defineStudyAction">
+        <action name="deployStudy" method="deployStudy" class="manageStudiesAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
-        <action name="createStudy" method="createStudy" class="defineStudyAction">
+        <action name="createStudy" method="createStudy" class="manageStudiesAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
-        <action name="saveStudy" method="saveStudy" class="defineStudyAction">
+        <action name="manageStudies" method="manageStudies" class="manageStudiesAction">
+            <result name="manageStudies" type="tiles">manageStudies</result>
+        </action>
+   
+        <action name="saveStudy" method="saveStudy" class="manageStudiesAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
         

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action;
 
 import java.io.File;
+import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -99,15 +100,17 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 /**
  * Action used to create and edit studies by a Study Manager.
  */
-public class DefineStudyAction extends ActionSupport {
+public class ManageStudiesAction extends ActionSupport {
     
     private static final long serialVersionUID = 1L;
     
     private static final String EDIT_STUDY = "editStudy";
     private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
     private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
+    private static final String MANAGE_STUDIES = "manageStudies";
     
     private StudyManagementService service;
+    private List<StudyConfiguration> studyConfigurations;
     private StudyConfiguration studyConfiguration;
     private GenomicDataSourceConfiguration genomicDataSource;
     private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
@@ -123,7 +126,7 @@ public class DefineStudyAction extends ActionSupport {
      * @return the Struts result.
      */
     public String createStudy() {
-        studyConfiguration = service.createStudy();
+        setStudyConfiguration(service.createStudy());
         return EDIT_STUDY;
     }
     
@@ -137,6 +140,25 @@ public class DefineStudyAction extends ActionSupport {
         return EDIT_STUDY;
     }
     
+    /**
+     * Opens an existing study for editing.
+     * 
+     * @return the Struts result.
+     */
+    public String editStudy() {
+        return EDIT_STUDY;
+    }
+    
+    /**
+     * Creates a new study.
+     * 
+     * @return the Struts result.
+     */
+    public String manageStudies() {
+        setStudyConfigurations(service.getManagedStudies(SecurityHelper.getCurrentUsername()));
+        return MANAGE_STUDIES;
+    }
+
     /**
      * Saves the current study.
      * 
@@ -261,6 +283,27 @@ public class DefineStudyAction extends ActionSupport {
      */
     public void setClinicalFileFilename(String clinicalFileFilename) {
         this.clinicalFileFilename = clinicalFileFilename;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+
+    /**
+     * @return the studyConfigurations
+     */
+    public List<StudyConfiguration> getStudyConfigurations() {
+        return studyConfigurations;
+    }
+
+    /**
+     * @param studyConfigurations the studyConfigurations to set
+     */
+    public void setStudyConfigurations(List<StudyConfiguration> studyConfigurations) {
+        this.studyConfigurations = studyConfigurations;
     }
 
 }

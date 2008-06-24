@@ -158,5 +158,11 @@ public class StudyManagementServiceImplTest {
         assertTrue(studyConfiguration.getGenomicDataSources().contains(genomicDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
     }
+    
+    @Test
+    public void testGetManagedStudies() {
+        assertNotNull(studyManagementService.getManagedStudies("username"));
+        assertTrue(daoStub.getManagedStudiesCalled);
+    }
 
 }

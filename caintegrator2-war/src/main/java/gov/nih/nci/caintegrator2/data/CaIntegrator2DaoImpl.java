@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
@@ -101,13 +102,14 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
+    private static final String UNCHECKED = "unchecked";
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(UNCHECKED)
     public UserWorkspace getWorkspace(String username) {
-        // Real implementation requires checking ownership in CSM using username argument
+        // TODO Real implementation requires checking ownership in CSM using username argument
         List results = getHibernateTemplate().find("from UserWorkspace");
         if (results.isEmpty()) {
             return null;
@@ -126,7 +128,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);
     }
@@ -134,7 +136,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(UNCHECKED)
     public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
         List<AnnotationFieldDescriptor> annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
         List<AnnotationFieldDescriptor> results = getHibernateTemplate().find("from AnnotationFieldDescriptor");
@@ -154,6 +156,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             }
         }
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public List<StudyConfiguration> getManagedStudies(String username) {
+        // TODO Real implementation requires checking StudyConfiguration ownership in CSM when integrated
+        return getHibernateTemplate().find("from StudyConfiguration sc order by sc.study.shortTitleText");
     }
     
 
