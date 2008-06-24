@@ -83,110 +83,31 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.Iterator;
 
-import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
-
-public final class CaIntegrator2DaoTestIntegration extends AbstractTransactionalSpringContextTests {
+/**
+ * This is a static utility class used by different caIntegrator2 objects. 
+ */
+public final class Cai2Util {
     
-    private CaIntegrator2Dao caIntegrator2Dao;
+    private Cai2Util() { }
     
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/dao-test-config.xml"};
-    }
-
-    @Test
-    public void testGetWorkspace() {
-        UserWorkspace workspace = new UserWorkspace();
-        caIntegrator2Dao.save(workspace);
-
-        UserWorkspace workspace2 = this.caIntegrator2Dao.getWorkspace("Anything.");
-        assertEquals(workspace.getId(), workspace2.getId());
-        
-    }
-
-    @Test
-    public void testSave() {
-        Study study1 = new Study();
-        study1.setLongTitleText("longTitleText");
-        study1.setShortTitleText("shortTitleText");
-        assertNull(study1.getId());
-        caIntegrator2Dao.save(study1);
-        assertNotNull(study1.getId());
-        
-        Study study2 = caIntegrator2Dao.get(study1.getId(), Study.class);
-        
-        assertEquals(study1, study2);
-        assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
-        assertEquals(study1.getLongTitleText(), study2.getLongTitleText());
-    }
-    
-    @Test 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength"})
-    public void testFindMatches() {
-        // First load 2 AnnotationFieldDescriptors.
-        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
-        Collection<String> keywords = new TreeSet<String>();
-        keywords.add("congestive");
-        keywords.add("heart");
-        keywords.add("failure");
-        afd.setKeywords(keywords);
-        afd.setName("Congestive Heart Failure");
-        afd.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd);
-        
-        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        Collection<String> keywords2 = new TreeSet<String>();
-        keywords2.add("congestive");
-        afd2.setKeywords(keywords2);
-        afd2.setName("Congestive");
-        afd2.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd2);
-        
-        AnnotationFieldDescriptor afd3 = new AnnotationFieldDescriptor();
-        Collection<String> keywords3 = new TreeSet<String>();
-        keywords3.add("congestive");
-        keywords3.add("failure");
-        afd3.setKeywords(keywords3);
-        afd3.setName("Congestive Failure");
-        afd3.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd3);
-        
-        // Now search for our item on the string "congestive"
-        List<String> searchWords = new ArrayList<String>();
-        searchWords.add("CoNgeStiVe");
-        searchWords.add("HearT");
-        searchWords.add("failure");
-        List<AnnotationFieldDescriptor> afds1 = caIntegrator2Dao.findMatches(searchWords);
-        
-        assertNotNull(afds1);
-        // Make sure it sorted them properly.
-        assertEquals(afds1.get(0).getName(), "Congestive Heart Failure");
-        assertEquals(afds1.get(1).getName(), "Congestive Failure");
-        assertEquals(afds1.get(2).getName(), "Congestive");
-        
-        List<String> searchWords2 = new ArrayList<String>();
-        searchWords2.add("afdsefda");
-        List<AnnotationFieldDescriptor> afds2 = caIntegrator2Dao.findMatches(searchWords2);
-        assertEquals(0, afds2.size());
-    }
-
     /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     * Used to see if a Collection of strings contains a string, ignoring case.
+     * @param l - collection of strings.
+     * @param s - string item to see if exists in the collection.
+     * @return true/false value.
      */
-    public void setCaIntegrator2Dao(CaIntegrator2Dao caIntegrator2Dao) {
-        this.caIntegrator2Dao = caIntegrator2Dao;
+    public static boolean containsIgnoreCase(Collection <String> l, String s) {
+        Iterator<String> it = l.iterator();
+        while (it.hasNext()) {
+            if (it.next().equalsIgnoreCase(s)) {
+                return true;
+            }
+        }
+        return false;
     }
-
 }
