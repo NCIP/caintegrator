@@ -97,6 +97,6 @@ public interface CaDSRFacade {
      * @param keywords List of keywords to search caDSR for.
      * @return - DataElements that freestyle search found.
      */
-    List<DataElement> retreiveCandidateDataElements(String[] keywords);
+    List<DataElement> retreiveCandidateDataElements(List<String> keywords);
     
 }

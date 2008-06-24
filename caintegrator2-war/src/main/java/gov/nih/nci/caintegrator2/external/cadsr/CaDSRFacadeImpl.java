@@ -102,12 +102,12 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * {@inheritDoc}
      */
-    public List<DataElement> retreiveCandidateDataElements(String[] keywords) {
+    public List<DataElement> retreiveCandidateDataElements(List<String> keywords) {
         
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < keywords.length; ++i) {
-            sb.append(keywords[i]);
-            if (i != keywords.length - 1) {
+        for (int i = 0; i < keywords.size(); ++i) {
+            sb.append(keywords.get(i));
+            if (i != keywords.size() - 1) {
                 sb.append(' ');
             }
           }

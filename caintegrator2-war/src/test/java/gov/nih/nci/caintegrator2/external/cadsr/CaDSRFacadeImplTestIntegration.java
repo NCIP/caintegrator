@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -95,27 +96,19 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * 
- */
 public class CaDSRFacadeImplTestIntegration {
 
-    CaDSRFacadeImpl caDSRFacade;
-    /**
-     * @throws java.lang.Exception
-     */
+    private CaDSRFacadeImpl caDSRFacade;
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("cadsr-test-config.xml", CaDSRFacadeImplTestIntegration.class); 
         caDSRFacade = (CaDSRFacadeImpl) context.getBean("caDSRFacade"); 
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl#retreiveCandidateDataElements(java.lang.String[])}.
-     */
     @Test
     public void testRetreiveCandidateDataElements() {
-        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(new String[]{"congestive", "heart", "failure"});
+        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
         assertNotNull(dataElements);
     }
 

@@ -89,6 +89,7 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -111,11 +112,11 @@ public class CaDSRFacadeImplTest {
 
     @Test
     public void testRetreiveCandidateDataElements() {
-        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(new String[]{"congestive", "heart", "failure"});
+        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
         DataElement de = dataElements.get(0);
         assertNotNull(de);
-        assertEquals("test", de.getDefinition());
         assertEquals("test", de.getLongName());
+        assertEquals("congestive heart failure", de.getDefinition());
         assertEquals(Long.valueOf(2), de.getPublicId());
     }
     
