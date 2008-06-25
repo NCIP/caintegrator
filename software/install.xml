@@ -95,7 +95,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<case value="install">
 			<property name="properties.template.file" value="install-properties.template" />
 		</case>
-		<case value="install">
+		<case value="upgrade">
 			<property name="properties.template.file" value="upgrade-properties.template" />
 		</case>
 		<default>
