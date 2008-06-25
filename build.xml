@@ -201,14 +201,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		
 	</target>
 
-	<target name="build:caintegrator2" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="build.xml"
-			target="caintegrator2.war"
-			dir="build" >
-			<property name="caintegrator2.war" value="${caintegrator2-war.target.dir}/caintegrator2.war" />
-		</ant>
-	</target>
-
 	<!-- Wrapper build target, call appropriate builds for sub-projects -->
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
 		depends="
@@ -217,24 +209,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		build:caintegrator2-war
 		"/>
 
-	<!-- Build generic-query-grid sub-project produces project level artifact -->
-	<target name="build:caintegrator-cacore" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.build.file}"
-			target="${caintegrator-cacore.build.target}"
-			dir="${caintegrator-cacore.base.dir}" >
-			<!-- ignore this since it does not need to be in distribution
-			<property name="dist" value="${caintegrator-cacore.dist.dir}" />
-			-->
+	<target name="build:caintegrator2-war" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="build.xml"
+			target="caintegrator2.war"
+			dir="build" >
+			<property name="caintegrator2.war" value="${caintegrator2-war.target.dir}/caintegrator2.war" />
 		</ant>
 	</target>
 
-	<target name="build:caintegrator2-war" depends="init, build:caintegrator-cacore">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
-			target="${caintegrator2-war.build.target}"
-			dir="${caintegrator2-war.base.dir}" >
-			<property name="dist.dir" value="${caintegrator2-war.dist.dir}" />
-		</ant>
-	</target>
+
 
 	<!--
 	<target name="compile:all" description="Used by static-analysis, required since dist target cleans up generated classes that are required by some static analysis tools"
@@ -351,8 +334,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Creates the installer distribution used by automated or manual remote installations -->
 	<target name="dist:installer" depends="dist:installer:prep">
-		<delete file="${dist.dir}/${caintegrator2-war.install.zip.file}"/>
-		<zip destfile="${dist.dir}/${caintegrator2-war.install.zip.file}" basedir="${target.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.install.zip.file}"/>
+		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" basedir="${target.dir}"/>
 	</target>
 
 	<!-- Copies install time resources into distribution tree -->
@@ -415,8 +398,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Creates upgrader distribution -->
 	<target name="dist:upgrader" depends="dist:upgrader:prep">
-		<delete file="${dist.dir}/${caintegrator2-war.upgrade.zip.file}"/>
-		<zip destfile="${dist.dir}/${caintegrator2-war.upgrade.zip.file}" basedir="${target.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.upgrade.zip.file}"/>
+		<zip destfile="${dist.dir}/${caintegrator2.upgrade.zip.file}" basedir="${target.dir}"/>
 
 	</target>
 
@@ -532,7 +515,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		dist:installer
 		">
 		<deploy-files
-			dist.file="${caintegrator2-war.install.zip.file}"
+			dist.file="${caintegrator2.install.zip.file}"
 			/>
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
 	</target>
@@ -544,7 +527,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		dist:upgrader
 		">
 		<deploy-files
-			dist.file="${upgrade.zip.file}"
+			dist.file="${caintegrator2.upgrade.zip.file}"
 			/>
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
 	</target>
