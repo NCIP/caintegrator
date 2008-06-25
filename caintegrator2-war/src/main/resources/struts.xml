@@ -35,12 +35,16 @@
         <action name="addGenomicSource" method="addGenomicSource" class="manageStudiesAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
         </action>
-   
+
+        <action name="createStudy" method="createStudy" class="manageStudiesAction">
+            <result name="editStudy" type="tiles">editStudy</result>
+        </action>
+      
         <action name="deployStudy" method="deployStudy" class="manageStudiesAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
-        <action name="createStudy" method="createStudy" class="manageStudiesAction">
+        <action name="editStudy" method="editStudy" class="manageStudiesAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
