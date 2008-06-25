@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -121,10 +122,10 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
 
     @Test
     public void testSave() {
-        Study study1 = new Study();
+        StudyConfiguration studyConfiguration1 = new StudyManagementServiceStub().createStudy();  
+        Study study1 = studyConfiguration1.getStudy();
         study1.setLongTitleText("longTitleText");
         study1.setShortTitleText("shortTitleText");
-        StudyConfiguration studyConfiguration1 = new StudyConfiguration(study1);      
         assertNull(studyConfiguration1.getId());
         assertNull(study1.getId());
         caIntegrator2Dao.save(studyConfiguration1);
