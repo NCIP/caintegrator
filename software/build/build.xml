@@ -199,7 +199,10 @@
     </target>
 
     <target name="build:caintegrator2-cacore">
+	    <!-- temp change location  out to make anthill pro build work
         <copy file="${docs.dir}/analysis_and_design/models/caintegrator2.xmi" tofile="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
+	-->
+	<copy file="${software.dir}/caintegrator2.xmi" tofile="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
         <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="build-system" />
     </target>
 
