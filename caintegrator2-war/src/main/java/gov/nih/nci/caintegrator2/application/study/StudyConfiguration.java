@@ -284,5 +284,36 @@ public class StudyConfiguration {
             nameToTimepointMap.put(timepoint.getName(), timepoint);
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        } else if (o == this) {
+            return true;
+        } else if (id == null) {
+            return false;
+        } else if (!(o instanceof StudyConfiguration)) {
+            return false;
+        } else {
+            StudyConfiguration e = (StudyConfiguration) o;
+            return id.equals(e.getId());
+        }
 
+    }
+
+    /**
+     * Default hashCode goes off of id.
+     * @return hashCode
+     */
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return System.identityHashCode(this);
+        }
+
+        return id.hashCode();
+    }
 }

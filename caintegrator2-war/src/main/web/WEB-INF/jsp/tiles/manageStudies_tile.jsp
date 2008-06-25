@@ -19,11 +19,11 @@
             </tr>
             <s:iterator value="studyConfigurations" status="status">
                 <tr>
-                    <td><s:property value="shortTitleText" /></td>
-                    <td><s:property value="longTitleText" /></td>
+                    <td><s:property value="study.shortTitleText" /></td>
+                    <td><s:property value="study.longTitleText" /></td>
                     <td>
                         <s:submit action="editStudy" value="Edit Study">
-                            <s:param name="studyConfiguration" />
+                            <s:param name="studyConfiguration" value="[0]" />
                         </s:submit>
                     </td>
                 </tr>
