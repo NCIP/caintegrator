@@ -85,39 +85,52 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caarray.domain.array.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 
-import java.util.List;
-
 /**
- * Interface to the subsystem used store and retrieve microarray data.
+ * Contains the actual numeric array data values. This will be an arbitrary subset (or perhaps
+ * the entire contents) of a particular <code>ArrayDataMatrix</code>.
  */
-public interface ArrayDataService {
+public class ArrayDataValues {
+    
+    private ArrayDataMatrix arrayDataMatrix;
     
     /**
-     * Stores the values of an <code>ArrayDataMatrix</code> for later search and retrieval.
+     * Returns the array data value for a given reporter for a given array.
      * 
-     * @param values the data matrix values to store.
+     * @param array get value for this array
+     * @param reporter get value for this reporter.
+     * @return the array data value.
      */
-    void save(ArrayDataValues values);
+    public Long getValue(Array array, AbstractReporter reporter) {
+        return null;
+    }
     
     /**
-     * Retrieves all of the normalized data values associated with the given <code>ArrayDataMatrix</code>.
+     * Sets the array data value for a given reporter for a given array.
      * 
-     * @param arrayDataMatrix retrieve data values for this data matrix.
-     * @return the values.
+     * @param array get value for this array
+     * @param reporter get value for this reporter.
+     * @param value the array data value.
      */
-    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix);
-    
+    public void setValue(Array array, AbstractReporter reporter, Long value) {
+        // no-op
+    }
+
     /**
-     * Retrieves the normalized data values from the given arrays for the given reporters.
-     * 
-     * @param arrays retrieve data values from these arrays
-     * @param reporters retrieve the values for these reporters only
-     * @return the values.
+     * @return the arrayDataMatrix
      */
-    ArrayDataValues getData(List<Array> arrays, List<AbstractReporter> reporters);
-    
+    public ArrayDataMatrix getArrayDataMatrix() {
+        return arrayDataMatrix;
+    }
+
+    /**
+     * @param arrayDataMatrix the arrayDataMatrix to set
+     */
+    public void setArrayDataMatrix(ArrayDataMatrix arrayDataMatrix) {
+        this.arrayDataMatrix = arrayDataMatrix;
+    }
+
 }
