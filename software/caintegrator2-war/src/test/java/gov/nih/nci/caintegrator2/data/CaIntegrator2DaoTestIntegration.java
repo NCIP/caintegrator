@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -95,12 +96,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public final class CaIntegrator2DaoTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private CaIntegrator2Dao caIntegrator2Dao;
+    private SessionFactory sessionFactory;
     
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/dao-test-config.xml"};
@@ -121,15 +124,22 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study1 = new Study();
         study1.setLongTitleText("longTitleText");
         study1.setShortTitleText("shortTitleText");
+        StudyConfiguration studyConfiguration1 = new StudyConfiguration(study1);      
+        assertNull(studyConfiguration1.getId());
         assertNull(study1.getId());
-        caIntegrator2Dao.save(study1);
+        caIntegrator2Dao.save(studyConfiguration1);
+        assertNotNull(studyConfiguration1.getId());
         assertNotNull(study1.getId());
         
-        Study study2 = caIntegrator2Dao.get(study1.getId(), Study.class);
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
+        StudyConfiguration studyConfiguration2 = caIntegrator2Dao.get(studyConfiguration1.getId(), StudyConfiguration.class);
+        Study study2 = studyConfiguration2.getStudy();
         
-        assertEquals(study1, study2);
         assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
         assertEquals(study1.getLongTitleText(), study2.getLongTitleText());
+        assertEquals(study1, study2);
+        assertEquals(studyConfiguration1, studyConfiguration2);
     }
     
     @Test 
@@ -187,6 +197,20 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
      */
     public void setCaIntegrator2Dao(CaIntegrator2Dao caIntegrator2Dao) {
         this.caIntegrator2Dao = caIntegrator2Dao;
+    }
+
+    /**
+     * @return the sessionFactory
+     */
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    /**
+     * @param sessionFactory the sessionFactory to set
+     */
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
 }
