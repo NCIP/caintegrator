@@ -193,7 +193,7 @@ public class StudyConfiguration {
         return study;
     }
 
-    private void setStudy(Study study) {
+    final void setStudy(Study study) {
         this.study = study;
     }
 
