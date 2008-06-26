@@ -85,34 +85,164 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.io.File;
 
-public class ManageStudiesActionTest {
+/**
+ * Action used to create and edit studies by a Study Manager.
+ */
+public class DefineStudyAction extends AbstractStudyAction {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private static final String EDIT_STUDY = "editStudy";
+    private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
+    private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
+    
+    private GenomicDataSourceConfiguration genomicDataSource;
+    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
+    private File clinicalFile;
+    private String clinicalFileContentType;
+    private String clinicalFileFilename;
+    
+    // STUDY ACTIONS
+    
+    /**
+     * Creates a new study.
+     * 
+     * @return the Struts result.
+     */
+    public String createStudy() {
+        setStudyConfiguration(getService().createStudy());
+        return EDIT_STUDY;
+    }
+    
+    /**
+     * Deploys the current study.
+     * 
+     * @return the Struts result.
+     */
+    public String deployStudy() {
+        getService().deployStudy(getStudyConfiguration());
+        return EDIT_STUDY;
+    }
+    
+    /**
+     * Opens an existing study for editing.
+     * 
+     * @return the Struts result.
+     */
+    public String editStudy() {
+        return EDIT_STUDY;
+    }
+    
 
-    private ManageStudiesAction manageStudiesAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    /**
+     * Saves the current study.
+     * 
+     * @return the Struts result.
+     */
+    public String saveStudy() {
+        getService().update(getStudyConfiguration());
+        return EDIT_STUDY;
+    }
+    
+    // CLINICAL DATA ACTIONS
+    
+    /**
+     * Adds a new clinical data source.
+     * 
+     * @return the Struts result.
+     */
+    public String addClinicalFile() {
+        try {
+            setClinicalSourceConfiguration(getService().addClinicalAnnotationFile(getStudyConfiguration(), 
+                    getClinicalFile()));
+            return EDIT_CLINICAL_FILE;
+        } catch (ValidationException e) {
+            addFieldError("upload", "Invalid file: " + e.getResult().getInvalidMessage());
+            return EDIT_STUDY;
+        }
+    }
+    
+    // GENOMIC DATA ACTIONS
+    
+    /**
+     * Adds a new genomic data source.
+     * 
+     * @return the Struts result.
+     */
+    public String addGenomicSource() {
+        genomicDataSource = getService().addGenomicSource(getStudyConfiguration());
+        return EDIT_GENOMIC_SOURCE;
+    }
+    
+    // ACTION PROPERTY GETTERS
 
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", ManageStudiesActionTest.class); 
-        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+    /**
+     * @return the genomicDataSource
+     */
+    public GenomicDataSourceConfiguration getGenomicDataSource() {
+        return genomicDataSource;
     }
 
-    @Test
-    public void testManageStudies() {
-        assertEquals("manageStudies", manageStudiesAction.manageStudies());
-        assertNotNull(manageStudiesAction.getStudyConfigurations());
-        assertTrue(studyManagementServiceStub.manageStudiesCalled);
+    /**
+     * @return the clinicalSourceConfiguration
+     */
+    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
+        return clinicalSourceConfiguration;
+    }
+
+    /**
+     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
+     */
+    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
+        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
+    }
+
+    /**
+     * @return the clinicalFile
+     */
+    public File getClinicalFile() {
+        return clinicalFile;
+    }
+
+    /**
+     * @param clinicalFile the clinicalFile to set
+     */
+    public void setClinicalFile(File clinicalFile) {
+        this.clinicalFile = clinicalFile;
+    }
+
+    /**
+     * @return the clinicalFileContentType
+     */
+    public String getClinicalFileContentType() {
+        return clinicalFileContentType;
+    }
+
+    /**
+     * @param clinicalFileContentType the clinicalFileContentType to set
+     */
+    public void setClinicalFileContentType(String clinicalFileContentType) {
+        this.clinicalFileContentType = clinicalFileContentType;
+    }
+
+    /**
+     * @return the clinicalFileFilename
+     */
+    public String getClinicalFileFilename() {
+        return clinicalFileFilename;
+    }
+
+    /**
+     * @param clinicalFileFilename the clinicalFileFilename to set
+     */
+    public void setClinicalFileFilename(String clinicalFileFilename) {
+        this.clinicalFileFilename = clinicalFileFilename;
     }
 
 }

@@ -100,6 +100,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addGenomicSourceCalled;
     public boolean addClinicalAnnotationFileCalled;
     public boolean manageStudiesCalled;
+    public boolean getStudyConfigurationCalled;
 
     public StudyConfiguration createStudy() {
         createStudyCalled = true;
@@ -126,6 +127,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;
         manageStudiesCalled = false;
+        getStudyConfigurationCalled = false;
     }
 
     public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
@@ -147,6 +149,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public List<StudyConfiguration> getManagedStudies(String username) {
         manageStudiesCalled = true;
         return Collections.emptyList();
+    }
+
+    public StudyConfiguration getStudyConfiguration(Long id) {
+        getStudyConfigurationCalled = true;
+        StudyConfiguration configuration = new StudyConfiguration(new Study());
+        configuration.setId(id);
+        return configuration;
     }
     
 }

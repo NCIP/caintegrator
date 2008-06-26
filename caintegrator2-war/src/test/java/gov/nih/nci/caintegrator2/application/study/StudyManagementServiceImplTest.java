@@ -164,5 +164,11 @@ public class StudyManagementServiceImplTest {
         assertNotNull(studyManagementService.getManagedStudies("username"));
         assertTrue(daoStub.getManagedStudiesCalled);
     }
+    
+    @Test
+    public void testGetStudyConfiguration() {
+        assertNotNull(studyManagementService.getStudyConfiguration(1L));
+        assertTrue(daoStub.getCalled);
+    }
 
 }

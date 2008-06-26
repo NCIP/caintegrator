@@ -114,8 +114,10 @@ public class StudyConfiguration {
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
     private transient Map<String, Timepoint> nameToTimepointMap;
     
-
-    StudyConfiguration() {
+    /**
+     * Creates a new <code>StudyConfiguration</code>.
+     */
+    public StudyConfiguration() {
         super();
     }
 

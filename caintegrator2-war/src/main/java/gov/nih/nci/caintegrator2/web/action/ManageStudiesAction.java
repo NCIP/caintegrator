@@ -85,17 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import java.io.File;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
  * Action used to create and edit studies by a Study Manager.
@@ -104,50 +99,10 @@ public class ManageStudiesAction extends ActionSupport {
     
     private static final long serialVersionUID = 1L;
     
-    private static final String EDIT_STUDY = "editStudy";
-    private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
-    private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
     private static final String MANAGE_STUDIES = "manageStudies";
     
     private StudyManagementService service;
     private List<StudyConfiguration> studyConfigurations;
-    private StudyConfiguration studyConfiguration;
-    private GenomicDataSourceConfiguration genomicDataSource;
-    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
-    private File clinicalFile;
-    private String clinicalFileContentType;
-    private String clinicalFileFilename;
-    
-    // STUDY ACTIONS
-    
-    /**
-     * Creates a new study.
-     * 
-     * @return the Struts result.
-     */
-    public String createStudy() {
-        setStudyConfiguration(service.createStudy());
-        return EDIT_STUDY;
-    }
-    
-    /**
-     * Deploys the current study.
-     * 
-     * @return the Struts result.
-     */
-    public String deployStudy() {
-        service.deployStudy(getStudyConfiguration());
-        return EDIT_STUDY;
-    }
-    
-    /**
-     * Opens an existing study for editing.
-     * 
-     * @return the Struts result.
-     */
-    public String editStudy() {
-        return EDIT_STUDY;
-    }
     
     /**
      * Creates a new study.
@@ -160,136 +115,10 @@ public class ManageStudiesAction extends ActionSupport {
     }
 
     /**
-     * Saves the current study.
-     * 
-     * @return the Struts result.
-     */
-    public String saveStudy() {
-        service.update(getStudyConfiguration());
-        return EDIT_STUDY;
-    }
-    
-    // CLINICAL DATA ACTIONS
-    
-    /**
-     * Adds a new clinical data source.
-     * 
-     * @return the Struts result.
-     */
-    public String addClinicalFile() {
-        try {
-            setClinicalSourceConfiguration(service.addClinicalAnnotationFile(getStudyConfiguration(), 
-                    getClinicalFile()));
-            return EDIT_CLINICAL_FILE;
-        } catch (ValidationException e) {
-            addFieldError("upload", "Invalid file: " + e.getResult().getInvalidMessage());
-            return EDIT_STUDY;
-        }
-    }
-    
-    // GENOMIC DATA ACTIONS
-    
-    /**
-     * Adds a new genomic data source.
-     * 
-     * @return the Struts result.
-     */
-    public String addGenomicSource() {
-        genomicDataSource = service.addGenomicSource(getStudyConfiguration());
-        return EDIT_GENOMIC_SOURCE;
-    }
-    
-    // ACTION PROPERTY GETTERS
-
-    /**
-     * @return the genomicDataSource
-     */
-    public GenomicDataSourceConfiguration getGenomicDataSource() {
-        return genomicDataSource;
-    }
-
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return getStudyConfiguration().getStudy();
-    }
-
-    /**
      * @param service the service to set
      */
     public void setService(StudyManagementService service) {
         this.service = service;
-    }
-
-    /**
-     * @return the clinicalSourceConfiguration
-     */
-    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
-        return clinicalSourceConfiguration;
-    }
-
-    /**
-     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
-     */
-    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
-        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
-    }
-
-    /**
-     * @return the clinicalFile
-     */
-    public File getClinicalFile() {
-        return clinicalFile;
-    }
-
-    /**
-     * @param clinicalFile the clinicalFile to set
-     */
-    public void setClinicalFile(File clinicalFile) {
-        this.clinicalFile = clinicalFile;
-    }
-
-    /**
-     * @return the clinicalFileContentType
-     */
-    public String getClinicalFileContentType() {
-        return clinicalFileContentType;
-    }
-
-    /**
-     * @param clinicalFileContentType the clinicalFileContentType to set
-     */
-    public void setClinicalFileContentType(String clinicalFileContentType) {
-        this.clinicalFileContentType = clinicalFileContentType;
-    }
-
-    /**
-     * @return the clinicalFileFilename
-     */
-    public String getClinicalFileFilename() {
-        return clinicalFileFilename;
-    }
-
-    /**
-     * @param clinicalFileFilename the clinicalFileFilename to set
-     */
-    public void setClinicalFileFilename(String clinicalFileFilename) {
-        this.clinicalFileFilename = clinicalFileFilename;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
     }
 
     /**
