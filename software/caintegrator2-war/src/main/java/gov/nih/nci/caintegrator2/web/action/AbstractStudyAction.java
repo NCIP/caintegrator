@@ -85,34 +85,61 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
-public class ManageStudiesActionTest {
+/**
+ * Base class for actions that are based on a single <code>StudyConfiguration</code>.
+ */
+public abstract class AbstractStudyAction extends ActionSupport implements Preparable {
 
-    private ManageStudiesAction manageStudiesAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    private StudyConfiguration studyConfiguration = new StudyConfiguration();
+    private StudyManagementService service;
 
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", ManageStudiesActionTest.class); 
-        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+    /**
+     * Retrieves the current <code>StudyConfiguration</code> for the action.
+     */
+    public void prepare() {
+        if (getStudyConfiguration().getId() != null) {
+            setStudyConfiguration(getService().getStudyConfiguration(getStudyConfiguration().getId()));
+        }
+    }
+    
+    /**
+     * @return the studyConfiguration
+     */
+    public final StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public final void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+    /**
+     * @return the study
+     */
+    public final Study getStudy() {
+        return getStudyConfiguration().getStudy();
+    }
+    
+    /**
+     * @param service the service to set
+     */
+    public final void setService(StudyManagementService service) {
+        this.service = service;
     }
 
-    @Test
-    public void testManageStudies() {
-        assertEquals("manageStudies", manageStudiesAction.manageStudies());
-        assertNotNull(manageStudiesAction.getStudyConfigurations());
-        assertTrue(studyManagementServiceStub.manageStudiesCalled);
+    /**
+     * @return the service
+     */
+    public final StudyManagementService getService() {
+        return service;
     }
 
 }

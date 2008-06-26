@@ -179,5 +179,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         return dao.getManagedStudies(username);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public StudyConfiguration getStudyConfiguration(Long id) {
+        return dao.get(id, StudyConfiguration.class);
+    }
+
 
 }

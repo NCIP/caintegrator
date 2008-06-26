@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
 import org.junit.Before;
@@ -95,24 +96,27 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ManageStudiesActionTest {
+public class AbstractStudyActionTest {
 
-    private ManageStudiesAction manageStudiesAction;
+    private AbstractStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", ManageStudiesActionTest.class); 
-        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
+        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", AbstractStudyActionTest.class); 
+        action = (DefineStudyAction) context.getBean("defineStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
     }
 
     @Test
-    public void testManageStudies() {
-        assertEquals("manageStudies", manageStudiesAction.manageStudies());
-        assertNotNull(manageStudiesAction.getStudyConfigurations());
-        assertTrue(studyManagementServiceStub.manageStudiesCalled);
+    public void testPrepare() {
+        StudyConfiguration configuration = action.getStudyConfiguration();
+        configuration.setId(1L);
+        action.prepare();
+        assertTrue(studyManagementServiceStub.getStudyConfigurationCalled);
+        assertEquals((Long) 1L, action.getStudyConfiguration().getId());
+        assertNotNull(action.getStudy());
     }
 
 }
