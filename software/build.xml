@@ -52,21 +52,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
-	<property name="caintegrator-cacore.base.dir" value="${basedir}/caintegrator-cacore"/>
 	<property name="caintegrator2-war.base.dir" value="${basedir}/caintegrator2-war"/>
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="caintegrator2-war.build.file" value="build.xml"/>
-	<property name="caintegrator-cacore.build.file" value="build.xml"/>
 	
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="caintegrator-cacore.build.target" value="run"/>
 	<property name="caintegrator2-war.build.target" value="run"/>
     
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="target.dir" value="${basedir}/target" />
-	<property name="caintegrator-cacore.target.dir" value="${target.dir}/${caintegrator-cacore.dist.relative.dir}" />
 	<property name="caintegrator2-war.target.dir" value="${target.dir}/${caintegrator2-war.dist.relative.dir}" />
 	<property name="tools.target.dir" value="${target.dir}/${tools.dist.relative.dir}" />
 	<property name="common.target.dir" value="${target.dir}/${common.dist.relative.dir}" />
@@ -78,7 +74,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="jboss.dest.file" value="${tools.target.dir}/${jboss.binaries.file}"/>
 
 	<!-- Where the sub-projects should deploy thier artifacts.  This relative from thier *.base.dir above.  We need to use this because thier basedir is not the same as this project's basedir. -->
-	<property name="caintegrator-cacore.dist.dir" value="../${caintegrator-cacore.target.dir}" />
 	<property name="caintegrator2-war.dist.dir" value="${caintegrator2-war.target.dir}" />
 
 	<!-- Properties related to creating the distribution -->
@@ -93,10 +88,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Testing & static-analysis properties -->
 	<property name="caintegrator2-war.java.dir" value="${caintegrator2-war.base.dir}/src"/>
-	<property name="caintegrator-cacore.java.dir" value="${caintegrator-cacore.base.dir}/src"/>
 
 	<property name="caintegrator2-war.classes.dir" value="${caintegrator2-war.base.dir}/target/classes"/>
-	<property name="caintegrator-cacore.classes.dir" value="${caintegrator-cacore.base.dir}/target/classes"/>
 
 	<!-- common directory to retrieve resources used by static-analysis tools -->
 	<property name="common.dir" value="common"/>
@@ -176,7 +169,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<target name="init" >
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${target.dir}"/>
-		<mkdir dir="${caintegrator-cacore.target.dir}"/>
 		<mkdir dir="${caintegrator2-war.target.dir}"/>
 		<mkdir dir="${common.target.dir}"/>
 		<mkdir dir="${tools.target.dir}"/>
@@ -192,9 +184,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<property name="bda-utils.dir" value="${bda-utils.dir}"/>
 			<property name="lib.dir" value="${lib.dir}"/>
 		</ant>
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.test.file}"
-			target="ivy-clean"
-			dir="${caintegrator-cacore.base.dir}" />
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
 			target="ivy-clean"
 			dir="${caintegrator2-war.base.dir}"/>
@@ -210,9 +199,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		"/>
 
 	<target name="build:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="build.xml"
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
 			target="caintegrator2.war"
-			dir="build" >
+			dir="${caintegrator2-war.base.dir}" >
 			<property name="caintegrator2.war" value="${caintegrator2-war.target.dir}/caintegrator2.war" />
 		</ant>
 	</target>
@@ -232,12 +221,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		depends="
 			init
 			"/>
-
-	<target name="compile:caintegrator-cacore" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.build.file}"
-			target="compile"
-			dir="${caintegrator-cacore.base.dir}"/>
-	</target>
 
 	<target name="compile:caintegrator2-war" depends="init">
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
@@ -712,15 +695,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			simian.html.name="simian-caintegrator2-war.html"
 			/>
 
-		<!--
-		<static-analysis-simian
-			simian.src.dir="${caintegrator-cacore.java.dir}"
-			simian.rpt.dir="${reports.simian.dir}"
-			simian.report-xsl.file="${common.dir}/simian/simian.xsl"
-			simian.xml.name="simian-caintegrator-cacore.xml"
-			simian.html.name="simian-caintegrator-cacore.html"
-			/>
-		-->
 	</target>
 	<macrodef name="static-analysis-simian">
 		<attribute name="simian.src.dir"/>
@@ -759,19 +733,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			pmd.xml.name="pmd-caintegrator2-war.xml"
 			pmd.html.name="pmd-caintegrator2-war.html"
 			/>
-		<!--
-		<static-analysis-pmd
-			pmd.src.dir="${caintegrator-cacore.java.dir}"
-			pmd.rpt.dir="${reports.pmd.dir}"
-			pmd.project.name="${project.name}"
-			pmd.sub-project.name="caintegrator-cacore"
-			pmd.report-xsl.file="${common.dir}/pmd/pmd-report.xslt"
-			pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
-			pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset-basic.xml"
-			pmd.xml.name="pmd-caintegrator-cacore.xml"
-			pmd.html.name="pmd-caintegrator-cacore.html"
-			/>
-		-->
 	</target>
 
 	<macrodef name="static-analysis-pmd">
@@ -829,15 +790,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			javancss.xml.name="javancss_metrics_caintegrator2-war.xml"
 			javancss.html.name="javancss_report_caintegrator2-war.html"
 			/>
-		<!--
-		<static-analysis-javancss
-			javancss.src.dir="${caintegrator-cacore.java.dir}"
-			javancss.rpt.dir="${reports.javancss.dir}"
-			javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
-			javancss.xml.name="javancss_metrics_caintegrator-cacore.xml"
-			javancss.html.name="javancss_report_caintegrator-cacore.html"
-			/>
-		-->
 	</target>
 
 	<macrodef name="static-analysis-javancss">
@@ -880,16 +832,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			checkstyle.xml.name="checkstyle-caintegrator2-war.xml"
 			checkstyle.html.name="checkstyle-caintegrator2-war.html"
 			/>
-		<!-- 
-		<static-analysis-checkstyle
-			checkstyle.src.dir="${caintegrator-cacore.java.dir}"
-			checkstyle.rpt.dir="${reports.checkstyle.dir}"
-			checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-simple.xsl"
-			checkstyle.config.file="${common.dir}/checkstyle/checkstyle_minimal.xml"
-			checkstyle.xml.name="checkstyle-caintegrator-cacore.xml"
-			checkstyle.html.name="checkstyle-caintegrator-cacore.html"
-			/>
-		-->
 	</target>
 
 	<macrodef name="static-analysis-checkstyle">
@@ -931,7 +873,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		static-analysis:init
 		">
 		<mkdir dir="${reports.findbugs.dir}/caintegrator2-war"/>
-		<mkdir dir="${reports.findbugs.dir}/caintegrator-cacore"/>
 
 		<static-analysis-findbugs
 			findbugs.home.dir="${findbugs.home.dir}"
@@ -944,19 +885,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			findbugs.xml.name="findbugs-caintegrator2-war.xml"
 			findbugs.html.name="findbugs-caintegrator2-war.html"
 			/>
-		<!-- 
-		<static-analysis-findbugs
-			findbugs.home.dir="${findbugs.home.dir}"
-			findbugs.src.dir="${caintegrator-cacore.java.dir}"
-			findbugs.classes.dir="${caintegrator-cacore.classes.dir}"
-			findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator-cacore"
-			findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
-			findbugs.app.classpath.dir="${lib.dir}/api/runtime"
-			findbugs.jboss.classpath.dir="${test.jboss.dir}"
-			findbugs.xml.name="findbugs-caintegrator-cacore.xml"
-			findbugs.html.name="findbugs-caintegrator-cacore.html"
-			/>
-		-->
 	</target>
 
 	<macrodef name="static-analysis-findbugs">
@@ -1007,7 +935,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		static-analysis:ivy-init,
 		static-analysis:init
 		">
-		<mkdir dir="${basedir}/instrumented/caintegrator-cacore"/>
 		<mkdir dir="${basedir}/instrumented/caintegrator2-war"/>
 		<static-analysis-cobertura
 			cobertura.src.dir="${caintegrator2-war.java.dir}"
@@ -1018,17 +945,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			cobertura.ser.file="cobertura.ser"
 			cobertura.config.file="${common.dir}/cobertura/cobertura.xml"
 			/>
-		<!--
-		<static-analysis-cobertura
-			cobertura.src.dir="${caintegrator-cacore.java.dir}"
-			cobertura.classes.dir="${caintegrator-cacore.classes.dir}"
-			cobertura.rpt.dir="${reports.cobertura.dir}/caintegrator-cacore"
-			cobertura.instrumented.dir="${basedir}/instrumented/caintegrator-cacore"
-			cobertura.report-xsl.file="${common.dir}/cobertura/cobertura-simple.xsl"
-			cobertura.ser.file="cobertura.ser"
-			cobertura.config.file="${common.dir}/cobertura/cobertura.xml"
-			/>
-		-->
 	</target>
 
 	<macrodef name="static-analysis-cobertura">
@@ -1058,15 +974,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</macrodef>
 
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
-	<!-- 
-	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
-		depends="
-		clean,
-		init,
-		test:caintegrator-cacore,
-		test:caintegrator2-war
-		"/>
-	-->
 
 	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
 		depends="
@@ -1076,14 +983,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		"/>
 
 
-	<!-- Build generic-query-grid sub-project produces project level artifact -->
-	<target name="test:caintegrator-cacore" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator-cacore.test.file}"
-			target="test"
-			dir="${caintegrator-cacore.base.dir}" >
-			<property name="dist" value="${caintegrator-cacore.dist.dir}" />
-		</ant>
-	</target>
 
 	<target name="test:caintegrator2-war" depends="init">
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
