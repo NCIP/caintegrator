@@ -28,13 +28,13 @@
     <definition name="editStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
     </definition>
-
+    
     <definition name="homepage" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
     </definition>
 
-    <definition name="listStudies" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/listStudies_tile.jsp" />
+    <definition name="manageStudies" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageStudies_tile.jsp" />
     </definition>
 
     <definition name="workspaceStudy" extends="cssBaseDef">

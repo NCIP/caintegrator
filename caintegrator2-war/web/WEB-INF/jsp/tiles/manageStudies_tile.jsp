@@ -9,14 +9,19 @@
 
 <h1>Manage Studies</h1>
 <s:form>
-    <table>
+    <table class="data">
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Action</th>
         </tr>
         <s:iterator value="studyConfigurations" status="status">
-            <tr>
+            <s:if test="#status.odd == true">
+              <tr class="odd">
+            </s:if>
+            <s:else>
+              <tr class="even">
+            </s:else>            
                 <td><s:property value="study.shortTitleText" /></td>
                 <td><s:property value="study.longTitleText" /></td>
                 <td>
