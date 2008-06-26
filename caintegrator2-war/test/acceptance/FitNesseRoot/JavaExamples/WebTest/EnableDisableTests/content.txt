@@ -1,0 +1,31 @@
+|button|button1|is enabled|
+
+|user clicks on|Disable Button1|
+
+|button|button1|is disabled|
+
+|user clicks on|Enable Button1|
+
+|button|button1|is enabled|
+
+
+|field|text1|is editable|
+
+|user clicks on|Disable Text1|
+
+|field|text1|is not editable|
+
+|user clicks on|Enable Text1|
+
+|field|text1|is editable|
+
+
+|element|button1|is enabled|
+
+|user clicks on|Disable Button1|
+
+|element|button1|is disabled|
+
+|user clicks on|Enable Button1|
+
+|element|button1|is enabled|

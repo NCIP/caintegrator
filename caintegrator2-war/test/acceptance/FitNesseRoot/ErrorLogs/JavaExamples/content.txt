@@ -1,0 +1,173 @@
+|'''Date: '''|!-10:26:13 PM (GMT) on Wednesday, February 13, 2008-!|
+|'''Command: '''|!-java -cp D:\paket\out\webtest-complete-20080213\java\selenium-server.jar;D:\paket\out\webtest-complete-20080213\java\fitlibrary.jar;D:\paket\out\webtest-complete-20080213\java\fitnesse.jar;D:\paket\out\webtest-complete-20080213\java\selenium-java-client-driver.jar;D:\paket\out\webtest-complete-20080213\java\webfixture.jar;impl/java/bin;impl/java/lib/*.jar;../bin fit.FitServer mali 8085 1-!|
+|'''Exit code: '''|!-21-!|
+|'''Time elapsed: '''|!-206.047 seconds-!|
+----'''Standard Output:'''
+{{{Selected label for sel1=Mr
+Selected label for sel1=Mrs
+Checking:identifier=altbutton
+Checking:identifier=button1
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='checkbox' and @id='check1']
+Checking:xpath=//input[@type='radio' and @id='check1']
+Checking:xpath=//input[@type='checkbox' and @name='check1']
+Checking:xpath=//input[@type='checkbox' and @id='check1']
+Checking:xpath=//input[@type='radio' and @id='check1']
+Checking:xpath=//input[@type='checkbox' and @name='check1']
+Checking:xpath=//input[@type='checkbox' and @id='check2']
+Checking:xpath=//input[@type='radio' and @id='check2']
+Checking:xpath=//input[@type='checkbox' and @name='check2']
+Checking:xpath=//input[@type='checkbox' and @id='check2']
+Checking:xpath=//input[@type='radio' and @id='check2']
+Checking:xpath=//input[@type='checkbox' and @name='check2']
+Checking:identifier=check1
+Checking:xpath=//input[@type='checkbox' and @id='check1']
+Checking:xpath=//input[@type='radio' and @id='check1']
+Checking:xpath=//input[@type='checkbox' and @name='check1']
+Checking:xpath=//input[@type='checkbox' and @id='Radio1']
+Checking:xpath=//input[@type='radio' and @id='Radio1']
+Checking:xpath=//input[@type='checkbox' and @name='Radio1']
+Checking:xpath=//input[@type='radio' and @name='Radio1']
+Checking:xpath=//input[@type='checkbox' and @value='Radio1']
+Checking:xpath=//input[@type='radio' and @value='Radio1']
+Checking:xpath=//input[@type='checkbox' and @id='Radio1']
+Checking:xpath=//input[@type='radio' and @id='Radio1']
+Checking:xpath=//input[@type='checkbox' and @name='Radio1']
+Checking:xpath=//input[@type='radio' and @name='Radio1']
+Checking:xpath=//input[@type='checkbox' and @value='Radio1']
+Checking:xpath=//input[@type='radio' and @value='Radio1']
+Checking:xpath=//input[@type='checkbox' and @id='Radio2']
+Checking:xpath=//input[@type='radio' and @id='Radio2']
+Checking:xpath=//input[@type='checkbox' and @name='Radio2']
+Checking:xpath=//input[@type='radio' and @name='Radio2']
+Checking:xpath=//input[@type='checkbox' and @value='Radio2']
+Checking:xpath=//input[@type='radio' and @value='Radio2']
+Checking:xpath=//input[@type='checkbox' and @id='Radio2']
+Checking:xpath=//input[@type='radio' and @id='Radio2']
+Checking:xpath=//input[@type='checkbox' and @name='Radio2']
+Checking:xpath=//input[@type='radio' and @name='Radio2']
+Checking:xpath=//input[@type='checkbox' and @value='Radio2']
+Checking:xpath=//input[@type='radio' and @value='Radio2']
+Checking:xpath=//input[@type='checkbox' and @id='Radio1']
+Checking:xpath=//input[@type='radio' and @id='Radio1']
+Checking:xpath=//input[@type='checkbox' and @name='Radio1']
+Checking:xpath=//input[@type='radio' and @name='Radio1']
+Checking:xpath=//input[@type='checkbox' and @value='Radio1']
+Checking:xpath=//input[@type='radio' and @value='Radio1']
+Checking:xpath=//input[@type='checkbox' and @id='Radio2']
+Checking:xpath=//input[@type='radio' and @id='Radio2']
+Checking:xpath=//input[@type='checkbox' and @name='Radio2']
+Checking:xpath=//input[@type='radio' and @name='Radio2']
+Checking:xpath=//input[@type='checkbox' and @value='Radio2']
+Checking:xpath=//input[@type='radio' and @value='Radio2']
+Checking:xpath=//input[@type='checkbox' and @id='Radio1']
+Checking:xpath=//input[@type='radio' and @id='Radio1']
+Checking:xpath=//input[@type='checkbox' and @name='Radio1']
+Checking:xpath=//input[@type='radio' and @name='Radio1']
+Checking:xpath=//input[@type='checkbox' and @value='Radio1']
+Checking:xpath=//input[@type='radio' and @value='Radio1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=text1
+Checking:identifier=div1
+Checking:identifier=cfmbutton
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=div1
+Checking:xpath=//input[@type='submit' and @id='button1']
+Checking:xpath=//input[@type='button' and @id='button1']
+Checking:identifier=Disable Button1
+Checking:xpath=//input[@type='submit' and @id='button1']
+Checking:xpath=//input[@type='button' and @id='button1']
+Checking:identifier=Enable Button1
+Checking:xpath=//input[@type='submit' and @id='button1']
+Checking:xpath=//input[@type='button' and @id='button1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=Disable Text1
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=Enable Text1
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=button1
+Checking:identifier=Disable Button1
+Checking:identifier=button1
+Checking:identifier=Enable Button1
+Checking:identifier=button1
+Checking:xpath=//input[@type='checkbox' and @id='cbblur']
+Checking:identifier=text1
+Checking:xpath=//input[@type='checkbox' and @id='cbblur']
+Checking:xpath=//input[@type='submit' and @id='button1 value']
+Checking:xpath=//input[@type='button' and @id='button1 value']
+Checking:xpath=//button[@id='button1 value']
+Checking:link='button1 value'
+Checking:xpath=//a[@id='button1 value']
+Checking:xpath=//input[@type='button' and @name='button1 value']
+Checking:xpath=//input[@type='submit' and @name='button1 value']
+Checking:xpath=//button[@name='button1 value']
+Checking:xpath=//a[@name='button1 value']
+Checking:xpath=//input[@type='submit' and @value='button1 value']
+Checking:xpath=//input[@type='button' and @value='button1 value']
+Checking:xpath=//input[@type='submit' and @id='button1']
+Checking:xpath=//input[@type='button' and @id='button1']
+Checking:identifier=loadnext
+Checking:xpath=//select[@id='sel1']
+Checking:xpath=//select[@id='sel1']
+Checking:xpath=//select[@id='sel1']
+Checking:xpath=//select[@id='sel1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='text' and @id='area1']
+Checking:xpath=//input[not(@type) and @id='area1']
+Checking:xpath=//input[@type='password' and @id='area1']
+Checking:xpath=//textarea[@id='area1']
+Checking:identifier=text1
+Checking:identifier=area1
+Checking:xpath=//input[@type='checkbox' and @id='cbfocus']
+Checking:xpath=//input[@type='checkbox' and @id='cbblur']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=This text is visible
+Checking:xpath=//*[@title='This text is visible']
+Checking:xpath=//*[text()='This text is visible']
+Checking:identifier=This text is not visible
+Checking:xpath=//*[@title='This text is not visible']
+Checking:xpath=//*[text()='This text is not visible']
+Checking:identifier=dynel
+Checking:xpath=//*[@title='dynel']
+Checking:xpath=//*[text()='dynel']
+Checking:link=dynel
+Checking:xpath=//*[@id='dynel']
+Checking:identifier=dynel
+Checking:xpath=//*[@title='dynel']
+Checking:xpath=//*[text()='dynel']
+Checking:link=dynel
+Checking:xpath=//*[@id='dynel']
+Checking:identifier=dynel
+Checking:xpath=//*[@title='dynel']
+Checking:xpath=//*[text()='dynel']
+Checking:link=dynel
+Checking:xpath=//*[@id='dynel']
+Checking:identifier=dynel
+Checking:identifier=removedyn
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:identifier=dynel
+Checking:xpath=//*[@title='dynel']
+Checking:xpath=//*[text()='dynel']
+Checking:link=dynel
+Checking:xpath=//*[@id='dynel']
+Checking:identifier=dynel
+Checking:xpath=//*[@title='dynel']
+Checking:xpath=//*[text()='dynel']
+Checking:link=dynel
+Checking:xpath=//*[@id='dynel']
+Checking:identifier=div1
+Checking:identifier=div1
+Checking:identifier=div1
+Checking:identifier=setfieldtext
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:xpath=//input[@type='text' and @id='text1']
+Checking:identifier=removedyn
+}}}

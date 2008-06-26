@@ -1,0 +1,7 @@
+|user clicks on|setfieldtext|
+
+|reject|field|text1|contains text|hello world|
+
+|wait|4|seconds for field|text1|to contain text|hello world|
+
+|field|text1|contains text|hello world|

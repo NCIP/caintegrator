@@ -1,0 +1,1 @@
+|waitForTextPresent|this text appears with a delay|true|

@@ -1,0 +1,11 @@
+!3 if you disable locator lookup, tests will run much faster, but you can only use DOM element IDs to identify elements
+
+|user clicks on button|button1 value|
+
+|user clicks on button|button1|
+
+|set locator lookup|false|
+
+|reject|user clicks on button|button1 value|
+
+|user clicks on button|button1|

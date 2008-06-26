@@ -1,0 +1,7 @@
+!include -c .VariableDefinitions
+
+!|com.neuri.webfixture.WebTest|
+
+!|Start Browser|${browser}|With Selenium Console On|localhost|At Port|4444|And Scripts At|${server}|
+
+!|user Opens URL|${server}/HtmlElements|
