@@ -1,0 +1,16 @@
+!- <div style="width:300px;margin:5px 5px 5px 5px; padding:5px 5px 5px 5px;background:#ccccee;border:1px solid black;float:right;text-align:center">
+Learn how to use FitNesse effectively: <br/><a href="http://gojko.net/fitnesse/book?webfixture">Test Driven .NET Development with FitNesse<br/><img style="border:1px solid black;" align="center" src="/files/images/tddfitn-sm.jpg"/></a></div>
+-!
+
+!c !3 Welcome to the !-WebFixture-! v. 2.0
+
+This package includes binaries and examples for !-WebFixture-!, an extension to .NET and Java FIT/!-FitNesse-! that implements a customer-friendly language for web testing, utilising Selenium Remote Control. For more information and the full syntax of these fixtures, see http://fitnesse.info/webtest and http://gojko.net/. 
+
+See JavaExamples and DotNetExamples for examples on how to use the fixtures. See HtmlElements for the HTML page used in examples. If you changed the port for !-FitNesse-! or want to use a different browser to run examples, edit the VariableDefinitions page.
+
+
+This software package includes several other GPL- and LGPL-licensed packages:
+
+- !-FitNesse-! Acceptance Testing Framework (http://www.fitnesse.org) developed by Object Mentor (http://www.objectmentor.com)
+- !-FitNesse.NET-! test runner (http://sourceforge.net/projects/fitnessedotnet) developed by Syterra software (http://syterra.com/FitnesseDotNet.html)
+- Selenium Remote Control (http://www.openqa.org/selenium-rc) developed by !-ThoughtWorks-!(http://www.thoughtworks.com)

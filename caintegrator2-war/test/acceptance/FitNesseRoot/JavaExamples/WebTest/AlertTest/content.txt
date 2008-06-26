@@ -1,0 +1,3 @@
+|user clicks on|altbutton|
+
+|check|alert|Wake up!|

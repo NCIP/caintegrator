@@ -1,0 +1,5 @@
+|reject|element|div1|contains text|this text appears with a delay|
+
+|wait|5|seconds for element|div1|to contain text|this text appears with a delay|
+
+|check|text in|div1|is|this text appears with a delay|

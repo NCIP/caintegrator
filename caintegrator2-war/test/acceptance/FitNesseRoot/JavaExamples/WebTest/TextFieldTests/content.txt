@@ -1,0 +1,19 @@
+|user types|test134|into|text1|field|
+
+|user types|area134|into|area1|field|
+
+|check|value of|text1|is|test134|
+
+|check|value of|area1|is|area134|
+
+!3 focus and blur events should have also been fired
+
+|checkbox|cbfocus|is checked|
+
+|checkbox|cbblur|is checked|
+
+!3 check the "is empty" method
+
+|user types||into|text1|field|
+
+|field|text1|is empty|

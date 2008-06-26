@@ -1,0 +1,7 @@
+!3 You can fire events manually using "fire event".
+
+|checkbox|cbblur|is not checked|
+
+|fire event|blur|for|text1|
+
+|checkbox|cbblur|is checked|

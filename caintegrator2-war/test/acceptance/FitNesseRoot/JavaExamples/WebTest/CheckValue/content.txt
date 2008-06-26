@@ -1,0 +1,13 @@
+!3 "Check" syntax can be used for values and element text content so that it displays the expected and actual value on failed tests. 
+
+Change the test to fail to see this in action
+
+!3 Field contains text checks for field value
+
+|user types|Hey you!|into|text1|field|
+
+|check|value of|text1|is|Hey you!|
+
+!3 Element contains text checks for text inside a dom element
+
+|check|text in |div1|is|This text is visible|

@@ -1,0 +1,10 @@
+|check|selected option in|sel1|is|Mr|
+
+|user selects|Mrs|from|sel1|
+
+|check|selected option in|sel1|is|Mrs|
+
+|list|sel1|contains options|
+|value|
+|Mr|
+|Mrs|

@@ -1,0 +1,9 @@
+|wait|5|seconds for text|this text appears with a delay|to appear|
+
+|page contains text|this text appears with a delay|
+
+|user clicks on|removedyn|
+
+|wait|5|seconds for text|this text appears with a delay|to disappear|
+
+|page does not contain text|this text appears with a delay|

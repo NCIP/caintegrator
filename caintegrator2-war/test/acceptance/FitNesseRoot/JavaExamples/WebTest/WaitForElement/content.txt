@@ -1,0 +1,9 @@
+|Wait|5|seconds for element|dynel|to appear|
+
+|page contains element|dynel|
+
+|user clicks on|removedyn|
+
+|Wait|5|seconds for element|dynel|to disappear|
+
+|page does not contain element|dynel|

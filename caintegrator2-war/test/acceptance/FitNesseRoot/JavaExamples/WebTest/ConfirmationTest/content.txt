@@ -1,0 +1,3 @@
+|user clicks on|cfmbutton|
+
+|check|confirmation|Are you sure|
