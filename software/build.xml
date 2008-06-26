@@ -49,17 +49,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	-->
 	<property name="db-install.src.dir" value="${basedir}/${db-install.dist.relative.dir}" />
 	<property name="db-upgrade.src.dir" value="${basedir}/${db-upgrade.dist.relative.dir}" />
-	
+
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
 	<property name="caintegrator2-war.base.dir" value="${basedir}/caintegrator2-war"/>
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="caintegrator2-war.build.file" value="build.xml"/>
-	
+
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="caintegrator2-war.build.target" value="run"/>
-    
+
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="target.dir" value="${basedir}/target" />
@@ -82,7 +82,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
 	<property name="install.target" value="install"/>
 	<property name="upgrade.target" value="upgrade"/>
-	
+
 	<!-- Where grand stores it's outputed pdf reports of build files -->
 	<property name="grand.rpt.dir" value="common/grand"/>
 
@@ -147,7 +147,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Includes- include BDA marcos -->
 	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
-	<!-- Start logging --> 
+	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
 	<tstamp>
 		<format property="install.time" pattern="yyyy-MM-dd-HH-mm" />
@@ -187,7 +187,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
 			target="ivy-clean"
 			dir="${caintegrator2-war.base.dir}"/>
-		
+
 	</target>
 
 	<!-- Wrapper build target, call appropriate builds for sub-projects -->
@@ -287,7 +287,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="*properties.template" />
 				<include name="project.properties" />
 			</fileset>
-		</copy> 
+		</copy>
 		<!-- Set default target on install xml to install -->
 		<replaceregexp file="${target.dir}/install.xml" byline="true"
 			match="(.project.*default=.)\w+(.\s+.*)"
@@ -312,7 +312,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<fileset dir="${common.src.dir}">
 				<include name="**/*"/>
 			</fileset>
-		</copy> 
+		</copy>
 	</target>
 
 	<!-- Creates the installer distribution used by automated or manual remote installations -->
@@ -351,7 +351,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="*properties.template" />
 				<include name="project.properties" />
 			</fileset>
-		</copy> 
+		</copy>
 		<!-- Change default target of install.xml to upgrade -->
 		<replaceregexp file="${target.dir}/install.xml" byline="true"
 			match="(.project.*default=.)\w+(.\s+.*)"
@@ -376,7 +376,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<fileset dir="${common.src.dir}">
 				<include name="**/*"/>
 			</fileset>
-		</copy> 
+		</copy>
 	</target>
 
 	<!-- Creates upgrader distribution -->
@@ -404,7 +404,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true"/>
 			<arg value="${install.target}"/>
-		</exec> 
+		</exec>
 		<exec os="Windows XP, Windows 2000, Windows 2003"
 			executable="ant.bat" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
@@ -412,7 +412,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true"/>
 			<arg value="${install.target}"/>
-		</exec> 
+		</exec>
 
 	</target>
 
@@ -452,7 +452,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<arg value="-Dforce.reinstall=true"/>
 			<arg value="-Dlocal.install=true"/>
 			<arg value="${upgrade.target}"/>
-		</exec> 
+		</exec>
 		<exec os="Windows XP, Windows 2000, Windows 2003"
 			executable="ant.bat" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
@@ -461,7 +461,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<arg value="-Dforce.reinstall=true"/>
 			<arg value="-Dlocal.install=true"/>
 			<arg value="${upgrade.target}"/>
-		</exec> 
+		</exec>
 		<echo message="The server is not started as part of local deployment.  You will need to run $JBOSS_HOME/bin/run.bat (or run.sh if you are linux)."/>
 	</target>
 
@@ -710,7 +710,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
 		</sequential>
 	</macrodef>
-	 
+
 	<!-- Runs PMD a tool which compares code to a set of rules to identfiey violations (bugs, dead code, sub-optimal code, overcomplicated and duplicate code.  Sample rule sets and xslt reporting files are included in automation/software/bda-build-template/common/pmd.
 		You can find additional information about PMD at:
 		http://pmd.sourceforge.net/
@@ -899,7 +899,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<attribute name="findbugs.html.name" default="findbugs.html"/>
 		<sequential>
 			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.test.findbugs.classpath"/>
-	
+
 			<findbugs home="@{findbugs.home.dir}"
 				output="xml:withMessages"
 				outputFile="@{findbugs.rpt.dir}/@{findbugs.xml.name}"
@@ -913,7 +913,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 						<include name="**/*.jar" />
 					</fileset>
 				</auxClasspath>
-				
+
 				<sourcePath path="@{findbugs.src.dir}" />
 				<class location="@{findbugs.classes.dir}" />
 			</findbugs>
@@ -924,7 +924,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				/>
 		</sequential>
 	</macrodef>
-		
+
 	<!-- Runs Cobertura a code coveragetool.
 		You can find additional information about cobertura at:
 		http://cobertura.sourceforge.net/
@@ -962,7 +962,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 					<include name="**" />
 				</fileset>
 			</cobertura-instrument>
-	
+
 			<cobertura-report datafile="@{cobertura.instrumented.dir}/@{cobertura.ser.file}" format="html" destdir="@{cobertura.rpt.dir}">
 				<fileset dir="@{cobertura.src.dir}">
 					<include name="**/*.java" />
@@ -979,10 +979,94 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		depends="
 		clean,
 		init,
-		test:caintegrator2-war
+		test:caintegrator2-war,
+		test:acceptance
 		"/>
 
+	<target name="test:acceptance" depends="-test:start-seleniumrc, -test:fitnesse" description="Runs automated acceptance tests">
+		<echo message="===========================================" />
+		<echo message="Running caIntegrator2 Acceptance Test Suite" />
+		<echo message="===========================================" />
 
+	</target>
+
+	<target name="-test:start-seleniumrc" description="Starts a SeleniumRC server">
+		<parallel>
+			<daemons>
+				<java jar="${bda-utils.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
+			</daemons>
+		</parallel>
+	</target>
+
+	<target name="-test:fitnesse" description="Runs fitnesse acceptance tests">
+		<property name="fitnesse.output.dir" value="${basedir}/target/common" />
+		<property name="fitnesse_root_dir" value="${bda-utils.dir}/acceptance-tests" />
+		<property name="fitnesse_log_dir" value="${basedir}/target/common" />
+		<property name="dir_containing_FitNesseRoot_dir" value="${basedir}/caintegrator2-war/test/acceptance" />
+		<property name="fitnesse.output.file" value="${fitnesse.output.dir}/fitnesse-test-results" />
+		<property name="fitnesse.port" value="8085" />
+		<property name="Fitnesse.Test.Page.Path" value="JavaExamples.WebTest.AlertTest" />
+
+		<path id="fitpath">
+			<fileset dir="${fitnesse_root_dir}">
+				<include name="fitnesse.jar" />
+				<include name="**/lib/*.jar" />
+			</fileset>
+			<!-- Add any other jars that your app might need -->
+		</path>
+
+		<echo message="Starting FitNesse server..." level="info" />
+
+		<parallel>
+
+			<daemons>
+				<java classname="fitnesse.FitNesse" classpath="${fitnesse_root_dir}/fitnesse.jar;${ant.home}/lib/xercesImpl.jar">
+					<arg value="-l" />
+					<arg value="${fitnesse_log_dir}" />
+					<arg value="-p" />
+					<arg value="${fitnesse.port}" />
+					<arg value="-e" />
+					<arg value="0" />
+					<arg value="-d" />
+					<arg value="${dir_containing_FitNesseRoot_dir}" />
+				</java>
+			</daemons>
+
+			<sequential>
+				<echo message="Starting ${Fitnesse.Test.Page.Path} test suite..." level="info" />
+				<sleep seconds="5" />
+				<java classpathref="fitpath" classname="fitnesse.runner.TestRunner" fork="true" dir="${fitnesse_root_dir}" resultproperty="fit.test.failures">
+					<arg value="-debug" />
+					<arg value="-xml" />
+					<arg value="${fitnesse.output.file}.xml" />
+					<arg value="-html" />
+					<arg value="${fitnesse.output.file}.html" />
+					<arg value="-nopath" />
+					<arg value="localhost" />
+					<arg value="${fitnesse.port}" />
+					<arg value="${Fitnesse.Test.Page.Path}" />
+				</java>
+				<!--
+				<replace file="${fitnesse.output.file}.html" token="localhost:${fitnesse.port}" />
+				-->
+				
+				<echo message="Finished FitNesse tests: ${fit.test.failures} failures/exceptions" level="info" />
+				<fail message="FIT test failures/exceptions: ${fit.test.failures}">
+					<condition>
+						<not>
+							<equals arg1="${fit.test.failures}" arg2="0" />
+						</not>
+					</condition>
+				</fail>
+				<!-- This will fail the build if the return code was not Zero, which means there were errors or exceptions -->
+			</sequential>
+
+		</parallel>
+	</target>
+
+	<target name="-test:stop-seleniumrc" description="Stops a SeleniumRC server">
+		<java jar="${bda-utils.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
+	</target>
 
 	<target name="test:caintegrator2-war" depends="init">
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
