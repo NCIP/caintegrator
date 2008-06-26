@@ -25,7 +25,7 @@
 
         <bootstrappers>
             <currentbuildstatusbootstrapper file="logs/${project.name}/buildstatus.txt" />
-            <svnbootstrapper localworkingcopy="projects/${project.name}" file="software\build\delegating-build.xml" />
+            <svnbootstrapper localworkingcopy="projects/${project.name}" file="software\caintegrator2-war\delegating-build.xml" />
         </bootstrappers>
 
         <modificationset quietperiod="0" ignoreFiles="*/docs/*/*.*">
@@ -34,7 +34,7 @@
 
         <schedule interval="60">
             <ant anthome="C:\dev\tools\apache-ant-1.7.0"
-                buildfile="projects\${project.name}\software\build\delegating-build.xml" target="continuous-integration" uselogger="true"
+                buildfile="projects\${project.name}\software\caintegrator2-war\delegating-build.xml" target="continuous-integration" uselogger="true"
                 usedebug="false">
             </ant>
         </schedule>
@@ -64,7 +64,7 @@
 
         <bootstrappers>
             <currentbuildstatusbootstrapper file="logs/${project.name}/buildstatus.txt" />
-            <svnbootstrapper localworkingcopy="projects/${project.name}" file="software\build\delegating-build.xml" />
+            <svnbootstrapper localworkingcopy="projects/${project.name}" file="software\caintegrator2-war\delegating-build.xml" />
         </bootstrappers>
 
         <modificationset quietperiod="0" ignoreFiles="*/docs/*/*.*">

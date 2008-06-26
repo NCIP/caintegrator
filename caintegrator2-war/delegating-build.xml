@@ -4,7 +4,7 @@
 
 <project name="caintegrator2-cruisecontrol" default="continuous-integration" basedir="../..">
 
-    <property name="build.dir" value="${basedir}/software/build" />
+    <property name="build.dir" value="${basedir}/software/caintegrator2-war" />
     <property name="lib.dir" value="${basedir}/software/lib" />
 
     <property file="${build.dir}/local.properties" />
@@ -25,9 +25,9 @@
         <svn username="${svn.username}" password="${svn.password}">
             <update dir="${basedir}" />
         </svn>
-        <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
+        <copy tofile="${basedir}/../../config.xml" file="software/caintegrator2-war/cruisecontrol-config.xml" />
         <ant antfile="build.xml"
-            dir="software/build"
+            dir="software/caintegrator2-war"
             target="continuous-integration" />
         <svn username="${svn.username}" password="${svn.password}">
             <copy message="Tagging with ${label}"
@@ -40,9 +40,9 @@
         <svn username="${svn.username}" password="${svn.password}">
             <update dir="${basedir}" />
         </svn>
-        <copy tofile="${basedir}/../../config.xml" file="software/build/cruisecontrol-config.xml" />
+        <copy tofile="${basedir}/../../config.xml" file="software/caintegrator2-war/cruisecontrol-config.xml" />
         <ant antfile="build.xml"
-            dir="software/build"
+            dir="software/caintegrator2-war"
             target="nightly-build" />
         <svn username="${svn.username}" password="${svn.password}">
             <copy message="Tagging with ${label}"
