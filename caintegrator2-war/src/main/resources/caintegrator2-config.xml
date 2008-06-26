@@ -24,8 +24,14 @@
         class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
     </bean>
 
+    <bean id="defineStudyAction"
+        class="gov.nih.nci.caintegrator2.web.action.DefineStudyAction">
+        <property name="service">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="manageStudiesAction"
-        scope="session"
         class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">
         <property name="service">
             <ref local="studyManagementService"/>

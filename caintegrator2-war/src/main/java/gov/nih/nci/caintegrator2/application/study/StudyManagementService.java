@@ -147,5 +147,13 @@ public interface StudyManagementService {
      * @return the list of managed studies.
      */
     List<StudyConfiguration> getManagedStudies(String username);
+
+    /**
+     * Returns the <code>StudyConfiguration</code> corresponding to the id given.
+     * 
+     * @param id retrieve configuration for this id.
+     * @return the study configuration.
+     */
+    StudyConfiguration getStudyConfiguration(Long id);
     
 }
