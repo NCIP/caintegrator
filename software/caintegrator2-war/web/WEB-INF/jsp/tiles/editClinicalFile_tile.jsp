@@ -22,9 +22,8 @@
         <tr>
             <td></td>
             <td><s:property value="name" /></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <s:iterator value="" >
+            </s:iterator>
         </tr>
         </s:iterator>
     </table>

@@ -14,10 +14,11 @@
     <h1>Edit Study</h1>
     
     <s:form>
-    <s:textfield label="Study Name" name="study.shortTitleText" />
-    <s:textarea label="Study Description" name="study.longTitleText" />
-    <s:submit action="saveStudy" value="Save" />
-    <s:submit action="deployStudy" value="Deploy" />
+        <s:hidden name="studyConfiguration.id"  />
+        <s:textfield label="Study Name" name="study.shortTitleText" />
+        <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
+        <s:submit action="saveStudy" value="Save" />
+        <s:submit action="deployStudy" value="Deploy" />
     </s:form>
     
     <table>
@@ -39,6 +40,7 @@
         <tr>
             <th colspan="2">
                 <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
+                    <s:hidden name="studyConfiguration.id"  />
                     <s:file name="clinicalFile" label="File" accept="text/plain" />
                     <s:submit value="Add Clinical Data File"/>
                 </s:form>
@@ -47,6 +49,7 @@
     </table>
     
     <s:form>
+    <s:hidden name="studyConfiguration.id"  />
     <table>
         <tr>
             <th colspan="2">Genomic Data Sources</th>
