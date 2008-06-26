@@ -1,0 +1,2 @@
+|click|button1|
+|verifyValue|text1|button1|

@@ -1,0 +1,27 @@
+|checkbox|check1|is not checked|
+
+|checkbox|check1|is not selected|
+
+|checkbox|check2|is checked|
+
+|checkbox|check2|is selected|
+
+|user clicks on|check1|
+
+|checkbox|check1|is checked|
+
+!3 radio buttons are a bit tricky, they should be selectable by value as well
+
+|radio button|Radio1|is not checked|
+
+|radio button|Radio1|is not selected|
+
+|radio button|Radio2|is checked|
+
+|radio button|Radio2|is selected|
+
+|user clicks on|Radio1|radio button|
+
+|radio button|Radio2|is not checked|
+
+|radio button|Radio1|is checked|

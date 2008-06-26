@@ -1,0 +1,8 @@
+!include -c .VariableDefinitions
+
+!|com.neuri.webfixture.PlainSeleniumTest|
+
+!|start browser|${browser}|localhost|4444|${server}|
+
+!|open|${server}/HtmlElements|
+

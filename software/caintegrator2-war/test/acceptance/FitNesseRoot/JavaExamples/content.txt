@@ -1,0 +1,5 @@
+!path java/*.jar
+!path impl/java/bin
+!path impl/java/lib/*.jar
+
+!contents -R

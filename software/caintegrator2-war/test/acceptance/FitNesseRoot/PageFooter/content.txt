@@ -1,0 +1,2 @@
+----
+!-WebFixture-! v. 2.0  (c) 2006-2007 [[Gojko Adzic][http://gojko.net/]]. See http://fitnesse.info/webtest for more information on syntax and more examples.

@@ -1,0 +1,9 @@
+!3 Field contains text checks for field value
+
+|user types|Hey you!|into|text1|field|
+
+|field|text1|contains text|Hey|
+
+!3 Element contains text checks for text inside a dom element
+
+|element|div1|contains text|is visible|
