@@ -73,7 +73,7 @@
 
         <schedule interval="1800">
             <ant anthome="C:\dev\tools\apache-ant-1.7.0"
-                buildfile="projects\${project.name}\software\build\delegating-build.xml" target="nightly-build" uselogger="true"
+                buildfile="projects\${project.name}\software\caintegrator2-war\delegating-build.xml" target="nightly-build" uselogger="true"
                 usedebug="false"
                 time="2359">
             </ant>
