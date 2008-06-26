@@ -12,13 +12,13 @@
     <property name="root.dir" location="${basedir}/../.." />
     <property name="docs.dir" location="${root.dir}/docs" />
     <property name="software.dir" location="${root.dir}/software" />
-    <property name="build.dir" location="${software.dir}/build" />
+    <property name="build.dir" location="${software.dir}/caintegrator2-war" />
     <property name="lib.dir" location="${software.dir}/lib" />
     <property name="ncia.lib.dir" location="${lib.dir}/ncia-lib" />
-    <property name="build.lib.dir" location="${build.dir}/lib" />
-    <property name="resource.dir" location="${build.dir}/resources" />
+    <property name="build.lib.dir" location="${software.dir}/lib" />
+    <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
-    <property name="site.dir" location="${build.dir}/site" />
+    <property name="site.dir" location="${software.dir}/reports" />
 
     <!-- Main caCORE properties; required for taskdefs -->
     <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
@@ -101,12 +101,13 @@
     <property name="bda-utils.dir" location="${build.dir}/bda-utils" />
 
     <mkdir dir="${build.lib.dir}" />
-    <ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="retrieve-bda">
+    <ant inheritAll="false" inheritRefs="false" dir="${software.dir}"
+	    antfile="bda-ivy-build.xml" target="retrieve-bda">
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
         <property name="lib.dir" location="${build.lib.dir}" />
     </ant>
 
-    <import file="${bda-utils.dir}/bda-build-utils-0.1.xml" />
+    <import file="${bda-utils.dir}/bda-build-utils-0.2.0.xml" />
 
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
 
@@ -211,11 +212,11 @@
     <!-- ******************************************************************* -->
 
     <property name="caintegrator2.war.dir" location="${software.dir}/caintegrator2-war" />
-    <property name="caintegrator2.war.java.src.dir" location="${caintegrator2.war.dir}/src/main/java" />
-    <property name="caintegrator2.war.resources.src.dir" location="${caintegrator2.war.dir}/src/main/resources" />
-    <property name="caintegrator2.war.web.src.dir" location="${caintegrator2.war.dir}/src/main/web" />
-    <property name="caintegrator2.war.test.src.dir" location="${caintegrator2.war.dir}/src/test/java" />
-    <property name="caintegrator2.war.resources.test.dir" location="${caintegrator2.war.dir}/src/test/resources" />
+    <property name="caintegrator2.war.java.src.dir" location="${caintegrator2.war.dir}/src" />
+    <property name="caintegrator2.war.resources.src.dir" location="${caintegrator2.war.dir}/resources" />
+    <property name="caintegrator2.war.web.src.dir" location="${caintegrator2.war.dir}/web" />
+    <property name="caintegrator2.war.test.src.dir" location="${caintegrator2.war.dir}/test/src" />
+    <property name="caintegrator2.war.resources.test.dir" location="${caintegrator2.war.dir}/test/resources" />
     <property name="caintegrator2.war.target.dir" location="${caintegrator2.war.dir}/target" />
     <property name="caintegrator2.war.java.classes.dir" location="${caintegrator2.war.target.dir}/classes" />
     <property name="caintegrator2.war.instrumented.unit.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/unit" />
@@ -433,8 +434,8 @@
     <!-- ** DATABASE TARGETS                                              ** -->
     <!-- ******************************************************************* -->
     
-    <property name="caintegrator2db.dir" location="${software.dir}/caintegrator2db" />
-    <property name="caintegrator2db.sql.src.dir" location="${caintegrator2db.dir}/src/main/sql" />
+    <property name="caintegrator2db.dir" location="${software.dir}/common/resources/db-install/mysql" />
+    <property name="caintegrator2db.sql.src.dir" location="${caintegrator2db.dir}" />
     <property name="caintegrator2db.sql.target.dir" location="${caintegrator2db.dir}/target/sql" />
 
     <target name="database:init-sql">
