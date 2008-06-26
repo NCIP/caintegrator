@@ -21,7 +21,7 @@
         <s:submit action="deployStudy" value="Deploy" />
     </s:form>
     
-    <table>
+    <table class="data">
         <tr>
             <th colspan="2">Clinical Data Sources</th>
         </tr>
@@ -31,7 +31,12 @@
         </tr>
         <s:form>
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
-        <tr>
+            <s:if test="#status.odd == true">
+              <tr class="odd">
+            </s:if>
+            <s:else>
+              <tr class="even">
+            </s:else>            
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
         </tr>
@@ -50,7 +55,7 @@
     
     <s:form>
     <s:hidden name="studyConfiguration.id"  />
-    <table>
+    <table class="data">
         <tr>
             <th colspan="2">Genomic Data Sources</th>
         </tr>
@@ -59,7 +64,12 @@
             <th>Experiment Identifier</th>
         </tr>
         <s:iterator value="studyConfiguration.genomicDataSources" status="status">
-        <tr>
+            <s:if test="#status.odd == true">
+              <tr class="odd">
+            </s:if>
+            <s:else>
+              <tr class="even">
+            </s:else>            
             <td><s:property value="serverProfile.hostname" /></td>
             <td><s:property value="experimentIdentifier" /></td>
         </tr>
