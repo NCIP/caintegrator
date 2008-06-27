@@ -85,9 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caarray.domain.array.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains the actual numeric array data values. This will be an arbitrary subset (or perhaps
@@ -96,6 +101,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 public class ArrayDataValues {
     
     private ArrayDataMatrix arrayDataMatrix;
+    private Set<Array> allArrays = new HashSet<Array>();
+    
+    private Map<AbstractReporter, HashMap<Array, Long>> reporterArrayValueMap = 
+                            new HashMap<AbstractReporter, HashMap<Array, Long>>();
     
     /**
      * Returns the array data value for a given reporter for a given array.
@@ -105,7 +114,7 @@ public class ArrayDataValues {
      * @return the array data value.
      */
     public Long getValue(Array array, AbstractReporter reporter) {
-        return null;
+        return reporterArrayValueMap.get(reporter).get(array);
     }
     
     /**
@@ -116,7 +125,25 @@ public class ArrayDataValues {
      * @param value the array data value.
      */
     public void setValue(Array array, AbstractReporter reporter, Long value) {
-        // no-op
+        allArrays.add(array);
+        HashMap<Array, Long> arrayValueMap;
+        if (reporterArrayValueMap.keySet().contains(reporter)) {
+            arrayValueMap = reporterArrayValueMap.get(reporter);
+        } else {
+            arrayValueMap = new HashMap<Array, Long>();    
+        }
+        arrayValueMap.put(array, value);
+        reporterArrayValueMap.put(reporter, arrayValueMap);
+        
+    }
+    
+    /**
+     * Returns the Array to Value Map given a Reporter.
+     * @param reporter - Reporter to use to get the Array to Value map.
+     * @return ArrayToValue Map.
+     */
+    public Map<Array, Long> getArrayValueMap(AbstractReporter reporter) {
+        return reporterArrayValueMap.get(reporter);
     }
 
     /**
@@ -132,5 +159,34 @@ public class ArrayDataValues {
     public void setArrayDataMatrix(ArrayDataMatrix arrayDataMatrix) {
         this.arrayDataMatrix = arrayDataMatrix;
     }
+
+    /**
+     * @return the reporterArrayValueMap
+     */
+    public Map<AbstractReporter, HashMap<Array, Long>> getReporterArrayValueMap() {
+        return reporterArrayValueMap;
+    }
+
+    /**
+     * @param reporterArrayValueMap the reporterArrayValueMap to set
+     */
+    public void setReporterArrayValueMap(Map<AbstractReporter, HashMap<Array, Long>> reporterArrayValueMap) {
+        this.reporterArrayValueMap = reporterArrayValueMap;
+    }
+
+    /**
+     * @return the allArrays
+     */
+    public Set<Array> getAllArrays() {
+        return allArrays;
+    }
+
+    /**
+     * @param allArrays the allArrays to set
+     */
+    public void setAllArrays(Set<Array> allArrays) {
+        this.allArrays = allArrays;
+    }
+
 
 }
