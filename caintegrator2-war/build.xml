@@ -250,7 +250,11 @@
         <pathelement location="${lib.dir}/hibernate-annotations.jar" />
         <pathelement location="${lib.dir}/hibernate-validator.jar" />
         <pathelement location="${lib.dir}/netcdf-2.2.22.jar" />
-        <pathelement location="${lib.dir}/log4j-1.2.9.jar" />
+        <pathelement location="${lib.dir}/bufr-1.4.jar" />
+        <pathelement location="${lib.dir}/grib-6.0.jar" />
+        <pathelement location="${lib.dir}/visadNoDods.jar" />
+        <pathelement location="${lib.dir}/nlog4j-1.2.25.jar" />
+        <!-- <pathelement location="${lib.dir}/log4j-1.2.9.jar" /> -->
         <pathelement location="${lib.dir}/opencsv-1.8.jar" />
         <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
         <pathelement location="${lib.dir}/caarray-lib/caarray-client.jar" />
@@ -344,6 +348,10 @@
                 <include name="hibernate-validator.jar" />
                 <include name="mysql-connector-java-5.0.5-bin.jar" />
                 <include name="netcdf-2.2.22.jar" />
+                <include name="bufr-1.4.jar" />
+                <include name="grib-6.0.jar" />
+                <include name="visadNoDods.jar" />
+                <include name="nlog4j-1.2.25.jar" />
                 <include name="opencsv-1.8.jar" />
                 <include name="tiles-api-2.0.6.jar"/>
                 <include name="tiles-core-2.0.6.jar"/>
