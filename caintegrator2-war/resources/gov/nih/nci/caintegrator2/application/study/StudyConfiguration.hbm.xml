@@ -22,10 +22,10 @@
 		
 		<property name="status" type="Status" column="STATUS"/>
 	
-        <list name="clinicalConfigurationCollection" lazy="true" inverse="true" cascade="save-update">
+        <list name="clinicalConfigurationCollection" lazy="true" cascade="save-update">
             <cache usage="read-write" />
-            <key column="STUDY_CONFIGURATION_ID" />
-            <index column="LIST_INDEX"/>
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
         </list>
         

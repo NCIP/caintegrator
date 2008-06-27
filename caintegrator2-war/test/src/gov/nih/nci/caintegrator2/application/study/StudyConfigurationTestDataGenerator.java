@@ -101,12 +101,13 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
         assertEquals(original.getStatus(), retrieved.getStatus());
         assertEquals(original.getVisibility(), retrieved.getVisibility());
         StudyTestDataGenerator.INSTANCE.compareFields(original.getStudy(), retrieved.getStudy());
-//        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-//        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-//            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-//            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-//            DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
-//        }
+        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
+        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
+            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
+            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
+            assertEquals(config1.getId(), config2.getId());
+            //DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
+        }
     }
 
     @Override
@@ -126,7 +127,7 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
         for (int i = 0; i < 3; i++) {
             DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
             DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.setValues(config);
-            studyConfiguration.getClinicalConfigurationCollection().add(config);
+            //studyConfiguration.getClinicalConfigurationCollection().add(config);
         }
     }
 
