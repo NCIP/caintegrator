@@ -1,0 +1,32 @@
+// <!-- <mdb:mork:z v="1.4"/> -->
+< <(a=c)> // (f=iso-8859-1)
+  (8A=Typed)(8B=LastPageVisited)(8C=ByteOrder)
+  (80=ns:history:db:row:scope:history:all)
+  (81=ns:history:db:table:kind:history)(82=URL)(83=Referrer)
+  (84=LastVisitDate)(85=FirstVisitDate)(86=VisitCount)(87=Name)
+  (88=Hostname)(89=Hidden)>
+
+<(80=LE)(81
+    =http://en-us.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:\
+en-US:official)(8D=1214588678109375)(82=1214588365000000)(83
+    =en-us.start2.mozilla.com)(84=1)(8E=3)(85
+    =http://www.google.com/firefox?client=firefox-a&rls=org.mozilla:en-US:offi\
+cial)(86=google.com)(87
+    =M$00o$00z$00i$00l$00l$00a$00 $00F$00i$00r$00e$00f$00o$00x$00 $00S$00t$00a\
+$00r$00t$00 $00P$00a$00g$00e$00)(88
+    =http://en-us.www.mozilla.com/en-US/firefox/2.0.0.14/firstrun/)
+  (89=en-us.www.mozilla.com)(8A=W$00e$00l$00c$00o$00m$00e$00 $00t$00o$00 $00F$00\
+i$00r$00e$00f$00o$00x$00)>
+{1:^80 {(k^81:c)(s=9)[1(^8C=LE)]} 
+  [2(^82^81)(^84^8D)(^85^82)(^88^83)(^89=1)(^86=3)]
+  [3(^82^85)(^84^8D)(^85^82)(^88^86)(^87^87)(^86=3)]
+  [4(^82^88)(^84^82)(^85^82)(^88^89)(^87^8A)]}
+
+@$${1{@
+<(8F=1214592954734375)(90=4)>[-3:^80(^82^85)(^84^8F)(^85^82)(^88^86)
+    (^87^87)(^86=4)]
+[-2:^80(^82^81)(^84^8F)(^85^82)(^88^83)(^89=1)(^86=4)]
+@$$}1}@
+
+@$${2{@
+@$$}2}@
