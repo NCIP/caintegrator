@@ -85,13 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+
 import java.util.List;
 
 /**
  * Stores information about the sources of <code>Subject</code> annotation for this <code>Study</code> and provides
  * functionality to work with the configured sources.
  */
-public abstract class AbstractClinicalSourceConfiguration {
+public abstract class AbstractClinicalSourceConfiguration implements PersistentObject {
     
     private Long id;
     private StudyConfiguration studyConfiguration;
@@ -149,6 +152,22 @@ public abstract class AbstractClinicalSourceConfiguration {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
+    }
 
 }

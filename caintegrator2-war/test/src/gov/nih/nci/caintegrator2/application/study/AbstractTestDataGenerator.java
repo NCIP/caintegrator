@@ -87,6 +87,18 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 
+/**
+ * Base class for test data generators. These provide support for creating test objects and comparing two test objects. These were
+ * designed principally to test persistence, but may be applicable whenever test data is necessary. 
+ * 
+ * <p>Subclasses must provide implementations of:
+ * 
+ * <ul>
+ *  <li><code>createPersistentObject</code>: create an instance of the class handled by the generator.</li>
+ *  <li><code>setValues</code>: set a unique or changed set of values on all fields within the instance.</li>
+ *  <li><code>compareFields</code>: compare all the fields between two instances asserting that they are equal..</li>
+ * </ul>
+ */
 public abstract class AbstractTestDataGenerator<T> {
     
     private static int uniqueInt;
