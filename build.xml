@@ -3,16 +3,13 @@
 $Id: build.xml 4753 2008-05-15 18:24:16Z saksass $
 $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 -->
-<project name="build-caintegrator2" default="build:all" basedir="." 
-	xmlns:ivy="antlib:org.apache.ivy.ant"
-	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
-	>
+<project name="build-caintegrator2" default="build:all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
 	<description>
 		Builds the application.
 	</description>
 
 	<!-- Property file related properties and tasks -->
-	<property name="project.name" value="caintegrator2"/>
+	<property name="project.name" value="caintegrator2" />
 	<property environment="env" />
 	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
 	<property file="local.properties" />
@@ -22,33 +19,33 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	-->
 	<condition property="properties.file" value="linux-install.properties">
 		<or>
-			<os family="unix"/>
-			<os family="mac"/>
+			<os family="unix" />
+			<os family="mac" />
 		</or>
 	</condition>
 	<condition property="properties.file" value="windows-install.properties">
-		<os family="windows"/>
+		<os family="windows" />
 	</condition>
 
-	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
-	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2" />
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2" />
 	<property file="${properties.file}" />
 	<!-- added for remote deployments since file is copied to root of install dir -->
-	<basename property="properties.file.name" file="${properties.file}"/>
+	<basename property="properties.file.name" file="${properties.file}" />
 
 	<!-- Default values in case property file is not used -->
-	<property name="application.base.path" value="${user.home}/apps"/>
+	<property name="application.base.path" value="${user.home}/apps" />
 
 	<!-- Generic build time properties -->
-	<property name="bda.version" value="0.2"/>
+	<property name="bda.version" value="0.2" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="resources.dir" value="${basedir}/resources" />
 	<property name="reports.dir" value="${basedir}/reports" />
 	<property name="temp.dir" value="${basedir}/temp" />
 	<property name="ivy.settings.file" location="ivy-bda-settings.xml" />
 	<property name="ivy.bda-testing.file" location="ivy-bda-testing.xml" />
-	<property name="ivy.file" value="ivy-2.0.0-beta2.jar"/>
-	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar"/>
+	<property name="ivy.file" value="ivy-2.0.0-beta2.jar" />
+	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar" />
 
 
 	<!-- Used by dist:*:prep to copy resource files to distribution area -->
@@ -62,13 +59,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
-	<property name="caintegrator2-war.base.dir" value="${basedir}/caintegrator2-war"/>
+	<property name="caintegrator2-war.base.dir" value="${basedir}/caintegrator2-war" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
-	<property name="caintegrator2-war.build.file" value="build.xml"/>
+	<property name="caintegrator2-war.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="caintegrator2-war.build.target" value="run"/>
+	<property name="caintegrator2-war.build.target" value="run" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
@@ -81,35 +78,34 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="jboss-conf.target.dir" value="${target.dir}/${jboss-conf.dist.relative.dir}" />
 
 	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
-	<property name="jboss.dest.file" value="${tools.target.dir}/${jboss.binaries.file}"/>
+	<property name="jboss.dest.file" value="${tools.target.dir}/${jboss.binaries.file}" />
 
 	<!-- Where the sub-projects should deploy thier artifacts.  This relative from thier *.base.dir above.  We need to use this because thier basedir is not the same as this project's basedir. -->
 	<property name="caintegrator2-war.dist.dir" value="${caintegrator2-war.target.dir}" />
 
 	<!-- Properties related to creating the distribution -->
-	<property name="dist.dir" value="dist"/>
+	<property name="dist.dir" value="dist" />
 
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
-	<property name="install.target" value="install"/>
-	<property name="upgrade.target" value="upgrade"/>
+	<property name="install.target" value="install" />
+	<property name="upgrade.target" value="upgrade" />
 
 	<!-- Where grand stores it's outputed pdf reports of build files -->
-	<property name="grand.rpt.dir" value="common/grand"/>
+	<property name="grand.rpt.dir" value="common/grand" />
 
 	<!-- Testing & static-analysis properties -->
-	<property name="caintegrator2-war.java.dir" value="${caintegrator2-war.base.dir}/src"/>
+	<property name="caintegrator2-war.java.dir" value="${caintegrator2-war.base.dir}/src" />
 
-	<property name="caintegrator2-war.classes.dir" value="${caintegrator2-war.base.dir}/target/classes"/>
+	<property name="caintegrator2-war.classes.dir" value="${caintegrator2-war.base.dir}/target/classes" />
 
 	<!-- common directory to retrieve resources used by static-analysis tools -->
-	<property name="common.dir" value="common"/>
+	<property name="common.dir" value="common" />
 
 	<!-- retrive ivy files then retrieve bda files and librarires -->
-	<mkdir dir="lib"/>
-	<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml"
-		target="retrieve-bda">
-		<property name="bda-utils.dir" value="${bda-utils.dir}"/>
-		<property name="lib.dir" value="${lib.dir}"/>
+	<mkdir dir="lib" />
+	<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="retrieve-bda">
+		<property name="bda-utils.dir" value="${bda-utils.dir}" />
+		<property name="lib.dir" value="${lib.dir}" />
 	</ant>
 
 	<!-- Paths -->
@@ -133,10 +129,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</classpath>
 	</taskdef>
 	<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath" />
-	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.classpath"/>
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.classpath" />
 	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
 		<classpath>
-			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
@@ -148,94 +144,83 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<tstamp>
 		<format property="install.time" pattern="yyyy-MM-dd-HH-mm" />
 	</tstamp>
-	<record name="${log.dir}/install-${install.time}.log" action="start"/>
+	<record name="${log.dir}/install-${install.time}.log" action="start" />
 
 	<!-- Targets -->
 	<target name="diagnostics" description="diagnostics">
-		<echoproperties/>
-		<diagnostics/>
+		<echoproperties />
+		<diagnostics />
 	</target>
 
 	<target name="clean">
-		<delete dir="${target.dir}"/>
-		<delete dir="${dist.dir}"/>
-		<delete dir="${temp.dir}"/>
+		<delete dir="${target.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${temp.dir}" />
 	</target>
 
-	<target name="init" >
-		<mkdir dir="${dist.dir}"/>
-		<mkdir dir="${target.dir}"/>
-		<mkdir dir="${caintegrator2-war.target.dir}"/>
-		<mkdir dir="${common.target.dir}"/>
-		<mkdir dir="${tools.target.dir}"/>
-		<mkdir dir="${temp.dir}"/>
-		<available file="${jboss.dest.file}" property="jboss.tools.exists"/>
+	<target name="init">
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${caintegrator2-war.target.dir}" />
+		<mkdir dir="${common.target.dir}" />
+		<mkdir dir="${tools.target.dir}" />
+		<mkdir dir="${temp.dir}" />
+		<available file="${jboss.dest.file}" property="jboss.tools.exists" />
 	</target>
 
 	<target name="ivy:clean" description="Clean">
 		<ivy:settings file="${ivy.settings.file}" />
 		<ivy:cleancache />
-		<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml"
-			target="ivy-cleancache">
-			<property name="bda-utils.dir" value="${bda-utils.dir}"/>
-			<property name="lib.dir" value="${lib.dir}"/>
+		<ant inheritAll="false" inheritRefs="false" antfile="bda-ivy-build.xml" target="ivy-cleancache">
+			<property name="bda-utils.dir" value="${bda-utils.dir}" />
+			<property name="lib.dir" value="${lib.dir}" />
 		</ant>
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}"
-			target="ivy-clean"
-			dir="${caintegrator2-war.base.dir}"/>
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}" target="ivy-clean" dir="${caintegrator2-war.base.dir}" />
 
 	</target>
 
 	<!-- Wrapper build target, call appropriate builds for sub-projects -->
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
-		depends="
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
 		build:caintegrator2-war
-		"/>
+		" />
 
 	<target name="build:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
-			target="caintegrator2.war"
-			dir="${caintegrator2-war.base.dir}" >
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="caintegrator2.war" dir="${caintegrator2-war.base.dir}">
 			<property name="caintegrator2.war" value="${caintegrator2-war.target.dir}/caintegrator2.war" />
 		</ant>
 	</target>
 
 	<!-- Produces all distributions: installer, upgrader and source -->
-	<target name="dist" description="Makes all distributions: installer, upgrader and source"
-		depends="
+	<target name="dist" description="Makes all distributions: installer, upgrader and source" depends="
 		build:all,
 		dist:installer,
 		dist:upgrader,
-		dist:src"
-	      	/>
+		dist:src" />
 
 	<target name="dist:src">
 		<!-- Add tasks here to zip up src into a distribution, may require some additoinal properties for distribution name" -->
 	</target>
 
 	<!-- Wrapper target that downloads all required binaries from Common Tools Repository -->
-	<target name="dist:tools:retrieve" description="Downloads binary support tools form common tools repository"
-		depends="
+	<target name="dist:tools:retrieve" description="Downloads binary support tools form common tools repository" depends="
 		init,
 		dist:tools:retrieve:jboss
 		" />
 
 	<!-- Downloads jboss from tools repository and compares checksum, based on properties set in project.properties -->
 	<target name="dist:tools:retrieve:jboss" unless="jboss.tools.exists">
-		<get src="${jboss.src.url}"
-			dest="${jboss.dest.file}"/>
-		<get src="${jboss.src.url}.MD5"
-			dest="${jboss.dest.file}.MD5"/>
-		<checksum file="${jboss.dest.file}" verifyProperty="jboss.cksum.ok"/>
+		<get src="${jboss.src.url}" dest="${jboss.dest.file}" />
+		<get src="${jboss.src.url}.MD5" dest="${jboss.dest.file}.MD5" />
+		<checksum file="${jboss.dest.file}" verifyProperty="jboss.cksum.ok" />
 		<if>
-			<equals arg1="${jboss.cksum.ok}" arg2="true"/>
+			<equals arg1="${jboss.cksum.ok}" arg2="true" />
 			<then>
-				<echo message="Downloaded jboss sucessfully"/>
+				<echo message="Downloaded jboss sucessfully" />
 			</then>
 			<else>
-				<fail message="Failed to download jboss file sucessfully."/>
+				<fail message="Failed to download jboss file sucessfully." />
 			</else>
 		</if>
 	</target>
@@ -247,11 +232,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			db-upgrade.* propertes are stored in project.properties because they are used in both
 			install.xml and build.xml
 		-->
-		<database-build-filelist 
-			sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}"
-			build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}"
-			incr.sql.dir="${db-upgrade.src.dir}/mysql" />
-		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
+		<database-build-filelist sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}" build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}" incr.sql.dir="${db-upgrade.src.dir}/mysql" />
+		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml" />
 
 		<!-- Copy install related xml and properties files -->
 		<copy todir="${target.dir}" overwrite="true">
@@ -263,19 +245,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</fileset>
 		</copy>
 		<!-- Set default target on install xml to install -->
-		<replaceregexp file="${target.dir}/install.xml" byline="true"
-			match="(.project.*default=.)\w+(.\s+.*)"
-			replace="\1install\2"/>
-		<replaceregexp file="${target.dir}/install.xml" byline="true"
-			match="(.*property name=.\$\{properties.file\} value=.)[\w\.\d\-\_]+(.\s+.*)"
-			replace="\1install.properties\2"/>
+		<replaceregexp file="${target.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1install\2" />
+		<replaceregexp file="${target.dir}/install.xml" byline="true" match="(.*property name=.\$\{properties.file\} value=.)[\w\.\d\-\_]+(.\s+.*)" replace="\1install.properties\2" />
 		<!-- Rename install.xml to build.xml so manual installs will not need to include the -f optoin on ant, simplifying the install proces. -->
-		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml"/>
+		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml" />
 
 		<!-- Copy over BDA macrodefs and librarires -->
 		<copy todir="${target.dir}/bda-utils" overwrite="true">
 			<fileset dir="${bda-utils.dir}">
-				<include name="**/*"/>
+				<include name="**/*" />
 			</fileset>
 		</copy>
 
@@ -284,21 +262,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		-->
 		<copy todir="${common.target.dir}" overwrite="true">
 			<fileset dir="${common.src.dir}">
-				<include name="**/*"/>
+				<include name="**/*" />
 			</fileset>
 		</copy>
 	</target>
 
 	<!-- Creates the installer distribution used by automated or manual remote installations -->
 	<target name="dist:installer" depends="dist:installer:prep">
-		<delete file="${dist.dir}/${caintegrator2.install.zip.file}"/>
-		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" basedir="${target.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.install.zip.file}" />
+		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" basedir="${target.dir}" />
 	</target>
 
 	<!-- Copies install time resources into distribution tree -->
 	<target name="dist:upgrader:prep">
 		<!-- Cleans up files copied by dist:*:prep targets to ensure only required files are present becaue this target is run after dist:installer:prep -->
-		<delete dir="${tools.target.dir}"/>
+		<delete dir="${tools.target.dir}" />
 		<delete>
 			<fileset dir="${target.dir}">
 				<include name="*.xml" />
@@ -311,11 +289,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			db-upgrade.* propertes are stored in project.properties because they are used in both
 			install.xml and build.xml
 		-->
-		<database-build-filelist 
-			sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}"
-			build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}"
-			incr.sql.dir="${db-upgrade.src.dir}/mysql" />
-		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
+		<database-build-filelist sqlfiles.list.file="${target.dir}/${db-upgrade.mysql.list.file}" build.properties.file="${target.dir}/${db-upgrade.mysql.conf.file}" incr.sql.dir="${db-upgrade.src.dir}/mysql" />
+		<copy tofile="${target.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml" />
 
 		<!-- Copy install related xml and properties files -->
 		<copy todir="${target.dir}" overwrite="true">
@@ -327,19 +302,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</fileset>
 		</copy>
 		<!-- Change default target of install.xml to upgrade -->
-		<replaceregexp file="${target.dir}/install.xml" byline="true"
-			match="(.project.*default=.)\w+(.\s+.*)"
-			replace="\1upgrade\2"/>
-		<replaceregexp file="${target.dir}/install.xml" byline="true"
-			match="(.*property name=.properties.file. value=.)[\w\.\d\-\_\$\{\}\/]+(.\s*\/.*)"
-			replace="\1upgrade.properties\2"/>
+		<replaceregexp file="${target.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1upgrade\2" />
+		<replaceregexp file="${target.dir}/install.xml" byline="true" match="(.*property name=.properties.file. value=.)[\w\.\d\-\_\$\{\}\/]+(.\s*\/.*)" replace="\1upgrade.properties\2" />
 		<!-- Rename install.xml to build.xml to simply install but not having to provide -f option to ant command line -->
-		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml"/>
+		<move file="${target.dir}/install.xml" tofile="${target.dir}/build.xml" />
 
 		<!-- Copy BDA macrodefs and library files -->
 		<copy todir="${target.dir}/bda-utils" overwrite="true">
 			<fileset dir="${bda-utils.dir}">
-				<exclude name="**/*.zip"/>
+				<exclude name="**/*.zip" />
 			</fileset>
 		</copy>
 
@@ -348,57 +319,56 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		-->
 		<copy todir="${common.target.dir}" overwrite="true">
 			<fileset dir="${common.src.dir}">
-				<include name="**/*"/>
+				<include name="**/*" />
 			</fileset>
 		</copy>
 	</target>
 
 	<!-- Creates upgrader distribution -->
 	<target name="dist:upgrader" depends="dist:upgrader:prep">
-		<delete file="${dist.dir}/${caintegrator2.upgrade.zip.file}"/>
-		<zip destfile="${dist.dir}/${caintegrator2.upgrade.zip.file}" basedir="${target.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.upgrade.zip.file}" />
+		<zip destfile="${dist.dir}/${caintegrator2.upgrade.zip.file}" basedir="${target.dir}" />
 
 	</target>
 
 
 	<!-- Installs the application locally. Requires a local instance of mysql. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from exec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. This target will use differnt properties based on linux (linux-install.properties) or windows (windows-install.properties) installs. It only supports using those properties files for now, so if you want to change install time properites edit these files. -->
-	<target name="deploy:local:install" depends="dist:installer:prep" description="Installs the application and required binaries on the local machine, used for developer desktops and ci environments" >
+	<target name="deploy:local:install" depends="dist:installer:prep" description="Installs the application and required binaries on the local machine, used for developer desktops and ci environments">
 		<!-- deploy:local fails about basedirectory in real strange place macrodefs:319, this should fix it -->
-		<mkdir dir="${target.dir}/lib"/>
+		<mkdir dir="${target.dir}/lib" />
 
 		<!-- Copies over all files so linux and windows properties are present -->
 		<copy todir="${target.dir}">
 			<fileset dir="${basedir}">
-				<include name="*.properties"/>
+				<include name="*.properties" />
 			</fileset>
 		</copy>
 		<exec os="Linux, Max OS X" executable="ant" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=linux-install.properties"/>
+			<arg value="-Dproperties.file=linux-install.properties" />
 			<!-- force reinstall of database and jboss without prompting -->
-			<arg value="-Dforce.reinstall=true"/>
-			<arg value="${install.target}"/>
+			<arg value="-Dforce.reinstall=true" />
+			<arg value="${install.target}" />
 		</exec>
-		<exec os="Windows XP, Windows 2000, Windows 2003"
-			executable="ant.bat" dir="${target.dir}" failonerror="true">
+		<exec os="Windows XP, Windows 2000, Windows 2003" executable="ant.bat" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=windows-install.properties"/>
+			<arg value="-Dproperties.file=windows-install.properties" />
 			<!-- force reinstall of database and jboss without prompting -->
-			<arg value="-Dforce.reinstall=true"/>
-			<arg value="${install.target}"/>
+			<arg value="-Dforce.reinstall=true" />
+			<arg value="${install.target}" />
 		</exec>
 
 	</target>
 
 	<!-- Upgrades the application locally. Requires a local instance of mysql. Will use the target from install.xml specified in ${upgrade.target} (defaults to upgrade unless passed in on command line).  Calls ant from exec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. This target will use differnt properties based on linux (linux-install.properties) or windows (windows-install.properties) upgrades. It only supports using those properties files for now, so if you want to change install time properites edit these files. -->
-	<target name="deploy:local:upgrade" depends="dist:upgrader:prep" description="Upgrades the application on the local machine, used for developer desktops and ci environments" >
+	<target name="deploy:local:upgrade" depends="dist:upgrader:prep" description="Upgrades the application on the local machine, used for developer desktops and ci environments">
 		<!-- deploy:local fails about basedirectory in real strange place macrodefs:319, this should fix it -->
-		<mkdir dir="${target.dir}/lib"/>
+		<mkdir dir="${target.dir}/lib" />
 
 		<!-- Copies over all files so linux and windows properties are present -->
 		<copy todir="${target.dir}">
 			<fileset dir="${basedir}">
-				<include name="*.properties"/>
+				<include name="*.properties" />
 			</fileset>
 		</copy>
 
@@ -408,50 +378,43 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			properties file.
 		-->
 		<if>
-			<isset property="ci.server"/>
+			<isset property="ci.server" />
 			<then>
-				<replaceregexp file="${target.dir}/linux-upgrade.properties" byline="true"
-					match="exclude.start.servers=true"
-					replace=""/>
-				<replaceregexp file="${target.dir}/windows-upgrade.properties" byline="true"
-					match="exclude.start.servers=true"
-					replace=""/>
+				<replaceregexp file="${target.dir}/linux-upgrade.properties" byline="true" match="exclude.start.servers=true" replace="" />
+				<replaceregexp file="${target.dir}/windows-upgrade.properties" byline="true" match="exclude.start.servers=true" replace="" />
 			</then>
 		</if>
 
 		<exec os="Linux, Max OS X" executable="ant" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=linux-upgrade.properties"/>
+			<arg value="-Dproperties.file=linux-upgrade.properties" />
 			<!-- force reinstall of database and jboss without prompting -->
-			<arg value="-Dforce.reinstall=true"/>
-			<arg value="-Dlocal.install=true"/>
-			<arg value="${upgrade.target}"/>
+			<arg value="-Dforce.reinstall=true" />
+			<arg value="-Dlocal.install=true" />
+			<arg value="${upgrade.target}" />
 		</exec>
-		<exec os="Windows XP, Windows 2000, Windows 2003"
-			executable="ant.bat" dir="${target.dir}" failonerror="true">
+		<exec os="Windows XP, Windows 2000, Windows 2003" executable="ant.bat" dir="${target.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=windows-upgrade.properties"/>
+			<arg value="-Dproperties.file=windows-upgrade.properties" />
 			<!-- force reinstall of database and jboss without prompting -->
-			<arg value="-Dforce.reinstall=true"/>
-			<arg value="-Dlocal.install=true"/>
-			<arg value="${upgrade.target}"/>
+			<arg value="-Dforce.reinstall=true" />
+			<arg value="-Dlocal.install=true" />
+			<arg value="${upgrade.target}" />
 		</exec>
-		<echo message="The server is not started as part of local deployment.  You will need to run $JBOSS_HOME/bin/run.bat (or run.sh if you are linux)."/>
+		<echo message="The server is not started as part of local deployment.  You will need to run $JBOSS_HOME/bin/run.bat (or run.sh if you are linux)." />
 	</target>
 
 	<macrodef name="deploy-files">
-		<attribute name="ssh.user" default="${ssh.server.username}"/>
-		<attribute name="ssh.host" default="${ssh.server.hostname}"/>
-		<attribute name="remote.directory.property.name" default="ssh.dir.temp"/>
-		<attribute name="properties.file" default="${properties.file}"/>
-		<attribute name="dist.dir" default="${dist.dir}"/>
+		<attribute name="ssh.user" default="${ssh.server.username}" />
+		<attribute name="ssh.host" default="${ssh.server.hostname}" />
+		<attribute name="remote.directory.property.name" default="ssh.dir.temp" />
+		<attribute name="properties.file" default="${properties.file}" />
+		<attribute name="dist.dir" default="${dist.dir}" />
 		<attribute name="dist.file" />
 		<sequential>
 			<!-- Validate remote directory is valid -->
 			<propertycopy name="remote.dir" from="@{remote.directory.property.name}" />
-			<check-valid-directory-name
-				directory.property="remote.dir"
-				/>
+			<check-valid-directory-name directory.property="remote.dir" />
 			<!-- Delete/re-create remote directory -->
 			<remote-ssh remotesshcommand="rm -rf ${remote.dir};mkdir -p ${remote.dir}" />
 			<!-- work around for issue where basedir is required but is not currently used -->
@@ -466,26 +429,20 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</macrodef>
 
 	<!-- Install the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point installer to correct enviornment to install into -->
-	<target name="deploy:remote:install"
-		depends="
+	<target name="deploy:remote:install" depends="
 		build:all,
 		dist:installer
 		">
-		<deploy-files
-			dist.file="${caintegrator2.install.zip.file}"
-			/>
+		<deploy-files dist.file="${caintegrator2.install.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
 	</target>
 
 	<!-- Upgrades the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${upgrade.target} (defaults to upgrade unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point upgrader to correct enviornment to upgrade -->
-	<target name="deploy:remote:upgrade"
-		depends="
+	<target name="deploy:remote:upgrade" depends="
 		build:all,
 		dist:upgrader
 		">
-		<deploy-files
-			dist.file="${caintegrator2.upgrade.zip.file}"
-			/>
+		<deploy-files dist.file="${caintegrator2.upgrade.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
 	</target>
 
@@ -495,36 +452,26 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Scorches checkout area and then checks out the generic project from svn. Serval propeties influence what is checked out.  Each of the properites have defaults, which will check out trunk.  This target uses the svn-co macro from bda -->
 	<target name="svn:co">
-		<property name="svn.project.base.url" value="http://gforge.nci.nih.gov/svnroot/generic"/>
-		<property name="svn.project.name" value="generic"/>
-		<property name="svn.tag" value="trunk"/>
-		<property name="svn.co.base.dir" value="${user.home}/tmp"/>
+		<property name="svn.project.base.url" value="http://gforge.nci.nih.gov/svnroot/generic" />
+		<property name="svn.project.name" value="generic" />
+		<property name="svn.tag" value="trunk" />
+		<property name="svn.co.base.dir" value="${user.home}/tmp" />
 
-		<svn-co
-			svn.project.base.url="${svn.project.base.url}"
-			svn.project.name="${svn.project.name}"
-			svn.tag="${svn.tag}"
-			svn.co.base.dir="${svn.co.base.dir}"
-			/>
+		<svn-co svn.project.base.url="${svn.project.base.url}" svn.project.name="${svn.project.name}" svn.tag="${svn.tag}" svn.co.base.dir="${svn.co.base.dir}" />
 	</target>
 	<!-- this target generates visio like diagrams of the build files -->
 	<target name="report:grand" description="Generates grand graphs for build.xml files">
-		<report-grand
-			build.file.location="build.xml"
-			output.file.dir="."
-			output.file.name="${grand.rpt.dir}/generic-root-build.xml"
-			/>
+		<report-grand build.file.location="build.xml" output.file.dir="." output.file.name="${grand.rpt.dir}/generic-root-build.xml" />
 	</target>
 
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
 
-	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
-		depends="
+	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
 		test:caintegrator2-war,
 		test:acceptance
-		"/>
+		" />
 
 	<target name="test:acceptance" depends="-test:start-seleniumrc, -test:fitnesse" description="Runs automated acceptance tests">
 		<echo message="===========================================" />
@@ -551,9 +498,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="Fitnesse.Test.Page.Path" value="JavaExamples.WebTest.AlertTest" />
 
 		<path id="fitpath">
-			<fileset dir="${fitnesse_root_dir}">
-				<include name="fitnesse.jar" />
-				<include name="**/lib/*.jar" />
+			<fileset dir="${lib.dir}/acceptance-tests">
+				<include name="*.jar" />
 			</fileset>
 			<!-- Add any other jars that your app might need -->
 		</path>
@@ -563,7 +509,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<parallel>
 
 			<daemons>
-				<java classname="fitnesse.FitNesse" classpath="${fitnesse_root_dir}/fitnesse.jar;${ant.home}/lib/xercesImpl.jar">
+				<java classname="fitnesse.FitNesse" classpath="${lib.dir}/acceptance-tests/fitnesse.jar;${ant.home}/lib/xercesImpl.jar">
 					<arg value="-l" />
 					<arg value="${fitnesse_log_dir}" />
 					<arg value="-p" />
@@ -578,7 +524,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<sequential>
 				<echo message="Starting ${Fitnesse.Test.Page.Path} test suite..." level="info" />
 				<sleep seconds="5" />
-				<java classpathref="fitpath" classname="fitnesse.runner.TestRunner" fork="true" dir="${fitnesse_root_dir}" resultproperty="fit.test.failures">
+				<java classpathref="fitpath" classname="fitnesse.runner.TestRunner" fork="true" resultproperty="fit.test.failures">
 					<arg value="-debug" />
 					<arg value="-xml" />
 					<arg value="${fitnesse.output.file}.xml" />
@@ -592,7 +538,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<!--
 				<replace file="${fitnesse.output.file}.html" token="localhost:${fitnesse.port}" />
 				-->
-				
+
 				<echo message="Finished FitNesse tests: ${fit.test.failures} failures/exceptions" level="info" />
 				<fail message="FIT test failures/exceptions: ${fit.test.failures}">
 					<condition>
@@ -608,13 +554,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="-test:stop-seleniumrc" description="Stops a SeleniumRC server">
-		<java jar="${bda-utils.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
+		<java jar="${lib.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
 	</target>
 
 	<target name="test:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
-			target="continuous-integration"
-			dir="${caintegrator2-war.base.dir}" >
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="continuous-integration" dir="${caintegrator2-war.base.dir}">
 		</ant>
 	</target>
 	<!-- called in test
