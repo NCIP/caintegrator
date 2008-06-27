@@ -92,7 +92,7 @@ import java.util.List;
  * Comparator to get the higher match score between two different AnnotationFieldDescriptors.
  * It sorts the list from highest to lowest match scores.
  */
-public class MatchScoreComparator implements Comparator <AnnotationFieldDescriptor> {
+public class MatchScoreComparator implements Comparator<AnnotationFieldDescriptor> {
 
     private final List<String> keywords;
     

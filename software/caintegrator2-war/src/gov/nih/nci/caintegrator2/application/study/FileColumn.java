@@ -85,11 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
  */
-public class FileColumn implements Comparable<FileColumn> {
-    private long id;
+public class FileColumn implements Comparable<FileColumn>, PersistentObject {
+    
+    private Long id;
     private int position;
     private String name;
     private AnnotationFieldDescriptor fieldDescriptor;
@@ -146,15 +150,32 @@ public class FileColumn implements Comparable<FileColumn> {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
     }
 
 }

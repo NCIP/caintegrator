@@ -91,6 +91,13 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
+/**
+ * Provides testing of the ORM persistence of classes, including the ORM mapping and the underlying table. To test a persistence
+ * mapping, create a subclass parameterized to the type being tested and implement getDataGenerator to return a data generator
+ * instance that handles that type.
+ * 
+ * <p>Persistence checking is done in the testMapping method which tests insert, retrieval, update and retrieval of the updated object.
+ */
 public abstract class AbstractHibernateMappingTestIntegration<T> extends AbstractTransactionalSpringContextTests {
     
     private CaIntegrator2Dao caIntegrator2Dao;
