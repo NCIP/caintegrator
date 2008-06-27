@@ -8,7 +8,7 @@
 		</id>
 		
         <many-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration" column="STUDY_CONFIGURATION_ID"
-            lazy="proxy" cascade="save-update" />
+            not-null="true" lazy="proxy" cascade="save-update" update="false" insert="false" />
             
         <joined-subclass name="DelimitedTextClinicalSourceConfiguration" 
                          table="DELIMITED_TEXT_CLINICAL_SOURCE_CONFIGURATION" lazy="true">
