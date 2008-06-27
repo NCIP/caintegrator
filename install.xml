@@ -342,7 +342,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		</if>
 	</target>
 	<target name="install:validation:pre-install">
-		<validate-pre-install />
+		<validate-pre-install 
+			ant.check.version="${ant.minimum.version}"
+			java.check.version.major="${java.major.version}"
+			java.check.version.minor="${java.minor.version}"
+			database.version="${mysql.minimum.version}"
+			/>      
 	</target>
 	<target name="install:validation:pre-install:ports">
 		<validate-ports-preinstall />
