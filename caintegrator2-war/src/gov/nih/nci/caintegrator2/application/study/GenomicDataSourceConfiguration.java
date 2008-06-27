@@ -88,13 +88,15 @@ package gov.nih.nci.caintegrator2.application.study;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
 /**
  * Records sample and array data retrieval information.
  */
-public class GenomicDataSourceConfiguration {
+public class GenomicDataSourceConfiguration implements PersistentObject {
     private Long id;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
@@ -152,4 +154,21 @@ public class GenomicDataSourceConfiguration {
         this.id = id;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
+    }
+
 }

@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.Collection;
@@ -95,7 +97,7 @@ import java.util.List;
  * Contains the information about a particular annotation field prior to association to an 
  * <code>AnnotationDefinition</code>.
  */
-public class AnnotationFieldDescriptor {
+public class AnnotationFieldDescriptor implements PersistentObject {
     private static final int PERCENT_TO_NUMBER = 100;
     private Long id;
     private String name;
@@ -187,6 +189,22 @@ public class AnnotationFieldDescriptor {
         }
         return Math.round(((float) numMatched / (float) matchKeywords.size()) * PERCENT_TO_NUMBER);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
+    }
 
 }

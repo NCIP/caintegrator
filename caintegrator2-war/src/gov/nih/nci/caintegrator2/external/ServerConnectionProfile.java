@@ -85,10 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.external;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+
 /**
  * Profile for connecting.
  */
-public class ServerConnectionProfile {
+public class ServerConnectionProfile implements PersistentObject {
+    
     private Long id;
     private String hostname;
     private int port;
@@ -178,6 +182,23 @@ public class ServerConnectionProfile {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
     }
 
 }

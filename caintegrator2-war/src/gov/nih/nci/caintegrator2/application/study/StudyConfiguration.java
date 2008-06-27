@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -101,7 +103,7 @@ import java.util.Set;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-public class StudyConfiguration {
+public class StudyConfiguration implements PersistentObject {
     
     private Long id;
     private Visibility visibility;
@@ -291,36 +293,22 @@ public class StudyConfiguration {
             nameToTimepointMap.put(timepoint.getName(), timepoint);
         }
     }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        } else if (o == this) {
-            return true;
-        } else if (id == null) {
-            return false;
-        } else if (!(o instanceof StudyConfiguration)) {
-            return false;
-        } else {
-            StudyConfiguration e = (StudyConfiguration) o;
-            return id.equals(e.getId());
-        }
+        return PersistentObjectHelper.equals(this, o);
 
     }
 
     /**
-     * Default hashCode goes off of id.
-     * @return hashCode
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
-        if (id == null) {
-            return System.identityHashCode(this);
-        }
-
-        return id.hashCode();
+        return PersistentObjectHelper.hashCode(this);
     }
+
 }

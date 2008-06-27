@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -100,7 +103,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Represents a CSV annotation text file.
  */
-public class AnnotationFile {
+public class AnnotationFile implements PersistentObject {
     private Long id;
     private String path;
     private List<FileColumn> columns = new ArrayList<FileColumn>();
@@ -368,6 +371,23 @@ public class AnnotationFile {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
     }
 
 }

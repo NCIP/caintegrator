@@ -106,7 +106,7 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
             DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
             DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
             assertEquals(config1.getId(), config2.getId());
-            //DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
+            DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
         }
     }
 
@@ -127,7 +127,6 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
         for (int i = 0; i < 3; i++) {
             DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
             DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.setValues(config);
-            //studyConfiguration.getClinicalConfigurationCollection().add(config);
         }
     }
 
