@@ -118,45 +118,34 @@ public class NCIAFacadeTest {
 
 
     @Test
-    public void testGetAllTrialDataProvenanceProjects() {
+    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
         List<String> allProjects;
-        try {
-            allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-            if (!allProjects.isEmpty()) {
-                LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-                assertEquals("Project1", allProjects.get(0));
-                assertEquals("Project2", allProjects.get(1));
-                assertTrue(true);
-            } else {
-                LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-                fail();
-            }
-            
-        } catch (ConnectionException e) {
-            LOGGER.error("Failed to connect");
+        
+        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
+        if (!allProjects.isEmpty()) {
+            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
+            assertEquals("Project1", allProjects.get(0));
+            assertEquals("Project2", allProjects.get(1));
+            assertTrue(true);
+        } else {
+            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
             fail();
         }
     }
 
 
     @Test
-    public void testGetImageSeriesAcquisition() {
+    public void testGetImageSeriesAcquisition() throws ConnectionException {
         String trialDataProvenanceProject = "RIDER";
         List<ImageSeriesAcquisition> imageStudies;
-        try {
-            imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
-            if (!imageStudies.isEmpty()){
-                LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
-            } else {
-                LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
-            }
-            assertTrue(true);
-        } catch (ConnectionException e) {
-            LOGGER.error(e.getMessage());
-            fail();
-            
-        }
         
+        imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
+        if (!imageStudies.isEmpty()){
+            LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
+        } else {
+            LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
+        }
+        assertTrue(true);
     }
         
 }
