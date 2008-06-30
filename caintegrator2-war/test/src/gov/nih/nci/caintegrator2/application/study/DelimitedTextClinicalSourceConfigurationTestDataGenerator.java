@@ -99,7 +99,7 @@ public final class DelimitedTextClinicalSourceConfigurationTestDataGenerator ext
     public void compareFields(DelimitedTextClinicalSourceConfiguration original, DelimitedTextClinicalSourceConfiguration retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
-        AnnotationFileTestDataGenerator.INSTANCE.compareFields(original.getAnnotationFile(), retrieved.getAnnotationFile());
+        AnnotationFileTestDataGenerator.INSTANCE.compare(original.getAnnotationFile(), retrieved.getAnnotationFile());
     }
 
     @Override
