@@ -100,7 +100,7 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
     public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
         assertEquals(original.getStatus(), retrieved.getStatus());
         assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compareFields(original.getStudy(), retrieved.getStudy());
+        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
         assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
         for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
             DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);

@@ -102,6 +102,7 @@ public final class FileColumnTestDataGenerator extends AbstractTestDataGenerator
         assertEquals(original.getName(), retrieved.getName());
         assertEquals(original.getPosition(), retrieved.getPosition());
         assertEquals(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
+        AnnotationFieldDescriptorTestDataGenerator.INSTANCE.compare(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
     }
 
 
@@ -113,7 +114,10 @@ public final class FileColumnTestDataGenerator extends AbstractTestDataGenerator
 
     @Override
     public void setValues(FileColumn column) {
-        // no-op
+        if (column.getFieldDescriptor() == null) {
+            column.setFieldDescriptor(AnnotationFieldDescriptorTestDataGenerator.INSTANCE.createPersistentObject());
+            }
+        AnnotationFieldDescriptorTestDataGenerator.INSTANCE.setValues(column.getFieldDescriptor());
 
     }
 

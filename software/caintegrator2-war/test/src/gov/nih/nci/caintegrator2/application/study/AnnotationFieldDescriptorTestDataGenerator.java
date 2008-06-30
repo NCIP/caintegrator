@@ -85,51 +85,36 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.*;
 
-/**
- * 
- */
-public final class AnnotationFileTestDataGenerator extends AbstractTestDataGenerator<AnnotationFile> {
+public final class AnnotationFieldDescriptorTestDataGenerator extends AbstractTestDataGenerator <AnnotationFieldDescriptor> {
 
-    public static final AnnotationFileTestDataGenerator INSTANCE = new AnnotationFileTestDataGenerator();
+    
+    public static final AnnotationFieldDescriptorTestDataGenerator INSTANCE = new AnnotationFieldDescriptorTestDataGenerator();
 
-    private AnnotationFileTestDataGenerator() {
+    
+    private AnnotationFieldDescriptorTestDataGenerator() {
         super();
     }
 
     @Override
-    public void compareFields(AnnotationFile original, AnnotationFile retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getFile(), retrieved.getFile());
-        assertEquals(original.getIdentifierColumn(), retrieved.getIdentifierColumn());
-        assertEquals(original.getTimepointColumn(), retrieved.getTimepointColumn());
-        assertEquals(original.getColumns().size(), retrieved.getColumns().size());
-        for (int x = 0; x < original.getColumns().size(); x++) {
-            FileColumn originalColumn = (FileColumn) original.getColumns().get(x);
-            FileColumn retrievedColumn = (FileColumn) retrieved.getColumns().get(x);
-            FileColumnTestDataGenerator.INSTANCE.compare(originalColumn, retrievedColumn);
-        }
+    public void compareFields(AnnotationFieldDescriptor original, AnnotationFieldDescriptor retrieved) {
+        assertEquals(original.getName(), retrieved.getName());
+        assertEquals(original.getType(), retrieved.getType());
+
     }
 
 
     @Override
-    public AnnotationFile createPersistentObject() {
-        try {
-            return AnnotationFile.load(VALID_FILE);
-        } catch (ValidationException e) {
-            return null;
-        }
+    public AnnotationFieldDescriptor createPersistentObject() {
+        return new AnnotationFieldDescriptor();
     }
 
 
     @Override
-    public void setValues(AnnotationFile annotationFile) {
-        annotationFile.setIdentifierColumnIndex(0);
-        for(FileColumn column : annotationFile.getColumns()) {
-            FileColumnTestDataGenerator.INSTANCE.setValues(column);
-        }
+    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        annotationFieldDescriptor.setName("TestAFD");
+        annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
 
     }
 
