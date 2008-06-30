@@ -108,7 +108,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     
     DelimitedTextClinicalSourceConfiguration(AnnotationFile annotationFile, StudyConfiguration configuration) {
         super(configuration);
-        setAnnotationFile(annotationFile);
+        this.annotationFile = annotationFile;
     }
 
     ValidationResult validate() {
@@ -167,7 +167,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     /**
      * @param annotationFile the annotationFile to set
      */
-    private void setAnnotationFile(AnnotationFile annotationFile) {
+    public void setAnnotationFile(AnnotationFile annotationFile) {
         this.annotationFile = annotationFile;
     }
 
