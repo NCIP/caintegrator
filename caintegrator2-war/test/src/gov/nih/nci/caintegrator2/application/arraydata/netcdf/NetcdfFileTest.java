@@ -97,7 +97,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.junit.Before;
 import org.junit.Test;
 
 import ucar.ma2.InvalidRangeException;
@@ -129,15 +128,6 @@ public class NetcdfFileTest {
     private final static Long array2Reporter2Value = Long.valueOf(200);
     private final static Long array3Reporter2Value = Long.valueOf(300);
     
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-        
-        reader = new NetcdfFileReader(FILE_NAME);
-        
-    }
     
     @Test
     @SuppressWarnings("PMD.ExcessiveMethodLength")
@@ -187,6 +177,7 @@ public class NetcdfFileTest {
     
     @Test
     public void testRetrievalByReporter() throws NetcdfReadException {
+        reader = new NetcdfFileReader(FILE_NAME);
         List<String> reporters = new ArrayList<String>();
         reporters.add(reporterName1);
         reporters.add(reporterName2);
@@ -211,6 +202,7 @@ public class NetcdfFileTest {
     
     @Test
     public void testRetrievalByArray() throws NetcdfReadException {
+        reader = new NetcdfFileReader(FILE_NAME);
         List<String> arrays = new ArrayList<String>();
         arrays.add(arrayName1);
         arrays.add(arrayName3);
@@ -234,7 +226,12 @@ public class NetcdfFileTest {
     }
     
     @Test
-    public void testRetrievalByReporterAndArray() throws IOException, InvalidRangeException {
+    public void testRetrievalByReporterAndArray() throws 
+        IOException, 
+        InvalidRangeException, 
+        NetcdfReadException {
+        
+        reader = new NetcdfFileReader(FILE_NAME);
         assertEquals(array1Reporter1Value, reader.getArrayData(arrayName1, reporterName1));
         assertEquals(array2Reporter1Value, reader.getArrayData(arrayName2, reporterName1));
         assertEquals(array3Reporter1Value, reader.getArrayData(arrayName3, reporterName1));
