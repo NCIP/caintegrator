@@ -108,7 +108,8 @@ public class NetcdfFileTest {
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(NetcdfFileTest.class);
     
-    private static final String FILE_NAME = "test/resources/junit-array.nc";
+    private static final String CLASSPATH = NetcdfFileTest.class.getResource("/").getPath();//("test/resources/junit-array.nc").getPath();
+    private static final String FILE_NAME = CLASSPATH + "junit-array.nc";
     
     private NetcdfFileReader reader;
 
