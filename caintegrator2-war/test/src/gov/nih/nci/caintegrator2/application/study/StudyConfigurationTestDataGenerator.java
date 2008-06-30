@@ -105,7 +105,6 @@ public final class StudyConfigurationTestDataGenerator extends AbstractTestDataG
         for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
             DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
             DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            assertEquals(config1.getId(), config2.getId());
             DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
         }
     }

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static org.junit.Assert.*;
 
 public final class DelimitedTextClinicalSourceConfigurationTestDataGenerator extends AbstractTestDataGenerator<DelimitedTextClinicalSourceConfiguration> {
     
@@ -96,7 +97,9 @@ public final class DelimitedTextClinicalSourceConfigurationTestDataGenerator ext
     
     @Override
     public void compareFields(DelimitedTextClinicalSourceConfiguration original, DelimitedTextClinicalSourceConfiguration retrieved) {
-        // no-op
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
+        AnnotationFileTestDataGenerator.INSTANCE.compareFields(original.getAnnotationFile(), retrieved.getAnnotationFile());
     }
 
     @Override
@@ -106,7 +109,12 @@ public final class DelimitedTextClinicalSourceConfigurationTestDataGenerator ext
 
     @Override
     public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {
-        // no-op
+        
+        if (configuration.getAnnotationFile() == null) {
+            configuration.setAnnotationFile(AnnotationFileTestDataGenerator.INSTANCE.createPersistentObject());
+            }
+        AnnotationFileTestDataGenerator.INSTANCE.setValues(configuration.getAnnotationFile());
+        
     }
 
 }
