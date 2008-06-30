@@ -116,20 +116,15 @@ public class NCIAFacadeTestIntegration {
 
 
     @Test
-    public void testGetAllTrialDataProvenanceProjects() {
+    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
         List<String> allProjects;
-        try {
-            allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-            if (!allProjects.isEmpty()) {
-                LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-                assertTrue(true);
-            } else {
-                LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-                fail();
-            }
-            
-        } catch (ConnectionException e) {
-            LOGGER.error("Failed to connect");
+        
+        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
+        if (!allProjects.isEmpty()) {
+            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
+            assertTrue(true);
+        } else {
+            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
             fail();
         }
     }
@@ -138,10 +133,9 @@ public class NCIAFacadeTestIntegration {
     // Test below is commented out because getting all projects for "RIDER" takes a very long time...
     // might want to uncomment it later if we find a reasonable size project name to use.
 //    @Test
-//    public void testGetImageSeriesAcquisition() {
+//    public void testGetImageSeriesAcquisition() throws ConnectionException {
 //        String trialDataProvenanceProject = "RIDER";
 //        List<ImageStudy> imageStudies;
-//        try {
 //            imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
 //            if (!imageStudies.isEmpty()){
 //                LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
@@ -149,10 +143,6 @@ public class NCIAFacadeTestIntegration {
 //                LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
 //            }
 //            assertTrue(true);
-//        } catch (ConnectionException e) {
-//            LOGGER.error(e.getMessage());
-//            fail();
-//            
 //        }
 //        
 //    }
