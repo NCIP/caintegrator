@@ -117,6 +117,7 @@
 	    antfile="bda-ivy-build.xml" target="retrieve-bda">
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
         <property name="lib.dir" location="${build.lib.dir}" />
+	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
     </ant>
 
     <import file="${bda-utils.dir}/bda-build-utils-0.2.0.xml" />
