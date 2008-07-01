@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.external.ncia;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.ncia.domain.Image;
@@ -105,33 +104,29 @@ public class NCIASearchServiceTestIntegration {
 
     @Test
     public void testRetrieveRealObjects() throws ConnectionException {
-        // Take out this if / else statement when NCIA actually comes back up, I put this in
-        // just to pass the nightly integration build.
-        if(1 == 0) {
-            ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
-            ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
-            NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
-            
-            NCIASearchService searchService;
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
+        
+        NCIASearchService searchService;
+
+        searchService = nciaServiceClient.createNCIASearchService(profile);
+
+        assertNotNull(searchService.retrieveAllTrialDataProvenanceProjects());
+
+        List<Patient> patients = searchService.retrievePatientCollectionFromDataProvenanceProject("RIDER"); 
+        assertNotNull(patients);
+        
+        List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());
+        assertNotNull(studies);
+        
+        List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
+        assertNotNull(series);
+        
+        List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
+        assertNotNull(images);
     
-            searchService = nciaServiceClient.createNCIASearchService(profile);
-    
-            assertNotNull(searchService.retrieveAllTrialDataProvenanceProjects());
-    
-            List<Patient> patients = searchService.retrievePatientCollectionFromDataProvenanceProject("RIDER"); 
-            assertNotNull(patients);
-            
-            List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());
-            assertNotNull(studies);
-            
-            List<Series> series = searchService.retrieveImageSeriesCollectionFromStudy(studies.get(0).getStudyInstanceUID());
-            assertNotNull(series);
-            
-            List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
-            assertNotNull(images);
-        } else {
-            assertTrue(true);
-        }
     }
 
 }
