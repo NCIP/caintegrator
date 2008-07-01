@@ -1111,4 +1111,8 @@
 
 		</sequential>
 	</macrodef>
+	<target name="ivy-test" depends="init:ivy" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="runtime" />
+		<ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
+	</target>
 </project>
