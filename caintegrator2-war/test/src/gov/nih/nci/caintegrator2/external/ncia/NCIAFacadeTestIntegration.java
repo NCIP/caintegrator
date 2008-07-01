@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -117,24 +116,16 @@ public class NCIAFacadeTestIntegration {
 
     @Test
     public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
-        // Take out this if / else statement when NCIA actually comes back up, I put this in
-        // just to pass the nightly integration build.
-        if(1 == 0) {
-            List<String> allProjects;
-            
-            allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-            if (!allProjects.isEmpty()) {
-                LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-                assertTrue(true);
-            } else {
-                LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-                fail();
-            } 
+    
+        List<String> allProjects;
+        
+        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
+        if (!allProjects.isEmpty()) {
+            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
         } else {
-            assertTrue(true);
-        }
-        
-        
+            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
+            fail();
+        } 
     }
 
 
@@ -150,7 +141,6 @@ public class NCIAFacadeTestIntegration {
 //            } else {
 //                LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
 //            }
-//            assertTrue(true);
 //        }
 //        
 //    }
