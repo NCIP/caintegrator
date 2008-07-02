@@ -26,6 +26,12 @@ create table ANNOTATION_FILE (
     primary key (ID)
 ) ENGINE=InnoDB;
 
+create table CONFIGURATION_PARAMETER (
+    PARAMETER varchar(255), 
+    RAW_VALUE varchar(255), 
+    primary key (PARAMETER)
+) ENGINE=InnoDB;
+
 create table DELIMITED_TEXT_CLINICAL_SOURCE_CONFIGURATION (
     ID bigint not null, 
     ANNOTATION_FILE_ID bigint, 
