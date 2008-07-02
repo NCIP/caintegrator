@@ -1153,8 +1153,17 @@
 
 		</sequential>
 	</macrodef>
-	<target name="ivy-test" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="runtime" />
-		<ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
-	</target>
+    
+    <target name="ivy-test" depends="ivy-test-runtime, ivy-test-compile" description="Updates the local ivy repository"/>
+    
+    <target name="ivy-test-runtime" depends="init:ivy" description="Updates the local ivy repository">
+        <ivy:resolve refresh="true" conf="runtime" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
+    </target>
+            
+    <target name="ivy-test-compile" depends="init:ivy" description="Updates the local ivy repository">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+
 </project>
