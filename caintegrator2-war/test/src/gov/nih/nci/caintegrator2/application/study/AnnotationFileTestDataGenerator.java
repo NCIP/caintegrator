@@ -127,10 +127,12 @@ public final class AnnotationFileTestDataGenerator extends AbstractTestDataGener
     @Override
     public void setValues(AnnotationFile annotationFile) {
         annotationFile.setIdentifierColumnIndex(0);
+        annotationFile.getColumns().clear();
+        annotationFile.getColumns().add(new FileColumn(annotationFile));
+        annotationFile.getColumns().add(new FileColumn(annotationFile));
         for(FileColumn column : annotationFile.getColumns()) {
             FileColumnTestDataGenerator.INSTANCE.setValues(column);
         }
-
     }
 
 }

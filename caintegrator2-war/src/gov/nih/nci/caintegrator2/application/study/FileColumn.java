@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 
@@ -97,7 +100,20 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
     private int position;
     private String name;
     private AnnotationFieldDescriptor fieldDescriptor;
-    
+    private AnnotationFile annotationFile;
+    private transient List<String> dataValues;
+
+    FileColumn(AnnotationFile annotationFile) {
+        this.annotationFile = annotationFile;
+    }
+
+    /**
+     * Creates a new instance.
+     */
+    public FileColumn() {
+        super();
+    }
+
     /**
      * @return the name
      */
@@ -177,5 +193,40 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
     public int hashCode() {
         return PersistentObjectHelper.hashCode(this);
     }
+
+    /**
+     * @return the annotationFile
+     */
+    public AnnotationFile getAnnotationFile() {
+        return annotationFile;
+    }
+
+    /**
+     * @param annotationFile the annotationFile to set
+     */
+    public void setAnnotationFile(AnnotationFile annotationFile) {
+        this.annotationFile = annotationFile;
+    }
+    
+    /**
+     * Returns the list of values in this column.
+     * 
+     * @return the values.
+     */
+    public List<String> getDataValues() {
+        if (dataValues == null) {
+            loadDataValues();
+        }
+        return dataValues;
+    }
+
+    private void loadDataValues() {
+        dataValues = new ArrayList<String>();
+        getAnnotationFile().positionAtData();
+        while (getAnnotationFile().hasNextDataLine()) {
+            dataValues.add(getAnnotationFile().getDataValue(this));
+        }
+    }
+    
 
 }

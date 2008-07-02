@@ -406,7 +406,10 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
 
-    <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:integration:caintegrator2.war,hibernate.cfg.xml.test">
+    <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,
+        test:instrument:integration:caintegrator2.war,
+        hibernate.cfg.xml.test,
+        database:reinitialize">
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
@@ -530,7 +533,7 @@
         </hibernatetool>
     </target>
     
-    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes">
+    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes,hibernate.cfg.xml.test">
         <java classname="gov.nih.nci.caintegrator2.data.DataGenerator" classpathref="caintegrator2.war.test.dependencies.path" />
     </target>
     

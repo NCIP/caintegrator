@@ -15,19 +15,29 @@
     
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
-        <s:textfield label="Study Name" name="study.shortTitleText" />
-        <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
-        <s:submit action="saveStudy" value="Save" />
-        <s:submit action="deployStudy" value="Deploy" />
+        <table>
+            <tr>
+                <th>Study Name</th>
+                <td><s:textfield name="study.shortTitleText" /></td>
+            </tr>
+            <tr>
+                <th>Study Description</th>
+                <td><s:textarea name="study.longTitleText" cols="40" rows="4" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /></td>
+            </tr>
+        </table>
     </s:form>
     
     <table class="data">
         <tr>
-            <th colspan="2">Clinical Data Sources</th>
+            <th colspan="3">Clinical Data Sources</th>
         </tr>
         <tr>
             <th>Type</th>
             <th>Description</th>
+            <th>Action</th>
         </tr>
         <s:form>
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
@@ -39,11 +49,18 @@
             </s:else>            
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
+            <td>
+                <s:url id="editClinicalSource" action="editClinicalSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="clinicalSourceConfiguration.id" value="id" />
+                </s:url> 
+                <s:a href="%{editClinicalSource}">Edit</s:a> 
+            </td>
         </tr>
         </s:iterator>
         </s:form>
         <tr>
-            <th colspan="2">
+            <th colspan="3">
                 <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
                     <s:hidden name="studyConfiguration.id"  />
                     <s:file name="clinicalFile" label="File" />

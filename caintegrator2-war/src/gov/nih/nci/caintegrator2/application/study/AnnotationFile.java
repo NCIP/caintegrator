@@ -151,7 +151,7 @@ public class AnnotationFile implements PersistentObject {
         resetReader();
         loadNextLine();
         for (int index = 0; index < currentLineValues.length; index++) {
-            FileColumn column = new FileColumn();
+            FileColumn column = new FileColumn(this);
             column.setPosition(index);
             column.setName(currentLineValues[index]);
             columns.add(column);
@@ -286,7 +286,7 @@ public class AnnotationFile implements PersistentObject {
 
     private void resetReader() {
         try {
-            reader = new CSVReader(new FileReader(file));
+            reader = new CSVReader(new FileReader(getFile()));
         } catch (FileNotFoundException e) {
             throw new IllegalStateException("Unexpected failure: unable to reset file", e);
         }
