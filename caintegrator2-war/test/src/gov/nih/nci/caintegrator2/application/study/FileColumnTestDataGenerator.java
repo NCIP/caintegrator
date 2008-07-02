@@ -102,6 +102,7 @@ public final class FileColumnTestDataGenerator extends AbstractTestDataGenerator
         assertEquals(original.getName(), retrieved.getName());
         assertEquals(original.getPosition(), retrieved.getPosition());
         assertEquals(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
+        assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
         AnnotationFieldDescriptorTestDataGenerator.INSTANCE.compare(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
     }
 

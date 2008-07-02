@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,6 +117,17 @@ public class FileColumnTest {
         assertEquals(column0, columns.get(0));
         assertEquals(column1, columns.get(1));
         assertEquals(column2, columns.get(2));
+    }
+    
+    @Test
+    public void testGetDataValues() throws ValidationException {
+        AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE);
+        List<String> dataValues = annotationFile.getColumns().get(0).getDataValues();
+        assertEquals("100", dataValues.get(0));
+        assertEquals("101", dataValues.get(1));
+        dataValues = annotationFile.getColumns().get(3).getDataValues();
+        assertEquals("N", dataValues.get(0));
+        assertEquals("Y", dataValues.get(1));
     }
 
 }
