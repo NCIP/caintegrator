@@ -37,7 +37,8 @@ public class FileManagerImplTest {
         studyConfiguration.setId(1L);
         File storedFile = fileManager.storeStudyFile(TestDataFiles.VALID_FILE, TEST_FILENAME, studyConfiguration);
         storedFile.deleteOnExit();
-        assertEquals(System.getProperty("java.io.tmpdir") + File.separator + "1" + File.separator + TEST_FILENAME, storedFile.getAbsolutePath());
+        File expectedFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "1" + File.separator + TEST_FILENAME);
+        assertEquals(expectedFile.getCanonicalPath(), storedFile.getCanonicalPath());
         assertTrue(configurationHelperStub.getStringCalled);
         assertEquals(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
         assertEquals(TestDataFiles.VALID_FILE.length(), storedFile.length());
