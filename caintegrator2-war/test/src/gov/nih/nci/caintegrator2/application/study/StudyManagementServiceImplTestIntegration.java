@@ -85,8 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.io.IOException;
+
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -113,24 +114,16 @@ public class StudyManagementServiceImplTestIntegration extends AbstractTransacti
     }
     
     @Test
-    public void testSetClinicalAnnotationAndLoadData() throws ValidationException {
+    public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
         
         // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE);
+        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         assertNotNull(sourceConfiguration);
         
-        // Need to now test to see if we can load the annotation values.
-        // Problem is, we don't have a studyConfiguration
-        // Artificially set the clinicalConfiguration.identifierDescriptor
-//        AnnotationFieldDescriptor identifier = new AnnotationFieldDescriptor();
-//        identifier.setName("ID");
-//        studyConfiguration.getClinicalConfigurationCollection().get(0).setIdentifierDescriptor(identifier);
-//        // Load Clinical Annotation Values
-//        studyManagementService.loadClinicalAnnotation(studyConfiguration); 
-        
-        // Now it's impossible to tell if the annotations got loaded because nothing is persisted yet.
-        
+        // Clean up the test file
+        sourceConfiguration.getAnnotationFile().getFile().delete();
     }
 
 }

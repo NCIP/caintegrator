@@ -88,6 +88,9 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -134,11 +137,11 @@ public class StudyManagementServiceImplTest {
     }
     
     @Test
-    public void testSetClinicalAnnotationAndLoadData() throws ValidationException {
+    public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = studyManagementService.createStudy();
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE);
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
 
         // Load Clinical Annotation Values

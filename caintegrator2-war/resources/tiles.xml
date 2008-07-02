@@ -28,6 +28,10 @@
     <definition name="editStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
     </definition>
+
+    <definition name="fileIoError" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/fileIoError_tile.jsp" />
+    </definition>
     
     <definition name="homepage" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />

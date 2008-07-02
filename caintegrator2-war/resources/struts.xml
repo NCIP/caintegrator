@@ -49,6 +49,7 @@
         <action name="addClinicalFile" method="addClinicalFile" class="defineClinicalSourceAction">
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
             <result name="invalidFile" type="tiles">editStudy</result>
+            <result name="fileIoError" type="tiles">fileIoError</result>
         </action>
    
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">

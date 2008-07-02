@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="main/java/|main/resources/|test/java/|test/resources/" kind="src" path="src"/>
-	<classpathentry kind="src" path="test/src"/>
-	<classpathentry kind="src" path="test/resources"/>
-	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="test/src"/>
+	<classpathentry kind="src" output="target/resources" path="resources"/>
+	<classpathentry kind="src" output="target/test-resources" path="test/resources"/>
+	<classpathentry excluding="main/java/|main/resources/|test/java/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
@@ -466,6 +466,12 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/caintegrator2-lib/bufr-1.4.jar">
 		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/caintegrator2-lib/commons-configuration-1.5.jar" sourcepath="/caintegrator2-lib/src/commons-configuration-1.5-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/caintegrator2-lib/javadoc/commons-configuration-1.5-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>

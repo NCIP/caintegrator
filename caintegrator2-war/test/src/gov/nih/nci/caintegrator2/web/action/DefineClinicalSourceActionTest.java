@@ -110,10 +110,13 @@ public class DefineClinicalSourceActionTest {
     @Test
     public void testAddClinicalFile() {
         action.setClinicalFile(TestDataFiles.VALID_FILE);
+        action.setClinicalFileFileName(TestDataFiles.VALID_FILE.getName());
         assertEquals("editClinicalFile", action.addClinicalFile());
+        assertTrue(studyManagementServiceStub.addClinicalAnnotationFileCalled);
         action.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
         assertEquals("invalidFile", action.addClinicalFile());
-        assertTrue(studyManagementServiceStub.addClinicalAnnotationFileCalled);
+        action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        assertEquals("fileIoError", action.addClinicalFile());
     }
     
     @Test
@@ -121,6 +124,11 @@ public class DefineClinicalSourceActionTest {
         action.getClinicalSourceConfiguration().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        studyManagementServiceStub.clear();
+        action.getStudyConfiguration().setId(1L);
+        action.prepare();
+        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        studyManagementServiceStub.clear();
     }
 
 }
