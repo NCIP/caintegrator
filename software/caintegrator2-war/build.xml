@@ -243,6 +243,7 @@
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
         <pathelement location="${lib.dir}/caDSR-beans.jar" />
+        <pathelement location="${lib.dir}/commons-configuration-1.5.jar" />
         <pathelement location="${lib.dir}/commons-fileupload-1.2.1.jar" />
         <pathelement location="${lib.dir}/commons-io-1.4.jar" />
         <pathelement location="${lib.dir}/commons-logging-1.0.4.jar" />
@@ -255,7 +256,6 @@
         <pathelement location="${lib.dir}/grib-6.0.jar" />
         <pathelement location="${lib.dir}/visadNoDods.jar" />
         <pathelement location="${lib.dir}/nlog4j-1.2.25.jar" />
-        <!-- <pathelement location="${lib.dir}/log4j-1.2.9.jar" /> -->
         <pathelement location="${lib.dir}/opencsv-1.8.jar" />
         <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
         <pathelement location="${lib.dir}/caarray-lib/caarray-client.jar" />
@@ -308,11 +308,11 @@
     </path>
 
     <path id="caintegrator2.war.test.dependencies.path">
+        <pathelement location="${caintegrator2.war.test.classes.dir}" />
         <path refid="caintegrator2.war.dependencies.path" />
         <path refid="test.dependencies.path" />
         <path refid="hibernatetool.classpath" />
         <pathelement location="${lib.dir}/spring-mock.jar" />
-        <pathelement location="${caintegrator2.war.test.classes.dir}" />
         <pathelement location="${caintegrator2.war.resources.src.dir}" />        
         <pathelement location="${caintegrator2.war.resources.test.dir}" />
     </path>
@@ -337,17 +337,19 @@
                 <exclude name="log4j*.jar"/>
                 <exclude name="servlet.jar"/>
                 <exclude name="commons-logging*.*"/>
+                <exclude name="mysql-connector*.*"/>
                 <exclude name="xercesImpl*.*"/>
             </lib>
             <lib dir="${lib.dir}">
                 <include name="caDSR-beans.jar"/>
+                <include name="commons-configuration-1.5.jar"/>
                 <include name="commons-fileupload-1.2.1.jar"/>
                 <include name="commons-io-1.4.jar"/>
+                <include name="commons-lang-2.4.jar"/>
                 <include name="ejb3-persistence.jar" />
                 <include name="freestylesearch.jar"/>
                 <include name="hibernate-annotations.jar" />
                 <include name="hibernate-validator.jar" />
-                <include name="mysql-connector-java-5.0.5-bin.jar" />
                 <include name="netcdf-2.2.22.jar" />
                 <include name="bufr-1.4.jar" />
                 <include name="grib-6.0.jar" />
@@ -373,8 +375,13 @@
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
             </classes>
-            <classes dir="${caintegrator2.war.java.classes.dir}" />
-            <classes dir="${caintegrator2.war.resources.src.dir}"/>
+            <classes dir="${caintegrator2.war.java.classes.dir}" >
+                <exclude name="hibernate.cfg.xml" />
+            </classes>
+            <classes dir="${caintegrator2.war.resources.src.dir}">
+                <exclude name="hibernate.cfg.xml" />
+                <exclude name="**/*.hbm.xml"/>
+            </classes>
             <webinf dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="server-config.wsdd"/>
             </webinf>
@@ -399,7 +406,7 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
 
-    <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:integration:caintegrator2.war">
+    <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:integration:caintegrator2.war,hibernate.cfg.xml.test">
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
@@ -408,13 +415,14 @@
     
     <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
-             <fileset dir="${caintegrator2.war.java.classes.dir}">
+             <fileset  dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
                  <!-- Excludes for classes that can only be tested in integration tests -->
                  <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
              </fileset>
          </cobertura-instrument>
      </target>
@@ -435,7 +443,7 @@
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2-ORM.JAR                                         ** -->
     <!-- ******************************************************************* -->
-    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore">
+    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore,hibernate.cfg.xml.deploy">
         <delete file="${caintegrator2-orm.jar}" />
         <jar destfile="${caintegrator2-orm.jar}">
             <manifest>
@@ -447,8 +455,10 @@
             </fileset>
             <fileset dir="${caintegrator2.war.resources.src.dir}">
                 <include name="**/*.hbm.xml"/>
-                <include name="hibernate.cfg.xml"/>
             </fileset>
+                <fileset dir="${caintegrator2.war.java.classes.dir}">
+                    <include name="hibernate.cfg.xml"/>
+                </fileset>
         </jar>
     </target>
 
@@ -459,6 +469,8 @@
     <property name="caintegrator2db.dir" location="${software.dir}/common/resources/db-install/mysql" />
     <property name="caintegrator2db.sql.src.dir" location="${caintegrator2db.dir}" />
     <property name="caintegrator2db.sql.target.dir" location="${caintegrator2db.dir}/target/sql" />
+    <property name="comment.start" value="&lt;!-- " />
+    <property name="comment.end" value=" -->" />
 
     <target name="database:init-sql">
         <mkdir dir="${caintegrator2db.sql.target.dir}" />
@@ -520,6 +532,30 @@
     
     <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes">
         <java classname="gov.nih.nci.caintegrator2.data.DataGenerator" classpathref="caintegrator2.war.test.dependencies.path" />
+    </target>
+    
+    <property name="hibernate.cfg.xml.src" value="${caintegrator2.war.resources.src.dir}/hibernate.cfg.xml" />
+    <property name="hibernate.cfg.xml.test" value="${caintegrator2.war.test.classes.dir}/hibernate.cfg.xml" />
+    <property name="hibernate.cfg.xml.deploy" value="${caintegrator2.war.java.classes.dir}/hibernate.cfg.xml" />
+
+    <target name="hibernate.cfg.xml.test">
+        <copy file="${hibernate.cfg.xml.src}" tofile="${hibernate.cfg.xml.test}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+            <filterset>
+                <filter token="HIBERNATE_CONFIG_START" value="${comment.end}" />
+                <filter token="HIBERNATE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="hibernate.cfg.xml.deploy">
+        <copy file="${hibernate.cfg.xml.src}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+            <filterset>
+                <filter token="DATASOURCE_CONFIG_START" value="${comment.end}" />
+                <filter token="DATASOURCE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
     </target>
 
     <!-- ******************************************************************* -->
@@ -633,8 +669,13 @@
     <property name="jboss.server.name" value="default" />
     <property name="jboss.server.dir" location="${jboss.home}/server/${jboss.server.name}" />
     <property name="jboss.deploy.dir" location="${jboss.server.dir}/deploy" />
+    <property name="caintegrator2.datasource" location="${software.dir}/common/resources/jboss-conf/caintegrator2-mysql-ds.xml" />
     
     <target name="deploy:jboss" depends="caintegrator2.war">
+        <copy file="${caintegrator2.datasource}" todir="${jboss.deploy.dir}">
+            <filterset refid="caintegrator2.filterset" />
+        </copy>
+        <copy file="${lib.dir}/mysql-connector-java-5.0.5-bin.jar" todir="${jboss.server.dir}/lib" />
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
 
@@ -661,6 +702,7 @@
             </sequential>
         </for>
     </target>
+    
     <!-- ******************************************************************* -->
     <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->

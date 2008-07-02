@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceCo
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Action used to create and edit studies by a Study Manager.
@@ -99,12 +100,13 @@ public class DefineClinicalSourceAction extends AbstractStudyAction {
     
     private static final String INVALID_FILE = "invalidFile";
     private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
+    private static final String FILE_IO_ERROR = "fileIoError";
     
     private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration = 
         new DelimitedTextClinicalSourceConfiguration();
     private File clinicalFile;
     private String clinicalFileContentType;
-    private String clinicalFileFilename;
+    private String clinicalFileFileName;
     
     /**
      * Refreshes the current clinical source configuration.
@@ -124,12 +126,16 @@ public class DefineClinicalSourceAction extends AbstractStudyAction {
      */
     public String addClinicalFile() {
         try {
-            setClinicalSourceConfiguration(getService().addClinicalAnnotationFile(getStudyConfiguration(), 
-                    getClinicalFile()));
+            DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+                getService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
+                        getClinicalFileFileName());
+            setClinicalSourceConfiguration(sourceConfiguration);
             return EDIT_CLINICAL_FILE;
         } catch (ValidationException e) {
             addFieldError("upload", "Invalid file: " + e.getResult().getInvalidMessage());
             return INVALID_FILE;
+        } catch (IOException e) {
+            return FILE_IO_ERROR;
         }
     }
 
@@ -176,17 +182,17 @@ public class DefineClinicalSourceAction extends AbstractStudyAction {
     }
 
     /**
-     * @return the clinicalFileFilename
+     * @return the clinicalFileFileName
      */
-    public String getClinicalFileFilename() {
-        return clinicalFileFilename;
+    public String getClinicalFileFileName() {
+        return clinicalFileFileName;
     }
 
     /**
-     * @param clinicalFileFilename the clinicalFileFilename to set
+     * @param clinicalFileFileName the clinicalFileFileName to set
      */
-    public void setClinicalFileFilename(String clinicalFileFilename) {
-        this.clinicalFileFilename = clinicalFileFilename;
+    public void setClinicalFileFileName(String clinicalFileFileName) {
+        this.clinicalFileFileName = clinicalFileFileName;
     }
 
 }

@@ -14,6 +14,7 @@ public class PersistentObjectHelperTest {
         PersistentObject id2 = create(2L);
         PersistentObject nullId = create(null);
         PersistentObject anotherNullId = create(null);
+        Object differentClass = new Object();
         assertEquals(id1, id1);
         assertFalse(id1.equals(null));
         assertFalse(id1.equals(id2));
@@ -21,6 +22,7 @@ public class PersistentObjectHelperTest {
         assertEquals(nullId, nullId);
         assertFalse(nullId.equals(null));
         assertFalse(nullId.equals(anotherNullId));
+        assertFalse(id1.equals(differentClass));
     }
 
     @Test

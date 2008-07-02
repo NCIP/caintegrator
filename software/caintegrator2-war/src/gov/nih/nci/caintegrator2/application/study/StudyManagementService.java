@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -108,15 +109,19 @@ public interface StudyManagementService {
     void update(StudyConfiguration studyConfiguration);
     
     /**
-     * Adds a clinical annotation file for use.
+     * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
+     * file provided as an argument to be removed after completion of this method.
      * 
      * @param studyConfiguration add the annotation file to this study
      * @param annotationFile annotation file to add.
+     * @param filename the name with which the annotation file should be stored 
+     *        (allows for the use of files with temp names as input)
      * @return the clinical source configuration created.
      * @throws ValidationException if the file was not a valid annotation file.
+     * @throws IOException if the annotation file couldn't be copied to permanent storage.
      */
     DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration, 
-            File annotationFile) throws ValidationException;
+            File annotationFile, String filename) throws ValidationException, IOException;
 
     /**
      * Loads clinical annotations given a study configuration.

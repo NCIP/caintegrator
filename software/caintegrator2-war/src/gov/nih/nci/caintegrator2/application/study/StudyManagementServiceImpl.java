@@ -88,8 +88,10 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -106,6 +108,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private CaIntegrator2Dao dao;
+    private FileManager fileManager;
     
     /**
      * {@inheritDoc}
@@ -128,8 +131,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File file) throws ValidationException {
-        AnnotationFile annotationFile = AnnotationFile.load(file);
+            File inputFile, String filename) throws ValidationException, IOException {
+        File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
         studyConfiguration.addClinicalConfiguration(clinicalSourceConfig);
@@ -194,6 +198,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             throw new IllegalArgumentException("Id was null");
         }
         return (T) dao.get(id, entity.getClass());
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 
