@@ -461,7 +461,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 	<!-- this target generates visio like diagrams of the build files -->
 	<target name="report:grand" description="Generates grand graphs for build.xml files">
-		<report-grand build.file.location="build.xml" output.file.dir="." output.file.name="${grand.rpt.dir}/generic-root-build.xml" />
+		<report-grand 
+			build.file.location="build.xml" 
+			output.file.dir="${grand.rpt.dir}"
+			output.file.name="master-build.xml"
+		       	/>
+		<report-grand 
+			build.file.location="caintegrator2-war/build.xml" 
+			output.file.dir="${grand.rpt.dir}"
+			output.file.name="caintegrator2-build.xml"
+		       	/>
+		<report-grand 
+			build.file.location="caintegrator-cacore/build.xml" 
+			output.file.dir="${grand.rpt.dir}"
+			output.file.name="cacore-build.xml"
+		       	/>
 	</target>
 
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
@@ -469,7 +483,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
-		test:caintegrator2-war,
+		test:unit:all,
 		test:acceptance
 		" />
 
@@ -557,22 +571,35 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<java jar="${lib.dir}/acceptance-tests/selenium-server.jar" fork="true" failonerror="true" />
 	</target>
 
-	<target name="test:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="continuous-integration" dir="${caintegrator2-war.base.dir}">
-		</ant>
+	<target name="test:unit:all" description="calls sub-project test:unit targets"
+		depends="
+		test:unit:caintegrator2-war
+		"/>
+
+	<target name="test:unit:caintegrator2-war" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" 
+			target="test:unit" 
+			dir="${caintegrator2-war.base.dir}"
+			/>
 	</target>
-	<!-- called in test
-	<target name="static-analysis:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions"
+
+	<target name="static-analysis:all" description="calls all sub-project static-analysis targets"
 		depends="
 		static-analysis:caintegrator2-war
 		"/>
 
 	<target name="static-analysis:caintegrator2-war" depends="init">
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}"
-			target="check"
+			target="static-analysis"
 			dir="${caintegrator2-war.base.dir}" >
 		</ant>
 	</target>
-	-->
+	
+	<target name="continuous-integration" description="calls wrapper targets for continuous integration build"
+		depends="
+		build:all,
+		static-analysis:all,
+		test:unit:all
+		"/>
 
 </project>
