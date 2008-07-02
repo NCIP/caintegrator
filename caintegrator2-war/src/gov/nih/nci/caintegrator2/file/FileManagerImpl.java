@@ -83,80 +83,66 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.file;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
-public class StudyManagementServiceStub implements StudyManagementService {
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
-    public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
-    public boolean manageStudiesCalled;
-    public boolean getRefreshedStudyEntityCalled;
-
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
-    }
-
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
-    }
-
-
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = false;
-        addGenomicSourceCalled = false;
-        manageStudiesCalled = false;
-        getRefreshedStudyEntityCalled = false;
-    }
-
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
-        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
-            throw new ValidationException(new ValidationResult());
-        } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
-            throw new IOException();
-        }
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
-    }
-
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        manageStudiesCalled = true;
-        return Collections.emptyList();
-    }
-
-    public <T> T getRefreshedStudyEntity(T entity) {
-        getRefreshedStudyEntityCalled = true;
-        return entity;
-    }
+/**
+ * Implementation of file storage and retrieval subsystem.
+ */
+public class FileManagerImpl implements FileManager {
     
+    private ConfigurationHelper configurationHelper;
+    private static final Logger LOGGER = Logger.getLogger(FileManagerImpl.class);
+    
+    /**
+     * {@inheritDoc}
+     * @throws IOException 
+     */
+    public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) 
+    throws IOException  {
+        File destFile = new File(getStudyDirectory(studyConfiguration), filename);
+        try {
+            FileUtils.copyFile(sourceFile, destFile);
+        } catch (IOException e) {
+            LOGGER.error("Couldn't copy " + sourceFile.getAbsolutePath() + " to " + destFile.getAbsolutePath(), e);
+            throw e;
+        }
+        return destFile;
+    }
+
+    private File getStudyDirectory(StudyConfiguration studyConfiguration) {
+        if (studyConfiguration.getId() == null) {
+            throw new IllegalArgumentException("StudyConfiguration has not been saved.");
+        }
+        return new File(getStorageRootDirectory(), studyConfiguration.getId().toString());
+    }
+
+    private File getStorageRootDirectory() {
+        return new File(getConfigurationHelper().getString(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY));
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
+    }
+
+
 }

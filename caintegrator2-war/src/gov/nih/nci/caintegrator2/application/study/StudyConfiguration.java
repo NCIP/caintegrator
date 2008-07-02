@@ -130,7 +130,7 @@ public class StudyConfiguration implements PersistentObject {
      */
     public StudyConfiguration(Study study) {
         this();
-        setStudy(study);
+        this.study = study;
     }
 
     /**
@@ -195,7 +195,7 @@ public class StudyConfiguration implements PersistentObject {
         return study;
     }
 
-    final void setStudy(Study study) {
+    void setStudy(Study study) {
         this.study = study;
     }
 

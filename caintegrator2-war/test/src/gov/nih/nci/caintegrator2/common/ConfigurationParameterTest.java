@@ -83,80 +83,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import org.junit.Test;
 
-public class StudyManagementServiceStub implements StudyManagementService {
+public class ConfigurationParameterTest {
 
-    public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
-    public boolean manageStudiesCalled;
-    public boolean getRefreshedStudyEntityCalled;
-
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
+    @Test
+    public void testGetDefaultValue() {
+        assertEquals(System.getProperty("java.io.tmpdir"), ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY.getDefaultValue());
     }
 
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
-    }
-
-
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
-        addClinicalAnnotationFileCalled = false;
-        addGenomicSourceCalled = false;
-        manageStudiesCalled = false;
-        getRefreshedStudyEntityCalled = false;
-    }
-
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
-        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
-            throw new ValidationException(new ValidationResult());
-        } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
-            throw new IOException();
-        }
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
-    }
-
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        manageStudiesCalled = true;
-        return Collections.emptyList();
-    }
-
-    public <T> T getRefreshedStudyEntity(T entity) {
-        getRefreshedStudyEntityCalled = true;
-        return entity;
-    }
-    
 }
