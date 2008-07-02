@@ -14,6 +14,9 @@
 		
 		<many-to-one name="fieldDescriptor" class="gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor" column="ANNOTATION_FIELD_DESCRIPTOR_ID"
             lazy="proxy" cascade="save-update" />
+            
+        <many-to-one name="annotationFile" class="gov.nih.nci.caintegrator2.application.study.AnnotationFile" column="ANNOTATION_FILE_ID"
+            not-null="true" lazy="proxy" cascade="save-update" update="false" insert="false" />
 
 	</class>
 </hibernate-mapping>

@@ -63,6 +63,10 @@
         <action name="deployStudy" method="deployStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
+        
+        <action name="editClinicalSource" method="editClinicalSource" class="defineClinicalSourceAction">
+            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
+        </action>
    
         <action name="editStudy" method="editStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>

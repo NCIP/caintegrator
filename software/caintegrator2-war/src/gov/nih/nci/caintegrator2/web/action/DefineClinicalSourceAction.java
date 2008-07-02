@@ -138,6 +138,15 @@ public class DefineClinicalSourceAction extends AbstractStudyAction {
             return FILE_IO_ERROR;
         }
     }
+    
+    /**
+     * Edits a clinical data source.
+     * 
+     * @return the Struts result.
+     */
+    public String editClinicalSource() {
+        return EDIT_CLINICAL_FILE;
+    }
 
     /**
      * @return the clinicalSourceConfiguration

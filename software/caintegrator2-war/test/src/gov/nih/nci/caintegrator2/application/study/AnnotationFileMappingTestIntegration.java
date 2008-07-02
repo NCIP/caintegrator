@@ -83,57 +83,15 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class AnnotationFileMappingTestIntegration extends AbstractHibernateMappingTestIntegration<AnnotationFile> {
 
-public class DefineClinicalSourceActionTest {
-
-    private DefineClinicalSourceAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineClinicalSourceActionTest.class); 
-        action = (DefineClinicalSourceAction) context.getBean("defineClinicalSourceAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
-    }
-
-    @Test
-    public void testAddClinicalFile() {
-        action.setClinicalFile(TestDataFiles.VALID_FILE);
-        action.setClinicalFileFileName(TestDataFiles.VALID_FILE.getName());
-        assertEquals("editClinicalFile", action.addClinicalFile());
-        assertTrue(studyManagementServiceStub.addClinicalAnnotationFileCalled);
-        action.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
-        assertEquals("invalidFile", action.addClinicalFile());
-        action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
-        assertEquals("fileIoError", action.addClinicalFile());
-    }
-    
-    @Test
-    public void testEditClinicalSource() {
-        assertEquals("editClinicalFile", action.editClinicalSource());
-    }
-    
-    @Test
-    public void testPrepare() {
-        action.getClinicalSourceConfiguration().setId(1L);
-        action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        studyManagementServiceStub.clear();
-        action.getStudyConfiguration().setId(1L);
-        action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        studyManagementServiceStub.clear();
+    @Override
+    protected AbstractTestDataGenerator<AnnotationFile> getDataGenerator() {
+        return AnnotationFileTestDataGenerator.INSTANCE;
     }
 
 }
