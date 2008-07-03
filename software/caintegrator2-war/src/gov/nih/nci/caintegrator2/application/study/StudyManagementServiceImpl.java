@@ -86,12 +86,16 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -109,6 +113,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
     private CaIntegrator2Dao dao;
     private FileManager fileManager;
+    private CaDSRFacade caDSRFacade;
     
     /**
      * {@inheritDoc}
@@ -214,5 +219,40 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         this.fileManager = fileManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn) {
+        List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+        List<AnnotationFieldDescriptor> matchingDescriptors = 
+            dao.findMatches(fileColumn.getFieldDescriptor().getKeywordsAsList());
+        for (AnnotationFieldDescriptor descriptor : matchingDescriptors) {
+            if (descriptor.getDefinition() != null && !definitions.contains(descriptor.getDefinition())) {
+                definitions.add(descriptor.getDefinition());
+            }
+        }
+        return definitions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
+        return caDSRFacade.retreiveCandidateDataElements(fileColumn.getFieldDescriptor().getKeywordsAsList());
+    }
+
+    /**
+     * @return the caDSRFacade
+     */
+    public CaDSRFacade getCaDSRFacade() {
+        return caDSRFacade;
+    }
+
+    /**
+     * @param caDSRFacade the caDSRFacade to set
+     */
+    public void setCaDSRFacade(CaDSRFacade caDSRFacade) {
+        this.caDSRFacade = caDSRFacade;
+    }
 
 }

@@ -90,8 +90,11 @@ import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
@@ -101,7 +104,7 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     private static final int PERCENT_TO_NUMBER = 100;
     private Long id;
     private String name;
-    private Collection<String> keywords;
+    private String keywords;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
 
@@ -122,14 +125,14 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     /**
      * @return the keywords
      */
-    public Collection<String> getKeywords() {
+    public String getKeywords() {
        return keywords;
     }
 
     /**
      * @param keywords the keywords to set
      */
-    public void setKeywords(Collection<String> keywords) {
+    public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
 
@@ -180,16 +183,25 @@ public class AnnotationFieldDescriptor implements PersistentObject {
      * @param matchKeywords - keywords to match on.
      * @return numeric value of matching words between (1-100)
      */
-    public int getMatchScore(List<String> matchKeywords) {
+    public int getMatchScore(Collection<String> matchKeywords) {
         int numMatched = 0;
         for (String word : matchKeywords) {
-            if (Cai2Util.containsIgnoreCase(keywords, word)) {
+            if (Cai2Util.containsIgnoreCase(getKeywordsAsList(), word)) {
                 numMatched++;
             }
         }
         return Math.round(((float) numMatched / (float) matchKeywords.size()) * PERCENT_TO_NUMBER);
     }
-    
+
+    /**
+     * Returns the keywords as a <code>List</code>.
+     * 
+     * @return the keywords.
+     */
+    public List<String> getKeywordsAsList() {
+        return Arrays.asList(StringUtils.split(getKeywords()));
+    }
+
     /**
      * {@inheritDoc}
      */

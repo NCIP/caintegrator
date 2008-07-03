@@ -10,6 +10,9 @@
         <property name="fileManager">
             <ref local="fileManagerStub"/>
         </property>
+        <property name="caDSRFacade">
+            <ref local="caDSRFacadeStub"/>
+        </property>
     </bean>
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
@@ -24,5 +27,8 @@
     </bean>
         
     <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
+
+    <bean id="caDSRFacadeStub"
+        class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub" />
 
 </beans>

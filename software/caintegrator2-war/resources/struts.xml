@@ -49,6 +49,7 @@
         <action name="addClinicalFile" method="addClinicalFile" class="defineClinicalSourceAction">
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
             <result name="invalidFile" type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
             <result name="fileIoError" type="tiles">fileIoError</result>
         </action>
    
@@ -68,6 +69,10 @@
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
         </action>
    
+        <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
+            <result name="editFileColumn" type="tiles">editFileColumn</result>
+        </action>
+   
         <action name="editStudy" method="editStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
@@ -78,6 +83,14 @@
    
         <action name="saveStudy" method="saveStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
+        </action>
+   
+        <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
+            <result name="editFileColumn" type="tiles">editFileColumn</result>
+        </action>
+   
+        <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
+            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
         </action>
         
     </package>

@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,6 +104,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addClinicalAnnotationFileCalled;
     public boolean manageStudiesCalled;
     public boolean getRefreshedStudyEntityCalled;
+    public boolean getMatchingDefinitionsCalled;
+    public boolean getMatchingDataElementsCalled;
 
     public StudyConfiguration createStudy() {
         createStudyCalled = true;
@@ -129,6 +133,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addGenomicSourceCalled = false;
         manageStudiesCalled = false;
         getRefreshedStudyEntityCalled = false;
+        getMatchingDefinitionsCalled = false;
+        getMatchingDataElementsCalled = false;
     }
 
     public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
@@ -157,6 +163,16 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public <T> T getRefreshedStudyEntity(T entity) {
         getRefreshedStudyEntityCalled = true;
         return entity;
+    }
+
+    public List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn) {
+        getMatchingDefinitionsCalled = true;
+        return Collections.emptyList();
+    }
+
+    public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
+        getMatchingDataElementsCalled = true;
+        return Collections.emptyList();
     }
     
 }

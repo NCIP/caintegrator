@@ -85,11 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
@@ -126,9 +129,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         }
     }
     
-    public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
+    public List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords) {
         findMatchesCalled = true;
-        return Collections.emptyList();
+        List<AnnotationFieldDescriptor> descriptors = new ArrayList<AnnotationFieldDescriptor>();
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setDefinition(new AnnotationDefinition());
+        descriptor.getDefinition().setDisplayName("definitionName");
+        descriptors.add(descriptor);
+        return descriptors;
     }
 
     public List<StudyConfiguration> getManagedStudies(String username) {

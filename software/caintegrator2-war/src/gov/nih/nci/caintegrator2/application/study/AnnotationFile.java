@@ -183,11 +183,15 @@ public class AnnotationFile implements PersistentObject {
     private void validateDataLinesConsistent() throws ValidationException {
         resetReader();
         int numberOfHeaders = readNext().length;
+        int currentLine = 2;
         String[] values;
         while ((values = readNext()) != null) {
             if (values.length != numberOfHeaders) {
-                throwValidationException("Number of values inconsistent with header line.");
+                throwValidationException("Number of values in line " + currentLine 
+                        + " inconsistent with header line. Expected " + numberOfHeaders + " but found " 
+                        + values.length + " values.");
             }
+            currentLine++;
         }
     }
 
@@ -235,6 +239,12 @@ public class AnnotationFile implements PersistentObject {
      */
     public void setIdentifierColumn(FileColumn identifierColumn) {
         this.identifierColumn = identifierColumn;
+        if (identifierColumn != null) {
+            identifierColumn.setFieldDescriptor(null);
+            if (identifierColumn.equals(getTimepointColumn())) {
+                setTimepointColumn(null);
+            }
+        }
     }
 
     /**
@@ -249,6 +259,12 @@ public class AnnotationFile implements PersistentObject {
      */
     public void setTimepointColumn(FileColumn timepointColumn) {
         this.timepointColumn = timepointColumn;
+        if (timepointColumn != null) {
+            timepointColumn.setFieldDescriptor(null);
+            if (timepointColumn.equals(getIdentifierColumn())) {
+                setIdentifierColumn(null);
+            }
+        }
     }
     
     private String[] readNext() {

@@ -161,6 +161,9 @@ public class DataGenerator {
     private void addAnnotationDefinition() {
         ad = new AnnotationDefinition();
         ad.setDisplayName("Congestive Heart Failure");
+        ad.setPreferredDefinition("Congestive heart failure (CHF), congestive cardiac failure (CCF) or just heart failure, "
+                + "is a condition that can result from any structural or functional cardiac disorder that impairs the ability "
+                + "of the heart to fill with blood or pump a sufficient amount of blood through the body.");
         ad.setType("boolean");
         dao.save(ad);
     }
@@ -168,11 +171,7 @@ public class DataGenerator {
     private void addAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setDefinition(ad);
-        Collection<String> keywords = new TreeSet<String>();
-        keywords.add("congestive");
-        keywords.add("heart");
-        keywords.add("failure");
-        afd.setKeywords(keywords);
+        afd.setKeywords("congestive heart failure");
         afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
         dao.save(afd);

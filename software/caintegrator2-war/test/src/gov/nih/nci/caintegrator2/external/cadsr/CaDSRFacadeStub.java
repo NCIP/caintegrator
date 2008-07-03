@@ -83,58 +83,22 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.external.cadsr;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Main DAO interface for storage and retrieval of persistent entities.
- */
-public interface CaIntegrator2Dao {
-    
-    /**
-     * Saves the object given.
-     * 
-     * @param persistentObject the object to save.
-     */
-    void save(Object persistentObject);
-    
-    /**
-     * Returns the persistent object with the id given.
-     * 
-     * @param <T> type of object being returned.
-     * @param id id of the object to retrieve
-     * @param objectClass the class of the object to retrieve
-     * @return the requested object.
-     */
-    <T> T get(Long id, Class<T> objectClass);
-    
-    /**
-     * Returns the workspace belonging to the specified user.
-     * 
-     * @param username retrieve workspace for this user.
-     * @return the user's workspace
-     */
-    UserWorkspace getWorkspace(String username);
-    
-    /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
-     * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
-     */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+public class CaDSRFacadeStub implements CaDSRFacade {
 
-    /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
-     */
-    List<StudyConfiguration> getManagedStudies(String username);
+    public boolean retreiveCandidateDataElementsCalled;
+
+    public void clear() {
+        retreiveCandidateDataElementsCalled = false;
+    }
+
+    public List<DataElement> retreiveCandidateDataElements(List<String> keywords) {
+        retreiveCandidateDataElementsCalled = true;
+        return Collections.emptyList();
+    }
 
 }

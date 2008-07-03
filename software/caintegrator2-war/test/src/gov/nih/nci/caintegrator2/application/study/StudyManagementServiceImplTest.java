@@ -88,12 +88,14 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
+
+import java.io.IOException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -104,6 +106,7 @@ public class StudyManagementServiceImplTest {
     
     private StudyManagementService studyManagementService;
     private CaIntegrator2DaoStub daoStub;
+    private CaDSRFacadeStub caDSRFacadeStub;
 
     @Before
     public void setUp() throws Exception {
@@ -111,6 +114,8 @@ public class StudyManagementServiceImplTest {
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();                
+        caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
+        caDSRFacadeStub.clear();
     }
     
     @Test
@@ -186,6 +191,25 @@ public class StudyManagementServiceImplTest {
     public void testGetStudyEntityIllegalClass() {
         Object object = new Object();
         studyManagementService.getRefreshedStudyEntity(object);
+    }
+    
+    @Test
+    public void testGetMatchingDefinitions() {
+        FileColumn fileColumn = new FileColumn();
+        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        fileColumn.getFieldDescriptor().setKeywords("test keywords");
+        List<AnnotationDefinition> definitions = studyManagementService.getMatchingDefinitions(fileColumn);
+        assertEquals(1, definitions.size());
+        assertEquals("definitionName", definitions.get(0).getDisplayName());
+    }
+    
+    @Test
+    public void testGetMatchingDataElements() {
+        FileColumn fileColumn = new FileColumn();
+        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        fileColumn.getFieldDescriptor().setKeywords("test keywords");
+        studyManagementService.getMatchingDataElements(fileColumn);
+        assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
     }
 
 }

@@ -245,6 +245,7 @@
         <pathelement location="${lib.dir}/caDSR-beans.jar" />
         <pathelement location="${lib.dir}/commons-configuration-1.5.jar" />
         <pathelement location="${lib.dir}/commons-fileupload-1.2.1.jar" />
+        <pathelement location="${lib.dir}/commons-lang-2.4.jar" />
         <pathelement location="${lib.dir}/commons-io-1.4.jar" />
         <pathelement location="${lib.dir}/commons-logging-1.0.4.jar" />
         <pathelement location="${lib.dir}/ejb3-persistence.jar" />
@@ -479,7 +480,7 @@
         <mkdir dir="${caintegrator2db.sql.target.dir}" />
         <copy todir="${caintegrator2db.sql.target.dir}">
             <filterset refid="caintegrator2.filterset" />
-            <fileset dir="${caintegrator2db.sql.src.dir}" includes="**/*.sql" />
+            <fileset dir="${caintegrator2db.sql.src.dir}" includes="*.sql" />
         </copy>
     </target>
 
