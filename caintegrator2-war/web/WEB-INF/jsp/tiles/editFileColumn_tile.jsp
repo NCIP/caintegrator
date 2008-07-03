@@ -22,11 +22,33 @@
                 </td>
             </tr>
             <tr>
-                <th>Keywords </th>
+                <th>Keywords</th>
                 <td>
                     <s:textfield name="fileColumn.fieldDescriptor.keywords"  />
                 </td>
             </tr>
+            <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        <s:textfield name="fileColumn.fieldDescriptor.definition.displayName"  />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Definition</th>
+                    <td>
+                        <s:textarea name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" />
+                    </td>
+                </tr>
+            </s:if>
+            <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
+                <tr>
+                    <th>CDE Public ID</th>
+                    <td>
+                        <s:property value="fileColumn.fieldDescriptor.definition.cde.publicID"  />
+                    </td>
+                </tr>
+            </s:if>
             <tr>
                 <td colspan="2">
                     <s:submit value="Update" action="updateFileColumn" /><s:submit value="Search" action="searchDefinitions" />

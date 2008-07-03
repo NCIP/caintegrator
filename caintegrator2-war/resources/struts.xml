@@ -76,6 +76,10 @@
         <action name="editStudy" method="editStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
+        
+        <action name="loadClinicalSource" method="loadClinicalSource" class="defineStudyAction">
+            <result name="editStudy" type="tiles">editStudy</result>
+        </action>
    
         <action name="manageStudies" method="manageStudies" class="manageStudiesAction">
             <result name="manageStudies" type="tiles">manageStudies</result>
@@ -89,8 +93,20 @@
             <result name="editFileColumn" type="tiles">editFileColumn</result>
         </action>
    
+        <action name="selectDataElement" method="selectDataElement" class="defineFileColumnAction">
+            <result name="editFileColumn" type="tiles">editFileColumn</result>
+        </action>
+   
+        <action name="selectDefinition" method="selectDefinition" class="defineFileColumnAction">
+            <result name="editFileColumn" type="tiles">editFileColumn</result>
+        </action>
+   
         <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
+        </action>
+   
+        <action name="viewStudy" method="viewStudy" class="defineStudyAction">
+            <result name="viewStudy" type="tiles">viewStudy</result>
         </action>
         
     </package>

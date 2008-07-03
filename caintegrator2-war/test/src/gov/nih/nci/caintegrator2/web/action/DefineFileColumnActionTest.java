@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.web.action;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
@@ -9,6 +10,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@SuppressWarnings("PMD")
 public class DefineFileColumnActionTest {
     
     private DefineFileColumnAction action;
@@ -39,6 +41,20 @@ public class DefineFileColumnActionTest {
         assertEquals("editFileColumn", action.searchDefinitions());
         assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
         assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);
+    }
+    
+    @Test
+    public void testSelectDefintion() {
+        action.getDefinitions().add(null);
+        assertEquals("editFileColumn", action.selectDefinition());
+        assertTrue(studyManagementServiceStub.setDefinitionCalled);
+    }
+    
+    @Test
+    public void testSelectDataElement() {
+        action.getDataElements().add(null);
+        assertEquals("editFileColumn", action.selectDataElement());
+        assertTrue(studyManagementServiceStub.setDataElementCalled);
     }
     
     @Test
