@@ -115,6 +115,8 @@ public final class FileColumnTestDataGenerator extends AbstractTestDataGenerator
 
     @Override
     public void setValues(FileColumn column) {
+        column.setName(getUniqueString());
+        column.setPosition(getUniqueInt());
         if (column.getFieldDescriptor() == null) {
             column.setFieldDescriptor(AnnotationFieldDescriptorTestDataGenerator.INSTANCE.createPersistentObject());
             }
