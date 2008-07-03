@@ -131,7 +131,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		properties file please add them to the filterset-pre below.
 	     Also you should include properties that are declared in this file, like database info below.
 	-->
-	<property name="resource.dir.temp" value="${working.dir}/tmp" />
+	<property name="resource.dir.temp" value="${working.dir}/temp" />
 	<filterset id="filterset.pre">
 		<filter token="application.base.path" value="${application.base.path}"/>
 		<filter token="application.url" value="${application.url}"/>
