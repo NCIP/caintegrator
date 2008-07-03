@@ -25,7 +25,16 @@
     </bean>
 
     <bean id="defineClinicalSourceAction"
+        scope="session"
         class="gov.nih.nci.caintegrator2.web.action.DefineClinicalSourceAction">
+        <property name="service">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="defineFileColumnAction"
+        scope="session"
+        class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>
@@ -55,6 +64,9 @@
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>
+        <property name="caDSRFacade">
+            <ref local="caDSRFacade"/>
+        </property>
     </bean>
 
     <bean id="workspaceService" 
@@ -63,6 +75,17 @@
             <ref local="caIntegrator2Dao"/>
         </property>
     </bean>
+
+    <bean id="caDSRFacade"
+        class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
+        <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>        
+        <property name="search">
+            <ref local="caDSRSearch" />
+        </property>
+    </bean>
+
+    <bean id="caDSRSearch"
+        class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
 
     <bean id="caIntegrator2Dao"
         class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">

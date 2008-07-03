@@ -11,13 +11,10 @@
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
-		
+        
         <property name="name" type="string" column="NAME"/>
         
-        <set name="keywords" table="ANNOTATION_FIELD_DESCRIPTOR_KEYWORDS">
-            <key column="descriptor_id"/>
-            <element column="keyword" type="string"/>
-         </set>
+        <property name="keywords" type="string" column="KEYWORDS"/>
         
         <property name="type" type="AnnotationFieldType" column="TYPE"/>
         

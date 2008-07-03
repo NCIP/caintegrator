@@ -93,9 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -148,28 +146,19 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     public void testFindMatches() {
         // First load 2 AnnotationFieldDescriptors.
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
-        Collection<String> keywords = new TreeSet<String>();
-        keywords.add("congestive");
-        keywords.add("heart");
-        keywords.add("failure");
-        afd.setKeywords(keywords);
+        afd.setKeywords("congestive heart failure");
         afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
         caIntegrator2Dao.save(afd);
         
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        Collection<String> keywords2 = new TreeSet<String>();
-        keywords2.add("congestive");
-        afd2.setKeywords(keywords2);
+        afd2.setKeywords("congestive");
         afd2.setName("Congestive");
         afd2.setType(AnnotationFieldType.CHOICE);
         caIntegrator2Dao.save(afd2);
         
         AnnotationFieldDescriptor afd3 = new AnnotationFieldDescriptor();
-        Collection<String> keywords3 = new TreeSet<String>();
-        keywords3.add("congestive");
-        keywords3.add("failure");
-        afd3.setKeywords(keywords3);
+        afd3.setKeywords("congestive failure");
         afd3.setName("Congestive Failure");
         afd3.setType(AnnotationFieldType.CHOICE);
         caIntegrator2Dao.save(afd3);

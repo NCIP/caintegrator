@@ -83,58 +83,137 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+
 /**
- * Main DAO interface for storage and retrieval of persistent entities.
+ * Action used to edit the type and annotation of a file column by a Study Manager.
  */
-public interface CaIntegrator2Dao {
+public class DefineFileColumnAction extends AbstractStudyAction {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private static final String EDIT_FILE_COLUMM = "editFileColumn";
+    private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
+
+    private static final String ANNOTATION_TYPE = "Annotation";
+    private static final String IDENTIFIER_TYPE = "Identifier";
+    private static final String TIMEPOINT_TYPE = "Timepoint";
+    private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE, TIMEPOINT_TYPE};
+    
+    private FileColumn fileColumn = new FileColumn();
+    private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
     
     /**
-     * Saves the object given.
+     * Refreshes the current clinical source configuration.
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        if (getFileColumn().getId() != null) {
+            setFileColumn(getService().getRefreshedStudyEntity(getFileColumn()));
+        }
+    }
+    
+    /**
+     * Edit a clinical data source file column.
      * 
-     * @param persistentObject the object to save.
+     * @return the Struts result.
      */
-    void save(Object persistentObject);
+    public String editFileColumn() {
+        return EDIT_FILE_COLUMM;
+    }
     
     /**
-     * Returns the persistent object with the id given.
+     * Retrieves from the database and from caDSR annotation definition that matches the current columns keywords.
      * 
-     * @param <T> type of object being returned.
-     * @param id id of the object to retrieve
-     * @param objectClass the class of the object to retrieve
-     * @return the requested object.
+     * @return the Struts result.
      */
-    <T> T get(Long id, Class<T> objectClass);
+    public String searchDefinitions() {
+        getService().update(getStudyConfiguration());
+        definitions = getService().getMatchingDefinitions(getFileColumn());
+        dataElements = getService().getMatchingDataElements(getFileColumn());
+        return EDIT_FILE_COLUMM;
+    }
     
     /**
-     * Returns the workspace belonging to the specified user.
+     * Updates a clinical data source file column.
      * 
-     * @param username retrieve workspace for this user.
-     * @return the user's workspace
+     * @return the Struts result.
      */
-    UserWorkspace getWorkspace(String username);
-    
-    /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
-     * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
-     */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+    public String updateFileColumn() {
+        getService().update(getStudyConfiguration());
+        return EDIT_CLINICAL_FILE;
+    }
 
     /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
+     * @return the fileColumn
      */
-    List<StudyConfiguration> getManagedStudies(String username);
+    public FileColumn getFileColumn() {
+        return fileColumn;
+    }
+
+    /**
+     * @param fileColumn the fileColumn to set
+     */
+    public void setFileColumn(FileColumn fileColumn) {
+        this.fileColumn = fileColumn;
+    }
+
+    /**
+     * @return the columnType
+     */
+    public String getColumnType() {
+        if (getFileColumn().isIdentifierColumn()) {
+            return IDENTIFIER_TYPE;
+        } else if (getFileColumn().isTimepointColumn()) {
+            return TIMEPOINT_TYPE;
+        } else {
+            return ANNOTATION_TYPE;
+        }
+    }
+
+    /**
+     * @param columnType the columnType to set
+     */
+    public void setColumnType(String columnType) {
+        if (IDENTIFIER_TYPE.equals(columnType)) {
+            getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
+        } else if (TIMEPOINT_TYPE.equals(columnType)) {
+            getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
+        } else if (ANNOTATION_TYPE.equals(columnType)) {
+            getFileColumn().makeAnnotationColumn();
+        }
+    }
+
+    /**
+     * @return the columnTypes
+     */
+    @SuppressWarnings("PMD")    // Prevent internal array exposure warning
+    public String[] getColumnTypes() {
+        return COLUMN_TYPES;
+    }
+
+    /**
+     * @return the definitions
+     */
+    public List<AnnotationDefinition> getDefinitions() {
+        return definitions;
+    }
+
+    /**
+     * @return the dataElements
+     */
+    public List<DataElement> getDataElements() {
+        return dataElements;
+    }
+
 
 }

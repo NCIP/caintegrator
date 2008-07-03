@@ -12,6 +12,7 @@
     default-autowire="no">
     
     <bean id="caDSRFacade" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
+        <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>
         <property name="search">
             <ref bean="search" />
         </property>
@@ -26,11 +27,9 @@
 
     <!-- Services -->
         
-    <bean id="search" class="gov.nih.nci.cadsr.freestylesearch.util.Search">
-        <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>
-    </bean>
+    <bean id="search" class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
     
-    <bean id="searchStub" class="gov.nih.nci.caintegrator2.external.cadsr.SearchStub"/>
+    <bean id="searchStub" class="gov.nih.nci.caintegrator2.external.cadsr.SearchStub" />
     
 
 </beans>

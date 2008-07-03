@@ -124,7 +124,7 @@ public class AnnotationFileTest {
         assertEquals("Col1", annotationFile.getColumns().get(1).getName());
         assertEquals("Col2", annotationFile.getColumns().get(2).getName());
         assertEquals("Col3", annotationFile.getColumns().get(3).getName());
-        checkInvalid(INVALID_FILE_MISSING_VALUE, "Number of values inconsistent with header line.");
+        checkInvalid(INVALID_FILE_MISSING_VALUE, "Number of values in line 3 inconsistent with header line. Expected 4 but found 3 values.");
         checkInvalid(INVALID_FILE_EMPTY, "The data file was empty.");
         checkInvalid(INVALID_FILE_NO_DATA, "The data file contained no data (header line only).");
         checkInvalid(INVALID_FILE_DOESNT_EXIST, "The file " + INVALID_FILE_DOESNT_EXIST.getAbsolutePath() + " could not be found");

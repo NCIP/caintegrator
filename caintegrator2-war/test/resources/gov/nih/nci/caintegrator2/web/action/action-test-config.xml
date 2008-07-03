@@ -20,6 +20,14 @@
         </property>
     </bean>
 
+    <bean id="defineFileColumnAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
+        <property name="service">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="manageStudiesAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">

@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -137,7 +138,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)
-    public List<AnnotationFieldDescriptor> findMatches(List<String> keywords) {
+    public List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords) {
         List<AnnotationFieldDescriptor> annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
         List<AnnotationFieldDescriptor> results = getHibernateTemplate().find("from AnnotationFieldDescriptor");
         for (AnnotationFieldDescriptor afd : results) {
@@ -149,9 +150,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return annotationFieldDescriptors;
     }
 
-    private boolean containsKeyword(AnnotationFieldDescriptor afd, List<String> keywords) {
+    private boolean containsKeyword(AnnotationFieldDescriptor afd, Collection<String> keywords) {
         for (String keyword : keywords) {
-            if (Cai2Util.containsIgnoreCase(afd.getKeywords(), keyword)) {
+            if (Cai2Util.containsIgnoreCase(afd.getKeywordsAsList(), keyword)) {
                 return true;
             }
         }
