@@ -21,6 +21,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editClinicalFile_tile.jsp" />
     </definition>
 
+    <definition name="editFileColumn" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
+    </definition>
+
     <definition name="editGenomicSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
     </definition>

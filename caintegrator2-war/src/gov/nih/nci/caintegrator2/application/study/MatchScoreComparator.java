@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Comparator to get the higher match score between two different AnnotationFieldDescriptors.
@@ -94,13 +94,13 @@ import java.util.List;
  */
 public class MatchScoreComparator implements Comparator<AnnotationFieldDescriptor> {
 
-    private final List<String> keywords;
+    private final Collection<String> keywords;
     
     /**
      * Constructor based on Keywords.
      * @param keywords - words to compare with.
      */
-    public MatchScoreComparator(List<String> keywords) {
+    public MatchScoreComparator(Collection<String> keywords) {
         this.keywords = keywords;
     }
     

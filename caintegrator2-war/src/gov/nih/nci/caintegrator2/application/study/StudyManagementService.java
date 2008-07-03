@@ -85,12 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * 
+ * Service used to create, define, deploy and update studies.
  */
 public interface StudyManagementService {
     
@@ -161,5 +164,23 @@ public interface StudyManagementService {
      * @return the refreshed entity.
      */
     <T> T getRefreshedStudyEntity(T entity);
+
+    /**
+     * Returns an ordered list of existing definitions that match the keywords contained
+     * in the given column.
+     * 
+     * @param fileColumn match definitions for this column.
+     * @return the list of matching candidate definitions.
+     */
+    List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn);
+
+    /**
+     * Returns an ordered list of existing CaDSR data elements that match the keywords contained
+     * in the given column.
+     * 
+     * @param fileColumn match data elements for this column.
+     * @return the list of matching candidate data elements.
+     */
+    List<DataElement> getMatchingDataElements(FileColumn fileColumn);
     
 }

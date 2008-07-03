@@ -98,6 +98,7 @@ import java.util.List;
 public class CaDSRFacadeImpl implements CaDSRFacade {
     
     private Search search;
+    private String dataDescription;
 
     /**
      * {@inheritDoc}
@@ -113,7 +114,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
           }
 
         String keywordsString = sb.toString();
-        
+        search.setDataDescription(getDataDescription());
         return convertSearchResultsToDataElements(search.findReturningSearchResults(keywordsString));
     }
 
@@ -144,6 +145,22 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
      */
     public void setSearch(Search search) {
         this.search = search;
+    }
+
+
+    /**
+     * @return the dataDescription
+     */
+    public String getDataDescription() {
+        return dataDescription;
+    }
+
+
+    /**
+     * @param dataDescription the dataDescription to set
+     */
+    public void setDataDescription(String dataDescription) {
+        this.dataDescription = dataDescription;
     }
     
     

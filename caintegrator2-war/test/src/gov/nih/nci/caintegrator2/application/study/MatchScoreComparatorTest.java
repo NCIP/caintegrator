@@ -102,15 +102,9 @@ public class MatchScoreComparatorTest {
         keywords.add("test3");
         
         AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
-        List<String> afd1Keywords = new ArrayList<String>();
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        List<String> afd2Keywords = new ArrayList<String>();
-        afd1Keywords.add("test1");
-        afd1.setKeywords(afd1Keywords);
-        
-        afd2Keywords.add("test2");
-        afd2Keywords.add("test3");
-        afd2.setKeywords(afd2Keywords);
+        afd1.setKeywords("test1");
+        afd2.setKeywords("test2 test3");
         
         
         MatchScoreComparator msc = new MatchScoreComparator(keywords);
