@@ -25,7 +25,7 @@
                 <td><s:textarea name="study.longTitleText" cols="40" rows="4" /></td>
             </tr>
             <tr>
-                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /><s:submit action="viewStudy" value="View Study" /></td>
+                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /></td>
             </tr>
         </table>
     </s:form>
