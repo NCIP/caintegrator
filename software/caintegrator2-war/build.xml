@@ -159,7 +159,7 @@
     <!-- ******************************************************************* -->
 
     <target name="continuous-integration" 
-        depends="clean,init:ivy,build,check,test:unit" 
+        depends="clean,init:ivy,build,static-analysis,test:unit" 
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
     <target name="nightly-build" 
@@ -175,13 +175,6 @@
     <target name="build" 
         depends="caintegrator2.war"
         description="Compiles all production source code and assembles artifacts." />
-
-    <target name="check" 
-        depends="check:checkstyle,check:pmd,static-analysis"
-        description="Runs quality checks on the source code.">
-        <fail if="checkstyle.failure" message="There were Checkstyle failures." />
-        <fail if="pmd.failure" message="There were PMD failures." />
-    </target>
 
     <target name="database" 
         depends="database:reinitialize"
@@ -766,49 +759,89 @@
 
 	<property name="reports.dir" value="${software.dir}/reports"/>
 	<property name="reports.simian.dir" value="${reports.dir}/simian"/>
-	<property name="reports.pmd.dir" value="${reports.dir}/pmd-new"/>
-	<property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle-new"/>
+	<property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
+	<property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
 	<property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
 	<property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
+
+	<target name="test:ivy-init" 
+		depends="
+		init:ivy,
+		test:ivy-test-selenium,
+		test:ivy-test-junit,
+		test:ivy-test-cobertura
+		"/>
+	<target name="test:ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-selenium" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
+		<path id="project.test.selenium.classpath">
+			<fileset dir="${lib.dir}/test-selenium">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+	<target name="test:ivy-test-junit" depends="init:ivy" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-junit" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
+		<path id="project.test.junit.classpath">
+			<fileset dir="${lib.dir}/test-junit">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+	<target name="test:ivy-test-cobertura" depends="init:ivy" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-cobertura" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
+		<path id="project.test.cobertura.classpath">
+			<fileset dir="${lib.dir}/test-cobertura">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
 
 	<target name="static-analysis:ivy-init" 
 		depends="
 		init:ivy,
-		static-analysis:ivy-test-selenium,
-		static-analysis:ivy-test-junit,
-		static-analysis:ivy-test-cobertura,
 		static-analysis:ivy-test-javancss,
 		static-analysis:ivy-test-checkstyle,
 		static-analysis:ivy-test-simian,
 		static-analysis:ivy-test-pmd
 		"/>
-	<target name="static-analysis:ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-selenium" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
-	</target>
-	<target name="static-analysis:ivy-test-junit" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-junit" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
-	</target>
-	<target name="static-analysis:ivy-test-cobertura" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-cobertura" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
-	</target>
 	<target name="static-analysis:ivy-test-javancss" depends="init:ivy" description="Updates the local ivy repository">
 		<ivy:resolve refresh="true" conf="test-javancss" />
 		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
+		<path id="project.test.javancss.classpath">
+			<fileset dir="${lib.dir}/test-javancss">
+				<include name="*.jar" />
+			</fileset>
+		</path>
 	</target>
 	<target name="static-analysis:ivy-test-checkstyle" depends="init:ivy" description="Updates the local ivy repository">
 		<ivy:resolve refresh="true" conf="test-checkstyle" />
 		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
+		<path id="project.test.checkstyle.classpath">
+			<fileset dir="${lib.dir}/test-checkstyle">
+				<include name="*.jar" />
+			</fileset>
+		</path>
 	</target>
 	<target name="static-analysis:ivy-test-pmd" depends="init:ivy" description="Updates the local ivy repository">
 		<ivy:resolve refresh="true" conf="test-pmd" />
 		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-pmd" />
+		<path id="project.test.pmd.classpath">
+			<fileset dir="${lib.dir}/test-pmd">
+				<include name="*.jar" />
+			</fileset>
+		</path>
 	</target>
 	<target name="static-analysis:ivy-test-simian" depends="init:ivy" description="Updates the local ivy repository">
 		<ivy:resolve refresh="true" conf="test-simian" />
 		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-simian" />
+		<path id="project.test.simian.classpath">
+			<fileset dir="${lib.dir}/test-simian">
+				<include name="*.jar" />
+			</fileset>
+		</path>
 	</target>
 
 
@@ -823,50 +856,13 @@
 		static-analysis:checkstyle,
 		static-analysis:javancss,
 		static-analysis:findbugs
-		"/>
+		">
+        	<fail if="checkstyle.failure" message="There were Checkstyle failures." />
+        	<fail if="pmd.failure" message="There were PMD failures." />
+	</target>
 
 	<!-- Creates paths and  directories -->
 	<target name="static-analysis:init">
-		<path id="ivy.classpath">
-			<fileset dir="${software.dir}/lib">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.selenium.classpath">
-			<fileset dir="${lib.dir}/test-selenium">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.junit.classpath">
-			<fileset dir="${lib.dir}/test-junit">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.cobertura.classpath">
-			<fileset dir="${lib.dir}/test-cobertura">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.javancss.classpath">
-			<fileset dir="${lib.dir}/test-javancss">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.checkstyle.classpath">
-			<fileset dir="${lib.dir}/test-checkstyle">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.pmd.classpath">
-			<fileset dir="${lib.dir}/test-pmd">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		<path id="project.test.simian.classpath">
-			<fileset dir="${lib.dir}/test-simian">
-				<include name="*.jar" />
-			</fileset>
-		</path>
 		<mkdir dir="${reports.dir}"/>
 		<mkdir dir="${reports.simian.dir}"/>
 		<mkdir dir="${reports.pmd.dir}"/>
@@ -941,7 +937,7 @@
 		<static-analysis-pmd
 			pmd.src.dir="${caintegrator2.war.java.src.dir}"
 			pmd.rpt.dir="${reports.pmd.dir}"
-			pmd.project.name="${project.name}"
+			pmd.root-dir.name="software"
 			pmd.sub-project.name="caintegrator2-war"
 			pmd.report-xsl.file="${common.dir}/pmd/pmd-report-per-class.xslt"
 			pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
@@ -954,7 +950,7 @@
 	<macrodef name="static-analysis-pmd">
 		<attribute name="pmd.src.dir"/>
 		<attribute name="pmd.rpt.dir"/>
-		<attribute name="pmd.project.name"/>
+		<attribute name="pmd.root-dir.name"/>
 		<attribute name="pmd.sub-project.name"/>
 		<attribute name="pmd.report-preprocessor.file"/>
 		<attribute name="pmd.report-xsl.file"/>
@@ -967,12 +963,9 @@
 			<taskdef name="pmd" 
 				classname="net.sourceforge.pmd.ant.PMDTask"
 				classpathref="project.test.pmd.classpath"/>
-			<!--
-			<pmd 
-				shortFilenames="true" 
-			-->
 			<pmd 
 				rulesetfiles="@{pmd.rule-set.file}"
+				shortFilenames="true" 
 				failonerror="false"
 				failurespropertyname="pmd.failure"
 				targetjdk="1.5"
@@ -988,11 +981,11 @@
 				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
 				out="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
 				style="@{pmd.report-preprocessor.file}">
-				<param name="relative.path" expression="@{pmd.project.name}/@{pmd.sub-project.name}"/>
+				<param name="relative.path" expression="@{pmd.root-dir.name}/@{pmd.sub-project.name}"/>
 			</xslt>
 
 			<xslt taskname="pmd"
-				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}"
+				in="${pmd.sub-project.rpt.dir}/@{pmd.xml.name}.bak"
 				out="${pmd.sub-project.rpt.dir}/@{pmd.html.name}"
 				style="@{pmd.report-xsl.file}"/>
 		</sequential>
