@@ -130,6 +130,8 @@ public class DefineFileColumnAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String editFileColumn() {
+        definitions.clear();
+        dataElements.clear();
         return EDIT_FILE_COLUMM;
     }
     
