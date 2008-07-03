@@ -113,7 +113,7 @@ public final class AnnotationFieldDescriptorTestDataGenerator extends AbstractTe
 
     @Override
     public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
-        annotationFieldDescriptor.setName("TestAFD");
+        annotationFieldDescriptor.setName(getUniqueString());
         annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
 
     }
