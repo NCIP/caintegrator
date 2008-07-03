@@ -21,12 +21,19 @@
 		<property name="visibility" type="Visibility" column="VISIBILITY"/>
 		
 		<property name="status" type="Status" column="STATUS"/>
-	
+    
         <list name="clinicalConfigurationCollection" lazy="true" cascade="save-update">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
+        </list>
+    
+        <list name="genomicDataSources" lazy="true" cascade="save-update">
+            <cache usage="read-write" />
+            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
+            <list-index column="LIST_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration"/>
         </list>
         
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"

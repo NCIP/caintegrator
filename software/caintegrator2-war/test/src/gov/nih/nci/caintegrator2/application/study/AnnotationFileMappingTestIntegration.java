@@ -91,7 +91,7 @@ public class AnnotationFileMappingTestIntegration extends AbstractHibernateMappi
 
     @Override
     protected AbstractTestDataGenerator<AnnotationFile> getDataGenerator() {
-        return AnnotationFileTestDataGenerator.INSTANCE;
+        return AnnotationFileGenerator.INSTANCE;
     }
 
 }

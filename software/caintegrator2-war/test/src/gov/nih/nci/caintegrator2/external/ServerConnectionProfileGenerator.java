@@ -83,15 +83,37 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.external;
 
-import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 
-public class StudyConfigurationMappingTestIntegration extends AbstractHibernateMappingTestIntegration<StudyConfiguration>  {
+import static org.junit.Assert.assertEquals;
+
+public class ServerConnectionProfileGenerator extends AbstractTestDataGenerator<ServerConnectionProfile> {
+
+    public static final ServerConnectionProfileGenerator INSTANCE = new ServerConnectionProfileGenerator();
+    
+    @Override
+    public void compareFields(ServerConnectionProfile original, ServerConnectionProfile retrieved) {
+        assertEquals(original.getHostname(), retrieved.getHostname());        
+        assertEquals(original.getPassword(), retrieved.getPassword());        
+        assertEquals(original.getPort(), retrieved.getPort());        
+        assertEquals(original.getUrl(), retrieved.getUrl());        
+        assertEquals(original.getUsername(), retrieved.getUsername());        
+    }
 
     @Override
-    protected AbstractTestDataGenerator<StudyConfiguration> getDataGenerator() {
-        return StudyConfigurationGenerator.INSTANCE;
+    public ServerConnectionProfile createPersistentObject() {
+        return new ServerConnectionProfile();
+    }
+
+    @Override
+    public void setValues(ServerConnectionProfile profile) {
+        profile.setHostname(getUniqueString());
+        profile.setPassword(getUniqueString());
+        profile.setPort(getUniqueInt());
+        profile.setUrl(getUniqueString());
+        profile.setUsername(getUniqueString());
     }
 
 }
