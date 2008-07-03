@@ -135,16 +135,16 @@ public abstract class AbstractTestDataGenerator<T> {
         return object;
     }
 
-    public String getUniqueString() {
+    protected String getUniqueString() {
         return String.valueOf(getUniqueInt());
     }
 
-    private int getUniqueInt() {
+    protected int getUniqueInt() {
         return uniqueInt++;
     }
 
     @SuppressWarnings("hiding")
-    public <T extends Enum<?>> T getNewEnumValue(T enumValue, T[] values) {
+    protected <T extends Enum<?>> T getNewEnumValue(T enumValue, T[] values) {
         if (enumValue == null || enumValue.ordinal() == (values.length - 1)) {
             return values[0];
         } else {
