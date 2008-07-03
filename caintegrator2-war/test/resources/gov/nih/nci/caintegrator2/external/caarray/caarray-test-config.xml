@@ -4,10 +4,18 @@
 
     <bean name="CaArrayFacade" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeImpl" singleton="true">
         <property name="serviceFactory">
+            <ref local="serviceFactoryStub"/>
+        </property>
+    </bean>
+
+    <bean name="CaArrayFacadeIntegration" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeImpl" singleton="true">
+        <property name="serviceFactory">
             <ref local="serviceFactory"/>
         </property>
     </bean>
     
-    <bean id="serviceFactory" class="gov.nih.nci.caintegrator2.external.caarray.ServiceStubFactory" />
+    <bean id="serviceFactory" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
+    
+    <bean id="serviceFactoryStub" class="gov.nih.nci.caintegrator2.external.caarray.ServiceStubFactory" />
 
 </beans>
