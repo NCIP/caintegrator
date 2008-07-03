@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.IOException;
 import java.util.List;
@@ -210,6 +211,34 @@ public class StudyManagementServiceImplTest {
         fileColumn.getFieldDescriptor().setKeywords("test keywords");
         studyManagementService.getMatchingDataElements(fileColumn);
         assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
+    }
+    
+    @Test
+    public void testSetDefinition() {
+        FileColumn fileColumn = new FileColumn();
+        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setId(1L);
+        studyManagementService.setDefinition(fileColumn, annotationDefinition);
+        assertTrue(daoStub.saveCalled);
+        assertEquals(annotationDefinition, fileColumn.getFieldDescriptor().getDefinition());
+    }
+    
+    @Test
+    public void testSetDataElement() {
+        FileColumn fileColumn = new FileColumn();
+        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        DataElement dataElement = new DataElement();
+        dataElement.setLongName("longName");
+        dataElement.setDefinition("definition");
+        dataElement.setPublicId(1234L);
+        studyManagementService.setDataElement(fileColumn, dataElement);
+        assertTrue(daoStub.saveCalled);
+        assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
+        assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCde());
+        assertEquals("longName", fileColumn.getFieldDescriptor().getDefinition().getDisplayName());
+        assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
+        assertEquals("1234", fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
     }
 
 }

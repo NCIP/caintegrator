@@ -110,6 +110,8 @@ public class DefineFileColumnAction extends AbstractStudyAction {
     private FileColumn fileColumn = new FileColumn();
     private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
     private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private int dataElementIndex;
+    private int definitionIndex;
     
     /**
      * Refreshes the current clinical source configuration.
@@ -140,6 +142,26 @@ public class DefineFileColumnAction extends AbstractStudyAction {
         getService().update(getStudyConfiguration());
         definitions = getService().getMatchingDefinitions(getFileColumn());
         dataElements = getService().getMatchingDataElements(getFileColumn());
+        return EDIT_FILE_COLUMM;
+    }
+    
+    /**
+     * Selects an existing annotation definition for a column.
+     * 
+     * @return the Struts result.
+     */
+    public String selectDefinition() {
+        getService().setDefinition(getFileColumn(), getDefinitions().get(getDefinitionIndex()));
+        return EDIT_FILE_COLUMM;
+    }
+    
+    /**
+     * Selects an existing CaDSR data element as the definition for a column.
+     * 
+     * @return the Struts result.
+     */
+    public String selectDataElement() {
+        getService().setDataElement(getFileColumn(), getDataElements().get(getDataElementIndex()));
         return EDIT_FILE_COLUMM;
     }
     
@@ -213,6 +235,34 @@ public class DefineFileColumnAction extends AbstractStudyAction {
      */
     public List<DataElement> getDataElements() {
         return dataElements;
+    }
+
+    /**
+     * @return the dataElementIndex
+     */
+    public int getDataElementIndex() {
+        return dataElementIndex;
+    }
+
+    /**
+     * @param dataElementIndex the dataElementIndex to set
+     */
+    public void setDataElementIndex(int dataElementIndex) {
+        this.dataElementIndex = dataElementIndex;
+    }
+
+    /**
+     * @return the definitionIndex
+     */
+    public int getDefinitionIndex() {
+        return definitionIndex;
+    }
+
+    /**
+     * @param definitionIndex the definitionIndex to set
+     */
+    public void setDefinitionIndex(int definitionIndex) {
+        this.definitionIndex = definitionIndex;
     }
 
 

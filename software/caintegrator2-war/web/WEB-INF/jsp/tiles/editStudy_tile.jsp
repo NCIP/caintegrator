@@ -25,7 +25,7 @@
                 <td><s:textarea name="study.longTitleText" cols="40" rows="4" /></td>
             </tr>
             <tr>
-                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /></td>
+                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /><s:submit action="viewStudy" value="View Study" /></td>
             </tr>
         </table>
     </s:form>
@@ -55,6 +55,13 @@
                     <s:param name="clinicalSourceConfiguration.id" value="id" />
                 </s:url> 
                 <s:a href="%{editClinicalSource}">Edit</s:a> 
+                <s:if test="%{loadable}" >
+                    <s:url id="loadClinicalSource" action="loadClinicalSource">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="clinicalSourceConfiguration.id" value="id" />
+                    </s:url> 
+                    <s:a href="%{loadClinicalSource}">Load</s:a> 
+                </s:if>
             </td>
         </tr>
         </s:iterator>

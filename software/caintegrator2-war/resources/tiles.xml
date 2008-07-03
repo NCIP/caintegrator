@@ -49,4 +49,8 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/workspaceHome_tile.jsp" />
     </definition>
 
+    <definition name="viewStudy" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewStudy_tile.jsp" />
+    </definition>
+
 </tiles-definitions>

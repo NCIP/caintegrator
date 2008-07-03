@@ -96,6 +96,8 @@ public class DefineStudyAction extends AbstractStudyAction {
     
     private static final String EDIT_STUDY = "editStudy";
     private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
+
+    private static final String VIEW_STUDY = "viewStudy";
     
     private GenomicDataSourceConfiguration genomicDataSource;
     
@@ -130,6 +132,15 @@ public class DefineStudyAction extends AbstractStudyAction {
         return EDIT_STUDY;
     }
     
+    /**
+     * Loads clinical data for the study.
+     * 
+     * @return the Struts result.
+     */
+    public String loadClinicalSource() {
+        getService().loadClinicalAnnotation(getStudyConfiguration());
+        return EDIT_STUDY;
+    }    
 
     /**
      * Saves the current study.
@@ -139,6 +150,15 @@ public class DefineStudyAction extends AbstractStudyAction {
     public String saveStudy() {
         getService().update(getStudyConfiguration());
         return EDIT_STUDY;
+    }
+
+    /**
+     * Views the current study.
+     * 
+     * @return the Struts result.
+     */
+    public String viewStudy() {
+        return VIEW_STUDY;
     }
     
     // GENOMIC DATA ACTIONS
