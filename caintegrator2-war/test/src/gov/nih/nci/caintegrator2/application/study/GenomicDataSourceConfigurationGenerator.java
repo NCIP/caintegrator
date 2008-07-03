@@ -85,36 +85,29 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
 
-public final class DelimitedTextClinicalSourceConfigurationTestDataGenerator extends AbstractTestDataGenerator<DelimitedTextClinicalSourceConfiguration> {
-    
-    public static final DelimitedTextClinicalSourceConfigurationTestDataGenerator INSTANCE = new DelimitedTextClinicalSourceConfigurationTestDataGenerator();
+public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGenerator<GenomicDataSourceConfiguration> {
 
-    private DelimitedTextClinicalSourceConfigurationTestDataGenerator() {
-        super();
-    }
-    
+    public static final GenomicDataSourceConfigurationGenerator INSTANCE = new GenomicDataSourceConfigurationGenerator();
+
     @Override
-    public void compareFields(DelimitedTextClinicalSourceConfiguration original, DelimitedTextClinicalSourceConfiguration retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
-        AnnotationFileTestDataGenerator.INSTANCE.compare(original.getAnnotationFile(), retrieved.getAnnotationFile());
+    public void compareFields(GenomicDataSourceConfiguration original, GenomicDataSourceConfiguration retrieved) {
+        assertEquals(original.getExperimentIdentifier(), retrieved.getExperimentIdentifier());
+        ServerConnectionProfileGenerator.INSTANCE.compare(original.getServerProfile(), retrieved.getServerProfile());
     }
 
     @Override
-    public DelimitedTextClinicalSourceConfiguration createPersistentObject() {
-        return new DelimitedTextClinicalSourceConfiguration();
+    public GenomicDataSourceConfiguration createPersistentObject() {
+        return new GenomicDataSourceConfiguration();
     }
 
     @Override
-    public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {
-        
-        if (configuration.getAnnotationFile() == null) {
-            configuration.setAnnotationFile(AnnotationFileTestDataGenerator.INSTANCE.createPersistentObject());
-            }
-        AnnotationFileTestDataGenerator.INSTANCE.setValues(configuration.getAnnotationFile());
-        
+    public void setValues(GenomicDataSourceConfiguration config) {
+        config.setExperimentIdentifier(getUniqueString());
+        ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile());
     }
+
 
 }

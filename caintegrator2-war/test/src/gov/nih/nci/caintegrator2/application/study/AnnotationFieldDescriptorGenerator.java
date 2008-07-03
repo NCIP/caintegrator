@@ -87,40 +87,34 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 
+public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGenerator <AnnotationFieldDescriptor> {
 
-public final class FileColumnTestDataGenerator extends AbstractTestDataGenerator <FileColumn> {
+    
+    public static final AnnotationFieldDescriptorGenerator INSTANCE = new AnnotationFieldDescriptorGenerator();
 
-    public static final FileColumnTestDataGenerator INSTANCE = new FileColumnTestDataGenerator();
-
-    private FileColumnTestDataGenerator() {
+    
+    private AnnotationFieldDescriptorGenerator() {
         super();
     }
 
     @Override
-    public void compareFields(FileColumn original, FileColumn retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
+    public void compareFields(AnnotationFieldDescriptor original, AnnotationFieldDescriptor retrieved) {
         assertEquals(original.getName(), retrieved.getName());
-        assertEquals(original.getPosition(), retrieved.getPosition());
-        assertEquals(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
-        assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
-        AnnotationFieldDescriptorTestDataGenerator.INSTANCE.compare(original.getFieldDescriptor(), retrieved.getFieldDescriptor());
+        assertEquals(original.getType(), retrieved.getType());
+
     }
 
 
     @Override
-    public FileColumn createPersistentObject() {
-        return new FileColumn();
+    public AnnotationFieldDescriptor createPersistentObject() {
+        return new AnnotationFieldDescriptor();
     }
 
 
     @Override
-    public void setValues(FileColumn column) {
-        column.setName(getUniqueString());
-        column.setPosition(getUniqueInt());
-        if (column.getFieldDescriptor() == null) {
-            column.setFieldDescriptor(AnnotationFieldDescriptorTestDataGenerator.INSTANCE.createPersistentObject());
-            }
-        AnnotationFieldDescriptorTestDataGenerator.INSTANCE.setValues(column.getFieldDescriptor());
+    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
+        annotationFieldDescriptor.setName(getUniqueString());
+        annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
 
     }
 

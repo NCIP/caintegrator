@@ -85,37 +85,54 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.*;
 
-public final class AnnotationFieldDescriptorTestDataGenerator extends AbstractTestDataGenerator <AnnotationFieldDescriptor> {
+/**
+ * 
+ */
+public final class AnnotationFileGenerator extends AbstractTestDataGenerator<AnnotationFile> {
 
-    
-    public static final AnnotationFieldDescriptorTestDataGenerator INSTANCE = new AnnotationFieldDescriptorTestDataGenerator();
+    public static final AnnotationFileGenerator INSTANCE = new AnnotationFileGenerator();
 
-    
-    private AnnotationFieldDescriptorTestDataGenerator() {
+    private AnnotationFileGenerator() {
         super();
     }
 
     @Override
-    public void compareFields(AnnotationFieldDescriptor original, AnnotationFieldDescriptor retrieved) {
-        assertEquals(original.getName(), retrieved.getName());
-        assertEquals(original.getType(), retrieved.getType());
-
+    public void compareFields(AnnotationFile original, AnnotationFile retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getFile(), retrieved.getFile());
+        assertEquals(original.getIdentifierColumn(), retrieved.getIdentifierColumn());
+        assertEquals(original.getTimepointColumn(), retrieved.getTimepointColumn());
+        assertEquals(original.getColumns().size(), retrieved.getColumns().size());
+        for (int x = 0; x < original.getColumns().size(); x++) {
+            FileColumn originalColumn = (FileColumn) original.getColumns().get(x);
+            FileColumn retrievedColumn = (FileColumn) retrieved.getColumns().get(x);
+            FileColumnGenerator.INSTANCE.compare(originalColumn, retrievedColumn);
+        }
     }
 
 
     @Override
-    public AnnotationFieldDescriptor createPersistentObject() {
-        return new AnnotationFieldDescriptor();
+    public AnnotationFile createPersistentObject() {
+        try {
+            return AnnotationFile.load(VALID_FILE);
+        } catch (ValidationException e) {
+            return null;
+        }
     }
 
 
     @Override
-    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
-        annotationFieldDescriptor.setName(getUniqueString());
-        annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
-
+    public void setValues(AnnotationFile annotationFile) {
+        annotationFile.setIdentifierColumnIndex(0);
+        annotationFile.getColumns().clear();
+        annotationFile.getColumns().add(new FileColumn(annotationFile));
+        annotationFile.getColumns().add(new FileColumn(annotationFile));
+        for(FileColumn column : annotationFile.getColumns()) {
+            FileColumnGenerator.INSTANCE.setValues(column);
+        }
     }
 
 }

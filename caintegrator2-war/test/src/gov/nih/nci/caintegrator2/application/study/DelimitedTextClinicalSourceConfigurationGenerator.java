@@ -86,47 +86,35 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
 
-public final class StudyConfigurationTestDataGenerator extends AbstractTestDataGenerator<StudyConfiguration> {
+public final class DelimitedTextClinicalSourceConfigurationGenerator extends AbstractTestDataGenerator<DelimitedTextClinicalSourceConfiguration> {
     
-    public static final AbstractTestDataGenerator<StudyConfiguration> INSTANCE = new StudyConfigurationTestDataGenerator();
+    public static final DelimitedTextClinicalSourceConfigurationGenerator INSTANCE = new DelimitedTextClinicalSourceConfigurationGenerator();
 
-    private StudyConfigurationTestDataGenerator() {
+    private DelimitedTextClinicalSourceConfigurationGenerator() {
         super();
     }
     
     @Override
-    public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
-        assertEquals(original.getStatus(), retrieved.getStatus());
-        assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.compare(config1, config2);
-        }
+    public void compareFields(DelimitedTextClinicalSourceConfiguration original, DelimitedTextClinicalSourceConfiguration retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
+        AnnotationFileGenerator.INSTANCE.compare(original.getAnnotationFile(), retrieved.getAnnotationFile());
     }
 
     @Override
-    public StudyConfiguration createPersistentObject() {
-        return new StudyConfiguration();
+    public DelimitedTextClinicalSourceConfiguration createPersistentObject() {
+        return new DelimitedTextClinicalSourceConfiguration();
     }
 
     @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
-        studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
-        studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
-        if (studyConfiguration.getStudy() == null) {
-            studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
-        }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
-        studyConfiguration.getClinicalConfigurationCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationTestDataGenerator.INSTANCE.setValues(config);
-        }
+    public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {
+        
+        if (configuration.getAnnotationFile() == null) {
+            configuration.setAnnotationFile(AnnotationFileGenerator.INSTANCE.createPersistentObject());
+            }
+        AnnotationFileGenerator.INSTANCE.setValues(configuration.getAnnotationFile());
+        
     }
 
 }
