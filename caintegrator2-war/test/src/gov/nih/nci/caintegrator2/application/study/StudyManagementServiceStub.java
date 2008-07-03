@@ -106,6 +106,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean getRefreshedStudyEntityCalled;
     public boolean getMatchingDefinitionsCalled;
     public boolean getMatchingDataElementsCalled;
+    public boolean setDataElementCalled;
+    public boolean setDefinitionCalled;
 
     public StudyConfiguration createStudy() {
         createStudyCalled = true;
@@ -135,6 +137,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         getRefreshedStudyEntityCalled = false;
         getMatchingDefinitionsCalled = false;
         getMatchingDataElementsCalled = false;
+        setDataElementCalled = true;
+        setDefinitionCalled = true;
     }
 
     public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
@@ -173,6 +177,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
         getMatchingDataElementsCalled = true;
         return Collections.emptyList();
+    }
+
+    public void setDataElement(FileColumn fileColumn, DataElement dataElement) {
+        setDataElementCalled = true;
+    }
+
+    public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
+        setDefinitionCalled = true;
     }
     
 }

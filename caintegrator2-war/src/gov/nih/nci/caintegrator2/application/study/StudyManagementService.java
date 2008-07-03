@@ -182,5 +182,21 @@ public interface StudyManagementService {
      * @return the list of matching candidate data elements.
      */
     List<DataElement> getMatchingDataElements(FileColumn fileColumn);
+
+    /**
+     * Selects an existing CaDSR data element as the definition for a column.
+
+     * @param fileColumn column receiving definition.
+     * @param dataElement the selected data element.
+     */
+    void setDataElement(FileColumn fileColumn, DataElement dataElement);
+
+    /**
+     * Selects an existing annotation definition for a column.
+     * 
+     * @param fileColumn column receiving definition.
+     * @param annotationDefinition the selected definition.
+     */
+    void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition);
     
 }

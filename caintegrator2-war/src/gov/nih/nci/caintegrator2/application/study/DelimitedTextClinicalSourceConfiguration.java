@@ -121,17 +121,13 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
         getAnnotationDescriptors().addAll(getAnnotationFile().getDescriptors());
     }
 
-    /**
-     * Loads the AnnotationValues from the file and persists.
-     */
-    public void loadAnnontation() {
+    void loadAnnontation() {
         getAnnotationFile().positionAtData();
         while (getAnnotationFile().hasNextDataLine()) {
             String identifier = getAnnotationFile().getDataValue(getAnnotationFile().getIdentifierColumn());
             StudySubjectAssignment subjectAssignment = getStudyConfiguration().getOrCreateSubjectAssignment(identifier);
             loadAnnotation(subjectAssignment);
         }
-        
     }
 
     private void loadAnnotation(StudySubjectAssignment subjectAssignment) {
@@ -185,6 +181,23 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     @Override
     public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
         return getAnnotationFile().getDescriptors();
+    }
+    
+    /**
+     * Indicates if the source has been configured and is prepared for loading.
+     * 
+     * @return whether source may be loaded.
+     */
+    public boolean isLoadable() {
+        if (getAnnotationFile().getIdentifierColumn() == null) {
+            return false;
+        }
+        for (AnnotationFieldDescriptor descriptor : getAnnotationDescriptors()) {
+            if (descriptor.getDefinition() == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

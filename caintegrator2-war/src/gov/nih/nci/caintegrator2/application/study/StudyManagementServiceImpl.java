@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
@@ -96,6 +98,7 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -152,7 +155,26 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
-            configuration.loadAnnontation();
+            if (configuration != null) {
+                configuration.loadAnnontation();
+            }
+        }
+        save(studyConfiguration);
+    }
+
+    private void save(StudyConfiguration studyConfiguration) {
+        for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
+            save(assignment.getSubjectAnnotation());
+            dao.save(assignment.getSubject());
+            dao.save(assignment);
+        }
+        dao.save(studyConfiguration);
+    }
+
+    private void save(Collection<SubjectAnnotation> subjectAnnotations) {
+        for (SubjectAnnotation annotation : subjectAnnotations) {
+            dao.save(annotation.getAnnotationValue());
+            dao.save(annotation);
         }
     }
 
@@ -253,6 +275,35 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void setCaDSRFacade(CaDSRFacade caDSRFacade) {
         this.caDSRFacade = caDSRFacade;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDataElement(FileColumn fileColumn, DataElement dataElement) {
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setDisplayName(dataElement.getLongName());
+        annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
+        CommonDataElement cde = translate(dataElement);
+        annotationDefinition.setCde(cde);
+        fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
+        dao.save(cde);
+        dao.save(annotationDefinition);
+        dao.save(fileColumn);
+    }
+
+    private CommonDataElement translate(DataElement dataElement) {
+        CommonDataElement cde = new CommonDataElement();
+        cde.setPublicID(dataElement.getPublicId().toString());
+        return cde;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
+        fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
+        dao.save(fileColumn);
     }
 
 }
