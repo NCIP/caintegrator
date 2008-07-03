@@ -125,6 +125,9 @@ public class DefineClinicalSourceAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String addClinicalFile() {
+        if (getClinicalFile() == null) {
+            return EDIT_CLINICAL_FILE;
+        }
         try {
             DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
                 getService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 

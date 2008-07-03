@@ -11,13 +11,31 @@
     
     <h1>Edit Genomic Data Source</h1>
     <s:form>
-        <s:textfield name="genomicDataSource.serverProfile.hostname" label="caArray Server Hostname" />
-        <s:textfield name="genomicDataSource.serverProfile.port" label="caArray server JNDI Port" />
-        <s:textfield name="genomicDataSource.serverProfile.username" label="caArray Username" />
-        <s:textfield name="genomicDataSource.serverProfile.password" label="caArray Password" />
-        <s:textfield name="genomicDataSource.experimentIdentifier" label="caArray Experiment Id" />
-        <s:submit action="verifyGenomicSourceConnection" value="Verify Connection" />
-        <s:submit action="saveStudy" value="Save" />
+        <table>
+            <tr>
+                <th>caArray Server Hostname</th>
+                <td><s:textfield name="genomicDataSource.serverProfile.hostname"/></td>
+            </tr>
+            <tr>
+                <th>caArray server JNDI Port</th>
+                <td><s:textfield name="genomicDataSource.serverProfile.port"/></td>
+            </tr>
+            <tr>
+                <th>caArray Username</th>
+                <td><s:textfield name="genomicDataSource.serverProfile.username"/></td>
+            </tr>
+            <tr>
+                <th>caArray Password</th>
+                <td><s:textfield name="genomicDataSource.serverProfile.password"/></td>
+            </tr>
+            <tr>
+                <th>caArray Experiment Id</th>
+                <td><s:textfield name="genomicDataSource.experimentIdentifier"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><s:submit action="saveStudy" value="Save" /></td>
+            </tr>
+        </table>
     </s:form>
             
 </div>
