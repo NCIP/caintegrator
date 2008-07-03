@@ -22,7 +22,7 @@
     <property name="build.lib.dir" location="${software.dir}/lib" />
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
-    <property name="site.dir" location="${software.dir}/reports" />
+    <property name="site.dir" location="${software.dir}/target/reports" />
 	<property name="common.dir" value="${software.dir}/common"/>
 
     <!-- Main caCORE properties; required for taskdefs -->
@@ -117,6 +117,7 @@
 	    antfile="bda-ivy-build.xml" target="retrieve-bda">
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
         <property name="lib.dir" location="${build.lib.dir}" />
+        <property name="software.dir" location="${software.dir}" />
 	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
     </ant>
 

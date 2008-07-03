@@ -14,9 +14,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
 	<property file="local.properties" />
 	<property file="project.properties" />
-	<!-- Should not be required for builds.
-	<property name="properties.file" value="${software.dir}/install.properties"/>
-	-->
 	<condition property="properties.file" value="linux-install.properties">
 		<or>
 			<os family="unix" />
@@ -26,6 +23,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<condition property="properties.file" value="windows-install.properties">
 		<os family="windows" />
 	</condition>
+	<echo message="Using properties file of ${properties.file}."/>
+	<available file="${properties.file}" property="properties.file.exists" />
+	<fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
 
 	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2" />
 	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2" />
@@ -45,8 +45,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="temp.dir" value="${target.dir}/temp" />
 	<property name="reports.dir" value="${target.dir}/reports" />
 	<property name="bda-utils.dir" value="${target.dir}/bda-utils" />
-	<property name="logs.dir" value="${target.dir}/logs" />
+	<property name="log.dir" value="${target.dir}/logs" />
 	<property name="dist.dir" value="${target.dir}/dist" />
+	<property name="download.dir" value="${target.dir}/download" />
 	<property name="ivy.settings.file" location="ivy-bda-settings.xml" />
 	<property name="ivy.file" value="ivy-2.0.0-beta2.jar" />
 	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar" />
@@ -73,20 +74,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
-	<property name="caintegrator2-war.dist.exploded.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
-	<property name="tools.dist.exploded.dir" value="${dist.exploded.dir}/${tools.dist.relative.dir}" />
-	<property name="common.dist.exploded.dir" value="${dist.exploded.dir}/${common.dist.relative.dir}" />
-	<property name="db-install.dist.exploded.dir" value="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
-	<property name="db-upgrade.dist.exploded.dir" value="${dist.exploded.dir}/${db-upgrade.dist.relative.dir}" />
-	<property name="jboss-conf.dist.exploded.dir" value="${dist.exploded.dir}/${jboss-conf.dist.relative.dir}" />
+	<property name="caintegrator2-war.dist.dir" value="${dist.exploded.dir}/${caintegrator2-war.dist.relative.dir}" />
+	<property name="tools.dist.dir" value="${dist.exploded.dir}/${tools.dist.relative.dir}" />
+	<property name="common.dist.dir" value="${dist.exploded.dir}/${common.dist.relative.dir}" />
+	<property name="db-install.dist.dir" value="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.dist.dir" value="${dist.exploded.dir}/${db-upgrade.dist.relative.dir}" />
+	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/${jboss-conf.dist.relative.dir}" />
 
 	<!-- Where to write files retrieved by get, into the distribution area.  The file names come from project.properties  -->
-	<property name="jboss.dest.file" value="${tools.dist.exploded.dir}/${jboss.binaries.file}" />
-
-	<!-- Where the sub-projects should deploy thier artifacts.  This relative from thier *.base.dir above.  We need to use this because thier software.dir is not the same as this project's software.dir. -->
-	<property name="caintegrator2-war.dist.dir" value="${caintegrator2-war.dist.exploded.dir}" />
-
-	<!-- Properties related to creating the distribution -->
+	<property name="jboss.dest.file" value="${download.dir}/${jboss.binaries.file}" />
 
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
 	<property name="install.target" value="install" />
@@ -144,6 +140,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</taskdef>
 
 	<!-- Includes- include BDA marcos -->
+	<echoproperties prefix="temp"/>
 	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
 	<!-- Start logging -->
@@ -160,18 +157,18 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="clean">
-		<delete dir="${dist.exploded.dir}" />
-		<delete dir="${dist.dir}" />
+		<delete dir="${dist.dir}"/>
 		<delete dir="${temp.dir}" />
 	</target>
 
 	<target name="init">
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${dist.exploded.dir}" />
-		<mkdir dir="${caintegrator2-war.dist.exploded.dir}" />
-		<mkdir dir="${common.dist.exploded.dir}" />
-		<mkdir dir="${tools.dist.exploded.dir}" />
+		<mkdir dir="${caintegrator2-war.dist.dir}" />
+		<mkdir dir="${common.dist.dir}" />
+		<mkdir dir="${tools.dist.dir}" />
 		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${download.dir}" />
 		<available file="${jboss.dest.file}" property="jboss.tools.exists" />
 	</target>
 
@@ -191,7 +188,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<!-- Wrapper build target, call appropriate builds for sub-projects -->
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level dist.exploded.directory, used by distribution targets to make distributions" depends="
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
 		build:caintegrator2-war
@@ -199,7 +196,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<target name="build:caintegrator2-war" depends="init">
 		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="caintegrator2.war" dir="${caintegrator2-war.base.dir}">
-			<property name="caintegrator2.war" value="${caintegrator2-war.dist.exploded.dir}/caintegrator2.war" />
+			<property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator2.war" />
 		</ant>
 	</target>
 
@@ -271,8 +268,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<!-- This  copies common files over, common files are currently resource files like
 			jboss configuration files and database scripts
 		-->
-		<copy todir="${common.dist.exploded.dir}" overwrite="true">
+		<copy todir="${common.dist.dir}" overwrite="true">
 			<fileset dir="${common.dir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy todir="${tools.dist.dir}" overwrite="true">
+			<fileset dir="${download.dir}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
@@ -287,7 +289,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Copies install time resources into distribution tree -->
 	<target name="dist:upgrader:prep">
 		<!-- Cleans up files copied by dist:*:prep targets to ensure only required files are present becaue this target is run after dist:installer:prep -->
-		<delete dir="${tools.dist.exploded.dir}" />
+		<delete dir="${tools.dist.dir}" />
 		<delete>
 			<fileset dir="${dist.exploded.dir}">
 				<include name="*.xml" />
@@ -328,7 +330,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<!-- This  copies common files over, common files are currently resource files like
 			jboss configuration files and database scripts
 		-->
-		<copy todir="${common.dist.exploded.dir}" overwrite="true">
+		<copy todir="${common.dist.dir}" overwrite="true">
 			<fileset dir="${common.dir}">
 				<include name="**/*" />
 			</fileset>
@@ -491,7 +493,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
 
-	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level dist.exploded.directory, used by distribution targets to make distributions" depends="
+	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
 		test:unit:all,
