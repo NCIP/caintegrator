@@ -715,6 +715,7 @@
 	<target name="static-analysis" description="Performs static analysis"
 		depends="
 		static-analysis:ivy-init,
+		init:dynamic.properties,
 		static-analysis:init,
 		static-analysis:findbugs-init,
 		static-analysis:simian,
