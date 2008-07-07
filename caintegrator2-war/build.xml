@@ -18,6 +18,7 @@
     <property name="software.dir" location="${root.dir}/software" />
     <property name="build.dir" location="${software.dir}/caintegrator2-war" />
     <property name="lib.dir" location="${software.dir}/lib" />
+    <property name="external.runtime.lib.dir" location="${lib.dir}/external-runtime" />
     <property name="ncia.lib.dir" location="${lib.dir}/ncia-lib" />
     <property name="build.lib.dir" location="${software.dir}/lib" />
     <property name="resource.dir" location="${software.dir}/common" />
@@ -160,7 +161,7 @@
     <!-- ******************************************************************* -->
 
     <target name="continuous-integration" 
-        depends="clean,init:ivy,build,static-analysis,test:unit" 
+        depends="clean,init:ivy,init:dynamic.properties,build,static-analysis,test:unit" 
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
     <target name="nightly-build" 
@@ -174,7 +175,7 @@
         description="Removes all generated artifacts from the working directory." />
 
     <target name="build" 
-        depends="caintegrator2.war"
+        depends="init:dynamic.properties,caintegrator2.war"
         description="Compiles all production source code and assembles artifacts." />
 
     <target name="database" 
@@ -182,7 +183,7 @@
         description="Drops any exisisting instance of the caintegrator2 database; creates and populates a new instance." />
 
     <target name="test" 
-        depends="test:unit,test:integration"
+        depends="init:dynamic.properties,test:unit,test:integration"
         description="Executes all unit and functional tests." />
 
     <target name="deploy"
@@ -231,98 +232,42 @@
     <property name="caintegrator2.war.instrumented.integration.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/integration" />
     <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
     <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator2.war" />
-
-    <path id="caintegrator2.war.dependencies.path">
-        <pathelement location="${caintegrator2.war.java.classes.dir}" />
-        <pathelement location="${caintegrator2-beans.jar}" />
-        <pathelement location="${caintegrator2-orm.jar}" />
-        <pathelement location="${lib.dir}/caDSR-beans.jar" />
-        <pathelement location="${lib.dir}/commons-configuration-1.5.jar" />
-        <pathelement location="${lib.dir}/commons-fileupload-1.2.1.jar" />
-        <pathelement location="${lib.dir}/commons-lang-2.4.jar" />
-        <pathelement location="${lib.dir}/commons-io-1.4.jar" />
-        <pathelement location="${lib.dir}/commons-logging-1.0.4.jar" />
-        <pathelement location="${lib.dir}/ejb3-persistence.jar" />
-        <pathelement location="${lib.dir}/freestylesearch.jar" />
-        <pathelement location="${lib.dir}/hibernate-annotations.jar" />
-        <pathelement location="${lib.dir}/hibernate-validator.jar" />
-        <pathelement location="${lib.dir}/netcdf-2.2.22.jar" />
-        <pathelement location="${lib.dir}/bufr-1.4.jar" />
-        <pathelement location="${lib.dir}/grib-6.0.jar" />
-        <pathelement location="${lib.dir}/visadNoDods.jar" />
-        <pathelement location="${lib.dir}/nlog4j-1.2.25.jar" />
-        <pathelement location="${lib.dir}/opencsv-1.8.jar" />
-        <pathelement location="${lib.dir}/xwork-2.1.1.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/caarray-client.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/caGrid-1.1-data-stubs.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/jbossall-client.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/jboss-aop-jdk50-client.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/jboss-aspect-jdk50-client.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/jboss-ejb3x.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/jboss-ejb3-client.jar" />
-        <pathelement location="${lib.dir}/caarray-lib/nci-commons-core-1.0.9.jar" />
-        <pathelement location="${ncia.lib.dir}/activation.jar" />
-        <pathelement location="${ncia.lib.dir}/addressing-1.0.jar" />
-        <pathelement location="${ncia.lib.dir}/axis.jar" />
-        <pathelement location="${ncia.lib.dir}/bcprov-jdk15-138.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-core-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/data-common-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-dataExtensions-style-cacore32-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-data-stubs-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-data-utils-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-metadata-common-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-metadata-security-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-client-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-common-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-ServiceSecurityProvider-stubs-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-Transfer-client-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/caGrid-Transfer-stubs-1.2.jar" />
-        <pathelement location="${ncia.lib.dir}/castor-1.0.2.jar" />
-        <pathelement location="${ncia.lib.dir}/cog-axis.jar" />
-        <pathelement location="${ncia.lib.dir}/cog-jglobus.jar" />
-        <pathelement location="${ncia.lib.dir}/commons-discovery.jar" />
-        <pathelement location="${ncia.lib.dir}/concurrent.jar" />
-        <pathelement location="${ncia.lib.dir}/mai.jar" />
-        <pathelement location="${ncia.lib.dir}/ncia-client-modified.jar" />
-        <pathelement location="${ncia.lib.dir}/NCIACoreService-client.jar" />
-        <pathelement location="${ncia.lib.dir}/NCIACoreService-common.jar" />
-        <pathelement location="${ncia.lib.dir}/NCIACoreService-stubs.jar" />
-        <pathelement location="${ncia.lib.dir}/wsdl4j-1.5.1.jar" />
-        <pathelement location="${ncia.lib.dir}/wsrf_core_stubs_enum.jar" />
-        <pathelement location="${ncia.lib.dir}/wsrf_core.jar" />
-        <pathelement location="${ncia.lib.dir}/wss4j.jar" />
-        <pathelement location="${ncia.lib.dir}/xalan.jar" />
-        <pathelement location="${ncia.lib.dir}/xercesImpl.jar" />
-        <pathelement location="${ncia.lib.dir}/xmlsec.jar" />
-        <pathelement location="${caintegrator2-cacore.system.dist.dir}/sdk-client-framework.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/acegi-security-1.0.4.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/csmapi.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/commons-collections-3.2.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/hibernate3.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/jaxrpc.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/saaj.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/spring.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/struts2-core-2.0.1.jar" />
-        <pathelement location="${caintegrator2-cacore.system.lib.dir}/wsdl4j-1.5.1.jar" />
-    </path>
-
-    <path id="caintegrator2.war.test.dependencies.path">
-        <pathelement location="${caintegrator2.war.test.classes.dir}" />
-        <path refid="caintegrator2.war.dependencies.path" />
-        <path refid="test.dependencies.path" />
-        <path refid="hibernatetool.classpath" />
-        <pathelement location="${lib.dir}/spring-mock.jar" />
-        <pathelement location="${caintegrator2.war.resources.src.dir}" />        
-        <pathelement location="${caintegrator2.war.resources.test.dir}" />
-    </path>
     
-    <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
+    <target name="init:dynamic.properties" depends="ivy-setup">
+        <property name="caintegrator2.ivy.compile.dir" location="${lib.dir}/caintegrator2-compile"/>
+        <property name="caintegrator2.ivy.runtime.dir" location="${lib.dir}/caintegrator2-runtime"/>
+        <path id="caintegrator2.war.dependencies.path">
+            <pathelement location="${caintegrator2.war.java.classes.dir}" />
+            <pathelement location="${caintegrator2-beans.jar}" />
+            <pathelement location="${caintegrator2-orm.jar}" />
+            <fileset dir="${caintegrator2.ivy.compile.dir}">
+                <include name="*.jar" />
+                <exclude name="log4j*.jar"/>
+            </fileset>
+            <fileset dir="${external.runtime.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    
+        <path id="caintegrator2.war.test.dependencies.path">
+            <pathelement location="${caintegrator2.war.test.classes.dir}" />
+            <path refid="caintegrator2.war.dependencies.path" />
+            <path refid="test.dependencies.path" />
+            <path refid="hibernatetool.classpath" />
+            <pathelement location="${lib.dir}/spring-mock.jar" />
+            <pathelement location="${caintegrator2.war.resources.src.dir}" />        
+            <pathelement location="${caintegrator2.war.resources.test.dir}" />
+        </path>
+        
+        <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
+        
+    </target>
 
     <target name="clean:caintegrator2.war">
         <delete dir="${caintegrator2.war.target.dir}" />
     </target>
 
-    <target name="caintegrator2.war" depends="caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
+    <target name="caintegrator2.war" depends="init:dynamic.properties,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
         <war destfile="${caintegrator2.war}" webxml="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml">
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
@@ -339,38 +284,9 @@
                 <exclude name="mysql-connector*.*"/>
                 <exclude name="xercesImpl*.*"/>
             </lib>
-            <lib dir="${lib.dir}">
-                <include name="caDSR-beans.jar"/>
-                <include name="commons-configuration-1.5.jar"/>
-                <include name="commons-fileupload-1.2.1.jar"/>
-                <include name="commons-io-1.4.jar"/>
-                <include name="commons-lang-2.4.jar"/>
-                <include name="ejb3-persistence.jar" />
-                <include name="freestylesearch.jar"/>
-                <include name="hibernate-annotations.jar" />
-                <include name="hibernate-validator.jar" />
-                <include name="netcdf-2.2.22.jar" />
-                <include name="bufr-1.4.jar" />
-                <include name="grib-6.0.jar" />
-                <include name="visadNoDods.jar" />
-                <include name="nlog4j-1.2.25.jar" />
-                <include name="opencsv-1.8.jar" />
-                <include name="tiles-api-2.0.6.jar"/>
-                <include name="tiles-core-2.0.6.jar"/>
-                <include name="tiles-jsp-2.0.6.jar"/>
-                <include name="struts2-tiles-plugin-2.1.2.jar"/>
-                <include name="xwork-2.1.1.jar"/>
-            </lib>
-            <lib dir="${ncia.lib.dir}">
-                <include name="NCIACoreService-client.jar" />
-                <include name="NCIACoreService-common.jar" />
-                <include name="NCIACoreService-stubs.jar" />
-                <include name="ncia-client-modified.jar" />
-           </lib>
-            <lib dir="${lib.dir}/caarray-lib">
-                <include name="caarray-client.jar" />
-                <include name="nci-commons-core-1.0.9.jar" />
-            </lib>
+            <lib dir="${caintegrator2.ivy.runtime.dir}" includes="*.jar"/>
+            <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
+            
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
             </classes>
@@ -393,7 +309,7 @@
         </war>
     </target>
 
-    <target name="compile:caintegrator2.war" depends="caintegrator2-beans.jar,caintegrator2-orm.jar">
+    <target name="compile:caintegrator2.war" depends="init:dynamic.properties,caintegrator2-beans.jar,caintegrator2-orm.jar">
         <mkdir dir="${caintegrator2.war.java.classes.dir}" />
         <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
@@ -769,6 +685,18 @@
 	<property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
 	<property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
 
+    <target name="ivy-setup" depends="ivy-runtime, ivy-compile" description="Updates the local ivy repository"/>
+    
+    <target name="ivy-runtime" depends="init:ivy" description="Copies the runtime libraries to the caintegrator2-runtime directory">
+        <ivy:resolve refresh="true" conf="runtime" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
+    </target>
+            
+    <target name="ivy-compile" depends="init:ivy" description="Copies the compile libraries to the caintegrator2-compile directory">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+            
 	<target name="test:ivy-init" 
 		depends="
 		init:ivy,
@@ -1156,16 +1084,6 @@
 		</sequential>
 	</macrodef>
     
-    <target name="ivy-test" depends="ivy-test-runtime, ivy-test-compile" description="Updates the local ivy repository"/>
-    
-    <target name="ivy-test-runtime" depends="init:ivy" description="Updates the local ivy repository">
-        <ivy:resolve refresh="true" conf="runtime" />
-        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
-    </target>
-            
-    <target name="ivy-test-compile" depends="init:ivy" description="Updates the local ivy repository">
-        <ivy:resolve refresh="true" conf="compile" />
-        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
-    </target>
+
 
 </project>
