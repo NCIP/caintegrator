@@ -19,12 +19,11 @@
     <property name="build.dir" location="${software.dir}/caintegrator2-war" />
     <property name="lib.dir" location="${software.dir}/lib" />
     <property name="external.runtime.lib.dir" location="${lib.dir}/external-runtime" />
-    <property name="ncia.lib.dir" location="${lib.dir}/ncia-lib" />
     <property name="build.lib.dir" location="${software.dir}/lib" />
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
     <property name="site.dir" location="${software.dir}/target/reports" />
-	<property name="common.dir" value="${software.dir}/common"/>
+    <property name="common.dir" value="${software.dir}/common"/>
 
     <!-- Main caCORE properties; required for taskdefs -->
     <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
@@ -39,14 +38,6 @@
     <property file="${software.dir}/project.properties"/>
     <property file="${envpropertyfile}" />
 
-    <!-- Libraries -->
-    <property name="junit.jar" location="${lib.dir}/junit-4.4.jar" />
-
-    <!-- Paths -->
-    <path id="test.dependencies.path">
-        <pathelement location="${junit.jar}" />
-    </path>
-
     <!-- Filtersets -->
     <filterset id="caintegrator2.filterset" onmissingfiltersfile="warn">
         <filtersfile file="${build.dir}/local.properties" />
@@ -57,52 +48,9 @@
     <!-- ******************************************************************* -->
     <!-- ** BUILD / TASKDEFS                                              ** -->
     <!-- ******************************************************************* -->
-    
-    <!-- ant-contrib -->
-    <property name="ant-contrib.jar" location="${lib.dir}/ant-contrib-1.0b3.jar" />
-    <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${ant-contrib.jar}" />
-
     <!-- Checkstyle -->
-    <property name="checkstyle.jar" location="${lib.dir}/checkstyle-all-4.4.jar" />
-    <taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar}" />
     <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
-
-    <!-- Hibernate -->
-    <path id="hibernatetool.classpath">
-        <fileset dir="${caintegrator2-cacore.system.lib.dir}">
-            <include name="antlr-2.7.6.jar" />
-            <include name="asm.jar" />
-            <include name="c3p0-0.9.0.jar" />
-            <include name="cglib-2.1.3.jar" />
-            <include name="commons-collections-3.2.jar" />
-            <include name="ehcache-1.2.2.jar" />
-            <include name="hibernate3.jar" />
-            <include name="freemarker-2.3.4.jar" />
-            <include name="pmd-4.2.1.jar" />
-            <include name="dom4j-1.4.jar" />
-        </fileset>
-        <fileset dir="${lib.dir}">
-            <include name="commons-logging-1.0.4.jar" />
-            <include name="commons-logging-1.0.4.jar" />
-            <include name="ejb3-persistence.jar" />
-            <include name="hibernate-annotations.jar" />
-            <include name="hibernate-commons-annotations.jar" />
-            <include name="hibernate-tools-3.2.2.beta1.jar" />
-            <include name="mysql-connector-java-5.0.5-bin.jar" />
-        </fileset>
-    </path>
-    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.classpath" />
-
-    <!-- PMD -->
-    <path id="pmd.classpath">
-        <fileset dir="${lib.dir}">
-            <include name="asm-3.1.jar" />
-            <include name="jaxen-1.1.1.jar" />
-            <include name="pmd-4.2.1.jar" />
-        </fileset>
-    </path>
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
-
+    
     <!-- Ivy -->
     <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
     <property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar"/>
@@ -138,23 +86,10 @@
     <property name="cobertura-functional.file" location="${cobertura.dir}/cobertura-functional.ser" />
     <property name="cobertura-merged.file" location="${cobertura.dir}/cobertura-merged.ser" />
 
-    <path id="cobertura.classpath">
-        <fileset dir="${lib.dir}">
-            <include name="cobertura.jar" />
-            <include name="asm-2.2.1.jar" />
-            <include name="asm-tree-2.2.1.jar" />
-            <include name="jakarta-oro-2.0.8.jar" />
-            <include name="log4j-1.2.9.jar" />
-        </fileset>
-    </path>
-
     <!-- Build Output Site -->
     <target name="clean:site">
         <delete dir="${site.dir}" />
     </target>
-
-
-    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
     <!-- ******************************************************************* -->
     <!-- ** MAIN TARGETS                                                  ** -->
@@ -252,9 +187,6 @@
         <path id="caintegrator2.war.test.dependencies.path">
             <pathelement location="${caintegrator2.war.test.classes.dir}" />
             <path refid="caintegrator2.war.dependencies.path" />
-            <path refid="test.dependencies.path" />
-            <path refid="hibernatetool.classpath" />
-            <pathelement location="${lib.dir}/spring-mock.jar" />
             <pathelement location="${caintegrator2.war.resources.src.dir}" />        
             <pathelement location="${caintegrator2.war.resources.test.dir}" />
         </path>
@@ -331,7 +263,7 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
     
-    <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war">
+    <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,test:ivy-test-cobertura">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
              <fileset  dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
@@ -486,7 +418,7 @@
         <pathelement location="${caintegrator2-beans.jar}" />
         <pathelement location="${caintegrator2-orm.jar}" />
         <!-- axis.jar is included for the MalformedURIException for Checkstyle -->
-        <pathelement location="${ncia.lib.dir}/axis.jar" />
+        <!-- <pathelement location="${ncia.lib.dir}/axis.jar" /> -->
     </path>
 
     <!-- ******************************************************************* -->
@@ -593,7 +525,7 @@
         <copy file="${caintegrator2.datasource}" todir="${jboss.deploy.dir}">
             <filterset refid="caintegrator2.filterset" />
         </copy>
-        <copy file="${lib.dir}/mysql-connector-java-5.0.5-bin.jar" todir="${jboss.server.dir}/lib" />
+        <copy file="${caintegrator2.ivy.compile.dir}/mysql-connector-java-5.0.5.jar" todir="${jboss.server.dir}/lib" />
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
 
@@ -685,14 +617,14 @@
 	<property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
 	<property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
 
-    <target name="ivy-setup" depends="ivy-runtime, ivy-compile" description="Updates the local ivy repository"/>
+    <target name="ivy-setup" depends="ivy-setup:runtime, ivy-setup:compile" description="Updates the local ivy repository"/>
     
-    <target name="ivy-runtime" depends="init:ivy" description="Copies the runtime libraries to the caintegrator2-runtime directory">
+    <target name="ivy-setup:runtime" depends="init:ivy" description="Copies the runtime libraries to the caintegrator2-runtime directory">
         <ivy:resolve refresh="true" conf="runtime" />
         <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
     </target>
             
-    <target name="ivy-compile" depends="init:ivy" description="Copies the compile libraries to the caintegrator2-compile directory">
+    <target name="ivy-setup:compile" depends="init:ivy" description="Copies the compile libraries to the caintegrator2-compile directory">
         <ivy:resolve refresh="true" conf="compile" />
         <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
     </target>
@@ -725,11 +657,12 @@
 	<target name="test:ivy-test-cobertura" depends="init:ivy" description="Updates the local ivy repository">
 		<ivy:resolve refresh="true" conf="test-cobertura" />
 		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
-		<path id="project.test.cobertura.classpath">
+		<path id="cobertura.classpath">
 			<fileset dir="${lib.dir}/test-cobertura">
 				<include name="*.jar" />
 			</fileset>
 		</path>
+	    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 	</target>
 
 	<target name="static-analysis:ivy-init" 
