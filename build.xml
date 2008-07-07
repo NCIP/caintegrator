@@ -69,7 +69,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="caintegrator2-war.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="caintegrator2-war.build.target" value="run" />
+	<property name="caintegrator2-war.build.target" value="build" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
@@ -195,7 +195,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		" />
 
 	<target name="build:caintegrator2-war" depends="init">
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="caintegrator2.war" dir="${caintegrator2-war.base.dir}">
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="${caintegrator2-war.build.target}" dir="${caintegrator2-war.base.dir}">
 			<property name="caintegrator2.war" value="${caintegrator2-war.dist.dir}/caintegrator2.war" />
 		</ant>
 	</target>

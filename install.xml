@@ -24,6 +24,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	
 	<!-- Generic properties -->
 	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="log.dir" value="${basedir}/logs" />
 	<property name="working.dir" value="${basedir}/working" />
 	<property name="temp.dir" value="${working.dir}/temp" />
 
@@ -40,7 +41,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 
 	<!-- *-ds.xml and WAR -->
 	<property name="caintegrator2-war.dir.dist" value="${basedir}/${caintegrator2-war.dist.relative.dir}" />
-	<property name="caintegrator2-war.ds.file" value="cai2-ds.xml" />
+	<property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
 	<property name="caintegrator2-war.war.file" value="caintegrator2.war" />
 
 	<!-- Paths -->
