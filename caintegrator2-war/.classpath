@@ -187,7 +187,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/axis-1.4.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/axis-1.4.2_10.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -461,6 +461,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/xwork-2.1.1.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/caGrid-dataExtensions-style-cacore32-1.2.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
