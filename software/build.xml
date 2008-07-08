@@ -39,6 +39,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Generic build time properties -->
 	<property name="software.dir" value="${basedir}" />
 	<property name="common.dir" value="${software.dir}/common" />
+	<property name="local.repo.dir" value="${software.dir}/local-ivy-repo" />
 	<property name="bda-download.dir" value="${common.dir}/bda-download" />
 	<property name="target.dir" value="${software.dir}/target" />
 	<property name="lib.dir" value="${target.dir}/lib" />
@@ -283,7 +284,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Creates the installer distribution used by automated or manual remote installations -->
 	<target name="dist:installer" depends="dist:installer:prep">
 		<delete file="${dist.dir}/${caintegrator2.install.zip.file}" />
-		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" software.dir="${dist.exploded.dir}" />
+		<zip destfile="${dist.dir}/${caintegrator2.install.zip.file}" basedir="${dist.exploded.dir}" />
 	</target>
 
 	<!-- Copies install time resources into distribution tree -->
@@ -340,7 +341,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Creates upgrader distribution -->
 	<target name="dist:upgrader" depends="dist:upgrader:prep">
 		<delete file="${dist.dir}/${caintegrator2.upgrade.zip.file}" />
-		<zip destfile="${dist.dir}/${caintegrator2.upgrade.zip.file}" software.dir="${dist.exploded.dir}" />
+		<zip destfile="${dist.dir}/${caintegrator2.upgrade.zip.file}" basedir="${dist.exploded.dir}" />
 
 	</target>
 
@@ -615,4 +616,36 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		test:unit:all
 		"/>
 
+	<target name="init:ivy">
+		<mkdir dir="${local.repo.dir}"/>
+		<property name="ivy.dep.file" value="${bda-download.dir}/ivy-bda.xml"/>
+		<ivy:settings file="${ivy.settings.file}" />
+	</target>
+
+	<target name="ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
+		<ivy:resolve refresh="true" conf="test-javancss" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
+		<path id="project.test.javancss.classpath">
+			<fileset dir="${lib.dir}/test-javancss">
+				<include name="*.jar" />
+			</fileset>
+		</path> 
+	</target>
+
+
+	<target name="Test-selenium">
+		<taskdef resource="selenium-ant.properties">
+			<classpath>
+				<pathelement location="${not.deployed.jarFiles}/selenium-server.jar"/>
+			</classpath>
+		</taskdef>
+		<selenese 
+			suite="test\selenium\QA_bulk_cagwasTestSuite.html"
+			browser="${browser}"
+			results="${result_file}"
+			multiWindow="false"
+			timeoutInSeconds="200"
+			port="${server_port}"
+			startURL="${test_url}"  />
+	</target>
 </project>
