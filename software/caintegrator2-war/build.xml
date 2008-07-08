@@ -208,6 +208,7 @@
                 <include name="caintegrator2-beans.jar"/>
                 <include name="caintegrator2-orm.jar"/>
             </lib>
+            <!--
             <lib dir="${caintegrator2-cacore.system.dist.dir}" includes="*.jar"/>
             <lib dir="${caintegrator2-cacore.system.lib.dir}" includes="*.jar">
                 <exclude name="log4j*.jar"/>
@@ -216,7 +217,16 @@
                 <exclude name="mysql-connector*.*"/>
                 <exclude name="xercesImpl*.*"/>
             </lib>
-            <lib dir="${caintegrator2.ivy.runtime.dir}" includes="*.jar"/>
+            -->
+            <!-- I shouldn't have to include this, but I can't pull down 2.0.1 from repo for some reason -->
+            <lib dir="${caintegrator2-cacore.system.lib.dir}">
+                <include name="xwork-2.0-beta-1.jar"/>    
+            </lib>
+            <lib dir="${caintegrator2.ivy.runtime.dir}" includes="*.jar"> 
+                <exclude name="log4j*.jar"/>
+                <exclude name="commons-logging*.*"/>
+                <exclude name="spring-mock*.jar"/>
+            </lib>
             <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
             
             <classes dir="${caintegrator2-cacore.output.src.dir}">
