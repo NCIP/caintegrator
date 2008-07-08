@@ -218,10 +218,6 @@
                 <exclude name="xercesImpl*.*"/>
             </lib>
             -->
-            <!-- I shouldn't have to include this, but I can't pull down 2.0.1 from repo for some reason -->
-            <lib dir="${caintegrator2-cacore.system.lib.dir}">
-                <include name="xwork-2.0-beta-1.jar"/>    
-            </lib>
             <lib dir="${caintegrator2.ivy.runtime.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
                 <exclude name="commons-logging*.*"/>
