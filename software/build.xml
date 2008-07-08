@@ -39,6 +39,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- Generic build time properties -->
 	<property name="software.dir" value="${basedir}" />
 	<property name="common.dir" value="${software.dir}/common" />
+	<property name="build.dir" value="${software.dir}/build" />
 	<property name="local.repo.dir" value="${software.dir}/local-ivy-repo" />
 	<property name="bda-download.dir" value="${common.dir}/bda-download" />
 	<property name="target.dir" value="${software.dir}/target" />
@@ -49,7 +50,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="log.dir" value="${target.dir}/logs" />
 	<property name="dist.dir" value="${target.dir}/dist" />
 	<property name="download.dir" value="${target.dir}/download" />
-	<property name="ivy.settings.file" location="ivy-bda-settings.xml" />
+	<property name="ivy.settings.file" location="${build.dir}/ivy-bda-settings.xml" />
 	<property name="ivy.file" value="ivy-2.0.0-beta2.jar" />
 	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar" />
 
