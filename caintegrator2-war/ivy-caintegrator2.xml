@@ -59,6 +59,7 @@
     <dependency org="apache" name="xmlsec" rev="1.2.1" conf="compile"/>
     <dependency org="apache" name="tiles-jsp" rev="2.0.6" conf="runtime"/>
     <dependency org="apache" name="struts2-core" rev="2.0.1" conf="runtime"/>
+    <dependency org="opensymphony" name="cacore-xwork" rev="2.0.1" conf="runtime" force="true"/>
     <!-- 
     Freemarker is a dependency of struts-core, but for some reason it doesn't get brought in unless
     it is also in here.
@@ -68,8 +69,7 @@
           rev="2.3.4"
           conf="runtime->master"/> 
 
-    <!-- Not sure why, but this doesn't seem to work, it only retrieves 2.1.1 from a transitive dependency -->
-    <dependency org="opensymphony" name="xwork" rev="2.0.1" conf="runtime->master"/>
+
 
 
     <!-- These exist in the repository -->
