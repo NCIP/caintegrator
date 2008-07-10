@@ -296,23 +296,24 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 
 	<!-- Configure log4j settings based on contents of caintegrator2-war/software/resrouces/deploy/log4j.block.xml -->
 	<target name="-install:jboss:configure:log4j" unless="exclude.jboss">
+		<!--
 		<property name="jboss.log4j.file" value="${jboss.home}/server/${jboss.server.name}/conf/log4j.xml"/>
 		<property name="log4j.block.file" value="${jboss-conf.dir.target}/log4j.block.xml"/>
 		<copy tofile="${jboss.log4j.file}.orig" file="${jboss.log4j.file}"/>
 
-		<!-- Replace the doctype of the xml with a generic one so it does not try resolve dtd -->
+		## Replace the doctype of the xml with a generic one so it does not try resolve dtd 
 		<pre-xmlconfig
 			file.location="${jboss.log4j.file}"
 			old-value.property.name="log4j.doctype.line"
 			/>
-		<!-- log4j has namespace configurations in log4j:configuration element so rename to simple no ns element -->
+		## log4j has namespace configurations in log4j:configuration element so rename to simple no ns element 
 		<pre-xmlconfig
 			search.pattern="&lt;log4j\:configuration.*"
 			replace.pattern="&lt;configuration&gt;"
 			file.location="${jboss.log4j.file}"
 			old-value.property.name="log4j.begin-configuration.line"
 			/>
-		<!-- log4j has namespace configurations in log4j:configuration element so rename to simple no ns element -->
+		## log4j has namespace configurations in log4j:configuration element so rename to simple no ns element 
 		<pre-xmlconfig
 			search.pattern="&lt;\/log4j\:configuration&gt;"
 			replace.pattern="&lt;\/configuration&gt;"
@@ -328,24 +329,25 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			<insertbranch path="//configuration" srcxmlfile="${log4j.block.file}" srcpath="//category[2]" />
 		</xmlconfig>
 
-		<!-- Restore original log4j:configuration line -->
+		## Restore original log4j:configuration line 
 		<post-xmlconfig
 			search.pattern="&lt;configuration&gt;"
 			file.location="${jboss.log4j.file}"
 			old-value.property.value="${log4j.begin-configuration.line}"
 			/>
-		<!-- Restore original log4j:configuration closing line -->
+		## Restore original log4j:configuration closing line 
 		<post-xmlconfig
 			search.pattern="&lt;\/configuration&gt;"
 			file.location="${jboss.log4j.file}"
 			old-value.property.value="${log4j.end-configuration.line}"
 			/>
-		<!-- Restore doctype to modified file -->
+		## Restore doctype to modified file 
 		<post-xmlconfig
 			file.location="${jboss.log4j.file}"
 			old-value.property.value="${log4j.doctype.line}"
 			/>
 		<fixcrlf file="${jboss.log4j.file}"/>
+		-->
 	</target>
 
 	<!-- Calls to bda macros for basic functionality -->
