@@ -77,7 +77,7 @@
 	<target name="init:ivy">
 		<mkdir dir="${local.repo.dir}"/>
 		<property name="ivy.dep.file" value="${ivy.def.file}"/>
-		<ivy:settings file="${ivy.settings.file}" />
+		<ivy:settings file="${ivy.settings.file}" override="true" />
 	</target>
 
     <!-- Cobertura -->
