@@ -10,6 +10,7 @@
     <conf name="test-pmd"  />
     <conf name="test-selenium" />
     <conf name="test-junit" />
+    <conf name="test-acceptance" />
     <conf name="test-cobertura" />
     <conf name="test-javancss" />
     <conf name="test-checkstyle" />
@@ -30,6 +31,9 @@
     <dependency org="umd" name="findbugs-ant" rev="1.3.4" conf="test-findbugs->runtime"/>
     <dependency org="redhillconsulting" name="simian" rev="2.2.24" conf="test-simian->runtime"/>
     <dependency org="pmd" name="pmd" rev="4.2.1" conf="test-pmd->runtime"/>
+    <dependency org="fit" name="fit" rev="1.1" conf="test-acceptance->master"/>
+    <dependency org="fitlibrary" name="fitrunner" rev="1.0" conf="test-acceptance->master"/>
+    <dependency org="antfit" name="antfit" rev="1.0" conf="test-acceptance->master"/>
     
     <!-- Runtime items that exist in WEB-INF/lib for war runtime -->
     
