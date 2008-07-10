@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2;
 
 import fit.ColumnFixture;
 
+@SuppressWarnings("PMD")
 public class Cai2FrontControllerFixture extends ColumnFixture {
 
 	// the "setters" are public fields
