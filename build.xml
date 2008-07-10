@@ -498,15 +498,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<target name="test:all" description="Builds all the sub projects, putting artifacts in the project level dist.directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
-		test:unit:all,
-		test:acceptance
+		test:unit:all
 		" />
 
-	<target name="test:acceptance" depends="-test:start-seleniumrc, -test:fitnesse" description="Runs automated acceptance tests">
+	<target name="test:acceptance" depends="-test:fit" description="Runs automated acceptance tests">
 		<echo message="===========================================" />
 		<echo message="Running caIntegrator2 Acceptance Test Suite" />
 		<echo message="===========================================" />
-
 	</target>
 
 	<target name="-test:start-seleniumrc" description="Starts a SeleniumRC server">
@@ -517,6 +515,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</parallel>
 	</target>
 
+	<target name="-test:fit" description="Runs fit acceptance tests">
+		<java classname="fit.runner.FolderRunner" classpathref="bda-utils.classpath">
+			<arg line="${caintegrator2-war.base.dir}/test/acceptance/tables"/>
+			<arg line="${reports.dir}/fit"/>
+		</java>
+	</target>
+	
 	<target name="-test:fitnesse" description="Runs fitnesse acceptance tests">
 		<property name="fitnesse.output.dir" value="${software.dir}/target/common" />
 		<property name="fitnesse_root_dir" value="${bda-utils.dir}/acceptance-tests" />
