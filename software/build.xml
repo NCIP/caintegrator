@@ -476,10 +476,27 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 	<!-- this target generates visio like diagrams of the build files -->
 	<target name="report:grand" description="Generates grand graphs for build.xml files">
+		<!-- Temporary fix to make grand work for install.xml -->
+		<ant inheritAll="false" inheritRefs="false"
+			antfile="bda-ivy-build.xml"
+			target="retrieve-bda"
+			dir="${bda-download.dir}"
+			>
+			<property name="bda-utils.dir" value="${software.dir}/bda-utils" />
+			<property name="lib.dir" value="${lib.dir}" />
+			<property name="software.dir" value="${software.dir}" />
+		</ant>  
+		<copy tofile="${software.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
+
 		<report-grand 
 			build.file.location="build.xml" 
 			output.file.dir="${grand.rpt.dir}"
 			output.file.name="master-build.xml"
+		       	/>
+		<report-grand 
+			build.file.location="install.xml" 
+			output.file.dir="${grand.rpt.dir}"
+			output.file.name="master-install.xml"
 		       	/>
 		<report-grand 
 			build.file.location="caintegrator2-war/build.xml" 
@@ -491,6 +508,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			output.file.dir="${grand.rpt.dir}"
 			output.file.name="cacore-build.xml"
 		       	/>
+		<delete dir="${software.dir}/bda-utils"/>
+		<delete dir="${software.dir}/logs"/>
+		<delete dir="${software.dir}/working"/>
+		<delete file="${software.dir}/db-integrate.xml"/>
+
 	</target>
 
 	<!-- Wrapper test target, call appropriate test for sub-projects -->
@@ -622,36 +644,84 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		test:unit:all
 		"/>
 
+
 	<target name="init:ivy">
 		<mkdir dir="${local.repo.dir}"/>
 		<property name="ivy.dep.file" value="${bda-download.dir}/ivy-bda.xml"/>
-		<ivy:settings file="${ivy.settings.file}" />
+		<ivy:settings file="${bda-download.dir}/ivy-bda-settings.xml" />
 	</target>
 
 	<target name="ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-javancss" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
-		<path id="project.test.javancss.classpath">
-			<fileset dir="${lib.dir}/test-javancss">
+		<ivy:resolve refresh="true" conf="test-selenium" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
+		<path id="project.test.selenium.classpath">
+			<fileset dir="${lib.dir}/test-selenium">
 				<include name="*.jar" />
 			</fileset>
 		</path> 
 	</target>
 
+	<target name="test:seleniumrc:start" description="Starts a SeleniumRC server">
+		<parallel>
+			<daemons>
+				<java jar="${lib.dir}/test-selenium/selenium-server-0.9.0.jar" fork="true" failonerror="true" />
+			</daemons>
+		</parallel>
+	</target>
 
-	<target name="Test-selenium">
-		<taskdef resource="selenium-ant.properties">
-			<classpath>
-				<pathelement location="${not.deployed.jarFiles}/selenium-server.jar"/>
-			</classpath>
-		</taskdef>
+	<target name="test:seleniumrc:stop">
+		<get taskname="selenium-shutdown"
+			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDown"
+			dest="reslut.txt" ignoreerrors="true"/>
+	</target>
+
+	<target name="test:selenium:init">
+		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
+		<!--<property name="selenium.browser" value="*custom /usr/lib/firefox-2.0.0.14/firefox-bin"/>-->
+		<property name="selenium.proxy.port" value="4444"/>
+		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
+		<property name="selenium.report.file" value="selenium-rpt.html"/>
+		<property name="selenium.test.suite" value="${software.dir}/cai2-create-study-tc.html"/>
+
+		<mkdir dir="${selenium.report.dir}"/>
+
+		<if>
+			<not>
+				<socket server="${jboss.server.hostname}" port="${jboss.server.port}" />
+			</not>
+			<then>
+				<jboss-start-jboss />
+			</then>
+		</if>
+	</target>
+
+	<target name="test:selenium"
+		depends="
+		ivy-test-selenium,
+		test:selenium:init,
+		test:selenium:run,
+		test:seleniumrc:stop
+		"
+		/>
+
+	<target name="test:selenium:run">
+		<java jar="${lib.dir}/test-selenium/selenium-server-0.9.0.jar" fork="true">
+			<arg line="-htmlSuite &quot;${selenium.browser}&quot;"/>
+			<arg line="&quot;${application.url}&quot;"/>
+			<arg line="&quot;${selenium.test.suite}&quot;"/>
+			<arg line="&quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
+			<arg line="-timeout 30"/>
+		</java> 
+		<!--
+		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
 		<selenese 
-			suite="test\selenium\QA_bulk_cagwasTestSuite.html"
-			browser="${browser}"
-			results="${result_file}"
-			multiWindow="false"
-			timeoutInSeconds="200"
-			port="${server_port}"
-			startURL="${test_url}"  />
+			suite="${selenium.test.suite}"
+			browser="${selenium.browser}"
+			results="${selenium.report.dir}/${selenium.report.file}"
+			multiWindow="falsE"
+			timeoutInSeconds="30"
+			port="${selenium.proxy.port}"
+			startURL="${application.url}"  />
+		-->
 	</target>
 </project>
