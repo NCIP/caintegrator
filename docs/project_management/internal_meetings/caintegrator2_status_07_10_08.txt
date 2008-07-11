@@ -1,0 +1,14 @@
+Shine to call meeting with Daniel Ruben & VASARI team 
+	to discuss more about analysis for ‘Image and Expr’ data 
+	Use-cases for View Images
+Data pre-processing to be determined after requirements are clearer
+KM plot 
+	Clinical
+	Gene by Gene
+	Fold Changes
+	CopyNumber based
+Dynamic grouping should be allowed 
+For this release KM-plot (first priority) and simple GenePattern (no seamless integration) will be implemented. 
+Shine to call meeting with Ted (Broad) to discuss more about GenePattern Integration 
+Shine to work on road-map for caIntegrator2 ( Multiple Instance of caI2, update Study etc and other features discussed before) 
+View Images and Browse Study will be based on new resource availability. 
