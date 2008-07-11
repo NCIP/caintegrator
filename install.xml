@@ -120,7 +120,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<isset property="ds.exists"/>
 		<then>
 			<jboss-read-dbconfig
-				jboss.ds-xml.file="${caintegrator2-war.ds.file}"
+				jboss.ds-xml.file="${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file}"
 				/>
 		</then>
 		<else>
