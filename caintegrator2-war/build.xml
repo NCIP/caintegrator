@@ -104,7 +104,6 @@
     <property name="simian.lib.dir" location="${lib.dir}/test-simian"/>
 
     <target name="ivy:init">
-        <mkdir dir="${local.repo.dir}"/>
         <property name="ivy.dep.file" value="${ivy.def.file}"/>
         <ivy:settings file="${ivy.settings.file}" override="true" />
     </target>
