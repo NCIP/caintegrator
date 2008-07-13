@@ -56,24 +56,15 @@
     <dependency org="org.bouncycastle" name="bcprov" rev="1.38" conf="compile"/>
     <dependency org="ucar" name="netcdf" rev="2.2.22" conf="runtime"/>
     <dependency org="opencsv" name="opencsv" rev="1.8" conf="runtime"/>
-    <dependency org="ognl" name="ognl" rev="2.6.7" conf="runtime"/>
+    <dependency org="ognl" name="ognl" rev="2.6.11" conf="runtime"/>
     <dependency org="springsource" name="spring" rev="2.0.3" conf="runtime"/>
     <dependency org="springsource" name="spring-mock" rev="2.0.3" conf="test-junit->master"/>
-    <dependency org="apache" name="struts2-tiles-plugin" rev="2.1.2" conf="runtime"/>
     <dependency org="apache" name="xmlsec" rev="1.2.1" conf="compile"/>
     <dependency org="apache" name="tiles-jsp" rev="2.0.6" conf="runtime"/>
-    <dependency org="apache" name="struts2-core" rev="2.0.1" conf="runtime"/>
-    <dependency org="opensymphony" name="cacore-xwork" rev="2.0.1" conf="runtime" force="true"/>
-    <!-- 
-    Freemarker is a dependency of struts-core, but for some reason it doesn't get brought in unless
-    it is also in here.
-     -->
-      <dependency org="freemarker" 
-          name="freemarker" 
-          rev="2.3.4"
-          conf="runtime->master"/> 
-
-
+    <dependency org="apache" name="struts2-core" rev="2.0.11" conf="runtime"/>
+    <dependency org="apache" name="struts2-spring-plugin" rev="2.0.11" conf="runtime"/>
+    <dependency org="apache" name="struts2-tiles-plugin" rev="2.0.11" conf="runtime"/>
+    <dependency org="opensymphony" name="xwork" rev="2.0.4" conf="runtime" force="true"/>
 
 
     <!-- These exist in the repository -->

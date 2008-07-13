@@ -22,7 +22,6 @@
     <property name="build.lib.dir" location="${software.dir}/lib" />
     <property name="resource.dir" location="${software.dir}/common" />
     <property name="target.dir" location="${build.dir}/target" />
-    <property name="site.dir" location="${software.dir}/target/reports" />
     <property name="common.dir" value="${software.dir}/common"/>
 
     <!-- Main caCORE properties; required for taskdefs -->
@@ -45,20 +44,21 @@
         <filtersfile file="${envpropertyfile}" />
     </filterset>
 
+    <!-- Report properties -->
+    <property name="reports.dir" value="${software.dir}/reports"/>
+    <property name="reports.simian.dir" value="${reports.dir}/simian"/>
+    <property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
+    <property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
+    <property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
+    <property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
+
     <!-- ******************************************************************* -->
     <!-- ** BUILD / TASKDEFS                                              ** -->
     <!-- ******************************************************************* -->
     <!-- Checkstyle -->
     <property name="checkstyle.config" location="${resource.dir}/checkstyle/caintegrator2_checks.xml" />
     
-    <!-- Ivy -->
-    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
-    <property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar"/>
-
-    <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
-    <property name="ivy.def.file" location="ivy-caintegrator2.xml" />
-    <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
-
+    <!-- BDA -->
     <property name="bda-utils.dir" location="${software.dir}/target/bda-utils" />
 
     <mkdir dir="${build.lib.dir}" />
@@ -72,31 +72,141 @@
 
     <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
-    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
-
-	<target name="init:ivy">
-		<mkdir dir="${local.repo.dir}"/>
-		<property name="ivy.dep.file" value="${ivy.def.file}"/>
-		<ivy:settings file="${ivy.settings.file}" override="true" />
-	</target>
-
     <!-- Cobertura -->
-    <property name="cobertura.dir" location="${site.dir}/cobertura" />
+    <property name="cobertura.dir" location="${reports.dir}/cobertura" />
     <property name="cobertura.file" location="${cobertura.dir}/cobertura.ser" />
     <property name="cobertura-functional.file" location="${cobertura.dir}/cobertura-functional.ser" />
     <property name="cobertura-merged.file" location="${cobertura.dir}/cobertura-merged.ser" />
 
-    <!-- Build Output Site -->
-    <target name="clean:site">
-        <delete dir="${site.dir}" />
+    <!-- ******************************************************************* -->
+    <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
+
+    <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
+    <property name="ivy.def.file" location="ivy-caintegrator2.xml" />
+    <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
+
+    <property name="caintegrator2.war.compile.lib.dir" location="${lib.dir}/caintegrator2-compile"/>
+    <property name="caintegrator2.war.runtime.lib.dir" location="${lib.dir}/caintegrator2-runtime"/>
+
+    <property name="acceptance.lib.dir" location="${lib.dir}/test-acceptance"/>
+    <property name="checkstyle.lib.dir" location="${lib.dir}/test-checkstyle"/>
+    <property name="cobertura.lib.dir" location="${lib.dir}/test-cobertura"/>
+    <property name="findbugs.lib.dir" location="${lib.dir}/test-findbugs"/>
+    <property name="javancss.lib.dir" location="${lib.dir}/test-javancss"/>
+    <property name="junit.lib.dir" location="${lib.dir}/test-junit"/>
+    <property name="pmd.lib.dir" location="${lib.dir}/test-pmd"/>
+    <property name="selenium.lib.dir" location="${lib.dir}/test-selenium"/>
+    <property name="simian.lib.dir" location="${lib.dir}/test-simian"/>
+
+    <target name="ivy:init">
+        <mkdir dir="${local.repo.dir}"/>
+        <property name="ivy.dep.file" value="${ivy.def.file}"/>
+        <ivy:settings file="${ivy.settings.file}" override="true" />
     </target>
+    
+    <target name="ivy:clean" depends="clean:dependencies" description="Clean">
+        <ivy:settings file="${ivy.settings.file}" />
+        <ivy:cleancache />
+    </target>
+    
+    <target name="clean:dependencies">
+        <delete dir="${caintegrator2.war.compile.lib.dir}" />
+        <delete dir="${caintegrator2.war.runtime.lib.dir}" />
+        <delete dir="${acceptance.lib.dir}" />
+        <delete dir="${checkstyle.lib.dir}" />
+        <delete dir="${cobertura.lib.dir}" />
+        <delete dir="${findbugs.lib.dir}" />
+        <delete dir="${javancss.lib.dir}" />
+        <delete dir="${junit.lib.dir}" />
+        <delete dir="${pmd.lib.dir}" />
+        <delete dir="${selenium.lib.dir}" />
+        <delete dir="${simian.lib.dir}" />
+    </target>
+
+    <target name="ivy:setup" depends="ivy:setup-runtime, 
+        ivy:setup-compile,
+        ivy:setup-test,
+        ivy:setup-static-analysis" 
+        description="Updates the local ivy repository for all build and test dependencies."/>
+    
+    <target name="ivy:setup-runtime" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="runtime" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
+    </target>
+
+    <target name="ivy:setup-compile" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+            
+    <target name="ivy:setup-test" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="test-selenium" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
+        <path id="selenium.classpath">
+            <fileset dir="${selenium.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-junit" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
+        <path id="junit.classpath">
+            <fileset dir="${junit.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-cobertura" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
+        <path id="cobertura.classpath">
+            <fileset dir="${cobertura.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    </target>
+
+    <target name="ivy:setup-static-analysis" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="test-javancss" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
+        <path id="javancss.classpath">
+            <fileset dir="${lib.dir}/test-javancss">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-checkstyle" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
+        <path id="project.test.checkstyle.classpath">
+            <fileset dir="${lib.dir}/test-checkstyle">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-pmd" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-pmd" />
+        <path id="project.test.pmd.classpath">
+            <fileset dir="${lib.dir}/test-pmd">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <ivy:resolve refresh="true" conf="test-simian" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-simian" />
+        <path id="project.test.simian.classpath">
+            <fileset dir="${lib.dir}/test-simian">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+
 
     <!-- ******************************************************************* -->
     <!-- ** MAIN TARGETS                                                  ** -->
     <!-- ******************************************************************* -->
 
     <target name="continuous-integration" 
-        depends="clean,init:ivy,init:dynamic.properties,build,static-analysis,test:unit" 
+        depends="clean,build,static-analysis,test:unit" 
         description="Cleans, builds, checks and tests the codebase. This should be run prior to every commit." />
 
     <target name="nightly-build" 
@@ -106,11 +216,12 @@
     <target name="clean" 
         depends="clean:caintegrator2-cacore,
         clean:caintegrator2.war,
-        clean:site"
+        clean:dependencies,
+        clean:reports"
         description="Removes all generated artifacts from the working directory." />
 
     <target name="build" 
-        depends="init:dynamic.properties,caintegrator2.war"
+        depends="caintegrator2.war"
         description="Compiles all production source code and assembles artifacts." />
 
     <target name="database" 
@@ -118,13 +229,25 @@
         description="Drops any exisisting instance of the caintegrator2 database; creates and populates a new instance." />
 
     <target name="test" 
-        depends="init:dynamic.properties,test:unit,test:integration"
+        depends="test:unit,test:integration"
         description="Executes all unit and functional tests." />
 
     <target name="deploy"
         depends="deploy:jboss"
         description="Deploys the caIntegrator 2 application to JBoss." />
-    
+
+    <target name="static-analysis" description="Performs static analysis"
+        depends="
+        static-analysis:simian,
+        static-analysis:pmd,
+        static-analysis:checkstyle,
+        static-analysis:javancss,
+        static-analysis:findbugs
+        ">
+            <fail if="checkstyle.failure" message="There were Checkstyle failures." />
+            <fail if="pmd.failure" message="There were PMD failures." />
+    </target>
+
     
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
@@ -167,39 +290,38 @@
     <property name="caintegrator2.war.instrumented.integration.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/integration" />
     <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
     <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator2.war" />
-    
-    <target name="init:dynamic.properties" depends="ivy-setup">
-        <property name="caintegrator2.ivy.compile.dir" location="${lib.dir}/caintegrator2-compile"/>
-        <property name="caintegrator2.ivy.runtime.dir" location="${lib.dir}/caintegrator2-runtime"/>
+
+    <target name="path:caintegrator2.war.dependencies" depends="ivy:setup-compile">
         <path id="caintegrator2.war.dependencies.path">
             <pathelement location="${caintegrator2.war.java.classes.dir}" />
             <pathelement location="${caintegrator2-beans.jar}" />
             <pathelement location="${caintegrator2-orm.jar}" />
-            <fileset dir="${caintegrator2.ivy.compile.dir}">
+            <fileset dir="${caintegrator2.war.compile.lib.dir}">
                 <include name="*.jar" />
-                <exclude name="log4j*.jar"/>
+                <exclude name="log4j*.jar" />
             </fileset>
             <fileset dir="${external.runtime.lib.dir}">
                 <include name="*.jar" />
             </fileset>
         </path>
-    
+    </target>
+
+    <target name="path:caintegrator2.war.test.dependencies" depends="path:caintegrator2.war.dependencies,ivy:setup-test">
         <path id="caintegrator2.war.test.dependencies.path">
             <pathelement location="${caintegrator2.war.test.classes.dir}" />
             <path refid="caintegrator2.war.dependencies.path" />
             <pathelement location="${caintegrator2.war.resources.src.dir}" />        
             <pathelement location="${caintegrator2.war.resources.test.dir}" />
-        </path>
-        
+            <path refid="junit.classpath" />
+        </path>        
         <property name="caintegrator2.war.test.dependencies.path" refid="caintegrator2.war.test.dependencies.path" />
-        
     </target>
-
+    
     <target name="clean:caintegrator2.war">
         <delete dir="${caintegrator2.war.target.dir}" />
     </target>
 
-    <target name="caintegrator2.war" depends="init:dynamic.properties,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
+    <target name="caintegrator2.war" depends="ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
         <war destfile="${caintegrator2.war}" webxml="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml">
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
@@ -208,20 +330,8 @@
                 <include name="caintegrator2-beans.jar"/>
                 <include name="caintegrator2-orm.jar"/>
             </lib>
-            <!--
-            <lib dir="${caintegrator2-cacore.system.dist.dir}" includes="*.jar"/>
-            <lib dir="${caintegrator2-cacore.system.lib.dir}" includes="*.jar">
+            <lib dir="${caintegrator2.war.runtime.lib.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
-                <exclude name="servlet.jar"/>
-                <exclude name="commons-logging*.*"/>
-                <exclude name="mysql-connector*.*"/>
-                <exclude name="xercesImpl*.*"/>
-            </lib>
-            -->
-            <lib dir="${caintegrator2.ivy.runtime.dir}" includes="*.jar"> 
-                <exclude name="log4j*.jar"/>
-                <exclude name="commons-logging*.*"/>
-                <exclude name="spring-mock*.jar"/>
             </lib>
             <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
             
@@ -247,7 +357,7 @@
         </war>
     </target>
 
-    <target name="compile:caintegrator2.war" depends="init:dynamic.properties,caintegrator2-beans.jar,caintegrator2-orm.jar">
+    <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies,caintegrator2-beans.jar,caintegrator2-orm.jar">
         <mkdir dir="${caintegrator2.war.java.classes.dir}" />
         <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
@@ -269,7 +379,7 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
     
-    <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,test:ivy-test-cobertura">
+    <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,ivy:setup-test">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
              <fileset  dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
@@ -283,7 +393,7 @@
          </cobertura-instrument>
      </target>
     
-    <target name="test:instrument:integration:caintegrator2.war" depends="compile:caintegrator2.war">
+    <target name="test:instrument:integration:caintegrator2.war" depends="compile:caintegrator2.war,ivy:setup-test">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.integration.classes.dir}" datafile="${cobertura.file}">
              <fileset dir="${caintegrator2.war.java.classes.dir}">
                  <include name="gov/nih/nci/caintegrator2/**" />
@@ -291,7 +401,7 @@
          </cobertura-instrument>
      </target>
 
-    <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war">
+    <target name="test:compile:caintegrator2.war.test.classes" depends="compile:caintegrator2.war,path:caintegrator2.war.test.dependencies">
         <mkdir dir="${caintegrator2.war.test.classes.dir}" />
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
     </target>
@@ -446,77 +556,163 @@
     </target>
 
     <target name="test:junit-report">
-        <mkdir dir="${site.dir}/junit/unit" />
-        <junitreport todir="${site.dir}/junit/unit">
+        <mkdir dir="${reports.dir}/junit/unit" />
+        <junitreport todir="${reports.dir}/junit/unit">
             <fileset dir="${caintegrator2.war.target.dir}/junit">
                 <include name="TEST-*.xml" />
             </fileset>
-            <report format="frames" todir="${site.dir}/junit/unit" />
+            <report format="frames" todir="${reports.dir}/junit/unit" />
         </junitreport>
     </target>
 
     <target name="test:junit-report-integration">
-        <mkdir dir="${site.dir}/junit/integration" />
-        <junitreport todir="${site.dir}/junit/integration">
+        <mkdir dir="${reports.dir}/junit/integration" />
+        <junitreport todir="${reports.dir}/junit/integration">
             <fileset dir="${caintegrator2.war.target.dir}/junit">
                 <include name="TEST-*.xml" />
             </fileset>
-            <report format="frames" todir="${site.dir}/junit/integration" />
+            <report format="frames" todir="${reports.dir}/junit/integration" />
         </junitreport>
     </target>
 
     <!-- Cobertura Test Targets -->
-    <target name="test:cobertura-report">
-        <cobertura-report format="xml" destdir="${site.dir}/cobertura/unit" datafile="${cobertura.file}">
+    <target name="test:cobertura-report" depends="ivy:setup-test">
+        <cobertura-report format="xml" destdir="${cobertura.dir}/unit" datafile="${cobertura.file}">
             <fileset dir="${caintegrator2.war.java.src.dir}" />
         </cobertura-report>
-        <cobertura-report format="html" destdir="${site.dir}/cobertura/unit" datafile="${cobertura.file}">
+        <cobertura-report format="html" destdir="${cobertura.dir}/unit" datafile="${cobertura.file}">
             <fileset dir="${caintegrator2.war.java.src.dir}" />
         </cobertura-report>
     </target>
 
-    <target name="test:cobertura-check">
+    <target name="test:cobertura-check" depends="ivy:setup-test">
         <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
     </target>
 
     <!-- ******************************************************************* -->
-    <!-- ** CHECK TARGETS                                                 ** -->
+    <!-- ** STATIC ANALYSIS TARGETS                                       ** -->
     <!-- ******************************************************************* -->
 
-    <target name="check:checkstyle" depends="build">
-        <mkdir dir="${site.dir}/checkstyle" />
-        <checkstyle config="${checkstyle.config}" 
-            failureProperty="checkstyle.failure" 
-            failOnViolation="false" 
-            maxerrors="0" 
-            maxwarnings="0"
-            classpathref="caintegrator2.full.classpath" >
-            <formatter type="xml" tofile="${site.dir}/checkstyle/checkstyle.xml" />
-            <fileset dir="${caintegrator2.war.java.src.dir}" includes="**/*.java" />
-        </checkstyle>
-        <xslt in="${site.dir}/checkstyle/checkstyle.xml" out="${site.dir}/checkstyle/checkstyle.html" style="${resource.dir}/checkstyle/checkstyle-frames.xsl">
-            <param name="output.dir" expression="${site.dir}/checkstyle" />
-        </xslt>
+    <!-- Creates paths and  directories -->
+    <target name="clean:reports">
+        <delete dir="${reports.dir}"/>
     </target>
 
-    <target name="check:pmd">
-        <mkdir dir="${site.dir}/pmd" />
+    <!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.-->
 
-        <pmd failonerror="false" rulesetfiles="${resource.dir}/pmd/pmd-ruleset.xml" failurespropertyname="pmd.failure" targetjdk="1.5">
-            <formatter type="xml" toFile="${site.dir}/pmd/pmd-report.xml" toConsole="false" />
-            <fileset dir="${caintegrator2.war.java.src.dir}">
-                <include name="**/*.java" />
+    <!-- Findbugs is realy a full application that has ant support.  This target downloads the binaries for this distribution for use by ant target.  Additionaly setups a jboss installation to uses in the classpath of findbugs to cover runtime libraries -->
+    <target name="static-analysis:findbugs-init" >
+        <mkdir dir="${reports.findbugs.dir}"/>
+        <property name="temp.dir" value="${software.dir}/temp"/>
+        <mkdir dir="${temp.dir}"/>
+        <property name="findbugs.home.dir" value="${lib.dir}/${findbugs.binaries.relative.dir}"/>
+        <if>
+            <not>
+                <available file="${findbugs.home.dir}/lib/findbugs.jar"/>
+            </not>
+            <then>
+                <echo message="Findbugs is missing, downloading and isnstalling in ${findbugs.home.dir}"/>
+                <get src="${findbugs.src.url}"
+                    dest="${temp.dir}/${findbugs.binaries.file}"/>
+                <unzip dest="${lib.dir}" src="${temp.dir}/${findbugs.binaries.file}" />
+            </then>
+        </if>
+        <path id="project.test.findbugs.classpath">
+            <fileset dir="${findbugs.home.dir}">
+                <include name="**/*.jar" />
             </fileset>
-        </pmd>
-
-        <xslt in="${site.dir}/pmd/pmd-report.xml" out="${site.dir}/pmd/pmd-report.html" style="${resource.dir}/pmd/pmd-report-per-class.xslt">
-        </xslt>
+        </path>
     </target>
 
-    <target name="check:pmd:update-eclipse-projects">
+    <!-- Runs Simian a code duplication reporter.
+        You can find additional information about simian at:
+        http://www.redhillconsulting.com.au/products/simian/installation.html
+        -->
+    <target name="static-analysis:simian" depends="ivy:setup-static-analysis" description="Performs code duplication analysis">
+        <mkdir dir="${reports.simian.dir}"/>
+        <static-analysis-simian
+            simian.src.dir="${caintegrator2.war.java.src.dir}"
+            simian.rpt.dir="${reports.simian.dir}"
+            simian.report-xsl.file="${common.dir}/simian/simian.xsl"
+            simian.xml.name="simian-caintegrator2-war.xml"
+            simian.html.name="simian-caintegrator2-war.html"
+            />
+    </target>
+
+    <target name="static-analysis:pmd" depends="ivy:setup-static-analysis">
+        <mkdir dir="${reports.pmd.dir}"/>
+        <static-analysis-pmd
+            pmd.src.dir="${caintegrator2.war.java.src.dir}"
+            pmd.rpt.dir="${reports.pmd.dir}"
+            pmd.root-dir.name="software"
+            pmd.sub-project.name="caintegrator2-war"
+            pmd.report-xsl.file="${common.dir}/pmd/pmd-report-per-class.xslt"
+            pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
+            pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset.xml"
+            pmd.xml.name="pmd-report.xml"
+            pmd.html.name="pmd-report.html"
+            />
+    </target>
+
+    <!-- Runs JavaNCSS a tool that identifies code Cyclomatic Complexity.
+        You can find additional information about JavaNCSS at:
+        http://www.kclee.de/clemens/java/javancss/
+        -->
+    <target name="static-analysis:javancss" depends="ivy:setup-static-analysis">
+        <mkdir dir="${reports.javancss.dir}"/>
+        <static-analysis-javancss
+            javancss.src.dir="${caintegrator2.war.java.src.dir}"
+            javancss.rpt.dir="${reports.javancss.dir}"
+            javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
+            javancss.xml.name="javancss_metrics_caintegrator2-war.xml"
+            javancss.html.name="javancss_report_caintegrator2-war.html"
+            />
+    </target>
+
+    <!-- Runs CheckStyle is a codeing standard violation reporter.  
+        You can find additional information about checkstyle at:
+        http://checkstyle.sourceforge.net/
+        -->
+    <target name="static-analysis:checkstyle" depends="ivy:setup-static-analysis">
+        <mkdir dir="${reports.checkstyle.dir}"/>
+        <static-analysis-checkstyle
+            checkstyle.src.dir="${caintegrator2.war.java.src.dir}"
+            checkstyle.rpt.dir="${reports.checkstyle.dir}"
+            checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-frames.xsl"
+            checkstyle.config.file="${checkstyle.config}"
+            checkstyle.xml.name="checkstyle.xml"
+            checkstyle.html.name="checkstyle.html"
+            checkstyle.classpath.ref.name="caintegrator2.full.classpath"
+            />
+    </target>
+
+    <!-- Runs Findbugs a tool that attempts to find bugs.
+        You can find additional information about findbugs at:
+        http://findbugs.sourceforge.net/
+        -->
+    <target name="static-analysis:findbugs" 
+        depends="
+        caintegrator2.war,
+        ivy:setup-static-analysis,
+        static-analysis:findbugs-init">
+        <mkdir dir="${reports.findbugs.dir}/caintegrator2"/>
+
+        <static-analysis-findbugs
+            findbugs.home.dir="${findbugs.home.dir}"
+            findbugs.src.dir="${caintegrator2.war.java.src.dir}"
+            findbugs.classes.dir="${caintegrator2.war.java.classes.dir}"
+            findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator2"
+            findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
+            findbugs.app.classpath.ref="caintegrator2.full.classpath" 
+            findbugs.xml.name="findbugs.xml"
+            findbugs.html.name="findbugs.html"
+            />
+    </target>
+
+    <target name="pmd:update-eclipse-projects">
         <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${caintegrator2.war.dir}/.ruleset" />
     </target>
-    
+
     <!-- ******************************************************************* -->
     <!-- ** DEPLOYMENT TARGETS                                            ** -->
     <!-- ******************************************************************* -->
@@ -531,7 +727,7 @@
         <copy file="${caintegrator2.datasource}" todir="${jboss.deploy.dir}">
             <filterset refid="caintegrator2.filterset" />
         </copy>
-        <copy file="${caintegrator2.ivy.compile.dir}/mysql-connector-java-5.0.5.jar" todir="${jboss.server.dir}/lib" />
+        <copy file="${caintegrator2.war.compile.lib.dir}/mysql-connector-java-5.0.5.jar" todir="${jboss.server.dir}/lib" />
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
 
@@ -566,16 +762,16 @@
     <target name="javadoc" depends="javadoc:full,javadoc:client" description="Generates javadoc for all source code" />
 
     <target name="javadoc:full" depends="build:caintegrator2-cacore">
-        <mkdir dir="${site.dir}/docs/api" />
-        <javadoc destdir="${site.dir}/docs/api" classpathref="caintegrator2.full.classpath">
+        <mkdir dir="${reports.dir}/docs/api" />
+        <javadoc destdir="${reports.dir}/docs/api" classpathref="caintegrator2.full.classpath">
             <packageset dir="${caintegrator2.war.java.src.dir}" />
             <packageset dir="${caintegrator2-cacore.output.src.dir}" />
         </javadoc>
     </target>
 
     <target name="javadoc:client" depends="build:caintegrator2-cacore">
-        <mkdir dir="${site.dir}/docs/client-api" />
-        <javadoc destdir="${site.dir}/docs/client-api" classpathref="caintegrator2.full.classpath">
+        <mkdir dir="${reports.dir}/docs/client-api" />
+        <javadoc destdir="${reports.dir}/docs/client-api" classpathref="caintegrator2.full.classpath">
             <packageset dir="${caintegrator2-cacore.output.src.dir}" />
         </javadoc>
     </target>
@@ -615,210 +811,25 @@
             </junit>
         </sequential>
     </macrodef>
-
-	<property name="reports.dir" value="${software.dir}/reports"/>
-	<property name="reports.simian.dir" value="${reports.dir}/simian"/>
-	<property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
-	<property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
-	<property name="reports.javancss.dir" value="${reports.dir}/javancss"/>
-	<property name="reports.findbugs.dir" value="${reports.dir}/findbugs"/>
-
-    <target name="ivy-setup" depends="ivy-setup:runtime, ivy-setup:compile" description="Updates the local ivy repository"/>
     
-    <target name="ivy-setup:runtime" depends="init:ivy" description="Copies the runtime libraries to the caintegrator2-runtime directory">
-        <ivy:resolve refresh="true" conf="runtime" />
-        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="runtime" />
-    </target>
-            
-    <target name="ivy-setup:compile" depends="init:ivy" description="Copies the compile libraries to the caintegrator2-compile directory">
-        <ivy:resolve refresh="true" conf="compile" />
-        <ivy:retrieve pattern="${lib.dir}/caintegrator2-[conf]/[artifact]-[revision].[ext]" conf="compile" />
-    </target>
-            
-	<target name="test:ivy-init" 
-		depends="
-		init:ivy,
-		test:ivy-test-selenium,
-		test:ivy-test-junit,
-		test:ivy-test-cobertura
-		"/>
-	<target name="test:ivy-test-selenium" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-selenium" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-selenium" />
-		<path id="project.test.selenium.classpath">
-			<fileset dir="${lib.dir}/test-selenium">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	<target name="test:ivy-test-junit" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-junit" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-junit" />
-		<path id="project.test.junit.classpath">
-			<fileset dir="${lib.dir}/test-junit">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	<target name="test:ivy-test-cobertura" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-cobertura" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-cobertura" />
-		<path id="cobertura.classpath">
-			<fileset dir="${lib.dir}/test-cobertura">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	</target>
-
-	<target name="static-analysis:ivy-init" 
-		depends="
-		init:ivy,
-		static-analysis:ivy-test-javancss,
-		static-analysis:ivy-test-checkstyle,
-		static-analysis:ivy-test-simian,
-		static-analysis:ivy-test-pmd
-		"/>
-	<target name="static-analysis:ivy-test-javancss" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-javancss" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-javancss" />
-		<path id="project.test.javancss.classpath">
-			<fileset dir="${lib.dir}/test-javancss">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	<target name="static-analysis:ivy-test-checkstyle" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-checkstyle" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-checkstyle" />
-		<path id="project.test.checkstyle.classpath">
-			<fileset dir="${lib.dir}/test-checkstyle">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	<target name="static-analysis:ivy-test-pmd" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-pmd" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-pmd" />
-		<path id="project.test.pmd.classpath">
-			<fileset dir="${lib.dir}/test-pmd">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	<target name="static-analysis:ivy-test-simian" depends="init:ivy" description="Updates the local ivy repository">
-		<ivy:resolve refresh="true" conf="test-simian" />
-		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="test-simian" />
-		<path id="project.test.simian.classpath">
-			<fileset dir="${lib.dir}/test-simian">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-
-
-	<!-- This is a wrapper target for all static analysis targets -->
-	<target name="static-analysis" description="Performs static analysis"
-		depends="
-		static-analysis:ivy-init,
-		init:dynamic.properties,
-		static-analysis:init,
-		static-analysis:findbugs-init,
-		static-analysis:simian,
-		static-analysis:pmd,
-		static-analysis:checkstyle,
-		static-analysis:javancss,
-		static-analysis:findbugs
-		">
-        	<fail if="checkstyle.failure" message="There were Checkstyle failures." />
-        	<fail if="pmd.failure" message="There were PMD failures." />
-	</target>
-
-	<!-- Creates paths and  directories -->
-	<target name="static-analysis:init">
-		<mkdir dir="${reports.dir}"/>
-		<mkdir dir="${reports.simian.dir}"/>
-		<mkdir dir="${reports.pmd.dir}"/>
-		<mkdir dir="${reports.checkstyle.dir}"/>
-		<mkdir dir="${reports.javancss.dir}"/>
-		<mkdir dir="${reports.findbugs.dir}"/>
-	</target>
-
-	<!-- Findbugs is realy a full application that has ant support.  This target downloads the binaries for this distribution for use by ant target.  Additionaly setups a jboss installation to uses in the classpath of findbugs to cover runtime libraries -->
-	<target name="static-analysis:findbugs-init" >
-		<property name="temp.dir" value="${software.dir}/temp"/>
-		<mkdir dir="${temp.dir}"/>
-		<property name="findbugs.home.dir" value="${lib.dir}/${findbugs.binaries.relative.dir}"/>
-		<if>
-			<not>
-				<available file="${findbugs.home.dir}/lib/findbugs.jar"/>
-			</not>
-			<then>
-				<echo message="Findbugs is missing, downloading and isnstalling in ${findbugs.home.dir}"/>
-				<get src="${findbugs.src.url}"
-					dest="${temp.dir}/${findbugs.binaries.file}"/>
-				<unzip dest="${lib.dir}" src="${temp.dir}/${findbugs.binaries.file}" />
-			</then>
-		</if>
-		<path id="project.test.findbugs.classpath">
-			<fileset dir="${findbugs.home.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</path>
-	</target>
-
-	<!-- One target and one macro have been written for each static-analysis tool.  The macro runs static-analysis on an one set of values. The target then calls the macro with values for each sub-project.  If a user wanted to add options to the static-analysis tool in the the macro, they could add an attribute, refer to that attribute in the static-analysis call and then add the option to each of the calls to the marco in the wrapper target.
-	-->
-	<!-- Runs Simian a code duplication reporter.
-		You can find additional information about simian at:
-		http://www.redhillconsulting.com.au/products/simian/installation.html
-		-->
-	<target name="static-analysis:simian" depends="static-analysis:init" description="Performs code duplication analysis">
-		<static-analysis-simian
-			simian.src.dir="${caintegrator2.war.java.src.dir}"
-			simian.rpt.dir="${reports.simian.dir}"
-			simian.report-xsl.file="${common.dir}/simian/simian.xsl"
-			simian.xml.name="simian-caintegrator2-war.xml"
-			simian.html.name="simian-caintegrator2-war.html"
-			/>
-
-	</target>
-	<macrodef name="static-analysis-simian">
-		<attribute name="simian.src.dir"/>
-		<attribute name="simian.rpt.dir"/>
-		<attribute name="simian.report-xsl.file"/>
-		<attribute name="simian.xml.name" default="simian.xml"/>
-		<attribute name="simian.html.name" default="simian.html"/>
-		<sequential>
-			<taskdef resource="simiantask.properties" classpathref="project.test.simian.classpath" />
-			<simian
-				failureProperty="simian.failure"
-				failOnDuplication="failse"
-				>
-				<fileset dir="@{simian.src.dir}" includes="**/*.java"/>
-				<formatter type="xml" toFile="@{simian.rpt.dir}/@{simian.xml.name}"/>
-			</simian>
-			<xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
-		</sequential>
-	</macrodef>
-
-	<target name="static-analysis:pmd"
-		depends="
-		static-analysis:ivy-init,
-		static-analysis:init
-		">
-		<static-analysis-pmd
-			pmd.src.dir="${caintegrator2.war.java.src.dir}"
-			pmd.rpt.dir="${reports.pmd.dir}"
-			pmd.root-dir.name="software"
-			pmd.sub-project.name="caintegrator2-war"
-			pmd.report-xsl.file="${common.dir}/pmd/pmd-report-per-class.xslt"
-			pmd.report-preprocessor.file="${common.dir}/pmd/pmd-hudson-preprocessor.xlst"
-			pmd.rule-set.file="${common.dir}/pmd/pmd-ruleset.xml"
-			pmd.xml.name="pmd-report.xml"
-			pmd.html.name="pmd-report.html"
-			/>
-	</target>
+    <macrodef name="static-analysis-simian">
+        <attribute name="simian.src.dir"/>
+        <attribute name="simian.rpt.dir"/>
+        <attribute name="simian.report-xsl.file"/>
+        <attribute name="simian.xml.name" default="simian.xml"/>
+        <attribute name="simian.html.name" default="simian.html"/>
+        <sequential>
+            <taskdef resource="simiantask.properties" classpathref="project.test.simian.classpath" />
+            <simian
+                failureProperty="simian.failure"
+                failOnDuplication="failse"
+                >
+                <fileset dir="@{simian.src.dir}" includes="**/*.java"/>
+                <formatter type="xml" toFile="@{simian.rpt.dir}/@{simian.xml.name}"/>
+            </simian>
+            <xslt in="@{simian.rpt.dir}/@{simian.xml.name}" out="@{simian.rpt.dir}/@{simian.html.name}" style="@{simian.report-xsl.file}" />
+        </sequential>
+    </macrodef>
 
 	<macrodef name="static-analysis-pmd">
 		<attribute name="pmd.src.dir"/>
@@ -864,24 +875,6 @@
 		</sequential>
 	</macrodef>
 
-	<!-- Runs JavaNCSS a tool that identifies code Cyclomatic Complexity.
-		You can find additional information about JavaNCSS at:
-		http://www.kclee.de/clemens/java/javancss/
-		-->
-	<target name="static-analysis:javancss"
-		depends="
-		static-analysis:ivy-init,
-		static-analysis:init
-		">
-		<static-analysis-javancss
-			javancss.src.dir="${caintegrator2.war.java.src.dir}"
-			javancss.rpt.dir="${reports.javancss.dir}"
-			javancss.report-xsl.file="${common.dir}/javancss/javancss2methodhtml.xsl"
-			javancss.xml.name="javancss_metrics_caintegrator2-war.xml"
-			javancss.html.name="javancss_report_caintegrator2-war.html"
-			/>
-	</target>
-
 	<macrodef name="static-analysis-javancss">
 		<attribute name="javancss.src.dir"/>
 		<attribute name="javancss.rpt.dir"/>
@@ -889,7 +882,7 @@
 		<attribute name="javancss.xml.name" default="javancss.xml"/>
 		<attribute name="javancss.html.name" default="javancss.html"/>
 		<sequential>
-			<taskdef name="javancss" classpathref="project.test.javancss.classpath" classname="javancss.JavancssAntTask" />
+			<taskdef name="javancss" classpathref="javancss.classpath" classname="javancss.JavancssAntTask" />
 			<javancss
 				srcdir="@{javancss.src.dir}"
 				includes="**/*.java"
@@ -905,31 +898,6 @@
 				style="@{javancss.report-xsl.file}"/>
 		</sequential>
 	</macrodef>
-
-	<!-- Runs Findbugs a tool that attempts to find bugs.
-		You can find additional information about findbugs at:
-		http://findbugs.sourceforge.net/
-		-->
-	<target name="static-analysis:findbugs" 
-		depends="
-		caintegrator2.war,
-		static-analysis:ivy-init,
-		static-analysis:findbugs-init,
-		static-analysis:init
-		">
-		<mkdir dir="${reports.findbugs.dir}/caintegrator2"/>
-
-		<static-analysis-findbugs
-			findbugs.home.dir="${findbugs.home.dir}"
-			findbugs.src.dir="${caintegrator2.war.java.src.dir}"
-			findbugs.classes.dir="${caintegrator2.war.java.classes.dir}"
-			findbugs.rpt.dir="${reports.findbugs.dir}/caintegrator2"
-			findbugs.report-xsl.file="${findbugs.home.dir}/src/xsl/fancy.xsl"
-			findbugs.app.classpath.ref="caintegrator2.full.classpath" 
-			findbugs.xml.name="findbugs.xml"
-			findbugs.html.name="findbugs.html"
-			/>
-	</target>
 
 	<macrodef name="static-analysis-findbugs">
 		<attribute name="findbugs.home.dir"/>
@@ -967,26 +935,6 @@
 				/>
 		</sequential>
 	</macrodef>
-
-	<!-- Runs CheckStyle is a codeing standard violation reporter.  
-		You can find additional information about checkstyle at:
-		http://checkstyle.sourceforge.net/
-		-->
-	<target name="static-analysis:checkstyle" 
-		depends="
-		static-analysis:ivy-init,
-		static-analysis:init
-		">
-		<static-analysis-checkstyle
-			checkstyle.src.dir="${caintegrator2.war.java.src.dir}"
-			checkstyle.rpt.dir="${reports.checkstyle.dir}"
-			checkstyle.report-xsl.file="${common.dir}/checkstyle/checkstyle-frames.xsl"
-			checkstyle.config.file="${checkstyle.config}"
-			checkstyle.xml.name="checkstyle.xml"
-			checkstyle.html.name="checkstyle.html"
-			checkstyle.classpath.ref.name="caintegrator2.full.classpath"
-			/>
-	</target>
 
 	<macrodef name="static-analysis-checkstyle">
 		<attribute name="checkstyle.src.dir"/>
