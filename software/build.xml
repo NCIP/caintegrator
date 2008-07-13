@@ -185,7 +185,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<property name="lib.dir" value="${lib.dir}" />
 			<property name="software.dir" value="${software.dir}" />
 		</ant>
-		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.test.file}" target="ivy-clean" dir="${caintegrator2-war.base.dir}" />
+		<ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" target="ivy:clean" dir="${caintegrator2-war.base.dir}" />
 
 	</target>
 
