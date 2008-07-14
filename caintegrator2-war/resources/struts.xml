@@ -8,35 +8,12 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
         </result-types>
-        
-        <interceptors>
-        
-            <interceptor name="servletConfig" class="org.apache.struts2.interceptor.ServletConfigInterceptor"/>
-
-            <interceptor-stack name="caIntegrator2DefaultStack">
-                <interceptor-ref name="exception"/>
-                <interceptor-ref name="servletConfig"/>
-                <interceptor-ref name="params"/>
-                <interceptor-ref name="prepare"/>
-                <interceptor-ref name="fileUpload"/>
-                <interceptor-ref name="checkbox"/>
-                <interceptor-ref name="params"/>
-                <interceptor-ref name="conversionError"/>
-                <interceptor-ref name="validation">
-                    <param name="excludeMethods">input,back,cancel</param>
-                </interceptor-ref>
-                <interceptor-ref name="workflow">
-                    <param name="excludeMethods">input,back,cancel</param>
-                </interceptor-ref>
-            </interceptor-stack>
-
-        </interceptors>
        
-        <default-interceptor-ref name="caIntegrator2DefaultStack" />
+        <default-interceptor-ref name="paramsPrepareParamsStack" />
         
         <!--  Navigation Actions -->
-        <action name="home" method="openHomepage" class="homepageAction">
-            <result name="homepage" type="tiles">homepage</result>
+        <action name="home" class="homepageAction">
+            <result type="tiles">homepage</result>
         </action>
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">
