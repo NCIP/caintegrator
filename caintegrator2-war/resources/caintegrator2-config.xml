@@ -21,11 +21,12 @@
     </bean>
 
     <bean id="homepageAction"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
     </bean>
 
     <bean id="defineClinicalSourceAction"
-        scope="session"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.DefineClinicalSourceAction">
         <property name="service">
             <ref local="studyManagementService"/>
@@ -33,7 +34,7 @@
     </bean>
 
     <bean id="defineFileColumnAction"
-        scope="session"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
         <property name="service">
             <ref local="studyManagementService"/>
@@ -41,6 +42,7 @@
     </bean>
 
     <bean id="defineStudyAction"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.DefineStudyAction">
         <property name="service">
             <ref local="studyManagementService"/>
@@ -48,6 +50,7 @@
     </bean>
 
     <bean id="manageStudiesAction"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">
         <property name="service">
             <ref local="studyManagementService"/>
