@@ -89,11 +89,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.opensymphony.xwork2.ActionSupport;
+
 public class HomepageActionTest {
     
     @Test
     public void testOpenHomepage() {
-        assertEquals("homepage", new HomepageAction().openHomepage());
+        assertEquals(ActionSupport.SUCCESS, new HomepageAction().execute());
     }
 
 }

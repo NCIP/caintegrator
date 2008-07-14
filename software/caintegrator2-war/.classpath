@@ -427,7 +427,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/struts2-core-2.0.11.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/struts2-core-2.0.11.jar" sourcepath="/caintegrator2-lib/src/struts2-core-2.0.11-src.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
