@@ -320,7 +320,7 @@
         <delete dir="${caintegrator2.war.target.dir}" />
     </target>
 
-    <target name="caintegrator2.war" depends="ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war">
+    <target name="caintegrator2.war" depends="ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war,caintegrator2.csm.xml.deploy">
         <war destfile="${caintegrator2.war}" webxml="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml">
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
@@ -341,7 +341,7 @@
                 <exclude name="hibernate.cfg.xml" />
             </classes>
             <classes dir="${caintegrator2.war.resources.src.dir}">
-                <exclude name="hibernate.cfg.xml" />
+                <exclude name="*hibernate.cfg.xml" />
                 <exclude name="**/*.hbm.xml"/>
             </classes>
             <webinf dir="${caintegrator2-cacore.output.src.dir}">
@@ -515,6 +515,20 @@
 
     <target name="hibernate.cfg.xml.deploy">
         <copy file="${hibernate.cfg.xml.src}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+            <filterset>
+                <filter token="DATASOURCE_CONFIG_START" value="${comment.end}" />
+                <filter token="DATASOURCE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
+    
+
+    <property name="caintegrator2.csm.xml.src" value="${caintegrator2.war.resources.src.dir}/caintegrator2.csm.new.hibernate.cfg.xml" />
+    <property name="caintegrator2.csm.xml.deploy" value="${caintegrator2.war.java.classes.dir}/caintegrator2.csm.new.hibernate.cfg.xml" />
+
+    <target name="caintegrator2.csm.xml.deploy">
+        <copy file="${caintegrator2.csm.xml.src}" tofile="${caintegrator2.csm.xml.deploy}" overwrite="true">
             <filterset refid="caintegrator2.filterset" />
             <filterset>
                 <filter token="DATASOURCE_CONFIG_START" value="${comment.end}" />
