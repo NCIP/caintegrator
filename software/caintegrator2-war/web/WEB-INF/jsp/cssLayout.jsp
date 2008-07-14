@@ -5,13 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 	<head>
-		<title>caIntegrator2 - User Workspace</title>
+		<title>caIntegrator2</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="address bar icon" href="favicon.ico" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="common/caintegrator2.css" />
 		<script type="text/javascript" src="common/js/pde.js"></script>
+        <s:head />
 	</head>
 	
 	<body>
