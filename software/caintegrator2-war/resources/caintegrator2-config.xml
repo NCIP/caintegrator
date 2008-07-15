@@ -19,6 +19,11 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
+    
+   <bean id="loginAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.LoginAction">
+    </bean>
 
     <bean id="homepageAction"
         scope="prototype"

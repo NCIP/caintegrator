@@ -7,8 +7,10 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/classes/application-config.xml /WEB-INF/classes/application-config-web.xml
-            /WEB-INF/classes/application-config-security.xml /WEB-INF/classes/application-config-web-security.xml
+            /WEB-INF/classes/application-config.xml 
+            /WEB-INF/classes/application-config-web.xml
+            /WEB-INF/classes/application-config-security.xml 
+            /WEB-INF/classes/application-config-web-security.xml
             /WEB-INF/classes/caintegrator2-config.xml
         </param-value>
     </context-param>
@@ -22,27 +24,25 @@
             <param-value>gov.nih.nci.system.struts.action</param-value>
         </init-param>
     </filter>
-    
+
     <filter>
         <filter-name>sessionFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
     </filter>
 
-    <!--
-        <filter>
+    <filter>
         <filter-name>AcegiFilters</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
         <init-param>
         <param-name>targetClass</param-name>
         <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
         </init-param>
-        </filter>
+    </filter>
         
-        <filter-mapping>
+    <filter-mapping>
         <filter-name>AcegiFilters</filter-name>
         <url-pattern>/*</url-pattern>
-        </filter-mapping>   
-    -->
+    </filter-mapping>   
 
     <filter-mapping>
         <filter-name>sessionFilter</filter-name>
