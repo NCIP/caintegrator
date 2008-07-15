@@ -3,7 +3,7 @@
 
 <beans>
 
-	<!--
+	
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
@@ -15,7 +15,7 @@
 	<bean id="authenticationProvider" class="gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider">
 		<property name="userDetailsService">
 			<bean class="gov.nih.nci.security.acegi.authentication.CSMUserDetailsService">
-				<property name="csmApplicationContext"><value>sdk</value></property>
+				<property name="csmApplicationContext"><value>caintegrator2</value></property>
 			</bean>
 		</property>
 		<property name="userCache">
@@ -83,5 +83,5 @@
 			</bean>
 		</property>
 	</bean>
-	-->
+	
 </beans>
