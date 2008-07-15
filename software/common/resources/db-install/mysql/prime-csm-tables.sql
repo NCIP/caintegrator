@@ -61,5 +61,51 @@ VALUES("DELETE","This privilege permits a user to delete a logical entity. This 
 INSERT INTO csm_privilege (privilege_name, privilege_description, update_date)
 VALUES("EXECUTE","This privilege allows a user to execute a particular resource. The resource can be a method, function, behavior of the application, URL, button etc", sysdate());
 
+#
+# The following entries are for inserting a generic StudyManager and ResearchInvestigator into
+# the tables for development purposes
+#
+
+INSERT INTO csm_user (USER_ID,LOGIN_NAME,FIRST_NAME,LAST_NAME,ORGANIZATION,DEPARTMENT,TITLE,PHONE_NUMBER,PASSWORD,EMAIL_ID,START_DATE,END_DATE,UPDATE_DATE) 
+VALUES (3,'manager','Study','Manager','','','','','7u06TntO8s8=','',null,null,sysdate());
+INSERT INTO csm_user (USER_ID,LOGIN_NAME,FIRST_NAME,LAST_NAME,ORGANIZATION,DEPARTMENT,TITLE,PHONE_NUMBER,PASSWORD,EMAIL_ID,START_DATE,END_DATE,UPDATE_DATE) 
+VALUES (4,'investigator','Research','Investigator','','','','','OiDRud3e8kHh1x9awEGfTg==','',null,null,sysdate());
+
+INSERT INTO csm_protection_element (PROTECTION_ELEMENT_ID,PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,ATTRIBUTE,ATTRIBUTE_VALUE,PROTECTION_ELEMENT_TYPE,APPLICATION_ID,UPDATE_DATE) 
+VALUES (3,'MODIFY_STUDY','This is to make modification of the Study object protected.','gov.nih.nci.caintegrator2.domain.translational.Study','','','',2,sysdate());
+
+INSERT INTO csm_protection_group (PROTECTION_GROUP_ID,PROTECTION_GROUP_NAME,PROTECTION_GROUP_DESCRIPTION,APPLICATION_ID,LARGE_ELEMENT_COUNT_FLAG,UPDATE_DATE,PARENT_PROTECTION_GROUP_ID) 
+VALUES (1,'STUDY_MODIFICATION','This has to do with all elements dealing with Study Modification',2,0,sysdate(),null);
+
+INSERT INTO csm_pg_pe (PG_PE_ID,PROTECTION_GROUP_ID,PROTECTION_ELEMENT_ID,UPDATE_DATE) 
+VALUES (1,1,3,sysdate());
+
+INSERT INTO csm_role (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,APPLICATION_ID,ACTIVE_FLAG,UPDATE_DATE) 
+VALUES (1,'STUDY_MANAGER_ROLE','This is the role of the study manager.',2,1,sysdate());
+
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (1,1,6,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (2,1,5,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (3,1,4,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (4,1,2,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (5,1,1,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (6,1,7,sysdate());
+INSERT INTO csm_role_privilege (ROLE_PRIVILEGE_ID,ROLE_ID,PRIVILEGE_ID,UPDATE_DATE) 
+VALUES (7,1,3,sysdate());
+
+INSERT INTO csm_group (GROUP_ID,GROUP_NAME,GROUP_DESC,UPDATE_DATE,APPLICATION_ID) 
+VALUES (1,'Study Manager Group','This group is for managing studies',sysdate(),2);
+
+INSERT INTO csm_user_group (USER_GROUP_ID,USER_ID,GROUP_ID) 
+VALUES (1,3,1);
+
+INSERT INTO csm_user_group_role_pg (USER_GROUP_ROLE_PG_ID,USER_ID,GROUP_ID,ROLE_ID,PROTECTION_GROUP_ID,UPDATE_DATE) 
+VALUES (1,3,null,1,1,sysdate());
+
 
 COMMIT;
