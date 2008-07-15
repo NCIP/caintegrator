@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.web.action;
 
 
 /**
- * Action used to log in a user (may not actually need this action when using ACEGI)
+ * Action used to log in a user (may not actually need this action when using ACEGI).
  */
 public class LoginAction {
     
