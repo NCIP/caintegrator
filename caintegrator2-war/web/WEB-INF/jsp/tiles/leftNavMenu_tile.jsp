@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
             
 <div id="leftnav">
     
@@ -19,6 +20,7 @@
                 <li class="stdnav"><a href="search.html">Advanced Search</a></li>
             </ul>
         </li>
+        <authz:authorize ifAnyGranted="MODIFY_STUDY_CREATE">
         <li class="stdnav"><div>Study Management</div>
             <ul>
                 <li><s:url id="manageStudiesUrl" action="manageStudies" />
@@ -35,7 +37,7 @@
                 <li><a href="study_elements/images.html">Images</a></li>
             </ul>
         </li>
-        
+        </authz:authorize>
         <!--Tree Control-->
         
         <li class="treenav"><div>Study Data</div>

@@ -16,6 +16,11 @@
             <result type="tiles">homepage</result>
         </action>
         
+        <action name="login" method="openLogin" class="loginAction">
+            <result name="login" type="tiles">login</result>
+            
+        </action>
+        
         <action name="workspace" method="openWorkspace" class="workspaceAction">
             <result name="workspaceStudy" type="tiles">workspaceStudy</result>
             <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>

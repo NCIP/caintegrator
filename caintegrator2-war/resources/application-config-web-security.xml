@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<!--
+	
 
 	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
 		<property name="filterInvocationDefinitionSource">
@@ -11,7 +11,7 @@
 				PATTERN_TYPE_APACHE_ANT
 				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
-				/home.action/**=sessionContextIntegrationFilter,logoutFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter
+				/**/login.action/**=sessionContextIntegrationFilter,logoutFilter
 				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/getxml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
@@ -21,6 +21,10 @@
 			</value>
 		</property>
 	</bean>
+ <!-- left out 
+    /home.action/**=sessionContextIntegrationFilter,logoutFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter
+    if we want home.action to show something to unauthenticated users, then put this back in.
+ -->
 
 	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
 		<property name="key" value="changeThis"/>
@@ -31,8 +35,8 @@
 
 	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="authenticationFailureUrl" value="/Home.action?login_error=1"/>
-		<property name="defaultTargetUrl" value="/ShowDynamicTree.action"/>
+		<property name="authenticationFailureUrl" value="/login.action"/> 
+		<property name="defaultTargetUrl" value="/"/>
 		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
 	</bean>
 
@@ -52,7 +56,7 @@
 	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-				<property name="loginFormUrl" value="/Home.action"/>
+				<property name="loginFormUrl" value="/login.action"/>
 				<property name="forceHttps" value="false"/>
 			</bean>
 		</property>
@@ -66,11 +70,12 @@
 	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="accessDecisionManager">
-			<bean class="org.acegisecurity.vote.AffirmativeBased">
+			<bean class="org.acegisecurity.vote.ConsensusBased">
 				<property name="allowIfAllAbstainDecisions" value="false"/>
 				<property name="decisionVoters">
 					<list>
 						<bean class="org.acegisecurity.vote.AuthenticatedVoter"/>
+						<bean class="gov.nih.nci.security.acegi.authorization.CSMRoleVoter"/>
 					</list>
 				</property>
 			</bean>
@@ -79,6 +84,8 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
+				/**/createstudy.action/**=MODIFY_STUDY_CREATE
+				/**/managestudies.action/**=MODIFY_STUDY_UPDATE
 				/**=IS_AUTHENTICATED_FULLY
 			</value>
 		</property>
@@ -87,7 +94,7 @@
 	<bean id="sessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
 
 	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-		<constructor-arg value="/Home.action"/> 
+		<constructor-arg value="/login.action"/> 
 		<constructor-arg>
 			<list>
 				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
@@ -95,6 +102,6 @@
 		</constructor-arg>
 	</bean>
 
-	-->	
+		
 	
 </beans>

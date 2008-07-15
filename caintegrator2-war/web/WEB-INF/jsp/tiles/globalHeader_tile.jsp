@@ -1,5 +1,6 @@
-<%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
 
 <!--NCI/NIH Header-->
             
@@ -21,15 +22,15 @@
 
 <div id="appheader">
 
-	<div id="mainlogo"><a href="home.html"><img
+	<div id="mainlogo"><a href="index.jsp"><img
 		src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
 	</div>
 
 
 	<div id="userarea_wrapper">
 	
-	    <div id="user">Welcome, <a href="account.html">username</a> | <a
-		   href="logout.html">Logout</a></div>
+	    <div id="user">Welcome, <a href="account.html"><authz:authentication operation="username"/></a> | <a
+		   href="logout.jsp">Logout</a></div>
 	
 	    <div id="mystudies"><label for="studynav">My Studies:</label> <select
 		   name="studynav" id="studynav">
