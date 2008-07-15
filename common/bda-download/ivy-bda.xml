@@ -23,7 +23,7 @@ This is the definition of a virtual module called bda-download that has a depend
   <publications>    
   </publications>
   <dependencies>
-    <dependency org="openqa" name="selenium" rev="0.9.0" conf="test-selenium->master"/>
+    <dependency org="openqa" name="selenium-server" rev="1.0-beta-1" conf="test-selenium->master"/>
     <dependency org="junit" name="junit" rev="4.3.1" conf="test-junit->master"/>
     <dependency org="cobertura" name="cobertura" rev="1.9" conf="test-cobertura->runtime"/>  
     <dependency org="javancss" name="javancss" rev="29.50" conf="test-javancss->runtime"/>

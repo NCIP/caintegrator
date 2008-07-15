@@ -661,27 +661,25 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</path> 
 	</target>
 
-	<target name="test:seleniumrc:start" description="Starts a SeleniumRC server">
-		<parallel>
-			<daemons>
-				<java jar="${lib.dir}/test-selenium/selenium-server-0.9.0.jar" fork="true" failonerror="true" />
-			</daemons>
-		</parallel>
-	</target>
-
 	<target name="test:seleniumrc:stop">
 		<get taskname="selenium-shutdown"
 			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDown"
-			dest="reslut.txt" ignoreerrors="true"/>
+			dest="${temp.dir}/reslut.txt" ignoreerrors="true"/>
 	</target>
 
 	<target name="test:selenium:init">
+		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
 		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
-		<!--<property name="selenium.browser" value="*custom /usr/lib/firefox-2.0.0.14/firefox-bin"/>-->
+		<!--
+		<property name="selenium.browser" value="*firefox /usr/lib/firefox-3.0b5/firefox"/>
+		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
+		<property name="selenium.browser" value="*custom /usr/lib/firefox-2.0.0.14/firefox-bin"/>
+		-->
 		<property name="selenium.proxy.port" value="4444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
-		<property name="selenium.test.suite" value="${software.dir}/cai2-create-study-tc.html"/>
+		<property name="selenium.test.suite" value="${software.dir}/cai2TestSuite.html"/>
+		<property name="selenium.url" value="${application.url}"/>
 
 		<mkdir dir="${selenium.report.dir}"/>
 
@@ -705,9 +703,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		/>
 
 	<target name="test:selenium:run">
-		<java jar="${lib.dir}/test-selenium/selenium-server-0.9.0.jar" fork="true">
+		<java jar="${selenium.jar}" fork="true">
 			<arg line="-htmlSuite &quot;${selenium.browser}&quot;"/>
-			<arg line="&quot;${application.url}&quot;"/>
+			<arg line="&quot;${selenium.url}&quot;"/>
 			<arg line="&quot;${selenium.test.suite}&quot;"/>
 			<arg line="&quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
 			<arg line="-timeout 30"/>
