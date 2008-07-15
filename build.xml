@@ -669,7 +669,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<target name="test:selenium:init">
 		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
-		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
+		<property name="selenium.browser" value="*firefox"/>
 		<!--
 		<property name="selenium.browser" value="*firefox /usr/lib/firefox-3.0b5/firefox"/>
 		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
@@ -679,7 +679,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
 		<property name="selenium.test.suite" value="${software.dir}/cai2TestSuite.html"/>
+		<property name="selenium.url" value="http://localhost:46210"/>
+		<!--
 		<property name="selenium.url" value="${application.url}"/>
+		-->
 
 		<mkdir dir="${selenium.report.dir}"/>
 
@@ -703,23 +706,25 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		/>
 
 	<target name="test:selenium:run">
-		<java jar="${selenium.jar}" fork="true">
-			<arg line="-htmlSuite &quot;${selenium.browser}&quot;"/>
-			<arg line="&quot;${selenium.url}&quot;"/>
-			<arg line="&quot;${selenium.test.suite}&quot;"/>
-			<arg line="&quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
-			<arg line="-timeout 30"/>
-		</java> 
 		<!--
+		<java jar="${selenium.jar}" fork="true">
+			<arg line=" -htmlSuite &quot;${selenium.browser}&quot;"/>
+			<arg line=" &quot;${selenium.url}&quot;"/>
+			<arg line=" &quot;${selenium.test.suite}&quot;"/>
+			<arg line=" &quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
+			<arg line=" -timeout 30"/>
+			<arg line=" -log ${temp.dir}/selenium-debug.log"/>
+		</java> 
+		-->
 		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
 		<selenese 
 			suite="${selenium.test.suite}"
 			browser="${selenium.browser}"
 			results="${selenium.report.dir}/${selenium.report.file}"
 			multiWindow="falsE"
-			timeoutInSeconds="30"
+			timeoutInSeconds="60"
 			port="${selenium.proxy.port}"
-			startURL="${application.url}"  />
-		-->
+			startURL="${selenium.url}"
+		      	/>
 	</target>
 </project>
