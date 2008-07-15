@@ -12,7 +12,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/caintegrator2-lib/caintegrator2-compile/acegi-security-1.0.4.jar">
+	<classpathentry exported="true" kind="lib" path="/caintegrator2-lib/caintegrator2-compile/acegi-security-1.0.4.jar" sourcepath="/caintegrator2-lib/src/acegi-security-1.0.4-src.zip">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
