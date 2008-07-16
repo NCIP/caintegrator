@@ -85,22 +85,40 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import org.apache.commons.lang.StringUtils;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Saves basic study information.
+ * Adds a new new clinical data source file to a study.
  */
-public class SaveStudyAction extends AbstractStudyAction {
+public class AddClinicalFileAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
+    private File clinicalFile;
+    private String clinicalFileContentType;
+    private String clinicalFileFileName;
+    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute()  {
-        getStudyManagementService().save(getStudyConfiguration());
-        return SUCCESS;
+        try {
+            DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+                getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
+                        getClinicalFileFileName());
+            setClinicalSourceConfiguration(sourceConfiguration);
+            return SUCCESS;
+        } catch (ValidationException e) {
+            addFieldError("clinicalFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            return INPUT;
+        } catch (IOException e) {
+            return ERROR;
+        }
     }
     
     /**
@@ -108,9 +126,65 @@ public class SaveStudyAction extends AbstractStudyAction {
      */
     @Override
     public void validate() {
-        if (StringUtils.isEmpty(getStudyConfiguration().getStudy().getShortTitleText())) {
-            addFieldError("study.shortTitleText", "Study Name is required");
+        if (clinicalFile == null) {
+            addFieldError("clinicalFile", "Clinical File is required");
         }
+    }
+
+    /**
+     * @return the clinicalFile
+     */
+    public File getClinicalFile() {
+        return clinicalFile;
+    }
+
+    /**
+     * @param clinicalFile the clinicalFile to set
+     */
+    public void setClinicalFile(File clinicalFile) {
+        this.clinicalFile = clinicalFile;
+    }
+
+    /**
+     * @return the clinicalFileContentType
+     */
+    public String getClinicalFileContentType() {
+        return clinicalFileContentType;
+    }
+
+    /**
+     * @param clinicalFileContentType the clinicalFileContentType to set
+     */
+    public void setClinicalFileContentType(String clinicalFileContentType) {
+        this.clinicalFileContentType = clinicalFileContentType;
+    }
+
+    /**
+     * @return the clinicalFileFileName
+     */
+    public String getClinicalFileFileName() {
+        return clinicalFileFileName;
+    }
+
+    /**
+     * @param clinicalFileFileName the clinicalFileFileName to set
+     */
+    public void setClinicalFileFileName(String clinicalFileFileName) {
+        this.clinicalFileFileName = clinicalFileFileName;
+    }
+
+    /**
+     * @return the clinicalSourceConfiguration
+     */
+    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
+        return clinicalSourceConfiguration;
+    }
+
+    /**
+     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
+     */
+    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
+        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
     }
     
 }

@@ -134,19 +134,25 @@ public class StudyManagementServiceImplTest {
     }
     
     @Test
-    public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
-        // Set Clinical Annotations
+    public void testAddClinicalAnnotationFile() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+        assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
+        assertTrue(studyConfiguration.getClinicalConfigurationCollection().contains(sourceConfiguration));
+        assertEquals(4, sourceConfiguration.getAnnotationFile().getColumns().size());
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    @Test
+    public void testLoadClinicalAnnotation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
-
-        // Load Clinical Annotation Values
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 
-        
-        // Now it's impossible to tell if the annotations got loaded because nothing is persisted yet.
-        
     }
     
     @Test 

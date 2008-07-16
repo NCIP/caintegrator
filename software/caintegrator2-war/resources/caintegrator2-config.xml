@@ -47,6 +47,14 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
+
+    <bean id="addClinicalFileAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.AddClinicalFileAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
     
     
     

@@ -30,7 +30,6 @@
             <th>Description</th>
             <th>Action</th>
         </tr>
-        <s:form>
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
             <s:if test="#status.odd == true">
               <tr class="odd">
@@ -56,7 +55,6 @@
             </td>
         </tr>
         </s:iterator>
-        </s:form>
         <tr>
             <th colspan="3">
                 <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
