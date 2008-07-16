@@ -85,33 +85,37 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
+ */
+public abstract class AbstractClinicalSourceAction extends AbstractStudyAction {
+    
+    private DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
 
-import com.opensymphony.xwork2.Action;
-
-public class CreateStudyActionTest {
-
-    private CreateStudyAction createStudyAction;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", CreateStudyActionTest.class); 
-        createStudyAction = (CreateStudyAction) context.getBean("createStudyAction");
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        super.prepare();
+        if (getClinicalSource().getId() != null) {
+            setClinicalSource(getStudyManagementService().getRefreshedStudyEntity(getClinicalSource()));
+        }
     }
 
-    @Test
-    public void testExecute() {
-        assertEquals(Action.SUCCESS, createStudyAction.execute());
+    /**
+     * @return the clinicalSource
+     */
+    public DelimitedTextClinicalSourceConfiguration getClinicalSource() {
+        return clinicalSource;
     }
 
-    @Test
-    public void testGetModel() {
-        assertNotNull(createStudyAction.getModel());
+    /**
+     * @param clinicalSource the clinicalSource to set
+     */
+    public void setClinicalSource(DelimitedTextClinicalSourceConfiguration clinicalSource) {
+        this.clinicalSource = clinicalSource;
     }
+
 }

@@ -11,7 +11,9 @@
     
     <h1>Define Fields for Clinical Data</h1>
     <h2>Study Name: <s:property value="study.shortTitleText" /></h2>
-    <s:form>
+    <s:form action="saveClinicalSource">
+    <s:hidden name="studyConfiguration.id" />
+    <s:hidden name="clinicalSource.id" />
     <table class="data">
         <tr>
             <th>Display in Browse</th>
@@ -19,14 +21,18 @@
             <th>File Header</th>
             <th colspan="3" />Data from File</th>
         </tr>
-        <s:iterator value="clinicalSourceConfiguration.annotationFile.columns" status="status">
+        <s:iterator value="clinicalSource.annotationFile.columns" status="status">
             <s:if test="#status.odd == true">
               <tr class="odd">
             </s:if>
             <s:else>
               <tr class="even">
             </s:else>            
-                <td><input type="checkbox" /></td>
+                <td>
+                    <s:if test="%{fieldDescriptor != null}">
+                        <s:checkbox name="fieldDescriptor.shownInBrowse" theme="simple" />
+                    </s:if>
+                </td>
                 <td>
                     <s:if test="%{identifierColumn}">
                         Identifier
@@ -50,6 +56,7 @@
             </tr>
         </s:iterator>
     </table>
+    <s:submit value="Save" />
     </s:form>
             
 </div>

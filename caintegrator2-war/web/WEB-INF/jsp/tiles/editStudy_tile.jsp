@@ -15,10 +15,10 @@
     
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
-            <s:textfield label="Study Name" name="study.shortTitleText" />
-            <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
-            <s:submit action="saveStudy" value="Save" />
-            <s:submit action="deployStudy" value="Deploy" />
+        <s:textfield label="Study Name" name="study.shortTitleText" />
+        <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
+        <s:submit action="saveStudy" value="Save" />
+        <s:submit action="deployStudy" value="Deploy" />
     </s:form>
     
     <table class="data">
@@ -41,8 +41,8 @@
             <td><s:property value="description" /></td>
             <td>
                 <s:url id="editClinicalSource" action="editClinicalSource">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="clinicalSourceConfiguration.id" value="id" />
+                    <s:param name="id" value="id" />
+                    <s:param name="clinicalSource.id" value="id" />
                 </s:url> 
                 <s:a href="%{editClinicalSource}">Edit</s:a> 
                 <s:if test="%{loadable}" >
