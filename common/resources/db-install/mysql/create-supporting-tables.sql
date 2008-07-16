@@ -11,6 +11,7 @@ create table ANNOTATION_FIELD_DESCRIPTOR (
     KEYWORDS varchar(255),
     TYPE varchar(255), 
     ANNOTATION_DEFINITION_ID bigint, 
+    SHOWN_IN_BROWSE tinyint,
     primary key (ID)
 ) ENGINE=InnoDB;
 
