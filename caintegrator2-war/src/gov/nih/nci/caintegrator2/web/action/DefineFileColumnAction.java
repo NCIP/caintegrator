@@ -141,7 +141,7 @@ public class DefineFileColumnAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String searchDefinitions() {
-        getService().update(getStudyConfiguration());
+        getService().save(getStudyConfiguration());
         definitions = getService().getMatchingDefinitions(getFileColumn());
         dataElements = getService().getMatchingDataElements(getFileColumn());
         return EDIT_FILE_COLUMM;
@@ -173,7 +173,7 @@ public class DefineFileColumnAction extends AbstractStudyAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
-        getService().update(getStudyConfiguration());
+        getService().save(getStudyConfiguration());
         return EDIT_CLINICAL_FILE;
     }
 

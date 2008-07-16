@@ -83,41 +83,65 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
-public class AbstractStudyActionTest {
-
-    private AbstractStudyAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", AbstractStudyActionTest.class); 
-        action = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+/**
+ * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
+ */
+public abstract class AbstractStudyAction extends ActionSupport implements Preparable, ModelDriven<StudyConfiguration> {
+    
+    private StudyConfiguration studyConfiguration = new StudyConfiguration();
+    private StudyManagementService studyManagementService;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        if (studyConfiguration.getId() != null) {
+            studyConfiguration = studyManagementService.getRefreshedStudyEntity(studyConfiguration);
+        }
     }
 
-    @Test
-    public void testPrepare() {
-        StudyConfiguration configuration = action.getStudyConfiguration();
-        configuration.setId(1L);
-        action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        assertEquals((Long) 1L, action.getStudyConfiguration().getId());
-        assertNotNull(action.getStudy());
+    /**
+     * {@inheritDoc}
+     */
+    public final StudyConfiguration getModel() {
+        return getStudyConfiguration();
+    }
+
+    /**
+     * @return the studyConfiguration
+     */
+    public final StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public final void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public final StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public final void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 
 }
