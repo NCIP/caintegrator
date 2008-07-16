@@ -1,0 +1,82 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:260px; top:125px; width:601px; height:496px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:609px; height:504px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_by_Gene_Expression_files/u0.png',sizingMethod='scale');
+"><img style="width:609px; height:504px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_by_Gene_Expression_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:260px; top:125px; width:601px; height:496px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:239.5px; width:596px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:260px; top:125px; width:600px; height:495px"  >
+
+<DIV id=u2 style="position:absolute; left:402px; top:157px; width:410px; height:22px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u2_rtf><span style=" font-family:'Arial'; color:#000000; font-size:19px;">Kaplan-Meier Survival Plots By Gene</span></DIV></DIV>
+<DIV id=u3 style="position:absolute; left:345px; top:211px; width:157px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Gene Keyword or Symbol</span></DIV></DIV>
+<INPUT id=u4  type=text value="PTK" style="position:absolute; left:497px; top:205px; width:175px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<SELECT id=u5  size=2  style="position:absolute; left:497px; top:235px; width:175px; height:75px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="PTK2B protein tyrosine kinase 2 beta">PTK2B protein tyrosine kinase 2 beta</OPTION>
+<OPTION selected value="PTK7 Protein tyrosine kinase 7">PTK7 Protein tyrosine kinase 7</OPTION>
+</SELECT>
+
+<SELECT id=u6  style="position:absolute; left:496px; top:407px; width:245px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Survival Months From Diagnosis">Survival Months From Diagnosis</OPTION>
+<OPTION  value="Survival Months From Treatment Start">Survival Months From Treatment Start</OPTION>
+</SELECT>
+
+<DIV id=u7 style="position:absolute; left:406px; top:411px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u7_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Survival Value</span></DIV></DIV>
+<DIV id=u8container style="position:absolute; left:480px; top:320px; width:280px; height:16px; ; ; text-align: left " >
+<DIV id=u9 style="position:absolute; left:16px; top:0px; width:262px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u9_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">use high/low mRNA expression fold change</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:480px; top:320px; width:280px; height:16px; ; ; text-align: left " ><INPUT id=u8 name="u8" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<DIV id=u10container style="position:absolute; left:480px; top:369px; width:250px; height:16px; ; ; text-align: left " >
+<DIV id=u11 style="position:absolute; left:16px; top:0px; width:232px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">use high/low copy number</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:480px; top:369px; width:250px; height:16px; ; ; text-align: left " ><INPUT id=u10 name="u10" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<INPUT id=u12  type=submit value="Create Plot" style="position:absolute; left:494px; top:456px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<SELECT id=u13  style="position:absolute; left:496px; top:341px; width:245px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Tumor vs. Mean of Normals">Tumor vs. Mean of Normals</OPTION>
+<OPTION  value="Tumor vs. Matched Normal">Tumor vs. Matched Normal</OPTION>
+</SELECT>
+
+<DIV id=u14 style="position:absolute; left:414px; top:345px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u14_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Fold Change</span></DIV></DIV>
+<DIV id=u15 style="position:absolute; left:350px; top:504px; width:428px; height:96px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u15_rtf><span style=" font-family:'Arial'; color:#FF0000; font-size:13px;">Note: Study Manager will have to specify fold change value(s) which can be used.&nbsp; This will require picking which samples are the 'normals'.&nbsp; It's possible to imagine several different fold changes being made available.<br><br>Note: It might be worth considering whether a summary of reporters for a gene could be used instead of individual reporters.</span></DIV></DIV>
+<DIV id=u16 style="position:absolute; left:428px; top:266px; width:157px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u16_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Select One</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Kaplan_Meier_by_Gene_Expression_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

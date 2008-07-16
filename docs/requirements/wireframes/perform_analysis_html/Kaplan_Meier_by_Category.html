@@ -1,0 +1,98 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:100px; top:135px; width:651px; height:416px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:659px; height:424px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_by_Category_files/u0.png',sizingMethod='scale');
+"><img style="width:659px; height:424px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_by_Category_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:100px; top:135px; width:651px; height:416px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:199.5px; width:646px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:100px; top:135px; width:650px; height:415px"  >
+
+<DIV id=u2 style="position:absolute; left:242px; top:157px; width:410px; height:22px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u2_rtf><span style=" font-family:'Arial'; color:#000000; font-size:19px;">Kaplan-Meier Survival Plots By Patient Category</span></DIV></DIV>
+<SELECT id=u3  style="position:absolute; left:275px; top:267px; width:120px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Tumor Type">Tumor Type</OPTION>
+<OPTION  value="Gender">Gender</OPTION>
+<OPTION  value="Treatment">Treatment</OPTION>
+</SELECT>
+
+<DIV id=u4 style="position:absolute; left:170px; top:270px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Group #1</span></DIV></DIV>
+<DIV id=u5 style="position:absolute; left:303px; top:245px; width:86px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Annotation</span></DIV></DIV>
+<SELECT id=u6  style="position:absolute; left:414px; top:266px; width:266px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Astrocytoma">Astrocytoma</OPTION>
+<OPTION  value="Oligodendroma">Oligodendroma</OPTION>
+<OPTION  value="Other Glioma">Other Glioma</OPTION>
+</SELECT>
+
+<DIV id=u7 style="position:absolute; left:529px; top:244px; width:86px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u7_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Value</span></DIV></DIV>
+<DIV id=u8 style="position:absolute; left:170px; top:319px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u8_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Group #2</span></DIV></DIV>
+<SELECT id=u9  style="position:absolute; left:348px; top:370px; width:245px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Survival Months From Diagnosis">Survival Months From Diagnosis</OPTION>
+<OPTION  value="Survival Months From Treatment Start">Survival Months From Treatment Start</OPTION>
+</SELECT>
+
+<DIV id=u10 style="position:absolute; left:258px; top:374px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u10_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Survival Value</span></DIV></DIV>
+<SELECT id=u11  style="position:absolute; left:275px; top:316px; width:120px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Tumor Type">Tumor Type</OPTION>
+<OPTION  value="Gender">Gender</OPTION>
+<OPTION  value="Treatment">Treatment</OPTION>
+</SELECT>
+
+<SELECT id=u12  style="position:absolute; left:414px; top:315px; width:266px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Astrocytoma">Astrocytoma</OPTION>
+<OPTION selected value="Oligodendroma">Oligodendroma</OPTION>
+<OPTION  value="Other Glioma">Other Glioma</OPTION>
+</SELECT>
+
+<DIV id=u13container style="position:absolute; left:263px; top:294px; width:340px; height:16px; ; ; text-align: left " >
+<DIV id=u14 style="position:absolute; left:16px; top:0px; width:322px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u14_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Patient Group #2 is all patients not in Patient Group #1</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:263px; top:294px; width:340px; height:16px; ; ; text-align: left " ><INPUT id=u13 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<DIV id=u15container style="position:absolute; left:263px; top:343px; width:397px; height:16px; ; ; text-align: left " >
+<DIV id=u16 style="position:absolute; left:16px; top:0px; width:379px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u16_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Exclude from Patient Group #2 all patients in Patient Group #1</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:263px; top:343px; width:397px; height:16px; ; ; text-align: left " ><INPUT id=u15 style="position:absolute; left:-3px; top:-2px;" type=checkbox value=checkbox  ></DIV>
+<INPUT id=u17  type=submit value="Create Plot" style="position:absolute; left:370px; top:430px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u18 style="position:absolute; left:195px; top:206px; width:540px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u18_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Select the two groups of patients you wish to compare using a Kaplan-Meier Survival Plot</span></DIV></DIV>
+<DIV id=u19 style="position:absolute; left:259px; top:481px; width:401px; height:48px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u19_rtf><span style=" font-family:'Arial'; color:#FF0000; font-size:13px;">Note: Study Manager will have to specify which clinical annotation(s) are appropriate for use as a survival time for this analysis.&nbsp; This will have to be done at Deploy Study time.</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Kaplan_Meier_by_Category_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>
