@@ -117,7 +117,7 @@ public class StudyManagementServiceImplTestIntegration extends AbstractTransacti
     public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
         
         // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         assertNotNull(sourceConfiguration);

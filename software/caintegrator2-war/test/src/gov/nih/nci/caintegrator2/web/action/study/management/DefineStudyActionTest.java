@@ -83,41 +83,54 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class AbstractStudyActionTest {
+public class DefineStudyActionTest {
 
-    private AbstractStudyAction action;
+    private static final String EDIT_STUDY = "editStudy";
+    private DefineStudyAction defineStudyAction;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", AbstractStudyActionTest.class); 
-        action = (DefineStudyAction) context.getBean("defineStudyAction");
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineStudyActionTest.class); 
+        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
     }
 
     @Test
-    public void testPrepare() {
-        StudyConfiguration configuration = action.getStudyConfiguration();
-        configuration.setId(1L);
-        action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        assertEquals((Long) 1L, action.getStudyConfiguration().getId());
-        assertNotNull(action.getStudy());
+    public void testSaveStudy() {
+        assertEquals(EDIT_STUDY, defineStudyAction.saveStudy());
+        assertTrue(studyManagementServiceStub.saveCalled);
+    }
+
+    @Test
+    public void testDeployStudy() {
+        assertEquals(EDIT_STUDY, defineStudyAction.deployStudy());
+        assertTrue(studyManagementServiceStub.deployStudyCalled);
+    }
+
+    @Test
+    public void testAddGenomicSource() {
+        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
+        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
+        assertNotNull(defineStudyAction.getGenomicDataSource());
+    }
+    
+    @Test
+    public void testEditStudy() {
+        assertEquals("editStudy", defineStudyAction.editStudy());
     }
 
 }

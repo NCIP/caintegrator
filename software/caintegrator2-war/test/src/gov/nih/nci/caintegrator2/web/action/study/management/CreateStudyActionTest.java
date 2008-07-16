@@ -83,41 +83,35 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class AbstractStudyActionTest {
+import com.opensymphony.xwork2.Action;
 
-    private AbstractStudyAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
+public class CreateStudyActionTest {
+
+    private CreateStudyAction createStudyAction;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", AbstractStudyActionTest.class); 
-        action = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", CreateStudyActionTest.class); 
+        createStudyAction = (CreateStudyAction) context.getBean("createStudyAction");
     }
 
     @Test
-    public void testPrepare() {
-        StudyConfiguration configuration = action.getStudyConfiguration();
-        configuration.setId(1L);
-        action.prepare();
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-        assertEquals((Long) 1L, action.getStudyConfiguration().getId());
-        assertNotNull(action.getStudy());
+    public void testExecute() {
+        assertEquals(Action.SUCCESS, createStudyAction.execute());
     }
 
+    @Test
+    public void testGetModel() {
+        assertNotNull(createStudyAction.getModel());
+    }
 }

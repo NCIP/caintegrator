@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.HashSet;
@@ -101,7 +100,7 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     
     @Before
     public void setUp() throws Exception {
-        StudyConfiguration studyConfig = new StudyConfiguration(new Study());
+        StudyConfiguration studyConfig = new StudyConfiguration();
         studyConfig.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE);
         // Create the identifier descriptor for our test file.

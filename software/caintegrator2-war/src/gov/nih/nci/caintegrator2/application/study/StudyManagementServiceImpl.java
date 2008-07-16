@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -110,6 +111,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Entry point to the StudyManagementService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED)
+@SuppressWarnings("PMD.CyclomaticComplexity")   // see configure study
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     @SuppressWarnings("unused")
@@ -122,7 +124,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public StudyConfiguration createStudy() {
-        StudyConfiguration configuration = new StudyConfiguration(new Study());
+        StudyConfiguration configuration = new StudyConfiguration();
         configuration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         dao.save(configuration);
         return configuration;
@@ -131,8 +133,38 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void update(StudyConfiguration studyConfiguration) {
-        dao.save(studyConfiguration);
+    public void save(StudyConfiguration studyConfiguration) {
+        if (isNew(studyConfiguration)) {
+            configureNew(studyConfiguration);
+        }
+        persist(studyConfiguration);
+    }
+
+    private boolean isNew(StudyConfiguration studyConfiguration) {
+        return studyConfiguration.getId() == null;
+    }
+
+    private void configureNew(StudyConfiguration studyConfiguration) {
+        configureNew(studyConfiguration.getStudy());
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // multiple simple null checks
+    private void configureNew(Study study) {
+        if (study.getAssignmentCollection() == null) {
+            study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        }
+        if (study.getImageSeriesAnnotationCollection() == null) {
+            study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        }
+        if (study.getSampleAnnotationCollection() == null) {
+            study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
+        }
+        if (study.getSubjectAnnotationCollection() == null) {
+            study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+        }
+        if (study.getTimepointCollection() == null) {
+            study.setTimepointCollection(new HashSet<Timepoint>());
+        }
     }
 
     /**
@@ -162,7 +194,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         save(studyConfiguration);
     }
 
-    private void save(StudyConfiguration studyConfiguration) {
+    private void persist(StudyConfiguration studyConfiguration) {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             save(assignment.getSubjectAnnotation());
             dao.save(assignment.getSubject());

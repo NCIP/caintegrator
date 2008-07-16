@@ -11,7 +11,16 @@
     default-dependency-check="none" 
     default-autowire="no">
 
-    <!-- Actions -->
+    <!-- ******************************************************************* -->
+    <!-- ** ACTIONS                                                       ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Navigation -->
+
+    <bean id="homepageAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
+    </bean>
     <bean id="workspaceAction"
         scope="session"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">
@@ -20,15 +29,27 @@
         </property>
     </bean>
     
-   <bean id="loginAction"
+    <bean id="loginAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.LoginAction">
     </bean>
+    <!-- Study Management -->
 
-    <bean id="homepageAction"
+    <bean id="createStudyAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.CreateStudyAction">
     </bean>
+
+    <bean id="saveStudyAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
+    
+    
 
     <bean id="defineClinicalSourceAction"
         scope="prototype"
@@ -48,7 +69,7 @@
 
     <bean id="defineStudyAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.DefineStudyAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>
@@ -62,7 +83,10 @@
         </property>
     </bean>
 
-    <!-- Subsystems -->
+
+    <!-- ******************************************************************* -->
+    <!-- ** SUBSYSTEMS                                                    ** -->
+    <!-- ******************************************************************* -->
 
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl">
@@ -119,7 +143,10 @@
         </property>
     </bean>
         
-    <!-- Services -->
+
+    <!-- ******************************************************************* -->
+    <!-- ** SERVICES                                                      ** -->
+    <!-- ******************************************************************* -->
         
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">

@@ -83,103 +83,36 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-/**
- * Action used to create and edit studies by a Study Manager.
- */
-public class DefineStudyAction extends AbstractStudyAction {
-    
-    private static final long serialVersionUID = 1L;
-    
-    private static final String EDIT_STUDY = "editStudy";
-    private static final String EDIT_GENOMIC_SOURCE = "editGenomicSource";
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-    private static final String VIEW_STUDY = "viewStudy";
-    
-    private GenomicDataSourceConfiguration genomicDataSource;
-    
-    // STUDY ACTIONS
-    
-    /**
-     * Creates a new study.
-     * 
-     * @return the Struts result.
-     */
-    public String createStudy() {
-        setStudyConfiguration(getService().createStudy());
-        return EDIT_STUDY;
-    }
-    
-    /**
-     * Deploys the current study.
-     * 
-     * @return the Struts result.
-     */
-    public String deployStudy() {
-        getService().deployStudy(getStudyConfiguration());
-        return EDIT_STUDY;
-    }
-    
-    /**
-     * Opens an existing study for editing.
-     * 
-     * @return the Struts result.
-     */
-    public String editStudy() {
-        return EDIT_STUDY;
-    }
-    
-    /**
-     * Loads clinical data for the study.
-     * 
-     * @return the Struts result.
-     */
-    public String loadClinicalSource() {
-        getService().loadClinicalAnnotation(getStudyConfiguration());
-        return EDIT_STUDY;
-    }    
+public class AbstractStudyActionTest {
 
-    /**
-     * Saves the current study.
-     * 
-     * @return the Struts result.
-     */
-    public String saveStudy() {
-        getService().update(getStudyConfiguration());
-        return EDIT_STUDY;
+    private AbstractStudyAction abstractStudyAction;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", CreateStudyActionTest.class); 
+        abstractStudyAction = (AbstractStudyAction) context.getBean("saveStudyAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    /**
-     * Views the current study.
-     * 
-     * @return the Struts result.
-     */
-    public String viewStudy() {
-        return VIEW_STUDY;
-    }
-    
-    // GENOMIC DATA ACTIONS
-    
-    /**
-     * Adds a new genomic data source.
-     * 
-     * @return the Struts result.
-     */
-    public String addGenomicSource() {
-        genomicDataSource = getService().addGenomicSource(getStudyConfiguration());
-        return EDIT_GENOMIC_SOURCE;
-    }
-    
-    // ACTION PROPERTY GETTERS
-
-    /**
-     * @return the genomicDataSource
-     */
-    public GenomicDataSourceConfiguration getGenomicDataSource() {
-        return genomicDataSource;
+    @Test
+    public void testPrepare() {
+        abstractStudyAction.prepare();
+        assertFalse(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        abstractStudyAction.getModel().setId(1L);
+        abstractStudyAction.prepare();
+        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
     }
 
 }

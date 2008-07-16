@@ -15,19 +15,10 @@
     
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
-        <table>
-            <tr>
-                <th>Study Name</th>
-                <td><s:textfield name="study.shortTitleText" /></td>
-            </tr>
-            <tr>
-                <th>Study Description</th>
-                <td><s:textarea name="study.longTitleText" cols="40" rows="4" /></td>
-            </tr>
-            <tr>
-                <td colspan="2"><s:submit action="saveStudy" value="Save" /><s:submit action="deployStudy" value="Deploy" /></td>
-            </tr>
-        </table>
+            <s:textfield label="Study Name" name="study.shortTitleText" />
+            <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
+            <s:submit action="saveStudy" value="Save" />
+            <s:submit action="deployStudy" value="Deploy" />
     </s:form>
     
     <table class="data">

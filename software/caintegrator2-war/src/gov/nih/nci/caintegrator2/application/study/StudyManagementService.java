@@ -98,18 +98,11 @@ import java.util.List;
 public interface StudyManagementService {
     
     /**
-     * Creates a study.
+     * Saves a study.
      * 
-     * @return StudyConfiguration for newly created study
+     * @param studyConfiguration study to save
      */
-    StudyConfiguration createStudy();
-    
-    /**
-     * Updates study.
-     * 
-     * @param studyConfiguration study to update
-     */
-    void update(StudyConfiguration studyConfiguration);
+    void save(StudyConfiguration studyConfiguration);
     
     /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
