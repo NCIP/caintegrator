@@ -670,19 +670,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<target name="test:selenium:init">
 		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
 		<property name="selenium.browser" value="*firefox"/>
-		<!--
-		<property name="selenium.browser" value="*firefox /usr/lib/firefox-3.0b5/firefox"/>
+		<!--  What you would need for a ci server, recommend setting in local.properties
 		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
-		<property name="selenium.browser" value="*custom /usr/lib/firefox-2.0.0.14/firefox-bin"/>
 		-->
 		<property name="selenium.proxy.port" value="4444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
 		<property name="selenium.test.suite" value="${software.dir}/cai2TestSuite.html"/>
 		<property name="selenium.url" value="http://localhost:46210"/>
-		<!--
-		<property name="selenium.url" value="${application.url}"/>
-		-->
 
 		<mkdir dir="${selenium.report.dir}"/>
 
@@ -716,6 +711,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<arg line=" -log ${temp.dir}/selenium-debug.log"/>
 		</java> 
 		-->
+		<osfamily property="os.family"/>
+		<if>
+			<equals arg1="${os.family}" arg2="unix"/>
+			<then>
+				<echo message="To be able to selenium tests on Unix platforms you need to meet the following conditions."/>
+				<echo message="You need to be logged in on the console running X (developer linux or mac workstation)."/>
+				<echo message=" If you are running it from a server that does not have a console (like a CI server) you need to be running at runlevel 3, running and xframe buffer ('Xvfb :1 -screen 0 1024x768x24', should be setup on a CI server) and have your DISPLAY environment variable sto to match your frame buffer ('DISPLAY=:1.0', should be set in .bash_profile on CI server)."/>
+				<fail unless="env.DISPLAY" message="DISPLAY environment variable not set, please set it as outlined above and run again."/>
+			</then>
+		</if>
 		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
 		<selenese 
 			suite="${selenium.test.suite}"
