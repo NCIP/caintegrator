@@ -136,11 +136,11 @@ public interface StudyManagementService {
     /**
      * Adds a new, initialized genomic data source to the study.
      * 
-     * @param studyConfiguration study configuration to add genomic data source to.
-     * @return the new genomic data source configuration object.
+     * @param studyConfiguration study configuration to add genomic data source to
+     * @param genomicSource genomic source to add
      */
-    GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration);
-
+    void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource);
+    
     /**
      * Returns the studies managed by the Study Manager indicated by username.
      * 

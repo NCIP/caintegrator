@@ -83,36 +83,26 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+/**
+ * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
+ */
+public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+    private static final long serialVersionUID = 1L;
 
-public class ManageStudiesActionTest {
-
-    private ManageStudiesAction manageStudiesAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", ManageStudiesActionTest.class); 
-        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        if (getGenomicSource().getId() == null) {
+            getStudyManagementService().addGenomicSource(getStudyConfiguration(), getGenomicSource());
+        } else {
+            getStudyManagementService().save(getStudyConfiguration());
+        }
+        return SUCCESS;
     }
-
-    @Test
-    public void testManageStudies() {
-        assertEquals("manageStudies", manageStudiesAction.manageStudies());
-        assertNotNull(manageStudiesAction.getStudyConfigurations());
-        assertTrue(studyManagementServiceStub.manageStudiesCalled);
-    }
-
+       
 }

@@ -83,56 +83,186 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-
+import java.util.ArrayList;
 import java.util.List;
 
-import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 /**
- * Action used to create and edit studies by a Study Manager.
+ * Action used to edit the type and annotation of a file column by a Study Manager.
  */
-public class ManageStudiesAction extends ActionSupport {
+public class DefineFileColumnAction extends AbstractStudyAction {
     
     private static final long serialVersionUID = 1L;
+
+    private static final String ANNOTATION_TYPE = "Annotation";
+    private static final String IDENTIFIER_TYPE = "Identifier";
+    private static final String TIMEPOINT_TYPE = "Timepoint";
+    private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE, TIMEPOINT_TYPE};
     
-    private static final String MANAGE_STUDIES = "manageStudies";
-    
-    private StudyManagementService service;
-    private List<StudyConfiguration> studyConfigurations;
+    private FileColumn fileColumn = new FileColumn();
+    private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private int dataElementIndex;
+    private int definitionIndex;
     
     /**
-     * Creates a new study.
+     * Refreshes the current clinical source configuration.
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        if (getFileColumn().getId() != null) {
+            setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
+        }
+    }
+    
+    /**
+     * Edit a clinical data source file column.
      * 
      * @return the Struts result.
      */
-    public String manageStudies() {
-        setStudyConfigurations(service.getManagedStudies(SecurityHelper.getCurrentUsername()));
-        return MANAGE_STUDIES;
+    public String editFileColumn() {
+        definitions.clear();
+        dataElements.clear();
+        return SUCCESS;
+    }
+    
+    /**
+     * Retrieves from the database and from caDSR annotation definition that matches the current columns keywords.
+     * 
+     * @return the Struts result.
+     */
+    public String searchDefinitions() {
+        getStudyManagementService().save(getStudyConfiguration());
+        definitions = getStudyManagementService().getMatchingDefinitions(getFileColumn());
+        dataElements = getStudyManagementService().getMatchingDataElements(getFileColumn());
+        return SUCCESS;
+    }
+    
+    /**
+     * Selects an existing annotation definition for a column.
+     * 
+     * @return the Struts result.
+     */
+    public String selectDefinition() {
+        getStudyManagementService().setDefinition(getFileColumn(), getDefinitions().get(getDefinitionIndex()));
+        return SUCCESS;
+    }
+    
+    /**
+     * Selects an existing CaDSR data element as the definition for a column.
+     * 
+     * @return the Struts result.
+     */
+    public String selectDataElement() {
+        getStudyManagementService().setDataElement(getFileColumn(), getDataElements().get(getDataElementIndex()));
+        return SUCCESS;
+    }
+    
+    /**
+     * Updates a clinical data source file column.
+     * 
+     * @return the Struts result.
+     */
+    public String updateFileColumn() {
+        getStudyManagementService().save(getStudyConfiguration());
+        return SUCCESS;
     }
 
     /**
-     * @param service the service to set
+     * @return the fileColumn
      */
-    public void setService(StudyManagementService service) {
-        this.service = service;
+    public FileColumn getFileColumn() {
+        return fileColumn;
     }
 
     /**
-     * @return the studyConfigurations
+     * @param fileColumn the fileColumn to set
      */
-    public List<StudyConfiguration> getStudyConfigurations() {
-        return studyConfigurations;
+    public void setFileColumn(FileColumn fileColumn) {
+        this.fileColumn = fileColumn;
     }
 
     /**
-     * @param studyConfigurations the studyConfigurations to set
+     * @return the columnType
      */
-    public void setStudyConfigurations(List<StudyConfiguration> studyConfigurations) {
-        this.studyConfigurations = studyConfigurations;
+    public String getColumnType() {
+        if (getFileColumn().isIdentifierColumn()) {
+            return IDENTIFIER_TYPE;
+        } else if (getFileColumn().isTimepointColumn()) {
+            return TIMEPOINT_TYPE;
+        } else {
+            return ANNOTATION_TYPE;
+        }
     }
+
+    /**
+     * @param columnType the columnType to set
+     */
+    public void setColumnType(String columnType) {
+        if (IDENTIFIER_TYPE.equals(columnType)) {
+            getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
+        } else if (TIMEPOINT_TYPE.equals(columnType)) {
+            getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
+        } else if (ANNOTATION_TYPE.equals(columnType)) {
+            getFileColumn().makeAnnotationColumn();
+        }
+    }
+
+    /**
+     * @return the columnTypes
+     */
+    @SuppressWarnings("PMD")    // Prevent internal array exposure warning
+    public String[] getColumnTypes() {
+        return COLUMN_TYPES;
+    }
+
+    /**
+     * @return the definitions
+     */
+    public List<AnnotationDefinition> getDefinitions() {
+        return definitions;
+    }
+
+    /**
+     * @return the dataElements
+     */
+    public List<DataElement> getDataElements() {
+        return dataElements;
+    }
+
+    /**
+     * @return the dataElementIndex
+     */
+    public int getDataElementIndex() {
+        return dataElementIndex;
+    }
+
+    /**
+     * @param dataElementIndex the dataElementIndex to set
+     */
+    public void setDataElementIndex(int dataElementIndex) {
+        this.dataElementIndex = dataElementIndex;
+    }
+
+    /**
+     * @return the definitionIndex
+     */
+    public int getDefinitionIndex() {
+        return definitionIndex;
+    }
+
+    /**
+     * @param definitionIndex the definitionIndex to set
+     */
+    public void setDefinitionIndex(int definitionIndex) {
+        this.definitionIndex = definitionIndex;
+    }
+
 
 }
