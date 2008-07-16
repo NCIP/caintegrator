@@ -671,7 +671,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
 		<property name="selenium.browser" value="*firefox"/>
 		<!--  What you would need for a ci server, recommend setting in local.properties
-		<property name="selenium.browser" value="*firefox /usr/local/lib/firefox-1.5.0.12/firefox-bin"/>
+		<property name="selenium.browser" value="*firefox /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
 		-->
 		<property name="selenium.proxy.port" value="4444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
