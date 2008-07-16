@@ -26,7 +26,20 @@
             <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>
         </action>
         
+        
         <!--  Study Actions -->
+
+        <action name="createStudy" class="createStudyAction">
+            <result type="tiles">editStudy</result>
+        </action>
+   
+        <action name="saveStudy" class="saveStudyAction">
+            <result type="redirectAction">manageStudies</result>
+            <result name="input" type="tiles">editStudy</result>
+        </action>
+
+
+
    
         <action name="addClinicalFile" method="addClinicalFile" class="defineClinicalSourceAction">
             <result name="editClinicalFile" type="tiles">editClinicalFile</result>
@@ -37,10 +50,6 @@
    
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
-        </action>
-
-        <action name="createStudy" method="createStudy" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
         </action>
       
         <action name="deployStudy" method="deployStudy" class="defineStudyAction">
@@ -65,10 +74,6 @@
    
         <action name="manageStudies" method="manageStudies" class="manageStudiesAction">
             <result name="manageStudies" type="tiles">manageStudies</result>
-        </action>
-   
-        <action name="saveStudy" method="saveStudy" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
         </action>
    
         <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">

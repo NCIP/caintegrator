@@ -108,7 +108,7 @@ public class StudyConfiguration implements PersistentObject {
     private Long id;
     private Visibility visibility;
     private Status status = Status.NOT_DEPLOYED;
-    private Study study;
+    private Study study = new Study();
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
         new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
@@ -121,16 +121,6 @@ public class StudyConfiguration implements PersistentObject {
      */
     public StudyConfiguration() {
         super();
-    }
-
-    /**
-     * Creates a new instance associated to the given study.
-     * 
-     * @param study configuration is associated to this study
-     */
-    public StudyConfiguration(Study study) {
-        this();
-        this.study = study;
     }
 
     /**

@@ -83,65 +83,34 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import org.apache.commons.lang.StringUtils;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Initializes study creation.
+ */
+public class SaveStudyAction extends AbstractStudyAction {
 
-public class DefineStudyActionTest {
+    private static final long serialVersionUID = 1L;
 
-    private static final String EDIT_STUDY = "editStudy";
-    private DefineStudyAction defineStudyAction;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
-    }
-
-    @Test
-    public void testCreateStudy() {
-        assertEquals(EDIT_STUDY, defineStudyAction.createStudy());
-        assertTrue(studyManagementServiceStub.createStudyCalled);
-        assertNotNull(defineStudyAction.getStudyConfiguration());
-        assertNotNull(defineStudyAction.getStudy());
-    }
-
-    @Test
-    public void testSaveStudy() {
-        defineStudyAction.createStudy();
-        assertEquals(EDIT_STUDY, defineStudyAction.saveStudy());
-        assertTrue(studyManagementServiceStub.updateStudyCalled);
-    }
-
-    @Test
-    public void testDeployStudy() {
-        defineStudyAction.createStudy();
-        assertEquals(EDIT_STUDY, defineStudyAction.deployStudy());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
-    }
-
-    @Test
-    public void testAddGenomicSource() {
-        defineStudyAction.createStudy();
-        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        assertNotNull(defineStudyAction.getGenomicDataSource());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute()  {
+        getStudyManagementService().save(getStudyConfiguration());
+        return SUCCESS;
     }
     
-    @Test
-    public void testEditStudy() {
-        assertEquals("editStudy", defineStudyAction.editStudy());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (StringUtils.isEmpty(getStudyConfiguration().getStudy().getShortTitleText())) {
+            addFieldError("study.shortTitleText", "Study Name is required");
+        }
     }
-
+    
 }

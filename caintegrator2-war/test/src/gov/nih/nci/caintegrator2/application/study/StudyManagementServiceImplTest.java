@@ -91,7 +91,6 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
@@ -118,25 +117,17 @@ public class StudyManagementServiceImplTest {
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
         caDSRFacadeStub.clear();
     }
-    
-    @Test
-    public void testCreateStudy() {
-        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
-        assertNotNull(studyConfiguration);
-        assertNotNull(studyConfiguration.getStudy());
-        assertTrue(daoStub.saveCalled);
-    }
 
     @Test
     public void testUpdate() {
-        StudyConfiguration configTest = new StudyConfiguration(new Study());
-        studyManagementService.update(configTest);
+        StudyConfiguration configTest = new StudyConfiguration();
+        studyManagementService.save(configTest);
         assertTrue(daoStub.saveCalled);
     }
     
     @Test
     public void testDeploy() {
-        StudyConfiguration configTest = new StudyConfiguration(new Study());
+        StudyConfiguration configTest = new StudyConfiguration();
         studyManagementService.deployStudy(configTest);
         assertEquals(Status.DEPLOYED, configTest.getStatus());
         assertTrue(daoStub.saveCalled);
@@ -145,7 +136,8 @@ public class StudyManagementServiceImplTest {
     @Test
     public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
         // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = studyManagementService.createStudy();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
@@ -159,7 +151,7 @@ public class StudyManagementServiceImplTest {
     
     @Test 
     public void testAddGenomicSource() {
-        StudyConfiguration studyConfiguration = new StudyConfiguration(new Study());
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = 
             studyManagementService.addGenomicSource(studyConfiguration);
         genomicDataSourceConfiguration.setId(Long.valueOf(1));        

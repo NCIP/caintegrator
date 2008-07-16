@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
@@ -98,8 +97,7 @@ import java.util.List;
 public class StudyManagementServiceStub implements StudyManagementService {
 
     public boolean deployStudyCalled;
-    public boolean createStudyCalled;
-    public boolean updateStudyCalled;
+    public boolean saveCalled;
     public boolean addGenomicSourceCalled;
     public boolean addClinicalAnnotationFileCalled;
     public boolean manageStudiesCalled;
@@ -109,18 +107,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean setDataElementCalled;
     public boolean setDefinitionCalled;
 
-    public StudyConfiguration createStudy() {
-        createStudyCalled = true;
-        return new StudyConfiguration(new Study());
-    }
-
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         // no-op
     }
 
 
-    public void update(StudyConfiguration studyConfiguration) {
-        updateStudyCalled = true;
+    public void save(StudyConfiguration studyConfiguration) {
+        saveCalled = true;
     }
 
     public void deployStudy(StudyConfiguration studyConfiguration) {
@@ -129,8 +122,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void clear() {
         deployStudyCalled = false;
-        createStudyCalled = false;
-        updateStudyCalled = false;
+        saveCalled = false;
         addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;
         manageStudiesCalled = false;

@@ -502,7 +502,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/xwork-2.0.4.jar">
+	<classpathentry kind="lib" path="/caintegrator2-lib/caintegrator2-compile/xwork-2.0.4.jar" sourcepath="/caintegrator2-lib/src/xwork-2.0.4-sources.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
