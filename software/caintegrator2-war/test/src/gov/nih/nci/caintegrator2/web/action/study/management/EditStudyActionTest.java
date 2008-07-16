@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,40 +95,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddClinicalFileActionTest {
+public class EditStudyActionTest {
 
-    private AddClinicalFileAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    private EditStudyAction editStudyAction;
 
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
-        action = (AddClinicalFileAction) context.getBean("addClinicalFileAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+        editStudyAction = (EditStudyAction) context.getBean("editStudyAction");
     }
-
-    @Test
-    public void testValidate() {
-        action.validate();
-        assertTrue(action.hasFieldErrors());
-        action.setClinicalFile(TestDataFiles.VALID_FILE);
-        action.clearErrorsAndMessages();
-        action.validate();
-        assertFalse(action.hasFieldErrors());
-    }
-
 
     @Test
     public void testExecute() {
-        action.setClinicalFile(TestDataFiles.VALID_FILE);
-        action.setClinicalFileFileName(TestDataFiles.VALID_FILE.getName());
-        assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.addClinicalAnnotationFileCalled);
-        action.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
-        assertEquals(Action.INPUT, action.execute());
-        action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
-        assertEquals(Action.ERROR, action.execute());
+        assertEquals(Action.SUCCESS, editStudyAction.execute());
     }
 
+    @Test
+    public void testGetModel() {
+        assertNotNull(editStudyAction.getModel());
+    }
 }

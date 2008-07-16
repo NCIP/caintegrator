@@ -13,6 +13,7 @@
     
     <s:form>
         <s:hidden name="studyConfiguration.id" />
+        <s:hidden name="clinicalSource.id" />
         <s:hidden name="fileColumn.id" />
         <table>
             <tr>

@@ -104,7 +104,7 @@ public class SaveStudyActionTest {
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", CreateStudyActionTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
         saveStudyAction = (SaveStudyAction) context.getBean("saveStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
