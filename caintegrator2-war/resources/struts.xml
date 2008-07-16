@@ -28,9 +28,17 @@
         
         
         <!--  Study Actions -->
+   
+        <action name="manageStudies" class="manageStudiesAction">
+            <result type="tiles">manageStudies</result>
+        </action>
 
         <action name="createStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
+        </action>
+            
+        <action name="deployStudy" class="deployStudyAction">
+            <result type="redirectAction">manageStudies</result>
         </action>
       
         <action name="editStudy" class="editStudyAction">
@@ -54,48 +62,37 @@
         <action name="saveClinicalSource" class="saveClinicalSourceAction">
             <result type="tiles">editStudy</result>
         </action>
-        
-        
-        
-        
-        <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
-            <result name="editGenomicSource" type="tiles">editGenomicSource</result>
+                      
+        <action name="loadClinicalSource" class="loadClinicalSourceAction">
+            <result type="tiles">editStudy</result>
         </action>
-      
-        <action name="deployStudy" method="deployStudy" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
-        </action>
-   
+              
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
-            <result name="editFileColumn" type="tiles">editFileColumn</result>
-        </action>
-        
-        <action name="loadClinicalSource" method="loadClinicalSource" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
-        </action>
-   
-        <action name="manageStudies" method="manageStudies" class="manageStudiesAction">
-            <result name="manageStudies" type="tiles">manageStudies</result>
+            <result type="tiles">editFileColumn</result>
         </action>
    
         <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
-            <result name="editFileColumn" type="tiles">editFileColumn</result>
+            <result type="tiles">editFileColumn</result>
         </action>
    
         <action name="selectDataElement" method="selectDataElement" class="defineFileColumnAction">
-            <result name="editFileColumn" type="tiles">editFileColumn</result>
+            <result type="tiles">editFileColumn</result>
         </action>
    
         <action name="selectDefinition" method="selectDefinition" class="defineFileColumnAction">
-            <result name="editFileColumn" type="tiles">editFileColumn</result>
+            <result type="tiles">editFileColumn</result>
         </action>
    
         <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
-            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
+            <result type="tiles">editClinicalFile</result>
         </action>
-   
-        <action name="viewStudy" method="viewStudy" class="defineStudyAction">
-            <result name="viewStudy" type="tiles">viewStudy</result>
+
+        <action name="addGenomicSource" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="editGenomicSource" class="editGenomicSourceAction">
+            <result type="tiles">editGenomicSource</result>
         </action>
         
     </package>

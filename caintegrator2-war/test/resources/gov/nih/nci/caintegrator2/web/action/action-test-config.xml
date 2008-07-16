@@ -3,60 +3,7 @@
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
     <!-- Actions -->
-
-    <bean id="createStudyAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="defineStudyAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="defineClinicalSourceAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.DefineClinicalSourceAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="defineFileColumnAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="manageStudiesAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="studyManagementService" 
-        class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub" 
-        singleton="true">
-    </bean>
-
-    <bean id="saveStudyAction"
-        singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
+    
     <bean id="workspaceAction" 
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">

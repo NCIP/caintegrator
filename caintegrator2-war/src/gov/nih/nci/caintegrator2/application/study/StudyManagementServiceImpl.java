@@ -225,11 +225,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+    public void addGenomicSource(StudyConfiguration studyConfiguration,
+            GenomicDataSourceConfiguration genomicSource) {
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
         dao.save(studyConfiguration);
-        return genomicDataSourceConfiguration;
     }
 
     /**

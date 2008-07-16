@@ -83,128 +83,39 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.DelimitedTextClinicalSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-
-import java.io.File;
-import java.io.IOException;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 
 /**
- * Action used to create and edit studies by a Study Manager.
+ * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
  */
-public class DefineClinicalSourceAction extends AbstractStudyAction {
+public abstract class AbstractGenomicSourceAction extends AbstractClinicalSourceAction {
     
-    private static final long serialVersionUID = 1L;
-    
-    private static final String INVALID_FILE = "invalidFile";
-    private static final String EDIT_CLINICAL_FILE = "editClinicalFile";
-    private static final String FILE_IO_ERROR = "fileIoError";
-    
-    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration = 
-        new DelimitedTextClinicalSourceConfiguration();
-    private File clinicalFile;
-    private String clinicalFileContentType;
-    private String clinicalFileFileName;
-    
+    private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+
     /**
-     * Refreshes the current clinical source configuration.
+     * {@inheritDoc}
      */
-    @Override
     public void prepare() {
         super.prepare();
-        if (getClinicalSourceConfiguration().getId() != null) {
-            setClinicalSourceConfiguration(getService().getRefreshedStudyEntity(getClinicalSourceConfiguration()));
+        if (getGenomicSource().getId() != null) {
+            setGenomicSource(getStudyManagementService().getRefreshedStudyEntity(getGenomicSource()));
         }
     }
-    
+
     /**
-     * Adds a new clinical data source.
-     * 
-     * @return the Struts result.
+     * @return the genomicSource
      */
-    public String addClinicalFile() {
-        if (getClinicalFile() == null) {
-            return EDIT_CLINICAL_FILE;
-        }
-        try {
-            DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-                getService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
-                        getClinicalFileFileName());
-            setClinicalSourceConfiguration(sourceConfiguration);
-            return EDIT_CLINICAL_FILE;
-        } catch (ValidationException e) {
-            addFieldError("upload", "Invalid file: " + e.getResult().getInvalidMessage());
-            return INVALID_FILE;
-        } catch (IOException e) {
-            return FILE_IO_ERROR;
-        }
-    }
-    
-    /**
-     * Edits a clinical data source.
-     * 
-     * @return the Struts result.
-     */
-    public String editClinicalSource() {
-        return EDIT_CLINICAL_FILE;
+    public GenomicDataSourceConfiguration getGenomicSource() {
+        return genomicSource;
     }
 
     /**
-     * @return the clinicalSourceConfiguration
+     * @param genomicSource the genomicSource to set
      */
-    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
-        return clinicalSourceConfiguration;
-    }
-
-    /**
-     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
-     */
-    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
-        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
-    }
-
-    /**
-     * @return the clinicalFile
-     */
-    public File getClinicalFile() {
-        return clinicalFile;
-    }
-
-    /**
-     * @param clinicalFile the clinicalFile to set
-     */
-    public void setClinicalFile(File clinicalFile) {
-        this.clinicalFile = clinicalFile;
-    }
-
-    /**
-     * @return the clinicalFileContentType
-     */
-    public String getClinicalFileContentType() {
-        return clinicalFileContentType;
-    }
-
-    /**
-     * @param clinicalFileContentType the clinicalFileContentType to set
-     */
-    public void setClinicalFileContentType(String clinicalFileContentType) {
-        this.clinicalFileContentType = clinicalFileContentType;
-    }
-
-    /**
-     * @return the clinicalFileFileName
-     */
-    public String getClinicalFileFileName() {
-        return clinicalFileFileName;
-    }
-
-    /**
-     * @param clinicalFileFileName the clinicalFileFileName to set
-     */
-    public void setClinicalFileFileName(String clinicalFileFileName) {
-        this.clinicalFileFileName = clinicalFileFileName;
+    public void setGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+        this.genomicSource = genomicSource;
     }
 
 }

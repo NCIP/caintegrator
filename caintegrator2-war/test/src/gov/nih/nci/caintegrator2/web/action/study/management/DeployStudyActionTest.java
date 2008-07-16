@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
 import org.junit.Before;
@@ -97,15 +96,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
-public class SaveStudyActionTest {
+public class DeployStudyActionTest {
 
-    private SaveStudyAction action;
+    private DeployStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
-        action = (SaveStudyAction) context.getBean("saveStudyAction");
+        action = (DeployStudyAction) context.getBean("deployStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
     }
@@ -113,21 +112,7 @@ public class SaveStudyActionTest {
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.saveCalled);
-    }
-    
-    @Test
-    public void testValidate() {
-        action.getStudyConfiguration().getStudy().setShortTitleText("name");
-        action.validate();
-        assertFalse(action.hasFieldErrors());
-        action.getStudyConfiguration().getStudy().setShortTitleText(null);
-        action.validate();
-        assertTrue(action.hasFieldErrors());
-        action.clearErrorsAndMessages();
-        action.getStudyConfiguration().getStudy().setShortTitleText("");
-        action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertTrue(studyManagementServiceStub.deployStudyCalled);
     }
 
 }

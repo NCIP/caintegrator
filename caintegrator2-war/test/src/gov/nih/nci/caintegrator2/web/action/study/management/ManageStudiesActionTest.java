@@ -95,42 +95,26 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class DefineStudyActionTest {
+import com.opensymphony.xwork2.Action;
 
-    private static final String EDIT_STUDY = "editStudy";
-    private DefineStudyAction defineStudyAction;
+public class ManageStudiesActionTest {
+
+    private ManageStudiesAction manageStudiesAction;
     private StudyManagementServiceStub studyManagementServiceStub;
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineStudyActionTest.class); 
-        defineStudyAction = (DefineStudyAction) context.getBean("defineStudyAction");
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", ManageStudiesActionTest.class); 
+        manageStudiesAction = (ManageStudiesAction) context.getBean("manageStudiesAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
     }
 
     @Test
-    public void testSaveStudy() {
-        assertEquals(EDIT_STUDY, defineStudyAction.saveStudy());
-        assertTrue(studyManagementServiceStub.saveCalled);
-    }
-
-    @Test
-    public void testDeployStudy() {
-        assertEquals(EDIT_STUDY, defineStudyAction.deployStudy());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
-    }
-
-    @Test
-    public void testAddGenomicSource() {
-        assertEquals("editGenomicSource", defineStudyAction.addGenomicSource());
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        assertNotNull(defineStudyAction.getGenomicDataSource());
-    }
-    
-    @Test
-    public void testEditStudy() {
-        assertEquals("editStudy", defineStudyAction.editStudy());
+    public void testManageStudies() {
+        assertEquals(Action.SUCCESS, manageStudiesAction.execute());
+        assertNotNull(manageStudiesAction.getStudyConfigurations());
+        assertTrue(studyManagementServiceStub.manageStudiesCalled);
     }
 
 }
