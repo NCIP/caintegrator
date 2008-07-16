@@ -1,4 +1,4 @@
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SuppressWarnings("PMD")
+import com.opensymphony.xwork2.Action;
+
 public class DefineFileColumnActionTest {
     
     private DefineFileColumnAction action;
@@ -18,7 +19,7 @@ public class DefineFileColumnActionTest {
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", DefineClinicalSourceActionTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", DefineFileColumnActionTest.class); 
         action = (DefineFileColumnAction) context.getBean("defineFileColumnAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
@@ -26,7 +27,7 @@ public class DefineFileColumnActionTest {
 
     @Test
     public void testEditFileColumn() {
-        assertEquals("editFileColumn", action.editFileColumn());
+        assertEquals(Action.SUCCESS, action.editFileColumn());
     }
     
     @Test
@@ -38,7 +39,7 @@ public class DefineFileColumnActionTest {
     
     @Test
     public void testSearchDefinitions() {
-        assertEquals("editFileColumn", action.searchDefinitions());
+        assertEquals(Action.SUCCESS, action.searchDefinitions());
         assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
         assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);
     }
@@ -46,14 +47,14 @@ public class DefineFileColumnActionTest {
     @Test
     public void testSelectDefintion() {
         action.getDefinitions().add(null);
-        assertEquals("editFileColumn", action.selectDefinition());
+        assertEquals(Action.SUCCESS, action.selectDefinition());
         assertTrue(studyManagementServiceStub.setDefinitionCalled);
     }
     
     @Test
     public void testSelectDataElement() {
         action.getDataElements().add(null);
-        assertEquals("editFileColumn", action.selectDataElement());
+        assertEquals(Action.SUCCESS, action.selectDataElement());
         assertTrue(studyManagementServiceStub.setDataElementCalled);
     }
     

@@ -92,13 +92,18 @@ import org.acegisecurity.userdetails.UserDetails;
 /**
  * Providers helper methods to access authentication and authorization data.
  */
-final class SecurityHelper {
+public final class SecurityHelper {
     
     private SecurityHelper() {
         super();
     }
 
-    static String getCurrentUsername() {
+    /**
+     * Returns the username of the current user.
+     * 
+     * @return the current user's username.
+     */
+    public static String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
         if (authentication != null) {

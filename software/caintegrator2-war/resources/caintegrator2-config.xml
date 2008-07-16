@@ -35,6 +35,22 @@
     </bean>
     <!-- Study Management -->
 
+    <bean id="manageStudiesAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.ManageStudiesAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="deployStudyAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DeployStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="editStudyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
@@ -74,38 +90,27 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
-    
-    
-    
 
-    <bean id="defineClinicalSourceAction"
+    <bean id="loadClinicalSourceAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.DefineClinicalSourceAction">
-        <property name="service">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
+        <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
     </bean>
 
     <bean id="defineFileColumnAction"
         scope="session"
-        class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineFileColumnAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>
     </bean>
 
-    <bean id="defineStudyAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction">
-        <property name="service">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean>
-
-    <bean id="manageStudiesAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.ManageStudiesAction">
-        <property name="service">
+    <bean id="editGenomicSourceAction"
+        scope="session"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
+        <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
     </bean>

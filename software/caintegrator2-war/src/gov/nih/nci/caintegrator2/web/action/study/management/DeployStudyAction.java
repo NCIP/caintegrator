@@ -83,63 +83,22 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
-
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 /**
- * Base class for actions that are based on a single <code>StudyConfiguration</code>.
+ * Action that deploys a study.
  */
-public abstract class AbstractStudyAction extends ActionSupport implements Preparable {
+public class DeployStudyAction extends AbstractStudyAction {
 
-    private StudyConfiguration studyConfiguration = new StudyConfiguration();
-    private StudyManagementService service;
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Retrieves the current <code>StudyConfiguration</code> for the action.
+     * {@inheritDoc}
      */
-    public void prepare() {
-        if (getStudyConfiguration().getId() != null) {
-            setStudyConfiguration(getService().getRefreshedStudyEntity(getStudyConfiguration()));
-        }
+    @Override
+    public String execute() {
+        getStudyManagementService().deployStudy(getStudyConfiguration());
+        return SUCCESS;
     }
     
-    /**
-     * @return the studyConfiguration
-     */
-    public final StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public final void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
-    /**
-     * @return the study
-     */
-    public final Study getStudy() {
-        return getStudyConfiguration().getStudy();
-    }
-    
-    /**
-     * @param service the service to set
-     */
-    public final void setService(StudyManagementService service) {
-        this.service = service;
-    }
-
-    /**
-     * @return the service
-     */
-    public final StudyManagementService getService() {
-        return service;
-    }
-
 }

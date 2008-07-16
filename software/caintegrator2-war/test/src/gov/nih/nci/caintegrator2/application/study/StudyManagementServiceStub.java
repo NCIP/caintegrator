@@ -106,9 +106,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean getMatchingDataElementsCalled;
     public boolean setDataElementCalled;
     public boolean setDefinitionCalled;
+    public boolean loadClinicalAnnotationCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        // no-op
+        loadClinicalAnnotationCalled = true;
     }
 
 
@@ -121,6 +122,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void clear() {
+        loadClinicalAnnotationCalled = false;
         deployStudyCalled = false;
         saveCalled = false;
         addClinicalAnnotationFileCalled = false;
@@ -133,11 +135,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDefinitionCalled = true;
     }
 
-    public GenomicDataSourceConfiguration addGenomicSource(StudyConfiguration studyConfiguration) {
+    public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         addGenomicSourceCalled = true;
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        return genomicDataSourceConfiguration;
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
     }
 
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,

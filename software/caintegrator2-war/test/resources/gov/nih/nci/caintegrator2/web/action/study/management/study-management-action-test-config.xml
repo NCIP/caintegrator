@@ -4,6 +4,14 @@
 
     <!-- Actions -->
 
+    <bean id="manageStudiesAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.ManageStudiesAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="addClinicalFileAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddClinicalFileAction">
@@ -28,6 +36,14 @@
         </property>
     </bean>
 
+    <bean id="loadClinicalSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="editStudyAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
@@ -36,10 +52,10 @@
         </property>
     </bean>
 
-    <bean id="defineStudyAction"
+    <bean id="deployStudyAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineStudyAction">
-        <property name="service">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DeployStudyAction">
+        <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
     </bean>
@@ -47,6 +63,22 @@
     <bean id="saveStudyAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="defineFileColumnAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineFileColumnAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="editGenomicSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

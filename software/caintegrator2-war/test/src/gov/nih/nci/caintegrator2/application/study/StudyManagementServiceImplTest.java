@@ -158,10 +158,9 @@ public class StudyManagementServiceImplTest {
     @Test 
     public void testAddGenomicSource() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = 
-            studyManagementService.addGenomicSource(studyConfiguration);
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
         genomicDataSourceConfiguration.setId(Long.valueOf(1));        
-        assertNotNull(genomicDataSourceConfiguration);
         assertTrue(studyConfiguration.getGenomicDataSources().contains(genomicDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
     }
