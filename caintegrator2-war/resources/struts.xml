@@ -29,12 +29,16 @@
         
         <!--  Study Actions -->
 
-        <action name="createStudy" class="createStudyAction">
+        <action name="createStudy" class="editStudyAction">
+            <result type="tiles">editStudy</result>
+        </action>
+      
+        <action name="editStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
         </action>
    
         <action name="saveStudy" class="saveStudyAction">
-            <result type="redirectAction">manageStudies</result>
+            <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
         </action>
    
@@ -42,9 +46,18 @@
             <result type="tiles">editClinicalFile</result>
             <result name="input" type="tiles">editStudy</result>
         </action>
-
-
-
+       
+        <action name="editClinicalSource" class="editClinicalSourceAction">
+            <result type="tiles">editClinicalFile</result>
+        </action>
+       
+        <action name="saveClinicalSource" class="saveClinicalSourceAction">
+            <result type="tiles">editStudy</result>
+        </action>
+        
+        
+        
+        
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
         </action>
@@ -52,17 +65,9 @@
         <action name="deployStudy" method="deployStudy" class="defineStudyAction">
             <result name="editStudy" type="tiles">editStudy</result>
         </action>
-        
-        <action name="editClinicalSource" method="editClinicalSource" class="defineClinicalSourceAction">
-            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
-        </action>
    
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
             <result name="editFileColumn" type="tiles">editFileColumn</result>
-        </action>
-   
-        <action name="editStudy" method="editStudy" class="defineStudyAction">
-            <result name="editStudy" type="tiles">editStudy</result>
         </action>
         
         <action name="loadClinicalSource" method="loadClinicalSource" class="defineStudyAction">

@@ -35,9 +35,12 @@
     </bean>
     <!-- Study Management -->
 
-    <bean id="createStudyAction"
+    <bean id="editStudyAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.CreateStudyAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
     </bean>
 
     <bean id="saveStudyAction"
@@ -55,6 +58,22 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
+
+    <bean id="editClinicalSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="saveClinicalSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveClinicalSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
     
     
     
@@ -68,7 +87,7 @@
     </bean>
 
     <bean id="defineFileColumnAction"
-        scope="prototype"
+        scope="session"
         class="gov.nih.nci.caintegrator2.web.action.DefineFileColumnAction">
         <property name="service">
             <ref local="studyManagementService"/>

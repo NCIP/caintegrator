@@ -6,7 +6,7 @@
 
     <bean id="createStudyAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.CreateStudyAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>
@@ -51,7 +51,7 @@
 
     <bean id="saveStudyAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.CreateStudyAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
         <property name="service">
             <ref local="studyManagementService"/>
         </property>

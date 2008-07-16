@@ -107,6 +107,7 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     private String keywords;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
+    private Boolean shownInBrowse = false;
 
     /**
      * @return the name
@@ -217,6 +218,20 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     @Override
     public int hashCode() {
         return PersistentObjectHelper.hashCode(this);
+    }
+
+    /**
+     * @return the shownInBrowse
+     */
+    public Boolean getShownInBrowse() {
+        return shownInBrowse;
+    }
+
+    /**
+     * @param shownInBrowse the shownInBrowse to set
+     */
+    public void setShownInBrowse(Boolean shownInBrowse) {
+        this.shownInBrowse = shownInBrowse;
     }
 
 }

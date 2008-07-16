@@ -118,6 +118,7 @@ public class StudyManagementServiceImplTestIntegration extends AbstractTransacti
         
         // Set Clinical Annotations
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
         DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
             studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         assertNotNull(sourceConfiguration);

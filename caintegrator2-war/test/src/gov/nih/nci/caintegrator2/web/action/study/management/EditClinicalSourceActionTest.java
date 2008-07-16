@@ -85,31 +85,39 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Initializes study creation.
- */
-public class CreateStudyAction extends ActionSupport implements ModelDriven<StudyConfiguration> {
+import com.opensymphony.xwork2.Action;
 
-    private static final long serialVersionUID = 1L;
+public class EditClinicalSourceActionTest {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute()  {
-        return SUCCESS;
+    private EditClinicalSourceAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditClinicalSourceActionTest.class); 
+        action = (EditClinicalSourceAction) context.getBean("editClinicalSourceAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public StudyConfiguration getModel() {
-        return new StudyConfiguration();
+    @Test
+    public void testExecute() {
+        assertEquals(Action.SUCCESS, action.execute());
     }
-    
+
+    @Test
+    public void testPrepare() {
+        action.getClinicalSource().setId(1L);
+        action.prepare();
+        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+    }
 }
