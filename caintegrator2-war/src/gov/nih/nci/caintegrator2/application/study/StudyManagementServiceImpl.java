@@ -176,7 +176,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         AnnotationFile annotationFile = AnnotationFile.load(permanentFile);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
-        studyConfiguration.addClinicalConfiguration(clinicalSourceConfig);
         dao.save(studyConfiguration);
         return clinicalSourceConfig;
     }
@@ -187,9 +186,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
-            if (configuration != null) {
-                configuration.loadAnnontation();
-            }
+            configuration.loadAnnontation();
         }
         save(studyConfiguration);
     }

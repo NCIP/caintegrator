@@ -37,17 +37,14 @@
             <result type="redirectAction">manageStudies</result>
             <result name="input" type="tiles">editStudy</result>
         </action>
-
-
-
    
-        <action name="addClinicalFile" method="addClinicalFile" class="defineClinicalSourceAction">
-            <result name="editClinicalFile" type="tiles">editClinicalFile</result>
-            <result name="invalidFile" type="tiles">editStudy</result>
+        <action name="addClinicalFile" class="addClinicalFileAction">
+            <result type="tiles">editClinicalFile</result>
             <result name="input" type="tiles">editStudy</result>
-            <result name="fileIoError" type="tiles">fileIoError</result>
         </action>
-   
+
+
+
         <action name="addGenomicSource" method="addGenomicSource" class="defineStudyAction">
             <result name="editGenomicSource" type="tiles">editGenomicSource</result>
         </action>
