@@ -102,12 +102,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="common.dir" value="common" />
 
 	<!-- retrive ivy files then retrieve bda files and librarires -->
+	<echo message="software.dir=${software.dir}"/>
 	<mkdir dir="lib" />
 	<ant inheritAll="false" inheritRefs="false"
 		antfile="bda-ivy-build.xml"
 		target="retrieve-bda"
 		dir="${bda-download.dir}"
 		>
+		<property name="bda.version" value="${bda.version}" />
 		<property name="bda-utils.dir" value="${bda-utils.dir}" />
 		<property name="lib.dir" value="${lib.dir}" />
 		<property name="software.dir" value="${software.dir}" />
