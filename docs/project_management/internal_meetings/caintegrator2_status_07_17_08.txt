@@ -1,0 +1,12 @@
+Deploy Study - To be completed 
+	. Fix the Sample/Patient mapping issue
+	. Mappping of NCIA
+	. Datatype feature 
+
+Features discussed
+	. Browse for grid services (for the server) and show experiments (in caArray configuration) etc.
+	. Update Study - Replace mapping feature (patient->sample)
+KM plot
+	. Handle patients who dropped out of study (sensored?) 
+	. Handle multiple groups 
+	
