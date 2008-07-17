@@ -51,6 +51,9 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	<available file="${ivy.settings.file}" property="ivy.settings.available"/>
 	<available file="${ivy.bda.file}" property="ivy.bda.available"/>
 
+	<echo message="bda.local.repo.dir=${bda.local.repo.dir}"/>
+	<echo message="bda.version=${bda.version}}"/>
+
 	<!-- Targets -->
 	<target name="init" description="Makes transcient directories">
 		<mkdir dir="${lib.dir}"/>

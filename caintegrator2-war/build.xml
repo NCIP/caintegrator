@@ -68,6 +68,7 @@
         <property name="lib.dir" location="${build.lib.dir}" />
         <property name="software.dir" location="${software.dir}" />
 	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
+	<property name="bda.version" value="${bda.version}"/>
     </ant>
 
     <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
