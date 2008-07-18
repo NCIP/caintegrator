@@ -54,6 +54,13 @@ create table GENOMIC_DATA_SOURCE_CONFIGURATION (
     primary key (ID)
 ) ENGINE=InnoDB;
 
+create table GENOMIC_DATA_SOURCE_SAMPLES (
+    GENOMIC_DATA_SOURCE_ID bigint,
+    SAMPLE_ID bigint,
+    LIST_INDEX integer,
+    primary key(GENOMIC_DATA_SOURCE_ID, SAMPLE_ID)
+) ENGINE=InnoDB;
+
 create table SAMPLE_IDENTIFIER (
     ID bigint not null auto_increment, 
     EXPERIMENT_IDENTIFIER varchar(255), 
