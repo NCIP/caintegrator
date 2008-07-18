@@ -50,7 +50,7 @@
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
             <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}" skipusers="true">
                 <always address="etavela@5amsolutions.com" />
-                <always address="mholck@scenpro.com" />
+                <always address="jmarple@5amsolutions.com" />
                 <always address="tandrews@scenpro.com" />
                 <always address="jacobss2@mail.nih.gov" />
             </htmlemail>
