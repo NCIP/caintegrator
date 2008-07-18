@@ -92,9 +92,31 @@
                     <s:param name="genomicSource.id" value="id" />
                 </s:url> 
                 <s:a href="%{editGenomicSource}">Edit</s:a> 
+                <s:url id="editSampleMapping" action="editSampleMapping">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="genomicSource.id" value="id" />
+                </s:url> 
+                <s:a href="%{editSampleMapping}">Map Samples</s:a> 
             </td>
         </tr>
         </s:iterator>
+        <tr>
+            <th colspan="3"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
+        </tr>
+    </table>
+    </s:form>
+    
+    <s:form>
+    <s:hidden name="studyConfiguration.id"  />
+    <table class="data">
+        <tr>
+            <th colspan="3">Imaging Data Sources</th>
+        </tr>
+        <tr>
+            <th>Server</th>
+            <th>Trial Provenance Id</th>
+            <th>Action</th>
+        </tr>
         <tr>
             <th colspan="3"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
         </tr>

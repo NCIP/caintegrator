@@ -91,6 +91,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
@@ -156,7 +157,7 @@ public class StudyManagementServiceImplTest {
     }
     
     @Test 
-    public void testAddGenomicSource() {
+    public void testAddGenomicSource() throws ConnectionException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);

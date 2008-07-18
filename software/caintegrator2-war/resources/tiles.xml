@@ -59,4 +59,8 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/viewStudy_tile.jsp" />
     </definition>
 
+    <definition name="editSampleMapping" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />
+    </definition>
+
 </tiles-definitions>

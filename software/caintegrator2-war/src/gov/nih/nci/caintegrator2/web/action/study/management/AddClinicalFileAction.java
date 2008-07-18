@@ -94,13 +94,12 @@ import java.io.IOException;
 /**
  * Adds a new new clinical data source file to a study.
  */
-public class AddClinicalFileAction extends AbstractStudyAction {
+public class AddClinicalFileAction extends AbstractClinicalSourceAction {
 
     private static final long serialVersionUID = 1L;
     private File clinicalFile;
     private String clinicalFileContentType;
     private String clinicalFileFileName;
-    private DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration;
 
     /**
      * {@inheritDoc}
@@ -108,10 +107,10 @@ public class AddClinicalFileAction extends AbstractStudyAction {
     @Override
     public String execute()  {
         try {
-            DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
+            DelimitedTextClinicalSourceConfiguration clinicalSource = 
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
                         getClinicalFileFileName());
-            setClinicalSourceConfiguration(sourceConfiguration);
+            setClinicalSource(clinicalSource);
             return SUCCESS;
         } catch (ValidationException e) {
             addFieldError("clinicalFile", "Invalid file: " + e.getResult().getInvalidMessage());
@@ -171,20 +170,6 @@ public class AddClinicalFileAction extends AbstractStudyAction {
      */
     public void setClinicalFileFileName(String clinicalFileFileName) {
         this.clinicalFileFileName = clinicalFileFileName;
-    }
-
-    /**
-     * @return the clinicalSourceConfiguration
-     */
-    public DelimitedTextClinicalSourceConfiguration getClinicalSourceConfiguration() {
-        return clinicalSourceConfiguration;
-    }
-
-    /**
-     * @param clinicalSourceConfiguration the clinicalSourceConfiguration to set
-     */
-    public void setClinicalSourceConfiguration(DelimitedTextClinicalSourceConfiguration clinicalSourceConfiguration) {
-        this.clinicalSourceConfiguration = clinicalSourceConfiguration;
     }
     
 }

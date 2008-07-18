@@ -84,7 +84,11 @@
         </action>
    
         <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
-            <result type="tiles">editClinicalFile</result>
+            <result type="redirectAction">
+                <param name="actionName">editClinicalSource</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+                <param name="clinicalSource.id">${clinicalSource.id}</param>
+            </result>
         </action>
 
         <action name="addGenomicSource" class="editGenomicSourceAction">
@@ -93,6 +97,20 @@
         
         <action name="editGenomicSource" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="saveGenomicSource" class="saveGenomicSourceAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="editSampleMapping" class="editSampleMappingAction">
+            <result type="tiles">editSampleMapping</result>
+            <result name="input" type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="saveSampleMapping" class="saveSampleMappingAction">
+            <result type="tiles">editStudy</result>
         </action>
         
     </package>

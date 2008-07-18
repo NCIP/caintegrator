@@ -92,8 +92,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
@@ -119,6 +122,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CaIntegrator2Dao dao;
     private FileManager fileManager;
     private CaDSRFacade caDSRFacade;
+    private NCIAFacade nciaFacade;
+    private CaArrayFacade caArrayFacade;
     
     /**
      * {@inheritDoc}
@@ -226,8 +231,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void addGenomicSource(StudyConfiguration studyConfiguration,
-            GenomicDataSourceConfiguration genomicSource) {
+            GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
+        genomicSource.setStudyConfiguration(studyConfiguration);
+        genomicSource.setSamples(getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
+                genomicSource.getServerProfile()));
         dao.save(studyConfiguration);
     }
 
@@ -332,6 +340,34 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
         fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
         dao.save(fileColumn);
+    }
+
+    /**
+     * @return the nciaFacade
+     */
+    public NCIAFacade getNciaFacade() {
+        return nciaFacade;
+    }
+
+    /**
+     * @param nciaFacade the nciaFacade to set
+     */
+    public void setNciaFacade(NCIAFacade nciaFacade) {
+        this.nciaFacade = nciaFacade;
+    }
+
+    /**
+     * @return the caArrayFacade
+     */
+    public CaArrayFacade getCaArrayFacade() {
+        return caArrayFacade;
+    }
+
+    /**
+     * @param caArrayFacade the caArrayFacade to set
+     */
+    public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
+        this.caArrayFacade = caArrayFacade;
     }
 
 }
