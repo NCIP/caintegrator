@@ -83,42 +83,23 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.external.caarray;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.Collections;
+import java.util.List;
 
-import com.opensymphony.xwork2.Action;
+public class CaArrayFacadeStub implements CaArrayFacade {
 
-public class EditGenomicSourceActionTest {
-
-    private EditGenomicSourceAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
-
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditGenomicSourceActionTest.class); 
-        action = (EditGenomicSourceAction) context.getBean("editGenomicSourceAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
-    }
-
-    @Test
-    public void testExecute() {
-        action.execute();
-        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
-        studyManagementServiceStub.clear();
-        action.getGenomicSource().setId(1L);
-        assertEquals(Action.SUCCESS, action.execute());
-        assertFalse(studyManagementServiceStub.addGenomicSourceCalled);
-        assertTrue(studyManagementServiceStub.saveCalled);
+    /**
+     * {@inheritDoc}
+     */
+    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
+            throws ConnectionException {
+        return Collections.emptyList();
     }
 
 }

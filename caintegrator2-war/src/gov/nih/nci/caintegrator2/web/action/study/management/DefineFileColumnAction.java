@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 /**
  * Action used to edit the type and annotation of a file column by a Study Manager.
  */
-public class DefineFileColumnAction extends AbstractStudyAction {
+public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     
     private static final long serialVersionUID = 1L;
 

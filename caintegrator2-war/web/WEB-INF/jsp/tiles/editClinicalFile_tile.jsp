@@ -45,6 +45,7 @@
                     </s:elseif>
                     <s:url id="editFileColumn" action="editFileColumn">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="clinicalSource.id" value="clinicalSource.id" />
                         <s:param name="fileColumn.id" value="id" />
                     </s:url> 
                     <s:a href="%{editFileColumn}">Change Assignment</s:a> 

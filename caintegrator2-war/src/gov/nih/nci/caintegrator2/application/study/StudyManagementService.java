@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
@@ -138,8 +139,10 @@ public interface StudyManagementService {
      * 
      * @param studyConfiguration study configuration to add genomic data source to
      * @param genomicSource genomic source to add
+     * @throws ConnectionException if the configured server couldn't be reached.
      */
-    void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource);
+    void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException;
     
     /**
      * Returns the studies managed by the Study Manager indicated by username.

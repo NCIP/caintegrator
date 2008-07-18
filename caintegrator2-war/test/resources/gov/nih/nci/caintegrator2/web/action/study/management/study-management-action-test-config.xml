@@ -76,9 +76,9 @@
         </property>
     </bean>
 
-    <bean id="editGenomicSourceAction"
+    <bean id="saveGenomicSourceAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveGenomicSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

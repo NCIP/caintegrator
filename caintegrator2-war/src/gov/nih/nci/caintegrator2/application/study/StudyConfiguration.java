@@ -88,6 +88,8 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
@@ -237,6 +239,7 @@ public class StudyConfiguration implements PersistentObject {
         studySubjectAssignment.setStudy(getStudy());
         studySubjectAssignment.setIdentifier(identifier);
         studySubjectAssignment.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        studySubjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         getStudy().getAssignmentCollection().add(studySubjectAssignment);
         getIdentifierToSubjectAssignmentMap().put(identifier, studySubjectAssignment);
         return studySubjectAssignment;
@@ -300,6 +303,19 @@ public class StudyConfiguration implements PersistentObject {
     @Override
     public int hashCode() {
         return PersistentObjectHelper.hashCode(this);
+    }
+
+    /**
+     * @return all samples in the study.
+     */
+    public List<Sample> getSamples() {
+        List<Sample> samples = new ArrayList<Sample>();
+        for (StudySubjectAssignment studySubjectAssignment : getStudy().getAssignmentCollection()) {
+            for (SampleAcquisition sampleAcquisition : studySubjectAssignment.getSampleAcquisitionCollection()) {
+                samples.add(sampleAcquisition.getSample());
+            }
+        }
+        return samples;
     }
 
 }

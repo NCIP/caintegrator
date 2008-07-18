@@ -88,10 +88,11 @@
     
     <table class="data">
         <tr>
-            <th colspan="2">Matches from caDSR</th>
+            <th colspan="3">Matches from caDSR</th>
         </tr>
         <tr>
             <th>Name</th>
+            <th>Public ID</th>
             <th>Definition</th>
         </tr>
         <s:iterator value="dataElements" status="status">
@@ -109,6 +110,7 @@
                 </s:url> 
                 <s:a href="%{selectDataElement}"><s:property value="longName" /></s:a>
             </td>
+            <td><s:property value="publicId" /></td>
             <td><s:property value="definition" /></td>
         </tr>
         </s:iterator>

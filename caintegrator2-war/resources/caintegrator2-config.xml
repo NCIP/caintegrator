@@ -102,14 +102,38 @@
     <bean id="defineFileColumnAction"
         scope="session"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineFileColumnAction">
-        <property name="service">
+        <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
     </bean>
 
     <bean id="editGenomicSourceAction"
-        scope="session"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="saveGenomicSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveGenomicSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="editSampleMappingAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditSampleMappingAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="saveSampleMappingAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveSampleMappingAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
@@ -130,6 +154,12 @@
         </property>
         <property name="caDSRFacade">
             <ref local="caDSRFacade"/>
+        </property>
+        <property name="caArrayFacade">
+            <ref local="caArrayFacade"/>
+        </property>
+        <property name="nciaFacade">
+            <ref local="nciaFacade"/>
         </property>
     </bean>
 
@@ -163,6 +193,22 @@
         <property name="serviceFactory">
             <ref local="caArrayServiceFactory"/>
         </property>
+    </bean>
+    
+    <bean id="nciaFacade" 
+         class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl">
+         <property name="nciaServiceFactory">
+            <ref local="nciaServiceFactory"/>
+        </property>
+    </bean>
+    
+    <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
+        
+    <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
+       <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
+       <property name="url" value="http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
+       
     </bean>
     
     <bean id="caArrayServiceFactory" 
