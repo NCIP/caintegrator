@@ -45,9 +45,9 @@
     <dependency org="jakarta" name="commons-configuration" rev="1.5" conf="runtime"/>
     <dependency org="jakarta" name="commons-lang" rev="2.4" conf="runtime"/>
     <dependency org="jboss" name="jbossall-client" rev="4.0.5.GA" conf="compile"/>
-    <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="compile"/>
+    <dependency org="jboss" name="jboss-ejb3x" rev="4.0.5.GA" conf="runtime"/>
     <dependency org="jboss" name="jboss-aop-client" rev="1.5.2.GA" conf="compile"/>
-    <dependency org="jboss" name="jboss-ejb3-client" rev="noversion" conf="compile"/>
+    <dependency org="jboss" name="jboss-ejb3-client" rev="noversion" conf="runtime"/>
     <dependency org="jboss" name="jboss-aspect-client" rev="1.5" conf="compile"/>
     <dependency org="caintegrator2" name="freestylesearch" rev="4.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.GA" conf="compile"/>

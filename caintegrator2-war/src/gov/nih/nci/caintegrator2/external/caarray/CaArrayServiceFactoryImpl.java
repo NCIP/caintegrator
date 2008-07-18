@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import javax.security.auth.login.FailedLoginException;
 
+import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.caarray.services.CaArrayServer;
 import gov.nih.nci.caarray.services.ServerConnectionException;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
@@ -108,7 +110,7 @@ public class CaArrayServiceFactoryImpl implements CaArrayServiceFactory {
     private CaArrayServer connect(ServerConnectionProfile profile) throws ConnectionException {
         CaArrayServer server = new CaArrayServer(profile.getHostname(), profile.getPort());
         try {
-            if (profile.getUsername() == null) {
+            if (StringUtils.isEmpty(profile.getUsername())) {
                 server.connect();
             } else {
                 server.connect(profile.getUsername(), profile.getPassword());

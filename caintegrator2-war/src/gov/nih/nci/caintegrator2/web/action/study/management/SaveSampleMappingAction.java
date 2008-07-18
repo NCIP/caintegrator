@@ -83,144 +83,69 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
+import java.io.File;
 
 /**
- * Records sample and array data retrieval information.
+ * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
-public class GenomicDataSourceConfiguration implements PersistentObject {
+public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
+
+    private static final long serialVersionUID = 1L;
     
-    private Long id;
-    private StudyConfiguration studyConfiguration;
-    private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
-    private String experimentIdentifier;
-    private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
-    private List<Sample> samples = new ArrayList<Sample>();
-
-    /**
-     * @return the experimentIdentifier
-     */
-    public String getExperimentIdentifier() {
-        return experimentIdentifier;
-    }
-    
-    /**
-     * @return the sampleIdentifiers
-     */
-    public List<SampleIdentifier> getSampleIdentifiers() {
-        return sampleIdentifiers;
-    }
-
-    /**
-     * @return the serverProfile
-     */
-    public ServerConnectionProfile getServerProfile() {
-        return serverProfile;
-    }
-
-    /**
-     * @param experimentIdentifier the experimentIdentifier to set
-     */
-    public void setExperimentIdentifier(String experimentIdentifier) {
-        this.experimentIdentifier = experimentIdentifier;
-    }
-
-    @SuppressWarnings("unused")
-    private void setServerProfile(ServerConnectionProfile serverProfile) {
-        this.serverProfile = serverProfile;
-    }
-
-    @SuppressWarnings("unused")
-    private void setSampleIdentifiers(List<SampleIdentifier> sampleIdentifiers) {
-        this.sampleIdentifiers = sampleIdentifiers;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
+    private File sampleMappingFile;
+    private String sampleMappingFileContentType;
+    private String sampleMappingFileFileName;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
+    public String execute() {
+        return SUCCESS;
     }
 
     /**
-     * @return the samples
+     * @return the sampleMappingFile
      */
-    public List<Sample> getSamples() {
-        return samples;
+    public File getSampleMappingFile() {
+        return sampleMappingFile;
     }
 
     /**
-     * @param samples the samples to set
+     * @param sampleMappingFile the sampleMappingFile to set
      */
-    public void setSamples(List<Sample> samples) {
-        this.samples = samples;
+    public void setSampleMappingFile(File sampleMappingFile) {
+        this.sampleMappingFile = sampleMappingFile;
     }
 
     /**
-     * @return the mapped samples
+     * @return the sampleMappingFileContentType
      */
-    public List<Sample> getMappedSamples() {
-        List<Sample> mappedSamples = new ArrayList<Sample>();
-        mappedSamples.addAll(getSamples());
-        mappedSamples.retainAll(getStudyConfiguration().getSamples());
-        return mappedSamples;
+    public String getSampleMappingFileContentType() {
+        return sampleMappingFileContentType;
     }
 
     /**
-     * @return the unmapped samples
+     * @param sampleMappingFileContentType the sampleMappingFileContentType to set
      */
-    public List<Sample> getUnmappedSamples() {
-        List<Sample> unmappedSamples = new ArrayList<Sample>();
-        unmappedSamples.addAll(getSamples());
-        unmappedSamples.removeAll(getStudyConfiguration().getSamples());
-        return unmappedSamples;
+    public void setSampleMappingFileContentType(String sampleMappingFileContentType) {
+        this.sampleMappingFileContentType = sampleMappingFileContentType;
     }
 
     /**
-     * @return the studyConfiguration
+     * @return the sampleMappingFileFileName
      */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
+    public String getSampleMappingFileFileName() {
+        return sampleMappingFileFileName;
     }
 
     /**
-     * @param studyConfiguration the studyConfiguration to set
+     * @param sampleMappingFileFileName the sampleMappingFileFileName to set
      */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
+    public void setSampleMappingFileFileName(String sampleMappingFileFileName) {
+        this.sampleMappingFileFileName = sampleMappingFileFileName;
     }
-
+       
 }

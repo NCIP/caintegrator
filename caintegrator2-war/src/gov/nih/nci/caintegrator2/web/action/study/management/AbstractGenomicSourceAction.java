@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 /**
  * Base class for actions that require retrieval of persistent <code>GenomicDataSourceConfigurations</code>.
  */
-public abstract class AbstractGenomicSourceAction extends AbstractClinicalSourceAction {
+public abstract class AbstractGenomicSourceAction extends AbstractStudyAction {
     
     private GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
 

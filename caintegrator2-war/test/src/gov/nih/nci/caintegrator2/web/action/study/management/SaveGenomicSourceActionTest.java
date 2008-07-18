@@ -83,144 +83,42 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Records sample and array data retrieval information.
- */
-public class GenomicDataSourceConfiguration implements PersistentObject {
-    
-    private Long id;
-    private StudyConfiguration studyConfiguration;
-    private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
-    private String experimentIdentifier;
-    private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
-    private List<Sample> samples = new ArrayList<Sample>();
+import com.opensymphony.xwork2.Action;
 
-    /**
-     * @return the experimentIdentifier
-     */
-    public String getExperimentIdentifier() {
-        return experimentIdentifier;
-    }
-    
-    /**
-     * @return the sampleIdentifiers
-     */
-    public List<SampleIdentifier> getSampleIdentifiers() {
-        return sampleIdentifiers;
+public class SaveGenomicSourceActionTest {
+
+    private SaveGenomicSourceAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", SaveGenomicSourceActionTest.class); 
+        action = (SaveGenomicSourceAction) context.getBean("saveGenomicSourceAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    /**
-     * @return the serverProfile
-     */
-    public ServerConnectionProfile getServerProfile() {
-        return serverProfile;
-    }
-
-    /**
-     * @param experimentIdentifier the experimentIdentifier to set
-     */
-    public void setExperimentIdentifier(String experimentIdentifier) {
-        this.experimentIdentifier = experimentIdentifier;
-    }
-
-    @SuppressWarnings("unused")
-    private void setServerProfile(ServerConnectionProfile serverProfile) {
-        this.serverProfile = serverProfile;
-    }
-
-    @SuppressWarnings("unused")
-    private void setSampleIdentifiers(List<SampleIdentifier> sampleIdentifiers) {
-        this.sampleIdentifiers = sampleIdentifiers;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
-    }
-
-    /**
-     * @return the samples
-     */
-    public List<Sample> getSamples() {
-        return samples;
-    }
-
-    /**
-     * @param samples the samples to set
-     */
-    public void setSamples(List<Sample> samples) {
-        this.samples = samples;
-    }
-
-    /**
-     * @return the mapped samples
-     */
-    public List<Sample> getMappedSamples() {
-        List<Sample> mappedSamples = new ArrayList<Sample>();
-        mappedSamples.addAll(getSamples());
-        mappedSamples.retainAll(getStudyConfiguration().getSamples());
-        return mappedSamples;
-    }
-
-    /**
-     * @return the unmapped samples
-     */
-    public List<Sample> getUnmappedSamples() {
-        List<Sample> unmappedSamples = new ArrayList<Sample>();
-        unmappedSamples.addAll(getSamples());
-        unmappedSamples.removeAll(getStudyConfiguration().getSamples());
-        return unmappedSamples;
-    }
-
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
+    @Test
+    public void testExecute() {
+        action.execute();
+        assertTrue(studyManagementServiceStub.addGenomicSourceCalled);
+        studyManagementServiceStub.clear();
+        action.getGenomicSource().setId(1L);
+        assertEquals(Action.SUCCESS, action.execute());
+        assertFalse(studyManagementServiceStub.addGenomicSourceCalled);
+        assertTrue(studyManagementServiceStub.saveCalled);
     }
 
 }

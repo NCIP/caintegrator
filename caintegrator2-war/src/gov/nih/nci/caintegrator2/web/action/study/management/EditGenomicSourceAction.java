@@ -97,11 +97,6 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
-        if (getGenomicSource().getId() == null) {
-            getStudyManagementService().addGenomicSource(getStudyConfiguration(), getGenomicSource());
-        } else {
-            getStudyManagementService().save(getStudyConfiguration());
-        }
         return SUCCESS;
     }
        
