@@ -23,7 +23,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<property file="${properties.file}" />
 	
 	<!-- Generic properties -->
-	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="log.dir" value="${basedir}/logs" />
 	<property name="working.dir" value="${basedir}/working" />
 	<property name="temp.dir" value="${working.dir}/temp" />
