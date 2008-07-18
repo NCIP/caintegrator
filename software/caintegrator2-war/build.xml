@@ -45,7 +45,7 @@
     </filterset>
 
     <!-- Report properties -->
-    <property name="reports.dir" value="${software.dir}/reports"/>
+    <property name="reports.dir" value="${software.dir}/target/reports"/>
     <property name="reports.simian.dir" value="${reports.dir}/simian"/>
     <property name="reports.pmd.dir" value="${reports.dir}/pmd"/>
     <property name="reports.checkstyle.dir" value="${reports.dir}/checkstyle"/>
