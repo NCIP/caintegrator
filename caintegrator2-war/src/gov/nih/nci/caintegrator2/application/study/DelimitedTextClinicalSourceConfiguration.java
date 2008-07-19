@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -133,7 +133,10 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     private void loadAnnotation(StudySubjectAssignment subjectAssignment) {
         for (AnnotationFieldDescriptor annotationDescriptor : getAnnotationDescriptors()) {
             String value = getAnnotationFile().getDataValue(annotationDescriptor);
-            AnnotationValue annotationValue = new AnnotationValue();
+            // TODO TJ just changed AnnotationValue to StringAnnotationValue to get this to work, verify
+            // that is correct.
+            StringAnnotationValue annotationValue = new StringAnnotationValue();
+            //AnnotationValue annotationValue = new AnnotationValue();
             annotationValue.setValue(value);
             annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
             SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
