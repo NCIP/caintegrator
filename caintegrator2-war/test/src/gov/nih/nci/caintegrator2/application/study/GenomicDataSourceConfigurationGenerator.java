@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
 
 public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGenerator<GenomicDataSourceConfiguration> {
@@ -96,6 +97,10 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     public void compareFields(GenomicDataSourceConfiguration original, GenomicDataSourceConfiguration retrieved) {
         assertEquals(original.getExperimentIdentifier(), retrieved.getExperimentIdentifier());
         ServerConnectionProfileGenerator.INSTANCE.compare(original.getServerProfile(), retrieved.getServerProfile());
+        assertEquals(original.getSamples().size(), retrieved.getSamples().size());
+        for (int i = 0; i < original.getSamples().size(); i++) {
+            SampleGenerator.INSTANCE.compare(original.getSamples().get(i), retrieved.getSamples().get(i));
+        }
     }
 
     @Override
@@ -107,6 +112,10 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     public void setValues(GenomicDataSourceConfiguration config) {
         config.setExperimentIdentifier(getUniqueString());
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile());
+        config.getSamples().clear();
+        for (int i = 0; i < 3; i++) {
+            config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+        }
     }
 
 
