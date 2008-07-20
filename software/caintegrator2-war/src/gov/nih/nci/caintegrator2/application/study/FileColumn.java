@@ -252,6 +252,11 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
             getAnnotationFile().setTimepointColumn(null);
         }
     }
+
+    boolean isLoadable() {
+        return isIdentifierColumn() || isTimepointColumn() 
+        || (getFieldDescriptor() != null && getFieldDescriptor().getDefinition() != null);
+    }
     
 
 }

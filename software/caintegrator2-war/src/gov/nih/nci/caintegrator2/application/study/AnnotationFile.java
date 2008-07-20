@@ -406,4 +406,16 @@ public class AnnotationFile implements PersistentObject {
         return PersistentObjectHelper.hashCode(this);
     }
 
+    boolean isLoadable() {
+        if (getIdentifierColumn() == null) {
+            return false;
+        }
+        for (FileColumn column : getColumns()) {
+            if (!column.isLoadable()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
