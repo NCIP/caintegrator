@@ -124,16 +124,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
     private CaArrayFacade caArrayFacade;
-    
-    /**
-     * {@inheritDoc}
-     */
-    public StudyConfiguration createStudy() {
-        StudyConfiguration configuration = new StudyConfiguration();
-        configuration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
-        dao.save(configuration);
-        return configuration;
-    }
 
     /**
      * {@inheritDoc}

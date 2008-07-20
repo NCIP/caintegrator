@@ -84,6 +84,30 @@
         </property>
     </bean>
 
+    <bean id="editGenomicSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditGenomicSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="editSampleMappingAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditSampleMappingAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
+    <bean id="saveSampleMappingAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveSampleMappingAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub" 
         singleton="true">

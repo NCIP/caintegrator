@@ -192,15 +192,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
      * @return whether source may be loaded.
      */
     public boolean isLoadable() {
-        if (getAnnotationFile().getIdentifierColumn() == null) {
-            return false;
-        }
-        for (AnnotationFieldDescriptor descriptor : getAnnotationDescriptors()) {
-            if (descriptor.getDefinition() == null) {
-                return false;
-            }
-        }
-        return true;
+        return getAnnotationFile().isLoadable();
     }
 
 }
