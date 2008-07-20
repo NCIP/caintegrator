@@ -85,7 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.HashSet;
@@ -127,12 +130,19 @@ public class DelimitedTextClinicalSourceConfigurationTest {
 
     @Test
     public void testLoadAnnontation() {
-        
-        // First load descriptors
         clinicalSourceConfiguration.loadDescriptors();
-        
-        // Now load annotations.
         clinicalSourceConfiguration.loadAnnontation();
     }
 
+    @Test
+    public void testIsLoadable() {
+        assertFalse(clinicalSourceConfiguration.isLoadable());
+        for (FileColumn fileColumn : clinicalSourceConfiguration.getAnnotationFile().getColumns()) {
+            fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+            fileColumn.getFieldDescriptor().setDefinition(new AnnotationDefinition());
+        }
+        assertTrue(clinicalSourceConfiguration.isLoadable());
+        clinicalSourceConfiguration.getAnnotationFile().setIdentifierColumn(null);
+        assertFalse(clinicalSourceConfiguration.isLoadable());
+    }
 }
