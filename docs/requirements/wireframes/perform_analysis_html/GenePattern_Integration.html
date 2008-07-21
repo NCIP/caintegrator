@@ -1,0 +1,81 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:170px; top:100px; width:591px; height:541px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:599px; height:549px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='GenePattern_Integration_files/u0.png',sizingMethod='scale');
+"><img style="width:599px; height:549px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="GenePattern_Integration_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:170px; top:100px; width:591px; height:541px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:262px; width:586px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:170px; top:100px; width:590px; height:540px"  >
+
+<DIV id=ou2 style="position:absolute; left:200px; top:170px; width:531px; height:111px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:539px; height:119px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='GenePattern_Integration_files/u2.png',sizingMethod='scale');
+"><img style="width:539px; height:119px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="GenePattern_Integration_files/u2.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u2container style="position:absolute; left:200px; top:170px; width:531px; height:111px;; overflow:visible;">
+
+<DIV id=u3 style="position:absolute; left:2px; top:47px; width:526px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:200px; top:170px; width:530px; height:110px"  >
+
+<DIV id=u4 style="position:absolute; left:374px; top:124px; width:250px; height:22px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" font-family:'Arial'; color:#000000; font-size:19px;">GenePattern Analysis</span></DIV></DIV>
+<SELECT id=u5  style="position:absolute; left:383px; top:178px; width:340px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="RMA Expression Values Across All Samples">RMA Expression Values Across All Samples</OPTION>
+<OPTION  value="MAS5 Expression Values Across All Samples">MAS5 Expression Values Across All Samples</OPTION>
+<OPTION  value="Probe Expression Values Across All Samples">Probe Expression Values Across All Samples</OPTION>
+<OPTION  value="RMA Expression Values Across Astrocytoma Samples">RMA Expression Values Across Astrocytoma Samples</OPTION>
+<OPTION  value="RMA Expression Values For Kinases">RMA Expression Values For Kinases</OPTION>
+</SELECT>
+
+<DIV id=u6 style="position:absolute; left:389px; top:205px; width:317px; height:64px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u6_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">To export data to GenePattern you must select a query that returns a gene expression data matrix.&nbsp; If there are no queries in this list then you (or the Study Manager) much create at least one such query. </span></DIV></DIV>
+<DIV id=u7 style="position:absolute; left:218px; top:210px; width:150px; height:32px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u7_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Analyze Gene Expression Data</span></DIV></DIV>
+<DIV id=u8 style="position:absolute; left:199px; top:338px; width:548px; height:64px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u8_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">When you click Export caIntegrator2 will export your data to GenePattern. The first part of that export will be run a job to convert your data to the correct file format.&nbsp; You will see that job at the upper right of the GenePattern window that will pop up (see below for example).&nbsp; You can then analyze your data in GenePattern.&nbsp; See the GenePattern </span><span style=" font-family:'Arial'; color:#0000FF; font-size:13px;"><u>help page</u></span><span style=" font-family:'Arial'; color:#000000; font-size:13px;"> for more information.</span></DIV></DIV>
+<span style="position:absolute; left:340px; top:420px; width:256px; height:196px">
+<IMG id=ou9 src="GenePattern_Integration_files/u9.jpg" style="position:absolute;left:0px;top:0px;width:256px;height:196px">
+</span>
+<IMG id=u9 src="Resources/transparent.gif" style="position:absolute; left:340px; top:420px; width:256px; height:196px"   >
+
+<INPUT id=u10  type=submit value="Export" style="position:absolute; left:410px; top:297px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u11 style="position:absolute; left:210px; top:660px; width:516px; height:32px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#FF0000; font-size:13px;">Note: Other types of data can be exported to GenePattern, such as copy number data or clinical or imaging data.&nbsp; Each one would need a separate box on the screen above.</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="GenePattern_Integration_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>
