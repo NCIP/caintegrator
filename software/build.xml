@@ -350,8 +350,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Installs the application locally. Requires a local instance of mysql. Will use the target from install.xml specified in ${install.target} (defaults to install unless passed in on command line).  Calls ant from exec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. This target will use differnt properties based on linux (linux-install.properties) or windows (windows-install.properties) installs. It only supports using those properties files for now, so if you want to change install time properites edit these files. -->
 	<target name="deploy:local:install" depends="dist:installer:prep,build:all" description="Installs the application and required binaries on the local machine, used for developer desktops and ci environments">
-		<!-- deploy:local fails about software.directory in real strange place macrodefs:319, this should fix it -->
+		<!-- deploy:local fails about software.directory in real strange place macrodefs:319, this should fix it
 		<mkdir dir="${dist.exploded.dir}/lib" />
+		-->
 
 		<!-- Copies over all files so linux and windows properties are present -->
 		<copy todir="${dist.exploded.dir}">
@@ -449,6 +450,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		build:all,
 		dist:installer
 		">
+		<if>
+			<not>
+				<contains string="${properties.file}" substring="install"/>
+			</not>
+			<then>
+				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'install' in the name."/>
+			</then>
+		</if>
 		<deploy-files dist.file="${caintegrator2.install.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
 	</target>
@@ -458,6 +467,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		build:all,
 		dist:upgrader
 		">
+		<if>
+			<not>
+				<contains string="${properties.file}" substring="upgrade"/>
+			</not>
+			<then>
+				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'upgrade' in the name."/>
+			</then>
+		</if>
 		<deploy-files dist.file="${caintegrator2.upgrade.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
 	</target>
