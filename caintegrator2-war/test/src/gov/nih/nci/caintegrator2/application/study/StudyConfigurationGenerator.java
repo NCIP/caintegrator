@@ -137,6 +137,7 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
         for (int i = 0; i < 3; i++) {
             GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
             studyConfiguration.getGenomicDataSources().add(config);
+            config.setStudyConfiguration(studyConfiguration);
             GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
         }
     }
