@@ -11,7 +11,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-1.5.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-attrs-1.5.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.4.2_10.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bcprov-jdk15-1.38.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bufr-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/c3p0-0.9.0.jar"/>
@@ -55,12 +54,10 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/concurrent-1.4.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-3.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-4.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ejb3-persistence-1.0.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freemarker-2.3.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freemarker-2.3.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/grib-6.0.jar"/>
@@ -85,18 +82,13 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/netcdf-2.2.22.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ognl-2.6.11.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ognl-2.6.7.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/saaj-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.0.3.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-mock-2.0.3.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-api-2.0.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-core-2.0.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-core-2.0.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-spring-plugin-2.0.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-tiles-plugin-2.0.11.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-tiles-plugin-2.1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-api-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-core-2.0.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/tiles-jsp-2.0.6.jar"/>
@@ -109,9 +101,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xercesImpl-2.6.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xml-apis-1.2.01.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xmlsec-1.2.1.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-2.0.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-2.0.4.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-2.1.1.jar"/>
 	<classpathentry kind="lib" path="software/caintegrator-cacore/output/caintegrator2/build/jar/caintegrator2-beans.jar"/>
 	<classpathentry kind="lib" path="software/caintegrator-cacore/output/caintegrator2/build/jar/caintegrator2-orm.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/caarray-client.jar"/>
@@ -124,5 +114,6 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-core.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-web-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-ws-framework.jar"/>
+	<classpathentry kind="lib" path="software/lib/test-junit/spring-mock-2.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
