@@ -1,0 +1,151 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:180px; top:140px; width:711px; height:491px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:719px; height:499px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Survival_Value_files/u0.png',sizingMethod='scale');
+"><img style="width:719px; height:499px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Survival_Value_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:180px; top:140px; width:711px; height:491px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:237px; width:706px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:180px; top:140px; width:710px; height:490px"  >
+
+<DIV id=ou2 style="position:absolute; left:214px; top:364px; width:647px; height:96px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:655px; height:104px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Survival_Value_files/u2.png',sizingMethod='scale');
+"><img style="width:655px; height:104px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Survival_Value_files/u2.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u2container style="position:absolute; left:214px; top:364px; width:647px; height:96px;; overflow:visible;">
+
+<DIV id=u3 style="position:absolute; left:2px; top:39.5px; width:642px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:214px; top:364px; width:646px; height:95px"  >
+
+<SELECT id=u4  size=2  style="position:absolute; left:436px; top:210px; width:230px; height:45px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Survival Since Diagnosis">Survival Since Diagnosis</OPTION>
+</SELECT>
+
+<DIV id=u5 style="position:absolute; left:449px; top:163px; width:260px; height:22px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:19px;">Survival Value Definition</span></DIV></DIV>
+<INPUT id=u6  type=submit value="New" style="position:absolute; left:385px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u7  type=submit value="Delete" style="position:absolute; left:511px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u8  type=submit value="Edit" style="position:absolute; left:633px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u9  type=text value="Survival Since Treatment Start" style="position:absolute; left:444px; top:335px; width:270px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<DIV id=u10 style="position:absolute; left:400px; top:340px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u10_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Name</span></DIV></DIV>
+<DIV id=u11 style="position:absolute; left:329px; top:378px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Survival Start Date</span></DIV></DIV>
+<DIV id=u12 style="position:absolute; left:370px; top:403px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u12_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Death Date</span></DIV></DIV>
+<DIV id=u13 style="position:absolute; left:324px; top:427px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u13_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Last Followup Date</span></DIV></DIV>
+<SELECT id=u14  style="position:absolute; left:443px; top:375px; width:227px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Diagnosis Date">Diagnosis Date</OPTION>
+<OPTION selected value="Treatment Start Date">Treatment Start Date</OPTION>
+<OPTION  value="Imaging Date">Imaging Date</OPTION>
+<OPTION  value="Last Followup Date">Last Followup Date</OPTION>
+<OPTION  value="Death Date">Death Date</OPTION>
+</SELECT>
+
+<SELECT id=u15  style="position:absolute; left:443px; top:400px; width:227px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Diagnosis Date">Diagnosis Date</OPTION>
+<OPTION  value="Treatment Start Date">Treatment Start Date</OPTION>
+<OPTION  value="Imaging Date">Imaging Date</OPTION>
+<OPTION  value="Last Followup Date">Last Followup Date</OPTION>
+<OPTION selected value="Death Date">Death Date</OPTION>
+</SELECT>
+
+<SELECT id=u16  style="position:absolute; left:443px; top:425px; width:227px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Diagnosis Date">Diagnosis Date</OPTION>
+<OPTION  value="Treatment Start Date">Treatment Start Date</OPTION>
+<OPTION  value="Imaging Date">Imaging Date</OPTION>
+<OPTION selected value="Last Followup Date">Last Followup Date</OPTION>
+<OPTION  value="Death Date">Death Date</OPTION>
+</SELECT>
+
+<DIV id=u17 style="position:absolute; left:690px; top:389px; width:150px; height:48px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u17_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Note: Every patient without a death date must have a last followup date</span></DIV></DIV>
+<DIV id=u18container style="position:absolute; left:226px; top:375px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u19 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u19_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">By Date</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:226px; top:375px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u18 name="u18" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=ou20 style="position:absolute; left:214px; top:468px; width:647px; height:83px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:655px; height:91px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Survival_Value_files/u20.png',sizingMethod='scale');
+"><img style="width:655px; height:91px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Survival_Value_files/u20.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u20container style="position:absolute; left:214px; top:468px; width:647px; height:83px;; overflow:visible;">
+
+<DIV id=u21 style="position:absolute; left:2px; top:33px; width:642px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u21_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u20 src="Resources/transparent.gif" style="position:absolute; left:214px; top:468px; width:646px; height:82px"  >
+
+<DIV id=u22 style="position:absolute; left:687px; top:481px; width:170px; height:48px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u22_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Note: Every patient without a survival time must have a time until last followup</span></DIV></DIV>
+<DIV id=u23container style="position:absolute; left:226px; top:477px; width:100px; height:16px; ; ; text-align: left " >
+<DIV id=u24 style="position:absolute; left:16px; top:0px; width:82px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u24_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">By Timespan</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:226px; top:477px; width:100px; height:16px; ; ; text-align: left " ><INPUT id=u23 name="u23" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<SELECT id=u25  style="position:absolute; left:444px; top:480px; width:226px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Survival Time (Days)">Survival Time (Days)</OPTION>
+<OPTION  value="Time Until Last Followup (Days)">Time Until Last Followup (Days)</OPTION>
+<OPTION  value="Time Until Treatment (Days)">Time Until Treatment (Days)</OPTION>
+</SELECT>
+
+<SELECT id=u26  style="position:absolute; left:444px; top:506px; width:226px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Survival Time (Days)">Survival Time (Days)</OPTION>
+<OPTION selected value="Time Until Last Followup (Days)">Time Until Last Followup (Days)</OPTION>
+<OPTION  value="Time Until Treatment (Days)">Time Until Treatment (Days)</OPTION>
+</SELECT>
+
+<DIV id=u27 style="position:absolute; left:361px; top:484px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u27_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Survival Time</span></DIV></DIV>
+<DIV id=u28 style="position:absolute; left:293px; top:509px; width:153px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u28_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Time Until Last Followup</span></DIV></DIV>
+<INPUT id=u29  type=submit value="Save" style="position:absolute; left:490px; top:580px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u30 style="position:absolute; left:396px; top:658px; width:520px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u30_rtf><span style=" color:#FF0000; font-size:13px;">Note: This will be part of the Deploy Study process</span></DIV></DIV><SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Define_Survival_Value_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

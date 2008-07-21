@@ -1,0 +1,118 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:180px; top:140px; width:711px; height:541px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:719px; height:549px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Expression_Fold_Change_files/u0.png',sizingMethod='scale');
+"><img style="width:719px; height:549px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Expression_Fold_Change_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:180px; top:140px; width:711px; height:541px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:262px; width:706px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:180px; top:140px; width:710px; height:540px"  >
+
+<DIV id=ou2 style="position:absolute; left:225px; top:374px; width:626px; height:97px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:634px; height:105px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Expression_Fold_Change_files/u2.png',sizingMethod='scale');
+"><img style="width:634px; height:105px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Expression_Fold_Change_files/u2.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u2container style="position:absolute; left:225px; top:374px; width:626px; height:97px;; overflow:visible;">
+
+<DIV id=u3 style="position:absolute; left:2px; top:40px; width:621px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:225px; top:374px; width:625px; height:96px"  >
+
+<SELECT id=u4  size=2  style="position:absolute; left:397px; top:210px; width:290px; height:45px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="Fold Change Compared to 5 Best Normals">Fold Change Compared to 5 Best Normals</OPTION>
+</SELECT>
+
+<DIV id=u5 style="position:absolute; left:395px; top:163px; width:311px; height:22px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:19px;">Expression Fold Change Definition</span></DIV></DIV>
+<INPUT id=u6  type=submit value="New" style="position:absolute; left:385px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u7  type=submit value="Delete" style="position:absolute; left:511px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u8  type=submit value="Edit" style="position:absolute; left:633px; top:280px; width:60px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<INPUT id=u9  type=text value="Fold Change Compared to 28 Normals" style="position:absolute; left:432px; top:335px; width:270px; height:25px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none"   >
+
+<DIV id=u10 style="position:absolute; left:388px; top:340px; width:150px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u10_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Name</span></DIV></DIV>
+<INPUT id=u11  type=submit value="Save" style="position:absolute; left:490px; top:642px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<DIV id=u12 style="position:absolute; left:396px; top:694px; width:520px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u12_rtf><span style=" color:#FF0000; font-size:13px;">Note: This will be part of the Deploy Study process</span></DIV></DIV>
+<SELECT id=u13  style="position:absolute; left:586px; top:388px; width:250px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Get All Normal Patients">Get All Normal Patients</OPTION>
+<OPTION  value="Get All Astrocytoma Patients">Get All Astrocytoma Patients</OPTION>
+</SELECT>
+
+<DIV id=u14 style="position:absolute; left:388px; top:390px; width:210px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u14_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Query Returning Control Samples</span></DIV></DIV>
+<DIV id=u15container style="position:absolute; left:240px; top:390px; width:130px; height:16px; ; ; text-align: left " >
+<DIV id=u16 style="position:absolute; left:16px; top:0px; width:112px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u16_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Specify By Query</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:240px; top:390px; width:130px; height:16px; ; ; text-align: left " ><INPUT id=u15 name="u15" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio checked ></DIV>
+<DIV id=ou17 style="position:absolute; left:225px; top:482px; width:626px; height:149px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:634px; height:157px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Define_Expression_Fold_Change_files/u17.png',sizingMethod='scale');
+"><img style="width:634px; height:157px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Define_Expression_Fold_Change_files/u17.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u17container style="position:absolute; left:225px; top:482px; width:626px; height:149px;; overflow:visible;">
+
+<DIV id=u18 style="position:absolute; left:2px; top:66px; width:621px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u18_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u17 src="Resources/transparent.gif" style="position:absolute; left:225px; top:482px; width:625px; height:148px"  >
+
+<DIV id=u19container style="position:absolute; left:240px; top:492px; width:150px; height:16px; ; ; text-align: left " >
+<DIV id=u20 style="position:absolute; left:16px; top:0px; width:132px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u20_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Specify By Selection</span></DIV></DIV>
+</DIV>
+<DIV style="position:absolute; left:240px; top:492px; width:150px; height:16px; ; ; text-align: left " ><INPUT id=u19 name="u19" style="position:absolute; left:-3px; top:-2px;" type=radio value=radio  ></DIV>
+<DIV id=u21 style="position:absolute; left:340px; top:420px; width:450px; height:32px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u21_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Note: To use this method you must have already deployed the study and created a query which will return the patients you wish to use as controls</span></DIV></DIV>
+<SELECT id=u22  size=2 multiple style="position:absolute; left:390px; top:495px; width:450px; height:125px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION selected value="Sample XZ1234">Sample XZ1234</OPTION>
+<OPTION selected value="Sample XZ1235">Sample XZ1235</OPTION>
+<OPTION selected value="Sample XZ1245">Sample XZ1245</OPTION>
+<OPTION  value="Sample AZ1267">Sample AZ1267</OPTION>
+<OPTION  value="Sample AZ1278">Sample AZ1278</OPTION>
+</SELECT>
+<SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Define_Expression_Fold_Change_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

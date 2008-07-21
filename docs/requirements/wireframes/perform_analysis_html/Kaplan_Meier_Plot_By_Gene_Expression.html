@@ -1,0 +1,95 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:85px; top:50px; width:801px; height:891px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:809px; height:899px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_Plot_By_Gene_Expression_files/u0.png',sizingMethod='scale');
+"><img style="width:809px; height:899px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_Plot_By_Gene_Expression_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:85px; top:50px; width:801px; height:891px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:437px; width:796px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:85px; top:50px; width:800px; height:890px"  >
+
+<span style="position:absolute; left:130px; top:120px; width:700px; height:500px">
+<span id=ou2 style="position:absolute;left:0px;top:0px;width:700px;height:500px;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_Plot_By_Gene_Expression_files/u2.png',sizingMethod='scale');
+"><img style="width:700px; height:500px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_Plot_By_Gene_Expression_files/u2.png" border="0" alt=""></span>
+</span>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:130px; top:120px; width:700px; height:500px"   >
+
+<DIV id=u3 style="position:absolute; left:268px; top:85px; width:487px; height:18px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" font-family:'Arial'; color:#000000; font-size:16px;">Kaplan Meier Survival Plot for Patients Over/Underexpressing TGM2</span></DIV></DIV>
+<DIV id=u4 style="position:absolute; left:543px; top:154px; width:267px; height:176px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" font-family:'Arial'; color:#FF0000; font-size:13px;"><b>|</b></span><span style=" font-family:'Arial'; color:#000000; font-size:13px;"> TGM2 &gt; 2-fold overexpressed (25 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (3 patients)</span><br></span><br><span style=" font-family:'Arial'; color:#00FF00; font-size:13px;"><b>|</b> </span><span style=" font-family:'Arial'; color:#000000; font-size:13px;">TGM2 &lt; 2-fold underexpressed (17 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (3 patients)</span><br></span><br><span style=" font-family:'Arial'; color:#FFFF00; font-size:13px;"><b>|</b></span><span style=" font-family:'Arial'; color:#000000; font-size:13px;"> TGM2 Intermediate expression (13 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (3 patients)</span><br></span><br><span style=" font-family:'Arial'; color:#0000FF; font-size:13px;">| </span><span style=" font-family:'Arial'; color:#000000; font-size:13px;">All (55 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (9 patients)</span><br></span></DIV></DIV>
+<DIV id=u5 style="position:absolute; left:293px; top:643px; width:420px; height:144px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Log-rank P-value for significance of difference in survival between groups<br><br>2-fold overexpressed vs. 2-fold underexpressed&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.0431<br>2-fold overexpressed vs. intermediate&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.5401<br>2-fold underexpressed vs. intermediate&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.0561<br><br>2-fold overexpressed vs. all other patients&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.0431<br>2-fold overexpressed vs. all other patients&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.5401<br>intermediate vs. all other patients&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.0561</span></DIV></DIV>
+<INPUT id=u6  type=submit value="Back to Gene Expression Definition" style="position:absolute; left:360px; top:889px; width:240px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+
+<SELECT id=u7  style="position:absolute; left:365px; top:810px; width:50px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="1.5">1.5</OPTION>
+<OPTION selected value="2">2</OPTION>
+<OPTION  value="3">3</OPTION>
+<OPTION  value="4">4</OPTION>
+<OPTION  value="5">5</OPTION>
+<OPTION  value="10">10</OPTION>
+</SELECT>
+
+<DIV id=u8 style="position:absolute; left:262px; top:813px; width:332px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u8_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Overexpressed &gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; fold or &gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; percentile&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></DIV></DIV>
+<SELECT id=u9  style="position:absolute; left:472px; top:810px; width:50px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="80th">80th</OPTION>
+<OPTION selected value="90th">90th</OPTION>
+<OPTION  value="95th">95th</OPTION>
+<OPTION  value="99th">99th</OPTION>
+</SELECT>
+
+<SELECT id=u10  style="position:absolute; left:365px; top:838px; width:50px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="1.5">1.5</OPTION>
+<OPTION selected value="2">2</OPTION>
+<OPTION  value="3">3</OPTION>
+<OPTION  value="4">4</OPTION>
+<OPTION  value="5">5</OPTION>
+<OPTION  value="10">10</OPTION>
+</SELECT>
+
+<DIV id=u11 style="position:absolute; left:255px; top:841px; width:339px; height:16px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u11_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Underexpressed &lt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; fold or &lt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; percentile&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></DIV></DIV>
+<SELECT id=u12  style="position:absolute; left:472px; top:838px; width:50px; height:22px; ; background-color:#FFFFFF; text-align: left ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<OPTION  value="20th">20th</OPTION>
+<OPTION selected value="10th">10th</OPTION>
+<OPTION  value="5th">5th</OPTION>
+<OPTION  value="1st">1st</OPTION>
+</SELECT>
+
+<INPUT id=u13  type=submit value="Redraw Plot" style="position:absolute; left:614px; top:820px; width:100px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Kaplan_Meier_Plot_By_Gene_Expression_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>

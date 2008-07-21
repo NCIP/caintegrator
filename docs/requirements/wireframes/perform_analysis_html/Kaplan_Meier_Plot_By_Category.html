@@ -1,0 +1,57 @@
+<HTML><HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="imagetoolbar" content="no"><link href="Resources/axurerppage.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+<script type="text/javascript">
+function InitializeSubmenu(submenucontainerid, tablecellroid, tablecellid, fname) { 
+var s = "";
+s = s + "function " + fname + "() { ";
+s = s + "document.getElementById(submenucontainerid).style.visibility='';";
+s = s + "BringToFront(submenucontainerid);";
+s = s + "}";
+if ((index = navigator.userAgent.indexOf("MSIE")) >= 0)
+s = s + "document.getElementById('" + tablecellid + "').attachEvent(\"onmouseover\", " + fname + ");";
+else
+s = s + "document.getElementById('" + tablecellid + "').addEventListener(\"mouseover\", " + fname + ", true);";
+s = s + "document.getElementById(tablecellroid).onclick = function() {";
+s = s + "if( document.createEvent ) {";
+s = s + "var evObj = document.createEvent('MouseEvents');";
+s = s + "evObj.initEvent( 'click', true, false );";
+s = s + "document.getElementById(tablecellid).dispatchEvent(evObj);";
+s = s + "} else if( document.createEventObject ) {";
+s = s + "document.getElementById(tablecellid).fireEvent('onclick');";
+s = s + "}";
+s = s + "}";
+eval(s);
+}
+</script>
+
+<DIV id=ou0 style="position:absolute; left:80px; top:60px; width:801px; height:711px;; overflow:visible">
+
+<span style="position:absolute; left:-3px; top:-3px; width:809px; height:719px; ;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_Plot_By_Category_files/u0.png',sizingMethod='scale');
+"><img style="width:809px; height:719px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_Plot_By_Category_files/u0.png" border="0" alt=""></span>
+
+</DIV>
+<DIV id=u0container style="position:absolute; left:80px; top:60px; width:801px; height:711px;; overflow:visible;">
+
+<DIV id=u1 style="position:absolute; left:2px; top:347px; width:796px; height:16px; ; ; text-align: center ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="Resources/transparent.gif" style="position:absolute; left:80px; top:60px; width:800px; height:710px"  >
+
+<span style="position:absolute; left:130px; top:130px; width:700px; height:500px">
+<span id=ou2 style="position:absolute;left:0px;top:0px;width:700px;height:500px;
+filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Kaplan_Meier_Plot_By_Category_files/u2.png',sizingMethod='scale');
+"><img style="width:700px; height:500px; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" 
+src="Kaplan_Meier_Plot_By_Category_files/u2.png" border="0" alt=""></span>
+</span>
+<IMG id=u2 src="Resources/transparent.gif" style="position:absolute; left:130px; top:130px; width:700px; height:500px"   >
+
+<DIV id=u3 style="position:absolute; left:273px; top:85px; width:467px; height:18px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u3_rtf><span style=" font-family:'Arial'; color:#000000; font-size:16px;">Kaplan Meier Survival Plot for Astrocytoma vs. Oligodendroglioma</span></DIV></DIV>
+<DIV id=u4 style="position:absolute; left:588px; top:160px; width:260px; height:80px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u4_rtf><span style=" font-family:'Arial'; color:#FF0000; font-size:13px;"><b>|</b></span><span style=" font-family:'Arial'; color:#000000; font-size:13px;"> Astrocytoma (25 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (3 patients)</span><br></span><br><span style=" font-family:'Arial'; color:#0000FF; font-size:13px;">| </span><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Oligodendroglioma (19 patients)</span><br>&bull; <span style="margin-top:-5px"><span style=" font-family:'Arial'; color:#000000; font-size:13px;">censored (4 patients)</span><br></span></DIV></DIV>
+<DIV id=u5 style="position:absolute; left:293px; top:643px; width:420px; height:48px; ; ; text-align: left ; font-family:Arial; text-align:left; word-wrap:break-word;" >
+<DIV id=u5_rtf><span style=" font-family:'Arial'; color:#000000; font-size:13px;">Log-rank P-value for significance of difference in survival between groups<br><br>Astrocytoma vs. Oligodendroglioma&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 0.0431</span></DIV></DIV>
+<INPUT id=u6  type=submit value="Back to Category Definition" style="position:absolute; left:390px; top:715px; width:210px; height:25px; ; ; text-align: center ; font-family:'Arial'; font-size: 13px; color:#000000; font-style:normal; font-weight:normal; text-decoration:none" >
+<SCRIPT src="Resources/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="Kaplan_Meier_Plot_By_Category_files/axurerp_pagespecificscript.js"></SCRIPT></BODY></HTML>
