@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/test/src"/>
+	<classpathentry kind="src" path="software/caintegrator2-war/test/resources"/>
+	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/activation-1.0.2.jar"/>
