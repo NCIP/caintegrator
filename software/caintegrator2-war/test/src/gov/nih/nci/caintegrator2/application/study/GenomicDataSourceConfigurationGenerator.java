@@ -95,6 +95,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
 
     @Override
     public void compareFields(GenomicDataSourceConfiguration original, GenomicDataSourceConfiguration retrieved) {
+        assertEquals(original.getStudyConfiguration(), retrieved.getStudyConfiguration());
         assertEquals(original.getExperimentIdentifier(), retrieved.getExperimentIdentifier());
         ServerConnectionProfileGenerator.INSTANCE.compare(original.getServerProfile(), retrieved.getServerProfile());
         assertEquals(original.getSamples().size(), retrieved.getSamples().size());

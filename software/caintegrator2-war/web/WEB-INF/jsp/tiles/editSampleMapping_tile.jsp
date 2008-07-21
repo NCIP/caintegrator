@@ -37,8 +37,8 @@
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="type" /></td>
-            <td><s:property value="description" /></td>
+            <td><s:property value="id" /></td>
+            <td><s:property value="name" /></td>
         </s:iterator>
     
     <table class="data">
@@ -57,8 +57,8 @@
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="type" /></td>
-            <td><s:property value="description" /></td>
+            <td><s:property value="id" /></td>
+            <td><s:property value="name" /></td>
         </s:iterator>
     </table>
             
