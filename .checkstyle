@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fileset-config file-format-version="1.2.0" simple-config="false">
+    <fileset name="all" enabled="true" check-config-name="caintegrator2_checks" local="false">
+        <file-match-pattern match-pattern="software/caintegrator2-war/src" include-pattern="true"/>
+    </fileset>
+</fileset-config>

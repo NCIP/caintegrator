@@ -747,7 +747,7 @@
     </target>
 
     <target name="pmd:update-eclipse-projects">
-        <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${caintegrator2.war.dir}/.ruleset" />
+        <copy file="${resource.dir}/pmd/pmd-ruleset.xml" tofile="${root.dir}/.ruleset" />
     </target>
 
     <!-- ******************************************************************* -->
