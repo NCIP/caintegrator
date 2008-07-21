@@ -85,15 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import org.apache.struts2.config.Result;
-import org.apache.struts2.views.tiles.TilesResult;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Takes the current user to the application homepage.
  */
-@Result(value = "homepage", type = TilesResult.class)
 public class HomepageAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
