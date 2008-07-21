@@ -15,7 +15,7 @@
     <!-- Main -->
     <property name="root.dir" location="${basedir}/../.." />
     <property name="docs.dir" location="${root.dir}/docs" />
-    <property name="software.dir" location="${root.dir}/software" />
+    <property name="software.dir" location=".." />
     <property name="build.dir" location="${software.dir}/caintegrator2-war" />
     <property name="lib.dir" location="${software.dir}/lib" />
     <property name="external.runtime.lib.dir" location="${lib.dir}/external-runtime" />
