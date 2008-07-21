@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
-	<classpathentry kind="src" path="software/caintegrator2-war/test/src"/>
-	<classpathentry kind="src" path="software/caintegrator2-war/test/resources"/>
+	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar"/>
@@ -63,7 +63,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freemarker-2.3.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/freestylesearch-4.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/grib-6.0.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.2.0.ga.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-3.2.0.ga.jar" sourcepath="software/lib/src/hibernate-3.2-src.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-annotations-1.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-commons-annotations-3.0.0.GA.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/hibernate-tools-3.2.2.beta1.jar"/>
@@ -87,7 +87,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/saaj-1.2.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.0.3.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/spring-2.0.3.jar" sourcepath="software/lib/src/spring-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-core-2.0.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-spring-plugin-2.0.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/struts2-tiles-plugin-2.0.11.jar"/>
@@ -117,5 +117,5 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-web-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-ws-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/spring-mock-2.0.3.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
