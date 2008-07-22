@@ -87,7 +87,11 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
 import java.util.List;
@@ -136,5 +140,32 @@ public interface CaIntegrator2Dao {
      * @return the list of studies.
      */
     List<StudyConfiguration> getManagedStudies(String username);
-
+    
+    /**
+     * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
+     * the corresponding criterion.
+     * 
+     * @param criterion find subjects that match the given criterion.
+     * @return the list of matches.
+     */
+    List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion);
+    
+    /**
+     * Returns the subjects (via their linked <code>ImageSeriesAcquisitions</code> that match
+     * the corresponding criterion.
+     * 
+     * @param criterion find subjects that match the given criterion.
+     * @return the list of matches.
+     */
+    List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion);
+    
+    /**
+     * Returns the subjects (via their linked <code>SampleAcquisitions</code> that match
+     * the corresponding criterion.
+     * 
+     * @param criterion find subjects that match the given criterion.
+     * @return the list of matches.
+     */
+    List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion);
+    
 }

@@ -89,7 +89,11 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,6 +170,30 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<StudyConfiguration> getManagedStudies(String username) {
         // TODO Real implementation requires checking StudyConfiguration ownership in CSM when integrated
         return getHibernateTemplate().find("from StudyConfiguration sc order by sc.study.shortTitleText");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 
