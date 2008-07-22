@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
@@ -168,7 +169,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
             File inputFile, String filename) throws ValidationException, IOException {
         File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
-        AnnotationFile annotationFile = AnnotationFile.load(permanentFile);
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
         DelimitedTextClinicalSourceConfiguration clinicalSourceConfig = 
             new DelimitedTextClinicalSourceConfiguration(annotationFile, studyConfiguration);
         dao.save(studyConfiguration);
@@ -188,18 +189,34 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     private void persist(StudyConfiguration studyConfiguration) {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
-            save(assignment.getSubjectAnnotation());
+            saveSubjectAnnotations(assignment.getSubjectAnnotation());
+            saveSampleAcquisitions(assignment.getSampleAcquisitionCollection());
             dao.save(assignment.getSubject());
             dao.save(assignment);
         }
         dao.save(studyConfiguration);
     }
 
-    private void save(Collection<SubjectAnnotation> subjectAnnotations) {
+    private void saveSampleAcquisitions(Collection<SampleAcquisition> sampleAcquisitionCollection) {
+        for (SampleAcquisition sampleAcquisition : sampleAcquisitionCollection) {
+            dao.save(sampleAcquisition.getSample());
+            dao.save(sampleAcquisition);
+        }
+    }
+
+    private void saveSubjectAnnotations(Collection<SubjectAnnotation> subjectAnnotations) {
         for (SubjectAnnotation annotation : subjectAnnotations) {
             dao.save(annotation.getAnnotationValue());
             dao.save(annotation);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) {
+        new SampleMappingHelper(studyConfiguration, mappingFile).mapSamples();
+        save(studyConfiguration);
     }
 
     /**

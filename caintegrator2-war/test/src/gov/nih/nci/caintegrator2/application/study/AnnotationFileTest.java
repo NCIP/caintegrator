@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,7 +110,7 @@ public class AnnotationFileTest {
     }
     
     private AnnotationFile createAnnotationFile(File file) throws ValidationException {
-        return AnnotationFile.load(file);
+        return AnnotationFile.load(file, new CaIntegrator2DaoStub());
     }
 
     /**

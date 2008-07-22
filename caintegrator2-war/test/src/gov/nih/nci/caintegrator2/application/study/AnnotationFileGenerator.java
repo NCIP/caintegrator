@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 /**
  * 
@@ -117,7 +118,7 @@ public final class AnnotationFileGenerator extends AbstractTestDataGenerator<Ann
     @Override
     public AnnotationFile createPersistentObject() {
         try {
-            return AnnotationFile.load(VALID_FILE);
+            return AnnotationFile.load(VALID_FILE, new CaIntegrator2DaoStub());
         } catch (ValidationException e) {
             return null;
         }

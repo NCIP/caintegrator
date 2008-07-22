@@ -1,0 +1,1 @@
+Age at Dx (years),numeric,Survival length (days),numeric,Age Range,string,25-29;30-34;35-39Gender,string,M;FSurvival (months),string,02-03M;04-05M;05-06M;06-09M;09-12M;12-18MDisease,string,GBM;ASTROCYTOMA;UNCLASSIFIED;OLIGODENDROGLIOMA;CELL_LINEGrade,string,I;II;IIIRace,string,WHITEInstitution,string,TJU;NOB;UNIVERSITY OF WISCONSINKarnofsky,numeric,

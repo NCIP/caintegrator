@@ -85,122 +85,124 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
-import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
-/**
- * Service used to create, define, deploy and update studies.
- */
-public interface StudyManagementService {
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
+
+import au.com.bytecode.opencsv.CSVReader;
+
+@Transactional
+public class DeployVasariTestIntegration extends AbstractTransactionalSpringContextTests {
+    
+    private StudyManagementService service;
+    private StudyConfiguration studyConfiguration;
+    private DelimitedTextClinicalSourceConfiguration sourceConfiguration;
+    private CaIntegrator2Dao dao;
+    
+    public DeployVasariTestIntegration() {
+        setDefaultRollback(false);
+    }
+    
+    protected String[] getConfigLocations() {
+        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
+    }
     
     /**
-     * Saves a study.
-     * 
-     * @param studyConfiguration study to save
+     * @param caIntegrator2Dao the caIntegrator2Dao to set
      */
-    void save(StudyConfiguration studyConfiguration);
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.service = studyManagementService;
+    }
     
-    /**
-     * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
-     * file provided as an argument to be removed after completion of this method.
-     * 
-     * @param studyConfiguration add the annotation file to this study
-     * @param annotationFile annotation file to add.
-     * @param filename the name with which the annotation file should be stored 
-     *        (allows for the use of files with temp names as input)
-     * @return the clinical source configuration created.
-     * @throws ValidationException if the file was not a valid annotation file.
-     * @throws IOException if the annotation file couldn't be copied to permanent storage.
-     */
-    DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration, 
-            File annotationFile, String filename) throws ValidationException, IOException;
+    @Test
+    public void testDeployVasari() throws ValidationException, IOException, ConnectionException {
+        try {
+            studyConfiguration = new StudyConfiguration();
+            service.save(studyConfiguration);
+            loadRembrandtAnnotationDefinitions();
+            loadClinicalData();
+            loadSamples();
+            mapSamples();
+            deploy();
+        } finally {
+            cleanup();            
+        }
+        
+    }
 
-    /**
-     * Loads clinical annotations given a study configuration.
-     * 
-     * @param studyConfiguration study configuration to load
-     */
-    void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
+    private void loadSamples() throws ConnectionException {
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
+        genomicSource.getServerProfile().setPort(8080);
+        genomicSource.setExperimentIdentifier("bakal-00023");
+        service.addGenomicSource(studyConfiguration, genomicSource);
+        assertEquals(2, genomicSource.getSamples().size());
+    }
 
-    /**
-     * Deploys or redeploys a study.
-     * 
-     * @param studyConfiguration the study configuration to deploy
-     */
-    void deployStudy(StudyConfiguration studyConfiguration);
-
-    /**
-     * Adds a new, initialized genomic data source to the study.
-     * 
-     * @param studyConfiguration study configuration to add genomic data source to
-     * @param genomicSource genomic source to add
-     * @throws ConnectionException if the configured server couldn't be reached.
-     */
-    void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException;
+    private void mapSamples() {
+        service.mapSamples(studyConfiguration, TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE);
+    }
     
-    /**
-     * Returns the studies managed by the Study Manager indicated by username.
-     * 
-     * @param username get studies managed by this user
-     * @return the list of managed studies.
-     */
-    List<StudyConfiguration> getManagedStudies(String username);
+    private void deploy() {
+        service.deployStudy(studyConfiguration);
+    }
 
-    /**
-     * Returns the refreshed entity attached to the current Hibernate session.
-     * 
-     * @param <T> type of object being returned.
-     * @param entity a persistent entity with the id set.
-     * @return the refreshed entity.
-     */
-    <T> T getRefreshedStudyEntity(T entity);
+    private void cleanup() {
+        if (sourceConfiguration != null && sourceConfiguration.getAnnotationFile() != null) {
+            sourceConfiguration.getAnnotationFile().getFile().delete();
+        }
+    }
 
-    /**
-     * Returns an ordered list of existing definitions that match the keywords contained
-     * in the given column.
-     * 
-     * @param fileColumn match definitions for this column.
-     * @return the list of matching candidate definitions.
-     */
-    List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn);
+    private void loadClinicalData() throws IOException, ValidationException {
+        sourceConfiguration = 
+            service.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.REMBRANDT_CLINICAL_FILE, 
+                    TestDataFiles.REMBRANDT_CLINICAL_FILE.getName());
+        sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+        assertTrue(sourceConfiguration.isLoadable());
+        service.loadClinicalAnnotation(studyConfiguration);
+    }
 
-    /**
-     * Returns an ordered list of existing CaDSR data elements that match the keywords contained
-     * in the given column.
-     * 
-     * @param fileColumn match data elements for this column.
-     * @return the list of matching candidate data elements.
-     */
-    List<DataElement> getMatchingDataElements(FileColumn fileColumn);
+    private void loadRembrandtAnnotationDefinitions() throws IOException {
+        CSVReader reader = new CSVReader(new FileReader(TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE));
+        String[] fields;
+        while ((fields = reader.readNext()) != null) {
+            AnnotationDefinition definition = new AnnotationDefinition();
+            definition.setDisplayName(fields[0]);
+            definition.setType(AnnotationTypeEnum.getByValue(fields[1]).getValue());
+            if (!StringUtils.isBlank(fields[2])) {
+                Collection<AbstractPermissableValue> permissableValues = new HashSet<AbstractPermissableValue>();
+                String[] values = fields[2].split(";");
+                for (String value : values) {
+                    StringPermissableValue permissableValue = new StringPermissableValue();
+                    permissableValue.setValue(value);
+                    permissableValues.add(permissableValue);
+                    dao.save(permissableValue);
+                }
+                definition.setPermissableValueCollection(permissableValues);
+            }
+            dao.save(definition);
+        }
+    }
 
-    /**
-     * Selects an existing CaDSR data element as the definition for a column.
+    public CaIntegrator2Dao getCaIntegrator2Dao() {
+        return dao;
+    }
 
-     * @param fileColumn column receiving definition.
-     * @param dataElement the selected data element.
-     */
-    void setDataElement(FileColumn fileColumn, DataElement dataElement);
+    public void setCaIntegrator2Dao(CaIntegrator2Dao caIntegrator2Dao) {
+        this.dao = caIntegrator2Dao;
+    }
 
-    /**
-     * Selects an existing annotation definition for a column.
-     * 
-     * @param fileColumn column receiving definition.
-     * @param annotationDefinition the selected definition.
-     */
-    void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition);
-
-    /**
-     * Create the associations between subjects in the study and samples.
-     * 
-     * @param studyConfiguration study containing the subjects and samples
-     * @param mappingFile comma-separated value file that maps subject identifiers to sample names
-     */
-    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile);
-    
 }

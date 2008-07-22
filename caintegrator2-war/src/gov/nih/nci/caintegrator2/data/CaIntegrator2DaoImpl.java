@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -194,6 +195,20 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")  // Hibernate operations are untyped
+    public AnnotationDefinition getAnnotationDefinition(String name) {
+        List values = getHibernateTemplate().findByNamedParam("from AnnotationDefinition where displayName = :name", 
+                "name", name);
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return (AnnotationDefinition) values.get(0);
+        }
     }
     
 

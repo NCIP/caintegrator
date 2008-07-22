@@ -107,6 +107,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean setDataElementCalled;
     public boolean setDefinitionCalled;
     public boolean loadClinicalAnnotationCalled;
+    public boolean mapSamplesCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -131,8 +132,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         getRefreshedStudyEntityCalled = false;
         getMatchingDefinitionsCalled = false;
         getMatchingDataElementsCalled = false;
-        setDataElementCalled = true;
-        setDefinitionCalled = true;
+        setDataElementCalled = false;
+        setDefinitionCalled = false;
+        mapSamplesCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -177,6 +179,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
         setDefinitionCalled = true;
+    }
+
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) {
+        mapSamplesCalled = true;
     }
     
 }

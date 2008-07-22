@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -140,20 +141,21 @@ public class AnnotationFile implements PersistentObject {
         this.columns = columns;
     }
     
-    static AnnotationFile load(File file) throws ValidationException {
+    static AnnotationFile load(File file, CaIntegrator2Dao dao) throws ValidationException {
         AnnotationFile annotationFile = new AnnotationFile(file);
         annotationFile.validateFileFormat();
-        annotationFile.loadColumns();
+        annotationFile.loadColumns(dao);
         return annotationFile;
     }
 
-    private void loadColumns() {
+    private void loadColumns(CaIntegrator2Dao dao) {
         resetReader();
         loadNextLine();
         for (int index = 0; index < currentLineValues.length; index++) {
             FileColumn column = new FileColumn(this);
             column.setPosition(index);
-            column.setName(currentLineValues[index]);
+            column.setName(currentLineValues[index].trim());
+            column.createFieldDescriptor(dao);
             columns.add(column);
         }
     }
@@ -324,8 +326,6 @@ public class AnnotationFile implements PersistentObject {
                 return;
             }
         }
-        column.setFieldDescriptor(new AnnotationFieldDescriptor());
-        column.getFieldDescriptor().setName(column.getName());
     }
 
     private boolean isAnnotationColumn(FileColumn column) {
