@@ -93,7 +93,11 @@ import java.util.List;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
@@ -101,6 +105,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean saveCalled;
     public boolean getManagedStudiesCalled;
     public boolean findMatchesCalled;
+    public boolean findMatchingImageSeriesCalled;
+    public boolean findMatchingSamplesCalled;
+    public boolean findMatchingSubjectsCalled;
 
     public UserWorkspace getWorkspace(String username) {
         return new UserWorkspace();
@@ -115,6 +122,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         saveCalled = false;
         findMatchesCalled = false;
         getManagedStudiesCalled = false;
+        findMatchingImageSeriesCalled = false;
+        findMatchingSamplesCalled = false;
+        findMatchingSubjectsCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -141,6 +151,30 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public List<StudyConfiguration> getManagedStudies(String username) {
         getManagedStudiesCalled = true;
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion) {
+        findMatchingImageSeriesCalled = true;
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion) {
+        findMatchingSamplesCalled = true;
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion) {
+        findMatchingSubjectsCalled = true;
         return Collections.emptyList();
     }
 
