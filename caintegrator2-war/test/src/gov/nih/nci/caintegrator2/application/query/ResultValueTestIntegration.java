@@ -87,17 +87,17 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
-import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
 /**
  * 
  */
-public class QueryTestIntegration extends AbstractHibernateMappingTestIntegration<Query> {
+public class ResultValueTestIntegration extends AbstractHibernateMappingTestIntegration<ResultValue> {
 
 
     @Override
-    protected AbstractTestDataGenerator<Query> getDataGenerator() {
-        return QueryGenerator.INSTANCE;
+    protected AbstractTestDataGenerator<ResultValue> getDataGenerator() {
+        return ResultValueGenerator.INSTANCE;
     }
 
 }

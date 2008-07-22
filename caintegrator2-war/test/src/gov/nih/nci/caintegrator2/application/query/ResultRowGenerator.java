@@ -87,50 +87,54 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.Collection;
 import java.util.HashSet;
 
-/**
- * 
- */
-public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
 
-    public static final QueryGenerator INSTANCE = new QueryGenerator();
+public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRow> {
+
+    public static final ResultRowGenerator INSTANCE = new ResultRowGenerator();
     
-    private QueryGenerator() {
+    private ResultRowGenerator() {
         super();
     }
 
     @Override
-    public void compareFields(Query original, Query retrieved) {
+    public void compareFields(ResultRow original, ResultRow retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getDescription(), retrieved.getDescription());
-        CompoundCriterionGenerator.INSTANCE.compare(original.getCompoundCriterion(), retrieved.getCompoundCriterion());
-        assertEquals(original.getColumnCollection().size(), retrieved.getColumnCollection().size());
-        assertEquals(original.getColumnCollection().size(), 3);
-
+        assertEquals(original.getRowIndex(), retrieved.getRowIndex());
+        assertEquals(original.getImageSeriesAcquisition().getId(), 
+                     retrieved.getImageSeriesAcquisition().getId());
+        assertEquals(original.getSampleAcquisition().getId(),
+                     retrieved.getSampleAcquisition().getId());
+        assertEquals(original.getSubjectAssignment().getId(),
+                     retrieved.getSubjectAssignment().getId());
+        assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
     }
 
 
     @Override
-    public Query createPersistentObject() {
-        return new Query();
+    public ResultRow createPersistentObject() {
+        return new ResultRow();
     }
 
 
     @Override
-    public void setValues(Query query) {
-        query.setDescription(getUniqueString());
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        for (int x=0; x<3; x++) {
-            query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject());
+    public void setValues(ResultRow resultRow) {
+        resultRow.setRowIndex(getUniqueInt());
+        resultRow.setValueCollection(new HashSet<ResultValue>());
+        for (int i = 0; i < 3; i++) {
+            resultRow.getValueCollection().add(ResultValueGenerator.INSTANCE.createPersistentObject());
         }
-        CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion);
-        query.setCompoundCriterion(compoundCriterion);
+        resultRow.setImageSeriesAcquisition(new ImageSeriesAcquisition());
+        resultRow.setSampleAcquisition(new SampleAcquisition());
+        resultRow.setSubjectAssignment(new StudySubjectAssignment());
 
     }
 

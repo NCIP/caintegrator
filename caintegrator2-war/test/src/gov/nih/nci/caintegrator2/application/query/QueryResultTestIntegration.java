@@ -85,53 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-
-import java.util.HashSet;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
 /**
  * 
  */
-public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
-
-    public static final QueryGenerator INSTANCE = new QueryGenerator();
-    
-    private QueryGenerator() {
-        super();
-    }
-
-    @Override
-    public void compareFields(Query original, Query retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getDescription(), retrieved.getDescription());
-        CompoundCriterionGenerator.INSTANCE.compare(original.getCompoundCriterion(), retrieved.getCompoundCriterion());
-        assertEquals(original.getColumnCollection().size(), retrieved.getColumnCollection().size());
-        assertEquals(original.getColumnCollection().size(), 3);
-
-    }
+public class QueryResultTestIntegration extends AbstractHibernateMappingTestIntegration<QueryResult> {
 
 
     @Override
-    public Query createPersistentObject() {
-        return new Query();
-    }
-
-
-    @Override
-    public void setValues(Query query) {
-        query.setDescription(getUniqueString());
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        for (int x=0; x<3; x++) {
-            query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject());
-        }
-        CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion);
-        query.setCompoundCriterion(compoundCriterion);
-
+    protected AbstractTestDataGenerator<QueryResult> getDataGenerator() {
+        return QueryResultGenerator.INSTANCE;
     }
 
 }
