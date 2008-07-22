@@ -97,6 +97,9 @@ public class TestDataFiles {
     public static final String INVALID_FILE_EMPTY_RESOURCE_PATH = "/emptyfile.txt";
     public static final String INVALID_FILE_NO_DATA_RESOURCE_PATH = "/csvtestclinical-no-data.csv";
     public static final String INVALID_FILE_DOESNT_EXIST_PATH = "nofile.txt";
+    public static final String REMBRANDT_CLINICAL_FILE_PATH = "/rembrandt_clinical_June08.csv";
+    public static final String REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH = "/rembrandt_annotation_definitions.csv";
+    public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_sample_mapping.csv";
     
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
@@ -104,6 +107,9 @@ public class TestDataFiles {
     public static final File INVALID_FILE_EMPTY = getFile(INVALID_FILE_EMPTY_RESOURCE_PATH);
     public static final File INVALID_FILE_NO_DATA = getFile(INVALID_FILE_NO_DATA_RESOURCE_PATH);
     public static final File INVALID_FILE_DOESNT_EXIST= new File(INVALID_FILE_DOESNT_EXIST_PATH);
+    public static final File REMBRANDT_CLINICAL_FILE = getFile(REMBRANDT_CLINICAL_FILE_PATH);
+    public static final File REMBRANDT_ANNOTATION_DEFINITIONS_FILE = getFile(REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH);
+    public static final File REMBRANDT_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
 
     private static File getFile(String resourcePath) {
         return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());

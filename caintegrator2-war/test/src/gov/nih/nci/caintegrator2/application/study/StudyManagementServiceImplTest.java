@@ -91,11 +91,15 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -237,6 +241,37 @@ public class StudyManagementServiceImplTest {
         assertEquals("longName", fileColumn.getFieldDescriptor().getDefinition().getDisplayName());
         assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
         assertEquals("1234", fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
+    }
+    
+    @Test
+    public void testMapSamples() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        assignment1.setId(1L);
+        assignment1.setIdentifier("E05004");
+        assignment1.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment1);
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        assignment2.setId(2L);
+        assignment2.setIdentifier("E05012");
+        assignment2.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        Sample sample1 = new Sample();
+        sample1.setId(1L);
+        sample1.setName("5500024030700072107989.B09");
+        genomicDataSourceConfiguration.getSamples().add(sample1);
+        Sample sample2 = new Sample();
+        sample2.setId(2L);
+        sample2.setName("5500024030700072107989.G10");
+        genomicDataSourceConfiguration.getSamples().add(sample2);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        studyManagementService.mapSamples(studyConfiguration, TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE);
+        assertEquals(1, assignment1.getSampleAcquisitionCollection().size());
+        assertEquals(sample1, assignment1.getSampleAcquisitionCollection().iterator().next().getSample());
+        assertEquals(1, assignment2.getSampleAcquisitionCollection().size());
+        assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
     }
 
 }

@@ -85,11 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
@@ -257,6 +258,11 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
         return isIdentifierColumn() || isTimepointColumn() 
         || (getFieldDescriptor() != null && getFieldDescriptor().getDefinition() != null);
     }
-    
+
+    void createFieldDescriptor(CaIntegrator2Dao dao) {
+        setFieldDescriptor(new AnnotationFieldDescriptor());
+        getFieldDescriptor().setName(getName());
+        getFieldDescriptor().setDefinition(dao.getAnnotationDefinition(getName()));
+    }
 
 }

@@ -178,4 +178,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return Collections.emptyList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public AnnotationDefinition getAnnotationDefinition(String name) {
+        return null;
+    }
+
 }

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +122,7 @@ public class FileColumnTest {
     
     @Test
     public void testGetDataValues() throws ValidationException {
-        AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE);
+        AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE, new CaIntegrator2DaoStub());
         List<String> dataValues = annotationFile.getColumns().get(0).getDataValues();
         assertEquals("100", dataValues.get(0));
         assertEquals("101", dataValues.get(1));

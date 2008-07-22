@@ -100,7 +100,7 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public final class CaIntegrator2DaoTestIntegration extends AbstractTransactionalSpringContextTests {
     
-    private CaIntegrator2Dao caIntegrator2Dao;
+    private CaIntegrator2Dao dao;
     private SessionFactory sessionFactory;
     
     protected String[] getConfigLocations() {
@@ -110,9 +110,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testGetWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
-        caIntegrator2Dao.save(workspace);
+        dao.save(workspace);
 
-        UserWorkspace workspace2 = this.caIntegrator2Dao.getWorkspace("Anything.");
+        UserWorkspace workspace2 = this.dao.getWorkspace("Anything.");
         assertEquals(workspace.getId(), workspace2.getId());
         
     }
@@ -125,13 +125,13 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         study1.setShortTitleText("shortTitleText");
         assertNull(studyConfiguration1.getId());
         assertNull(study1.getId());
-        caIntegrator2Dao.save(studyConfiguration1);
+        dao.save(studyConfiguration1);
         assertNotNull(studyConfiguration1.getId());
         assertNotNull(study1.getId());
         
         sessionFactory.getCurrentSession().flush();
         sessionFactory.getCurrentSession().clear();
-        StudyConfiguration studyConfiguration2 = caIntegrator2Dao.get(studyConfiguration1.getId(), StudyConfiguration.class);
+        StudyConfiguration studyConfiguration2 = dao.get(studyConfiguration1.getId(), StudyConfiguration.class);
         Study study2 = studyConfiguration2.getStudy();
         
         assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
@@ -148,26 +148,26 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         afd.setKeywords("congestive heart failure");
         afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd);
+        dao.save(afd);
         
         AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
         afd2.setKeywords("congestive");
         afd2.setName("Congestive");
         afd2.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd2);
+        dao.save(afd2);
         
         AnnotationFieldDescriptor afd3 = new AnnotationFieldDescriptor();
         afd3.setKeywords("congestive failure");
         afd3.setName("Congestive Failure");
         afd3.setType(AnnotationFieldType.CHOICE);
-        caIntegrator2Dao.save(afd3);
+        dao.save(afd3);
         
         // Now search for our item on the string "congestive"
         List<String> searchWords = new ArrayList<String>();
         searchWords.add("CoNgeStiVe");
         searchWords.add("HearT");
         searchWords.add("failure");
-        List<AnnotationFieldDescriptor> afds1 = caIntegrator2Dao.findMatches(searchWords);
+        List<AnnotationFieldDescriptor> afds1 = dao.findMatches(searchWords);
         
         assertNotNull(afds1);
         // Make sure it sorted them properly.
@@ -177,15 +177,15 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         List<String> searchWords2 = new ArrayList<String>();
         searchWords2.add("afdsefda");
-        List<AnnotationFieldDescriptor> afds2 = caIntegrator2Dao.findMatches(searchWords2);
+        List<AnnotationFieldDescriptor> afds2 = dao.findMatches(searchWords2);
         assertEquals(0, afds2.size());
     }
 
     /**
      * @param caIntegrator2Dao the caIntegrator2Dao to set
      */
-    public void setCaIntegrator2Dao(CaIntegrator2Dao caIntegrator2Dao) {
-        this.caIntegrator2Dao = caIntegrator2Dao;
+    public void setDao(CaIntegrator2Dao caIntegrator2Dao) {
+        this.dao = caIntegrator2Dao;
     }
 
     /**
