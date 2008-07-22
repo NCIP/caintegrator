@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -200,7 +201,11 @@ public class AnnotationFieldDescriptor implements PersistentObject {
      * @return the keywords.
      */
     public List<String> getKeywordsAsList() {
-        return Arrays.asList(StringUtils.split(getKeywords()));
+        if (getKeywords() != null) {
+            return Arrays.asList(StringUtils.split(getKeywords()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /**

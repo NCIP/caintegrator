@@ -227,10 +227,14 @@ public class StudyConfiguration implements PersistentObject {
 
     StudySubjectAssignment getOrCreateSubjectAssignment(String identifier) {
         if (getIdentifierToSubjectAssignmentMap().containsKey(identifier)) {
-            return getIdentifierToSubjectAssignmentMap().get(identifier);
+            return getSubjectAssignment(identifier);
         } else {
             return createSubjectAssignment(identifier);
         }
+    }
+
+    StudySubjectAssignment getSubjectAssignment(String identifier) {
+        return getIdentifierToSubjectAssignmentMap().get(identifier);
     }
 
     private StudySubjectAssignment createSubjectAssignment(String identifier) {

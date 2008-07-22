@@ -83,98 +83,71 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Main DAO interface for storage and retrieval of persistent entities.
+ * Annotation of allowed values for <code>AnnotationDefintion.type</code>
  */
-public interface CaIntegrator2Dao {
+public enum AnnotationTypeEnum {
+
+    DATE("date"),
+    NUMERIC("numeric"),
+    STRING("string");
     
-    /**
-     * Saves the object given.
-     * 
-     * @param persistentObject the object to save.
-     */
-    void save(Object persistentObject);
+    private static Map<String, AnnotationTypeEnum> valueToTypeMap = new HashMap<String, AnnotationTypeEnum>();
+
+    private String value;
     
-    /**
-     * Returns the persistent object with the id given.
-     * 
-     * @param <T> type of object being returned.
-     * @param id id of the object to retrieve
-     * @param objectClass the class of the object to retrieve
-     * @return the requested object.
-     */
-    <T> T get(Long id, Class<T> objectClass);
-    
-    /**
-     * Returns the workspace belonging to the specified user.
-     * 
-     * @param username retrieve workspace for this user.
-     * @return the user's workspace
-     */
-    UserWorkspace getWorkspace(String username);
-    
-    /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
-     * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
-     */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+    private AnnotationTypeEnum(String value) {
+        this.value = value;
+    }
 
     /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
+     * @return the value
      */
-    List<StudyConfiguration> getManagedStudies(String username);
-    
-    /**
-     * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @return the list of matches.
-     */
-    List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion);
-    
-    /**
-     * Returns the subjects (via their linked <code>ImageSeriesAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @return the list of matches.
-     */
-    List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion);
-    
-    /**
-     * Returns the subjects (via their linked <code>SampleAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @return the list of matches.
-     */
-    List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion);
+    public String getValue() {
+        return value;
+    }
 
     /**
-     * Returns the definitions that matches the name given (if one exists).
-     * 
-     * @param name find definitions for this name
-     * @return the matching definition or null.
+     * @param value the value to set
      */
-    AnnotationDefinition getAnnotationDefinition(String name);
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    private static Map<String, AnnotationTypeEnum> getValueToTypeMap() {
+        if (valueToTypeMap.isEmpty()) {
+            for (AnnotationTypeEnum type : values()) {
+                valueToTypeMap.put(type.getValue(), type);
+            }
+        }
+        return valueToTypeMap;
+    }
     
+    /**
+     * Returns the <code>AnnotationTypeEnum</code> corresponding to the given value. Returns null
+     * for null value.
+     * 
+     * @param value the value to match
+     * @return the matching type.
+     */
+    public static AnnotationTypeEnum getByValue(String value) {
+        checkType(value);
+        return getValueToTypeMap().get(value);
+    }
+
+    /**
+     * Checks to see that the value given is a legal <code>AssayType</code> value.
+     * 
+     * @param value the value to check;
+     */
+    public static void checkType(String value) {
+        if (value != null && !getValueToTypeMap().containsKey(value)) {
+            throw new IllegalArgumentException("No matching type for " + value);
+        }
+    }
 }
