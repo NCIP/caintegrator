@@ -88,10 +88,9 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import static org.junit.Assert.assertEquals;
 
-/**
- * 
- */
+
 public final class StringComparisonCriterionGenerator extends AbstractTestDataGenerator<StringComparisonCriterion> {
 
     public static final StringComparisonCriterionGenerator INSTANCE = new StringComparisonCriterionGenerator();
@@ -101,14 +100,15 @@ public final class StringComparisonCriterionGenerator extends AbstractTestDataGe
     }
     @Override
     public void compareFields(StringComparisonCriterion original, StringComparisonCriterion retrieved) {
-        // TODO Auto-generated method stub
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
 
     }
 
     @Override
     public StringComparisonCriterion createPersistentObject() {
-        // TODO Auto-generated method stub
-        return null;
+        return new StringComparisonCriterion();
     }
 
     @Override
