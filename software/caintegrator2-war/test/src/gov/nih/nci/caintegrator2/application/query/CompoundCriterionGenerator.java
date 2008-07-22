@@ -89,10 +89,10 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 import java.util.TreeSet;
-
 /**
  * 
  */
@@ -105,7 +105,8 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
     }
     @Override
     public void compareFields(CompoundCriterion original, CompoundCriterion retrieved) {
-        // TODO Auto-generated method stub
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getBooleanOperator(), retrieved.getBooleanOperator());
 
     }
 
