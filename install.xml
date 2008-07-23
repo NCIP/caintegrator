@@ -195,7 +195,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper install database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database also calls upgrade:database -->
 	<target name="install:database" description="Re-creates database and users from baseline and applys incremental database changes." unless="exclude.database"
 		depends="
-		install:check,
 		install:init
 		">
 		<switch value="${database.type}">
@@ -445,6 +444,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		install:init,
 		install:jboss:caintegrator2-war:re-configure,
 		install:jboss:caintegrator2-war,
+		install:jboss:caintegrator2-war:configure,
 		install:jboss:start
 		" />
 
