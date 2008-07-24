@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 
