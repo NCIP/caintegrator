@@ -85,14 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.HashSet;
 /**
  * 
  */
@@ -107,7 +109,7 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
     public void compareFields(CompoundCriterion original, CompoundCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getBooleanOperator(), retrieved.getBooleanOperator());
-
+        assertEquals(original.getCriterionCollection().size(), retrieved.getCriterionCollection().size());
     }
 
     @Override
@@ -119,10 +121,18 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
     public void setValues(CompoundCriterion compoundCriterion) {
         compoundCriterion.setBooleanOperator("=");
         
-        Collection<AbstractCriterion> abstractCriterionCollection = new TreeSet<AbstractCriterion>();
+        Collection<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         StringComparisonCriterion scc = new StringComparisonCriterion();
         StringComparisonCriterionGenerator.INSTANCE.setValues(scc);
         abstractCriterionCollection.add(scc);
+        
+        NumericComparisonCriterion ncc = new NumericComparisonCriterion();
+        NumericComparisonCriterionGenerator.INSTANCE.setValues(ncc);
+        abstractCriterionCollection.add(ncc);
+        
+        SelectedValueCriterion svc = new SelectedValueCriterion();
+        SelectedValueCriterionGenerator.INSTANCE.setValues(svc);
+        abstractCriterionCollection.add(svc);
         
         compoundCriterion.setCriterionCollection(abstractCriterionCollection);
 
