@@ -19,6 +19,9 @@
         <property name="nciaFacade">
             <ref local="nciaFacadeStub"/>
         </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataServiceStub"/>
+        </property>
     </bean>
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
@@ -42,5 +45,8 @@
 
     <bean id="nciaFacadeStub"
         class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub" />
+
+    <bean id="arrayDataServiceStub"
+        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
 
 </beans>

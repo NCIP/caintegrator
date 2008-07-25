@@ -86,8 +86,11 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
+import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
+import gov.nih.nci.caarray.domain.data.DataSet;
 import gov.nih.nci.caarray.domain.project.Experiment;
 import gov.nih.nci.caarray.domain.sample.Sample;
+import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -98,8 +101,13 @@ import java.util.List;
 
 public class ServiceStubFactory implements CaArrayServiceFactory {
 
+ 
     public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
         return new SearchServiceStub();
+    }
+
+    public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile)  {
+        return new DataRetrievalServiceStub();
     }
 
     private static class SearchServiceStub implements CaArraySearchService {
@@ -114,9 +122,15 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
         }
 
         private List<Sample> returnSamples(Sample searchSample) {
-            List<Sample> samples 
-                 = new ArrayList<Sample>();
-            samples.add(searchSample);
+            List<Sample> samples = new ArrayList<Sample>();
+            if (searchSample.getExperiment() != null) {
+                List<Experiment> experiments = returnExperiments(searchSample.getExperiment());
+                if (!experiments.isEmpty()) {
+                    samples.addAll(experiments.get(0).getSamples());
+                }
+            } else {
+                samples.add(searchSample);
+            }
             return samples;
         }
 
@@ -141,6 +155,14 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
 
         public List<?> search(CQLQuery arg0) {
             return null;
+        }
+
+    }
+    
+    private static class DataRetrievalServiceStub implements DataRetrievalService {
+
+        public DataSet getDataSet(DataRetrievalRequest arg0) {
+            return new DataSet();
         }
 
     }

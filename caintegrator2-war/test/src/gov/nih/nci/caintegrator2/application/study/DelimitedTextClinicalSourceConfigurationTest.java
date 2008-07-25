@@ -131,6 +131,15 @@ public class DelimitedTextClinicalSourceConfigurationTest {
 
     @Test
     public void testLoadAnnontation() {
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        clinicalSourceConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        clinicalSourceConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        clinicalSourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         clinicalSourceConfiguration.loadDescriptors();
         clinicalSourceConfiguration.loadAnnontation();
     }

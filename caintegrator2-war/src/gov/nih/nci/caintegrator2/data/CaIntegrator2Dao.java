@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -176,5 +177,13 @@ public interface CaIntegrator2Dao {
      * @return the matching definition or null.
      */
     AnnotationDefinition getAnnotationDefinition(String name);
+
+    /**
+     * Returns the gene that matches the given symbol or null if no match is found.
+     * 
+     * @param symbol the gene symbol
+     * @return the matching gene or null.
+     */
+    Gene getGene(String symbol);
     
 }

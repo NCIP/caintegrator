@@ -214,7 +214,6 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     @Override
     public boolean equals(Object o) {
         return PersistentObjectHelper.equals(this, o);
-
     }
 
     /**

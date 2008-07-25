@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -108,6 +109,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findMatchingImageSeriesCalled;
     public boolean findMatchingSamplesCalled;
     public boolean findMatchingSubjectsCalled;
+    public boolean getGeneCalled;
 
     public UserWorkspace getWorkspace(String username) {
         return new UserWorkspace();
@@ -125,6 +127,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingImageSeriesCalled = false;
         findMatchingSamplesCalled = false;
         findMatchingSubjectsCalled = false;
+        getGeneCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -182,6 +185,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      * {@inheritDoc}
      */
     public AnnotationDefinition getAnnotationDefinition(String name) {
+        return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Gene getGene(String symbol) {
+        getGeneCalled = true;
         return null;
     }
 
