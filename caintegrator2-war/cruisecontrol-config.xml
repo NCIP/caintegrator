@@ -46,7 +46,7 @@
         </log>
 
         <publishers>
-            <artifactspublisher dir="projects\${project.name}\software\reports" dest="artifacts\${project.name}" />
+            <artifactspublisher dir="projects\${project.name}\software\target\reports" dest="artifacts\${project.name}" />
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
             <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}" skipusers="true">
                 <always address="etavela@5amsolutions.com" />
@@ -86,7 +86,7 @@
         </log>
 
         <publishers>
-            <artifactspublisher dir="projects\${project.name}\software\reports" dest="artifacts\${project.name}" />
+            <artifactspublisher dir="projects\${project.name}\software\target\reports" dest="artifacts\${project.name}" />
             <currentbuildstatuspublisher file="logs/${project.name}/buildstatus.txt" />
             <htmlemail buildresultsurl="${email.buildresultsurl.prefix}${project.name}" skipusers="true">
                 <always address="etavela@5amsolutions.com" />
