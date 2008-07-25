@@ -1,0 +1,19 @@
+Notes from Meeting Subha about Perform Analysis Wireframes - 7/23/08
+
+Will and Subha met to go over the Perform Analysis wireframes as she missed the last review of these.
+
+She liked the idea of having controlled-vocabulary categories for selecting sets of patients but did ask about
+using patient lists that had been previously stored.  I said we'd do that but since we hadn't worked on how to create
+and manage those lists we couldn't do it now.  She liked the idea of specifying survival values at Study Deploy time
+and that there might be more than one (she said the two that she knew about were time since diagnosis and time since
+surgery).
+
+For the gene expression plots she said that she supported having gene summary expression as the default but that
+probe-level expression should still be an option.  She didn't know what gene summary method was best but said JC and
+Yuri would be good contacts.
+
+She also liked having sets of controls for fold change calculations being defined at deploy study time, but that it was
+always possible to not have controls and just use the median expression for that gene as the control.
+
+For genepattern she said we should shoot for seamless integration, a la Rembrandt (not in production, however) but that
+just cutting over to GenePattern is an acceptable stop gap method.

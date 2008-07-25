@@ -1,0 +1,36 @@
+VASARI/caIntegrator Meeting - 7/23/08
+
+Will, JP and Mark met with Adam Flanders (TJU), Daniel Rubin (Stanford), Carl Jaffe (NCIA) and John Freymann (NCIA) to
+discuss how best to access images in caIntegrator2, and how they envisioned using the tool.
+
+There was a fair amount of preliminary discussions to explain caIntegrator2 and how it will work.  So much so that Will
+offered, boldly, to schedule another meeting to give them a more comprehensive overview.  They has questions about
+whether caInt2 had its own database (yes), whether it was designed to be installed locally at lots of cancer centers (yes, 
+although only if they want deploy their own studies, not just use existing studies), and whether it was going to be
+grid-enabled (not sure exactly what was meant by this, but probably no).
+
+For usability Daniel and Adam said the most desirable method was to kick off a Cedara session that would display the
+representative image in a series and any markups on that image.  Cedara is a windows app that displays DICOM images 
+and markups, although it does not support AIM annotations (more on that later).  They also mentioned Nimbus as another
+possible tool.  Note that Cedara is limited to Windows XP.
+
+John Freymann mentioned that there might exist and API in NCIA that would allow popping up a Cedara session given an
+image series id.  He had to check.
+
+There was quite a bit of discussion of image markups and formats.  The goal is to use AIM but there are no images in NCIA
+with AIM markups, and even the VASARI images to be loaded will not have AIM markups.  There is XML markup for some
+images in NCIA now but not AIM.  IDRI?  LIDC?
+
+So in the short term there will be no markups in NCIA, but we can still get annotations in CSV file form.
+
+Daniel said he would send references for AIM.  He mentioned someone named Pat at Northwestern who was an expert.
+
+We also discussed how they would want to use caInt2.  They said it was open for wide discovery because no one knows
+the connections between image characteristics and gene expression/copy number.  They said that people would want to
+go both ways, from image to genes, and vice versa.  Sounded like we were on track, at least broadly.
+
+Action items:
+
+	* Will set up broad review for Daniel, Adam, Carl and John
+	* Daniel to send AIM references and docs to Will
+	* John to look into NCIA API we could use to start Cedara session
