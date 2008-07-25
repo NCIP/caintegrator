@@ -83,111 +83,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.Collection;
-import java.util.List;
+import org.junit.Test;
 
-/**
- * Main DAO interface for storage and retrieval of persistent entities.
- */
-public interface CaIntegrator2Dao {
-    
-    /**
-     * Saves the object given.
-     * 
-     * @param persistentObject the object to save.
-     */
-    void save(Object persistentObject);
-    
-    /**
-     * Returns the persistent object with the id given.
-     * 
-     * @param <T> type of object being returned.
-     * @param id id of the object to retrieve
-     * @param objectClass the class of the object to retrieve
-     * @return the requested object.
-     */
-    <T> T get(Long id, Class<T> objectClass);
-    
-    /**
-     * Returns the workspace belonging to the specified user.
-     * 
-     * @param username retrieve workspace for this user.
-     * @return the user's workspace
-     */
-    UserWorkspace getWorkspace(String username);
-    
-    /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
-     * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
-     */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+public class NumericComparisonOperatorEnumTest {
 
-    /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
-     */
-    List<StudyConfiguration> getManagedStudies(String username);
-    
-    /**
-     * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study.
-     * @return the list of matches.
-     */
-    List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study);
-    
-    /**
-     * Returns the subjects (via their linked <code>ImageSeriesAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study. 
-     * @return the list of matches.
-     */
-    List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study);
-    
-    /**
-     * Returns the subjects (via their linked <code>SampleAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study.
-     * @return the list of matches.
-     */
-    List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study);
+    @Test
+    public void testGetByValue() {
+        assertEquals(NumericComparisonOperatorEnum.EQUAL, NumericComparisonOperatorEnum.getByValue("=="));
+        assertNull(NumericComparisonOperatorEnum.getByValue(null));
+    }
 
-    /**
-     * Returns the definitions that matches the name given (if one exists).
-     * 
-     * @param name find definitions for this name
-     * @return the matching definition or null.
-     */
-    AnnotationDefinition getAnnotationDefinition(String name);
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        NumericComparisonOperatorEnum.checkType("no match");
+    }
 
-    /**
-     * Returns the gene that matches the given symbol or null if no match is found.
-     * 
-     * @param symbol the gene symbol
-     * @return the matching gene or null.
-     */
-    Gene getGene(String symbol);
-    
 }
