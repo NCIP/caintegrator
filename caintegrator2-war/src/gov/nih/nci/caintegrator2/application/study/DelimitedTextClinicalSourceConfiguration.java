@@ -85,16 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Holds configuration information for annotation stored in a CSV text file.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")   // see method createAnnotationValue
 public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSourceConfiguration {
     
     private AnnotationFile annotationFile;
@@ -133,12 +143,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     private void loadAnnotation(StudySubjectAssignment subjectAssignment) {
         for (AnnotationFieldDescriptor annotationDescriptor : getAnnotationDescriptors()) {
             String value = getAnnotationFile().getDataValue(annotationDescriptor);
-            // TODO TJ just changed AnnotationValue to StringAnnotationValue to get this to work, verify
-            // that is correct.
-            StringAnnotationValue annotationValue = new StringAnnotationValue();
-            //AnnotationValue annotationValue = new AnnotationValue();
-            annotationValue.setValue(value);
-            annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+            AbstractAnnotationValue annotationValue = createAnnotationValue(annotationDescriptor, value);
             SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
             subjectAnnotation.setAnnotationValue(annotationValue);
             if (getAnnotationFile().getTimepointColumn() != null) {
@@ -146,6 +151,74 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
                 subjectAnnotation.setTimepoint(getStudyConfiguration().getOrCreateTimepoint(timepointValue));
             }
             subjectAssignment.getSubjectAnnotation().add(subjectAnnotation);
+        }
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
+    private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        if (annotationDescriptor.getDefinition() == null || annotationDescriptor.getDefinition().getType() == null) {
+            throw new IllegalArgumentException("Type for field " + annotationDescriptor.getName() + " was not set.");
+        }
+        AnnotationTypeEnum type = AnnotationTypeEnum.getByValue(annotationDescriptor.getDefinition().getType());
+        switch (type) {
+        case DATE:
+            return createDateAnnotationValue(annotationDescriptor, value);
+        case STRING:
+            return createStringAnnotationValue(annotationDescriptor, value);
+        case NUMERIC:
+            return createNumericAnnotationValue(annotationDescriptor, value);
+        default:
+            throw new IllegalStateException("Unknown AnnotationDefinitionType: " + type);
+        }
+    }
+
+    private StringAnnotationValue createStringAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        StringAnnotationValue annotationValue = new StringAnnotationValue();
+        annotationValue.setValue(value);
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private DateAnnotationValue createDateAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        DateAnnotationValue annotationValue = new DateAnnotationValue();
+        annotationValue.setValue(getDateValue(value));
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private Date getDateValue(String value) {
+        final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+        try {
+            if (StringUtils.isBlank(value)) {
+                return null;
+            } else {
+                return format.parse(value);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date format found after validation: " + value, e);
+        }
+    }
+
+    private NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        NumericAnnotationValue annotationValue = new NumericAnnotationValue();
+        annotationValue.setValue(getNumericValue(value));
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private Double getNumericValue(String value) {
+        try {
+            if (StringUtils.isBlank(value)) {
+                return null;
+            } else {
+                return Double.parseDouble(value);
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number format found after validation: " + value, e);
         }
     }
 

@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -211,6 +212,18 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
     }
     
-
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")  // Hibernate operations are untyped
+    public Gene getGene(String symbol) {
+        List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
+                "name", symbol);
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return (Gene) values.get(0);
+        }
+    }
     
 }

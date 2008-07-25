@@ -113,7 +113,7 @@ public class TestDataFiles {
     public static final File REMBRANDT_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_SAMPLE_MAPPING_FILE = getFile(SIMPLE_SAMPLE_MAPPING_FILE_PATH);
 
-    private static File getFile(String resourcePath) {
+    public static File getFile(String resourcePath) {
         return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());
     }
 

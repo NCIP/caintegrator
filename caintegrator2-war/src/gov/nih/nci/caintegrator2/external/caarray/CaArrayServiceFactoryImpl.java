@@ -91,6 +91,7 @@ import org.apache.commons.lang.StringUtils;
 
 import gov.nih.nci.caarray.services.CaArrayServer;
 import gov.nih.nci.caarray.services.ServerConnectionException;
+import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -105,6 +106,13 @@ public class CaArrayServiceFactoryImpl implements CaArrayServiceFactory {
      */
     public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
         return connect(profile).getSearchService();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) throws ConnectionException {
+        return connect(profile).getDataRetrievalService();
     }
 
     private CaArrayServer connect(ServerConnectionProfile profile) throws ConnectionException {

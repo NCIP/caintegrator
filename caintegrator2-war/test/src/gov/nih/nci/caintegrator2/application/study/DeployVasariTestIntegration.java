@@ -131,6 +131,8 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     public void testDeployVasari() throws ValidationException, IOException, ConnectionException {
         try {
             studyConfiguration = new StudyConfiguration();
+            studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
+            studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
             service.save(studyConfiguration);
             loadRembrandtAnnotationDefinitions();
             loadClinicalData();
@@ -147,9 +149,9 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
         genomicSource.getServerProfile().setPort(8080);
-        genomicSource.setExperimentIdentifier("bakal-00023");
+        genomicSource.setExperimentIdentifier("admin-00037");
         service.addGenomicSource(studyConfiguration, genomicSource);
-        assertEquals(2, genomicSource.getSamples().size());
+        assertTrue(genomicSource.getSamples().size() > 0);
     }
 
     private void mapSamples() {

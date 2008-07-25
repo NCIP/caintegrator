@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
@@ -125,6 +126,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CaDSRFacade caDSRFacade;
     private NCIAFacade nciaFacade;
     private CaArrayFacade caArrayFacade;
+    private ArrayDataService arrayDataService;
 
     /**
      * {@inheritDoc}
@@ -223,6 +225,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void deployStudy(StudyConfiguration studyConfiguration) {
+        new GenomicDataHelper(getCaArrayFacade(), getArrayDataService()).loadData(studyConfiguration);
         studyConfiguration.setStatus(Status.DEPLOYED);
         dao.save(studyConfiguration);
     }
@@ -375,6 +378,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
         this.caArrayFacade = caArrayFacade;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 
 }

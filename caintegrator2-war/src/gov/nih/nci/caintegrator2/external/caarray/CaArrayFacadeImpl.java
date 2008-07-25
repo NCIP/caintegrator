@@ -85,19 +85,35 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
+import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
+import gov.nih.nci.caarray.domain.data.DataSet;
+import gov.nih.nci.caarray.domain.data.QuantitationType;
+import gov.nih.nci.caarray.domain.hybridization.Hybridization;
 import gov.nih.nci.caarray.domain.project.Experiment;
+import gov.nih.nci.caarray.domain.sample.Extract;
+import gov.nih.nci.caarray.domain.sample.LabeledExtract;
+import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 /**
  * Implementation of the CaArrayFacade subsystem.
  */
 public class CaArrayFacadeImpl implements CaArrayFacade {
+    
+    private static final Logger LOGGER = Logger.getLogger(CaArrayFacadeImpl.class);
     
     private CaArrayServiceFactory serviceFactory;
 
@@ -107,40 +123,30 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
     throws ConnectionException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(profile);
-        Experiment experiment = getExperiment(searchService, experimentIdentifier);
-        return getSamples(searchService, experiment);
+        return getSamples(searchService, experimentIdentifier);
     }
 
-    private List<Sample> getSamples(CaArraySearchService searchService, Experiment experiment) {
+    private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) {
         List<Sample> samples = new ArrayList<Sample>();
-        if (experiment != null) {
-            for (gov.nih.nci.caarray.domain.sample.Sample experimentSample : experiment.getSamples()) {
-                samples.add(translateSample(getLoadedSample(experimentSample, searchService)));
-            }
+        for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
+                : getCaArraySamples(experimentIdentifier, searchService)) {
+            samples.add(translateSample(experimentSample));
         }
         return samples;
+    }
+
+    private List<gov.nih.nci.caarray.domain.sample.Sample> getCaArraySamples(String experimentIdentifier, 
+            CaArraySearchService searchService) {
+        gov.nih.nci.caarray.domain.sample.Sample searchSample = new gov.nih.nci.caarray.domain.sample.Sample();
+        searchSample.setExperiment(new Experiment());
+        searchSample.getExperiment().setPublicIdentifier(experimentIdentifier);
+        return searchService.search(searchSample);
     }
 
     private Sample translateSample(gov.nih.nci.caarray.domain.sample.Sample loadedSample) {
         Sample sample = new Sample();
         sample.setName(loadedSample.getName());
         return sample;
-    }
-
-    private gov.nih.nci.caarray.domain.sample.Sample 
-    getLoadedSample(gov.nih.nci.caarray.domain.sample.Sample experimentSample, CaArraySearchService searchService) {
-        return searchService.search(experimentSample).get(0);
-    }
-
-    private Experiment getExperiment(CaArraySearchService searchService, String experimentIdentifier) {
-        Experiment searchExperiment = new Experiment();
-        searchExperiment.setPublicIdentifier(experimentIdentifier);
-        List<Experiment> results = searchService.search(searchExperiment);
-        if (results.isEmpty()) {
-            return null;
-        } else {
-            return results.get(0);
-        }
     }
 
     /**
@@ -155,6 +161,91 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public void setServiceFactory(CaArrayServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
+    }
+    
+    /**
+     * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
+     * 
+     * @param genomicSource retrieve data from this source.
+     * @throws ConnectionException if the connection to the caArray server fails.
+     * @return the data values.
+     */
+    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+        CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+        DataRetrievalService service = 
+            getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
+        DataRetrievalRequest request = createRequest(genomicSource, searchService);
+        DataSet dataSet = service.getDataSet(request);
+        LOGGER.info("Retrieved " + dataSet);
+        return null;
+    }
+
+    private DataRetrievalRequest createRequest(GenomicDataSourceConfiguration genomicSource,
+            CaArraySearchService searchService) {
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addQuantitationType(getSignal(searchService));
+        addHybridizations(request, genomicSource, searchService);
+        return request;
+    }
+
+    private void addHybridizations(DataRetrievalRequest request, GenomicDataSourceConfiguration genomicSource,
+            CaArraySearchService searchService) {
+        List<Sample> samplesToRetrieve;
+        if (!genomicSource.getMappedSamples().isEmpty()) {
+            samplesToRetrieve = genomicSource.getMappedSamples();
+        } else {
+            samplesToRetrieve = genomicSource.getSamples();
+        }
+        for (Sample sample : samplesToRetrieve) {
+            gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
+                    genomicSource.getExperimentIdentifier(), searchService);
+            addHybridizations(request, caArraySample, searchService);
+        }
+    }
+
+    private gov.nih.nci.caarray.domain.sample.Sample getCaArraySample(Sample sample, String experimentIdentifier,
+            CaArraySearchService searchService) {
+        gov.nih.nci.caarray.domain.sample.Sample searchSample = new gov.nih.nci.caarray.domain.sample.Sample();
+        searchSample.setExperiment(new Experiment());
+        searchSample.getExperiment().setPublicIdentifier(experimentIdentifier);
+        searchSample.setName(sample.getName());
+        return searchService.search(searchSample).get(0);
+    }
+
+    private void addHybridizations(DataRetrievalRequest request, gov.nih.nci.caarray.domain.sample.Sample caArraySample,
+            CaArraySearchService searchService) {
+        Set<Extract> extracts = getLoadedCaArrayObjects(caArraySample.getExtracts(), searchService);
+        for (Extract extract : extracts) {
+            addHybridizations(request, extract, searchService);
+        }
+    }
+
+    private void addHybridizations(DataRetrievalRequest request, Extract extract, CaArraySearchService searchService) {
+        Set<LabeledExtract> labeledExtracts = getLoadedCaArrayObjects(extract.getLabeledExtracts(), searchService);
+        for (LabeledExtract labeledExtract : labeledExtracts) {
+            addHybridizations(request, labeledExtract);
+        }
+    }
+
+    private void addHybridizations(DataRetrievalRequest request, LabeledExtract labeledExtract) {
+        for (Hybridization hybridization : labeledExtract.getHybridizations()) {
+            request.addHybridization(hybridization);
+        }
+    }
+
+    private <T extends AbstractCaArrayObject> Set<T> getLoadedCaArrayObjects(Set<T> objects, 
+            CaArraySearchService searchService) {
+        Set<T> loadedObjects = new HashSet<T>(objects.size());
+        for (T t : objects) {
+            loadedObjects.add(searchService.search(t).get(0));
+        }
+        return loadedObjects;
+    }
+
+    private QuantitationType getSignal(CaArraySearchService searchService) {
+        QuantitationType signalSearch = new QuantitationType();
+        signalSearch.setName("CHPSignal");
+        return searchService.search(signalSearch).iterator().next();
     }
 
 }

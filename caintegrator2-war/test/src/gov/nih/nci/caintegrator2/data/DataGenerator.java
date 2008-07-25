@@ -141,8 +141,8 @@ public class DataGenerator {
     private void addStudy() {
         StudyConfiguration configuration = new StudyConfiguration();
         Study study = configuration.getStudy();
-        study.setLongTitleText("Vasari/Rembrandt Study");
-        study.setShortTitleText("Vasari");
+        study.setLongTitleText("Sample study description");
+        study.setShortTitleText("Sample Study");
         dao.save(configuration);
     }
     private void addStudySubscription() {

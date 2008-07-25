@@ -25,6 +25,9 @@
         <property name="nciaFacade">
             <ref local="nciaFacade"/>
         </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
     </bean>
     
     <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
@@ -63,6 +66,9 @@
             <ref local="caArrayServiceFactory"/>
         </property>
     </bean>
+    
+    <bean id="arrayDataService" 
+        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl" />
     
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
