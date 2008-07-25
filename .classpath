@@ -117,5 +117,6 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-web-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-ws-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/spring-mock-2.0.3.jar" sourcepath="software/lib/src/spring-src.zip"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/AffxFusion-1.0.10b.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImplTest;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
@@ -25,7 +25,7 @@ public class FileManagerImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceImplTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceTest.class); 
         fileManager = (FileManager) context.getBean("fileManager"); 
         configurationHelperStub = (ConfigurationHelperStub) context.getBean("configurationHelperStub");
         configurationHelperStub.clear();                

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.List;
 
@@ -119,5 +120,14 @@ public interface ArrayDataService {
      * @return the values.
      */
     ArrayDataValues getData(List<Array> arrays, List<AbstractReporter> reporters);
+    
+    /**
+     * Loads the given array design into the system.
+     * 
+     * @param platformSource contains the files or information necessary to load the design
+     * @return the loaded design.
+     * @throws PlatformLoadingException if there was a problem loading the array design from the provided resources.
+     */
+     Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException;
     
 }
