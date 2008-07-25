@@ -385,11 +385,22 @@
         <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
 
-    <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:unit:caintegrator2.war">
+    <target name="test:unit:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,test:instrument:unit:caintegrator2.war,test:unpack-test-data">
         <run-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.unit.classes.dir}" 
             classpath="${caintegrator2.war.test.dependencies.path}" />
+    </target>
+
+    <target name="test:unpack-test-data">
+        <for param="zipfile">
+            <path>
+                <fileset dir="${caintegrator2.war.resources.test.dir}" includes="**/*.zip" />
+            </path>
+            <sequential>
+                <unzip overwrite="false" src="@{zipfile}" dest="@{zipfile}/.." />
+            </sequential>
+        </for>
     </target>
 
     <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,
