@@ -121,13 +121,13 @@ public class NetcdfFileTest {
     private final static String reporterName1 = "Reporter 1";
     private final static String reporterName2 = "Reporter 2";
     
-    private final static Long array1Reporter1Value = Long.valueOf(1);
-    private final static Long array2Reporter1Value = Long.valueOf(2);
-    private final static Long array3Reporter1Value = Long.valueOf(3);
+    private final static Float array1Reporter1Value = Float.valueOf(1);
+    private final static Float array2Reporter1Value = Float.valueOf(2);
+    private final static Float array3Reporter1Value = Float.valueOf(3);
     
-    private final static Long array1Reporter2Value = Long.valueOf(100);
-    private final static Long array2Reporter2Value = Long.valueOf(200);
-    private final static Long array3Reporter2Value = Long.valueOf(300);
+    private final static Float array1Reporter2Value = Float.valueOf(100);
+    private final static Float array2Reporter2Value = Float.valueOf(200);
+    private final static Float array3Reporter2Value = Float.valueOf(300);
     
     
     @Test

@@ -85,7 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -104,13 +108,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-@Transactional
+@Transactional(timeout = 1440)
 public class DeployVasariTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private StudyManagementService service;
     private StudyConfiguration studyConfiguration;
     private DelimitedTextClinicalSourceConfiguration sourceConfiguration;
     private CaIntegrator2Dao dao;
+    private ArrayDataService arrayDataService;
     
     public DeployVasariTestIntegration() {
         setDefaultRollback(false);
@@ -128,8 +133,10 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     }
     
     @Test
-    public void testDeployVasari() throws ValidationException, IOException, ConnectionException {
+    public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException {
         try {
+            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+            arrayDataService.loadArrayDesign(designSource);
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
             studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
@@ -158,7 +165,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         service.mapSamples(studyConfiguration, TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE);
     }
     
-    private void deploy() {
+    private void deploy() throws ConnectionException {
         service.deployStudy(studyConfiguration);
     }
 
@@ -205,6 +212,20 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
 
     public void setCaIntegrator2Dao(CaIntegrator2Dao caIntegrator2Dao) {
         this.dao = caIntegrator2Dao;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 
 }

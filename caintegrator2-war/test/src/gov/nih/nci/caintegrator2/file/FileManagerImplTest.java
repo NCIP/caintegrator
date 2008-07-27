@@ -34,7 +34,7 @@ public class FileManagerImplTest {
     @Test
     public void testStoreStudyFile() throws IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setId(1L);
+        studyConfiguration.getStudy().setId(1L);
         File storedFile = fileManager.storeStudyFile(TestDataFiles.VALID_FILE, TEST_FILENAME, studyConfiguration);
         storedFile.deleteOnExit();
         File expectedFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "1" + File.separator + TEST_FILENAME);
@@ -53,7 +53,7 @@ public class FileManagerImplTest {
     @Test(expected = IOException.class)
     public void testStoreStudyFileIOException() throws IOException  {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setId(1L);
+        studyConfiguration.getStudy().setId(1L);
         fileManager.storeStudyFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST, TEST_FILENAME, studyConfiguration);    
     }
 

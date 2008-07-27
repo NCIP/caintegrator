@@ -85,11 +85,42 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
+import gov.nih.nci.caarray.domain.array.Array;
+import gov.nih.nci.caarray.domain.array.ArrayDesign;
+import gov.nih.nci.caarray.domain.array.ArrayDesignDetails;
+import gov.nih.nci.caarray.domain.array.LogicalProbe;
+import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
+import gov.nih.nci.caarray.domain.data.DataSet;
+import gov.nih.nci.caarray.domain.data.DesignElementList;
+import gov.nih.nci.caarray.domain.data.FloatColumn;
+import gov.nih.nci.caarray.domain.data.HybridizationData;
+import gov.nih.nci.caarray.domain.hybridization.Hybridization;
+import gov.nih.nci.caarray.domain.project.Experiment;
+import gov.nih.nci.caarray.domain.sample.Extract;
+import gov.nih.nci.caarray.domain.sample.LabeledExtract;
+import gov.nih.nci.caarray.services.data.DataRetrievalService;
+import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -97,10 +128,12 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
+@SuppressWarnings("PMD")
 public class CaArrayFacadeTest {
 
     private CaArrayFacade caArrayFacade;
+    private GeneExpressionReporter reporter1 = createTestReporter("probeSet1");
+    private GeneExpressionReporter reporter2 = createTestReporter("probeSet2");
     
     @Before
     public void setUp() {
@@ -118,6 +151,171 @@ public class CaArrayFacadeTest {
         assertTrue(samples.isEmpty());
         samples = caArrayFacade.getSamples("no-experiment", null);
         assertTrue(samples.isEmpty()); 
+    }
+    
+    @Test
+    public void testRetrieveData() throws ConnectionException {
+        RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
+        ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
+        ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setExperimentIdentifier("test-data");
+        genomicSource.setStudyConfiguration(new StudyConfiguration());
+        genomicSource.getStudyConfiguration().getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        Sample sample1 = new Sample();
+        Sample sample2 = new Sample();
+        sample1.setName("sample1");
+        sample2.setName("sample2");
+        genomicSource.getSamples().add(sample1);
+        genomicSource.getSamples().add(sample2);
+        ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
+        assertNotNull(values);
+        assertEquals(2, values.getAllArrays().size());
+        for (gov.nih.nci.caintegrator2.domain.genomic.Array array : values.getAllArrays()) {
+            assertEquals((float) 1.1, (float) values.getValue(array, reporter1), 0);
+            assertEquals((float) 2.2, (float) values.getValue(array, reporter2), 0);
+        }
+    }
+
+    private GeneExpressionReporter createTestReporter(String name) {
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.setName(name);
+        return reporter;
+    }
+
+    private class RetrieveDataDaoStub extends CaIntegrator2DaoStub {
+        
+        private Platform platform = createTestPlatform();
+
+        @Override
+        public Platform getPlatform(String name) {
+            return platform;
+        }
+
+        private Platform createTestPlatform() {
+            Platform platform = new Platform();
+            platform.setReporterSets(new HashSet<ReporterSet>());
+            ReporterSet reporters = new ReporterSet();
+            reporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+            platform.getReporterSets().add(reporters);
+            reporters.setReporters(new HashSet<AbstractReporter>());
+            reporters.getReporters().add(reporter1);
+            reporters.getReporters().add(reporter2);
+            return  platform;
+        }
+        
+    }
+
+    private class RetrieveDataServiceFactoryStub extends ServiceStubFactory {
+
+        private final ArrayDesign arrayDesign = createTestArrayDesign();
+        LogicalProbe probeSet1 = createTestProbeSet("probeSet1");
+        LogicalProbe probeSet2 = createTestProbeSet("probeSet2");
+
+        @Override
+        public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
+            return new RetrieveDataSearchServiceStub();
+        }
+
+        @SuppressWarnings("deprecation")
+        private LogicalProbe createTestProbeSet(String name) {
+            LogicalProbe probeSet = new LogicalProbe();
+            probeSet.setName(name);
+            return probeSet;
+        }
+
+        @Override
+        public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) {
+            return new RetrieveDataDataRetrievalServiceStub();
+        }
+
+        @SuppressWarnings("deprecation")
+        private ArrayDesign createTestArrayDesign() {
+            ArrayDesign design = new ArrayDesign();
+            design.setName("test design");
+            design.setDesignDetails(new ArrayDesignDetails());
+            design.getDesignDetails().getLogicalProbes().add(probeSet1);
+            design.getDesignDetails().getLogicalProbes().add(probeSet2);
+            return design;
+        }
+
+        private class RetrieveDataDataRetrievalServiceStub implements DataRetrievalService {
+
+            public DataSet getDataSet(DataRetrievalRequest request) {
+                DataSet dataSet = new DataSet();
+                dataSet.setDesignElementList(new DesignElementList());
+                dataSet.getDesignElementList().getDesignElements().add(probeSet1);
+                dataSet.getDesignElementList().getDesignElements().add(probeSet2);
+                dataSet.getQuantitationTypes().addAll(request.getQuantitationTypes());
+                for (Hybridization hybridization : request.getHybridizations()) {
+                    HybridizationData hybridizationData = dataSet.addHybridizationData(hybridization);
+                    FloatColumn column = new FloatColumn();
+                    column.setQuantitationType(request.getQuantitationTypes().get(0));
+                    column.initializeArray(2);
+                    column.getValues()[0] = (float) 1.1;
+                    column.getValues()[1] = (float) 2.2;
+                    hybridizationData.getColumns().add(column);
+                }
+                return dataSet;
+            }
+
+        }
+
+        private class RetrieveDataSearchServiceStub extends SearchServiceStub {
+            
+            private final gov.nih.nci.caarray.domain.sample.Sample sample1 = creatTestSample("sample1");
+            private final gov.nih.nci.caarray.domain.sample.Sample sample2 = creatTestSample("sample2");
+            private final Experiment experiment = createTestDataExperiment();
+            
+            @SuppressWarnings("unchecked")
+            public <T extends AbstractCaArrayObject> List<T> search(T searchObject) {
+                List<T> results = new ArrayList<T>();
+                if (searchObject instanceof Experiment && ("test-data".equals(((Experiment) searchObject).getPublicIdentifier()))) {
+                    results.add((T) experiment);
+                } else if (searchObject instanceof gov.nih.nci.caarray.domain.sample.Sample) {
+                    results.add((T) getSample((gov.nih.nci.caarray.domain.sample.Sample) searchObject));
+                } else {
+                    results.add(searchObject);
+                }
+                return results;
+            }
+
+            private gov.nih.nci.caarray.domain.sample.Sample creatTestSample(String name) {
+                gov.nih.nci.caarray.domain.sample.Sample sample = new gov.nih.nci.caarray.domain.sample.Sample();
+                sample.setName(name);
+                Hybridization hybridization = new Hybridization();
+                hybridization.setName("hybridiation " + name);
+                hybridization.setArray(new Array());
+                hybridization.getArray().setDesign(arrayDesign);
+                LabeledExtract labeledExtract = new LabeledExtract();
+                hybridization.getLabeledExtracts().add(labeledExtract);
+                labeledExtract.getHybridizations().add(hybridization);
+                Extract extract = new Extract();
+                extract.getLabeledExtracts().add(labeledExtract);
+                labeledExtract.getExtracts().add(extract);
+                extract.getSamples().add(sample);
+                sample.getExtracts().add(extract);
+                return sample;
+            }
+
+            private gov.nih.nci.caarray.domain.sample.Sample getSample(gov.nih.nci.caarray.domain.sample.Sample searchSample) {
+                if ("sample1".equals(searchSample.getName())) {
+                    return sample1;
+                } else if ("sample2".equals(searchSample.getName())) {
+                    return sample2;
+                } else {
+                    return searchSample;
+                }
+            }
+
+            private Experiment createTestDataExperiment() {
+                Experiment experiment = new Experiment();
+                experiment.getSamples().add(sample1);
+                experiment.getSamples().add(sample2);
+                return experiment;
+            }
+        }
+        
     }
 
 }

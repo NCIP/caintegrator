@@ -58,6 +58,12 @@
 
     <rule ref="rulesets/imports.xml" />
 
+    <rule ref="rulesets/imports.xml/TooManyStaticImports">
+        <properties>
+            <property name="maximumStaticImports" value="7" />
+        </properties>
+    </rule>
+
     <rule ref="rulesets/javabeans.xml">
         <exclude name="BeanMembersShouldSerialize" />
     </rule>

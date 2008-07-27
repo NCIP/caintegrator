@@ -91,7 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 /**
  * Base class for platform loaders.
  */
-public abstract class AbstractPlatformLoader {
+abstract class AbstractPlatformLoader {
 
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
     

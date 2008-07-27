@@ -85,37 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
-import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
-import gov.nih.nci.caarray.domain.data.DataSet;
-import gov.nih.nci.caarray.domain.data.QuantitationType;
-import gov.nih.nci.caarray.domain.hybridization.Hybridization;
 import gov.nih.nci.caarray.domain.project.Experiment;
-import gov.nih.nci.caarray.domain.sample.Extract;
-import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * Implementation of the CaArrayFacade subsystem.
  */
 public class CaArrayFacadeImpl implements CaArrayFacade {
     
-    private static final Logger LOGGER = Logger.getLogger(CaArrayFacadeImpl.class);
-    
     private CaArrayServiceFactory serviceFactory;
+    private CaIntegrator2Dao dao;
 
     /**
      * {@inheritDoc}
@@ -164,88 +153,27 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     }
     
     /**
-     * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
-     * 
-     * @param genomicSource retrieve data from this source.
-     * @throws ConnectionException if the connection to the caArray server fails.
-     * @return the data values.
+     * {@inheritDoc}
      */
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        DataRetrievalService service = 
+        DataRetrievalService dataRetrievalService = 
             getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
-        DataRetrievalRequest request = createRequest(genomicSource, searchService);
-        DataSet dataSet = service.getDataSet(request);
-        LOGGER.info("Retrieved " + dataSet);
-        return null;
+        return new DataRetrievalHelper(genomicSource, dataRetrievalService, searchService, dao).retrieveData();
     }
 
-    private DataRetrievalRequest createRequest(GenomicDataSourceConfiguration genomicSource,
-            CaArraySearchService searchService) {
-        DataRetrievalRequest request = new DataRetrievalRequest();
-        request.addQuantitationType(getSignal(searchService));
-        addHybridizations(request, genomicSource, searchService);
-        return request;
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
     }
 
-    private void addHybridizations(DataRetrievalRequest request, GenomicDataSourceConfiguration genomicSource,
-            CaArraySearchService searchService) {
-        List<Sample> samplesToRetrieve;
-        if (!genomicSource.getMappedSamples().isEmpty()) {
-            samplesToRetrieve = genomicSource.getMappedSamples();
-        } else {
-            samplesToRetrieve = genomicSource.getSamples();
-        }
-        for (Sample sample : samplesToRetrieve) {
-            gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
-                    genomicSource.getExperimentIdentifier(), searchService);
-            addHybridizations(request, caArraySample, searchService);
-        }
-    }
-
-    private gov.nih.nci.caarray.domain.sample.Sample getCaArraySample(Sample sample, String experimentIdentifier,
-            CaArraySearchService searchService) {
-        gov.nih.nci.caarray.domain.sample.Sample searchSample = new gov.nih.nci.caarray.domain.sample.Sample();
-        searchSample.setExperiment(new Experiment());
-        searchSample.getExperiment().setPublicIdentifier(experimentIdentifier);
-        searchSample.setName(sample.getName());
-        return searchService.search(searchSample).get(0);
-    }
-
-    private void addHybridizations(DataRetrievalRequest request, gov.nih.nci.caarray.domain.sample.Sample caArraySample,
-            CaArraySearchService searchService) {
-        Set<Extract> extracts = getLoadedCaArrayObjects(caArraySample.getExtracts(), searchService);
-        for (Extract extract : extracts) {
-            addHybridizations(request, extract, searchService);
-        }
-    }
-
-    private void addHybridizations(DataRetrievalRequest request, Extract extract, CaArraySearchService searchService) {
-        Set<LabeledExtract> labeledExtracts = getLoadedCaArrayObjects(extract.getLabeledExtracts(), searchService);
-        for (LabeledExtract labeledExtract : labeledExtracts) {
-            addHybridizations(request, labeledExtract);
-        }
-    }
-
-    private void addHybridizations(DataRetrievalRequest request, LabeledExtract labeledExtract) {
-        for (Hybridization hybridization : labeledExtract.getHybridizations()) {
-            request.addHybridization(hybridization);
-        }
-    }
-
-    private <T extends AbstractCaArrayObject> Set<T> getLoadedCaArrayObjects(Set<T> objects, 
-            CaArraySearchService searchService) {
-        Set<T> loadedObjects = new HashSet<T>(objects.size());
-        for (T t : objects) {
-            loadedObjects.add(searchService.search(t).get(0));
-        }
-        return loadedObjects;
-    }
-
-    private QuantitationType getSignal(CaArraySearchService searchService) {
-        QuantitationType signalSearch = new QuantitationType();
-        signalSearch.setName("CHPSignal");
-        return searchService.search(signalSearch).iterator().next();
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
     }
 
 }

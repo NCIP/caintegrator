@@ -6,7 +6,7 @@ package gov.nih.nci.caintegrator2.application.arraydata.netcdf;
 public class ReporterRow {
 
     private String reporterId;
-    private Long[] arrayValues;
+    private Float[] arrayValues;
     /**
      * @return the reporterId
      */
@@ -22,13 +22,13 @@ public class ReporterRow {
     /**
      * @return the arrayValues
      */
-    public Long[] getArrayValues() {
+    public Float[] getArrayValues() {
         return arrayValues.clone();
     }
     /**
      * @param arrayValues the arrayValues to set
      */
-    public void setArrayValues(Long[] arrayValues) {
+    public void setArrayValues(Float[] arrayValues) {
         this.arrayValues = arrayValues.clone();
     }
 

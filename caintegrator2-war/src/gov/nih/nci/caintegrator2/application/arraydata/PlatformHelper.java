@@ -83,28 +83,76 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import java.util.HashMap;
+import java.util.Map;
+
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 
 /**
- * Action that deploys a study.
+ * Provides useful methods for working with <code>Platforms</code> and they objects they contain.
  */
-public class DeployStudyAction extends AbstractStudyAction {
-
-    private static final long serialVersionUID = 1L;
+public class PlatformHelper {
+    
+    private final Platform platform;
+    private final Map<ReporterTypeEnum, Map<String, AbstractReporter>> reporterMaps = 
+        new HashMap<ReporterTypeEnum, Map<String, AbstractReporter>>();
+    
+    /**
+     * Creates a new instance.
+     * 
+     * @param platform the associated array design.
+     */
+    public PlatformHelper(Platform platform) {
+        this.platform = platform;
+    }
 
     /**
-     * {@inheritDoc}
+     * @return the platform
      */
-    @Override
-    public String execute() {
-        try {
-            getStudyManagementService().deployStudy(getStudyConfiguration());
-        } catch (ConnectionException e) {
-            return ERROR;
-        }
-        return SUCCESS;
+    public Platform getPlatform() {
+        return platform;
     }
     
+    /**
+     * Returns the reporter for the type and name given.
+     * 
+     * @param type the reporter type
+     * @param name the reporter name
+     * @return the matching reporter.
+     */
+    public AbstractReporter getReporter(ReporterTypeEnum type, String name) {
+        return getReporterMap(type).get(name);
+    }
+
+    private Map<String, AbstractReporter> getReporterMap(ReporterTypeEnum type) {
+        if (!reporterMaps.containsKey(type)) {
+            reporterMaps.put(type, createReporterMap(type));
+        }
+        return reporterMaps.get(type);
+    }
+
+    private Map<String, AbstractReporter> createReporterMap(ReporterTypeEnum type) {
+        Map<String, AbstractReporter> reporterMap = new HashMap<String, AbstractReporter>();
+        ReporterSet reporterSet = getReporterSet(type);
+        if (reporterSet != null) {
+            for (AbstractReporter reporter : reporterSet.getReporters()) {
+                reporterMap.put(reporter.getName(), reporter);
+            }
+        }
+        return reporterMap;
+    }
+
+    private ReporterSet getReporterSet(ReporterTypeEnum type) {
+        for (ReporterSet reporterSet : platform.getReporterSets()) {
+            if (type.getValue().equals(reporterSet.getReporterType())) {
+                return reporterSet;
+            }
+        }
+        return null;
+    }
+
 }

@@ -85,12 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileReader;
+import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileWriter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -102,29 +108,59 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArrayDataServiceImpl implements ArrayDataService {
     
     private CaIntegrator2Dao dao;
+    private FileManager fileManager;
 
     /**
      * {@inheritDoc}
      */
     public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        // TODO Auto-generated method stub
-        return null;
+        return getData(arrayDataMatrix, getArrays(arrayDataMatrix), getReporters(arrayDataMatrix));
+    }
+
+    private List<Array> getArrays(ArrayDataMatrix arrayDataMatrix) {
+        List<Array> arrays = new ArrayList<Array>(arrayDataMatrix.getSampleDataCollection().size());
+        for (ArrayData arrayData : arrayDataMatrix.getSampleDataCollection()) {
+            arrays.add(arrayData.getArray());
+        }
+        return arrays;
+    }
+
+    private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        reporters.addAll(arrayDataMatrix.getReporterSet().getReporters());
+        return reporters;
     }
 
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(List<Array> arrays, List<AbstractReporter> reporters) {
-        // TODO Auto-generated method stub
-        return null;
+    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, List<Array> arrays, 
+            List<AbstractReporter> reporters) {
+        NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
+        ArrayDataValues values = new ArrayDataValues();
+        values.setArrayDataMatrix(arrayDataMatrix);
+        for (Array array : arrays) {
+            for (AbstractReporter reporter : reporters) {
+                values.setValue(array, reporter, reader.getArrayData(array.getName(), reporter.getName()));
+            }
+        }
+        return values;
     }
 
     /**
      * {@inheritDoc}
      */
     public void save(ArrayDataValues values) {
-        // TODO Auto-generated method stub
+        dao.save(values.getArrayDataMatrix());
+        NetcdfFileWriter writer = new NetcdfFileWriter(values, getNetCdfFilename(values.getArrayDataMatrix()));
+        writer.create();
+    }
 
+    private String getNetCdfFilename(ArrayDataMatrix arrayDataMatrix) {
+        String filename = "data" + arrayDataMatrix.getId() + ".nc";
+        File netCdfFile = 
+            new File(getFileManager().getStudyDirectory(arrayDataMatrix.getStudy()), filename);
+        return netCdfFile.getAbsolutePath();
     }
 
     /**
@@ -146,6 +182,20 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 }

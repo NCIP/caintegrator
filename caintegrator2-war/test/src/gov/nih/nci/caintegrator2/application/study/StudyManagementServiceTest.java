@@ -131,7 +131,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() {
+    public void testDeploy() throws ConnectionException {
         StudyConfiguration configTest = new StudyConfiguration();
         studyManagementService.deployStudy(configTest);
         assertEquals(Status.DEPLOYED, configTest.getStatus());

@@ -193,6 +193,9 @@
         <property name="serviceFactory">
             <ref local="caArrayServiceFactory"/>
         </property>
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
     </bean>
     
     <bean id="nciaFacade" 
