@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,5 +107,13 @@ public interface FileManager {
      * @throws IOException if the file couldn't be copied to its destination.
      */
     File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) throws IOException;
+    
+    /**
+     * Returns the storage directory for the given study.
+     * 
+     * @param study get directory for this study.
+     * @return the directory.
+     */
+    File getStudyDirectory(Study study);
 
 }

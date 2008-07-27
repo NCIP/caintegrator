@@ -103,8 +103,8 @@ public class ArrayDataValues {
     private ArrayDataMatrix arrayDataMatrix;
     private Set<Array> allArrays = new HashSet<Array>();
     
-    private Map<AbstractReporter, HashMap<Array, Long>> reporterArrayValueMap = 
-                            new HashMap<AbstractReporter, HashMap<Array, Long>>();
+    private final Map<AbstractReporter, HashMap<Array, Float>> reporterArrayValueMap = 
+                            new HashMap<AbstractReporter, HashMap<Array, Float>>();
     
     /**
      * Returns the array data value for a given reporter for a given array.
@@ -113,7 +113,7 @@ public class ArrayDataValues {
      * @param reporter get value for this reporter.
      * @return the array data value.
      */
-    public Long getValue(Array array, AbstractReporter reporter) {
+    public Float getValue(Array array, AbstractReporter reporter) {
         return reporterArrayValueMap.get(reporter).get(array);
     }
     
@@ -124,26 +124,17 @@ public class ArrayDataValues {
      * @param reporter get value for this reporter.
      * @param value the array data value.
      */
-    public void setValue(Array array, AbstractReporter reporter, Long value) {
+    public void setValue(Array array, AbstractReporter reporter, Float value) {
         allArrays.add(array);
-        HashMap<Array, Long> arrayValueMap;
+        HashMap<Array, Float> arrayValueMap;
         if (reporterArrayValueMap.keySet().contains(reporter)) {
             arrayValueMap = reporterArrayValueMap.get(reporter);
         } else {
-            arrayValueMap = new HashMap<Array, Long>();    
+            arrayValueMap = new HashMap<Array, Float>();    
         }
         arrayValueMap.put(array, value);
         reporterArrayValueMap.put(reporter, arrayValueMap);
         
-    }
-    
-    /**
-     * Returns the Array to Value Map given a Reporter.
-     * @param reporter - Reporter to use to get the Array to Value map.
-     * @return ArrayToValue Map.
-     */
-    public Map<Array, Long> getArrayValueMap(AbstractReporter reporter) {
-        return reporterArrayValueMap.get(reporter);
     }
 
     /**
@@ -163,16 +154,10 @@ public class ArrayDataValues {
     /**
      * @return the reporterArrayValueMap
      */
-    public Map<AbstractReporter, HashMap<Array, Long>> getReporterArrayValueMap() {
+    public Map<AbstractReporter, HashMap<Array, Float>> getReporterArrayValueMap() {
         return reporterArrayValueMap;
     }
 
-    /**
-     * @param reporterArrayValueMap the reporterArrayValueMap to set
-     */
-    public void setReporterArrayValueMap(Map<AbstractReporter, HashMap<Array, Long>> reporterArrayValueMap) {
-        this.reporterArrayValueMap = reporterArrayValueMap;
-    }
 
     /**
      * @return the allArrays
@@ -188,5 +173,28 @@ public class ArrayDataValues {
         this.allArrays = allArrays;
     }
 
+    /**
+     * Adds all of the values from the given values object to this one.
+     * 
+     * @param values add values from this values object.
+     */
+    public void addValues(ArrayDataValues values) {
+        copyArrays(values.getAllArrays());
+        copyDataValues(values);
+    }
+
+    private void copyArrays(Set<Array> copiedArrays) {
+        for (Array array : copiedArrays) {
+            array.getArrayData().setMatrix(getArrayDataMatrix());
+        }
+    }
+
+    private void copyDataValues(ArrayDataValues values) {
+        for (AbstractReporter reporter : values.reporterArrayValueMap.keySet()) {
+            for (Array array : values.allArrays) {
+                setValue(array, reporter, values.getValue(array, reporter));
+            }
+        }
+    }
 
 }

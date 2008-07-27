@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -100,6 +102,13 @@ public class CaArrayFacadeStub implements CaArrayFacade {
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
             throws ConnectionException {
         return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+        return new ArrayDataValues();
     }
 
 }

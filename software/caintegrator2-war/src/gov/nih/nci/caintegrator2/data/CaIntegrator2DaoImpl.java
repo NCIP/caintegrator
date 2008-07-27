@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -202,7 +203,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")  // Hibernate operations are untyped
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public AnnotationDefinition getAnnotationDefinition(String name) {
         List values = getHibernateTemplate().findByNamedParam("from AnnotationDefinition where displayName = :name", 
                 "name", name);
@@ -216,14 +217,28 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")  // Hibernate operations are untyped
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
     public Gene getGene(String symbol) {
         List values = getHibernateTemplate().findByNamedParam("from Gene where symbol = :symbol", 
-                "name", symbol);
+                "symbol", symbol);
         if (values.isEmpty()) {
             return null;
         } else {
             return (Gene) values.get(0);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public Platform getPlatform(String name) {
+        List values = getHibernateTemplate().findByNamedParam("from Platform where name = :name", 
+                "name", name);
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return (Platform) values.get(0);
         }
     }
     

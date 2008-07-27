@@ -101,13 +101,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import affymetrix.fusion.cdf.FusionCDFData;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Used to load Affymetrix array designs.
  */
-public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
+class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     
     private static final Logger LOGGER = Logger.getLogger(AffymetrixPlatformLoader.class);
     
@@ -117,24 +116,16 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private static final String ENSEMBL_HEADER = "Ensembl";
     private static final String UNIGENE_ID_HEADER = "UniGene ID";
 
-    private final File cdfFile;
+    private final String platformName;
     private final File annotationFile;
-    private Map<String, Gene> probeSetToGeneMap = new HashMap<String, Gene>();
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
     private AffymetrixCdfReader cdfReader;
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
     private CSVReader annotationFileReader;
 
-    
-    /**
-     * Creates a new instance.
-     * 
-     * @param cdfFile the CDF library file.
-     * @param annotationFile the CSV annotation file.
-     */
-    public AffymetrixPlatformLoader(File cdfFile, File annotationFile) {
+    AffymetrixPlatformLoader(String platformName, File annotationFile) {
         super();
-        this.cdfFile = cdfFile;
+        this.platformName = platformName;
         this.annotationFile = annotationFile;
     }
 
@@ -146,7 +137,6 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         Platform platform = createPlatform();
         try {
             handleAnnotationFile(platform, dao);
-            handleCdfFile(platform);
             dao.save(platform);
         } finally {
             releaseResources();
@@ -157,6 +147,7 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private Platform createPlatform() {
         Platform platform = new Platform();
+        platform.setName(platformName);
         platform.setReporterSets(new HashSet<ReporterSet>());
         platform.setVendor("Affymetrix");
         return platform;
@@ -167,10 +158,14 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         platform.getReporterSets().add(geneReporters);
         geneReporters.setReporters(new HashSet<AbstractReporter>());
+        ReporterSet probeSetReporters = new ReporterSet();
+        probeSetReporters.setReporters(new HashSet<AbstractReporter>());
+        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        platform.getReporterSets().add(probeSetReporters);
         try {
             annotationFileReader = new CSVReader(new FileReader(annotationFile));
             loadAnnotationHeaders();
-            loadAnnotations(geneReporters, dao);
+            loadAnnotations(geneReporters, probeSetReporters, dao);
         } catch (IOException e) {
             throw new PlatformLoadingException("Couldn't read annotation file " + annotationFile.getName(), e);
         }
@@ -201,14 +196,16 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         return fields.length > 0 && PROBE_SET_ID_HEADER.equals(fields[0]);
     }
 
-    private void loadAnnotations(ReporterSet geneReporters, CaIntegrator2Dao dao) throws IOException {
+    private void loadAnnotations(ReporterSet geneReporters, ReporterSet probeSetReporters, CaIntegrator2Dao dao) 
+    throws IOException {
         String[] fields;
         while ((fields = annotationFileReader.readNext()) != null) {
-            loadAnnotations(fields, geneReporters, dao);
+            loadAnnotations(fields, geneReporters, probeSetReporters, dao);
         }
     }
     
-    private void loadAnnotations(String[] fields, ReporterSet geneReporters, CaIntegrator2Dao dao) {
+    private void loadAnnotations(String[] fields, ReporterSet geneReporters, ReporterSet probeSetReporters, 
+            CaIntegrator2Dao dao) {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
         Gene gene = symbolToGeneMap.get(symbol);
         if (gene == null) {
@@ -216,7 +213,7 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
             addGeneReporter(geneReporters, gene);
         }
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
-        probeSetToGeneMap.put(probeSetName, gene);
+        handleProbeSet(probeSetName, gene, probeSetReporters);
     }
 
     private void addGeneReporter(ReporterSet geneReporters, Gene gene) {
@@ -249,28 +246,10 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         return fields[headerToIndexMap.get(header)];
     }
 
-    private void handleCdfFile(Platform platform) throws PlatformLoadingException {
-        try {
-            cdfReader = AffymetrixCdfReader.create(cdfFile);
-        } catch (AffymetrixCdfReadException e) {
-            throw new PlatformLoadingException("Couldn't read Affymetrix design file " + cdfFile.getName(), e);
-        }
-        ReporterSet probeSetReporters = new ReporterSet();
-        probeSetReporters.setReporters(new HashSet<AbstractReporter>());
-        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        platform.getReporterSets().add(probeSetReporters);
-        FusionCDFData cdfData = cdfReader.getCdfData();
-        platform.setName(cdfData.getChipType());
-        int numProbeSets = cdfData.getHeader().getNumProbeSets();
-        for (int index = 0; index < numProbeSets; index++) {
-            handleProbeSet(cdfData.getProbeSetName(index), probeSetReporters);
-        }
-    }
-
-    private void handleProbeSet(String probeSetName, ReporterSet probeSetReporters) {
+    private void handleProbeSet(String probeSetName, Gene gene, ReporterSet probeSetReporters) {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
-        reporter.setGene(probeSetToGeneMap.get(probeSetName));
+        reporter.setGene(gene);
         probeSetReporters.getReporters().add(reporter);
     }
 
@@ -280,7 +259,6 @@ public class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         }
         closeAnnotationFileREader();
         cdfReader = null;
-        probeSetToGeneMap = null;
     }
 
     private void closeAnnotationFileREader() {

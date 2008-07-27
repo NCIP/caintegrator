@@ -104,7 +104,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(List<Array> arrays, List<AbstractReporter> reporters) {
+    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, List<Array> arrays, List<AbstractReporter> reporters) {
         return null;
     }
 

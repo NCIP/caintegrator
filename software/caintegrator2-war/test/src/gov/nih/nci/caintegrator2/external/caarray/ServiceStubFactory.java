@@ -110,14 +110,18 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
         return new DataRetrievalServiceStub();
     }
 
-    private static class SearchServiceStub implements CaArraySearchService {
+   static class SearchServiceStub implements CaArraySearchService {
 
         @SuppressWarnings("unchecked")
-        public <T extends AbstractCaArrayObject> List<T> search(T arg0) {
-            if (arg0 instanceof Experiment) {
-                return (List<T>) returnExperiments((Experiment) arg0);
+        public <T extends AbstractCaArrayObject> List<T> search(T searchObject) {
+            if (searchObject instanceof Experiment) {
+                return (List<T>) returnExperiments((Experiment) searchObject);
+            } else if (searchObject instanceof Sample) {
+                return (List<T>) returnSamples((Sample) searchObject);
             } else {
-                return (List<T>) returnSamples((Sample) arg0);
+                List<T> values = new ArrayList<T>();
+                values.add(searchObject);
+                return values;
             }
         }
 
@@ -136,7 +140,7 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
 
         private List<Experiment> returnExperiments(Experiment searchExperiment) {
             List<Experiment> experiments = new ArrayList<Experiment>();
-            if (searchExperiment.getPublicIdentifier().equals("samples")) {
+            if ("samples".equals(searchExperiment.getPublicIdentifier())) {
                 Experiment experiment = new Experiment();
                 Sample sample1 = new Sample();
                 sample1.setName("sample1");
@@ -145,7 +149,7 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
                 sample2.setName("sample2");
                 experiment.getSamples().add(sample2);
                 experiments.add(experiment);
-            } else if (searchExperiment.getPublicIdentifier().equals("no-samples")) {
+            } else if ("no-samples".equals(searchExperiment.getPublicIdentifier())) {
                 Experiment experiment = new Experiment();
                 experiments.add(experiment);
             }

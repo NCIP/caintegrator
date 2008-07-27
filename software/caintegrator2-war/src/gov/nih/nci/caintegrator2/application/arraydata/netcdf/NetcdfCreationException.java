@@ -3,7 +3,7 @@ package gov.nih.nci.caintegrator2.application.arraydata.netcdf;
 /**
  * Indicates a problem creating a NetCDF file.
  */
-public class NetcdfCreationException extends Exception {
+public class NetcdfCreationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

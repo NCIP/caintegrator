@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata.netcdf;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfConstants.*;
+
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import ucar.ma2.ArrayChar;
-import ucar.ma2.ArrayLong;
+import ucar.ma2.ArrayFloat;
 import ucar.ma2.DataType;
 import ucar.ma2.Index;
 import ucar.ma2.InvalidRangeException;
@@ -61,10 +62,9 @@ public class NetcdfFileWriter {
 
     /**
      * Creates the netCDF file to suit our Reporter -> Array format.
-     * @throws NetcdfCreationException - Exception creating netCDF file.
      */
     @SuppressWarnings("PMD.ExcessiveMethodLength")
-    public void create() throws NetcdfCreationException {
+    public void create() {
         try {
             NetcdfFileWriteable ncfile = NetcdfFileWriteable.createNew(outputFile, true);
             int numMicroArrays = arrayDataValues.getAllArrays().size();
@@ -130,7 +130,7 @@ public class NetcdfFileWriter {
         // Batch reporters in groups
         ArrayChar reporterCharacters = new ArrayChar.D2(numReporters, LABEL_LENGTH);
         // Create a 2D array of longs and fill it
-        ArrayLong values = new ArrayLong.D2(numMicroArrays, numReporters);
+        ArrayFloat values = new ArrayFloat.D2(numMicroArrays, numReporters);
         List<ReporterRow> rows = retrieveRows(arrayDataValues, microArrayOrderredList);
         int curr = 0;
         for (ReporterRow r : rows) {
@@ -178,12 +178,12 @@ public class NetcdfFileWriter {
         for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
             ReporterRow row = new ReporterRow();
             row.setReporterId(reporter.getName());
-            List<Long> arrayValues = new ArrayList<Long>();
+            List<Float> arrayValues = new ArrayList<Float>();
             for (Array microArray : microArrayList) {
                 arrayValues.add(values.getValue(microArray, reporter));
             }
 
-            row.setArrayValues(arrayValues.toArray(new Long[arrayValues.size()]));
+            row.setArrayValues(arrayValues.toArray(new Float[arrayValues.size()]));
             rows.add(row);
         }
 

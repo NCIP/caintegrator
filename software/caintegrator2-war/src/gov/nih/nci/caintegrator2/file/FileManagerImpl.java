@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.file;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,7 +106,6 @@ public class FileManagerImpl implements FileManager {
     
     /**
      * {@inheritDoc}
-     * @throws IOException 
      */
     public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) 
     throws IOException  {
@@ -120,10 +120,17 @@ public class FileManagerImpl implements FileManager {
     }
 
     private File getStudyDirectory(StudyConfiguration studyConfiguration) {
-        if (studyConfiguration.getId() == null) {
-            throw new IllegalArgumentException("StudyConfiguration has not been saved.");
+        return getStudyDirectory(studyConfiguration.getStudy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public File getStudyDirectory(Study study) {
+        if (study.getId() == null) {
+            throw new IllegalArgumentException("Study has not been saved.");
         }
-        return new File(getStorageRootDirectory(), studyConfiguration.getId().toString());
+        return new File(getStorageRootDirectory(), study.getId().toString());
     }
 
     private File getStorageRootDirectory() {

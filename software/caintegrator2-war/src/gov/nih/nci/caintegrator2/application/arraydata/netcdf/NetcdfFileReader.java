@@ -45,18 +45,16 @@ public class NetcdfFileReader {
     /**
      * Constructor given a filename, opens and reads the file.
      * @param fileName - filename to read in.
-     * @throws NetcdfReadException - Exception when trying to read file.
      */
-    public NetcdfFileReader(String fileName) throws NetcdfReadException {
+    public NetcdfFileReader(String fileName) {
         this.fileName = fileName;
         openFile();
     }
 
     /**
      * Opens file.
-     * @throws NetcdfReadException - Exception when trying to read file..
      */
-    public void open() throws NetcdfReadException {
+    public void open() {
         openFile();
     }
 
@@ -74,7 +72,7 @@ public class NetcdfFileReader {
      * This method opens the netCDF file and reads in the reporter ids, sample ids, chromosomes and locations to hold
      * them within the object for performance enhancements of multiple reads.
      */
-    private void openFile() throws NetcdfReadException {
+    private void openFile() {
         try {
             ncFile = null;
             ncFile = NetcdfFile.open(fileName);
@@ -100,17 +98,22 @@ public class NetcdfFileReader {
      * @param arrayName - Name of the array column.
      * @param reporter - Name of the reporter column.
      * @return Long value for this reporter/array combination.
-     * @throws IOException - Read exception.
-     * @throws InvalidRangeException - Range exception.
+
      */
-    public Long getArrayData(String arrayName, String reporter) throws IOException, InvalidRangeException {
-        Variable arrayData = ncFile.findVariable(ARRAY_DATA);
-        int[] origin = new int[] {arrays.get(arrayName), reporters.get(reporter)};
-        int[] size = new int[] {1, 1};
-        Array data3D = arrayData.read(origin, size);
-        Array data2D = data3D.reduce();
-        Index index = data2D.getIndex();
-        return data2D.getLong(index);
+    public Float getArrayData(String arrayName, String reporter) {
+        try {
+            Variable arrayData = ncFile.findVariable(ARRAY_DATA);
+            int[] origin = new int[] {arrays.get(arrayName), reporters.get(reporter)};
+            int[] size = new int[] {1, 1};
+            Array data3D = arrayData.read(origin, size);
+            Array data2D = data3D.reduce();
+            Index index = data2D.getIndex();
+            return data2D.getFloat(index);
+        } catch (IOException e) {
+            throw new NetcdfReadException(e);
+        } catch (InvalidRangeException e) {
+            throw new NetcdfReadException(e);
+        }
     }
 
     /**
@@ -119,17 +122,15 @@ public class NetcdfFileReader {
      * 
      * @param arrayNames - List of arrays we wish to return rows for, assumes all reporters.
      * @return - List of reporter rows for the given array names.
-     * @throws NetcdfReadException - Exception when trying to read file.
      */
-    public List<ReporterRow> getArrayDataForArrays(List<String> arrayNames) throws NetcdfReadException {
+    public List<ReporterRow> getArrayDataForArrays(List<String> arrayNames) {
         // allSamples used to be a Long[][] but so that I could clear up memory, I
         // transformed it into this
-        HashMap<Integer, List<Long>> allSamples = new HashMap<Integer, List<Long>>();
+        HashMap<Integer, List<Float>> allSamples = new HashMap<Integer, List<Float>>();
         try {
             for (int i = 0; i < arrayNames.size(); i++) {
                 String sampleId = arrayNames.get(i);
-                List<Long> copyNumberForSample = getArrayDataForArray(sampleId, ncFile);
-
+                List<Float> copyNumberForSample = getArrayDataForArray(sampleId, ncFile);
                 allSamples.put(i, copyNumberForSample);
 
             }
@@ -150,13 +151,13 @@ public class NetcdfFileReader {
      * @param allSamples
      * @param returnList
      */
-    private void fillReturnListForArrays(List<String> arrayNames, Map<Integer, List<Long>> allSamples,
+    private void fillReturnListForArrays(List<String> arrayNames, Map<Integer, List<Float>> allSamples,
             List<ReporterRow> returnList) {
         // Start from the end so we can delete the items off the end of the
         for (int i = allSamples.get(0).size() - 1; i >= 0; i--) {
             ReporterRow r = new ReporterRow();
             r.setReporterId(reporterArray[i]);
-            Long[] arrayValues = new Long[arrayNames.size()];
+            Float[] arrayValues = new Float[arrayNames.size()];
             for (int j = 0; j < allSamples.size(); j++) {
                 arrayValues[j] = allSamples.get(j).get(i);
                 // Remove that element to free up memory
@@ -174,9 +175,8 @@ public class NetcdfFileReader {
      * 
      * @param reporterNames - List of reporters we wish to return rows for, assumes all arrays.
      * @return - List of reporter rows for the given reporter names.
-     * @throws NetcdfReadException - Exception when trying to read file.
      */
-    public List<ReporterRow> getArrayDataForReporters(List<String> reporterNames) throws NetcdfReadException {
+    public List<ReporterRow> getArrayDataForReporters(List<String> reporterNames) {
 
         List<ReporterRow> returnList = new ArrayList<ReporterRow>();
         try {
@@ -186,7 +186,7 @@ public class NetcdfFileReader {
 
                 ReporterRow r = new ReporterRow();
                 r.setReporterId(reporterId);
-                r.setArrayValues(createLongArray(arrayValueForReporter));
+                r.setArrayValues(createFloatArray(arrayValueForReporter));
                 returnList.add(r);
 
             }
@@ -200,17 +200,17 @@ public class NetcdfFileReader {
     }
 
 
-    private List<Long> getArrayDataForArray(String arrayName, NetcdfFile nc) throws IOException, InvalidRangeException {
+    private List<Float> getArrayDataForArray(String arrayName, NetcdfFile nc) 
+    throws IOException, InvalidRangeException {
         Variable copyNumber = nc.findVariable(ARRAY_DATA);
         int[] origin = new int[] {arrays.get(arrayName), 0};
         int[] size = new int[] {1, reporters.size()};
         Array data3D = copyNumber.read(origin, size);
         Array data2D = data3D.reduce();
         double[] doubleArray = (double[]) data2D.copyTo1DJavaArray();
-        ArrayList<Long> myArrayList = new ArrayList<Long>();
+        ArrayList<Float> myArrayList = new ArrayList<Float>();
         for (int i = 0; i < doubleArray.length; i++) {
-            // expect an Object as argument, but automatically changed to Long
-            myArrayList.add(Math.round(doubleArray[i]));
+            myArrayList.add((float) doubleArray[i]);
         }
 
         doubleArray = null;
@@ -266,10 +266,10 @@ public class NetcdfFileReader {
         labelMap.put(buff.toString(), i);
     }
 
-    private Long[] createLongArray(double[] array) {
-        Long[] newArray = new Long[array.length];
+    private Float[] createFloatArray(double[] array) {
+        Float[] newArray = new Float[array.length];
         for (int i = 0; i < array.length; i++) {
-            newArray[i] = Math.round(array[i]);
+            newArray[i] = (float) array[i];
         }
         return newArray;
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
@@ -81,8 +82,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/mail-1.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/mysql-connector-java-5.0.5.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/netcdf-2.2.22.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/netcdf-2.2.22.jar" sourcepath="software/lib/src/netcdf-2.2.22-src.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ognl-2.6.11.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ojdbc14-10.2.0.3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/opencsv-1.8.jar"/>

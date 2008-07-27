@@ -115,11 +115,12 @@ public interface ArrayDataService {
     /**
      * Retrieves the normalized data values from the given arrays for the given reporters.
      * 
+     * @param arrayDataMatrix retrieve data values for this data matrix.
      * @param arrays retrieve data values from these arrays
      * @param reporters retrieve the values for these reporters only
      * @return the values.
      */
-    ArrayDataValues getData(List<Array> arrays, List<AbstractReporter> reporters);
+    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, List<Array> arrays, List<AbstractReporter> reporters);
     
     /**
      * Loads the given array design into the system.

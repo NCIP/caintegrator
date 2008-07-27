@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
 
@@ -93,6 +94,10 @@ public class FileManagerStub implements FileManager {
 
     public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
         return sourceFile;
+    }
+    
+    public File getStudyDirectory(Study study) {
+        return new File("/");
     }
 
 }

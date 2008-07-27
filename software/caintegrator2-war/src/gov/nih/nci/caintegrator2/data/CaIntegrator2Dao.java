@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -189,5 +190,13 @@ public interface CaIntegrator2Dao {
      * @return the matching gene or null.
      */
     Gene getGene(String symbol);
+
+    /**
+     * Returns the array design platform that matches the given name.
+     * 
+     * @param name the platform name.
+     * @return the matching platform.
+     */
+    Platform getPlatform(String name);
     
 }

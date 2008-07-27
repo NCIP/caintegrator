@@ -131,8 +131,9 @@ public interface StudyManagementService {
      * Deploys or redeploys a study.
      * 
      * @param studyConfiguration the study configuration to deploy
+     * @throws ConnectionException if underlying data sources couldn't be reached
      */
-    void deployStudy(StudyConfiguration studyConfiguration);
+    void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException;
 
     /**
      * Adds a new, initialized genomic data source to the study.

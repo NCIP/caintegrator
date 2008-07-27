@@ -92,27 +92,27 @@ import java.io.File;
  */
 public class AffymetrixPlatformSource extends AbstractPlatformSource {
     
-    private final File cdfFile;
     private final File annotationFile;
+    private final String platformName;
     
     /**
      * Creates a new instance.
      * 
-     * @param cdfFile the CDF library file.
+     * @param platformName the name of the new design.
      * @param annotationFile the CSV annotation file.
      */
-    public AffymetrixPlatformSource(File cdfFile, File annotationFile) {
+    public AffymetrixPlatformSource(String platformName, File annotationFile) {
         super();
-        if (cdfFile == null || !cdfFile.exists()) {
-            throw new IllegalArgumentException("CDF file must exist.");
+        this.platformName = platformName;
+        if (annotationFile == null || !annotationFile.exists()) {
+            throw new IllegalArgumentException("Annotation file must exist.");
         }
-        this.cdfFile = cdfFile;
         this.annotationFile = annotationFile;
     }
 
     @Override
     AbstractPlatformLoader getLoader() {
-        return new AffymetrixPlatformLoader(cdfFile, annotationFile);
+        return new AffymetrixPlatformLoader(platformName, annotationFile);
     }
 
 
