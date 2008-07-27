@@ -18,7 +18,7 @@
         <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" />
         <s:textfield label="caArray Password" name="genomicSource.serverProfile.password" readonly="true" />
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" />
-        <s:file name="clinicalFile" label="File" />
+        <s:file name="sampleMappingFile" label="File" />
         <s:submit value="Upload Mapping File" />
     </s:form>
     
