@@ -89,11 +89,13 @@ import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.io.FileReader;
@@ -146,10 +148,18 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
             loadSamples();
             mapSamples();
             deploy();
+            checkArrayData();
         } finally {
             cleanup();            
         }
         
+    }
+
+    private void checkArrayData() {
+        ArrayDataMatrix arrayDataMatrix = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection().iterator().next().getMatrix();
+        ArrayDataValues values = arrayDataService.getData(arrayDataMatrix);
+        assertEquals(6, values.getAllArrays().size());
+        assertEquals(54675, values.getReporterArrayValueMap().size());
     }
 
     private void loadSamples() throws ConnectionException {
