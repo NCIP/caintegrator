@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-lazy-init="false" 
+    default-dependency-check="none" 
+    default-autowire="no">
+    
+    <bean id="studyManagementService" 
+        class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>
+        <property name="caArrayFacade">
+            <ref local="caArrayFacade"/>
+        </property>
+        <property name="nciaFacade">
+            <ref local="nciaFacade"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+    </bean>
+    
+    <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="sessionFactory"/>
+        </property>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    
+    <bean id="sessionFactory" 
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation">
+            <value>classpath:hibernate.cfg.xml</value>
+        </property>
+    </bean>
+
+    <bean id="fileManager"
+        class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
+        </property>
+    </bean>
+        
+    <bean id="configurationHelper" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
+
+    <bean id="caArrayFacade" 
+        class="gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeImpl">
+        <property name="serviceFactory">
+            <ref local="caArrayServiceFactory"/>
+        </property>
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+    </bean>
+    
+    <bean id="arrayDataService" 
+        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>
+    </bean>
+    
+    <bean id="caArrayServiceFactory" 
+        class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
+    
+    <bean id="nciaFacade" 
+         class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl">
+         <property name="nciaServiceFactory">
+            <ref local="nciaServiceFactory"/>
+        </property>
+    </bean>
+    
+    <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
+        
+    <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
+       <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
+       <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
+       <property name="url" value="http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
+       
+    </bean>
+    
+</beans>

@@ -224,7 +224,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void deployStudy(StudyConfiguration studyConfiguration) {
+    public void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException {
         new GenomicDataHelper(getCaArrayFacade(), getArrayDataService()).loadData(studyConfiguration);
         studyConfiguration.setStatus(Status.DEPLOYED);
         dao.save(studyConfiguration);

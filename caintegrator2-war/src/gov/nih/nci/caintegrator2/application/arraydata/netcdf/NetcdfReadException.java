@@ -3,7 +3,7 @@ package gov.nih.nci.caintegrator2.application.arraydata.netcdf;
 /**
  * Indicates a problem reading a NetCDF file.
  */
-public class NetcdfReadException extends Exception {
+public class NetcdfReadException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

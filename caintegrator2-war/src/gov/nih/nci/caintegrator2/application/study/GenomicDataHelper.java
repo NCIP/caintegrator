@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
@@ -102,8 +104,10 @@ class GenomicDataHelper {
         this.arrayDataService = arrayDataService;
     }
 
-    void loadData(StudyConfiguration studyConfiguration) {
+    void loadData(StudyConfiguration studyConfiguration) throws ConnectionException {
         ArrayDataValues values = new ArrayDataValues();
+        values.setArrayDataMatrix(new ArrayDataMatrix());
+        values.getArrayDataMatrix().setStudy(studyConfiguration.getStudy());
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
             loadData(studyConfiguration, genomicSource, values);
         }
@@ -111,10 +115,8 @@ class GenomicDataHelper {
     }
 
     void loadData(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource, 
-            ArrayDataValues values) {
-//        for (Sample sample : genomicSource.getSamples()) {
-//            
-//        }
+            ArrayDataValues values) throws ConnectionException {
+        values.addValues(caArrayFacade.retrieveData(genomicSource));
     }
 
     /**
