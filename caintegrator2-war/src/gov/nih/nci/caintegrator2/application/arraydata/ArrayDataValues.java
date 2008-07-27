@@ -196,5 +196,21 @@ public class ArrayDataValues {
             }
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        for (AbstractReporter reporter : reporterArrayValueMap.keySet()) {
+            for (Array array : allArrays) {
+                sb.append(reporterArrayValueMap.get(reporter).get(array));
+                sb.append(' ');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 
 }
