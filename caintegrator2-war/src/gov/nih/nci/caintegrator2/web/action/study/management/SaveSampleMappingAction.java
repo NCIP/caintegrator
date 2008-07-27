@@ -103,6 +103,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
+        getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile());
         return SUCCESS;
     }
 

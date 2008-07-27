@@ -230,12 +230,21 @@ class DataRetrievalHelper {
         array.setPlatform(platform);
         array.setName(hybridization.getName());
         array.setSampleCollection(new HashSet<Sample>());
-        array.getSampleCollection().add(getAssociatedSample(hybridization));
+        Sample sample = getAssociatedSample(hybridization);
+        array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
         array.setArrayData(arrayData);
-        arrayData.setSample(getAssociatedSample(hybridization));
+        arrayData.setSample(sample);
         arrayData.setStudy(genomicSource.getStudyConfiguration().getStudy());
+        if (sample.getArrayDataCollection() == null) {
+            sample.setArrayDataCollection(new HashSet<ArrayData>());
+        }
+        if (sample.getArrayCollection() == null) {
+            sample.setArrayCollection(new HashSet<Array>());
+        }
+        sample.getArrayCollection().add(array);
+        sample.getArrayDataCollection().add(arrayData);
         return array;
     }
 
