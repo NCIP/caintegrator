@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -104,6 +105,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -187,9 +189,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE)) {
+            // TODO : This should probably throw an error instead of returning null.
+            return null;
+        } else {
+            // Main criteria is for SampleAcquisitions
+            Criteria sampleAcquisitionCrit = getHibernateTemplate().
+                                             getSessionFactory().
+                                             getCurrentSession().
+                                             createCriteria(SampleAcquisition.class);
+            Criteria valuesCrit = sampleAcquisitionCrit.createCriteria("annotationCollection");
+            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+            return sampleAcquisitionCrit.list();
+        }
     }
 
     /**

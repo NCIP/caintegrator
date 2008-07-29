@@ -101,7 +101,7 @@ public final class NumericComparisonCriterionGenerator extends AbstractTestDataG
     @Override
     public void compareFields(NumericComparisonCriterion original, NumericComparisonCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
         assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
 
     }
@@ -115,7 +115,7 @@ public final class NumericComparisonCriterionGenerator extends AbstractTestDataG
     public void setValues(NumericComparisonCriterion numericComparisonCriterion) {
         numericComparisonCriterion.setEntityType("Subject");
         numericComparisonCriterion.setAnnotationDefinition(new AnnotationDefinition());
-        numericComparisonCriterion.setValue(Double.valueOf(getUniqueInt()));
+        numericComparisonCriterion.setNumericValue(Double.valueOf(getUniqueInt()));
 
     }
 

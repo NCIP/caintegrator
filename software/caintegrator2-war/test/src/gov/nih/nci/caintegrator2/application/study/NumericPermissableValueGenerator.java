@@ -102,7 +102,7 @@ public final class NumericPermissableValueGenerator extends AbstractTestDataGene
         assertEquals(original.getHighValue(), retrieved.getHighValue());
         assertEquals(original.getIsRangeValue(), retrieved.getIsRangeValue());
         assertEquals(original.getLowValue(), retrieved.getLowValue());
-        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
     }
 
     @Override
@@ -115,7 +115,7 @@ public final class NumericPermissableValueGenerator extends AbstractTestDataGene
         numericPermissableValue.setHighValue(Double.valueOf(getUniqueInt()));
         numericPermissableValue.setIsRangeValue(getUniqueInt());
         numericPermissableValue.setLowValue(Double.valueOf(getUniqueInt()));
-        numericPermissableValue.setValue(Double.valueOf(getUniqueInt()));
+        numericPermissableValue.setNumericValue(Double.valueOf(getUniqueInt()));
         
     }
 

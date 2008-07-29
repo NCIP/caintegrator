@@ -206,7 +206,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
                 String[] values = fields[2].split(";");
                 for (String value : values) {
                     StringPermissableValue permissableValue = new StringPermissableValue();
-                    permissableValue.setValue(value);
+                    permissableValue.setStringValue(value);
                     permissableValues.add(permissableValue);
                     dao.save(permissableValue);
                 }

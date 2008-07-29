@@ -104,7 +104,7 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     @Override
     public void compareFields(NumericAnnotationValue original, NumericAnnotationValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
         if(retrieved.getBoundedValue() instanceof NumericPermissableValue) {
             NumericPermissableValueGenerator.INSTANCE.compare((NumericPermissableValue)original.getBoundedValue(), (NumericPermissableValue)retrieved.getBoundedValue());
         }  else {
@@ -120,7 +120,7 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     @Override
     public void setValues(NumericAnnotationValue numericAnnotationValue) {
         
-        numericAnnotationValue.setValue(Double.valueOf(getUniqueInt()));
+        numericAnnotationValue.setNumericValue(Double.valueOf(getUniqueInt()));
         numericAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());
         numericAnnotationValue.setBoundedValue(NumericPermissableValueGenerator.INSTANCE.createPersistentObject());
         
