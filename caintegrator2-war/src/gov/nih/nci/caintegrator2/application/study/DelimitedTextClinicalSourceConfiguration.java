@@ -176,7 +176,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     private StringAnnotationValue createStringAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
             String value) {
         StringAnnotationValue annotationValue = new StringAnnotationValue();
-        annotationValue.setValue(value);
+        annotationValue.setStringValue(value);
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
     }
@@ -184,7 +184,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     private DateAnnotationValue createDateAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
             String value) {
         DateAnnotationValue annotationValue = new DateAnnotationValue();
-        annotationValue.setValue(getDateValue(value));
+        annotationValue.setDateValue(getDateValue(value));
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
     }
@@ -205,7 +205,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     private NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
             String value) {
         NumericAnnotationValue annotationValue = new NumericAnnotationValue();
-        annotationValue.setValue(getNumericValue(value));
+        annotationValue.setNumericValue(getNumericValue(value));
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
     }

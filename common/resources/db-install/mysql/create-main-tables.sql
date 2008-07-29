@@ -22,7 +22,7 @@ CREATE TABLE ABSTRACT_ANNOTATION_VALUE
 CREATE TABLE NUMERIC_ANNOTATION_VALUE 
 (
     ID bigint not null, 
-    VALUE double precision, 
+    NUMERIC_VALUE double precision, 
     primary key (ID)
 ) TYPE=InnoDB;
 
@@ -30,14 +30,14 @@ CREATE TABLE NUMERIC_ANNOTATION_VALUE
 CREATE TABLE STRING_ANNOTATION_VALUE 
 (
     ID bigint not null, 
-    VALUE varchar(255), 
+    STRING_VALUE varchar(255), 
     primary key (ID)
 ) TYPE=InnoDB;
 
 CREATE TABLE DATE_ANNOTATION_VALUE 
 (
     ID bigint not null, 
-    VALUE datetime,
+    DATE_VALUE datetime,
     primary key (ID)
 ) TYPE=InnoDB;
 
@@ -54,21 +54,21 @@ CREATE TABLE NUMERIC_PERMISSABLE_VALUE
     HIGH_VALUE double precision, 
     IS_RANGE_VALUE integer, 
     LOW_VALUE double precision, 
-    VALUE double precision, 
+    NUMERIC_VALUE double precision, 
     primary key (ID)
 ) TYPE=InnoDB;
 
 CREATE TABLE STRING_PERMISSABLE_VALUE 
 (
     ID bigint not null, 
-    VALUE varchar(255),
+    STRING_VALUE varchar(255),
     primary key (ID)
 ) TYPE=InnoDB;
 
 CREATE TABLE DATE_PERMISSABLE_VALUE 
 (
     ID bigint not null, 
-    VALUE datetime, 
+    DATE_VALUE datetime, 
     primary key (ID)
 ) TYPE=InnoDB;
 
@@ -138,7 +138,7 @@ CREATE TABLE ABSTRACT_ANNOTATION_CRITERION
 CREATE TABLE STRING_COMPARISON_CRITERION 
 (
     ID bigint not null, 
-    VALUE varchar(255),
+    STRING_VALUE varchar(255),
     primary key (ID)
 ) TYPE=InnoDB;
 
@@ -146,7 +146,7 @@ CREATE TABLE NUMERIC_COMPARISON_CRITERION
 (
     ID bigint not null,
     NUMERIC_COMPARISON_OPERATOR varchar(255), 
-    VALUE double precision,
+    NUMERIC_VALUE double precision,
     primary key (ID)
 ) TYPE=InnoDB;
 
@@ -163,15 +163,6 @@ CREATE TABLE SELECTED_VALUE_CRITERIA_PERMISSABLE_VALUES
     SELECTED_VALUE_CRITERION_ID bigint not null,
     PRIMARY KEY (ABSTRACT_PERMISSABLE_VALUE_ID, SELECTED_VALUE_CRITERION_ID)
 ) TYPE=InnoDB;
-
-
-
-
-
-
-
-
-
 
 
 CREATE TABLE IMAGE
