@@ -99,7 +99,7 @@ public final class StringPermissableValueGenerator extends AbstractTestDataGener
     @Override
     public void compareFields(StringPermissableValue original, StringPermissableValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getStringValue(), retrieved.getStringValue());
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class StringPermissableValueGenerator extends AbstractTestDataGener
     @Override
     public void setValues(StringPermissableValue stringPermissableValue) {
         
-        stringPermissableValue.setValue(getUniqueString());
+        stringPermissableValue.setStringValue(getUniqueString());
         
     }
 

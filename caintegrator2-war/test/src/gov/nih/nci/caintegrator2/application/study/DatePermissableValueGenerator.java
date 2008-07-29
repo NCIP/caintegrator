@@ -101,7 +101,7 @@ public final class DatePermissableValueGenerator extends AbstractTestDataGenerat
     @Override
     public void compareFields(DatePermissableValue original, DatePermissableValue retrieved) {
        assertEquals(original.getId(), retrieved.getId());
-       assertEquals(original.getValue(), retrieved.getValue());
+       assertEquals(original.getDateValue(), retrieved.getDateValue());
     }
 
     @Override
@@ -111,7 +111,7 @@ public final class DatePermissableValueGenerator extends AbstractTestDataGenerat
 
     @Override
     public void setValues(DatePermissableValue datePermissableValue) {
-        datePermissableValue.setValue(new Date());
+        datePermissableValue.setDateValue(new Date());
         
     }
 

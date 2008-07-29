@@ -101,7 +101,7 @@ public final class StringComparisonCriterionGenerator extends AbstractTestDataGe
     @Override
     public void compareFields(StringComparisonCriterion original, StringComparisonCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getValue(), retrieved.getValue());
+        assertEquals(original.getStringValue(), retrieved.getStringValue());
         assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
 
     }
@@ -115,7 +115,7 @@ public final class StringComparisonCriterionGenerator extends AbstractTestDataGe
     public void setValues(StringComparisonCriterion stringComparisonCriterion) {
         stringComparisonCriterion.setEntityType("Subject");
         stringComparisonCriterion.setAnnotationDefinition(new AnnotationDefinition());
-        stringComparisonCriterion.setValue(getUniqueString());
+        stringComparisonCriterion.setStringValue(getUniqueString());
 
     }
 

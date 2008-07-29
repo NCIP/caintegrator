@@ -87,11 +87,21 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -102,6 +112,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     
     private CaIntegrator2Dao dao;
     private SessionFactory sessionFactory;
+    private AnnotationDefinition testAnnotationDefinition;
+    private static final String EXCESSIVE = "PMD.ExcessiveMethodLength";
     
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/dao-test-config.xml"};
@@ -141,7 +153,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     }
     
     @Test 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength"})
+    @SuppressWarnings({EXCESSIVE})
     public void testFindMatches() {
         // First load 2 AnnotationFieldDescriptors.
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
@@ -179,6 +191,111 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         searchWords2.add("afdsefda");
         List<AnnotationFieldDescriptor> afds2 = dao.findMatches(searchWords2);
         assertEquals(0, afds2.size());
+    }
+    
+    @Test
+    @SuppressWarnings({EXCESSIVE})
+    public void testFindMatchingSamples() {
+        
+        Study study = populateAndRetrieveStudy();
+        dao.save(study);
+        
+        // Now need to create the criterion items and see if we can retrieve back the proper values.
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericValue(12.0);
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion.setAnnotationDefinition(testAnnotationDefinition);
+        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        List<SampleAcquisition> matchingSamples = dao.findMatchingSamples(criterion, study);
+        
+        assertEquals(3, matchingSamples.size());
+    }
+    
+    
+    @Test
+    @SuppressWarnings({EXCESSIVE})
+    public void testFindMatchingSamples2() {
+        
+        Study study = populateAndRetrieveStudy();
+        dao.save(study);
+        
+        // Now need to create the criterion items and see if we can retrieve back the proper values.
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericValue(13.0);
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion.setAnnotationDefinition(testAnnotationDefinition);
+        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        List<SampleAcquisition> matchingSamples = dao.findMatchingSamples(criterion, study);
+        
+        assertEquals(2, matchingSamples.size());
+    }
+    
+    @SuppressWarnings({EXCESSIVE})
+    private Study populateAndRetrieveStudy() {
+        Study myStudy = new Study();
+        myStudy.setShortTitleText("Test Study");
+        testAnnotationDefinition = new AnnotationDefinition();
+        testAnnotationDefinition.setDisplayName("TestAnnotation");
+        Collection<AnnotationDefinition> definitions = new HashSet<AnnotationDefinition>();
+        definitions.add(testAnnotationDefinition);
+        myStudy.setSampleAnnotationCollection(definitions);
+        
+        NumericAnnotationValue val1 = new NumericAnnotationValue();
+        NumericAnnotationValue val2 = new NumericAnnotationValue();
+        NumericAnnotationValue val3 = new NumericAnnotationValue();
+        NumericAnnotationValue val4 = new NumericAnnotationValue();
+        NumericAnnotationValue val5 = new NumericAnnotationValue();
+        
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        sampleAcquisition1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+        sampleAcquisition2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        SampleAcquisition sampleAcquisition3 = new SampleAcquisition();
+        sampleAcquisition3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+       
+        SampleAcquisition sampleAcquisition4 = new SampleAcquisition();
+        sampleAcquisition4.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+       
+        SampleAcquisition sampleAcquisition5 = new SampleAcquisition();
+        sampleAcquisition5.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        val1.setAnnotationDefinition(testAnnotationDefinition);
+        val1.setNumericValue(10.0);
+        sampleAcquisition1.getAnnotationCollection().add(val1);
+        
+        val2.setAnnotationDefinition(testAnnotationDefinition);
+        val2.setNumericValue(11.0);
+        sampleAcquisition2.getAnnotationCollection().add(val2);
+        
+        val3.setAnnotationDefinition(testAnnotationDefinition);
+        val3.setNumericValue(12.0);
+        sampleAcquisition3.getAnnotationCollection().add(val3);
+        
+        val4.setAnnotationDefinition(testAnnotationDefinition);
+        val4.setNumericValue(13.0);
+        sampleAcquisition4.getAnnotationCollection().add(val4);
+        
+        val5.setAnnotationDefinition(testAnnotationDefinition);
+        val5.setNumericValue(14.0);
+        sampleAcquisition5.getAnnotationCollection().add(val5);
+        
+        StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+        
+        Collection<SampleAcquisition> saCollection = new HashSet<SampleAcquisition>();
+        saCollection.add(sampleAcquisition1);
+        saCollection.add(sampleAcquisition2);
+        saCollection.add(sampleAcquisition3);
+        saCollection.add(sampleAcquisition4);
+        saCollection.add(sampleAcquisition5);
+        
+
+        studySubjectAssignment.setSampleAcquisitionCollection(saCollection);
+        Collection<StudySubjectAssignment> ssaCollection = new HashSet<StudySubjectAssignment>();
+        ssaCollection.add(studySubjectAssignment);
+        myStudy.setAssignmentCollection(ssaCollection);
+        return myStudy;
     }
 
     /**
