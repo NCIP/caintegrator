@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 /**
  * Action that deploys a study.
@@ -102,6 +103,10 @@ public class DeployStudyAction extends AbstractStudyAction {
         try {
             getStudyManagementService().deployStudy(getStudyConfiguration());
         } catch (ConnectionException e) {
+            addActionError(e.getMessage());
+            return ERROR;
+        } catch (DataRetrievalException e) {
+            addActionError(e.getMessage());
             return ERROR;
         }
         return SUCCESS;

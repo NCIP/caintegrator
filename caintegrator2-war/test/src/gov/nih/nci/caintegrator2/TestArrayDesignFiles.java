@@ -95,10 +95,12 @@ public class TestArrayDesignFiles {
     public static final String HG_U133_PLUS_2_ANNOTATION_PATH = "/arraydesign/affymetrix/HG-U133_Plus_2.na26.annot.csv";
     public static final String YEAST_2_CDF_PATH = "/arraydesign/affymetrix/Yeast_2.cdf";
     public static final String YEAST_2_ANNOTATION_PATH = "/arraydesign/affymetrix/Yeast_2.na26.annot.csv";
+    public static final String TEST3_ANNOTATION_PATH = "/arraydesign/affymetrix/Test3.annot.csv";
 
     public static final File HG_U133_PLUS_2_CDF_FILE = getFile(HG_U133_PLUS_2_CDF_PATH);
     public static final File HG_U133_PLUS_2_ANNOTATION_FILE = getFile(HG_U133_PLUS_2_ANNOTATION_PATH);
     public static final File YEAST_2_ANNOTATION_FILE = getFile(YEAST_2_ANNOTATION_PATH);
     public static final File YEAST_2_CDF_FILE = getFile(YEAST_2_CDF_PATH);
+    public static final File TEST3_ANNOTATION_FILE = getFile(TEST3_ANNOTATION_PATH);
 
 }

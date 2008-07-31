@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.List;
@@ -115,7 +116,9 @@ public interface CaArrayFacade {
      * @throws ConnectionException if the connection to the caArray server fails.
      * @return the data values.
      * @throws ConnectionException if the subsystem can't connect to the caArray server.
+     * @throws DataRetrievalException if the data couldn't be retrieved from caArray.
      */
-    ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException;
+    ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, DataRetrievalException;
 
 }

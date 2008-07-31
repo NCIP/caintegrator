@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
@@ -155,7 +156,8 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, DataRetrievalException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
         DataRetrievalService dataRetrievalService = 
             getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());

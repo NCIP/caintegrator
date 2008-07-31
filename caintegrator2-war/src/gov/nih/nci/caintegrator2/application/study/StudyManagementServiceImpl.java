@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
@@ -224,8 +225,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException {
-        new GenomicDataHelper(getCaArrayFacade(), getArrayDataService()).loadData(studyConfiguration);
+    public void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException {
+        if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
+            new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao).loadData(studyConfiguration);
+        }
         studyConfiguration.setStatus(Status.DEPLOYED);
         dao.save(studyConfiguration);
     }
