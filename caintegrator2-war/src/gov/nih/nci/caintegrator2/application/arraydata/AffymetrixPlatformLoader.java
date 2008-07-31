@@ -155,10 +155,12 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
         ReporterSet geneReporters = new ReporterSet();
+        geneReporters.setPlatform(platform);
         geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         platform.getReporterSets().add(geneReporters);
         geneReporters.setReporters(new HashSet<AbstractReporter>());
         ReporterSet probeSetReporters = new ReporterSet();
+        probeSetReporters.setPlatform(platform);
         probeSetReporters.setReporters(new HashSet<AbstractReporter>());
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         platform.getReporterSets().add(probeSetReporters);

@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
@@ -132,8 +133,9 @@ public interface StudyManagementService {
      * 
      * @param studyConfiguration the study configuration to deploy
      * @throws ConnectionException if underlying data sources couldn't be reached
+     * @throws DataRetrievalException if external data couldn't be retrieved
      */
-    void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException;
+    void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException;
 
     /**
      * Adds a new, initialized genomic data source to the study.

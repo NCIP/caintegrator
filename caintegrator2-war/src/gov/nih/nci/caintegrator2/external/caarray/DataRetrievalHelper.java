@@ -100,6 +100,7 @@ import gov.nih.nci.caarray.domain.sample.Extract;
 import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
@@ -108,9 +109,12 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -118,11 +122,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 /**
  * Responsible for retrieving array data from caArray.
  */
 class DataRetrievalHelper {
 
+    private static final Logger LOGGER = Logger.getLogger(DataRetrievalHelper.class);
+    
     private final DataRetrievalService dataRetrievalService;
     private final GenomicDataSourceConfiguration genomicSource;
     private final CaArraySearchService searchService;
@@ -137,7 +145,7 @@ class DataRetrievalHelper {
                 this.dao = dao;
     }
 
-    ArrayDataValues retrieveData() throws ConnectionException {
+    ArrayDataValues retrieveData() throws ConnectionException, DataRetrievalException {
         DataSet dataSet = dataRetrievalService.getDataSet(createRequest());
         return convertToArrayDataValues(dataSet);
     }
@@ -196,8 +204,9 @@ class DataRetrievalHelper {
     }
 
     private ArrayDataValues convertToArrayDataValues(DataSet dataSet) 
-    throws ConnectionException {
+    throws ConnectionException, DataRetrievalException {
         ArrayDataValues values = new ArrayDataValues();
+        values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
         for (HybridizationData hybridizationData : dataSet.getHybridizationDataList()) {
             hybridizationData.setDataSet(dataSet);
             loadArrayDataValues(hybridizationData, values);
@@ -206,23 +215,55 @@ class DataRetrievalHelper {
     }
 
     private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues) 
-    throws ConnectionException {
+    throws ConnectionException, DataRetrievalException {
         PlatformHelper platformHelper = 
             new PlatformHelper(getPlatform(hybridizationData.getHybridization()));
         Array array = createArray(hybridizationData.getHybridization(), platformHelper.getPlatform());
+        loadArrayDataValues(hybridizationData, arrayDataValues, platformHelper, array);
+        updateArrayDataMatrix(arrayDataValues.getArrayDataMatrix(), platformHelper, array);
+    }
+
+    private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues,
+            PlatformHelper platformHelper, Array array) {
         QuantitationType quantitationType = hybridizationData.getDataSet().getQuantitationTypes().get(0);
         List<AbstractDesignElement> probeSets = 
             hybridizationData.getDataSet().getDesignElementList().getDesignElements();
         float[] values = ((FloatColumn) hybridizationData.getColumn(quantitationType)).getValues();
         for (int i = 0; i < probeSets.size(); i++) {
-            arrayDataValues.setValue(array, getReporter(probeSets.get(i), platformHelper), values[i]);
+            AbstractReporter reporter = getReporter(probeSets.get(i), platformHelper);
+            setValue(arrayDataValues, array, reporter, values[i]);
         }
     }
 
-    private Platform getPlatform(Hybridization hybridization) {
+    private void updateArrayDataMatrix(ArrayDataMatrix arrayDataMatrix, PlatformHelper platformHelper, Array array) {
+        arrayDataMatrix.getSampleDataCollection().add(array.getArrayData());
+        array.getArrayData().setMatrix(arrayDataMatrix);
+        ReporterSet reporterSet = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        if (arrayDataMatrix.getReporterSet() == null) {
+            arrayDataMatrix.setReporterSet(reporterSet);
+        } else if (!arrayDataMatrix.getReporterSet().equals(reporterSet)) {
+            throw new IllegalStateException("Illegal attempt to load data from different platforms");
+        }
+    }
+
+
+    private void setValue(ArrayDataValues values, Array array, AbstractReporter reporter, float value) {
+        if (reporter == null) {
+            LOGGER.warn("Not including array data value due to missing reporter");
+        } else {
+            values.setValue(array, reporter, value);
+        }
+    }
+
+    private Platform getPlatform(Hybridization hybridization) throws DataRetrievalException {
         Hybridization loadedHybridization = getLoadedCaArrayObject(hybridization);
         ArrayDesign arrayDesign = getLoadedCaArrayObject(loadedHybridization.getArray()).getDesign();
-        return dao.getPlatform(arrayDesign.getName());
+        Platform platform = dao.getPlatform(arrayDesign.getName());
+        if (platform == null) {
+            throw new DataRetrievalException("The platform named " + arrayDesign.getName() 
+                    + " hasn't been loaded into the system");
+        }
+        return platform;
     }
 
     private Array createArray(Hybridization hybridization, Platform platform) {
@@ -245,6 +286,7 @@ class DataRetrievalHelper {
         }
         sample.getArrayCollection().add(array);
         sample.getArrayDataCollection().add(arrayData);
+        dao.save(array);
         return array;
     }
 
@@ -253,8 +295,14 @@ class DataRetrievalHelper {
     }
 
     private AbstractReporter getReporter(AbstractDesignElement designElement, PlatformHelper platformHelper) {
-        return platformHelper.getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
-                ((AbstractProbe) designElement).getName()); 
+        String probeSetName = ((AbstractProbe) designElement).getName();
+        AbstractReporter reporter = platformHelper.getReporter(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, 
+                probeSetName); 
+        if (reporter == null) {
+            LOGGER.warn("Reporter with name " + probeSetName + " was not found in platform " 
+                    + platformHelper.getPlatform().getName());
+        }
+        return reporter;
     }
 
     private gov.nih.nci.caarray.domain.sample.Sample getCaArraySample(Sample sample, String experimentIdentifier) {
