@@ -91,12 +91,15 @@ import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -135,9 +138,10 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     }
     
     @Test
-    public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException {
+    public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
-            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+//            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.TEST3_ANNOTATION_FILE);
             arrayDataService.loadArrayDesign(designSource);
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
@@ -156,17 +160,40 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     }
 
     private void checkArrayData() {
-        ArrayDataMatrix arrayDataMatrix = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection().iterator().next().getMatrix();
-        ArrayDataValues values = arrayDataService.getData(arrayDataMatrix);
+        Collection<ArrayData> arrayDatas = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection();
+        ArrayDataMatrix probeSetArrayDataMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ArrayDataMatrix geneMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        assertEquals(studyConfiguration.getStudy(), probeSetArrayDataMatrix.getStudy());
+        assertEquals(6, probeSetArrayDataMatrix.getSampleDataCollection().size());
+        ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
         assertEquals(6, values.getAllArrays().size());
-        assertEquals(54675, values.getReporterArrayValueMap().size());
+//        assertEquals(54675, values.getReporterArrayValueMap().size());
+        assertEquals(345, values.getReporterArrayValueMap().size());
+        assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
+        assertEquals(6, geneMatrix.getSampleDataCollection().size());
+        values = arrayDataService.getData(geneMatrix);
+        assertEquals(6, values.getAllArrays().size());
+//        assertEquals(20887, values.getReporterArrayValueMap().size());
+        assertEquals(20, values.getReporterArrayValueMap().size());
+    }
+
+    private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
+        for (ArrayData arrayData : arrayDatas) {
+            if (type.getValue().equals(arrayData.getMatrix().getReporterSet().getReporterType())) {
+                return arrayData.getMatrix();
+            }
+        }
+        return null;
     }
 
     private void loadSamples() throws ConnectionException {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
-        genomicSource.getServerProfile().setPort(8080);
-        genomicSource.setExperimentIdentifier("admin-00037");
+//        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
+//        genomicSource.getServerProfile().setPort(8080);
+//        genomicSource.setExperimentIdentifier("admin-00037");
+        genomicSource.getServerProfile().setHostname("localhost");
+        genomicSource.getServerProfile().setPort(11099);
+        genomicSource.setExperimentIdentifier("admin-00001");
         service.addGenomicSource(studyConfiguration, genomicSource);
         assertTrue(genomicSource.getSamples().size() > 0);
     }
@@ -175,7 +202,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         service.mapSamples(studyConfiguration, TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE);
     }
     
-    private void deploy() throws ConnectionException {
+    private void deploy() throws ConnectionException, DataRetrievalException {
         service.deployStudy(studyConfiguration);
     }
 

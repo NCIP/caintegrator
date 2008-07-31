@@ -85,10 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 
@@ -100,6 +104,8 @@ public class PlatformHelper {
     private final Platform platform;
     private final Map<ReporterTypeEnum, Map<String, AbstractReporter>> reporterMaps = 
         new HashMap<ReporterTypeEnum, Map<String, AbstractReporter>>();
+    private final Map<ReporterTypeEnum, Map<Gene, Collection<AbstractReporter>>> geneToReporterMaps = 
+        new HashMap<ReporterTypeEnum, Map<Gene, Collection<AbstractReporter>>>();
     
     /**
      * Creates a new instance.
@@ -146,13 +152,60 @@ public class PlatformHelper {
         return reporterMap;
     }
 
-    private ReporterSet getReporterSet(ReporterTypeEnum type) {
+    /**
+     * Returns the reporter set for the reporter type given.
+     * 
+     * @param type return set of this type
+     * @return the set.
+     */
+    public ReporterSet getReporterSet(ReporterTypeEnum type) {
         for (ReporterSet reporterSet : platform.getReporterSets()) {
             if (type.getValue().equals(reporterSet.getReporterType())) {
                 return reporterSet;
             }
         }
         return null;
+    }
+
+    /**
+     * Returns all reporters associated to a single gene. For gene level reporters this collection
+     * should only contain (at most) one reporter, for probe set reporters this will return multiple
+     * reporters.
+     * 
+     * @param gene find reporters associated to this gene.
+     * @param type find reporters of this type.
+     * @return the reporters for the gene.
+     */
+    public Collection<AbstractReporter> getReportersForGene(Gene gene, ReporterTypeEnum type) {
+        return getGeneToReporterMap(type).get(gene);
+    }
+
+    private Map<Gene, Collection<AbstractReporter>> getGeneToReporterMap(ReporterTypeEnum type) {
+        Map<Gene, Collection<AbstractReporter>> geneReporterMap = geneToReporterMaps.get(type);
+        if (geneReporterMap == null) {
+            geneReporterMap = createGeneReporterMap(type);
+            geneToReporterMaps.put(type, geneReporterMap);
+        }
+        return geneReporterMap;
+    }
+
+    private Map<Gene, Collection<AbstractReporter>> createGeneReporterMap(ReporterTypeEnum type) {
+        Map<Gene, Collection<AbstractReporter>> geneToReporterMap = new HashMap<Gene, Collection<AbstractReporter>>();
+        for (AbstractReporter reporter : getReporterSet(type).getReporters()) {
+            GeneExpressionReporter geneExpressionReporter = (GeneExpressionReporter) reporter;
+            addToGeneToReporterMap(geneExpressionReporter, geneToReporterMap);
+        }
+        return geneToReporterMap;
+    }
+
+    private void addToGeneToReporterMap(GeneExpressionReporter geneExpressionReporter,
+            Map<Gene, Collection<AbstractReporter>> geneToReporterMap) {
+        Collection<AbstractReporter> reportersForGene = geneToReporterMap.get(geneExpressionReporter.getGene());
+        if (reportersForGene == null) {
+            reportersForGene = new HashSet<AbstractReporter>();
+            geneToReporterMap.put(geneExpressionReporter.getGene(), reportersForGene);
+        }
+        reportersForGene.add(geneExpressionReporter);
     }
 
 }

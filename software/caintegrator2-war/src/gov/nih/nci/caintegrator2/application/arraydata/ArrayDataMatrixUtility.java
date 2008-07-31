@@ -85,165 +85,69 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import java.util.HashSet;
+
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 /**
- * Contains the actual numeric array data values. This will be an arbitrary subset (or perhaps
- * the entire contents) of a particular <code>ArrayDataMatrix</code>.
+ * Provides helper methods for working with <code>ArrayDataMatrixes</code>.
  */
-public class ArrayDataValues {
-    
-    private ArrayDataMatrix arrayDataMatrix;
-    private Set<Array> allArrays = new HashSet<Array>();
-    
-    private final Map<AbstractReporter, Map<Array, Float>> reporterArrayValueMap = 
-                            new HashMap<AbstractReporter, Map<Array, Float>>();
+public final class ArrayDataMatrixUtility {
+
+    private ArrayDataMatrixUtility() {
+        super();
+    }
     
     /**
-     * Returns the array data value for a given reporter for a given array.
+     * Creates a new <code>ArrayDataMatrix</code> with collections initialized.
      * 
-     * @param array get value for this array
-     * @param reporter get value for this reporter.
-     * @return the array data value.
+     * @return the matrix.
      */
-    public Float getValue(Array array, AbstractReporter reporter) {
-        return reporterArrayValueMap.get(reporter).get(array);
+    public static ArrayDataMatrix createMatrix() {
+        ArrayDataMatrix matrix = new ArrayDataMatrix();
+        matrix.setSampleDataCollection(new HashSet<ArrayData>());
+        return matrix;
     }
-    
+
     /**
-     * Sets the array data value for a given reporter for a given array.
+     * Copies associations from one data matrix to another.
      * 
-     * @param array get value for this array
-     * @param reporter get value for this reporter.
-     * @param value the array data value.
+     * @param fromArrayDataMatrix copy from this matrix
+     * @param toArrayDataMatrix copy to this matrix
      */
-    public void setValue(Array array, AbstractReporter reporter, Float value) {
-        checkSetValueArguments(array, reporter, value);
-        allArrays.add(array);
-        getArrayToValueMap(reporter).put(array, value);
-        
-    }
-
-    private void checkSetValueArguments(Array array, AbstractReporter reporter, Float value) {
-        if (array == null) {
-            throw new IllegalArgumentException("Argument array was null");
-        }
-        if (reporter == null) {
-            throw new IllegalArgumentException("Argument reporter was null");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Argument value was null");
+    public static void merge(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
+        if (fromArrayDataMatrix != null && toArrayDataMatrix != null) {
+            mergeStudy(fromArrayDataMatrix, toArrayDataMatrix);
+            mergeReporterSet(fromArrayDataMatrix, toArrayDataMatrix);
+            mergeDatas(fromArrayDataMatrix, toArrayDataMatrix);
         }
     }
 
-    private Map<Array, Float> getArrayToValueMap(AbstractReporter reporter) {
-        Map<Array, Float> arrayValueMap;
-        if (reporterArrayValueMap.keySet().contains(reporter)) {
-            arrayValueMap = reporterArrayValueMap.get(reporter);
-        } else {
-            arrayValueMap = new HashMap<Array, Float>();    
-            reporterArrayValueMap.put(reporter, arrayValueMap);
-        }
-        return arrayValueMap;
-    }
-
-    /**
-     * @return the arrayDataMatrix
-     */
-    public ArrayDataMatrix getArrayDataMatrix() {
-        return arrayDataMatrix;
-    }
-
-    /**
-     * @param arrayDataMatrix the arrayDataMatrix to set
-     */
-    public void setArrayDataMatrix(ArrayDataMatrix arrayDataMatrix) {
-        this.arrayDataMatrix = arrayDataMatrix;
-    }
-
-    /**
-     * @return the reporterArrayValueMap
-     */
-    public Map<AbstractReporter, Map<Array, Float>> getReporterArrayValueMap() {
-        return reporterArrayValueMap;
-    }
-
-
-    /**
-     * @return the allArrays
-     */
-    public Set<Array> getAllArrays() {
-        return allArrays;
-    }
-
-    /**
-     * @param allArrays the allArrays to set
-     */
-    public void setAllArrays(Set<Array> allArrays) {
-        this.allArrays = allArrays;
-    }
-
-    /**
-     * Adds all of the values from the given values object to this one.
-     * 
-     * @param values add values from this values object.
-     */
-    public void addValues(ArrayDataValues values) {
-        copyArrays(values.getAllArrays());
-        copyDataValues(values);
-        if (arrayDataMatrix == null) {
-            arrayDataMatrix = values.getArrayDataMatrix();
-        } else {
-            ArrayDataMatrixUtility.merge(values.getArrayDataMatrix(), arrayDataMatrix);
+    private static void mergeDatas(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
+        for (ArrayData arrayData : fromArrayDataMatrix.getSampleDataCollection()) {
+            arrayData.setMatrix(toArrayDataMatrix);
+            arrayData.setStudy(toArrayDataMatrix.getStudy());
+            toArrayDataMatrix.getSampleDataCollection().add(arrayData);
         }
     }
 
-    private void copyArrays(Set<Array> copiedArrays) {
-        for (Array array : copiedArrays) {
-            array.getArrayData().setMatrix(getArrayDataMatrix());
+    private static void mergeStudy(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
+        if (toArrayDataMatrix.getStudy() == null) {
+            toArrayDataMatrix.setStudy(fromArrayDataMatrix.getStudy());
+        } else if (fromArrayDataMatrix.getStudy() != null 
+                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getStudy())) {
+            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated to different studies");
         }
     }
 
-    private void copyDataValues(ArrayDataValues values) {
-        for (AbstractReporter reporter : values.reporterArrayValueMap.keySet()) {
-            for (Array array : values.allArrays) {
-                setValue(array, reporter, values.getValue(array, reporter));
-            }
+    private static void mergeReporterSet(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
+        if (toArrayDataMatrix.getReporterSet() == null) {
+            toArrayDataMatrix.setReporterSet(fromArrayDataMatrix.getReporterSet());
+        } else if (fromArrayDataMatrix.getReporterSet() != null 
+                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getReporterSet())) {
+            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated with different ReporterSets");
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        for (Array array : allArrays) {
-            sb.append(array != null ? array.getName() : "NULL");
-            sb.append(' ');
-        }
-        sb.append('\n');
-        for (AbstractReporter reporter : reporterArrayValueMap.keySet()) {
-            addReporterDetails(sb, reporter);
-        }
-        return sb.toString();
-    }
-
-    private void addReporterDetails(StringBuffer sb, AbstractReporter reporter) {
-        sb.append(reporter != null ? reporter.getName() : "NULL");
-        sb.append(' ');
-        for (Array array : allArrays) {
-            sb.append(' ');
-            sb.append(reporterArrayValueMap.get(reporter).get(array));
-        }
-        sb.append('\n');
-    }
-
 }

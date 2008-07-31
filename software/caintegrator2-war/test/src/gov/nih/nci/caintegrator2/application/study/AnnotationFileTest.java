@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static gov.nih.nci.caintegrator2.TestDataFiles.*;
 import static org.junit.Assert.*;
-
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 import java.io.File;
@@ -96,8 +96,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static gov.nih.nci.caintegrator2.TestDataFiles.*;
 
 
 public class AnnotationFileTest {
@@ -222,5 +220,5 @@ public class AnnotationFileTest {
             assertEquals(testAnnotationDescriptor.getName(), realAnnotationDescriptor.getName());
         }
     }
-    
+   
 }

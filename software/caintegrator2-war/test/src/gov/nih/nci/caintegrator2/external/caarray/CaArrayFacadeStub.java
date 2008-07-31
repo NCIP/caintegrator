@@ -85,13 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class CaArrayFacadeStub implements CaArrayFacade {
@@ -108,7 +113,16 @@ public class CaArrayFacadeStub implements CaArrayFacade {
      * {@inheritDoc}
      */
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        return new ArrayDataValues();
+        ArrayDataValues values = new ArrayDataValues();
+        values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
+        ReporterSet reporterSet = new ReporterSet();
+        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        Platform platform = new Platform();
+        platform.setReporterSets(new HashSet<ReporterSet>());
+        platform.getReporterSets().add(reporterSet);
+        reporterSet.setPlatform(platform);
+        values.getArrayDataMatrix().setReporterSet(reporterSet);
+        return values;
     }
 
 }

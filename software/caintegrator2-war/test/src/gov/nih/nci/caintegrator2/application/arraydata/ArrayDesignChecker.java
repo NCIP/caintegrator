@@ -21,6 +21,9 @@ public class ArrayDesignChecker {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
         AffymetrixPlatformSource source = new AffymetrixPlatformSource(cdfReader.getCdfData().getChipType(), annotationFile);
         Platform platform = service.loadArrayDesign(source);
+        if (platform.getId() == null) {
+            platform.setId(1L);
+        }
         checkPlatform(platform, cdfReader);
         checkProbeSetReporters(platform, cdfReader);
         checkGeneReporters(platform);
@@ -29,6 +32,7 @@ public class ArrayDesignChecker {
 
     private static void checkGeneReporters(Platform platform) {
         ReporterSet geneReporters = getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE, platform);
+        assertEquals(platform, geneReporters.getPlatform());
         Set<String> geneSymbols = new HashSet<String>();
         for (AbstractReporter abstractReporter : geneReporters.getReporters()) {
             GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
@@ -42,6 +46,7 @@ public class ArrayDesignChecker {
 
     private static void checkProbeSetReporters(Platform platform, AffymetrixCdfReader cdfReader) {
         ReporterSet probeSetReporters = getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, platform);
+        assertEquals(platform, probeSetReporters.getPlatform());
         assertEquals(cdfReader.getCdfData().getHeader().getNumProbeSets(), probeSetReporters.getReporters().size());
         for (AbstractReporter abstractReporter : probeSetReporters.getReporters()) {
             GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;

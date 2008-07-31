@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
@@ -131,10 +132,13 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() throws ConnectionException {
-        StudyConfiguration configTest = new StudyConfiguration();
-        studyManagementService.deployStudy(configTest);
-        assertEquals(Status.DEPLOYED, configTest.getStatus());
+    public void testDeploy() throws ConnectionException, DataRetrievalException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
+        genomicDataSourceConfiguration.setId(Long.valueOf(1));        
+        studyManagementService.deployStudy(studyConfiguration);
+        assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
         assertTrue(daoStub.saveCalled);
     }
     

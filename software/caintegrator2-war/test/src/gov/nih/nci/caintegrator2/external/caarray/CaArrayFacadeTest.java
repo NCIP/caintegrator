@@ -117,6 +117,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class CaArrayFacadeTest {
     }
     
     @Test
-    public void testRetrieveData() throws ConnectionException {
+    public void testRetrieveData() throws ConnectionException, DataRetrievalException {
         RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
         ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
         ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
@@ -196,6 +197,7 @@ public class CaArrayFacadeTest {
             Platform platform = new Platform();
             platform.setReporterSets(new HashSet<ReporterSet>());
             ReporterSet reporters = new ReporterSet();
+            reporters.setId(1L);
             reporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
             platform.getReporterSets().add(reporters);
             reporters.setReporters(new HashSet<AbstractReporter>());
