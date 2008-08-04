@@ -1,10 +1,15 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +35,19 @@ public class ArrayDataServiceTest {
     }
 
     private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        ArrayDesignChecker.checkLoadArrayDesign(cdfFile, annotationFile, service);
+        Platform platform = ArrayDesignChecker.checkLoadArrayDesign(cdfFile, annotationFile, service);
         assertTrue(daoStub.saveCalled);
+        PlatformHelper platformHelper = new PlatformHelper(platform);
+        Collection<AbstractReporter> geneReporters = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
+        assertEquals(4563, geneReporters.size());
+        for (AbstractReporter abstractReporter : geneReporters) {
+            GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
+            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            for (AbstractReporter probeSetReporter : probeSets) {
+                GeneExpressionReporter probeSet = (GeneExpressionReporter) probeSetReporter;
+                assertTrue(geneReporter.getGene() == probeSet.getGene());
+            }
+        }
     }
 
 }

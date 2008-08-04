@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -104,9 +105,11 @@ public class NCIAFacadeStub implements NCIAFacade {
     /**
      * {@inheritDoc}
      */
-    public List<ImageSeriesAcquisition> getImageSeriesAcquisition(String trialDataProvenanceProject,
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject,
             ServerConnectionProfile profile) throws ConnectionException {
-        return Collections.emptyList();
+        List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>();
+        acquisitions.add(new ImageSeriesAcquisition());
+        return acquisitions;
     }
 
 }

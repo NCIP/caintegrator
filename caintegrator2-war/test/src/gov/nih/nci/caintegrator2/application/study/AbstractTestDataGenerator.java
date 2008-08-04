@@ -87,6 +87,9 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Base class for test data generators. These provide support for creating test objects and comparing two test objects. These were
  * designed principally to test persistence, but may be applicable whenever test data is necessary. 
@@ -150,6 +153,26 @@ public abstract class AbstractTestDataGenerator<T> {
         } else {
             return values[enumValue.ordinal() + 1];
         }
+    }
+
+    @SuppressWarnings("hiding")
+    protected <T> void compareCollections(Collection<T> originalCollection, Collection<T> retrievedCollection, AbstractTestDataGenerator<T> generator) {
+        assertEquals(originalCollection.size(), retrievedCollection.size());
+        for (Iterator<T> retrievedIterator = retrievedCollection.iterator(); retrievedIterator.hasNext();) {
+            T retrieved = retrievedIterator.next();
+            T original = getOriginal(originalCollection, retrieved);
+            generator.compare(original, retrieved);
+        }
+    }
+
+    @SuppressWarnings("hiding")
+    private <T> T getOriginal(Collection<T> originalCollection, T retrieved) {
+        for (T original : originalCollection) {
+            if (original.equals(retrieved)) {
+                return original;
+            }
+        }
+        return null;
     }
 
 }

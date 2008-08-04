@@ -88,22 +88,33 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Represents a CSV annotation text file.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
 public class AnnotationFile implements PersistentObject {
     private Long id;
     private String path;
@@ -388,7 +399,96 @@ public class AnnotationFile implements PersistentObject {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
+    void loadAnnontation(AbstractAnnotationHandler handler) {
+        positionAtData();
+        while (hasNextDataLine()) {
+            String identifier = getDataValue(getIdentifierColumn());
+            handler.handleIdentifier(identifier);
+            loadAnnotationLine(handler);
+        }
+    }
+
+    private void loadAnnotationLine(AbstractAnnotationHandler handler) {
+        for (AnnotationFieldDescriptor annotationDescriptor : getDescriptors()) {
+            String value = getDataValue(annotationDescriptor);
+            AbstractAnnotationValue annotationValue = createAnnotationValue(annotationDescriptor, value);
+            if (getTimepointColumn() != null) {
+                String timepointValue = getDataValue(getTimepointColumn());
+                handler.handleAnnotationValue(annotationValue, timepointValue);
+            } else {
+                handler.handleAnnotationValue(annotationValue);
+            }
+        }
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
+    private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        if (annotationDescriptor.getDefinition() == null || annotationDescriptor.getDefinition().getType() == null) {
+            throw new IllegalArgumentException("Type for field " + annotationDescriptor.getName() + " was not set.");
+        }
+        AnnotationTypeEnum type = AnnotationTypeEnum.getByValue(annotationDescriptor.getDefinition().getType());
+        switch (type) {
+        case DATE:
+            return createDateAnnotationValue(annotationDescriptor, value);
+        case STRING:
+            return createStringAnnotationValue(annotationDescriptor, value);
+        case NUMERIC:
+            return createNumericAnnotationValue(annotationDescriptor, value);
+        default:
+            throw new IllegalStateException("Unknown AnnotationDefinitionType: " + type);
+        }
+    }
+
+    private StringAnnotationValue createStringAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        StringAnnotationValue annotationValue = new StringAnnotationValue();
+        annotationValue.setStringValue(value);
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private DateAnnotationValue createDateAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        DateAnnotationValue annotationValue = new DateAnnotationValue();
+        annotationValue.setDateValue(getDateValue(value));
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private Date getDateValue(String value) {
+        final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+        try {
+            if (StringUtils.isBlank(value)) {
+                return null;
+            } else {
+                return format.parse(value);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date format found after validation: " + value, e);
+        }
+    }
+
+    private NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+            String value) {
+        NumericAnnotationValue annotationValue = new NumericAnnotationValue();
+        annotationValue.setNumericValue(getNumericValue(value));
+        annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        return annotationValue;
+    }
+
+    private Double getNumericValue(String value) {
+        try {
+            if (StringUtils.isBlank(value)) {
+                return null;
+            } else {
+                return Double.parseDouble(value);
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number format found after validation: " + value, e);
+        }
+    }
     /**
      * {@inheritDoc}
      */

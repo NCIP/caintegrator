@@ -85,80 +85,78 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-@SuppressWarnings("PMD")
-public final class StudyConfigurationGenerator extends AbstractTestDataGenerator<StudyConfiguration> {
-    
-    public static final AbstractTestDataGenerator<StudyConfiguration> INSTANCE = new StudyConfigurationGenerator();
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
-    private StudyConfigurationGenerator() {
-        super();
-    }
-    
-    @Override
-    public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
-        assertEquals(original.getStatus(), retrieved.getStatus());
-        assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getGenomicDataSources().size(), retrieved.getGenomicDataSources().size());
-        for (int i = 0; i < original.getGenomicDataSources().size(); i++) {
-            GenomicDataSourceConfiguration config1 = (GenomicDataSourceConfiguration) original.getGenomicDataSources().get(i);
-            GenomicDataSourceConfiguration config2 = (GenomicDataSourceConfiguration) retrieved.getGenomicDataSources().get(i);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageDataSources().size(), retrieved.getImageDataSources().size());
-        for (int i = 0; i < original.getImageDataSources().size(); i++) {
-            ImageDataSourceConfiguration config1 = original.getImageDataSources().get(i);
-            ImageDataSourceConfiguration config2 = retrieved.getImageDataSources().get(i);
-            ImageDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageAnnotationConfigurations().size(), retrieved.getImageAnnotationConfigurations().size());
-        for (int i = 0; i < original.getImageAnnotationConfigurations().size(); i++) {
-            ImageAnnotationConfiguration config1 = original.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfiguration config2 = retrieved.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
+import au.com.bytecode.opencsv.CSVReader;
+
+/**
+ * Helper class used to map samples to subjects.
+ */
+class ImageSeriesAcquisitionMappingHelper {
+
+    private final StudyConfiguration studyConfiguration;
+    private final File mappingFile;
+    private Map<String, ImageSeriesAcquisition> imageSeriesAcquisitionIdentifierMap;
+
+    ImageSeriesAcquisitionMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
+        this.studyConfiguration = studyConfiguration;
+        this.mappingFile = mappingFile;
     }
 
-    @Override
-    public StudyConfiguration createPersistentObject() {
-        return new StudyConfiguration();
+    void mapImageSeries() {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(mappingFile));
+            String[] values;
+            while ((values = reader.readNext()) != null) {
+                String subjectIdentifier = values[0];
+                String acquisitionIdentifier = values[1];
+                map(getSubjectAssignment(subjectIdentifier), getImageSeriesAcquisition(acquisitionIdentifier));
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Unexpected IO error", e);
+        }
+        
     }
 
-    @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
-        studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
-        studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
-        if (studyConfiguration.getStudy() == null) {
-            studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
+    private void map(StudySubjectAssignment subjectAssignment, ImageSeriesAcquisition acquisition) {
+        if (subjectAssignment.getImageStudyCollection() == null) {
+            subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
         }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
-        studyConfiguration.getClinicalConfigurationCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config);
+        subjectAssignment.getImageStudyCollection().add(acquisition);
+    }
+
+    private ImageSeriesAcquisition getImageSeriesAcquisition(String identifier) {
+        return getImageSeriesAcquisitionIdentifierMap().get(identifier);
+    }
+
+    private Map<String, ImageSeriesAcquisition> getImageSeriesAcquisitionIdentifierMap() {
+        if (imageSeriesAcquisitionIdentifierMap == null) {
+            imageSeriesAcquisitionIdentifierMap = createImageSeriesAcquisitionIdentifierMap();
         }
-        studyConfiguration.getGenomicDataSources().clear();
-        for (int i = 0; i < 3; i++) {
-            GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
-            studyConfiguration.getGenomicDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
+        return imageSeriesAcquisitionIdentifierMap;
+    }
+
+    private Map<String, ImageSeriesAcquisition> createImageSeriesAcquisitionIdentifierMap() {
+        imageSeriesAcquisitionIdentifierMap = new HashMap<String, ImageSeriesAcquisition>();
+        for (ImageDataSourceConfiguration sourceConfiguration : studyConfiguration.getImageDataSources()) {
+            for (ImageSeriesAcquisition acquisition : sourceConfiguration.getImageSeriesAcquisitions()) {
+//                imageSeriesAcquisitionIdentifierMap.put(acquisition.getIdentifier(), acquisition);
+                imageSeriesAcquisitionIdentifierMap.put(acquisition.getId().toString(), acquisition); // DELETE ME
+            }
         }
-        for (int i = 0; i < 3; i++) {
-            ImageDataSourceConfiguration config = new ImageDataSourceConfiguration();
-            studyConfiguration.getImageDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
+        return imageSeriesAcquisitionIdentifierMap;
+    }
+
+    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
+        return studyConfiguration.getSubjectAssignment(subjectIdentifier);
     }
 
 }
