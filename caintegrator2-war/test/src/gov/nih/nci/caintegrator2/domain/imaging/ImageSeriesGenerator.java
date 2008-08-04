@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.domain.imaging;
 
+import static org.junit.Assert.assertEquals;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 
 import java.util.HashSet;
@@ -102,7 +104,7 @@ public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageS
      */
     @Override
     public void compareFields(ImageSeries original, ImageSeries retrieved) {
-        //assertEquals(original.getIdentifier(), retrieved.getIdentifier());
+        assertEquals(original.getIdentifier(), retrieved.getIdentifier());
         compareCollections(original.getImageCollection(), retrieved.getImageCollection(), ImageGenerator.INSTANCE);
     }
 
@@ -119,7 +121,7 @@ public final class ImageSeriesGenerator extends AbstractTestDataGenerator<ImageS
      */
     @Override
     public void setValues(ImageSeries imageSeries) {
-        //imageSeries.setIdentifier(getUniqueString());
+        imageSeries.setIdentifier(getUniqueString());
         if (imageSeries.getImageCollection() == null) {
             imageSeries.setImageCollection(new HashSet<Image>());
         } else {            

@@ -148,8 +148,7 @@ class ImageSeriesAcquisitionMappingHelper {
         imageSeriesAcquisitionIdentifierMap = new HashMap<String, ImageSeriesAcquisition>();
         for (ImageDataSourceConfiguration sourceConfiguration : studyConfiguration.getImageDataSources()) {
             for (ImageSeriesAcquisition acquisition : sourceConfiguration.getImageSeriesAcquisitions()) {
-//                imageSeriesAcquisitionIdentifierMap.put(acquisition.getIdentifier(), acquisition);
-                imageSeriesAcquisitionIdentifierMap.put(acquisition.getId().toString(), acquisition); // DELETE ME
+                imageSeriesAcquisitionIdentifierMap.put(acquisition.getIdentifier(), acquisition);
             }
         }
         return imageSeriesAcquisitionIdentifierMap;

@@ -325,11 +325,9 @@ public class StudyManagementServiceTest {
         ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
         acquisition.setSeriesCollection(new HashSet<ImageSeries>());
         ImageSeries series1 = new ImageSeries();
-        series1.setId(100L);
-//        series1.setIdentifier("100");
+        series1.setIdentifier("100");
         ImageSeries series2 = new ImageSeries();
-        series2.setId(101L);
-//        series2.setIdentifier("101");
+        series2.setIdentifier("101");
         acquisition.getSeriesCollection().add(series1);
         acquisition.getSeriesCollection().add(series2);
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
@@ -370,19 +368,15 @@ public class StudyManagementServiceTest {
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         ImageSeriesAcquisition acquisition1 = new ImageSeriesAcquisition();
-        acquisition1.setId(100L);
-//        acquisition1.setIdentifier("100");
+        acquisition1.setIdentifier("100");
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition1);
         ImageSeriesAcquisition acquisition2 = new ImageSeriesAcquisition();
-        acquisition2.setId(101L);
-//        acquisition2.setIdentifier("101");
+        acquisition2.setIdentifier("101");
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition2);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
         studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE);
-        assertEquals(new Long(100), assignment1.getImageStudyCollection().iterator().next().getId());
-        assertEquals(new Long(101), assignment2.getImageStudyCollection().iterator().next().getId());
-//        assertEquals("100", assignment1.getImageStudyCollection().iterator().getIdentifier());
-//        assertEquals("101", assignment2.getImageStudyCollection().iterator().getIdentifier());
+        assertEquals("100", assignment1.getImageStudyCollection().iterator().next().getIdentifier());
+        assertEquals("101", assignment2.getImageStudyCollection().iterator().next().getIdentifier());
     }
 }
