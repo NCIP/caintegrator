@@ -187,10 +187,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     
     private void convertStudyToImageSeriesAcquisition(ImageSeriesAcquisition imageSeriesAcquisition, Patient patient, 
             Study study) {
-        // Fill this in properly later.
-        Long id = Long.valueOf("1312");
-        imageSeriesAcquisition.setId(id);
-        //imageSeriesAcquisition.setIdentifier(study.getStudyInstanceUID());
+        imageSeriesAcquisition.setIdentifier(study.getStudyInstanceUID());
         // These are pointless.
         patient.getId();
         study.getId();
@@ -201,8 +198,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     
     private void convertSeriesToImageSeries(ImageSeries imageSeries, Series series) {
         // Actually fill this in properly later.
-        imageSeries.setId(Long.valueOf(series.getId()));
-        //imageSeries.setIdentifier(series.getSeriesInstanceUID());
+        imageSeries.setIdentifier(series.getSeriesInstanceUID());
     }
 
     /**

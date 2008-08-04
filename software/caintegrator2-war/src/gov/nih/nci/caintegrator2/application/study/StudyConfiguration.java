@@ -385,8 +385,7 @@ public class StudyConfiguration implements PersistentObject {
 
     private void loadIdentifierToImageSeriesMap(Collection<ImageSeries> seriesCollection) {
         for (ImageSeries imageSeries : seriesCollection) {
-            identifierToImageSeriesMap.put(imageSeries.getId().toString(), imageSeries);
-//           identifierToImageSeriesMap.put(imageSeries.getIdentifier(), imageSeries);
+           identifierToImageSeriesMap.put(imageSeries.getIdentifier(), imageSeries);
         }
     }
 
