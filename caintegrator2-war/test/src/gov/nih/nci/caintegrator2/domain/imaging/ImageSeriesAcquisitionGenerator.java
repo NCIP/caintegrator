@@ -106,6 +106,7 @@ public final class ImageSeriesAcquisitionGenerator extends AbstractTestDataGener
         compareCollections(original.getSeriesCollection(), retrieved.getSeriesCollection(), ImageSeriesGenerator.INSTANCE);
         assertEquals(original.getAssignment(), retrieved.getAssignment());
         assertEquals(original.getTimepoint(), retrieved.getTimepoint());
+        assertEquals(original.getIdentifier(), retrieved.getIdentifier());
     }
 
     /**
@@ -121,6 +122,7 @@ public final class ImageSeriesAcquisitionGenerator extends AbstractTestDataGener
      */
     @Override
     public void setValues(ImageSeriesAcquisition acquisition) {
+        acquisition.setIdentifier(getUniqueString());
         if (acquisition.getSeriesCollection() == null) {
             acquisition.setSeriesCollection(new HashSet<ImageSeries>());
         } else {            
