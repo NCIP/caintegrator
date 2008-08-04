@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;

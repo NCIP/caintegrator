@@ -85,80 +85,112 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
+import java.util.ArrayList;
+import java.util.List;
 
-@SuppressWarnings("PMD")
-public final class StudyConfigurationGenerator extends AbstractTestDataGenerator<StudyConfiguration> {
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+/**
+ * Contains configuration information for retrieving images, etc. from NCIA.
+ */
+public class ImageDataSourceConfiguration implements PersistentObject {
     
-    public static final AbstractTestDataGenerator<StudyConfiguration> INSTANCE = new StudyConfigurationGenerator();
+    private Long id;
+    private StudyConfiguration studyConfiguration;
+    private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
+    private List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
+    private String trialDataProvenance;
+    
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
 
-    private StudyConfigurationGenerator() {
-        super();
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
-        assertEquals(original.getStatus(), retrieved.getStatus());
-        assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getGenomicDataSources().size(), retrieved.getGenomicDataSources().size());
-        for (int i = 0; i < original.getGenomicDataSources().size(); i++) {
-            GenomicDataSourceConfiguration config1 = (GenomicDataSourceConfiguration) original.getGenomicDataSources().get(i);
-            GenomicDataSourceConfiguration config2 = (GenomicDataSourceConfiguration) retrieved.getGenomicDataSources().get(i);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageDataSources().size(), retrieved.getImageDataSources().size());
-        for (int i = 0; i < original.getImageDataSources().size(); i++) {
-            ImageDataSourceConfiguration config1 = original.getImageDataSources().get(i);
-            ImageDataSourceConfiguration config2 = retrieved.getImageDataSources().get(i);
-            ImageDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageAnnotationConfigurations().size(), retrieved.getImageAnnotationConfigurations().size());
-        for (int i = 0; i < original.getImageAnnotationConfigurations().size(); i++) {
-            ImageAnnotationConfiguration config1 = original.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfiguration config2 = retrieved.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StudyConfiguration createPersistentObject() {
-        return new StudyConfiguration();
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
     }
 
-    @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
-        studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
-        studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
-        if (studyConfiguration.getStudy() == null) {
-            studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
-        }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
-        studyConfiguration.getClinicalConfigurationCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        studyConfiguration.getGenomicDataSources().clear();
-        for (int i = 0; i < 3; i++) {
-            GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
-            studyConfiguration.getGenomicDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        for (int i = 0; i < 3; i++) {
-            ImageDataSourceConfiguration config = new ImageDataSourceConfiguration();
-            studyConfiguration.getImageDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+
+    /**
+     * @return the serverProfile
+     */
+    public ServerConnectionProfile getServerProfile() {
+        return serverProfile;
+    }
+
+    /**
+     * @param serverProfile the serverProfile to set
+     */
+    @SuppressWarnings("unused")
+    private void setServerProfile(ServerConnectionProfile serverProfile) {
+        this.serverProfile = serverProfile;
+    }
+
+    /**
+     * @return the trialDataProvenance
+     */
+    public String getTrialDataProvenance() {
+        return trialDataProvenance;
+    }
+
+    /**
+     * @param trialDataProvenance the trialDataProvenance to set
+     */
+    public void setTrialDataProvenance(String trialDataProvenance) {
+        this.trialDataProvenance = trialDataProvenance;
+    }
+
+    /**
+     * @return the imageSeriesAcquisitions
+     */
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions() {
+        return imageSeriesAcquisitions;
+    }
+
+    /**
+     * @param imageSeriesAcquisitions the imageSeriesAcquisitions to set
+     */
+    @SuppressWarnings("unused")
+    private void setImageSeriesAcquisitions(List<ImageSeriesAcquisition> imageSeriesAcquisitions) {
+        this.imageSeriesAcquisitions = imageSeriesAcquisitions;
     }
 
 }

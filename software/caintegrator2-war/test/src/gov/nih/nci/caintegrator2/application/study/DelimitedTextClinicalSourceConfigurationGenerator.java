@@ -97,7 +97,6 @@ public final class DelimitedTextClinicalSourceConfigurationGenerator extends Abs
     
     @Override
     public void compareFields(DelimitedTextClinicalSourceConfiguration original, DelimitedTextClinicalSourceConfiguration retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getAnnotationFile(), retrieved.getAnnotationFile());
         AnnotationFileGenerator.INSTANCE.compare(original.getAnnotationFile(), retrieved.getAnnotationFile());
     }
@@ -108,13 +107,11 @@ public final class DelimitedTextClinicalSourceConfigurationGenerator extends Abs
     }
 
     @Override
-    public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {
-        
+    public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {        
         if (configuration.getAnnotationFile() == null) {
             configuration.setAnnotationFile(AnnotationFileGenerator.INSTANCE.createPersistentObject());
-            }
-        AnnotationFileGenerator.INSTANCE.setValues(configuration.getAnnotationFile());
-        
+        }
+        AnnotationFileGenerator.INSTANCE.setValues(configuration.getAnnotationFile());        
     }
 
 }

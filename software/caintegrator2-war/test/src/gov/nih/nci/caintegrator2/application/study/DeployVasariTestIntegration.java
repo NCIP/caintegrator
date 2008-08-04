@@ -140,7 +140,8 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     @Test
     public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
-            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+//            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.TEST3_ANNOTATION_FILE);
             arrayDataService.loadArrayDesign(designSource);
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
@@ -150,12 +151,33 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
             loadClinicalData();
             loadSamples();
             mapSamples();
+            loadImages();
+            loadImageAnnotation();
+            mapImages();
             deploy();
             checkArrayData();
         } finally {
             cleanup();            
         }
         
+    }
+
+    private void loadImages() throws ConnectionException {
+        ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
+        imageSource.getServerProfile().setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
+        imageSource.setTrialDataProvenance("????");     // Whatever the proper values is for the Vasari study
+        // service.addImageSource(studyConfiguration, imageSource); // Uncomment this when proper trialDataProvenance and server profile are known
+    }
+
+    private void loadImageAnnotation() {    // Uncomment this methods after creating TestDataFiles.VASARI_ANNOTATIONS_FILE based on annotations in MS Access db
+//        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+//            service.addImageAnnotationFile(studyConfiguration, TestDataFiles.VASARI_ANNOTATIONS_FILE, TestDataFiles.VASARI_ANNOTATIONS_FILE.getName());
+//        imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+//        service.loadImageAnnotation(studyConfiguration);
+    }
+
+    private void mapImages() {
+//        service.mapImageSeriesAcquisitions(studyConfiguration, TestDataFiles.VASARI_SUBJECT_MAPPING_FILE);    // Uncomment this line after creating Vasari subject to ImageSeriesAcquisition mapping file
     }
 
     private void checkArrayData() {
@@ -166,12 +188,14 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         assertEquals(6, probeSetArrayDataMatrix.getSampleDataCollection().size());
         ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
         assertEquals(6, values.getAllArrays().size());
-        assertEquals(54675, values.getReporterArrayValueMap().size());
+//        assertEquals(54675, values.getReporterArrayValueMap().size());
+        assertEquals(345, values.getReporterArrayValueMap().size());
         assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
         assertEquals(6, geneMatrix.getSampleDataCollection().size());
         values = arrayDataService.getData(geneMatrix);
         assertEquals(6, values.getAllArrays().size());
-        assertEquals(20887, values.getReporterArrayValueMap().size());
+//        assertEquals(20887, values.getReporterArrayValueMap().size());
+        assertEquals(20, values.getReporterArrayValueMap().size());
     }
 
     private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
@@ -185,9 +209,12 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
 
     private void loadSamples() throws ConnectionException {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
-        genomicSource.getServerProfile().setPort(8080);
-        genomicSource.setExperimentIdentifier("admin-00037");
+//        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
+//        genomicSource.getServerProfile().setPort(8080);
+//        genomicSource.setExperimentIdentifier("admin-00037");
+        genomicSource.getServerProfile().setHostname("localhost");
+        genomicSource.getServerProfile().setPort(11099);
+        genomicSource.setExperimentIdentifier("admin-00001");
         service.addGenomicSource(studyConfiguration, genomicSource);
         assertTrue(genomicSource.getSamples().size() > 0);
     }

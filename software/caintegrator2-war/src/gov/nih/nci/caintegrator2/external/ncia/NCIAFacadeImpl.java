@@ -119,7 +119,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * {@inheritDoc}
      */
-    public List<ImageSeriesAcquisition> getImageSeriesAcquisition(String trialDataProvenanceProject, 
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException {
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<Patient> patientCollection;
@@ -185,25 +185,24 @@ public class NCIAFacadeImpl implements NCIAFacade {
     }
     
     
-    // Image study will be ImageSeriesAcquisition soon.
     private void convertStudyToImageSeriesAcquisition(ImageSeriesAcquisition imageSeriesAcquisition, Patient patient, 
             Study study) {
         // Fill this in properly later.
         Long id = Long.valueOf("1312");
         imageSeriesAcquisition.setId(id);
+        //imageSeriesAcquisition.setIdentifier(study.getStudyInstanceUID());
         // These are pointless.
         patient.getId();
         study.getId();
         // imageSeriesAcquisition.setNCIAPatientId(p.getPatientId());
         //imageSeriesAcquisition.setStudyDate(s.getStudyDate();
-        //imageSeriesAcquisition.setOriginalStudyID(s.getStudyInstanceUID());
         
     }
     
     private void convertSeriesToImageSeries(ImageSeries imageSeries, Series series) {
         // Actually fill this in properly later.
         imageSeries.setId(Long.valueOf(series.getId()));
-        //currentImageSeries.setNCIASeriesId(series.getSeriesInstanceUID());
+        //imageSeries.setIdentifier(series.getSeriesInstanceUID());
     }
 
     /**

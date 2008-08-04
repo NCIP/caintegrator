@@ -101,6 +101,7 @@ public class TestDataFiles {
     public static final String REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH = "/rembrandt_annotation_definitions.csv";
     public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_sample_mapping.csv";
     public static final String SIMPLE_SAMPLE_MAPPING_FILE_PATH = "/simple_sample_mapping.csv";
+    public static final String SIMPLE_IMAGE_MAPPING_FILE_PATH = "/simple_image_mapping.csv";
 
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
@@ -112,6 +113,7 @@ public class TestDataFiles {
     public static final File REMBRANDT_ANNOTATION_DEFINITIONS_FILE = getFile(REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH);
     public static final File REMBRANDT_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_SAMPLE_MAPPING_FILE = getFile(SIMPLE_SAMPLE_MAPPING_FILE_PATH);
+    public static final File SIMPLE_IMAGE_MAPPING_FILE = getFile(SIMPLE_IMAGE_MAPPING_FILE_PATH);
 
     public static File getFile(String resourcePath) {
         return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());

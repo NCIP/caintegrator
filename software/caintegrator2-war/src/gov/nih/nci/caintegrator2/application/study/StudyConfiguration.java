@@ -90,12 +90,15 @@ import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -114,8 +117,12 @@ public class StudyConfiguration implements PersistentObject {
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
         new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
+    private List<ImageAnnotationConfiguration> imageAnnotationConfigurations = 
+        new ArrayList<ImageAnnotationConfiguration>();
+    private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
 
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
+    private transient Map<String, ImageSeries> identifierToImageSeriesMap;
     private transient Map<String, Timepoint> nameToTimepointMap;
     
     /**
@@ -320,6 +327,67 @@ public class StudyConfiguration implements PersistentObject {
             }
         }
         return samples;
+    }
+
+    /**
+     * @return the imageAnnotationConfigurations
+     */
+    public List<ImageAnnotationConfiguration> getImageAnnotationConfigurations() {
+        return imageAnnotationConfigurations;
+    }
+
+    /**
+     * @param imageAnnotationConfigurations the imageAnnotationConfigurations to set
+     */
+    @SuppressWarnings("unused")
+    private void setImageAnnotationConfigurations(List<ImageAnnotationConfiguration> imageAnnotationConfigurations) {
+        this.imageAnnotationConfigurations = imageAnnotationConfigurations;
+    }
+
+    /**
+     * @return the imageDataSources
+     */
+    public List<ImageDataSourceConfiguration> getImageDataSources() {
+        return imageDataSources;
+    }
+
+    /**
+     * @param imageDataSources the imageDataSources to set
+     */
+    @SuppressWarnings("unused")
+    private void setImageDataSources(List<ImageDataSourceConfiguration> imageDataSources) {
+        this.imageDataSources = imageDataSources;
+    }
+
+    ImageSeries getImageSeries(String identifier) {
+        return getIdentifierToImageSeriesMap().get(identifier);
+    }
+
+    private Map<String, ImageSeries> getIdentifierToImageSeriesMap() {
+        if (identifierToImageSeriesMap == null) {
+            loadIdentifierToImageSeriesMap();
+        }
+        return identifierToImageSeriesMap;
+    }
+
+    private void loadIdentifierToImageSeriesMap() {
+        identifierToImageSeriesMap = new HashMap<String, ImageSeries>();
+        for (ImageDataSourceConfiguration imageSource : imageDataSources) {
+            loadIdentifierToImageSeriesMap(imageSource.getImageSeriesAcquisitions());
+        }
+    }
+
+    private void loadIdentifierToImageSeriesMap(List<ImageSeriesAcquisition> imageSeriesAcquisitions) {
+        for (ImageSeriesAcquisition imageSeriesAcquisition : imageSeriesAcquisitions) {
+            loadIdentifierToImageSeriesMap(imageSeriesAcquisition.getSeriesCollection());
+        }
+    }
+
+    private void loadIdentifierToImageSeriesMap(Collection<ImageSeries> seriesCollection) {
+        for (ImageSeries imageSeries : seriesCollection) {
+            identifierToImageSeriesMap.put(imageSeries.getId().toString(), imageSeries);
+//           identifierToImageSeriesMap.put(imageSeries.getIdentifier(), imageSeries);
+        }
     }
 
 }

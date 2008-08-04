@@ -85,80 +85,106 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
+import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 
-@SuppressWarnings("PMD")
-public final class StudyConfigurationGenerator extends AbstractTestDataGenerator<StudyConfiguration> {
+/**
+ * Contains configuration information for file based annotation of <code>ImageSeries</code>.
+ */
+public class ImageAnnotationConfiguration implements PersistentObject {
     
-    public static final AbstractTestDataGenerator<StudyConfiguration> INSTANCE = new StudyConfigurationGenerator();
+    private Long id;
+    private StudyConfiguration studyConfiguration;
+    private AnnotationFile annotationFile;
 
-    private StudyConfigurationGenerator() {
+    /**
+     * Creates a new instance.
+     */
+    public ImageAnnotationConfiguration() {
         super();
     }
     
-    @Override
-    public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
-        assertEquals(original.getStatus(), retrieved.getStatus());
-        assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getGenomicDataSources().size(), retrieved.getGenomicDataSources().size());
-        for (int i = 0; i < original.getGenomicDataSources().size(); i++) {
-            GenomicDataSourceConfiguration config1 = (GenomicDataSourceConfiguration) original.getGenomicDataSources().get(i);
-            GenomicDataSourceConfiguration config2 = (GenomicDataSourceConfiguration) retrieved.getGenomicDataSources().get(i);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageDataSources().size(), retrieved.getImageDataSources().size());
-        for (int i = 0; i < original.getImageDataSources().size(); i++) {
-            ImageDataSourceConfiguration config1 = original.getImageDataSources().get(i);
-            ImageDataSourceConfiguration config2 = retrieved.getImageDataSources().get(i);
-            ImageDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageAnnotationConfigurations().size(), retrieved.getImageAnnotationConfigurations().size());
-        for (int i = 0; i < original.getImageAnnotationConfigurations().size(); i++) {
-            ImageAnnotationConfiguration config1 = original.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfiguration config2 = retrieved.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
+    ImageAnnotationConfiguration(AnnotationFile annotationFile, StudyConfiguration studyConfiguration) {
+        this.annotationFile = annotationFile;
+        this.studyConfiguration = studyConfiguration;
+        studyConfiguration.getImageAnnotationConfigurations().add(this);
     }
 
-    @Override
-    public StudyConfiguration createPersistentObject() {
-        return new StudyConfiguration();
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
     }
 
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
-        studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
-        studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
-        if (studyConfiguration.getStudy() == null) {
-            studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
-        }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
-        studyConfiguration.getClinicalConfigurationCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        studyConfiguration.getGenomicDataSources().clear();
-        for (int i = 0; i < 3; i++) {
-            GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
-            studyConfiguration.getGenomicDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        for (int i = 0; i < 3; i++) {
-            ImageDataSourceConfiguration config = new ImageDataSourceConfiguration();
-            studyConfiguration.getImageDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
+    public boolean equals(Object o) {
+        return PersistentObjectHelper.equals(this, o);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return PersistentObjectHelper.hashCode(this);
+    }
+
+    /**
+     * @return the annotationFile
+     */
+    public AnnotationFile getAnnotationFile() {
+        return annotationFile;
+    }
+
+    /**
+     * @param annotationFile the annotationFile to set
+     */
+    public void setAnnotationFile(AnnotationFile annotationFile) {
+        this.annotationFile = annotationFile;
+    }
+
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+
+    void loadAnnontation() {
+        getAnnotationFile().loadAnnontation(new ImageAnnotationHandler(this));
+    }
+
+    /**
+     * Indicates if the source has been configured and is prepared for loading.
+     * 
+     * @return whether source may be loaded.
+     */
+    public boolean isLoadable() {
+        return getAnnotationFile().isLoadable();
+    }
+
+    ImageSeries getImageSeries(String identifier) {
+        return getStudyConfiguration().getImageSeries(identifier);
     }
 
 }

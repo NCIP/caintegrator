@@ -138,7 +138,8 @@ public interface StudyManagementService {
     void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException;
 
     /**
-     * Adds a new, initialized genomic data source to the study.
+     * Adds a new, initialized genomic data source to the study. Samples related to this data source are
+     * retrieved from the source and added to the study.
      * 
      * @param studyConfiguration study configuration to add genomic data source to
      * @param genomicSource genomic source to add
@@ -146,7 +147,40 @@ public interface StudyManagementService {
      */
     void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException;
+
+    /**
+     * Adds a new, initialized image data source to the study. The <code>ImageSeriesAcquisition</code> related to this 
+     * data source is retrieved from the source and added to the study.
+     * 
+     * @param studyConfiguration study configuration to add image data source to
+     * @param imageSource image source to add
+     * @throws ConnectionException if the configured server couldn't be reached.
+     */
+    void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+    throws ConnectionException;
     
+    /**
+     * Adds an image series annotation file to the study. The file given will be copied to permanent storage 
+     * allowing the file provided as an argument to be removed after completion of this method.
+     * 
+     * @param studyConfiguration add the annotation file to this study
+     * @param annotationFile annotation file to add.
+     * @param filename the name with which the annotation file should be stored 
+     *        (allows for the use of files with temp names as input)
+     * @return the clinical source configuration created.
+     * @throws ValidationException if the file was not a valid annotation file.
+     * @throws IOException if the annotation file couldn't be copied to permanent storage.
+     */
+    ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration, 
+            File annotationFile, String filename) throws ValidationException, IOException;
+
+    /**
+     * Loads image annotations given a study configuration.
+     * 
+     * @param studyConfiguration study configuration to load
+     */
+    void loadImageAnnotation(StudyConfiguration studyConfiguration);
+
     /**
      * Returns the studies managed by the Study Manager indicated by username.
      * 
@@ -205,5 +239,13 @@ public interface StudyManagementService {
      * @param mappingFile comma-separated value file that maps subject identifiers to sample names
      */
     void mapSamples(StudyConfiguration studyConfiguration, File mappingFile);
+
+    /**
+     * Create the associations between subjects in the study and image series.
+     * 
+     * @param studyConfiguration study containing the subjects and image series
+     * @param mappingFile comma-separated value file that maps subject identifiers to image series identifiers
+     */
+    void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile);
     
 }
