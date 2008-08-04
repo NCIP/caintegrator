@@ -191,7 +191,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
-        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE)) {
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
             // TODO : This should probably throw an error instead of returning null.
             return null;
         } else {
