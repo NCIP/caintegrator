@@ -140,8 +140,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     @Test
     public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
-//            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.TEST3_ANNOTATION_FILE);
+            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
             arrayDataService.loadArrayDesign(designSource);
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
@@ -188,14 +187,12 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         assertEquals(6, probeSetArrayDataMatrix.getSampleDataCollection().size());
         ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
         assertEquals(6, values.getAllArrays().size());
-//        assertEquals(54675, values.getReporterArrayValueMap().size());
-        assertEquals(345, values.getReporterArrayValueMap().size());
+        assertEquals(54675, values.getReporterArrayValueMap().size());
         assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
         assertEquals(6, geneMatrix.getSampleDataCollection().size());
         values = arrayDataService.getData(geneMatrix);
         assertEquals(6, values.getAllArrays().size());
-//        assertEquals(20887, values.getReporterArrayValueMap().size());
-        assertEquals(20, values.getReporterArrayValueMap().size());
+        assertEquals(20887, values.getReporterArrayValueMap().size());
     }
 
     private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
@@ -209,12 +206,9 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
 
     private void loadSamples() throws ConnectionException {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-//        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
-//        genomicSource.getServerProfile().setPort(8080);
-//        genomicSource.setExperimentIdentifier("admin-00037");
-        genomicSource.getServerProfile().setHostname("localhost");
-        genomicSource.getServerProfile().setPort(11099);
-        genomicSource.setExperimentIdentifier("admin-00001");
+        genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
+        genomicSource.getServerProfile().setPort(8080);
+        genomicSource.setExperimentIdentifier("admin-00037");
         service.addGenomicSource(studyConfiguration, genomicSource);
         assertTrue(genomicSource.getSamples().size() > 0);
     }
