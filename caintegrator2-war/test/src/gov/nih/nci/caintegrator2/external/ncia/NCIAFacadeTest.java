@@ -139,7 +139,7 @@ public class NCIAFacadeTest {
         String trialDataProvenanceProject = "RIDER";
         List<ImageSeriesAcquisition> imageStudies;
         
-        imageStudies = nciaFacade.getImageSeriesAcquisition(trialDataProvenanceProject, connection);
+        imageStudies = nciaFacade.getImageSeriesAcquisitions(trialDataProvenanceProject, connection);
         if (!imageStudies.isEmpty()){
             LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
         } else {

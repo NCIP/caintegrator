@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
@@ -94,6 +95,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("PMD")
 public class StudyManagementServiceStub implements StudyManagementService {
 
     public boolean deployStudyCalled;
@@ -108,6 +110,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean setDefinitionCalled;
     public boolean loadClinicalAnnotationCalled;
     public boolean mapSamplesCalled;
+    public boolean addImageSourceCalled;
+    public boolean addImageAnnotationFileCalled;
+    public boolean loadImageAnnotationCalled;
+    public boolean mapImageSeriesCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -135,6 +141,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDataElementCalled = false;
         setDefinitionCalled = false;
         mapSamplesCalled = false;
+        addImageAnnotationFileCalled = false;
+        addImageSourceCalled = false;
+        loadImageAnnotationCalled = false;
+        mapImageSeriesCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -183,6 +193,25 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) {
         mapSamplesCalled = true;
+    }
+    
+    public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
+            File annotationFile, String filename) throws ValidationException, IOException {
+        addImageAnnotationFileCalled = true;
+        return new ImageAnnotationConfiguration();
+    }
+
+    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
+            throws ConnectionException {
+        addImageSourceCalled = true;
+    }
+
+    public void loadImageAnnotation(StudyConfiguration studyConfiguration) {
+        loadImageAnnotationCalled = true;
+    }
+
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
+        mapImageSeriesCalled = true;
     }
     
 }

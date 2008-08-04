@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
@@ -93,6 +94,9 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -108,6 +112,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@SuppressWarnings("PMD")
 public class StudyManagementServiceTest {
     
     private StudyManagementService studyManagementService;
@@ -287,4 +292,97 @@ public class StudyManagementServiceTest {
         assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
     }
 
+    @Test
+    public void testAddImageAnnotationFile() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+            studyManagementService.addImageAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+        assertTrue(studyConfiguration.getImageAnnotationConfigurations().contains(imageAnnotationConfiguration));
+        assertEquals(1, studyConfiguration.getImageAnnotationConfigurations().size());
+        assertTrue(studyConfiguration.getImageAnnotationConfigurations().contains(imageAnnotationConfiguration));
+        assertEquals(4, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
+        assertTrue(daoStub.saveCalled);
+    }
+
+    @Test
+    public void testAddImageSource() throws ConnectionException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
+        imageDataSourceConfiguration.setId(Long.valueOf(1));        
+        assertTrue(studyConfiguration.getImageDataSources().contains(imageDataSourceConfiguration));
+        assertTrue(daoStub.saveCalled);
+        assertFalse(imageDataSourceConfiguration.getImageSeriesAcquisitions().isEmpty());
+    }
+
+    @Test
+    public void testLoadImageAnnotation() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
+        acquisition.setSeriesCollection(new HashSet<ImageSeries>());
+        ImageSeries series1 = new ImageSeries();
+        series1.setId(100L);
+//        series1.setIdentifier("100");
+        ImageSeries series2 = new ImageSeries();
+        series2.setId(101L);
+//        series2.setIdentifier("101");
+        acquisition.getSeriesCollection().add(series1);
+        acquisition.getSeriesCollection().add(series2);
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
+        studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
+        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+            studyManagementService.addImageAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+        imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        imageAnnotationConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        imageAnnotationConfiguration.getAnnotationFile().getColumns().get(2).getFieldDescriptor().setDefinition(definition);
+        definition = new AnnotationDefinition();
+        definition.setType(AnnotationTypeEnum.STRING.getValue());
+        imageAnnotationConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        studyManagementService.loadImageAnnotation(studyConfiguration); 
+        assertEquals(3, series1.getAnnotationCollection().size());
+        assertEquals(3, series2.getAnnotationCollection().size());
+    }
+    
+    @Test
+    public void testMapImageSeriesAcquisitions() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        StudySubjectAssignment assignment1 = new StudySubjectAssignment();
+        assignment1.setId(1L);
+        assignment1.setIdentifier("E05004");
+        assignment1.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment1);
+        assignment1.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
+        StudySubjectAssignment assignment2 = new StudySubjectAssignment();
+        assignment2.setId(2L);
+        assignment2.setIdentifier("E05012");
+        assignment2.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        assignment2.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
+        studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        ImageSeriesAcquisition acquisition1 = new ImageSeriesAcquisition();
+        acquisition1.setId(100L);
+//        acquisition1.setIdentifier("100");
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition1);
+        ImageSeriesAcquisition acquisition2 = new ImageSeriesAcquisition();
+        acquisition2.setId(101L);
+//        acquisition2.setIdentifier("101");
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition2);
+        studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
+        studyManagementService.save(studyConfiguration);
+        studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE);
+        assertEquals(new Long(100), assignment1.getImageStudyCollection().iterator().next().getId());
+        assertEquals(new Long(101), assignment2.getImageStudyCollection().iterator().next().getId());
+//        assertEquals("100", assignment1.getImageStudyCollection().iterator().getIdentifier());
+//        assertEquals("101", assignment2.getImageStudyCollection().iterator().getIdentifier());
+    }
 }

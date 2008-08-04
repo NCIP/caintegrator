@@ -397,4 +397,48 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         this.arrayDataService = arrayDataService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
+            File inputFile, String filename) throws ValidationException, IOException {
+        File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
+        AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
+        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+            new ImageAnnotationConfiguration(annotationFile, studyConfiguration);
+        dao.save(studyConfiguration);
+        return imageAnnotationConfiguration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
+            throws ConnectionException {
+        studyConfiguration.getImageDataSources().add(imageSource);
+        imageSource.setStudyConfiguration(studyConfiguration);
+        imageSource.getImageSeriesAcquisitions().addAll(getNciaFacade().getImageSeriesAcquisitions(
+                imageSource.getTrialDataProvenance(), imageSource.getServerProfile()));
+        dao.save(studyConfiguration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void loadImageAnnotation(StudyConfiguration studyConfiguration) {
+        for (ImageAnnotationConfiguration configuration 
+                : studyConfiguration.getImageAnnotationConfigurations()) {
+            configuration.loadAnnontation();
+        }
+        save(studyConfiguration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
+        new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile).mapImageSeries();
+        save(studyConfiguration);
+    }
+
 }

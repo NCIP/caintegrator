@@ -85,80 +85,27 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
+public class ImageAnnotationConfigurationGenerator extends AbstractTestDataGenerator<ImageAnnotationConfiguration> {
 
-@SuppressWarnings("PMD")
-public final class StudyConfigurationGenerator extends AbstractTestDataGenerator<StudyConfiguration> {
-    
-    public static final AbstractTestDataGenerator<StudyConfiguration> INSTANCE = new StudyConfigurationGenerator();
+    public static final ImageAnnotationConfigurationGenerator INSTANCE = new ImageAnnotationConfigurationGenerator();
 
-    private StudyConfigurationGenerator() {
-        super();
-    }
-    
     @Override
-    public void compareFields(StudyConfiguration original, StudyConfiguration retrieved) {
-        assertEquals(original.getStatus(), retrieved.getStatus());
-        assertEquals(original.getVisibility(), retrieved.getVisibility());
-        StudyTestDataGenerator.INSTANCE.compare(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getClinicalConfigurationCollection().size(), retrieved.getClinicalConfigurationCollection().size());
-        for (int i = 0; i < original.getClinicalConfigurationCollection().size(); i++) {
-            DelimitedTextClinicalSourceConfiguration config1 = (DelimitedTextClinicalSourceConfiguration) original.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfiguration config2 = (DelimitedTextClinicalSourceConfiguration) retrieved.getClinicalConfigurationCollection().get(i);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getGenomicDataSources().size(), retrieved.getGenomicDataSources().size());
-        for (int i = 0; i < original.getGenomicDataSources().size(); i++) {
-            GenomicDataSourceConfiguration config1 = (GenomicDataSourceConfiguration) original.getGenomicDataSources().get(i);
-            GenomicDataSourceConfiguration config2 = (GenomicDataSourceConfiguration) retrieved.getGenomicDataSources().get(i);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageDataSources().size(), retrieved.getImageDataSources().size());
-        for (int i = 0; i < original.getImageDataSources().size(); i++) {
-            ImageDataSourceConfiguration config1 = original.getImageDataSources().get(i);
-            ImageDataSourceConfiguration config2 = retrieved.getImageDataSources().get(i);
-            ImageDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
-        assertEquals(original.getImageAnnotationConfigurations().size(), retrieved.getImageAnnotationConfigurations().size());
-        for (int i = 0; i < original.getImageAnnotationConfigurations().size(); i++) {
-            ImageAnnotationConfiguration config1 = original.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfiguration config2 = retrieved.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
+    public void compareFields(ImageAnnotationConfiguration original, ImageAnnotationConfiguration retrieved) {
+        AnnotationFileGenerator.INSTANCE.compare(original.getAnnotationFile(), retrieved.getAnnotationFile());
     }
 
     @Override
-    public StudyConfiguration createPersistentObject() {
-        return new StudyConfiguration();
+    public ImageAnnotationConfiguration createPersistentObject() {
+        return new ImageAnnotationConfiguration();
     }
 
     @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
-        studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
-        studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
-        if (studyConfiguration.getStudy() == null) {
-            studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
+    public void setValues(ImageAnnotationConfiguration config) {
+        if (config.getAnnotationFile() == null) {
+            config.setAnnotationFile(AnnotationFileGenerator.INSTANCE.createPersistentObject());
         }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
-        studyConfiguration.getClinicalConfigurationCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        studyConfiguration.getGenomicDataSources().clear();
-        for (int i = 0; i < 3; i++) {
-            GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
-            studyConfiguration.getGenomicDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
-        for (int i = 0; i < 3; i++) {
-            ImageDataSourceConfiguration config = new ImageDataSourceConfiguration();
-            studyConfiguration.getImageDataSources().add(config);
-            config.setStudyConfiguration(studyConfiguration);
-            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config);
-        }
+        AnnotationFileGenerator.INSTANCE.setValues(config.getAnnotationFile());        
     }
+
 
 }

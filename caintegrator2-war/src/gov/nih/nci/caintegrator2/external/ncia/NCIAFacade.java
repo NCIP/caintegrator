@@ -106,14 +106,14 @@ public interface NCIAFacade {
         throws ConnectionException;
     
     /**
-     * Retrieves the list of ImageStudy's from NCIAGridService and converts them to our 
+     * Retrieves the list of ImageStudys from NCIAGridService and converts them to our 
      * ImageSeriesAcquisition object.
      * @param trialDataProvenanceProject - Project for the TrialDataProvenance
      * @param profile contains connection information for the NCIA server
      * @return ImageStudy will be ImageSeriesAcquisition after it gets mapped.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<ImageSeriesAcquisition> getImageSeriesAcquisition(String trialDataProvenanceProject, 
+    List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException;
 
 }
