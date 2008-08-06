@@ -106,6 +106,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -181,9 +182,24 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
+            // TODO : This should probably throw an error instead of returning null.
+            return null;
+        } else {
+            
+            Criteria imageSeriesAcquisitionCrit = getHibernateTemplate().
+                                                  getSessionFactory().
+                                                  getCurrentSession().
+                                                  createCriteria(ImageSeriesAcquisition.class);
+            Criteria imageSeriesCrit = imageSeriesAcquisitionCrit.createCriteria("seriesCollection");
+            Criteria valuesCrit = imageSeriesCrit.createCriteria("annotationCollection");
+            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
+            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
+            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+            return imageSeriesAcquisitionCrit.list();
+        }
     }
 
     /**
@@ -201,7 +217,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                              getCurrentSession().
                                              createCriteria(SampleAcquisition.class);
             Criteria valuesCrit = sampleAcquisitionCrit.createCriteria("annotationCollection");
+            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
+            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
             valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+
             return sampleAcquisitionCrit.list();
         }
     }
@@ -209,9 +228,24 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
+            // TODO : This should probably throw an error instead of returning null.
+            return null;
+        } else {
+            // Main criteria is for SampleAcquisitions
+            Criteria studySubjectAssignmentCrit = getHibernateTemplate().
+                                             getSessionFactory().
+                                             getCurrentSession().
+                                             createCriteria(StudySubjectAssignment.class);
+            Criteria valuesCrit = studySubjectAssignmentCrit.createCriteria("annotationCollection");
+            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
+            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
+            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+
+            return studySubjectAssignmentCrit.list();
+        }
     }
 
     /**

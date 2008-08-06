@@ -122,7 +122,7 @@ class SubjectAnnotationHandler extends AbstractAnnotationHandler {
     private SubjectAnnotation createAnnotation(AbstractAnnotationValue annotationValue) {
         SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
         subjectAnnotation.setAnnotationValue(annotationValue);
-        currentSubjectAssignment.getSubjectAnnotation().add(subjectAnnotation);
+        currentSubjectAssignment.getSubjectAnnotationCollection().add(subjectAnnotation);
         return subjectAnnotation;
     }
 
