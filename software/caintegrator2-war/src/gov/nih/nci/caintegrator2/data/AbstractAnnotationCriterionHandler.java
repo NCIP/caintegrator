@@ -93,12 +93,28 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import org.hibernate.criterion.Criterion;
 
 /**
- * 
+ * Abstract class that handles translating caIntegrator2 Criterion into Hibernate Criterion.
  */
 public abstract class AbstractAnnotationCriterionHandler {
     
-   
+    /**
+     * Numeric Value.
+     */
+    public static final String NUMERIC_VALUE_COLUMN = "numericValue";
+    /**
+     * String Value.
+     */
+    public static final String STRING_VALUE_COLUMN = "stringValue";
+    /**
+     * Date Value.
+     */
+    public static final String DATE_VALUE_COLUMN = "dateValue";
     
+    /**
+     * Creates the appropriate Annotation Criterion Handler based on the criterion object.
+     * @param criterion is the criterion of interest to be translated.
+     * @return appropriate handler to return.
+     */
     static AbstractAnnotationCriterionHandler create(AbstractAnnotationCriterion criterion) {
         if (criterion instanceof StringComparisonCriterion) {
             return new StringComparisonCriterionHandler((StringComparisonCriterion) criterion);
@@ -112,6 +128,10 @@ public abstract class AbstractAnnotationCriterionHandler {
         }
     }
     
+    /**
+     * Subclasses must create translated Criterion.
+     * @return Hibernate Criterion object that is translated.
+     */
     abstract Criterion translate();
 
 }

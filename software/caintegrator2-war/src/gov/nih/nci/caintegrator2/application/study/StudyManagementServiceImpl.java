@@ -192,7 +192,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     private void persist(StudyConfiguration studyConfiguration) {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
-            saveSubjectAnnotations(assignment.getSubjectAnnotation());
+            saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
             saveSampleAcquisitions(assignment.getSampleAcquisitionCollection());
             dao.save(assignment.getSubject());
             dao.save(assignment);
