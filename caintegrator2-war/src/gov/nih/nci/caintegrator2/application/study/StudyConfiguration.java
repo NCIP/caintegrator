@@ -249,7 +249,7 @@ public class StudyConfiguration implements PersistentObject {
         studySubjectAssignment.setSubject(new Subject());
         studySubjectAssignment.setStudy(getStudy());
         studySubjectAssignment.setIdentifier(identifier);
-        studySubjectAssignment.setSubjectAnnotation(new HashSet<SubjectAnnotation>());
+        studySubjectAssignment.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studySubjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         getStudy().getAssignmentCollection().add(studySubjectAssignment);
         getIdentifierToSubjectAssignmentMap().put(identifier, studySubjectAssignment);
