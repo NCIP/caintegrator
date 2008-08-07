@@ -96,6 +96,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
@@ -137,8 +139,13 @@ class GenomicDataHelper {
     private ArrayDataValues createGeneArrayDataValues(StudyConfiguration studyConfiguration, 
             ArrayDataValues probeSetValues) {
         ArrayDataValues geneValues = createArrayDataValues(studyConfiguration);
+        // TJ - Seperated out for debugging purposes to find null pointer exception.
+        ArrayDataMatrix adm = probeSetValues.getArrayDataMatrix();
+        ReporterSet rs = adm.getReporterSet();
+        Platform platform = rs.getPlatform();
         PlatformHelper platformHelper = 
-            new PlatformHelper(probeSetValues.getArrayDataMatrix().getReporterSet().getPlatform());
+            new PlatformHelper(platform);
+            //(probeSetValues.getArrayDataMatrix().getReporterSet().getPlatform());
         geneValues.getArrayDataMatrix().setReporterSet(
                 platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE));
         for (Array array : probeSetValues.getAllArrays()) {
