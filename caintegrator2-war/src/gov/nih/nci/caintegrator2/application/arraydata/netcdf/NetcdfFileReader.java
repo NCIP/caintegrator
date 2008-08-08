@@ -103,12 +103,19 @@ public class NetcdfFileReader {
     public Float getArrayData(String arrayName, String reporter) {
         try {
             Variable arrayData = ncFile.findVariable(ARRAY_DATA);
-            int[] origin = new int[] {arrays.get(arrayName), reporters.get(reporter)};
-            int[] size = new int[] {1, 1};
-            Array data3D = arrayData.read(origin, size);
-            Array data2D = data3D.reduce();
-            Index index = data2D.getIndex();
-            return data2D.getFloat(index);
+            if (arrays.containsKey(arrayName) 
+                && reporters.containsKey(reporter)) {
+                int[] origin = new int[] {arrays.get(arrayName), reporters.get(reporter)};
+                int[] size = new int[] {1, 1};
+                Array data3D = arrayData.read(origin, size);
+                Array data2D = data3D.reduce();
+                Index index = data2D.getIndex();
+                return data2D.getFloat(index);
+            } else {
+                // Probably should return null or something else, redesign later?
+                return Float.valueOf("0.0");
+            }
+
         } catch (IOException e) {
             throw new NetcdfReadException(e);
         } catch (InvalidRangeException e) {
