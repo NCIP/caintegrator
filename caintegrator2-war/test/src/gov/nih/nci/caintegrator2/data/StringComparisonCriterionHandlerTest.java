@@ -101,6 +101,6 @@ public class StringComparisonCriterionHandlerTest {
         strCriterion.setStringValue("test");
         Criterion crit = AbstractAnnotationCriterionHandler.create(strCriterion).translate();
         assertNotNull(crit);
-        assertEquals("stringValue like test",crit.toString());
+        assertEquals(AbstractAnnotationCriterionHandler.STRING_VALUE_COLUMN+" like test",crit.toString());
     }
 }

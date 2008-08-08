@@ -115,6 +115,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
     private static final String UNCHECKED = "unchecked";
+    private static final String ANNOTATION_VALUE_ASSOCIATION = "annotationValue";
+    private static final String ANNOTATION_VALUE_COLLECTION_ASSOCIATION = "annotationCollection";
 
     /**
      * {@inheritDoc}
@@ -188,16 +190,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             // TODO : This should probably throw an error instead of returning null.
             return null;
         } else {
-            
             Criteria imageSeriesAcquisitionCrit = getHibernateTemplate().
                                                   getSessionFactory().
                                                   getCurrentSession().
                                                   createCriteria(ImageSeriesAcquisition.class);
-            Criteria imageSeriesCrit = imageSeriesAcquisitionCrit.createCriteria("seriesCollection");
-            Criteria valuesCrit = imageSeriesCrit.createCriteria("annotationCollection");
-            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
-            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
-            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
+            createAnnotationValuesCriteria(criterion, 
+                                           imageSeriesAcquisitionCrit.createCriteria("seriesCollection"), 
+                                           ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
             return imageSeriesAcquisitionCrit.list();
         }
     }
@@ -211,16 +210,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             // TODO : This should probably throw an error instead of returning null.
             return null;
         } else {
-            // Main criteria is for SampleAcquisitions
             Criteria sampleAcquisitionCrit = getHibernateTemplate().
                                              getSessionFactory().
                                              getCurrentSession().
                                              createCriteria(SampleAcquisition.class);
-            Criteria valuesCrit = sampleAcquisitionCrit.createCriteria("annotationCollection");
-            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
-            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
-            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
-
+            createAnnotationValuesCriteria(criterion, 
+                                           sampleAcquisitionCrit, 
+                                           ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
             return sampleAcquisitionCrit.list();
         }
     }
@@ -230,22 +226,34 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
-        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT.getValue())) {
             // TODO : This should probably throw an error instead of returning null.
             return null;
         } else {
-            // Main criteria is for SampleAcquisitions
             Criteria studySubjectAssignmentCrit = getHibernateTemplate().
                                              getSessionFactory().
                                              getCurrentSession().
                                              createCriteria(StudySubjectAssignment.class);
-            Criteria valuesCrit = studySubjectAssignmentCrit.createCriteria("annotationCollection");
-            Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
-            definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
-            valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
-
+            createAnnotationValuesCriteria(criterion, 
+                                           studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
+                                           ANNOTATION_VALUE_ASSOCIATION);
             return studySubjectAssignmentCrit.list();
         }
+    }
+    
+    /**
+     * This function adds the values criteria for getting back the correct annotation values.
+     * @param criterion - The main criterion object for the values we want.
+     * @param mainAnnotationCriteria - The Criteria on the object that links directly to AbstractAnnotationValue
+     * @param annotationValueRelationship - Relationship name that the above object has with AbstractAnnotationValue
+     */
+    private void createAnnotationValuesCriteria(AbstractAnnotationCriterion criterion,
+                                              Criteria mainAnnotationCriteria, 
+                                              String annotationValueRelationship) {
+        Criteria valuesCrit = mainAnnotationCriteria.createCriteria(annotationValueRelationship);
+        Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
+        definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
+        valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
     }
 
     /**
