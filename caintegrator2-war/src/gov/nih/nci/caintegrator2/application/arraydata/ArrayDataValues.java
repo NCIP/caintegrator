@@ -114,7 +114,13 @@ public class ArrayDataValues {
      * @return the array data value.
      */
     public Float getValue(Array array, AbstractReporter reporter) {
-        return reporterArrayValueMap.get(reporter).get(array);
+        if (reporterArrayValueMap.containsKey(reporter) 
+            && reporterArrayValueMap.get(reporter).containsKey(array)) { 
+            return reporterArrayValueMap.get(reporter).get(array);
+        } else {
+        // I think returning a 0 value might be wrong, maybe need to throw exception?
+            return Float.valueOf("0.0");
+        }
     }
     
     /**
