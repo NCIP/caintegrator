@@ -258,7 +258,32 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(0, matchingImageSeriesAcquisitions2.size());
     }
     
-    @SuppressWarnings({"PMD.ExcessiveMethodLength"})
+    @Test
+    public void testFindMatchingSubjects() {
+        Study study = populateAndRetrieveStudy();
+        dao.save(study);
+        
+        NumericComparisonCriterion criterion1 = new NumericComparisonCriterion();
+        criterion1.setNumericValue(2.0);
+        criterion1.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
+        criterion1.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion1.setAnnotationDefinition(subjectAnnotationDefinition);
+        List<StudySubjectAssignment> matchingStudySubjectAssignments = dao.findMatchingSubjects(criterion1, study);
+        
+        assertEquals(1, matchingStudySubjectAssignments.size());
+        
+        // Change only the annotation definition and see if it returns 0.
+        NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
+        criterion2.setNumericValue(2.0);
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setAnnotationDefinition(sampleAnnotationDefinition);
+        List<StudySubjectAssignment> matchingStudySubjectAssignments2 = dao.findMatchingSubjects(criterion2, study);
+        
+        assertEquals(0, matchingStudySubjectAssignments2.size());
+    }
+    
+    @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
     private Study populateAndRetrieveStudy() {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
@@ -295,9 +320,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         StringAnnotationValue stringval2 = new StringAnnotationValue();
         StringAnnotationValue stringval3 = new StringAnnotationValue();
         
-        DateAnnotationValue date1 = new DateAnnotationValue();
-        DateAnnotationValue date2 = new DateAnnotationValue();
-        DateAnnotationValue date3 = new DateAnnotationValue();
+        NumericAnnotationValue subjnumval1 = new NumericAnnotationValue();
+        NumericAnnotationValue subjnumval2 = new NumericAnnotationValue();
+        NumericAnnotationValue subjnumval3 = new NumericAnnotationValue();
         
         
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
@@ -325,7 +350,19 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         imageSeries3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         
         SubjectAnnotation subjectAnnotation1 = new SubjectAnnotation();
-        subjectAnnotation1.setAnnotationValue(date1);
+        subjnumval1.setNumericValue(1.0);
+        subjectAnnotation1.setAnnotationValue(subjnumval1);
+        subjnumval1.setAnnotationDefinition(subjectAnnotationDefinition);
+        
+        SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
+        subjnumval2.setNumericValue(2.0);
+        subjectAnnotation2.setAnnotationValue(subjnumval2);
+        subjnumval2.setAnnotationDefinition(subjectAnnotationDefinition);
+        
+        SubjectAnnotation subjectAnnotation3 = new SubjectAnnotation();
+        subjnumval3.setNumericValue(3.0);
+        subjectAnnotation3.setAnnotationValue(subjnumval3);
+        subjnumval3.setAnnotationDefinition(subjectAnnotationDefinition);
         
         numval1.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1.setNumericValue(10.0);
@@ -381,6 +418,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         Collection<SubjectAnnotation> subjectAnnotationCollection = new HashSet<SubjectAnnotation>();
         subjectAnnotationCollection.add(subjectAnnotation1);
+        subjectAnnotationCollection.add(subjectAnnotation2);
+        subjectAnnotationCollection.add(subjectAnnotation3);
+        
         
         studySubjectAssignment.setSampleAcquisitionCollection(saCollection);
         studySubjectAssignment.setImageStudyCollection(isaCollection);

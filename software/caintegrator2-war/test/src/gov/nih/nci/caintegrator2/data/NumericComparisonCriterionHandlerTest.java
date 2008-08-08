@@ -104,7 +104,7 @@ public class NumericComparisonCriterionHandlerTest {
         numCriterion.setNumericValue(20.0);
         Criterion crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
         assertNotNull(crit);
-        assertEquals("numericValue>=20.0",crit.toString());
+        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+">=20.0",crit.toString());
     }
 
 }
