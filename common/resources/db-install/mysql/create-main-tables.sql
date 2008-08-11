@@ -139,6 +139,7 @@ CREATE TABLE STRING_COMPARISON_CRITERION
 (
     ID bigint not null, 
     STRING_VALUE varchar(255),
+    WILD_CARD_TYPE varchar(50),
     primary key (ID)
 ) TYPE=InnoDB;
 
