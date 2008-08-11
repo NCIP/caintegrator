@@ -115,6 +115,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
     private static final String UNCHECKED = "unchecked";
+    private static final String ANNOTATION_DEFINITION_ASSOCIATION = "annotationDefinition";
     private static final String ANNOTATION_VALUE_ASSOCIATION = "annotationValue";
     private static final String ANNOTATION_VALUE_COLLECTION_ASSOCIATION = "annotationCollection";
 
@@ -187,8 +188,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
-            // TODO : This should probably throw an error instead of returning null.
-            return null;
+            return new ArrayList<ImageSeriesAcquisition>();
         } else {
             Criteria imageSeriesAcquisitionCrit = getHibernateTemplate().
                                                   getSessionFactory().
@@ -207,8 +207,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
-            // TODO : This should probably throw an error instead of returning null.
-            return null;
+            return new ArrayList<SampleAcquisition>();
         } else {
             Criteria sampleAcquisitionCrit = getHibernateTemplate().
                                              getSessionFactory().
@@ -227,8 +226,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT.getValue())) {
-            // TODO : This should probably throw an error instead of returning null.
-            return null;
+            return new ArrayList<StudySubjectAssignment>();
         } else {
             Criteria studySubjectAssignmentCrit = getHibernateTemplate().
                                              getSessionFactory().
@@ -251,8 +249,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                               Criteria mainAnnotationCriteria, 
                                               String annotationValueRelationship) {
         Criteria valuesCrit = mainAnnotationCriteria.createCriteria(annotationValueRelationship);
-        Criteria definitionCrit = valuesCrit.createCriteria("annotationDefinition");
-        definitionCrit.add(Restrictions.idEq(criterion.getAnnotationDefinition().getId()));
+        valuesCrit.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, criterion.getAnnotationDefinition()));
         valuesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
     }
 

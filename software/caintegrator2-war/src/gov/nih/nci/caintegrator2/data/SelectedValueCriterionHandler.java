@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.Collection;
@@ -114,15 +113,8 @@ public class SelectedValueCriterionHandler extends AbstractAnnotationCriterionHa
      */
     @Override
     Criterion translate() {
-        // This doesn't work properly.
-        Collection<AbstractPermissableValue> valueCollection = selectedValueCriterion.getValueCollection();
-        for (AbstractPermissableValue value : valueCollection) {
-            if (value instanceof NumericPermissableValue) {
-                NumericPermissableValue val = (NumericPermissableValue) value;
-                val.getNumericValue();
-            }
-        }
-        return Restrictions.in("value", valueCollection);
+        Collection<AbstractPermissableValue> permissableValueCollection = selectedValueCriterion.getValueCollection();
+        return Restrictions.in(PERMISSABLE_VALUE_COLUMN, permissableValueCollection);
     }
 
 }
