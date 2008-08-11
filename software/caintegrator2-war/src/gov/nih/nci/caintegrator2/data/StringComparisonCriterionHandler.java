@@ -85,15 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 
 /**
  * Criterion handler for StringComparisonCriterion.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")   // see translate() method
 public class StringComparisonCriterionHandler extends AbstractAnnotationCriterionHandler {
 
     private final StringComparisonCriterion stringComparisonCriterion;
@@ -109,8 +112,35 @@ public class StringComparisonCriterionHandler extends AbstractAnnotationCriterio
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
     Criterion translate() {
-        return Restrictions.like(STRING_VALUE_COLUMN, stringComparisonCriterion.getStringValue());
+        if (stringComparisonCriterion.getWildCardType() != null) {
+            WildCardTypeEnum wildCardType = WildCardTypeEnum.
+                    getByValue(stringComparisonCriterion.getWildCardType());
+            switch(wildCardType) {
+            case WILDCARD_OFF:
+                return Restrictions.like(STRING_VALUE_COLUMN, 
+                                         stringComparisonCriterion.getStringValue());
+            case WILDCARD_AFTER_STRING:
+                return Restrictions.like(STRING_VALUE_COLUMN, 
+                                         stringComparisonCriterion.getStringValue(), 
+                                         MatchMode.START);
+            case WILDCARD_BEFORE_STRING:
+                return Restrictions.like(STRING_VALUE_COLUMN, 
+                                         stringComparisonCriterion.getStringValue(), 
+                                         MatchMode.END);
+            case WILDCARD_BEFORE_AND_AFTER_STRING:
+                return Restrictions.like(STRING_VALUE_COLUMN, 
+                                         stringComparisonCriterion.getStringValue(), 
+                                         MatchMode.ANYWHERE);
+            default:
+                return Restrictions.like(STRING_VALUE_COLUMN, 
+                                         stringComparisonCriterion.getStringValue());
+            }
+        } else {
+            return Restrictions.like(STRING_VALUE_COLUMN, 
+                                     stringComparisonCriterion.getStringValue());
+        }
     }
 
 }
