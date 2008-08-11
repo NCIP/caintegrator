@@ -106,9 +106,13 @@ public abstract class AbstractAnnotationCriterionHandler {
      */
     public static final String STRING_VALUE_COLUMN = "stringValue";
     /**
-     * Date Value.
+     * Date Value (Currently Unused, but maybe in the future?).
      */
     public static final String DATE_VALUE_COLUMN = "dateValue";
+    /**
+     * Permissable Value.
+     */
+    public static final String PERMISSABLE_VALUE_COLUMN = "boundedValue";
     
     /**
      * Creates the appropriate Annotation Criterion Handler based on the criterion object.
@@ -123,8 +127,7 @@ public abstract class AbstractAnnotationCriterionHandler {
         } else if (criterion instanceof SelectedValueCriterion) {
             return new SelectedValueCriterionHandler((SelectedValueCriterion) criterion);
         } else {
-            // Probably need to throw an exception instead of returning null.
-            return null;
+            throw new IllegalStateException("Unknown AbstractAnnotationCriterion: " + criterion.getClass().toString());
         }
     }
     

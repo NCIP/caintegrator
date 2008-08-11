@@ -115,23 +115,21 @@ public class NumericComparisonCriterionHandler extends AbstractAnnotationCriteri
     Criterion translate() {
         NumericComparisonOperatorEnum operator = NumericComparisonOperatorEnum.
                     getByValue(numericComparisonCriterion.getNumericComparisonOperator());
-        String propertyName = "numericValue";
         switch(operator) {
         case EQUAL:
-            return Restrictions.eq(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.eq(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         case GREATER:
-            return Restrictions.gt(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.gt(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         case GREATEROREQUAL:
-            return Restrictions.ge(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.ge(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         case LESS:
-            return Restrictions.lt(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.lt(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         case LESSOREQUAL:
-            return Restrictions.le(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.le(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         case NOTEQUAL:
-            return Restrictions.ne(propertyName, numericComparisonCriterion.getNumericValue());
+            return Restrictions.ne(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());
         default:
-            // Need to eventually throw an exception instead of just returning null.
-            return null;
+            throw new IllegalStateException("Unknown NumericComparisonOperator: " + operator);
         }
         
         

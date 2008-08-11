@@ -91,12 +91,14 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -121,6 +123,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     private AnnotationDefinition sampleAnnotationDefinition;
     private AnnotationDefinition imageSeriesAnnotationDefinition;
     private AnnotationDefinition subjectAnnotationDefinition;
+    private NumericPermissableValue permval1;
+    private NumericPermissableValue permval2;
    
     protected String[] getConfigLocations() {
         return new String[] {"classpath*:/**/dao-test-config.xml"};
@@ -225,15 +229,38 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         assertEquals(2, matchingSamples2.size());
         
-        // Try using a different Annotation Definition and verify that it returns 0 from that.
-        NumericComparisonCriterion criterion3 = new NumericComparisonCriterion();
-        criterion3.setNumericValue(13.0);
-        criterion3.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
-        criterion3.setAnnotationDefinition(imageSeriesAnnotationDefinition);
+        // Try a selectedValueCriterion now (should be size 3)
+        SelectedValueCriterion criterion3 = new SelectedValueCriterion();
+        Collection<AbstractPermissableValue> permissableValues1 = new HashSet<AbstractPermissableValue>();
+        permissableValues1.add(permval1);
+        criterion3.setValueCollection(permissableValues1);
         criterion3.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion3.setAnnotationDefinition(sampleAnnotationDefinition);
         List<SampleAcquisition> matchingSamples3 = dao.findMatchingSamples(criterion3, study);
         
-        assertEquals(0, matchingSamples3.size());
+        assertEquals(3, matchingSamples3.size());
+        
+        // Try the other permissable values (should be size 2)
+        SelectedValueCriterion criterion4 = new SelectedValueCriterion();
+        Collection<AbstractPermissableValue> permissableValues2 = new HashSet<AbstractPermissableValue>();
+        permissableValues2.add(permval2);
+        criterion4.setValueCollection(permissableValues2);
+        criterion4.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion4.setAnnotationDefinition(sampleAnnotationDefinition);
+        List<SampleAcquisition> matchingSamples4 = dao.findMatchingSamples(criterion4, study);
+        
+        assertEquals(2, matchingSamples4.size());
+        
+        
+        // Try using a different Annotation Definition and verify that it returns 0 from that.
+        NumericComparisonCriterion criterion5 = new NumericComparisonCriterion();
+        criterion5.setNumericValue(13.0);
+        criterion5.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion5.setAnnotationDefinition(imageSeriesAnnotationDefinition);
+        criterion5.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        List<SampleAcquisition> matchingSamples5 = dao.findMatchingSamples(criterion5, study);
+        
+        assertEquals(0, matchingSamples5.size());
     }
     
     @Test
@@ -324,7 +351,14 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         NumericAnnotationValue subjnumval2 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval3 = new NumericAnnotationValue();
         
+        permval1 = new NumericPermissableValue();
+        permval2 = new NumericPermissableValue();
         
+        Collection<AbstractPermissableValue> permissableValueCollection = new HashSet<AbstractPermissableValue>();
+        permissableValueCollection.add(permval1);
+        permissableValueCollection.add(permval2);
+        
+
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
         sampleAcquisition1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         
@@ -364,24 +398,37 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         subjectAnnotation3.setAnnotationValue(subjnumval3);
         subjnumval3.setAnnotationDefinition(subjectAnnotationDefinition);
         
+        // Add permissable values.
+        sampleAnnotationDefinition.setPermissableValueCollection(permissableValueCollection);
+        permval1.setLowValue(10.0);
+        permval1.setHighValue(12.0);
+        
+        permval2.setLowValue(13.0);
+        permval2.setHighValue(14.0);
+        
         numval1.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1.setNumericValue(10.0);
+        numval1.setBoundedValue(permval1);
         sampleAcquisition1.getAnnotationCollection().add(numval1);
         
         numval2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval2.setNumericValue(11.0);
+        numval2.setBoundedValue(permval1);
         sampleAcquisition2.getAnnotationCollection().add(numval2);
         
         numval3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval3.setNumericValue(12.0);
+        numval3.setBoundedValue(permval1);
         sampleAcquisition3.getAnnotationCollection().add(numval3);
         
         numval4.setAnnotationDefinition(sampleAnnotationDefinition);
         numval4.setNumericValue(13.0);
+        numval4.setBoundedValue(permval2);
         sampleAcquisition4.getAnnotationCollection().add(numval4);
         
         numval5.setAnnotationDefinition(sampleAnnotationDefinition);
         numval5.setNumericValue(14.0);
+        numval5.setBoundedValue(permval2);
         sampleAcquisition5.getAnnotationCollection().add(numval5);
         
         stringval1.setAnnotationDefinition(imageSeriesAnnotationDefinition);
