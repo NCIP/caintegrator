@@ -100,11 +100,34 @@ public class NumericComparisonCriterionHandlerTest {
     @Test
     public void testTranslate() {
         NumericComparisonCriterion numCriterion = new NumericComparisonCriterion();
-        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
         numCriterion.setNumericValue(20.0);
+        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
         Criterion crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
         assertNotNull(crit);
-        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+">=20.0",crit.toString());
+       assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+">=20.0",crit.toString());
+        
+        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
+        crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
+        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+">20.0",crit.toString());
+        
+        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL.getValue());
+        crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
+        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+"=20.0",crit.toString());
+        
+        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS.getValue());
+        crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
+        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+"<20.0",crit.toString());
+        
+        numCriterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL.getValue());
+        crit = AbstractAnnotationCriterionHandler.create(numCriterion).translate();
+        assertEquals(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+"<=20.0",crit.toString());
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void testTranslateNoComparison() {
+        NumericComparisonCriterion numCriterion = new NumericComparisonCriterion();
+        numCriterion.setNumericValue(20.0);
+        AbstractAnnotationCriterionHandler.create(numCriterion).translate();
     }
 
 }

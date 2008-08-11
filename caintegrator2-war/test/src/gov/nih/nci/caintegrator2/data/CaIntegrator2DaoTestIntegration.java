@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -276,13 +277,23 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         assertEquals(1, matchingImageSeriesAcquisitions.size());
         
-        // Change only the annotation definition and see if it returns 0.
+        // Try a wildcard search now.
         StringComparisonCriterion criterion2 = new StringComparisonCriterion();
-        criterion2.setStringValue("string1");
+        criterion2.setStringValue("string");
         criterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        criterion2.setAnnotationDefinition(sampleAnnotationDefinition);
+        criterion2.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
+        criterion2.setAnnotationDefinition(imageSeriesAnnotationDefinition);
         List<ImageSeriesAcquisition> matchingImageSeriesAcquisitions2 = dao.findMatchingImageSeries(criterion2, study);
-        assertEquals(0, matchingImageSeriesAcquisitions2.size());
+        
+        assertEquals(3, matchingImageSeriesAcquisitions2.size());
+        
+        // Change only the annotation definition and see if it returns 0.
+        StringComparisonCriterion criterion3 = new StringComparisonCriterion();
+        criterion3.setStringValue("string1");
+        criterion3.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion3.setAnnotationDefinition(sampleAnnotationDefinition);
+        List<ImageSeriesAcquisition> matchingImageSeriesAcquisitions3 = dao.findMatchingImageSeries(criterion3, study);
+        assertEquals(0, matchingImageSeriesAcquisitions3.size());
     }
     
     @Test
