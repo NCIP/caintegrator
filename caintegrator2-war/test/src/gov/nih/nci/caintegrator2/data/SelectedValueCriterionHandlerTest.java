@@ -87,12 +87,14 @@ package gov.nih.nci.caintegrator2.data;
 
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import org.hibernate.criterion.Criterion;
 import org.junit.Test;
@@ -104,13 +106,16 @@ public class SelectedValueCriterionHandlerTest {
     public void testTranslate() {
         SelectedValueCriterion svCriterion = new SelectedValueCriterion();
         Collection <AbstractPermissableValue> valueCollection = new HashSet<AbstractPermissableValue>();
-        StringPermissableValue val1 = new StringPermissableValue();
-        val1.setStringValue("val1");
+        NumericPermissableValue val1 = new NumericPermissableValue();
+        val1.setNumericValue(Double.valueOf(123));
+        valueCollection.add(val1);
         svCriterion.setValueCollection(valueCollection);
         
         Criterion crit = AbstractAnnotationCriterionHandler.create(svCriterion).translate();
         assertNotNull(crit);
-        //assertEquals("value like val1",crit.toString());
+        // This needs to be "boundedValue in Collection(PermissableValue)"
+        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.PERMISSABLE_VALUE_COLUMN+" in").
+                                    matcher(crit.toString()).find());
     }
 
 }

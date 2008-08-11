@@ -110,7 +110,7 @@ public class StringComparisonCriterionHandler extends AbstractAnnotationCriterio
      */
     @Override
     Criterion translate() {
-        return Restrictions.like("stringValue", stringComparisonCriterion.getStringValue());
+        return Restrictions.like(STRING_VALUE_COLUMN, stringComparisonCriterion.getStringValue());
     }
 
 }
