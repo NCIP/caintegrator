@@ -62,7 +62,7 @@ public enum WildCardTypeEnum {
     }
     
     /**
-     * Returns the <code>NumericComparisonOperatorEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>WildCardTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
