@@ -86,8 +86,10 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -98,34 +100,32 @@ import org.junit.Test;
 public class QueryManagementServiceImplTest {
     
     private QueryManagementServiceImpl queryManagementService;
-    private UserWorkspace userWorkspace;
+    private CaIntegrator2DaoStub dao;
     private Query query;
     
     @Before
     public void setup() {
+        dao = new CaIntegrator2DaoStub();
+        dao.clear();
         queryManagementService = new QueryManagementServiceImpl();
-        userWorkspace = new UserWorkspace();
+        queryManagementService.setDao(dao);
         query = new Query();
-        query.setId(Long.valueOf(1));
+        //query.setId(Long.valueOf(1));
     }
 
     
     @Test
-    public void testCreateQuery() {
-        // Test getter and setters
-        queryManagementService.setQuery(query);
-        assertEquals(query, queryManagementService.getQuery());
-
+    public void testExecute() {
         // test createQuery method.
-        Query myQuery = queryManagementService.createQuery(userWorkspace);
-        assertEquals(myQuery, null);
+        QueryResult queryResult = queryManagementService.execute(query);
+        assertEquals(queryResult, null);
     }
 
     
     @Test
-    public void testUpdateQuery() {
-       queryManagementService.updateQuery(query);
-       assertEquals(query, queryManagementService.getQuery());
+    public void testSave() {
+       queryManagementService.save(query);
+       assertTrue(dao.saveCalled);
     }
 
 }

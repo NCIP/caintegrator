@@ -87,7 +87,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
 
 /**
@@ -96,18 +96,17 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 public interface QueryManagementService {
 
     /**
-     * Given a workspace, we create a query and persist.
-     * 
-     * @param workspace The UserWorkspace which we want a query to be created for.
-     * @return the query object that is created.
+     * Executes a query and returns back the result
+     * @param query item to execute.
+     * @return - Result of the query being executed
      */
-    Query createQuery(UserWorkspace workspace);
+    QueryResult execute(Query query);
     
     /**
-     * Updates a query and persists.
+     * Persists a query.
      * 
      * @param query item to update
      */
-    void updateQuery(Query query);
+    void save(Query query);
 
 }
