@@ -96,7 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 public interface QueryManagementService {
 
     /**
-     * Executes a query and returns back the result
+     * Executes a query and returns back the result.
      * @param query item to execute.
      * @return - Result of the query being executed
      */
