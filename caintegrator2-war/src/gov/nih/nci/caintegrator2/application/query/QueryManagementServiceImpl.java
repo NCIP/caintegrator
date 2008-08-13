@@ -85,45 +85,37 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
 /**
  * Implementation of the QueryManagementService interface.
  */
 public class QueryManagementServiceImpl implements QueryManagementService {
     
-    private Query query;
+    CaIntegrator2Dao dao;
 
-    /**
-     * Creates a query based on work space, not sure if just a UserWorkspace is sufficient to creating a query.
-     * @param workspace user's work space
-     * @return query that is created
+    /*
+     * {@inheritDoc}
      */
-    public Query createQuery(UserWorkspace workspace) {
+    public QueryResult execute(Query query) {
+        
         return null;
     }
 
-    /**
-     * Updates a query and persists.
-     * 
-     * @param q query to update
+    /*
+     * {@inheritDoc}
      */
-    public void updateQuery(Query q) {
-        setQuery(q);
+    public void save(Query query) {
+        dao.save(query);
     }
 
-    /**
-     * @return the query
-     */
-    public Query getQuery() {
-        return query;
+
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
     }
 
-    /**
-     * @param query the query to set
-     */
-    public void setQuery(Query query) {
-        this.query = query;
-    }
+
+
 }
