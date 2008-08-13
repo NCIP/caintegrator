@@ -94,9 +94,9 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
  */
 public class QueryManagementServiceImpl implements QueryManagementService {
     
-    CaIntegrator2Dao dao;
+    private CaIntegrator2Dao dao;
 
-    /*
+    /**
      * {@inheritDoc}
      */
     public QueryResult execute(Query query) {
@@ -104,14 +104,17 @@ public class QueryManagementServiceImpl implements QueryManagementService {
         return null;
     }
 
-    /*
+    /**
      * {@inheritDoc}
      */
     public void save(Query query) {
         dao.save(query);
     }
 
-
+    /**
+     * Sets the DAO.
+     * @param dao - dao to set.
+     */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
