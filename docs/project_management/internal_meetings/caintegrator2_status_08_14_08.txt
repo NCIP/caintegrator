@@ -1,0 +1,10 @@
+ 
+CaIntegrator2 should be a demo-able, as a working product by Sep 15th. 
+Shine to get schedule of Aris and Jomol for demo and further discussions at the ICR face-to-face
+Subha to get a slot for demo at ICR face-to-face
+Anand, Eric, JP, Will and Shine should plan to attend ICR face-to-face
+Road-Map for caIntegrator2
+	Arrange monthly meeting with SME’s
+	Work with Elaine Freund to find SME’s 
+	Install caIntegrator2 at cancer center’s and work with the users
+	Beta sites should be created for users for early use and feedback.
