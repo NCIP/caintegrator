@@ -113,12 +113,37 @@
             <th colspan="3">Imaging Data Sources</th>
         </tr>
         <tr>
-            <th>Server</th>
-            <th>Trial Provenance Id</th>
+            <th>Type</th>
+            <th>Description</th>
             <th>Action</th>
         </tr>
+        <s:iterator value="studyConfiguration.imageAnnotationConfigurations" status="status">
+            <s:if test="#status.odd == true">
+             <tr class="odd">
+            </s:if>
+            <s:else>
+              <tr class="even">
+            </s:else>            
+            <td><s:property value="type" /></td>
+            <td><s:property value="description" /></td>
+            <td>
+                <s:url id="editImagingSource" action="editImagingSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="imagingSource.id" value="id" />
+                </s:url> 
+                <s:a href="%{editImagingSource}">Edit</s:a> 
+                <s:if test="%{loadable}" >
+                    <s:url id="loadImagingSource" action="loadImagingSource">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="imagingSourceConfiguration.id" value="id" />
+                    </s:url> 
+                    <s:a href="%{loadImagingSource}">Load</s:a> 
+                </s:if>
+            </td>
+        </tr>
+        </s:iterator>
         <tr>
-            <th colspan="3"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
+            <th colspan="3"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
         </tr>
     </table>
     </s:form>
