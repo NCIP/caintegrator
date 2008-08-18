@@ -75,6 +75,22 @@
         </property>
     </bean>
 
+    <bean id="addImagingFileAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.AddImageFileAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
+    <bean id="editImagingSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="editClinicalSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
@@ -91,6 +107,14 @@
         </property>
     </bean>
 
+	<bean id="saveImagingSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="loadClinicalSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
@@ -99,6 +123,14 @@
         </property>
     </bean>
 
+	<bean id="loadImagingSourceAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.LoadImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="defineFileColumnAction"
         scope="session"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineFileColumnAction">
