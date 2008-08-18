@@ -113,6 +113,26 @@
             <result type="tiles">editStudy</result>
         </action>
         
+        <action name="addImagingSource" class="editImagingSourceAction">
+            <result type="tiles">editImagingSource</result>
+        </action>
+        
+        <action name="addImagingFile" class="addImagingFileAction">
+            <result type="tiles">editImagingFile</result>
+            <result name="input" type="tiles">editImagingSource</result>
+        </action>
+        
+        <action name="editImagingSource" class="editImagingSourceAction">
+            <result type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="loadImagingSource" class="loadImagingSourceAction">
+            <result type="tiles">editStudy</result>
+        </action>
+        
+        <action name="saveImagingSource" class="saveImagingSourceAction">
+            <result type="tiles">editStudy</result>
+        </action>
     </package>
     
 </struts>

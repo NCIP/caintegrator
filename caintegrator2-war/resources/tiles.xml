@@ -20,7 +20,11 @@
     <definition name="editClinicalFile" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editClinicalFile_tile.jsp" />
     </definition>
-
+    
+	<definition name="editImagingFile" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingFile_tile.jsp" />
+    </definition>
+    
     <definition name="editFileColumn" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editFileColumn_tile.jsp" />
     </definition>
@@ -29,6 +33,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
     </definition>
 
+	<definition name="editImagingSource" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingSource_tile.jsp" />
+    </definition>
+    
     <definition name="editStudy" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editStudy_tile.jsp" />
     </definition>
