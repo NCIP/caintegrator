@@ -97,12 +97,22 @@ public class ImageAnnotationConfiguration implements PersistentObject {
     private Long id;
     private StudyConfiguration studyConfiguration;
     private AnnotationFile annotationFile;
-
+    
+    //abstract ImagingSourceType getType();
+    //public abstract String getDescription();
     /**
      * Creates a new instance.
      */
     public ImageAnnotationConfiguration() {
         super();
+    }
+    
+    ValidationResult validate() {
+        return getAnnotationFile().validate();
+    }
+    
+    public ImagingSourceType getType() {
+        return ImagingSourceType.DELIMITED_TEXT;
     }
     
     ImageAnnotationConfiguration(AnnotationFile annotationFile, StudyConfiguration studyConfiguration) {
@@ -187,4 +197,10 @@ public class ImageAnnotationConfiguration implements PersistentObject {
         return getStudyConfiguration().getImageSeries(identifier);
     }
 
+	
+	public String getDescription() {
+        return getAnnotationFile().getFile().getName();
+    }
+
+	
 }
