@@ -111,6 +111,9 @@ public class ImageAnnotationConfiguration implements PersistentObject {
         return getAnnotationFile().validate();
     }
     
+    /**
+     * @return Type
+     */
     public ImagingSourceType getType() {
         return ImagingSourceType.DELIMITED_TEXT;
     }
@@ -197,10 +200,10 @@ public class ImageAnnotationConfiguration implements PersistentObject {
         return getStudyConfiguration().getImageSeries(identifier);
     }
 
-	
-	public String getDescription() {
+/**
+ * @return Description
+ */
+public String getDescription() {
         return getAnnotationFile().getFile().getName();
     }
-
-	
 }
