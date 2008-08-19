@@ -42,18 +42,20 @@ function OnLoad() {
 
 }
 
-var u2 = document.getElementById('u2');
+var u5 = document.getElementById('u5');
+gv_vAlignTable['u5'] = 'top';
+var u0 = document.getElementById('u0');
+
+var u3 = document.getElementById('u3');
+gv_vAlignTable['u3'] = 'top';
+var u6 = document.getElementById('u6');
 
 var u1 = document.getElementById('u1');
 gv_vAlignTable['u1'] = 'center';
-var u6 = document.getElementById('u6');
-
-var u0 = document.getElementById('u0');
-
-var u5 = document.getElementById('u5');
-gv_vAlignTable['u5'] = 'top';
 var u4 = document.getElementById('u4');
 gv_vAlignTable['u4'] = 'top';
-var u3 = document.getElementById('u3');
-gv_vAlignTable['u3'] = 'top';
+var u7 = document.getElementById('u7');
+gv_vAlignTable['u7'] = 'top';
+var u2 = document.getElementById('u2');
+
 if (window.OnLoad) OnLoad();

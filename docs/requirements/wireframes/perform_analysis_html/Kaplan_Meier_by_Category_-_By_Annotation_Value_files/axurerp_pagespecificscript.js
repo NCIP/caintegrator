@@ -1,8 +1,8 @@
 
-var PageName = 'Define Expression Fold Change';
-var PageId = 'p850ac895164b458ea803db4de6dbf827'
-var PageUrl = 'Define_Expression_Fold_Change.html'
-document.title = 'Define Expression Fold Change';
+var PageName = 'Kaplan Meier by Category - By Annotation Value';
+var PageId = 'p279fd42547b44f918bd86bd03f714583'
+var PageUrl = 'Kaplan_Meier_by_Category_-_By_Annotation_Value.html'
+document.title = 'Kaplan Meier by Category - By Annotation Value';
 
 if (top.location != self.location)
 {
@@ -43,51 +43,45 @@ function OnLoad() {
 }
 
 var u16 = document.getElementById('u16');
-gv_vAlignTable['u16'] = 'top';
+
 var u7 = document.getElementById('u7');
 
 var u15 = document.getElementById('u15');
-
+gv_vAlignTable['u15'] = 'top';
 var u2 = document.getElementById('u2');
 
 var u19 = document.getElementById('u19');
-
+gv_vAlignTable['u19'] = 'top';
 var u13 = document.getElementById('u13');
-
-var u22 = document.getElementById('u22');
 
 var u12 = document.getElementById('u12');
 gv_vAlignTable['u12'] = 'top';
 var u5 = document.getElementById('u5');
-gv_vAlignTable['u5'] = 'top';
+gv_vAlignTable['u5'] = 'center';
 var u8 = document.getElementById('u8');
-
+gv_vAlignTable['u8'] = 'top';
 var u10 = document.getElementById('u10');
 gv_vAlignTable['u10'] = 'top';
 var u0 = document.getElementById('u0');
 
-var u21 = document.getElementById('u21');
-gv_vAlignTable['u21'] = 'top';
 var u17 = document.getElementById('u17');
-
+gv_vAlignTable['u17'] = 'top';
 var u3 = document.getElementById('u3');
 gv_vAlignTable['u3'] = 'center';
-var u23 = document.getElementById('u23');
-gv_vAlignTable['u23'] = 'top';
 var u14 = document.getElementById('u14');
 gv_vAlignTable['u14'] = 'top';
 var u6 = document.getElementById('u6');
-
+gv_vAlignTable['u6'] = 'top';
 var u9 = document.getElementById('u9');
-
+gv_vAlignTable['u9'] = 'top';
 var u20 = document.getElementById('u20');
-gv_vAlignTable['u20'] = 'top';
+
 var u1 = document.getElementById('u1');
 gv_vAlignTable['u1'] = 'center';
 var u11 = document.getElementById('u11');
 
 var u18 = document.getElementById('u18');
-gv_vAlignTable['u18'] = 'center';
+
 var u4 = document.getElementById('u4');
 
 if (window.OnLoad) OnLoad();
