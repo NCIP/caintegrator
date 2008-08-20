@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 /**
  * 
  */
-public class EditImagingSourceAction extends AbstractGenomicSourceAction {
+public class EditImagingSourceAction extends AbstractImagingSourceAction {
 private static final long serialVersionUID = 1L;
 
     /**
