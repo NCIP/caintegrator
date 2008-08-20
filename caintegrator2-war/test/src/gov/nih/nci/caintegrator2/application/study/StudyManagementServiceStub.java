@@ -119,7 +119,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadClinicalAnnotationCalled = true;
     }
 
-
     public void save(StudyConfiguration studyConfiguration) {
         saveCalled = true;
     }
@@ -197,6 +196,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
     
     public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
             File annotationFile, String filename) throws ValidationException, IOException {
+        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
+            throw new ValidationException(new ValidationResult());
+        } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
+            throw new IOException();
+        }
         addImageAnnotationFileCalled = true;
         return new ImageAnnotationConfiguration();
     }
