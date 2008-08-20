@@ -20,6 +20,14 @@
         </property>
     </bean>
 
+    <bean id="addImageFileAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.AddImageFileAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="editClinicalSourceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
@@ -28,6 +36,14 @@
         </property>
     </bean>
 
+    <bean id="editImagingSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="saveClinicalSourceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveClinicalSourceAction">
@@ -36,6 +52,14 @@
         </property>
     </bean>
 
+    <bean id="saveImagingSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="loadClinicalSourceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
@@ -44,6 +68,14 @@
         </property>
     </bean>
 
+    <bean id="loadImagingSourceAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.LoadImagingSourceAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>
+    
     <bean id="editStudyAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
