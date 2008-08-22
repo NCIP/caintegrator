@@ -85,60 +85,87 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 
+/**
+ * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
+ */
+public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
 
-public class CompoundCriterionHandlerTest {
-
+    private CaIntegrator2DaoImpl dao;
+    private ResultHandlerImpl resultHandler;
     
-    @Test
-    public void testGetMatches() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();       
-        
-        Study study = new Study();
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion2 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion3 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
-        
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion3);
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        
-        compoundCriterionHandler.getMatches(daoStub, study);
-        assertTrue(daoStub.findMatchingSamplesCalled);
-        assertTrue(daoStub.findMatchingImageSeriesCalled);
-        assertTrue(daoStub.findMatchingSubjectsCalled);
+    protected String[] getConfigLocations() {
+        return new String[] {"classpath*:/**/query-test-integration.xml"};
     }
 
+    @Test
+    @SuppressWarnings({"PMD"})
+    public void testExecute() {
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudy();
+        dao.save(study);
+        
+        ResultColumn column1 = new ResultColumn();
+        ResultColumn column2 = new ResultColumn();
+        ResultColumn column3 = new ResultColumn();
+        
+        column1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
+        column1.setColumnIndex(1);
+        column1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        
+        column2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
+        column2.setColumnIndex(2);
+        column2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        
+        column3.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
+        column3.setColumnIndex(3);
+        column3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        
+        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+        columnCollection.add(column1);
+        columnCollection.add(column2);
+        columnCollection.add(column3);
+        
+        CompoundCriterion compoundCriterion = studyHelper.createCompoundCriterion1();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        
+        Query query = studyHelper.createQuery(compoundCriterion, columnCollection);
+        
+        QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+        
+        QueryResult queryResult = queryTranslator.execute();
+        assertNotNull(queryResult);
+    }
+    
+
+    
+    /**
+     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     */
+    public void setDao(CaIntegrator2DaoImpl caIntegrator2Dao) {
+        this.dao = caIntegrator2Dao;
+    }
+
+    /**
+     * @param resultHandler the resultHandler to set
+     */
+    public void setResultHandler(ResultHandlerImpl resultHandler) {
+        this.resultHandler = resultHandler;
+    }
 
 }

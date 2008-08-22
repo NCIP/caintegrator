@@ -85,34 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+
+import java.util.Set;
 
 /**
- * Handles results? (fix this comment later).
+ * 
  */
-public class ResultHandler {
+public interface ResultHandler {
 
-//    /**
-//     * Adds ResultColumns to the QueryResult object.
-//     * @param queryResult object to add ResultColumns to.
-//     */
-//    public void addColumns(QueryResult queryResult) {
-//        
-//    }
-//    
-//    /**
-//     * Creates QueryResult objects out of a list of ResultRows.
-//     * @param resultRows rows to turn into QueryResult's.
-//     * @return final result from the rows.
-//     */
-//    public QueryResult createResults(List<ResultRow> resultRows) {
-//        return null;
-//    }
-//    
-//    /**
-//     * Sorts the rows.
-//     * @param queryResult object to sort rows on.
-//     */
-//    public void sortRows(QueryResult queryResult) {
-//        
-//    }
+    /**
+     * Creates QueryResult objects out of a list of ResultRows.
+     * @param query the query to create the result for.
+     * @param resultRows rows to turn into QueryResult's.
+     * @return final result from the rows.
+     */
+    QueryResult createResults(Query query, Set<ResultRow> resultRows);
+
 }

@@ -85,9 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -95,11 +95,24 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Subject;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * 
@@ -111,11 +124,17 @@ public class StudyHelper {
     private AnnotationDefinition subjectAnnotationDefinition;
     private NumericPermissableValue permval1;
     private NumericPermissableValue permval2;
+    private StudySubscription studySubscription;
+    private Timepoint defaultTimepoint;
     
     @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
     public Study populateAndRetrieveStudy() {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
+        
+        studySubscription = new StudySubscription();
+        studySubscription.setStudy(myStudy);
+        
         sampleAnnotationDefinition = new AnnotationDefinition();
         sampleAnnotationDefinition.setDisplayName("SampleAnnotation");
         
@@ -124,6 +143,10 @@ public class StudyHelper {
         
         subjectAnnotationDefinition = new AnnotationDefinition();
         subjectAnnotationDefinition.setDisplayName("SubjectAnnotation");
+        
+        defaultTimepoint = new Timepoint();
+        defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
+        defaultTimepoint.setName("Default Timepoint");
         
         Collection<AnnotationDefinition> sampleDefinitions = new HashSet<AnnotationDefinition>();
         sampleDefinitions.add(sampleAnnotationDefinition);
@@ -139,6 +162,23 @@ public class StudyHelper {
         myStudy.setImageSeriesAnnotationCollection(imageSeriesDefinitions);
         myStudy.setSubjectAnnotationCollection(subjectDefinitions);
 
+        Subject subject1 = new Subject();
+        Subject subject2 = new Subject();
+        Subject subject3 = new Subject();
+        Subject subject4 = new Subject();
+        Subject subject5 = new Subject();
+        
+        Collection<Subject> subjectCollection = new HashSet<Subject>();
+        subjectCollection.add(subject1);
+        subjectCollection.add(subject2);
+        subjectCollection.add(subject3);
+        subjectCollection.add(subject4);
+        subjectCollection.add(subject5);
+        
+        SubjectList subjectList = new SubjectList();
+        subjectList.setSubjectCollection(subjectCollection);
+        subjectList.setSubscription(studySubscription);
+        
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment2 = new StudySubjectAssignment();
         StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
@@ -146,6 +186,8 @@ public class StudyHelper {
         StudySubjectAssignment studySubjectAssignment5 = new StudySubjectAssignment();
         
         NumericAnnotationValue numval1 = new NumericAnnotationValue();
+        NumericAnnotationValue numval1_2 = new NumericAnnotationValue();
+        NumericAnnotationValue numval1_3 = new NumericAnnotationValue();
         NumericAnnotationValue numval2 = new NumericAnnotationValue();
         NumericAnnotationValue numval3 = new NumericAnnotationValue();
         NumericAnnotationValue numval4 = new NumericAnnotationValue();
@@ -169,10 +211,16 @@ public class StudyHelper {
         Collection<AbstractPermissableValue> permissableValueCollection = new HashSet<AbstractPermissableValue>();
         permissableValueCollection.add(permval1);
         permissableValueCollection.add(permval2);
-        
+
 
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
         sampleAcquisition1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        SampleAcquisition sampleAcquisition1_2 = new SampleAcquisition();
+        sampleAcquisition1_2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        SampleAcquisition sampleAcquisition1_3 = new SampleAcquisition();
+        sampleAcquisition1_3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         
         SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
         sampleAcquisition2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
@@ -209,30 +257,35 @@ public class StudyHelper {
         subjectAnnotation1.setAnnotationValue(subjnumval1);
         subjnumval1.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation1.setStudySubjectAssignment(studySubjectAssignment1);
+        studySubjectAssignment1.setSubject(subject1);
         
         SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
         subjnumval2.setNumericValue(2.0);
         subjectAnnotation2.setAnnotationValue(subjnumval2);
         subjnumval2.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation2.setStudySubjectAssignment(studySubjectAssignment2);
+        studySubjectAssignment2.setSubject(subject2);
         
         SubjectAnnotation subjectAnnotation3 = new SubjectAnnotation();
         subjnumval3.setNumericValue(3.0);
         subjectAnnotation3.setAnnotationValue(subjnumval3);
         subjnumval3.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation3.setStudySubjectAssignment(studySubjectAssignment3);
+        studySubjectAssignment3.setSubject(subject3);
         
         SubjectAnnotation subjectAnnotation4 = new SubjectAnnotation();
         subjnumval4.setNumericValue(4.0);
         subjectAnnotation4.setAnnotationValue(subjnumval4);
         subjnumval4.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation4.setStudySubjectAssignment(studySubjectAssignment4);
+        studySubjectAssignment4.setSubject(subject4);
         
         SubjectAnnotation subjectAnnotation5 = new SubjectAnnotation();
         subjnumval5.setNumericValue(5.0);
         subjectAnnotation5.setAnnotationValue(subjnumval5);
         subjnumval5.setAnnotationDefinition(subjectAnnotationDefinition);
         subjectAnnotation5.setStudySubjectAssignment(studySubjectAssignment5);
+        studySubjectAssignment5.setSubject(subject5);
 
         Collection<SubjectAnnotation> subjectAnnotationCollection1 = new HashSet<SubjectAnnotation>();
         Collection<SubjectAnnotation> subjectAnnotationCollection2 = new HashSet<SubjectAnnotation>();
@@ -263,31 +316,48 @@ public class StudyHelper {
         numval1.setBoundedValue(permval1);
         sampleAcquisition1.getAnnotationCollection().add(numval1);
         sampleAcquisition1.setAssignment(studySubjectAssignment1);
+        sampleAcquisition1.setTimepoint(defaultTimepoint);
+        
+        // Add 2 more samples to Study Subject Assignment 1
+        numval1_2.setAnnotationDefinition(sampleAnnotationDefinition);
+        numval1_2.setNumericValue(100.0);
+        sampleAcquisition1_2.getAnnotationCollection().add(numval1_2);
+        sampleAcquisition1_2.setAssignment(studySubjectAssignment1);
+        sampleAcquisition1_2.setTimepoint(defaultTimepoint);
+        
+        numval1_3.setAnnotationDefinition(sampleAnnotationDefinition);
+        numval1_3.setNumericValue(1.0);
+        sampleAcquisition1_3.getAnnotationCollection().add(numval1_3);
+        sampleAcquisition1_3.setAssignment(studySubjectAssignment1);
+        sampleAcquisition1_3.setTimepoint(defaultTimepoint);
         
         numval2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval2.setNumericValue(11.0);
         numval2.setBoundedValue(permval1);
         sampleAcquisition2.getAnnotationCollection().add(numval2);
         sampleAcquisition2.setAssignment(studySubjectAssignment2);
+        sampleAcquisition2.setTimepoint(defaultTimepoint);
         
         numval3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval3.setNumericValue(12.0);
         numval3.setBoundedValue(permval1);
         sampleAcquisition3.getAnnotationCollection().add(numval3);
         sampleAcquisition3.setAssignment(studySubjectAssignment3);
+        sampleAcquisition3.setTimepoint(defaultTimepoint);
         
         numval4.setAnnotationDefinition(sampleAnnotationDefinition);
         numval4.setNumericValue(13.0);
         numval4.setBoundedValue(permval2);
         sampleAcquisition4.getAnnotationCollection().add(numval4);
         sampleAcquisition4.setAssignment(studySubjectAssignment4);
+        sampleAcquisition4.setTimepoint(defaultTimepoint);
         
         numval5.setAnnotationDefinition(sampleAnnotationDefinition);
         numval5.setNumericValue(14.0);
         numval5.setBoundedValue(permval2);
         sampleAcquisition5.getAnnotationCollection().add(numval5);
         sampleAcquisition5.setAssignment(studySubjectAssignment5);
-        
+        sampleAcquisition5.setTimepoint(defaultTimepoint);
 
         Collection<SampleAcquisition> saCollection1 = new HashSet<SampleAcquisition>();
         Collection<SampleAcquisition> saCollection2 = new HashSet<SampleAcquisition>();
@@ -296,6 +366,8 @@ public class StudyHelper {
         Collection<SampleAcquisition> saCollection5 = new HashSet<SampleAcquisition>();
         
         saCollection1.add(sampleAcquisition1);
+        saCollection1.add(sampleAcquisition1_2);
+        saCollection1.add(sampleAcquisition1_3);
         saCollection2.add(sampleAcquisition2);
         saCollection3.add(sampleAcquisition3);
         saCollection4.add(sampleAcquisition4);
@@ -339,19 +411,23 @@ public class StudyHelper {
         ImageSeriesAcquisition isAcquisition1 = new ImageSeriesAcquisition();
         isAcquisition1.setSeriesCollection(isCollection1);
         isAcquisition1.setAssignment(studySubjectAssignment1);
+        isAcquisition1.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition2 = new ImageSeriesAcquisition();
         isAcquisition2.setSeriesCollection(isCollection2);
         isAcquisition2.setAssignment(studySubjectAssignment2);
+        isAcquisition2.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition3 = new ImageSeriesAcquisition();
         isAcquisition3.setSeriesCollection(isCollection3);
         isAcquisition3.setAssignment(studySubjectAssignment3);
+        isAcquisition3.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition4 = new ImageSeriesAcquisition();
         isAcquisition4.setSeriesCollection(isCollection4);
         isAcquisition4.setAssignment(studySubjectAssignment4);
+        isAcquisition4.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition5 = new ImageSeriesAcquisition();
         isAcquisition5.setSeriesCollection(isCollection5);
         isAcquisition5.setAssignment(studySubjectAssignment5);
-        
+        isAcquisition5.setTimepoint(defaultTimepoint);
         
         Collection<ImageSeriesAcquisition> isaCollection1 = new HashSet<ImageSeriesAcquisition>();
         Collection<ImageSeriesAcquisition> isaCollection2 = new HashSet<ImageSeriesAcquisition>();
@@ -367,7 +443,7 @@ public class StudyHelper {
         
 
         
-        
+        // studySubjectAssignment1 is unique to the others in that he has 3 sample acquisitions in his collection
         studySubjectAssignment1.setSampleAcquisitionCollection(saCollection1);
         studySubjectAssignment1.setImageStudyCollection(isaCollection1);
         studySubjectAssignment1.setSubjectAnnotationCollection(subjectAnnotationCollection1);
@@ -397,6 +473,76 @@ public class StudyHelper {
         
         myStudy.setAssignmentCollection(ssaCollection);
         return myStudy;
+    }
+    
+    public CompoundCriterion createCompoundCriterion1() {    
+        // Sample criterion (will return 3 Subjects: #1,#2,#3), but it will return #1 twice.
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericValue(12.0);
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL.getValue());
+        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        
+        // Image Series criterion (Will return 1 subject: #3)
+        StringComparisonCriterion criterion1 = new StringComparisonCriterion();
+        criterion1.setStringValue("string3");
+        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        
+        // Clinical criterion (Will return 4 subjects: #2, #3, #4, #5)
+        NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
+        criterion2.setNumericValue(2.0);
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
+
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion.getCriterionCollection().add(criterion);
+        compoundCriterion.getCriterionCollection().add(criterion1);
+        compoundCriterion.getCriterionCollection().add(criterion2);
+        return compoundCriterion;
+    }
+    
+    
+    public CompoundCriterion createCompoundCriterion2() {
+        // Sample criterion (will return 2 Subjects: #1, #5)
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericValue(13.0);
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
+        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        
+        // Image Series criterion (Will return 1 subject: #3)
+        StringComparisonCriterion criterion1 = new StringComparisonCriterion();
+        criterion1.setStringValue("string3");
+        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        
+        // Clinical criterion (Will return 3 subjects: #1, #2, #3)
+        NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
+        criterion2.setNumericValue(4.0);
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS.getValue());
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
+        
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion.getCriterionCollection().add(criterion);
+        compoundCriterion.getCriterionCollection().add(criterion1);
+        compoundCriterion.getCriterionCollection().add(criterion2);
+        return compoundCriterion;
+    }
+    
+    public Query createQuery(CompoundCriterion compoundCriterion, Collection<ResultColumn> columnCollection) {
+        Query query = new Query();
+        query.setName("Test Query");
+        query.setCompoundCriterion(compoundCriterion);
+        query.setSubscription(studySubscription);
+        query.setColumnCollection(columnCollection);
+        return query;
     }
 
     
@@ -429,6 +575,14 @@ public class StudyHelper {
     }
     public void setPermval2(NumericPermissableValue permval2) {
         this.permval2 = permval2;
+    }
+
+    public Timepoint getDefaultTimepoint() {
+        return defaultTimepoint;
+    }
+
+    public void setDefaultTimepoint(Timepoint defaultTimepoint) {
+        this.defaultTimepoint = defaultTimepoint;
     }
     
     

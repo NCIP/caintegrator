@@ -95,13 +95,21 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 public class QueryManagementServiceImpl implements QueryManagementService {
     
     private CaIntegrator2Dao dao;
+    private ResultHandler resultHandler;
+
+    /**
+     * @param resultHandler the resultHandler to set
+     */
+    public void setResultHandler(ResultHandler resultHandler) {
+        this.resultHandler = resultHandler;
+    }
 
     /**
      * {@inheritDoc}
      */
     public QueryResult execute(Query query) {
-        
-        return null;
+        QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+        return queryTranslator.execute();
     }
 
     /**
@@ -112,13 +120,9 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     }
 
     /**
-     * Sets the DAO.
-     * @param dao - dao to set.
+     * @param dao the dao to set.
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
-
-
-
 }

@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -113,6 +114,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findMatchingSubjectsCalled;
     public boolean getGeneCalled;
     public boolean getPlatformCalled;
+    private StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+    private Timepoint timepoint = new Timepoint();
 
     public UserWorkspace getWorkspace(String username) {
         return new UserWorkspace();
@@ -132,6 +135,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingSubjectsCalled = false;
         getGeneCalled = false;
         getPlatformCalled = false;
+        studySubjectAssignment.setId(Long.valueOf(1));
+        timepoint.setId(Long.valueOf(1));
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -166,7 +171,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      */
     public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingImageSeriesCalled = true;
-        return Collections.emptyList();
+        ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
+        imageSeriesAcquisition.setAssignment(studySubjectAssignment);
+        imageSeriesAcquisition.setTimepoint(timepoint);
+        List<ImageSeriesAcquisition> isaList = new ArrayList<ImageSeriesAcquisition>();
+        isaList.add(imageSeriesAcquisition);
+        return isaList;
     }
 
     /**
@@ -174,7 +184,12 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      */
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingSamplesCalled = true;
-        return Collections.emptyList();
+        SampleAcquisition sampleAcquisition = new SampleAcquisition();
+        sampleAcquisition.setTimepoint(timepoint);
+        sampleAcquisition.setAssignment(studySubjectAssignment);
+        List<SampleAcquisition> saList = new ArrayList<SampleAcquisition>();
+        saList.add(sampleAcquisition);
+        return saList;
     }
 
     /**
@@ -182,7 +197,9 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      */
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingSubjectsCalled = true;
-        return Collections.emptyList();
+        List<StudySubjectAssignment> ssaList = new ArrayList<StudySubjectAssignment>();
+        ssaList.add(studySubjectAssignment);
+        return ssaList;
     }
 
     /**
