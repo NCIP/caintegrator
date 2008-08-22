@@ -119,7 +119,13 @@ class SampleMappingHelper {
             while ((values = reader.readNext()) != null) {
                 String subjectIdentifier = values[0];
                 String sampleName = values[1];
-                map(getSubjectAssignment(subjectIdentifier), getSample(sampleName));
+                
+                StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
+                
+                // map is throwing an exception.  This is a temporary check for null to prevent it.
+                if (!(sja == null)) {
+                     map(sja, getSample(sampleName));
+                }
             }
         } catch (IOException e) {
             throw new IllegalStateException("Unexpected IO error", e);
