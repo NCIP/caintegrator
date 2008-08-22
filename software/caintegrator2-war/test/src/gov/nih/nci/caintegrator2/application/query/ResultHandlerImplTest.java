@@ -100,7 +100,7 @@ public class ResultHandlerImplTest {
 
     @Test
     public void testCreateResults() {
-        ResultHandlerImpl resultHandler = new ResultHandlerImpl();
+        ResultHandler resultHandler = new ResultHandlerImpl();
         Query query = new Query();
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         assertNotNull(resultHandler.createResults(query, resultRows));
