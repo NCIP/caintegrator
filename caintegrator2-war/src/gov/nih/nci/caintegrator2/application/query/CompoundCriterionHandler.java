@@ -118,7 +118,7 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @param newRows - new rows to validate.
      * @return - combination of rows.
      */
-    public Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, Set<ResultRow> newRows) {
+    private Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         if (compoundCriterion.getBooleanOperator() != null) {
            BooleanOperatorEnum booleanOperator = BooleanOperatorEnum.
@@ -156,13 +156,13 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
                 } else if (abstractCriterion instanceof CompoundCriterion) {
                     handlers.add(CompoundCriterionHandler.create((CompoundCriterion) abstractCriterion));
                 } else {
-                    // TODO : Probably could throw an error or something if the type of AbstractCriterion is unknown.
-                    return null;
+                    throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
             }
             return new CompoundCriterionHandler(handlers, compoundCriterion);
         } else {
-            return null;
+            // No handlers so we return a CompoundCriterionHandler with a null value.
+            return new CompoundCriterionHandler(null, compoundCriterion);
         }
     }
 
@@ -190,18 +190,8 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
     private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows, 
                                    Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
-        // First figure out which has less rows, so we can loop through that one for efficiency.
-           Set<ResultRow> lessRows;
-           Set<ResultRow> moreRows;
-           if (currentValidRows.size() <= newRows.size()) {
-               lessRows = currentValidRows;
-               moreRows = newRows;
-           } else {
-               lessRows = newRows;
-               moreRows = currentValidRows;
-           }
-           for (ResultRow row : lessRows) {
-               if (Cai2Util.resultRowSetContainsResultRow(moreRows, row)) {
+           for (ResultRow row : newRows) {
+               if (Cai2Util.resultRowSetContainsResultRow(currentValidRows, row)) {
                    combinedResults.add(row);
                }
            }
@@ -211,18 +201,8 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
     private Set<ResultRow> combineResultsForOrOperator(Set<ResultRow> currentValidRows,
                                              Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
-        // First figure out which has less rows, so we can loop through that one for efficiency.
-        Set<ResultRow> lessRows;
-        Set<ResultRow> moreRows;
-        if (currentValidRows.size() <= newRows.size()) {
-            lessRows = currentValidRows;
-            moreRows = newRows;
-        } else {
-            lessRows = newRows;
-            moreRows = currentValidRows;
-        }
-        combinedResults.addAll(moreRows);
-        for (ResultRow row : lessRows) {
+        combinedResults.addAll(currentValidRows);
+        for (ResultRow row : newRows) {
             if (!Cai2Util.resultRowSetContainsResultRow(combinedResults, row)) {
                 combinedResults.add(row);
             }

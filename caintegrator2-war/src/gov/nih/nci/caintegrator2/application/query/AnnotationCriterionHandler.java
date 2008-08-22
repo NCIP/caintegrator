@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -130,10 +129,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
                 row.setImageSeriesAcquisition(imageSeriesAcquisition);
                 // Make sure to set the StudySubjectAssignment, this is the only way to compare rows.
                 row.setSubjectAssignment(imageSeriesAcquisition.getAssignment());
-                // Only add the row if it doesn't already exist.
-                if (!Cai2Util.resultRowSetContainsResultRow(resultRows, row)) {
-                    resultRows.add(row);
-                }
+                resultRows.add(row);
             }
             break;
         case SAMPLE:
@@ -143,10 +139,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
                 row.setSampleAcquisition(sampleAcquisition);
                 // Make sure to set the StudySubjectAssignment, this is the only way to compare rows.
                 row.setSubjectAssignment(sampleAcquisition.getAssignment());
-                // Only add the row if it doesn't already exist.
-                if (!Cai2Util.resultRowSetContainsResultRow(resultRows, row)) {
-                    resultRows.add(row);
-                }
+                resultRows.add(row);
             }
             break;
         case SUBJECT:
@@ -154,10 +147,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
                     : dao.findMatchingSubjects(abstractAnnotationCriterion, study)) {
                 ResultRow row = new ResultRow();
                 row.setSubjectAssignment(studySubjectAssignment);
-                // Only add the row if it doesn't already exist.
-                if (!Cai2Util.resultRowSetContainsResultRow(resultRows, row)) {
-                    resultRows.add(row);
-                }
+                resultRows.add(row);
             }
             break;
         default:

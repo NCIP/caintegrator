@@ -106,6 +106,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -190,10 +191,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
             return new ArrayList<ImageSeriesAcquisition>();
         } else {
-            Criteria imageSeriesAcquisitionCrit = getHibernateTemplate().
-                                                  getSessionFactory().
-                                                  getCurrentSession().
-                                                  createCriteria(ImageSeriesAcquisition.class);
+            Criteria imageSeriesAcquisitionCrit = getCurrentSession().createCriteria(ImageSeriesAcquisition.class);
             createAnnotationValuesCriteria(criterion, 
                                            imageSeriesAcquisitionCrit.createCriteria("seriesCollection"), 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
@@ -209,10 +207,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
             return new ArrayList<SampleAcquisition>();
         } else {
-            Criteria sampleAcquisitionCrit = getHibernateTemplate().
-                                             getSessionFactory().
-                                             getCurrentSession().
-                                             createCriteria(SampleAcquisition.class);
+            Criteria sampleAcquisitionCrit = getCurrentSession().createCriteria(SampleAcquisition.class);
             createAnnotationValuesCriteria(criterion, 
                                            sampleAcquisitionCrit, 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
@@ -228,10 +223,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT.getValue())) {
             return new ArrayList<StudySubjectAssignment>();
         } else {
-            Criteria studySubjectAssignmentCrit = getHibernateTemplate().
-                                             getSessionFactory().
-                                             getCurrentSession().
-                                             createCriteria(StudySubjectAssignment.class);
+            Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
             createAnnotationValuesCriteria(criterion, 
                                            studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
                                            ANNOTATION_VALUE_ASSOCIATION);
@@ -293,6 +285,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         } else {
             return (Platform) values.get(0);
         }
+    }
+    
+    private Session getCurrentSession() {
+        return getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
     
 }

@@ -85,47 +85,54 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+
+import java.util.Set;
+
 
 /**
- * Translates a Query to it's various compound criterion... (fix this comment later).
+ * Translates a Query to it's various compound criterion, retrieves the results after
+ * running the criterion against the database, and fills in the columns.
  */
 public class QueryTranslator {
 
-//    private ResultHandler resultHandler;
-//    private Query query;
-//    private CaIntegrator2Dao dao;
-//    
-//    /**
-//     * Todo.
-//     * @param query - todo.
-//     * @param dao - todo.
-//     */
-//    public QueryTranslator(Query query, CaIntegrator2Dao dao) {
-//        this.query = query;
-//        this.dao = dao;
-//    }
-//    /**
-//     * Adds ResultColumns to the QueryResult object.
-//     * @param queryResult object to add ResultColumns to.
-//     */
-//    public void addColumns(QueryResult queryResult) {
-//        
-//    }
-//    
-//    /**
-//     * Executes a query and returns the QueryResult.
-//     * @return result of the query execution.
-//     */
-//    public QueryResult execute() {
-//        
-//        return null;
-//    }
-//
-//    /**
-//     * Sets the value of the ResultHandler object.
-//     * @param resultHandler - value to set.
-//     */
-//    public void setResultHandler(ResultHandler resultHandler) {
-//        this.resultHandler = resultHandler;
-//    }
+    private final ResultHandler resultHandler;
+    private final Query query;
+    private final CaIntegrator2Dao dao;
+    
+    /**
+     * Only constructor for a QueryTranslator takes a query and a dao.
+     * @param query - Query to translate.
+     * @param dao - Dao to read from database.
+     * @param resultHandler - ResultHandler to handle the results.
+     */
+    public QueryTranslator(Query query, CaIntegrator2Dao dao, ResultHandler resultHandler) {
+        this.query = query;
+        this.dao = dao;
+        this.resultHandler = resultHandler;
+    }
+    
+    /**
+     * Executes a query and returns the QueryResult.
+     * @return result of the query execution.
+     */
+    public QueryResult execute() {
+        if (query.getCompoundCriterion() != null) {
+            CompoundCriterionHandler compoundCriterionHandler = 
+                CompoundCriterionHandler.create(query.getCompoundCriterion());
+            
+            Set<ResultRow> resultsCollection = 
+                compoundCriterionHandler.getMatches(dao, query.getSubscription().getStudy());
+            
+            
+            return resultHandler.createResults(query, resultsCollection);
+        } else {
+            // Not sure what to return here if there's no compoundCriterion.
+            // Maybe it should be EVERY row since there's no criterion?
+            return new QueryResult();
+        }
+    }
 }

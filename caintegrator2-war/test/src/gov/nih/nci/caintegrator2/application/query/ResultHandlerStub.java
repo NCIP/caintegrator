@@ -85,60 +85,29 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
-import java.util.HashSet;
+import java.util.Set;
 
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * 
+ */
+public class ResultHandlerStub implements ResultHandler {
 
-
-public class CompoundCriterionHandlerTest {
-
+    public boolean createResultsCalled = false;
     
-    @Test
-    public void testGetMatches() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();       
-        
-        Study study = new Study();
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion2 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion3 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
-        
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion3);
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        
-        compoundCriterionHandler.getMatches(daoStub, study);
-        assertTrue(daoStub.findMatchingSamplesCalled);
-        assertTrue(daoStub.findMatchingImageSeriesCalled);
-        assertTrue(daoStub.findMatchingSubjectsCalled);
+    public void clear() {
+        createResultsCalled = false;
     }
-
+    /**
+     * {@inheritDoc}
+     */
+    public QueryResult createResults(Query query, Set<ResultRow> resultRows) {
+        // TODO Auto-generated method stub
+        createResultsCalled = true;
+        return null;
+    }
 
 }
