@@ -8,9 +8,7 @@
             <ref local="daoStub"/>
         </property>
     </bean>
-    
-    <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl"/>
-    
+       
     <bean id="resultHandlerStub" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerStub"/>
     
     <bean id="daoStub" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
