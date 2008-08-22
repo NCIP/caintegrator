@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -106,9 +106,11 @@ public class QueryManagementServiceImplTest {
     @Before
     public void setup() {
         dao = new CaIntegrator2DaoStub();
+        ResultHandler resultHandler = new ResultHandlerStub();
         dao.clear();
         queryManagementService = new QueryManagementServiceImpl();
         queryManagementService.setDao(dao);
+        queryManagementService.setResultHandler(resultHandler);
         query = new Query();
         //query.setId(Long.valueOf(1));
     }
@@ -118,7 +120,7 @@ public class QueryManagementServiceImplTest {
     public void testExecute() {
         // test createQuery method.
         QueryResult queryResult = queryManagementService.execute(query);
-        assertEquals(queryResult, null);
+        assertNull(queryResult.getRowCollection());
     }
 
     

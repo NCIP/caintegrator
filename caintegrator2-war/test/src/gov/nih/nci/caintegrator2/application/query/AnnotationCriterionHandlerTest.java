@@ -102,7 +102,7 @@ public class AnnotationCriterionHandlerTest {
     @Test
     public void testGetMatches() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
         daoStub.clear();       
         
         Study study = new Study();

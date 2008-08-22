@@ -85,60 +85,129 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.Collection;
 import java.util.HashSet;
-
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.Set;
 
 
-public class CompoundCriterionHandlerTest {
-
+/**
+ * Creates the actual results for the Query and Subjects that passed the criterion checks.
+ */
+@SuppressWarnings({"PMD" })
+public class ResultHandlerImpl implements ResultHandler {
     
-    @Test
-    public void testGetMatches() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();       
+    /**
+     * {@inheritDoc}
+     */
+    public QueryResult createResults(Query query, Set<ResultRow> resultRows) {
+        QueryResult queryResult = new QueryResult();
+        queryResult.setRowCollection(resultRows);
+        queryResult.setQuery(query);
+        addColumns(queryResult);
+        sortRows(queryResult);
+        return queryResult;
+    }
+    
+
+    /**
+     * This function assumes a QueryResult with no columns, just rows, and it fills in the columns
+     * and values for each row.
+     * @param queryResult - object that contains the rows.
+     */
+    private void addColumns(QueryResult queryResult) {
+        Query query = queryResult.getQuery();
+        Collection<ResultColumn> columns = query.getColumnCollection();
+        Collection<ResultRow> resultRows = queryResult.getRowCollection();
         
-        Study study = new Study();
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion2 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        AbstractAnnotationCriterion abstractAnnotationCriterion3 = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        compoundCriterion.getCriterionCollection().add(abstractAnnotationCriterion);
-        
-        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
-        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion2);
-        compoundCriterion2.getCriterionCollection().add(abstractAnnotationCriterion3);
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        
-        compoundCriterionHandler.getMatches(daoStub, study);
-        assertTrue(daoStub.findMatchingSamplesCalled);
-        assertTrue(daoStub.findMatchingImageSeriesCalled);
-        assertTrue(daoStub.findMatchingSubjectsCalled);
+        for (ResultRow row : resultRows) {
+            Collection<ResultValue> valueCollection = new HashSet<ResultValue>();
+            for (ResultColumn column : columns) {
+                EntityTypeEnum entityType = EntityTypeEnum.getByValue(column.getEntityType());
+                ResultValue resultValue = new ResultValue();
+                resultValue.setColumn(column);
+                resultValue.setValue(null);
+                valueCollection.add(resultValue);
+                switch(entityType) {
+                case IMAGESERIES:
+                    resultValue.setValue(handleImageSeriesRow(row, column));
+                break;
+                case SAMPLE:
+                    resultValue.setValue(handleSampleRow(row, column));
+                break;
+                case SUBJECT:
+                    resultValue.setValue(handleSubjectRow(row, column));
+                break;
+                default:
+                    // Might need to throw some sort of error in this case?
+                    resultValue.setValue(null);
+                break;
+                
+                }
+            }
+            row.setValueCollection(valueCollection);
+        }
     }
 
 
+    private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
+        ImageSeriesAcquisition imageSeriesAcquisition = row.getImageSeriesAcquisition();
+        if (imageSeriesAcquisition != null) {
+            for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
+                for (AbstractAnnotationValue annotationValue : imageSeries.getAnnotationCollection()) {
+                    if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
+                        return annotationValue;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    private AbstractAnnotationValue handleSampleRow(ResultRow row, ResultColumn column) {
+        SampleAcquisition sampleAcquisition = row.getSampleAcquisition();
+        if (sampleAcquisition != null) {
+            for (AbstractAnnotationValue annotationValue : sampleAcquisition.getAnnotationCollection()) {
+                if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
+                    return annotationValue;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private AbstractAnnotationValue handleSubjectRow(ResultRow row, ResultColumn column) {
+        StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
+        if (studySubjectAssignment != null) {
+            for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
+                if (subjectAnnotation.getAnnotationValue().
+                                      getAnnotationDefinition().
+                                      equals(column.getAnnotationDefinition())) {
+                    return subjectAnnotation.getAnnotationValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Unsure of how to sort this, do this later.
+     * @param queryResult
+     */
+    private void sortRows(QueryResult queryResult) {
+        // TODO : finish sorting.
+        queryResult.getRowCollection();
+    }
 }
