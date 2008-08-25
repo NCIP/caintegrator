@@ -133,6 +133,11 @@
         <action name="saveImagingSource" class="saveImagingSourceAction">
             <result type="tiles">editStudy</result>
         </action>
+          
+        <action name="editQuery" class="editQueryAction">
+            <result type="tiles">editQuery</result>
+        </action>
+        
     </package>
     
 </struts>

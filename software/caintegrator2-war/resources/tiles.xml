@@ -71,4 +71,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editSampleMapping_tile.jsp" />
     </definition>
 
+    <!-- Query Management pages -->
+    <definition name="editQuery" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
+    </definition>
+
 </tiles-definitions>
