@@ -85,11 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Edits a study (new or existing).
  */
-public class EditQueryAction extends AbstractQueryAction {
+public class EditQueryAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
 
