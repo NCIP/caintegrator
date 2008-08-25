@@ -105,7 +105,6 @@ public class ResultHandlerStub implements ResultHandler {
      * {@inheritDoc}
      */
     public QueryResult createResults(Query query, Set<ResultRow> resultRows) {
-        // TODO Auto-generated method stub
         createResultsCalled = true;
         return null;
     }
