@@ -644,6 +644,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			/>
 	</target>
 
+    <target name="test:integration:caintegrator2-war" depends="init">
+        <ant inheritAll="false" inheritRefs="false" antfile="${caintegrator2-war.build.file}" 
+            target="test:integration" 
+            dir="${caintegrator2-war.base.dir}"
+            />
+    </target>
+
 	<target name="static-analysis:all" description="calls all sub-project static-analysis targets"
 		depends="
 		static-analysis:caintegrator2-war
