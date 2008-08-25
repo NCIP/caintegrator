@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -98,20 +100,25 @@ import com.opensymphony.xwork2.Action;
 public class EditQueryActionTest {
 
     private EditQueryAction editQueryAction;
-
+    
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", EditQueryActionTest.class); 
         editQueryAction = (EditQueryAction) context.getBean("editQueryAction");
     }
 
+//    @Test
+//    public void testPrepare() {
+//        editQueryAction.prepare();
+//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+//        editQueryAction.getModel().setId(1L);
+//        editQueryAction.prepare();
+//        studyConfiguration = editQueryAction.getStudyConfiguration();
+//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+//    }
+    
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, editQueryAction.execute());
-    }
-
-    @Test
-    public void testGetModel() {
-        assertNotNull(editQueryAction.getModel());
     }
 }
