@@ -1,0 +1,10 @@
+1. Fix the following issues on ‘Deploy Study ‘
+Fix Saving Genomic source 
+Click on Mapping without filename gives errors
+Sample Mapping not working 
+Project Id instead of Protocol Id for NCIA service
+Once Image annotations are saved, screen goes to clinical save screen 
+
+2. NCIA access – Do ISPY like implementation for image and image series (JP to look into that)
+3. TimePoint Issue: Will to work on creating a prototype and discuss the solution. 
+4. BDA – Postponed for a later time. 
