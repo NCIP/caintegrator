@@ -171,6 +171,12 @@
         </property>
     </bean>
 
+    <!-- Query Management actions -->
+    
+    <bean id="editQueryAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.query.EditQueryAction">
+    </bean>   
 
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
