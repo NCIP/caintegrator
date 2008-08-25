@@ -413,6 +413,13 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
     
+    <target name="test:integration:master.build" >
+        <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
+            xml.output.dir="${caintegrator2.war.target.dir}/junit" 
+            instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
+            classpath="${caintegrator2.war.test.dependencies.path}" />
+    </target>
+    
     <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,ivy:setup-test">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
              <fileset  dir="${caintegrator2.war.java.classes.dir}">
@@ -602,7 +609,12 @@
         test:junit-report-integration">
         <fail if="junit.failure" message="There were JUnit failures." />
     </target>
-
+    
+    <target name="test:integration:from-master" depends="test:integration:master.build,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+ 
     <target name="test:junit-report">
         <mkdir dir="${reports.dir}/junit/unit" />
         <junitreport todir="${reports.dir}/junit/unit">
