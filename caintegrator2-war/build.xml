@@ -414,8 +414,8 @@
     </target>
     
     <target name="test:integration:master.build" depends="test:compile:caintegrator2.war.test.classes,
-        hibernate.cfg.xml.test,
-        test:instrument:integration:caintegrator2.war">
+        test:instrument:integration:caintegrator2.war,
+        hibernate.cfg.xml.test">
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
