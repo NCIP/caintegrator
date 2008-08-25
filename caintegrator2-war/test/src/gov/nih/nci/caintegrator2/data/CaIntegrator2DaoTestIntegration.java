@@ -207,7 +207,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         List<SampleAcquisition> matchingSamples = dao.findMatchingSamples(criterion, study);
         
-        assertEquals(3, matchingSamples.size());
+        assertEquals(4, matchingSamples.size());
         
         // Try a different number combination to test a different operator
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
@@ -217,7 +217,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         List<SampleAcquisition> matchingSamples2 = dao.findMatchingSamples(criterion2, study);
         
-        assertEquals(2, matchingSamples2.size());
+        assertEquals(3, matchingSamples2.size());
         
         // Try a selectedValueCriterion now (should be size 3)
         SelectedValueCriterion criterion3 = new SelectedValueCriterion();
