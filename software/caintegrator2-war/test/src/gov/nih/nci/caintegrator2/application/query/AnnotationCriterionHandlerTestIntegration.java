@@ -116,7 +116,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
         criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(criterion);
-        assertEquals(3,annotationCriterionHandler.getMatches(dao, study).size());
+        assertEquals(4,annotationCriterionHandler.getMatches(dao, study).size());
     }
     
     /**
