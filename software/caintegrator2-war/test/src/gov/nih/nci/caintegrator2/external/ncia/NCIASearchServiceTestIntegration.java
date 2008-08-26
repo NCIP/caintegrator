@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.ncia.domain.Image;
@@ -126,9 +128,10 @@ public class NCIASearchServiceTestIntegration {
         
         List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
         assertNotNull(images);
-            
-        boolean checkSeriesInstanceUID = searchService.validate(series.get(0).getSeriesInstanceUID());
-        assertNotNull(checkSeriesInstanceUID);
+
+        assertTrue(searchService.validate(series.get(0).getSeriesInstanceUID()));
+        
+        assertFalse(searchService.validate("INVALID SERIES UID"));
     }
 
 }
