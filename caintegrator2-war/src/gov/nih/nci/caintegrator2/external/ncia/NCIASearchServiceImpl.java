@@ -193,6 +193,33 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         return imageSeriesCollection;
     }
     
+       
+    /**
+     * {@inheritDoc}
+     */
+    
+    public boolean validate(String seriesInstanceUID) throws ConnectionException {
+        boolean x = false;
+        List<Series> imageSeriesCollection = new ArrayList<Series>();
+        CQLQuery query = new CQLQuery();
+        Object target = new Object();
+        target.setName("gov.nih.nci.ncia.domain.Series");
+        Attribute symbolAttribute = new Attribute("seriesInstanceUID", Predicate.EQUAL_TO, seriesInstanceUID);
+        target.setAttribute(symbolAttribute);
+        query.setTarget(target);
+        CQLQueryResults result = connectAndExecuteQuery(query);
+        if (result != null) {
+            CQLQueryResultsIterator iter2 = new CQLQueryResultsIterator(result);
+            while (iter2.hasNext()) {
+                Series obj = (Series) iter2.next();
+                imageSeriesCollection.add(obj);
+            }
+           } 
+        x = imageSeriesCollection.contains(seriesInstanceUID); 
+        return x;
+    }
+    
+      
     private CQLQuery retrieveQuery(String targetName, Association assoc) {
         final CQLQuery fcqlq = new CQLQuery();
         Object target = new Object();
