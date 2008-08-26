@@ -106,8 +106,6 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
     private static class ServiceClientStub implements NCIASearchService {
         
         public boolean validate(String seriesInstanceUID) throws ConnectionException {
-            List<Series> series = new ArrayList<Series>();
-            series.contains(seriesInstanceUID);
             return true;
             
         }
