@@ -199,7 +199,6 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
      */
     
     public boolean validate(String seriesInstanceUID) throws ConnectionException {
-        boolean x = false;
         List<Series> imageSeriesCollection = new ArrayList<Series>();
         CQLQuery query = new CQLQuery();
         Object target = new Object();
@@ -214,9 +213,8 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
                 Series obj = (Series) iter2.next();
                 imageSeriesCollection.add(obj);
             }
-           } 
-        x = imageSeriesCollection.contains(seriesInstanceUID); 
-        return x;
+        } 
+        return (imageSeriesCollection.size() > 0);
     }
     
       
