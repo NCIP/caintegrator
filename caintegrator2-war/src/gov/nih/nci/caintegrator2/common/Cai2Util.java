@@ -120,13 +120,15 @@ public final class Cai2Util {
      * This needs to be tweaked, not sure if the algorithm is correct.
      * @param rowSet - set of rows.
      * @param rowToTest - ResultRow item to test if it exists in set.
+     * @param defaultTimepoint - the default timepoint for the study.
      * @return true/false value.
      */
     public static boolean resultRowSetContainsResultRow(Set<ResultRow> rowSet, 
-                                                        ResultRow rowToTest) {
+                                                        ResultRow rowToTest,
+                                                        Timepoint defaultTimepoint) {
         for (ResultRow curRow : rowSet) {
             if (curRow.getSubjectAssignment().equals(rowToTest.getSubjectAssignment())
-                    && timepointsMatchForRows(rowToTest, curRow) 
+                    && timepointsMatchForRows(rowToTest, curRow, defaultTimepoint) 
                     && sameEntitiesMatch(rowToTest, curRow)) {
                     addExtraDataToRow(rowToTest, curRow);
                     return true;
@@ -155,8 +157,9 @@ public final class Cai2Util {
      * @param curRow
      * @return
      */
-    private static boolean timepointsMatchForRows(ResultRow rowToTest, ResultRow curRow) {
-        if (retrieveTimepointFromRow(rowToTest).equals(retrieveTimepointFromRow(curRow)) 
+    private static boolean timepointsMatchForRows(ResultRow rowToTest, ResultRow curRow, Timepoint defaultTimepoint) {
+        if (retrieveTimepointFromRow(rowToTest, defaultTimepoint).
+                equals(retrieveTimepointFromRow(curRow, defaultTimepoint)) 
              || isClinicalOnlyRow(rowToTest) || isClinicalOnlyRow(curRow)) {
             return true;
         }
@@ -213,13 +216,16 @@ public final class Cai2Util {
         return true;
     }
     
-    private static Timepoint retrieveTimepointFromRow(ResultRow row) {
-        Timepoint timepoint = new Timepoint();
+    private static Timepoint retrieveTimepointFromRow(ResultRow row, Timepoint defaultTimepoint) {
+        Timepoint timepoint = null;
         if (row.getImageSeriesAcquisition() != null) {
             timepoint = row.getImageSeriesAcquisition().getTimepoint();
         } else if (row.getSampleAcquisition() != null) {
             timepoint = row.getSampleAcquisition().getTimepoint();
         } 
+        if (timepoint == null) {
+            timepoint = defaultTimepoint;
+        }
         return timepoint;
     }
 }

@@ -89,6 +89,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -121,7 +122,7 @@ public class Cai2UtilTest {
         ResultRow rowToTest = new ResultRow();
         rowToTest.setSubjectAssignment(subjectAssignment);
         
-        assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest));
+        assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest, new Timepoint()));
         
     }
 
