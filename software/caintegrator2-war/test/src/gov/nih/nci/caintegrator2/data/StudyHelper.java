@@ -147,6 +147,7 @@ public class StudyHelper {
         defaultTimepoint = new Timepoint();
         defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
         defaultTimepoint.setName("Default Timepoint");
+        myStudy.setDefaultTimepoint(defaultTimepoint);
         
         Collection<AnnotationDefinition> sampleDefinitions = new HashSet<AnnotationDefinition>();
         sampleDefinitions.add(sampleAnnotationDefinition);
@@ -316,48 +317,48 @@ public class StudyHelper {
         numval1.setBoundedValue(permval1);
         sampleAcquisition1.getAnnotationCollection().add(numval1);
         sampleAcquisition1.setAssignment(studySubjectAssignment1);
-        sampleAcquisition1.setTimepoint(defaultTimepoint);
+//        sampleAcquisition1.setTimepoint(defaultTimepoint);
         
         // Add 2 more samples to Study Subject Assignment 1
         numval1_2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1_2.setNumericValue(100.0);
         sampleAcquisition1_2.getAnnotationCollection().add(numval1_2);
         sampleAcquisition1_2.setAssignment(studySubjectAssignment1);
-        sampleAcquisition1_2.setTimepoint(defaultTimepoint);
+//        sampleAcquisition1_2.setTimepoint(defaultTimepoint);
         
         numval1_3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1_3.setNumericValue(1.0);
         sampleAcquisition1_3.getAnnotationCollection().add(numval1_3);
         sampleAcquisition1_3.setAssignment(studySubjectAssignment1);
-        sampleAcquisition1_3.setTimepoint(defaultTimepoint);
+//        sampleAcquisition1_3.setTimepoint(defaultTimepoint);
         
         numval2.setAnnotationDefinition(sampleAnnotationDefinition);
         numval2.setNumericValue(11.0);
         numval2.setBoundedValue(permval1);
         sampleAcquisition2.getAnnotationCollection().add(numval2);
         sampleAcquisition2.setAssignment(studySubjectAssignment2);
-        sampleAcquisition2.setTimepoint(defaultTimepoint);
+//        sampleAcquisition2.setTimepoint(defaultTimepoint);
         
         numval3.setAnnotationDefinition(sampleAnnotationDefinition);
         numval3.setNumericValue(12.0);
         numval3.setBoundedValue(permval1);
         sampleAcquisition3.getAnnotationCollection().add(numval3);
         sampleAcquisition3.setAssignment(studySubjectAssignment3);
-        sampleAcquisition3.setTimepoint(defaultTimepoint);
+//        sampleAcquisition3.setTimepoint(defaultTimepoint);
         
         numval4.setAnnotationDefinition(sampleAnnotationDefinition);
         numval4.setNumericValue(13.0);
         numval4.setBoundedValue(permval2);
         sampleAcquisition4.getAnnotationCollection().add(numval4);
         sampleAcquisition4.setAssignment(studySubjectAssignment4);
-        sampleAcquisition4.setTimepoint(defaultTimepoint);
+//        sampleAcquisition4.setTimepoint(defaultTimepoint);
         
         numval5.setAnnotationDefinition(sampleAnnotationDefinition);
         numval5.setNumericValue(14.0);
         numval5.setBoundedValue(permval2);
         sampleAcquisition5.getAnnotationCollection().add(numval5);
         sampleAcquisition5.setAssignment(studySubjectAssignment5);
-        sampleAcquisition5.setTimepoint(defaultTimepoint);
+//        sampleAcquisition5.setTimepoint(defaultTimepoint);
 
         Collection<SampleAcquisition> saCollection1 = new HashSet<SampleAcquisition>();
         Collection<SampleAcquisition> saCollection2 = new HashSet<SampleAcquisition>();
@@ -411,23 +412,23 @@ public class StudyHelper {
         ImageSeriesAcquisition isAcquisition1 = new ImageSeriesAcquisition();
         isAcquisition1.setSeriesCollection(isCollection1);
         isAcquisition1.setAssignment(studySubjectAssignment1);
-        isAcquisition1.setTimepoint(defaultTimepoint);
+//        isAcquisition1.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition2 = new ImageSeriesAcquisition();
         isAcquisition2.setSeriesCollection(isCollection2);
         isAcquisition2.setAssignment(studySubjectAssignment2);
-        isAcquisition2.setTimepoint(defaultTimepoint);
+//        isAcquisition2.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition3 = new ImageSeriesAcquisition();
         isAcquisition3.setSeriesCollection(isCollection3);
         isAcquisition3.setAssignment(studySubjectAssignment3);
-        isAcquisition3.setTimepoint(defaultTimepoint);
+//        isAcquisition3.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition4 = new ImageSeriesAcquisition();
         isAcquisition4.setSeriesCollection(isCollection4);
         isAcquisition4.setAssignment(studySubjectAssignment4);
-        isAcquisition4.setTimepoint(defaultTimepoint);
+//        isAcquisition4.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition5 = new ImageSeriesAcquisition();
         isAcquisition5.setSeriesCollection(isCollection5);
         isAcquisition5.setAssignment(studySubjectAssignment5);
-        isAcquisition5.setTimepoint(defaultTimepoint);
+//        isAcquisition5.setTimepoint(defaultTimepoint);
         
         Collection<ImageSeriesAcquisition> isaCollection1 = new HashSet<ImageSeriesAcquisition>();
         Collection<ImageSeriesAcquisition> isaCollection2 = new HashSet<ImageSeriesAcquisition>();
