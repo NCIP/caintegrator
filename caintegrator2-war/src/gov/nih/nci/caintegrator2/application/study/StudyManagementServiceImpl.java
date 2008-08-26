@@ -164,6 +164,18 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         if (study.getTimepointCollection() == null) {
             study.setTimepointCollection(new HashSet<Timepoint>());
         }
+        if (study.getDefaultTimepoint() == null) {
+            Timepoint defaultTimepoint = new Timepoint();
+            String studyTitle = "";
+            if (study.getShortTitleText() != null) {
+                studyTitle = study.getShortTitleText();
+            } else if (study.getLongTitleText() != null) {
+                studyTitle = study.getLongTitleText();
+            }
+            defaultTimepoint.setDescription("Default Timepoint For Study '" + studyTitle + "'");
+            defaultTimepoint.setName("Default");
+            study.setDefaultTimepoint(defaultTimepoint);
+        }
     }
 
     /**
