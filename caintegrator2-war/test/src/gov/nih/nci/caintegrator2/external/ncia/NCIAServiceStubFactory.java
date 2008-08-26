@@ -105,7 +105,12 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
     }
     private static class ServiceClientStub implements NCIASearchService {
         
-
+        public boolean validate(String seriesInstanceUID) throws ConnectionException {
+            List<Series> series = new ArrayList<Series>();
+            series.contains(seriesInstanceUID);
+            return true;
+            
+        }
         public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException {
             Image i = new Image();
             i.setId(123);
