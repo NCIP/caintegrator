@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.HashSet;
 
@@ -111,6 +112,7 @@ public class CompoundCriterionHandlerTest {
         daoStub.clear();       
         
         Study study = new Study();
+        study.setDefaultTimepoint(new Timepoint());
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
