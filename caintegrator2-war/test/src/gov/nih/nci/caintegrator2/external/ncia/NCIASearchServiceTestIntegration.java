@@ -126,7 +126,9 @@ public class NCIASearchServiceTestIntegration {
         
         List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
         assertNotNull(images);
-    
+            
+        boolean checkSeriesInstanceUID = searchService.validate(series.get(0).getSeriesInstanceUID());
+        assertNotNull(checkSeriesInstanceUID);
     }
 
 }
