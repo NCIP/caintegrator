@@ -138,5 +138,11 @@ public interface NCIASearchService {
      */
     List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException;
     
-
+    /**
+     * 
+     * @param seriesInstanceUID seriesInstanceUID sent to see whether the UID is present or not 
+     * @return true or false
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    boolean validate(String seriesInstanceUID) throws ConnectionException;
 }
