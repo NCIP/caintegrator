@@ -214,7 +214,7 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
                 imageSeriesCollection.add(obj);
             }
         } 
-        return (imageSeriesCollection.size() > 0);
+        return (!imageSeriesCollection.isEmpty());
     }
     
       
