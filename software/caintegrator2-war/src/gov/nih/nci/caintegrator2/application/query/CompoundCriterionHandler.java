@@ -113,39 +113,7 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
         this.compoundCriterion = compoundCriterion;
     }
     
-    /**
-     * Combines the results of the rows.
-     * @param currentValidRows - current rows that are valid.
-     * @param newRows - new rows to validate.
-     * @param defaultTimepoint - the default timepoint for the study.
-     * @return - combination of rows.
-     */
-    private Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, 
-                                          Set<ResultRow> newRows,
-                                          Timepoint defaultTimepoint) {
-        Set<ResultRow> combinedResults = new HashSet<ResultRow>();
-        if (compoundCriterion.getBooleanOperator() != null) {
-           BooleanOperatorEnum booleanOperator = BooleanOperatorEnum.
-                               getByValue(compoundCriterion.getBooleanOperator());
-           switch(booleanOperator) {
-           case AND:
-               combinedResults = combineResultsForAndOperator(currentValidRows, newRows, defaultTimepoint);
-           break;
-           case OR:
-               combinedResults = combineResultsForOrOperator(currentValidRows, newRows, defaultTimepoint);
-           break;
-           default:
-               // TODO : figure out what to actually do in this case?
-               combinedResults.addAll(currentValidRows);
-               combinedResults.addAll(newRows);
-           break;
-           }
-           
-        }
-        return combinedResults;
-    }
 
-    
     /**
      * Creates the CompoundCriterionHandler based on the given CompoundCriterion.
      * @param compoundCriterion - compound criterion to create from.
@@ -190,6 +158,38 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return allValidRows;
     }
     
+    /**
+     * Combines the results of the rows.
+     * @param currentValidRows - current rows that are valid.
+     * @param newRows - new rows to validate.
+     * @param defaultTimepoint - the default timepoint for the study.
+     * @return - combination of rows.
+     */
+    private Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, 
+                                          Set<ResultRow> newRows,
+                                          Timepoint defaultTimepoint) {
+        Set<ResultRow> combinedResults = new HashSet<ResultRow>();
+        if (compoundCriterion.getBooleanOperator() != null) {
+           BooleanOperatorEnum booleanOperator = BooleanOperatorEnum.
+                               getByValue(compoundCriterion.getBooleanOperator());
+           switch(booleanOperator) {
+           case AND:
+               combinedResults = combineResultsForAndOperator(currentValidRows, newRows, defaultTimepoint);
+           break;
+           case OR:
+               combinedResults = combineResultsForOrOperator(currentValidRows, newRows, defaultTimepoint);
+           break;
+           default:
+               // TODO : figure out what to actually do in this case?
+               combinedResults.addAll(currentValidRows);
+               combinedResults.addAll(newRows);
+           break;
+           }
+           
+        }
+        return combinedResults;
+    }
+
     
     private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows, 
                                    Set<ResultRow> newRows,
