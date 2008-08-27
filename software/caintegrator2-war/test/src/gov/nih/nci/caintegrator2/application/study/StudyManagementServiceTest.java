@@ -121,7 +121,7 @@ public class StudyManagementServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
         studyManagementService = (StudyManagementService) context.getBean("studyManagementService"); 
 		daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
         daoStub.clear();                
