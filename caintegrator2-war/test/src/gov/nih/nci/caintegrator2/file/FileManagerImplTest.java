@@ -25,7 +25,7 @@ public class FileManagerImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", StudyManagementServiceTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
         fileManager = (FileManager) context.getBean("fileManager"); 
         configurationHelperStub = (ConfigurationHelperStub) context.getBean("configurationHelperStub");
         configurationHelperStub.clear();                

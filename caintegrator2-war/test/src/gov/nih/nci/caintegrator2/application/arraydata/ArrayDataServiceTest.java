@@ -23,7 +23,7 @@ public class ArrayDataServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("service-test-config.xml", ArrayDataServiceTest.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext("arraydata-test-config.xml", ArrayDataServiceTest.class); 
         service = (ArrayDataService) context.getBean("arrayDataService"); 
         daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
         daoStub.clear();                
