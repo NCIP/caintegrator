@@ -85,123 +85,149 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import static org.junit.Assert.*;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 /**
- * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
+ * 
  */
-public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
-
-    private CaIntegrator2DaoImpl dao;
-    private ResultHandlerImpl resultHandler;
-    
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/query-test-integration.xml"};
-    }
+public class ResultRowComparatorTest {
 
     @Test
-    @SuppressWarnings({"PMD"})
-    public void testExecute() {
-        StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
-        dao.save(study);
+    public void testSort() {
+        ResultRow row1 = new ResultRow();
+        row1.setId(Long.valueOf(1));
+        ResultRow row2 = new ResultRow();
+        row2.setId(Long.valueOf(2));
+        ResultRow row3 = new ResultRow();
+        row3.setId(Long.valueOf(3));
+        ResultRow row4 = new ResultRow();
+        row4.setId(Long.valueOf(4));
+        ResultRow row5 = new ResultRow();
+        row5.setId(Long.valueOf(5));
         
-        ResultColumn column1 = new ResultColumn();
-        ResultColumn column2 = new ResultColumn();
-        ResultColumn column3 = new ResultColumn();
+        ResultColumn col1 = new ResultColumn();
+        ResultColumn col2 = new ResultColumn();
         
-        column1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
-        column1.setColumnIndex(1);
-        column1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        Collection<ResultRow> rowCollection = new HashSet<ResultRow>();
+        rowCollection.add(row1);
+        ResultValue row1col1Value = new ResultValue();
+        ResultValue row1col2Value = new ResultValue();
+        Collection <ResultValue> row1ValueCollection = new HashSet<ResultValue>();
+        row1.setValueCollection(row1ValueCollection);
         
-        column2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        column2.setColumnIndex(2);
-        column2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
-        column2.setSortOrder(2);
-        column2.setSortType(SortTypeEnum.ASCENDING.getValue());
+        rowCollection.add(row2);
+        ResultValue row2col1Value = new ResultValue();
+        ResultValue row2col2Value = new ResultValue();
+        Collection <ResultValue> row2ValueCollection = new HashSet<ResultValue>();
+        row2.setValueCollection(row2ValueCollection);
+       
+        rowCollection.add(row3);
+        ResultValue row3col1Value = new ResultValue();
+        ResultValue row3col2Value = new ResultValue();
+        Collection <ResultValue> row3ValueCollection = new HashSet<ResultValue>();
+        row3.setValueCollection(row3ValueCollection);
         
-        column3.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
-        column3.setColumnIndex(3);
-        column3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        column3.setSortOrder(1);
-        column3.setSortType(SortTypeEnum.DESCENDING.getValue());
+        rowCollection.add(row4);
+        ResultValue row4col1Value = new ResultValue();
+        ResultValue row4col2Value = new ResultValue();
+        Collection <ResultValue> row4ValueCollection = new HashSet<ResultValue>();
+        row4.setValueCollection(row4ValueCollection);
         
-        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
-        columnCollection.add(column1);
-        columnCollection.add(column2);
-        columnCollection.add(column3);
+        rowCollection.add(row5);
+        ResultValue row5col1Value = new ResultValue();
+        ResultValue row5col2Value = new ResultValue();
+        Collection <ResultValue> row5ValueCollection = new HashSet<ResultValue>();
+        row5.setValueCollection(row5ValueCollection);
         
-        CompoundCriterion compoundCriterion = studyHelper.createCompoundCriterion1();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        NumericAnnotationValue numVal1 = new NumericAnnotationValue();
+        numVal1.setNumericValue(1.0);
+        NumericAnnotationValue numVal2 = new NumericAnnotationValue();
+        numVal2.setNumericValue(5.0);
+        NumericAnnotationValue numVal3 = new NumericAnnotationValue();
+        numVal3.setNumericValue(2.0);
+        NumericAnnotationValue numVal4 = new NumericAnnotationValue();
+        numVal4.setNumericValue(5.0);
+        NumericAnnotationValue numVal5 = new NumericAnnotationValue();
+        numVal5.setNumericValue(1.0);
         
-        Query query = studyHelper.createQuery(compoundCriterion, columnCollection);
+        StringAnnotationValue stringVal1 = new StringAnnotationValue();
+//        stringVal1.setStringValue("value 1");
+        StringAnnotationValue stringVal2 = new StringAnnotationValue();
+        stringVal2.setStringValue("value 2");
+        StringAnnotationValue stringVal3 = new StringAnnotationValue();
+        stringVal3.setStringValue("value 3");
+        StringAnnotationValue stringVal4 = new StringAnnotationValue();
+        stringVal4.setStringValue("value 4");
+        StringAnnotationValue stringVal5 = new StringAnnotationValue();
+        stringVal5.setStringValue("value 5");
         
-        QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+        row1col1Value.setColumn(col1);
+        row1col1Value.setValue(numVal1);
+        row1col2Value.setColumn(col2);
+        row1col2Value.setValue(stringVal1);
+        row1ValueCollection.add(row1col1Value);
+        row1ValueCollection.add(row1col2Value);
         
-        QueryResult queryResult = queryTranslator.execute();
-        assertEquals(6, queryResult.getRowCollection().size());
-        for (ResultRow row : queryResult.getRowCollection()) {
-            assertNotNull(row.getRowIndex());
-            if (row.getRowIndex() == 5) {
-                // Subject should be 1 because these were sorted Descending
-                for (SubjectAnnotation value : row.getSubjectAssignment().getSubjectAnnotationCollection()) {
-                    NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getAnnotationValue();
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
-                }
-                // Sample should be 1.0 because samples are sorted Ascending
-                for (AbstractAnnotationValue value : row.getSampleAcquisition().getAnnotationCollection()) {
-                    NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
-                }
-            }
-            
-            if (row.getRowIndex() == 6) {
-                // Subject should be 1 because these were sorted Descending
-                for (SubjectAnnotation value : row.getSubjectAssignment().getSubjectAnnotationCollection()) {
-                    NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getAnnotationValue();
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
-                }
-                // Sample should be 10.0 because samples are sorted Ascending
-                for (AbstractAnnotationValue value : row.getSampleAcquisition().getAnnotationCollection()) {
-                    NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-                    assertEquals(Double.valueOf(10.0), numericValue.getNumericValue());
-                }
-            }
-        }
+        row2col1Value.setColumn(col1);
+        row2col1Value.setValue(numVal2);
+        row2col2Value.setColumn(col2);
+        row2col2Value.setValue(stringVal2);
+        row2ValueCollection.add(row2col1Value);
+        row2ValueCollection.add(row2col2Value);
+        
+        row3col1Value.setColumn(col1);
+        row3col1Value.setValue(numVal3);
+        row3col2Value.setColumn(col2);
+        row3col2Value.setValue(stringVal3);
+        row3ValueCollection.add(row3col1Value);
+        row3ValueCollection.add(row3col2Value);
+        
+        row4col1Value.setColumn(col1);
+        row4col1Value.setValue(numVal4);
+        row4col2Value.setColumn(col2);
+        row4col2Value.setValue(stringVal4);
+        row4ValueCollection.add(row4col1Value);
+        row4ValueCollection.add(row4col2Value);
+        
+        row5col1Value.setColumn(col1);
+        row5col1Value.setValue(numVal5);
+        row5col2Value.setColumn(col2);
+        row5col2Value.setValue(stringVal5);
+        row5ValueCollection.add(row5col1Value);
+        row5ValueCollection.add(row5col2Value);
+        
+        
+        col1.setSortOrder(1);
+        col1.setSortType(SortTypeEnum.ASCENDING.getValue());
+        
+        col2.setSortOrder(2);
+        col2.setSortType(SortTypeEnum.DESCENDING.getValue());
+        
+        List <ResultColumn> sortColumns = new ArrayList<ResultColumn>();
+        sortColumns.add(col1);
+        sortColumns.add(col2);
+        
+        List <ResultRow> sortedRows = ResultRowComparator.sort(rowCollection, sortColumns);
+        assertEquals(Long.valueOf(5), sortedRows.get(0).getId());
+        assertEquals(Long.valueOf(1), sortedRows.get(1).getId());
+        assertEquals(Long.valueOf(3), sortedRows.get(2).getId());
+        assertEquals(Long.valueOf(4), sortedRows.get(3).getId());
+        assertEquals(Long.valueOf(2), sortedRows.get(4).getId());
+        
     }
-    
 
-    
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setDao(CaIntegrator2DaoImpl caIntegrator2Dao) {
-        this.dao = caIntegrator2Dao;
-    }
 
-    /**
-     * @param resultHandler the resultHandler to set
-     */
-    public void setResultHandler(ResultHandlerImpl resultHandler) {
-        this.resultHandler = resultHandler;
-    }
 
 }

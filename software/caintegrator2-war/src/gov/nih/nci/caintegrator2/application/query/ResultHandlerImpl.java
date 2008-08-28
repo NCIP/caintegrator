@@ -98,15 +98,18 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 /**
  * Creates the actual results for the Query and Subjects that passed the criterion checks.
  */
-@SuppressWarnings({"PMD" })
+@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // see addColumns()
 public class ResultHandlerImpl implements ResultHandler {
     
     /**
@@ -120,18 +123,18 @@ public class ResultHandlerImpl implements ResultHandler {
         sortRows(queryResult);
         return queryResult;
     }
-    
 
     /**
      * This function assumes a QueryResult with no columns, just rows, and it fills in the columns
      * and values for each row.
      * @param queryResult - object that contains the rows.
      */
+    // Have to iterate over many collections to get values.
+    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) 
     private void addColumns(QueryResult queryResult) {
         Query query = queryResult.getQuery();
         Collection<ResultColumn> columns = query.getColumnCollection();
         Collection<ResultRow> resultRows = queryResult.getRowCollection();
-        
         for (ResultRow row : resultRows) {
             Collection<ResultValue> valueCollection = new HashSet<ResultValue>();
             for (ResultColumn column : columns) {
@@ -154,14 +157,13 @@ public class ResultHandlerImpl implements ResultHandler {
                     // Might need to throw some sort of error in this case?
                     resultValue.setValue(null);
                 break;
-                
                 }
             }
             row.setValueCollection(valueCollection);
         }
     }
 
-
+    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Have to iterate over many collections to get values.
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
         ImageSeriesAcquisition imageSeriesAcquisition = row.getImageSeriesAcquisition();
         if (imageSeriesAcquisition != null
@@ -206,11 +208,23 @@ public class ResultHandlerImpl implements ResultHandler {
     }
 
     /**
-     * Unsure of how to sort this, do this later.
-     * @param queryResult
+     * Sort the rows in the Query Result object.
+     * @param queryResult - Object that needs the results to be sorted.
      */
     private void sortRows(QueryResult queryResult) {
-        // TODO : finish sorting.
-        queryResult.getRowCollection();
+        Collection<ResultColumn> columnsCollection = queryResult.getQuery().getColumnCollection();
+        if (!columnsCollection.isEmpty()) {
+            Collection <ResultRow> rowsCollection = queryResult.getRowCollection();
+            List<ResultColumn> sortColumns = new ArrayList<ResultColumn>();
+            for (ResultColumn column : columnsCollection) {
+                if (column.getSortOrder() != null) {
+                    sortColumns.add(column);
+                }
+            }
+            if (!sortColumns.isEmpty()) { // Sort only if there's a specified sort column.
+                Collections.sort(sortColumns, new ResultColumnComparator());
+                queryResult.setRowCollection(ResultRowComparator.sort(rowsCollection, sortColumns));
+            }
+        }
     }
 }
