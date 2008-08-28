@@ -1,0 +1,11 @@
+
+Features/Bugs
+	Anand recommended features/bugs (Data sources as tab, various errors at Deploy Study)
+	UI improvement 
+	caI2 team to discuss and come-up with a plan for (a) demo, (b) first release and (c) roadmap 
+ICR face-to-face
+	Demo – speaker information and time to be determined. Shine to work with Juli/Elaine 
+	Meetings with external stake-holders. Anand mentioned about getting requirements/data types from these users. Shine to work with         Elaine to coordinate time. 
+Image view
+	Simple implementation for representative image (like ISPY)
+	JP to find out if existing NCIA has options for image series and feasibility of image series movie player
