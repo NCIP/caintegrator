@@ -85,11 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -123,9 +126,12 @@ public class QueryTranslator {
         if (query.getCompoundCriterion() != null) {
             CompoundCriterionHandler compoundCriterionHandler = 
                 CompoundCriterionHandler.create(query.getCompoundCriterion());
-            
+            Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
+            for (ResultColumn col : query.getColumnCollection()) {
+                entityTypesInQuery.add(EntityTypeEnum.getByValue(col.getEntityType()));
+            }
             Set<ResultRow> resultsCollection = 
-                compoundCriterionHandler.getMatches(dao, query.getSubscription().getStudy());
+                compoundCriterionHandler.getMatches(dao, query.getSubscription().getStudy(), entityTypesInQuery);
             
             
             return resultHandler.createResults(query, resultsCollection);

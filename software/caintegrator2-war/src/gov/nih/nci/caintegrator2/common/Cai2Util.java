@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -120,112 +119,18 @@ public final class Cai2Util {
      * This needs to be tweaked, not sure if the algorithm is correct.
      * @param rowSet - set of rows.
      * @param rowToTest - ResultRow item to test if it exists in set.
-     * @param defaultTimepoint - the default timepoint for the study.
      * @return true/false value.
      */
     public static boolean resultRowSetContainsResultRow(Set<ResultRow> rowSet, 
-                                                        ResultRow rowToTest,
-                                                        Timepoint defaultTimepoint) {
+                                                        ResultRow rowToTest) {
         for (ResultRow curRow : rowSet) {
-            if (curRow.getSubjectAssignment().equals(rowToTest.getSubjectAssignment())
-                    && timepointsMatchForRows(rowToTest, curRow, defaultTimepoint) 
-                    && sameEntitiesMatch(rowToTest, curRow)) {
-                    addExtraDataToRow(rowToTest, curRow);
+            if (curRow.getSubjectAssignment() == rowToTest.getSubjectAssignment()
+                    && curRow.getImageSeriesAcquisition() == rowToTest.getImageSeriesAcquisition()
+                    && curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition()) {
                     return true;
                 }
             }
         return false;
     }
 
-    /**
-     * If the rowToTest has more info than the row already in the set,
-     * then we need to add in that extra data.
-     * @param rowToTest
-     * @param curRow
-     */
-    private static void addExtraDataToRow(ResultRow rowToTest, ResultRow curRow) {
-        if (isClinicalOnlyRow(curRow) && !isClinicalOnlyRow(rowToTest)) {
-            curRow.setImageSeriesAcquisition(rowToTest.getImageSeriesAcquisition());
-            curRow.setSampleAcquisition(rowToTest.getSampleAcquisition());
-        }
-    }
-
-    /**
-     * This tests to see if the timepoints match for image series and genomic to see if they belong
-     * together.  It does assume that we ignore timepoints for clinical annotations.
-     * @param rowToTest
-     * @param curRow
-     * @return
-     */
-    private static boolean timepointsMatchForRows(ResultRow rowToTest, ResultRow curRow, Timepoint defaultTimepoint) {
-        if (retrieveTimepointFromRow(rowToTest, defaultTimepoint).
-                equals(retrieveTimepointFromRow(curRow, defaultTimepoint)) 
-             || isClinicalOnlyRow(rowToTest) || isClinicalOnlyRow(curRow)) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * The only time a timepoint wouldn't exist for a row is if it has no image seriesAcquisition and
-     * no sampleAcquisition, so essentially it is just clinical data.
-     * @param row - row to test.
-     * @return true/false value.
-     */
-    private static boolean isClinicalOnlyRow(ResultRow row) {
-       if (row.getImageSeriesAcquisition() == null && row.getSampleAcquisition() == null) {
-           return true;
-       }
-       return false;
-    }
-    
-    private static boolean sameEntitiesMatch(ResultRow rowToTest, ResultRow curRow) {
-        if (sameImageSeries(rowToTest, curRow) && sameSample(rowToTest, curRow)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param rowToTest
-     * @param curRow
-     */
-    private static boolean sameSample(ResultRow rowToTest, ResultRow curRow) {
-        if (rowToTest.getSampleAcquisition() != null
-            && curRow.getSampleAcquisition() != null) {
-            if (rowToTest.getSampleAcquisition().equals(curRow.getSampleAcquisition())) {
-                return true;
-            } 
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @param rowToTest
-     * @param curRow
-     */
-    private static boolean sameImageSeries(ResultRow rowToTest, ResultRow curRow) {
-        if (rowToTest.getImageSeriesAcquisition() != null 
-            && curRow.getImageSeriesAcquisition() != null) {
-            if (rowToTest.getImageSeriesAcquisition().equals(curRow.getImageSeriesAcquisition())) {
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
-    
-    private static Timepoint retrieveTimepointFromRow(ResultRow row, Timepoint defaultTimepoint) {
-        Timepoint timepoint = null;
-        if (row.getImageSeriesAcquisition() != null) {
-            timepoint = row.getImageSeriesAcquisition().getTimepoint();
-        } else if (row.getSampleAcquisition() != null) {
-            timepoint = row.getSampleAcquisition().getTimepoint();
-        } 
-        if (timepoint == null) {
-            timepoint = defaultTimepoint;
-        }
-        return timepoint;
-    }
 }

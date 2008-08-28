@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,7 +119,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     @SuppressWarnings({ "PMD.ExcessiveMethodLength" })   // switch statement and argument checking
-    public Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study) {
+    public Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
         EntityTypeEnum entityType = EntityTypeEnum.getByValue(abstractAnnotationCriterion.getEntityType());
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
@@ -126,20 +127,30 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
             for (ImageSeriesAcquisition imageSeriesAcquisition 
                     : dao.findMatchingImageSeries(abstractAnnotationCriterion, study)) {
                 ResultRow row = new ResultRow();
+                StudySubjectAssignment studySubjectAssignment = imageSeriesAcquisition.getAssignment();
                 row.setImageSeriesAcquisition(imageSeriesAcquisition);
-                // Make sure to set the StudySubjectAssignment, this is the only way to compare rows.
-                row.setSubjectAssignment(imageSeriesAcquisition.getAssignment());
-                resultRows.add(row);
+                row.setSubjectAssignment(studySubjectAssignment);
+                if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
+                    Timepoint imageSeriesTimepoint = imageSeriesAcquisition.getTimepoint();
+                    addSampleRows(resultRows, row, studySubjectAssignment, imageSeriesTimepoint);
+                } else {
+                    resultRows.add(row);
+                }
             }
             break;
         case SAMPLE:
             for (SampleAcquisition sampleAcquisition 
                     : dao.findMatchingSamples(abstractAnnotationCriterion, study)) {
                 ResultRow row = new ResultRow();
+                StudySubjectAssignment studySubjectAssignment = sampleAcquisition.getAssignment();
                 row.setSampleAcquisition(sampleAcquisition);
-                // Make sure to set the StudySubjectAssignment, this is the only way to compare rows.
-                row.setSubjectAssignment(sampleAcquisition.getAssignment());
-                resultRows.add(row);
+                row.setSubjectAssignment(studySubjectAssignment);
+                if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
+                    Timepoint sampleAcquisitionTimepoint = sampleAcquisition.getTimepoint();
+                    addImageSeriesRows(resultRows, row, studySubjectAssignment, sampleAcquisitionTimepoint);
+                } else {
+                    resultRows.add(row);
+                }
             }
             break;
         case SUBJECT:
@@ -147,7 +158,21 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
                     : dao.findMatchingSubjects(abstractAnnotationCriterion, study)) {
                 ResultRow row = new ResultRow();
                 row.setSubjectAssignment(studySubjectAssignment);
-                resultRows.add(row);
+                if (entityTypes.contains(EntityTypeEnum.SAMPLE)) { // Sample
+                    Set <ResultRow> newResultRows = new HashSet<ResultRow>();
+                    addSampleRows(newResultRows, row, studySubjectAssignment, null);
+                    if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Sample + Image Series
+                        for (ResultRow newRow : newResultRows) {
+                            addImageSeriesRows(newResultRows, newRow, studySubjectAssignment, 
+                                               newRow.getSampleAcquisition().getTimepoint());
+                        }
+                    }
+                    resultRows.addAll(newResultRows);
+                } else if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Image Series w/o Sample
+                    addImageSeriesRows(resultRows, row, studySubjectAssignment, null);
+                } else { // No image series or rows, just clinical
+                    resultRows.add(row);
+                }
             }
             break;
         default:
@@ -156,4 +181,45 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
         }
         return resultRows;
     }
+
+
+    private void addSampleRows(Set<ResultRow> resultRows, 
+                               ResultRow row, 
+                               StudySubjectAssignment studySubjectAssignment,
+                               Timepoint timepoint) {
+        boolean samplesFound = false;
+        for (SampleAcquisition sampleAcquisition 
+                : studySubjectAssignment.getSampleAcquisitionCollection()) {
+            if (timepoint == null 
+                || timepoint == sampleAcquisition.getTimepoint()) {
+                ResultRow newRow = row;
+                newRow.setSampleAcquisition(sampleAcquisition);
+                resultRows.add(newRow);
+                samplesFound = true;
+            }
+        }
+        if (!samplesFound) {
+            resultRows.add(row);
+        }
+    }
+    
+    private void addImageSeriesRows(Set<ResultRow> resultRows, 
+                                        ResultRow row, 
+                                        StudySubjectAssignment studySubjectAssignment,
+                                        Timepoint timepoint) {
+        boolean imageSeriesFound = false;
+        for (ImageSeriesAcquisition imageSeriesAcquisition : studySubjectAssignment.getImageStudyCollection()) {
+            if (timepoint == null 
+                || timepoint == imageSeriesAcquisition.getTimepoint()) {
+                ResultRow newRow = row;
+                newRow.setImageSeriesAcquisition(imageSeriesAcquisition);
+                resultRows.add(newRow);
+                imageSeriesFound = true;
+            }
+        }
+        if (!imageSeriesFound) {
+            resultRows.add(row);
+        }
+    }
+
 }
