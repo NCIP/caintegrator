@@ -164,7 +164,8 @@ public class ResultHandlerImpl implements ResultHandler {
 
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
         ImageSeriesAcquisition imageSeriesAcquisition = row.getImageSeriesAcquisition();
-        if (imageSeriesAcquisition != null) {
+        if (imageSeriesAcquisition != null
+                && imageSeriesAcquisition.getSeriesCollection() != null) {
             for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
                 for (AbstractAnnotationValue annotationValue : imageSeries.getAnnotationCollection()) {
                     if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
@@ -178,7 +179,8 @@ public class ResultHandlerImpl implements ResultHandler {
     
     private AbstractAnnotationValue handleSampleRow(ResultRow row, ResultColumn column) {
         SampleAcquisition sampleAcquisition = row.getSampleAcquisition();
-        if (sampleAcquisition != null) {
+        if (sampleAcquisition != null 
+                && sampleAcquisition.getAnnotationCollection() != null) {
             for (AbstractAnnotationValue annotationValue : sampleAcquisition.getAnnotationCollection()) {
                 if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
                     return annotationValue;
@@ -190,7 +192,8 @@ public class ResultHandlerImpl implements ResultHandler {
     
     private AbstractAnnotationValue handleSubjectRow(ResultRow row, ResultColumn column) {
         StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
-        if (studySubjectAssignment != null) {
+        if (studySubjectAssignment != null
+                && studySubjectAssignment.getSubjectAnnotationCollection() != null) {
             for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
                 if (subjectAnnotation.getAnnotationValue().
                                       getAnnotationDefinition().

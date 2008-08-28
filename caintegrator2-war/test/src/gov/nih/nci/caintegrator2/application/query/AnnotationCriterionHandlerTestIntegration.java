@@ -92,6 +92,8 @@ import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.HashSet;
+
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
@@ -116,7 +118,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
         criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(criterion);
-        assertEquals(4,annotationCriterionHandler.getMatches(dao, study).size());
+        assertEquals(4, annotationCriterionHandler.getMatches(dao, study, new HashSet<EntityTypeEnum>()).size());
     }
     
     /**

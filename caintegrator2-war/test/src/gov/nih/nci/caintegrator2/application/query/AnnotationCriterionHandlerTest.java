@@ -91,6 +91,8 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.HashSet;
+
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -109,17 +111,17 @@ public class AnnotationCriterionHandlerTest {
         AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(abstractAnnotationCriterion);
-        annotationCriterionHandler.getMatches(daoStub, study);
+        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        annotationCriterionHandler.getMatches(daoStub, study);
+        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        annotationCriterionHandler.getMatches(daoStub, study);
+        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
     }
 

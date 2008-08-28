@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -93,7 +94,6 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -142,16 +142,16 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study) {
+    Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
         boolean rowsRetrieved = false;
         Set<ResultRow> allValidRows = new HashSet<ResultRow>();
         for (AbstractCriterionHandler handler : handlers) {
-            Set<ResultRow> newRows = handler.getMatches(dao, study);
+            Set<ResultRow> newRows = handler.getMatches(dao, study, entityTypes);
             if (!rowsRetrieved) {
                 allValidRows = newRows;
                 rowsRetrieved = true;
             } else {
-                allValidRows = combineResults(allValidRows, newRows, study.getDefaultTimepoint());
+                allValidRows = combineResults(allValidRows, newRows);
             }
             
         }
@@ -166,18 +166,17 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @return - combination of rows.
      */
     private Set<ResultRow> combineResults(Set<ResultRow> currentValidRows, 
-                                          Set<ResultRow> newRows,
-                                          Timepoint defaultTimepoint) {
+                                          Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         if (compoundCriterion.getBooleanOperator() != null) {
            BooleanOperatorEnum booleanOperator = BooleanOperatorEnum.
                                getByValue(compoundCriterion.getBooleanOperator());
            switch(booleanOperator) {
            case AND:
-               combinedResults = combineResultsForAndOperator(currentValidRows, newRows, defaultTimepoint);
+               combinedResults = combineResultsForAndOperator(currentValidRows, newRows);
            break;
            case OR:
-               combinedResults = combineResultsForOrOperator(currentValidRows, newRows, defaultTimepoint);
+               combinedResults = combineResultsForOrOperator(currentValidRows, newRows);
            break;
            default:
                // TODO : figure out what to actually do in this case?
@@ -192,11 +191,10 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     
     private Set<ResultRow> combineResultsForAndOperator(Set<ResultRow> currentValidRows, 
-                                   Set<ResultRow> newRows,
-                                   Timepoint defaultTimepoint) {
+                                   Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
            for (ResultRow row : newRows) {
-               if (Cai2Util.resultRowSetContainsResultRow(currentValidRows, row, defaultTimepoint)) {
+               if (Cai2Util.resultRowSetContainsResultRow(currentValidRows, row)) {
                    combinedResults.add(row);
                }
            }
@@ -204,12 +202,11 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
     }
     
     private Set<ResultRow> combineResultsForOrOperator(Set<ResultRow> currentValidRows,
-                                             Set<ResultRow> newRows,
-                                             Timepoint defaultTimepoint) {
+                                             Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         combinedResults.addAll(currentValidRows);
         for (ResultRow row : newRows) {
-            if (!Cai2Util.resultRowSetContainsResultRow(combinedResults, row, defaultTimepoint)) {
+            if (!Cai2Util.resultRowSetContainsResultRow(combinedResults, row)) {
                 combinedResults.add(row);
             }
             
