@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -100,7 +101,8 @@ public abstract class AbstractCriterionHandler {
      * Gets all matches from the DAO.
      * @param dao object to use.
      * @param study object to use
+     * @param entityTypes entityTypes that are in this criterion to use.
      * @return set of ResultRows that match..
      */
-    abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study);
+    abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes);
 }

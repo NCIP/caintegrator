@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -124,6 +125,7 @@ public class QueryTranslatorTest {
         Query query = new Query();
         query.setCompoundCriterion(compoundCriterion);
         query.setSubscription(subscription);
+        query.setColumnCollection(new HashSet<ResultColumn>());
 
         QueryTranslator queryTranslator = new QueryTranslator(query, daoStub, resultHandlerStub);
         queryTranslator.execute();

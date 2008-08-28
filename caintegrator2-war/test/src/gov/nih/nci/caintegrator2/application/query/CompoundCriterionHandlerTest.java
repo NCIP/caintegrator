@@ -136,7 +136,7 @@ public class CompoundCriterionHandlerTest {
         CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
         
-        compoundCriterionHandler.getMatches(daoStub, study);
+        compoundCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         assertTrue(daoStub.findMatchingSubjectsCalled);

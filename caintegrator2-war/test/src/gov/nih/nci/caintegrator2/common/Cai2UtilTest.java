@@ -122,7 +122,7 @@ public class Cai2UtilTest {
         ResultRow rowToTest = new ResultRow();
         rowToTest.setSubjectAssignment(subjectAssignment);
         
-        assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest, new Timepoint()));
+        assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest));
         
     }
 
