@@ -117,7 +117,7 @@ public final class ResultRowComparator implements Comparator <ResultRow> {
     private final List <ResultColumn> sortColumns;
     
     /**
-     * Public constructor which takes in a list of columns to sort on.
+     * Private constructor which takes in a list of columns to sort on.
      * @param sortColumns Columns to sort the rows by.
      */
     private ResultRowComparator(List<ResultColumn> sortColumns) {
@@ -126,14 +126,17 @@ public final class ResultRowComparator implements Comparator <ResultRow> {
     
     /**
      * Static sort method that is a wrapper for Collections.sort().
-     * @param rowsToSort - rows to sort.
-     * @param sortColumns - Columns to sort the rows by. 
+     * @param rowsToSort Rows to sort.
+     * @param sortColumns Ordered list of columns to sort the rows by. 
      * @return List of rows that are sorted.
      */
     public static List<ResultRow> sort(Collection<ResultRow> rowsToSort, List<ResultColumn> sortColumns) {
-        // Turn it into a list so it can be sorted by Collections.sort() function.
+        for (ResultColumn col : sortColumns) {
+            if (col.getSortType() == null) {  // Check sort types and if not there assume it's ascending.
+                col.setSortType(SortTypeEnum.ASCENDING.getValue());
+            }
+        }
         List<ResultRow> rowsList = Arrays.asList(rowsToSort.toArray(new ResultRow[rowsToSort.size()]));
-        
         Collections.sort(rowsList, new ResultRowComparator(sortColumns));
         int rowNumber = 0;
         for (ResultRow row : rowsList) {
@@ -151,11 +154,10 @@ public final class ResultRowComparator implements Comparator <ResultRow> {
         ResultColumn currentColumn = sortColumnsIterator.next();
         ResultValue resultValue1 = getResultValueFromRowColumn(row1, currentColumn);
         ResultValue resultValue2 = getResultValueFromRowColumn(row2, currentColumn);
-        // Add checking here to make sure there's a sort type for the column, if not throw error.
         int order = compareResultValues(resultValue1, 
                                         resultValue2, 
                                         SortTypeEnum.getByValue(currentColumn.getSortType()));
-        if (order == 0 && sortColumnsIterator.hasNext()) {
+        if (order == 0 && sortColumnsIterator.hasNext()) { // Tie-breaker check, goes to next sort column
             List <ResultColumn> newColumns = new ArrayList<ResultColumn>();
             newColumns.addAll(sortColumns);
             List <ResultRow> newRows = new ArrayList<ResultRow>();
