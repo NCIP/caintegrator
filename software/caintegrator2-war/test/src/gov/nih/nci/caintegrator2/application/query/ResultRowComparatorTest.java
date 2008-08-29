@@ -163,6 +163,7 @@ public class ResultRowComparatorTest {
         numVal5.setNumericValue(1.0);
         
         StringAnnotationValue stringVal1 = new StringAnnotationValue();
+        // Commenting this out to make sure that null values are sorted properly. (Always lower)
 //        stringVal1.setStringValue("value 1");
         StringAnnotationValue stringVal2 = new StringAnnotationValue();
         stringVal2.setStringValue("value 2");
@@ -208,7 +209,6 @@ public class ResultRowComparatorTest {
         row5ValueCollection.add(row5col1Value);
         row5ValueCollection.add(row5col2Value);
         
-        
         col1.setSortOrder(1);
         col1.setSortType(SortTypeEnum.ASCENDING.getValue());
         
@@ -219,12 +219,26 @@ public class ResultRowComparatorTest {
         sortColumns.add(col1);
         sortColumns.add(col2);
         
+        // Teset1 is col1.sortType ascending, col2.sortType descending.
         List <ResultRow> sortedRows = ResultRowComparator.sort(rowCollection, sortColumns);
         assertEquals(Long.valueOf(5), sortedRows.get(0).getId());
         assertEquals(Long.valueOf(1), sortedRows.get(1).getId());
         assertEquals(Long.valueOf(3), sortedRows.get(2).getId());
         assertEquals(Long.valueOf(4), sortedRows.get(3).getId());
         assertEquals(Long.valueOf(2), sortedRows.get(4).getId());
+
+        // Test2 is col1.sortType null (should default to ascending), col2.sortType ascending.
+        col1.setSortType(null);
+        col2.setSortType(SortTypeEnum.ASCENDING.getValue());
+        assertNull(col1.getSortType());
+        List <ResultRow> sortedRows2 = ResultRowComparator.sort(rowCollection, sortColumns);
+        assertEquals(Long.valueOf(1), sortedRows2.get(0).getId());
+        assertEquals(Long.valueOf(5), sortedRows2.get(1).getId());
+        assertEquals(Long.valueOf(3), sortedRows2.get(2).getId());
+        assertEquals(Long.valueOf(2), sortedRows2.get(3).getId());
+        assertEquals(Long.valueOf(4), sortedRows2.get(4).getId());
+        // Test to make sure that column's default to Ascending sort types.
+        assertEquals(SortTypeEnum.ASCENDING.getValue(), col1.getSortType());
         
     }
 
