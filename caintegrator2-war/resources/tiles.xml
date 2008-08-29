@@ -73,7 +73,7 @@
 
     <!-- Query Management pages -->
     <definition name="editQuery" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
 
 </tiles-definitions>

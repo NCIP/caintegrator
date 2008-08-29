@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 
 /**
  * Edits a study (new or existing).
@@ -93,12 +95,70 @@ import com.opensymphony.xwork2.ActionSupport;
 public class EditQueryAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
+    
+    private QueryResult queryResult = new QueryResult();
+    private String injectTest = "no";
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute()  {
+        
+        // declarations and such
+        final Long id;
+        final Query query = new Query();
+        
+        // obtain Query results
+        
+        //check if test data is requested
+        if (getInjectTest().equals("yes")) {
+            //create test results for now
+            //QueryResult queryResult = new QueryResult();
+            id = Long.parseLong("123");
+            queryResult.setId(id);
+            query.setName("cai2 Test Query");
+            query.setDescription("This is test query composed for testing inside the action class");
+            queryResult.setQuery(query);
+        
+        }
+        
+        // write query result object into the session scope
+        
         return SUCCESS;
     }
+    
+    /**
+     * Struts Setter method for the QueryResult which will be displayed.
+     * @param qR the query result to be set
+     */
+    public void setQueryResult(QueryResult qR) {
+        this.queryResult = qR;
+    }
+    
+    /**
+     * Gets the QueryResult to be handled by struts.
+     * @return final result from the rows.
+     */
+    public QueryResult getQueryResult() {
+        return queryResult;
+    }
+    
+    /**
+     * Struts Setter method for the test injection parameter.
+     * This parameter determines if test values are used for query results.
+     * @param iP the test selection parameter.
+     */
+    public void setInjectTest(String iP) {
+        this.injectTest = iP;
+    }
+    
+    /**
+     * Struts getter method for the test injection parameter.
+     * This parameter determines if test values are used for query results.
+     * @return the test selection parameter.
+     */
+    public String getInjectTest() {
+        return injectTest;
+    }    
 }
