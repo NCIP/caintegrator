@@ -79,7 +79,7 @@
                     <s:param name="fileColumn.id" value="fileColumn.id" />
                     <s:param name="definitionIndex" value="#status.index" />
                 </s:url> 
-                <s:a href="%{selectDefinition}"><s:property value="displayName" /></s:a>
+                <s:a href="%{selectImagingDefinition}"><s:property value="displayName" /></s:a>
             </td>
             <td><s:property value="preferredDefinition" /></td>
         </tr>
@@ -108,7 +108,7 @@
                     <s:param name="fileColumn.id" value="fileColumn.id" />
                     <s:param name="dataElementIndex" value="#status.index" />
                 </s:url> 
-                <s:a href="%{selectDataElement}"><s:property value="longName" /></s:a>
+                <s:a href="%{selectImagingDataElement}"><s:property value="longName" /></s:a>
             </td>
             <td><s:property value="publicId" /></td>
             <td><s:property value="definition" /></td>
