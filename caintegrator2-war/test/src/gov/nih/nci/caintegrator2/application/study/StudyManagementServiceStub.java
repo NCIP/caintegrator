@@ -192,7 +192,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDefinitionCalled = true;
     }
 
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) {
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)throws ValidationException {
         mapSamplesCalled = true;
     }
     

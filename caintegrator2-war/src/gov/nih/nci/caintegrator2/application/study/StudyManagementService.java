@@ -237,8 +237,10 @@ public interface StudyManagementService {
      * 
      * @param studyConfiguration study containing the subjects and samples
      * @param mappingFile comma-separated value file that maps subject identifiers to sample names
+     * @throws ValidationException if the file was not a valid mapping file.
+     * 
      */
-    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile);
+    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) throws ValidationException;
 
     /**
      * Create the associations between subjects in the study and image series.

@@ -262,7 +262,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testMapSamples() {
+    public void testMapSamples() throws ValidationException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
