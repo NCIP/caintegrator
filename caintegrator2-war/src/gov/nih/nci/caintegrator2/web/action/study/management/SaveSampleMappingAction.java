@@ -85,7 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+
 import java.io.File;
+
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
@@ -103,10 +106,27 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
      */
     @Override
     public String execute() {
-        File holdFile = getSampleMappingFile();
-        getStudyManagementService().mapSamples(getStudyConfiguration(), holdFile);
-        return SUCCESS;
+        try {
+            File holdFile = getSampleMappingFile();
+            getStudyManagementService().mapSamples(getStudyConfiguration(), holdFile);
+            return SUCCESS;
+        } catch (ValidationException e) {
+            addFieldError("sampleMappingFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            return INPUT;
+        } 
+        
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+public void validate() {
+        if (sampleMappingFile == null) {
+            addFieldError("sampleMappingFile", " File is required");
+        }
+    }
+
 
     /**
      * @return the sampleMappingFile
