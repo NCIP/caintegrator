@@ -453,4 +453,16 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         save(studyConfiguration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor) {
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        descriptor.setDefinition(annotationDefinition);
+        annotationDefinition.setDisplayName(descriptor.getName());
+        dao.save(annotationDefinition);
+        dao.save(descriptor);
+        return annotationDefinition;
+    }
+
 }
