@@ -248,4 +248,11 @@ public interface StudyManagementService {
      */
     void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile);
     
+    /**
+     * Creates a new AnnotationDefinition based on an AnnotationFieldDescriptor.
+     * @param descriptor annotation descriptor to use.
+     * @return The annotation definition that was created.
+     */
+    AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor);
+    
 }

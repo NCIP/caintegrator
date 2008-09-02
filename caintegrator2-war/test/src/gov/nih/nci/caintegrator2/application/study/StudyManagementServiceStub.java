@@ -114,6 +114,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean addImageAnnotationFileCalled;
     public boolean loadImageAnnotationCalled;
     public boolean mapImageSeriesCalled;
+    public boolean createDefinitionCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -144,6 +145,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addImageSourceCalled = false;
         loadImageAnnotationCalled = false;
         mapImageSeriesCalled = false;
+        createDefinitionCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -216,6 +218,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
         mapImageSeriesCalled = true;
+    }
+
+
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor) {
+        createDefinitionCalled = true;
+        return null;
     }
     
 }
