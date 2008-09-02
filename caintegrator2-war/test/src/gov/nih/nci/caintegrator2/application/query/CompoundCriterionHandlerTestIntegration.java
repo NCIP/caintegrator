@@ -115,7 +115,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
     @SuppressWarnings({"PMD"})
     public void testGetMatches() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
         dao.save(study);
         

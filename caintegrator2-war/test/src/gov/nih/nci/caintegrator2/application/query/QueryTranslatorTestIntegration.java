@@ -87,20 +87,30 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -121,7 +131,8 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
     @SuppressWarnings({"PMD"})
     public void testExecute() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        StudySubscription studySubscription = studyHelper.populateAndRetrieveStudy();
+        Study study = studySubscription.getStudy();
         dao.save(study);
         
         ResultColumn column1 = new ResultColumn();
@@ -152,7 +163,7 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         CompoundCriterion compoundCriterion = studyHelper.createCompoundCriterion1();
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
         
-        Query query = studyHelper.createQuery(compoundCriterion, columnCollection);
+        Query query = studyHelper.createQuery(compoundCriterion, columnCollection, studySubscription);
         
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
         
@@ -187,7 +198,78 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
             }
         }
     }
-    
+    @SuppressWarnings({ "PMD" })
+    public void testVasariQuery() {
+        StudyHelper studyHelper = new StudyHelper();
+        // If we ever use usernames, be sure to change this signature
+        Study vasariStudy = studyHelper.retrieveStudyByName("VASARI", "", dao);
+        if (vasariStudy != null) {
+            StudySubscription vasariStudySubscription = new StudySubscription();
+            vasariStudySubscription.setStudy(vasariStudy);
+            
+            AnnotationDefinition genderDefinition = dao.getAnnotationDefinition("Gender");
+            AnnotationDefinition raceDefinition = dao.getAnnotationDefinition("race");
+            AnnotationDefinition karnofskyDefinition = dao.getAnnotationDefinition("karnofsky");
+            
+            ResultColumn genderColumn = new ResultColumn();
+            ResultColumn raceColumn = new ResultColumn();
+            ResultColumn karnofskyColumn = new ResultColumn();
+            
+            genderColumn.setAnnotationDefinition(genderDefinition);
+            genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            genderColumn.setColumnIndex(1);
+            
+            raceColumn.setAnnotationDefinition(raceDefinition);
+            raceColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            raceColumn.setColumnIndex(2);
+            raceColumn.setSortOrder(1);
+            
+            karnofskyColumn.setAnnotationDefinition(karnofskyDefinition);
+            karnofskyColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            karnofskyColumn.setColumnIndex(3);
+            karnofskyColumn.setSortOrder(2);
+            karnofskyColumn.setSortType(SortTypeEnum.DESCENDING.getValue());
+            
+            StringComparisonCriterion maleCriterion = new StringComparisonCriterion();
+            maleCriterion.setStringValue("F");
+            maleCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            maleCriterion.setAnnotationDefinition(genderDefinition);
+            
+            List<ResultColumn> columnCollection = new ArrayList<ResultColumn>();
+            columnCollection.add(raceColumn);
+            columnCollection.add(genderColumn);
+            columnCollection.add(karnofskyColumn);
+            
+            Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
+            criterionCollection.add(maleCriterion);
+            
+            CompoundCriterion compoundCriterion = new CompoundCriterion();
+            compoundCriterion.setCriterionCollection(criterionCollection);
+            Query query = studyHelper.createQuery(compoundCriterion, columnCollection, vasariStudySubscription);
+            
+            QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+            QueryResult queryResult = queryTranslator.execute();
+            
+            for (ResultRow row : queryResult.getRowCollection()) {
+                System.out.print("Row " + row.getRowIndex() 
+                        + " for Subject " + row.getSubjectAssignment().getIdentifier());
+                for (ResultColumn column : columnCollection) {
+                    ResultValue value = Cai2Util.retrieveValueFromRowColumn(row, column);
+                    if (value != null) {
+                        if (value.getValue() instanceof StringAnnotationValue) {
+                            StringAnnotationValue stringValue = (StringAnnotationValue) value.getValue();
+                            System.out.print(" - " + stringValue.getStringValue());
+                        }
+                        if (value.getValue() instanceof NumericAnnotationValue) {
+                            NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getValue();
+                            System.out.print(" - " + numericValue.getNumericValue());    
+                        }
+                    }
+                }
+                System.out.println();
+            }
+        }
+    }
 
     
     /**
