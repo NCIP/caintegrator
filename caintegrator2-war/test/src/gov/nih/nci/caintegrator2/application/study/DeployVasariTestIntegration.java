@@ -213,7 +213,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         assertTrue(genomicSource.getSamples().size() > 0);
     }
 
-    private void mapSamples() {
+    private void mapSamples() throws ValidationException {
         service.mapSamples(studyConfiguration, TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE);
     }
     
