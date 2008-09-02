@@ -6,7 +6,7 @@
     
     <!--Study Logo-->
     
-    <div id="study_logo"><img src="images/logo_sample_study.gif" alt="Study Logo" /></div>
+    <div id="study_logo"><img src="images/logo_sample_vasari.gif" alt="Study Logo" /></div>
     
     <!--/Study Logo-->
     
