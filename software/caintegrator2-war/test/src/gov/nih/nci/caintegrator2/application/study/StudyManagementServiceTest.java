@@ -379,4 +379,12 @@ public class StudyManagementServiceTest {
         assertEquals("100", assignment1.getImageStudyCollection().iterator().next().getIdentifier());
         assertEquals("101", assignment2.getImageStudyCollection().iterator().next().getIdentifier());
     }
+    
+    @Test
+    public void testCreateDefinition() {
+        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        descriptor.setName("testName");
+        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor);
+        assertEquals(descriptor.getName(), definition.getDisplayName());
+    }
 }
