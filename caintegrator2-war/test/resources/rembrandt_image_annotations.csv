@@ -1,0 +1,16 @@
+ID,examnum,radiologist,comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex
+E07733,2,dxf113,,Temporal,Left,Language
+E08021,1,dxf113,,Insular,Right,None
+E09137,3,dxf113,,Temporal,Right,None
+E09138,4,dxf113,,Frontal,Right,None
+E09139,5,dxf113,,Frontal,Left,Motor
+E09151,1,rjg143,,"Frontal, Insular",Right,None
+900_0052_99,2,rjg143, ADC is mixed,Temporal,Left,None
+900_0053_03,3,rjg143,no adc map,Temporal,Right,None
+900_00_1961,4,rjg143,no adc,Frontal,Right,None
+900_00_5308,5,rjg143,"no adc, but majority is dark on dwi",Parietal,Left,Speech
+900_00_5315,1,aflanders,nice example of a well defined tumor matrix,"Frontal, Temporal, Insular",Right,None
+900_00_5316,2,aflanders,"all three components - edema, nCET and CET",Temporal,Left,None
+900_00_5317,3,aflanders,"characteristics are mixed, halo of nCET",Temporal,Right,None
+900_00_5338,4,aflanders,single nodule of enhancement,Frontal,Right,Motor
+900_00_5339,5,aflanders,classic central necrosis with peritumoral envelope,Parietal,Center,None
