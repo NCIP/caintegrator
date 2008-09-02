@@ -108,7 +108,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
     @Test
     public void testGetMatches() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
