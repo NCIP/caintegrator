@@ -43,12 +43,12 @@
                     <s:elseif test="%{fieldDescriptor != null && fieldDescriptor.definition != null}">
                         <s:property value="fieldDescriptor.definition.displayName"/> 
                     </s:elseif>
-                    <s:url id="editFileColumn" action="editFileColumn">
+                    <s:url id="editImagingFileColumn" action="editImagingFileColumn">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="imagingSource.id" value="imagingSource.id" />
                         <s:param name="fileColumn.id" value="id" />
                     </s:url> 
-                    <s:a href="%{editFileColumn}">Change Assignment</s:a> 
+                    <s:a href="%{editImagingFileColumn}">Change Assignment</s:a> 
                 </td>
                 <td><s:property value="name" /></td>
                 <td><s:if test="%{dataValues.size > 0}"><s:property value="dataValues[0]" /></s:if></td>
