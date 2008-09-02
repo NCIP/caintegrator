@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -113,6 +114,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * 
@@ -128,7 +130,7 @@ public class StudyHelper {
     private Timepoint defaultTimepoint;
     
     @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
-    public Study populateAndRetrieveStudy() {
+    public StudySubscription populateAndRetrieveStudy() {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
         
@@ -473,7 +475,7 @@ public class StudyHelper {
         ssaCollection.add(studySubjectAssignment5);
         
         myStudy.setAssignmentCollection(ssaCollection);
-        return myStudy;
+        return studySubscription;
     }
     
     public CompoundCriterion createCompoundCriterion1() {    
@@ -537,13 +539,26 @@ public class StudyHelper {
         return compoundCriterion;
     }
     
-    public Query createQuery(CompoundCriterion compoundCriterion, Collection<ResultColumn> columnCollection) {
+    public Query createQuery(CompoundCriterion compoundCriterion, 
+                             Collection<ResultColumn> columnCollection, 
+                             StudySubscription subscription) {
         Query query = new Query();
         query.setName("Test Query");
         query.setCompoundCriterion(compoundCriterion);
-        query.setSubscription(studySubscription);
+        query.setSubscription(subscription);
         query.setColumnCollection(columnCollection);
         return query;
+    }
+    
+    public Study retrieveStudyByName(String studyName, String username, CaIntegrator2Dao dao) {
+        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
+        for (StudyConfiguration studyConfiguration : studyConfigurations) {
+            if (studyConfiguration.getStudy().getShortTitleText().contains(studyName)){
+                return studyConfiguration.getStudy();
+            }
+        }
+        return null;
+        
     }
 
     

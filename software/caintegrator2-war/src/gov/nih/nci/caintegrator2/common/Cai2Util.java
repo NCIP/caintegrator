@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -94,6 +96,7 @@ import java.util.Set;
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
+@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     
     private Cai2Util() { }
@@ -131,6 +134,28 @@ public final class Cai2Util {
                 }
             }
         return false;
+    }
+    
+    /**
+     * Given a ResultRow and ResultColumn, we can retrieve the specific ResultValue object that 
+     * associates the two.  It uses the AnnotationDefinition from the Column to compare so this
+     * must be non-null and equal.
+     * @param row object to retrieve value from.
+     * @param column object to retrieve value from.
+     * @return ResultValue, assuming the row/column pair isn't a null value.
+     */
+    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Lots of null checks
+    public static ResultValue retrieveValueFromRowColumn(ResultRow row, ResultColumn column) {
+        if (row.getValueCollection() != null && !row.getValueCollection().isEmpty()) {
+            for (ResultValue value : row.getValueCollection()) {
+                if (value.getColumn().getAnnotationDefinition() != null 
+                    && column.getAnnotationDefinition() != null
+                    && value.getColumn().getAnnotationDefinition().equals(column.getAnnotationDefinition())) { 
+                    return value;
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -196,7 +196,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @SuppressWarnings({"PMD.ExcessiveMethodLength"})
     public void testFindMatchingSamples() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
         // Now need to create the criterion items and see if we can retrieve back the proper values.
@@ -257,7 +257,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @SuppressWarnings({"PMD.ExcessiveMethodLength"})
     public void testFindMatchingImageSeries() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
@@ -290,7 +290,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testFindMatchingSubjects() {
         StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);
         
         NumericComparisonCriterion criterion1 = new NumericComparisonCriterion();

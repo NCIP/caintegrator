@@ -85,11 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -124,6 +128,28 @@ public class Cai2UtilTest {
         
         assertTrue(Cai2Util.resultRowSetContainsResultRow(rowSet, rowToTest));
         
+    }
+    
+    @Test
+    public void testRetrieveValueFromRowColumn() {
+        ResultRow row = new ResultRow();
+        ResultColumn column = new ResultColumn();
+        AnnotationDefinition testDef = new AnnotationDefinition();
+        testDef.setId(Long.valueOf(1));
+        column.setAnnotationDefinition(testDef);
+        ResultValue nullValue = Cai2Util.retrieveValueFromRowColumn(row, column);
+        
+        assertNull(nullValue);
+        
+        ResultValue realValue = new ResultValue();
+        realValue.setColumn(column);
+        realValue.setId(Long.valueOf(2));
+        Collection<ResultValue> valueCollection = new HashSet<ResultValue>();
+        valueCollection.add(realValue);
+        row.setValueCollection(valueCollection);
+        
+        ResultValue retrievedRealValue = Cai2Util.retrieveValueFromRowColumn(row, column);
+        assertEquals(realValue, retrievedRealValue);
     }
 
 }
