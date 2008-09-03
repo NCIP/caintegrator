@@ -126,7 +126,6 @@ public class StudyHelper {
     private AnnotationDefinition subjectAnnotationDefinition;
     private NumericPermissableValue permval1;
     private NumericPermissableValue permval2;
-    private StudySubscription studySubscription;
     private Timepoint defaultTimepoint;
     
     @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
@@ -134,7 +133,7 @@ public class StudyHelper {
         Study myStudy = new Study();
         myStudy.setShortTitleText("Test Study");
         
-        studySubscription = new StudySubscription();
+        StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(myStudy);
         
         sampleAnnotationDefinition = new AnnotationDefinition();

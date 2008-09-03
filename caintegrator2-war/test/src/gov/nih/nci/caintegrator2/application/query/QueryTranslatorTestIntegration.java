@@ -108,7 +108,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -118,6 +117,7 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 /**
  * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion.
  */
+@SuppressWarnings("PMD")
 public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
 
     private CaIntegrator2DaoImpl dao;
