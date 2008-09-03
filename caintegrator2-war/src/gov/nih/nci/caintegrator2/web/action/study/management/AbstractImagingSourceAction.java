@@ -89,9 +89,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 
 /**
- * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
+ * Base class for actions that require retrieval of persistent <code>ImageAnnotationConfigurations</code>.
  */
-public class AbstractImagingSourceAction extends AbstractStudyAction {
+public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
 
     private ImageAnnotationConfiguration imagingSource = new ImageAnnotationConfiguration();
    
@@ -105,11 +105,11 @@ public class AbstractImagingSourceAction extends AbstractStudyAction {
         }
     }
 
-/**
- * @return ImagingSource
- */
-public ImageAnnotationConfiguration getImagingSource() {
-        return imagingSource;
+    /**
+     * @return ImagingSource
+     */
+    public ImageAnnotationConfiguration getImagingSource() {
+            return imagingSource;
     }
 
     /**
@@ -118,4 +118,5 @@ public ImageAnnotationConfiguration getImagingSource() {
     public void setImagingSource(ImageAnnotationConfiguration imagingSource) {
         this.imagingSource = imagingSource;
     }
+    
 }
