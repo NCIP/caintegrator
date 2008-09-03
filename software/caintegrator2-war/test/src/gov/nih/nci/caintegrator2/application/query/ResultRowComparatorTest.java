@@ -99,9 +99,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-/**
- * 
- */
+@SuppressWarnings("PMD")
 public class ResultRowComparatorTest {
 
     @Test
