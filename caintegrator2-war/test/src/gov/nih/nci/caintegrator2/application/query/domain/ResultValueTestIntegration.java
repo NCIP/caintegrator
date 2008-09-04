@@ -83,52 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
-import java.util.HashSet;
-
-
-public final class QueryResultGenerator extends AbstractTestDataGenerator<QueryResult> {
-
-    public static final QueryResultGenerator INSTANCE = new QueryResultGenerator();
-    
-    private QueryResultGenerator() {
-        super();
-    }
-
-    @Override
-    public void compareFields(QueryResult original, QueryResult retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        QueryGenerator.INSTANCE.compareFields(original.getQuery(), retrieved.getQuery());
-        assertEquals(original.getRowCollection().size(), retrieved.getRowCollection().size());
-        assertEquals(original.getRowCollection().size(), 3);
-    }
+/**
+ * 
+ */
+public class ResultValueTestIntegration extends AbstractHibernateMappingTestIntegration<ResultValue> {
 
 
     @Override
-    public QueryResult createPersistentObject() {
-        return new QueryResult();
-    }
-
-
-    @Override
-    public void setValues(QueryResult queryResult) {
-        Query query = new Query();
-        QueryGenerator.INSTANCE.setValues(query);
-        queryResult.setQuery(query);
-        
-        queryResult.setRowCollection(new HashSet<ResultRow>());
-        for (int i = 0; i < 3; i++) {
-            queryResult.getRowCollection().add(ResultRowGenerator.INSTANCE.createPersistentObject());
-        }
-
+    protected AbstractTestDataGenerator<ResultValue> getDataGenerator() {
+        return ResultValueGenerator.INSTANCE;
     }
 
 }
-

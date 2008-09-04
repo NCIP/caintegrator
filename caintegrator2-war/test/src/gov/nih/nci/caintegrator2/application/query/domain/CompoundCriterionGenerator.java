@@ -83,12 +83,15 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -96,7 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import java.util.Collection;
 import java.util.HashSet;
 /**
- * 
+ * This generator gets called by the test QueryResultTestIntegration, through the QueryGenerator.
  */
 public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<CompoundCriterion> {
 
@@ -110,6 +113,68 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getBooleanOperator(), retrieved.getBooleanOperator());
         assertEquals(original.getCriterionCollection().size(), retrieved.getCriterionCollection().size());
+        
+        NumericComparisonCriterion originalNumericCriterion = null;
+        NumericComparisonCriterion retrievedNumericCriterion = null;
+        StringComparisonCriterion originalStringCriterion = null;
+        StringComparisonCriterion retrievedStringCriterion = null;
+        SelectedValueCriterion originalSelectedValueCriterion = null;
+        SelectedValueCriterion retrievedSelectedValueCriterion = null;
+        GeneListCriterion originalGeneListCriterion = null;
+        GeneListCriterion retrievedGeneListCriterion = null;
+        GeneCriterion originalGeneCriterion = null;
+        GeneCriterion retrievedGeneCriterion = null;
+        FoldChangeCriterion originalFoldChangeCriterion = null;
+        FoldChangeCriterion retrievedFoldChangeCriterion = null;
+        
+        for (AbstractCriterion criterion : original.getCriterionCollection()) {
+            if (criterion instanceof NumericComparisonCriterion) {
+                originalNumericCriterion = (NumericComparisonCriterion) criterion;
+            }
+            if (criterion instanceof StringComparisonCriterion) {
+                originalStringCriterion = (StringComparisonCriterion) criterion;
+            }
+            if (criterion instanceof SelectedValueCriterion) {
+                originalSelectedValueCriterion = (SelectedValueCriterion) criterion;
+            }
+            if (criterion instanceof GeneListCriterion) {
+                originalGeneListCriterion = (GeneListCriterion) criterion;
+            }
+            if (criterion instanceof GeneCriterion) {
+                originalGeneCriterion = (GeneCriterion) criterion;
+            }
+            if (criterion instanceof FoldChangeCriterion) {
+                originalFoldChangeCriterion = (FoldChangeCriterion) criterion;
+            }
+        }
+        
+        for (AbstractCriterion criterion : retrieved.getCriterionCollection()) {
+            if (criterion instanceof NumericComparisonCriterion) {
+                retrievedNumericCriterion = (NumericComparisonCriterion) criterion;
+            }
+            if (criterion instanceof StringComparisonCriterion) {
+                retrievedStringCriterion = (StringComparisonCriterion) criterion;
+            }
+            if (criterion instanceof SelectedValueCriterion) {
+                retrievedSelectedValueCriterion = (SelectedValueCriterion) criterion;
+            }
+            if (criterion instanceof GeneListCriterion) {
+                retrievedGeneListCriterion = (GeneListCriterion) criterion;
+            }
+            if (criterion instanceof GeneCriterion) {
+                retrievedGeneCriterion = (GeneCriterion) criterion;
+            }
+            if (criterion instanceof FoldChangeCriterion) {
+                retrievedFoldChangeCriterion = (FoldChangeCriterion) criterion;
+            }
+        }
+        
+        NumericComparisonCriterionGenerator.INSTANCE.compare(originalNumericCriterion, retrievedNumericCriterion);
+        StringComparisonCriterionGenerator.INSTANCE.compare(originalStringCriterion, retrievedStringCriterion);
+        SelectedValueCriterionGenerator.INSTANCE.compare(originalSelectedValueCriterion, retrievedSelectedValueCriterion);
+        GeneListCriterionGenerator.INSTANCE.compare(originalGeneListCriterion, retrievedGeneListCriterion);
+        GeneCriterionGenerator.INSTANCE.compare(originalGeneCriterion, retrievedGeneCriterion);
+        FoldChangeCriterionGenerator.INSTANCE.compare(originalFoldChangeCriterion, retrievedFoldChangeCriterion);
     }
 
     @Override
@@ -133,6 +198,18 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
         SelectedValueCriterion svc = new SelectedValueCriterion();
         SelectedValueCriterionGenerator.INSTANCE.setValues(svc);
         abstractCriterionCollection.add(svc);
+        
+        GeneListCriterion glc = new GeneListCriterion();
+        GeneListCriterionGenerator.INSTANCE.setValues(glc);
+        abstractCriterionCollection.add(glc);
+        
+        GeneCriterion gc = new GeneCriterion();
+        GeneCriterionGenerator.INSTANCE.setValues(gc);
+        abstractCriterionCollection.add(gc);
+        
+        FoldChangeCriterion fc = new FoldChangeCriterion();
+        FoldChangeCriterionGenerator.INSTANCE.setValues(fc);
+        abstractCriterionCollection.add(fc);
         
         compoundCriterion.setCriterionCollection(abstractCriterionCollection);
 

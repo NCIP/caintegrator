@@ -83,57 +83,44 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-
-import java.util.HashSet;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 
 
-public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRow> {
+public final class GenomicDataResultValueGenerator extends AbstractTestDataGenerator<GenomicDataResultValue> {
 
-    public static final ResultRowGenerator INSTANCE = new ResultRowGenerator();
+    public static final GenomicDataResultValueGenerator INSTANCE = new GenomicDataResultValueGenerator();
     
-    private ResultRowGenerator() {
+    private GenomicDataResultValueGenerator() {
         super();
     }
 
     @Override
-    public void compareFields(ResultRow original, ResultRow retrieved) {
+    public void compareFields(GenomicDataResultValue original, GenomicDataResultValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getRowIndex(), retrieved.getRowIndex());
-        assertEquals(original.getImageSeriesAcquisition().getId(), 
-                     retrieved.getImageSeriesAcquisition().getId());
-        assertEquals(original.getSampleAcquisition().getId(),
-                     retrieved.getSampleAcquisition().getId());
-        assertEquals(original.getSubjectAssignment().getId(),
-                     retrieved.getSubjectAssignment().getId());
-        assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
+        assertEquals(original.getColumn(), retrieved.getColumn());
+        
+        
     }
 
 
     @Override
-    public ResultRow createPersistentObject() {
-        return new ResultRow();
+    public GenomicDataResultValue createPersistentObject() {
+        return new GenomicDataResultValue();
     }
 
 
     @Override
-    public void setValues(ResultRow resultRow) {
-        resultRow.setRowIndex(getUniqueInt());
-        resultRow.setValueCollection(new HashSet<ResultValue>());
-        for (int i = 0; i < 3; i++) {
-            resultRow.getValueCollection().add(ResultValueGenerator.INSTANCE.createPersistentObject());
-        }
-        resultRow.setImageSeriesAcquisition(new ImageSeriesAcquisition());
-        resultRow.setSampleAcquisition(new SampleAcquisition());
-        resultRow.setSubjectAssignment(new StudySubjectAssignment());
+    public void setValues(GenomicDataResultValue resultValue) {
+        resultValue.setValue(Float.valueOf(getUniqueInt()));
+        GenomicDataResultColumn col = new GenomicDataResultColumn();
+        GenomicDataResultColumnGenerator.INSTANCE.setValues(col);
+        resultValue.setColumn(col);
+        
 
     }
 

@@ -83,21 +83,60 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.application.study.DatePermissableValueGenerator;
+import gov.nih.nci.caintegrator2.application.study.NumericPermissableValueGenerator;
+import gov.nih.nci.caintegrator2.application.study.StringPermissableValueGenerator;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DatePermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+
+import java.util.HashSet;
 
 /**
- * 
+ * Gets called by the QueryResultTestIntegration through the CompoundCriterionGenerator.
  */
-public class ResultColumnTestIntegration extends AbstractHibernateMappingTestIntegration<ResultColumn> {
+public final class SelectedValueCriterionGenerator extends AbstractTestDataGenerator<SelectedValueCriterion> {
 
+    public static final SelectedValueCriterionGenerator INSTANCE = new SelectedValueCriterionGenerator();
+    
+    private SelectedValueCriterionGenerator() { 
+        super();
+    }
+    @Override
+    public void compareFields(SelectedValueCriterion original, SelectedValueCriterion retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
+    }
 
     @Override
-    protected AbstractTestDataGenerator<ResultColumn> getDataGenerator() {
-        return ResultColumnGenerator.INSTANCE;
+    public SelectedValueCriterion createPersistentObject() {
+        return new SelectedValueCriterion();
+    }
+
+    @Override
+    public void setValues(SelectedValueCriterion selectedValueCriterion) {
+        selectedValueCriterion.setEntityType("Subject");
+        selectedValueCriterion.setAnnotationDefinition(new AnnotationDefinition());
+        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissableValue>());
+
+        NumericPermissableValue numVal = NumericPermissableValueGenerator.INSTANCE.createPersistentObject();
+        NumericPermissableValueGenerator.INSTANCE.setValues(numVal);
+        StringPermissableValue stringVal = StringPermissableValueGenerator.INSTANCE.createPersistentObject();
+        StringPermissableValueGenerator.INSTANCE.setValues(stringVal);
+        DatePermissableValue dateVal = DatePermissableValueGenerator.INSTANCE.createPersistentObject();
+        DatePermissableValueGenerator.INSTANCE.setValues(dateVal);
+        
+        selectedValueCriterion.getValueCollection().add(numVal);
+        selectedValueCriterion.getValueCollection().add(stringVal);
+        selectedValueCriterion.getValueCollection().add(dateVal);
     }
 
 }

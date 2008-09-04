@@ -83,53 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.application.study.NumericAnnotationValueGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
-
-public final class ResultValueGenerator extends AbstractTestDataGenerator<ResultValue> {
-
-    public static final ResultValueGenerator INSTANCE = new ResultValueGenerator();
-    
-    private ResultValueGenerator() {
-        super();
-    }
-
-    @Override
-    public void compareFields(ResultValue original, ResultValue retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getColumn(), retrieved.getColumn());
-        NumericAnnotationValue nav1 = null;
-        NumericAnnotationValue nav2 = null;
-        nav1 = (NumericAnnotationValue)original.getValue();
-        nav2 = (NumericAnnotationValue)retrieved.getValue();
-        NumericAnnotationValueGenerator.INSTANCE.compare(nav1, nav2);
-        
-    }
+/**
+ * 
+ */
+public class ResultRowTestIntegration extends AbstractHibernateMappingTestIntegration<ResultRow> {
 
 
     @Override
-    public ResultValue createPersistentObject() {
-        return new ResultValue();
-    }
-
-
-    @Override
-    public void setValues(ResultValue resultValue) {
-        NumericAnnotationValue nav = new NumericAnnotationValue();
-        NumericAnnotationValueGenerator.INSTANCE.setValues(nav);
-        resultValue.setValue(nav);
-        ResultColumn col = new ResultColumn();
-        ResultColumnGenerator.INSTANCE.setValues(col);
-        resultValue.setColumn(col);
-        
-
+    protected AbstractTestDataGenerator<ResultRow> getDataGenerator() {
+        return ResultRowGenerator.INSTANCE;
     }
 
 }

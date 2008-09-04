@@ -83,24 +83,48 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import static org.junit.Assert.assertEquals;
 /**
  * 
  */
-public class QueryResultTestIntegration extends AbstractHibernateMappingTestIntegration<QueryResult> {
+public final class ResultColumnGenerator extends AbstractTestDataGenerator<ResultColumn> {
 
-//    public QueryResultTestIntegration() {
-//        this.setDefaultRollback(false);
-//    }
+    public static final ResultColumnGenerator INSTANCE = new ResultColumnGenerator();
+    
+    private ResultColumnGenerator() {
+        super();
+    }
 
     @Override
-    protected AbstractTestDataGenerator<QueryResult> getDataGenerator() {
-        return QueryResultGenerator.INSTANCE;
+    public void compareFields(ResultColumn original, ResultColumn retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
+        assertEquals(original.getColumnIndex(), retrieved.getColumnIndex());
+        assertEquals(original.getEntityType(), retrieved.getEntityType());
+        assertEquals(original.getSortOrder(), retrieved.getSortOrder());
+        assertEquals(original.getSortType(), retrieved.getSortType());
+    }
+
+
+    @Override
+    public ResultColumn createPersistentObject() {
+        return new ResultColumn();
+    }
+
+
+    @Override
+    public void setValues(ResultColumn rc) {
+        rc.setSortOrder(getUniqueInt());
+        rc.setSortType(getUniqueString());
+        rc.setColumnIndex(getUniqueInt());
+        rc.setEntityType(getUniqueString());
+        rc.setAnnotationDefinition(new AnnotationDefinition());
+
     }
 
 }
