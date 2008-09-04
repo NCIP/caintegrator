@@ -83,47 +83,39 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import static org.junit.Assert.assertEquals;
-/**
- * 
- */
-public final class ResultColumnGenerator extends AbstractTestDataGenerator<ResultColumn> {
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 
-    public static final ResultColumnGenerator INSTANCE = new ResultColumnGenerator();
+
+public final class NumericComparisonCriterionGenerator extends AbstractTestDataGenerator<NumericComparisonCriterion> {
+
+    public static final NumericComparisonCriterionGenerator INSTANCE = new NumericComparisonCriterionGenerator();
     
-    private ResultColumnGenerator() {
+    private NumericComparisonCriterionGenerator() { 
         super();
     }
-
     @Override
-    public void compareFields(ResultColumn original, ResultColumn retrieved) {
+    public void compareFields(NumericComparisonCriterion original, NumericComparisonCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
         assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
-        assertEquals(original.getColumnIndex(), retrieved.getColumnIndex());
-        assertEquals(original.getEntityType(), retrieved.getEntityType());
-        assertEquals(original.getSortOrder(), retrieved.getSortOrder());
-        assertEquals(original.getSortType(), retrieved.getSortType());
+
     }
 
-
     @Override
-    public ResultColumn createPersistentObject() {
-        return new ResultColumn();
+    public NumericComparisonCriterion createPersistentObject() {
+        return new NumericComparisonCriterion();
     }
 
-
     @Override
-    public void setValues(ResultColumn rc) {
-        rc.setSortOrder(getUniqueInt());
-        rc.setSortType(getUniqueString());
-        rc.setColumnIndex(getUniqueInt());
-        rc.setEntityType(getUniqueString());
-        rc.setAnnotationDefinition(new AnnotationDefinition());
+    public void setValues(NumericComparisonCriterion numericComparisonCriterion) {
+        numericComparisonCriterion.setEntityType("Subject");
+        numericComparisonCriterion.setAnnotationDefinition(new AnnotationDefinition());
+        numericComparisonCriterion.setNumericValue(Double.valueOf(getUniqueInt()));
 
     }
 

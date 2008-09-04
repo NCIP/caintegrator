@@ -83,21 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 
 /**
  * 
  */
-public class ResultRowTestIntegration extends AbstractHibernateMappingTestIntegration<ResultRow> {
+public class ResultColumnTestIntegration extends AbstractHibernateMappingTestIntegration<ResultColumn> {
 
 
     @Override
-    protected AbstractTestDataGenerator<ResultRow> getDataGenerator() {
-        return ResultRowGenerator.INSTANCE;
+    protected AbstractTestDataGenerator<ResultColumn> getDataGenerator() {
+        return ResultColumnGenerator.INSTANCE;
     }
 
 }

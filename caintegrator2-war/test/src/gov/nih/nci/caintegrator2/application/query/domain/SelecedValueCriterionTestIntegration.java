@@ -83,48 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.application.study.DatePermissableValueGenerator;
-import gov.nih.nci.caintegrator2.application.study.NumericPermissableValueGenerator;
-import gov.nih.nci.caintegrator2.application.study.StringPermissableValueGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
-import java.util.HashSet;
+/**
+ * 
+ */
+public class SelecedValueCriterionTestIntegration extends AbstractHibernateMappingTestIntegration<SelectedValueCriterion> {
 
-
-public final class SelectedValueCriterionGenerator extends AbstractTestDataGenerator<SelectedValueCriterion> {
-
-    public static final SelectedValueCriterionGenerator INSTANCE = new SelectedValueCriterionGenerator();
-    
-    private SelectedValueCriterionGenerator() { 
-        super();
-    }
-    @Override
-    public void compareFields(SelectedValueCriterion original, SelectedValueCriterion retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
-        assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
-    }
 
     @Override
-    public SelectedValueCriterion createPersistentObject() {
-        return new SelectedValueCriterion();
-    }
-
-    @Override
-    public void setValues(SelectedValueCriterion selectedValueCriterion) {
-        selectedValueCriterion.setEntityType("Subject");
-        selectedValueCriterion.setAnnotationDefinition(new AnnotationDefinition());
-        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissableValue>());
-
-        selectedValueCriterion.getValueCollection().add(NumericPermissableValueGenerator.INSTANCE.createPersistentObject());
-        selectedValueCriterion.getValueCollection().add(StringPermissableValueGenerator.INSTANCE.createPersistentObject());
-        selectedValueCriterion.getValueCollection().add(DatePermissableValueGenerator.INSTANCE.createPersistentObject());
+    protected AbstractTestDataGenerator<SelectedValueCriterion> getDataGenerator() {
+        return SelectedValueCriterionGenerator.INSTANCE;
     }
 
 }

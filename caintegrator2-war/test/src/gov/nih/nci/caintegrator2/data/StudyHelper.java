@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
@@ -535,6 +536,23 @@ public class StudyHelper {
         compoundCriterion.getCriterionCollection().add(criterion);
         compoundCriterion.getCriterionCollection().add(criterion1);
         compoundCriterion.getCriterionCollection().add(criterion2);
+        return compoundCriterion;
+    }
+    
+    public CompoundCriterion createCompoundCriterion3() {
+        // Sample criterion (will return 3 Subjects: #1, #2, #3)
+        SelectedValueCriterion criterion = new SelectedValueCriterion();
+        criterion.setValueCollection(new HashSet<AbstractPermissableValue>());
+        criterion.getValueCollection().add(permval1);
+        
+        criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        
+        
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion.getCriterionCollection().add(criterion);
         return compoundCriterion;
     }
     
