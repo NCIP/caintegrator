@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+    <class name="AbstractCriterion" table="ABSTRACT_CRITERION" lazy="false" polymorphism="explicit">
+        <cache usage="read-write" />
+        <id name="id" type="long" column="ID">
+            <generator class="native" />
+        </id>
+        <!-- Attributes mapping for the AbstractCriterion class -->
+        <!-- Associations mapping for the AbstractCriterion class -->
+        <joined-subclass name="AbstractAnnotationCriterion" table="ABSTRACT_ANNOTATION_CRITERION" lazy="false">
+            <key column="ID" />
+            <!-- Attributes mapping for the AbstractAnnotationCriterion class -->
+            <property name="entityType" type="string" column="ENTITY_TYPE"/>
+            <!-- Associations mapping for the AbstractAnnotationCriterion class -->
+            <many-to-one name="annotationDefinition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" lazy="proxy" cascade="save-update" />
+            <joined-subclass name="NumericComparisonCriterion" table="NUMERIC_COMPARISON_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Attributes mapping for the NumericComparisonCriterion class -->
+                <property name="numericComparisonOperator" type="string" column="NUMERIC_COMPARISON_OPERATOR"/>
+                <property name="numericValue" type="double" column="NUMERIC_VALUE"/>
+            </joined-subclass>
+            <joined-subclass name="StringComparisonCriterion" table="STRING_COMPARISON_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Attributes mapping for the StringComparisonCriterion class -->
+                <property name="stringValue" type="string" column="STRING_VALUE"/>
+                <property name="wildCardType" type="string" column="WILD_CARD_TYPE"/>
+            </joined-subclass>
+            <joined-subclass name="SelectedValueCriterion" table="SELECTED_VALUE_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Associations mapping for the SelectedValueCriterion class -->
+                <set name="valueCollection" table="SELECTED_VALUE_CRITERIA_PERMISSABLE_VALUES" lazy="true" cascade="save-update" >
+                    <cache usage="read-write" />
+                    <key column="SELECTED_VALUE_CRITERION_ID" />
+                    <many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue" column="ABSTRACT_PERMISSABLE_VALUE_ID" />
+                </set>
+            </joined-subclass>
+        </joined-subclass>
+        <joined-subclass name="CompoundCriterion" table="COMPOUND_CRITERION" lazy="false">
+            <key column="ID" />
+            <!-- Attributes mapping for the CompoundCriterion class -->
+            <property name="booleanOperator" type="string" column="BOOLEAN_OPERATOR"/>
+            <!-- Associations mapping for the CompoundCriterion class -->
+            <set name="criterionCollection" lazy="true" cascade="save-update" >
+                <cache usage="read-write" />
+                <key column="COMPOUND_CRITERION_ID" />
+                <one-to-many class="gov.nih.nci.caintegrator2.domain.application.AbstractCriterion"/>
+            </set>
+        </joined-subclass>
+        <joined-subclass name="AbstractGenomicCriterion" table="ABSTRACT_GENOMIC_CRITERION" lazy="false">
+            <key column="ID" />
+            <joined-subclass name="FoldChangeCriterion" table="FOLD_CHANGE_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Attributes mapping for the FoldChangeCriterion class -->
+                <property name="folds" type="float" column="FOLDS"/>
+                <property name="regulationType" type="string" column="REGULATION_TYPE"/>
+                <!-- Associations mapping for the FoldChangeCriterion class -->
+                <many-to-one name="compareToSamples" class="gov.nih.nci.caintegrator2.domain.application.SampleList" column="SAMPLE_LIST_ID" lazy="proxy" cascade="save-update" />
+            </joined-subclass>
+            <joined-subclass name="GeneListCriterion" table="GENE_LIST_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Associations mapping for the GeneListCriterion class -->
+                <many-to-one name="geneList" class="gov.nih.nci.caintegrator2.domain.application.GeneList" column="GENE_LIST_ID" lazy="proxy" cascade="save-update" />
+            </joined-subclass>
+            <joined-subclass name="GeneCriterion" table="GENE_CRITERION" lazy="false">
+                <key column="ID" />
+                <!-- Associations mapping for the GeneCriterion class -->
+                <many-to-one name="gene" class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" lazy="proxy" cascade="save-update" />
+            </joined-subclass>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>
