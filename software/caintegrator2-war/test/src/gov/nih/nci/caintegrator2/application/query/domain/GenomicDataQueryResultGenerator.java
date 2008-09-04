@@ -83,40 +83,52 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+
+import java.util.HashSet;
 
 
-public final class NumericComparisonCriterionGenerator extends AbstractTestDataGenerator<NumericComparisonCriterion> {
+public final class GenomicDataQueryResultGenerator extends AbstractTestDataGenerator<GenomicDataQueryResult> {
 
-    public static final NumericComparisonCriterionGenerator INSTANCE = new NumericComparisonCriterionGenerator();
+    public static final GenomicDataQueryResultGenerator INSTANCE = new GenomicDataQueryResultGenerator();
     
-    private NumericComparisonCriterionGenerator() { 
+    private GenomicDataQueryResultGenerator() {
         super();
     }
+
     @Override
-    public void compareFields(NumericComparisonCriterion original, NumericComparisonCriterion retrieved) {
+    public void compareFields(GenomicDataQueryResult original, GenomicDataQueryResult retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
-        assertEquals(original.getAnnotationDefinition(), retrieved.getAnnotationDefinition());
-
+        QueryGenerator.INSTANCE.compareFields(original.getQuery(), retrieved.getQuery());
+        assertEquals(original.getRowCollection().size(), retrieved.getRowCollection().size());
+        assertEquals(original.getRowCollection().size(), 3);
     }
 
-    @Override
-    public NumericComparisonCriterion createPersistentObject() {
-        return new NumericComparisonCriterion();
-    }
 
     @Override
-    public void setValues(NumericComparisonCriterion numericComparisonCriterion) {
-        numericComparisonCriterion.setEntityType("Subject");
-        numericComparisonCriterion.setAnnotationDefinition(new AnnotationDefinition());
-        numericComparisonCriterion.setNumericValue(Double.valueOf(getUniqueInt()));
+    public GenomicDataQueryResult createPersistentObject() {
+        return new GenomicDataQueryResult();
+    }
+
+
+    @Override
+    public void setValues(GenomicDataQueryResult queryResult) {
+        Query query = new Query();
+        QueryGenerator.INSTANCE.setValues(query);
+        queryResult.setQuery(query);
+        
+        queryResult.setRowCollection(new HashSet<GenomicDataResultRow>());
+        for (int i = 0; i < 3; i++) {
+            queryResult.getRowCollection().add(GenomicDataResultRowGenerator.INSTANCE.createPersistentObject());
+        }
 
     }
 
 }
+

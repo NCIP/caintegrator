@@ -83,97 +83,53 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.query.domain;
 
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.application.study.NumericAnnotationValueGenerator;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
-import java.util.HashSet;
-import java.util.Set;
 
-import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+public final class ResultValueGenerator extends AbstractTestDataGenerator<ResultValue> {
 
-/**
- * Tests that the CompoundCriterionHandler object can get the matches for various CompoundCriterion
- */
-public class CompoundCriterionHandlerTestIntegration extends AbstractTransactionalSpringContextTests {
-
-    private CaIntegrator2Dao dao;
+    public static final ResultValueGenerator INSTANCE = new ResultValueGenerator();
     
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/dao-test-config.xml"};
+    private ResultValueGenerator() {
+        super();
     }
 
-    @Test
-    @SuppressWarnings({"PMD"})
-    public void testGetMatches() {
-        StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
-        Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();
-        dao.save(study);
+    @Override
+    public void compareFields(ResultValue original, ResultValue retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getColumn(), retrieved.getColumn());
+        NumericAnnotationValue nav1 = null;
+        NumericAnnotationValue nav2 = null;
+        nav1 = (NumericAnnotationValue)original.getValue();
+        nav2 = (NumericAnnotationValue)retrieved.getValue();
+        NumericAnnotationValueGenerator.INSTANCE.compare(nav1, nav2);
         
-        // Try compoundCriterion1
-        CompoundCriterion compoundCriterion1 = studyHelper.createCompoundCriterion1();
-        entityTypesInQuery.add(EntityTypeEnum.IMAGESERIES);
-        entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
-        entityTypesInQuery.add(EntityTypeEnum.SUBJECT);
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        CompoundCriterionHandler compoundCriterionHandler1 = CompoundCriterionHandler.create(compoundCriterion1);
-        
-        assertEquals(1, compoundCriterionHandler1.getMatches(dao, study, entityTypesInQuery).size());
-        
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        assertEquals(6, compoundCriterionHandler1.getMatches(dao, study, entityTypesInQuery).size());
-        
-        // Try compoundCriterion2.
-        CompoundCriterion compoundCriterion2 = studyHelper.createCompoundCriterion2();
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        CompoundCriterionHandler compoundCriterionHandler2 = CompoundCriterionHandler.create(compoundCriterion2);
-        assertEquals(0, compoundCriterionHandler2.getMatches(dao, study, entityTypesInQuery).size());
-
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        assertEquals(5, compoundCriterionHandler2.getMatches(dao, study, entityTypesInQuery).size());
-        
-        // Try to combine criterion 1 and criterion 2 into a new compoundCriterion.
-        CompoundCriterion compoundCriterion3 = new CompoundCriterion();
-        compoundCriterion3.setCriterionCollection(new HashSet<AbstractCriterion>());
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion1);
-        compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
-        // 6 results for 1
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        // 4 results for 2
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        
-        // If we AND them together we should get 4 results
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        CompoundCriterionHandler compoundCriterionHandler3 = CompoundCriterionHandler.create(compoundCriterion3);
-        assertEquals(4, compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery).size());
-        
-        // If we OR them together we should get 7 results, all 5 subjects, plus 2 more samples for subject1.
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        Set<ResultRow> mostComplexRows = compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery);
-        assertEquals(7, mostComplexRows.size());
-        
-        // Test out the selected value criterion on the permissable value's for Samples.
-        entityTypesInQuery = new HashSet<EntityTypeEnum>();
-        entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
-        CompoundCriterion compoundCriterion4 = studyHelper.createCompoundCriterion3();
-        CompoundCriterionHandler compoundCriterionHandler4 = CompoundCriterionHandler.create(compoundCriterion4);
-        assertEquals(3, compoundCriterionHandler4.getMatches(dao, study, entityTypesInQuery).size());
     }
-    
-    /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
-     */
-    public void setDao(CaIntegrator2Dao caIntegrator2Dao) {
-        this.dao = caIntegrator2Dao;
+
+
+    @Override
+    public ResultValue createPersistentObject() {
+        return new ResultValue();
+    }
+
+
+    @Override
+    public void setValues(ResultValue resultValue) {
+        NumericAnnotationValue nav = new NumericAnnotationValue();
+        NumericAnnotationValueGenerator.INSTANCE.setValues(nav);
+        resultValue.setValue(nav);
+        ResultColumn col = new ResultColumn();
+        ResultColumnGenerator.INSTANCE.setValues(col);
+        resultValue.setColumn(col);
+        
+
     }
 
 }
