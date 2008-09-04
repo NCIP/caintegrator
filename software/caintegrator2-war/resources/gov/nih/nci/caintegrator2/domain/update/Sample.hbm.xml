@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+    <class name="Sample" table="SAMPLE" lazy="false" polymorphism="explicit">
+        <cache usage="read-write" />
+        <id name="id" type="long" column="ID">
+            <generator class="native" />
+        </id>
+        <!-- Attributes mapping for the Sample class -->
+        <property name="name" type="string" column="NAME"/>
+        <!-- Associations mapping for the Sample class -->
+        <many-to-one name="sampleAcquisition" class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition" column="SAMPLE_ACQUISITION_ID" unique="true" lazy="proxy" cascade="save-update" />
+        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="save-update" >
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="MICROARRAY_ID" />
+        </set>
+        <set name="arrayDataCollection" lazy="true" cascade="save-update" >
+            <cache usage="read-write" />
+            <key column="SAMPLE_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
+        </set>
+    </class>
+</hibernate-mapping>

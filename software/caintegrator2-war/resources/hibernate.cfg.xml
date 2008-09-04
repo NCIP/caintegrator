@@ -53,7 +53,6 @@
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/AbstractPermissableValue.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/AbstractAnnotationValue.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/SubjectAnnotation.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/AbstractCriterion.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataQueryResult.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataResultColumn.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataResultRow.hbm.xml" />
@@ -68,7 +67,6 @@
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/AbstractList.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/AnalysisJobConfiguration.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/SampleAcquisition.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/Sample.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/Array.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/Gene.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/genomic/ArrayData.hbm.xml" />
@@ -83,6 +81,15 @@
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/StudySubjectAssignment.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/Study.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/translational/Subject.hbm.xml" />
+        
+        <!-- Updated Domain Bean Mappings -->
+        <!-- 
+	        These had to be modified to accomodate many-to-many mappings, however, the new
+	        release of caCore sdk 4.1 should fix these problems.
+        -->
+        <mapping resource="gov/nih/nci/caintegrator2/domain/update/AbstractCriterion.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/update/Sample.hbm.xml" />
+        
     </session-factory>
 </hibernate-configuration>
 
