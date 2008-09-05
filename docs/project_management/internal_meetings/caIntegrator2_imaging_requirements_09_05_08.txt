@@ -1,0 +1,50 @@
+VASARI/caIntegrator Meeting - 8/5/08
+
+Will FitzHugh, Shine Jacob, Eric Tavela, JP Marple, Carl Jaffe, John Freymann, Adam Flanders and Daniel Rubin met.
+
+Action Items:
+
+- Adam will send to the group a document describing the annotations as they exist and provide us with
+  some values for those annotations for some images.  The caveat is that they might change as he finishes
+  his validation but he said they were "close" to being frozen.
+- Will and/or Shine will set up a time to talk to Adam about use cases for image viewing, and to talk about
+  the deferred discussion points (getting representative images for VASARI and how to handle multiple image
+  series for a subject).
+- Will and/or Shine will follow up with John about his statement that NCIA subject id might not be unique.
+  Just want to make sure we understand the implications of this for caIntegrator2.
+ 
+Adam Flanders at TJU is in the process of validating what image annotations they will be gathering.  He is
+doing this by having multiple radiologists assess the same images and comparing the results for reproducibility.
+He is close to having this operation done but will send us what he has so far, which is descriptions of the 
+annotations and values of those annotations for some images.
+
+We had a discussion of DICOM tags compared to these image annotations.  DICOM tags are a fixed set of tag/value
+pairs that are currently associated with images in NCIA.  The image annotations can be numeric or text but can
+also be areas or graphical figures overlaid on the actual images.  The long-term plan is for these annotations to
+be stored in AIM format in some NCI repository (NCAA?  Maybe another acronym so the websites don't get swamped in
+March!).  For now we will get them in a file so we can load them into caIntegrator2.
+
+We discussed other DICOM viewers other than Cedera.  NCIA will hopefully in the future support viewers other than
+Cedera.  We also discussed how to show images to caIntegrator2 users.  The short-term plan is to link to Image or
+Image Series pages in NCIA.  This has the advantage of being fast and relatively easy to implement but the disadvantage
+of not showing annotations on the images, for which you'd need a DICOM viewer.  There was a good discussion of
+which would be better for the user, and it might be good to provide both given that some users might be interested in
+a quick browse and some might be interested in a detailed analysis.  Adam pointed out some more discussion
+of the use cases for image viewing might be useful.
+
+There appear to be some web-based DICOM viewers which we might leverage although we still need to decide whether to
+use NCIA as the way to get to DICOM images, or to have caIntegrator2 use the grid API to get the image and send it
+to a DICOM image directly.  John said that NCIA would probably support a non-Cedera DICOM viewer in the future.
+
+Questions about representative images and how to handle multiple studies and image series from a single subject were
+deferred because the best person to talk about it had to leave (Adam).
+
+We discussed what NCIA subject ids mean and don't mean.  NCIA by default generates internal subject ids that mean
+nothing outside of NCIA.  John also stated that they are not unique (see action item to clarify this).  It's possible
+to get back which NCIA ids correspond to submitted images afterwards but it is an ad-hoc thing upon request.  But,
+at submission time it is possible to request what subject ids get used in NCIA.  This is what waS done for the
+Rembrandt data, probably.  While caIntegrator2 does not assume that the subject ids match with clinical subject ids,
+it does need a way to map the two to each other.  For VASARI we decided to subsitute meaningful ids at NCIA submission
+time (verify with Adam that this is ok).
+
+c3PR was brought up as a possible source in the long run for subject id mapping data (but not now).
