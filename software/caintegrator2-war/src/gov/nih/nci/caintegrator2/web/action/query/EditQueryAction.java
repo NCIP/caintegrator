@@ -85,9 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.opensymphony.xwork2.ActionSupport;
+
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+
+// import things needed for creating test results
+//import gov.nih.nci.caintegrator2.web.action.query.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 /**
  * Edits a study (new or existing).
@@ -114,13 +126,17 @@ public class EditQueryAction extends ActionSupport {
         //check if test data is requested
         if (getInjectTest().equals("yes")) {
             //create test results for now
-            //QueryResult queryResult = new QueryResult();
             id = Long.parseLong("123");
             queryResult.setId(id);
-            query.setName("cai2 Test Query");
+            query.setName("cai2 Test Query - basic");
             query.setDescription("This is test query composed for testing inside the action class");
             queryResult.setQuery(query);
-        
+            queryResult.setRowCollection(getTestResultRows());     
+        } else if (getInjectTest().equals("vasari")) {
+            // create and run more realistic vasari query           
+            query.setName("cai2 Test Query - vasari");
+            query.setDescription("This is test query composed for testing inside the action class");
+            queryResult.setQuery(query);            
         }
         
         // write query result object into the session scope
@@ -160,5 +176,30 @@ public class EditQueryAction extends ActionSupport {
      */
     public String getInjectTest() {
         return injectTest;
+    }
+    
+    /**
+     * @return resultRows
+     */
+    public final Set<ResultRow> getTestResultRows() {
+        
+        //Create dummy results rows
+        Set<ResultRow> resultRows = new HashSet<ResultRow>();
+        
+        ResultRow row1 = new ResultRow();       
+        ImageSeriesAcquisition imageSeriesAcquisition1 = new ImageSeriesAcquisition();
+        StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        Sample sample1 = new Sample();
+        row1.setImageSeriesAcquisition(imageSeriesAcquisition1);
+        studySubjectAssignment1.setIdentifier("SubjectID1");
+        row1.setSubjectAssignment(studySubjectAssignment1);
+        sample1.setName("SampleName1");
+        sampleAcquisition1.setSample(sample1);
+        row1.setSampleAcquisition(sampleAcquisition1);
+        row1.getSampleAcquisition().getSample().setName("SampleId1");
+        resultRows.add(row1);
+        
+        return resultRows;
     }    
 }
