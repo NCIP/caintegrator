@@ -124,5 +124,6 @@ public class EditQueryActionTest {
         editQueryAction.getQueryResult();
         editQueryAction.setInjectTest("yes");
         editQueryAction.getInjectTest();
+        editQueryAction.getTestResultRows();
     }
 }

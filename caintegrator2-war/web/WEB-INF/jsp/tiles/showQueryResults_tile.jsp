@@ -10,27 +10,27 @@
          <br>
     <table class="data">
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>struts iterator</th>
+            <th>Row Index</th>
+            <th>Row Id</th>
+            <th>Subject Identifier</th>
+            <th>Sample Name</th>
         </tr>
-        <s:iterator value="studyConfigurations" status="status">
+        
+         <s:iterator value="queryResult.getRowCollection()" status="status">
             <s:if test="#status.odd == true">
               <tr class="odd">
             </s:if>
             <s:else>
               <tr class="even">
-            </s:else>            
-                <td><s:property value="study.shortTitleText" /></td>
-                <td><s:property value="study.longTitleText" /></td>
-                <td>
-                    <s:url id="editUrl" action="editStudy">
-                        <s:param name="studyConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{editUrl}">Edit</s:a> 
-                </td>
+            </s:else>
+                <td><s:property value="#status.count" /></td>       
+                <td><s:property value="rowIndex" /></td>
+                <td><s:property value="id" /></td>
+                <td><s:property value="subjectAssignment.identifier" /></td>
+                <td><s:property value="sampleAcquisition.sample.name" /></td>
             </tr>
-        </s:iterator>
+        </s:iterator>       
     </table>
 </s:form>
 
