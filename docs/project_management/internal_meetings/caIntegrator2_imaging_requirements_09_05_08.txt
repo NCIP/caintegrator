@@ -21,8 +21,8 @@ annotations and values of those annotations for some images.
 We had a discussion of DICOM tags compared to these image annotations.  DICOM tags are a fixed set of tag/value
 pairs that are currently associated with images in NCIA.  The image annotations can be numeric or text but can
 also be areas or graphical figures overlaid on the actual images.  The long-term plan is for these annotations to
-be stored in AIM format in some NCI repository (NCAA?  Maybe another acronym so the websites don't get swamped in
-March!).  For now we will get them in a file so we can load them into caIntegrator2.
+be stored in AIM format in some NCI repository or AIM data service.  For now we will get them in a file so we can
+load them into caIntegrator2.
 
 We discussed other DICOM viewers other than Cedera.  NCIA will hopefully in the future support viewers other than
 Cedera.  We also discussed how to show images to caIntegrator2 users.  The short-term plan is to link to Image or
