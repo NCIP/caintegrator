@@ -108,7 +108,7 @@ import java.util.List;
  * upon and based on that it sorts the rows and returns it in a List form.
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See handleNumericValues()
-public final class ResultRowComparator implements Comparator <ResultRow> {
+final class ResultRowComparator implements Comparator <ResultRow> {
 
     private static final int EQUAL        = 0;
     private static final int LESS_THAN    = -1;
@@ -130,7 +130,7 @@ public final class ResultRowComparator implements Comparator <ResultRow> {
      * @param sortColumns Ordered list of columns to sort the rows by. 
      * @return List of rows that are sorted.
      */
-    public static List<ResultRow> sort(Collection<ResultRow> rowsToSort, List<ResultColumn> sortColumns) {
+    static List<ResultRow> sort(Collection<ResultRow> rowsToSort, List<ResultColumn> sortColumns) {
         for (ResultColumn col : sortColumns) {
             if (col.getSortType() == null) {  // Check sort types and if not there assume it's ascending.
                 col.setSortType(SortTypeEnum.ASCENDING.getValue());

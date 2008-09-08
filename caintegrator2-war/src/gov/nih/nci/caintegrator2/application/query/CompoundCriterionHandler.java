@@ -102,7 +102,7 @@ import java.util.Set;
 /**
  * Handles CompoundCriterion objects.
  */
-public final class CompoundCriterionHandler extends AbstractCriterionHandler {
+final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private final Collection <AbstractCriterionHandler> handlers;
     private final CompoundCriterion compoundCriterion;
@@ -119,7 +119,7 @@ public final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @param compoundCriterion - compound criterion to create from.
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
-    public static CompoundCriterionHandler create(CompoundCriterion compoundCriterion) {
+    static CompoundCriterionHandler create(CompoundCriterion compoundCriterion) {
         if (compoundCriterion.getCriterionCollection() != null) {
             Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
             for (AbstractCriterion abstractCriterion : compoundCriterion.getCriterionCollection()) {

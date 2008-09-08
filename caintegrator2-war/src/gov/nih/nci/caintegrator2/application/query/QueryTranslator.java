@@ -100,7 +100,7 @@ import java.util.Set;
  * Translates a Query to it's various compound criterion, retrieves the results after
  * running the criterion against the database, and fills in the columns.
  */
-public class QueryTranslator {
+class QueryTranslator {
 
     private final ResultHandler resultHandler;
     private final Query query;
@@ -112,7 +112,7 @@ public class QueryTranslator {
      * @param dao - Dao to read from database.
      * @param resultHandler - ResultHandler to handle the results.
      */
-    public QueryTranslator(Query query, CaIntegrator2Dao dao, ResultHandler resultHandler) {
+    QueryTranslator(Query query, CaIntegrator2Dao dao, ResultHandler resultHandler) {
         this.query = query;
         this.dao = dao;
         this.resultHandler = resultHandler;
@@ -122,7 +122,7 @@ public class QueryTranslator {
      * Executes a query and returns the QueryResult.
      * @return result of the query execution.
      */
-    public QueryResult execute() {
+    QueryResult execute() {
         if (query.getCompoundCriterion() != null) {
             CompoundCriterionHandler compoundCriterionHandler = 
                 CompoundCriterionHandler.create(query.getCompoundCriterion());

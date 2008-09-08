@@ -95,7 +95,7 @@ import java.util.Set;
 /**
  * Abstract Criterion Handler Class.
  */
-public abstract class AbstractCriterionHandler {
+abstract class AbstractCriterionHandler {
     
     /**
      * Gets all matches from the DAO.
