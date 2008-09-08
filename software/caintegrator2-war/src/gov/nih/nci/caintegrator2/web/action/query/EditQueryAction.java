@@ -100,6 +100,10 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 
 /**
  * Edits a study (new or existing).
@@ -191,6 +195,11 @@ public class EditQueryAction extends ActionSupport {
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
         Sample sample1 = new Sample();
+        ResultValue resultValue1 = new ResultValue();
+        ResultColumn resultColumn1 = new ResultColumn();
+        AbstractAnnotationValue abstractAnnotationValue1 = new AbstractAnnotationValue();
+        Set<ResultValue> resultValuesCollection1 = new HashSet<ResultValue>();
+        
         row1.setImageSeriesAcquisition(imageSeriesAcquisition1);
         studySubjectAssignment1.setIdentifier("SubjectID1");
         row1.setSubjectAssignment(studySubjectAssignment1);
@@ -198,6 +207,10 @@ public class EditQueryAction extends ActionSupport {
         sampleAcquisition1.setSample(sample1);
         row1.setSampleAcquisition(sampleAcquisition1);
         row1.getSampleAcquisition().getSample().setName("SampleId1");
+        resultColumn1.setAnnotationDefinition(new AnnotationDefinition());
+        resultValue1.setValue(abstractAnnotationValue1);
+        row1.setValueCollection(resultValuesCollection1);
+        row1.getValueCollection().add(resultValue1);
         resultRows.add(row1);
         
         return resultRows;

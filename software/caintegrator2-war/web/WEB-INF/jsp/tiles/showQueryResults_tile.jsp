@@ -29,6 +29,16 @@
                 <td><s:property value="id" /></td>
                 <td><s:property value="subjectAssignment.identifier" /></td>
                 <td><s:property value="sampleAcquisition.sample.name" /></td>
+                
+                <s:if test="getValueCollection() != null && !getValueCollection().isEmpty()">
+                    <s:iterator value="getValueCollection()" status="valueStatus">
+                                <td><s:property value="#valueStatus.getCount" /><s:property value="value" /></td>                
+                    </s:iterator>
+                </s:if>
+                <s:else>
+                  <td>No Result Values</td>
+                </s:else>                
+                
             </tr>
         </s:iterator>       
     </table>
