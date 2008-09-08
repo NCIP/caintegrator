@@ -102,7 +102,7 @@ import java.util.Set;
  * Handles AnnotationCriterion objects by retrieving the proper data from the DAO.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")   // See getMatches()
-public class AnnotationCriterionHandler extends AbstractCriterionHandler {
+class AnnotationCriterionHandler extends AbstractCriterionHandler {
 
     private final AbstractAnnotationCriterion abstractAnnotationCriterion;
     
@@ -110,7 +110,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
      * Constructor based on the abstractAnnotationCriterion to use.
      * @param abstractAnnotationCriterion criterion object to use.
      */
-    public AnnotationCriterionHandler(AbstractAnnotationCriterion abstractAnnotationCriterion) {
+    AnnotationCriterionHandler(AbstractAnnotationCriterion abstractAnnotationCriterion) {
         this.abstractAnnotationCriterion = abstractAnnotationCriterion;
     }
 
@@ -119,7 +119,7 @@ public class AnnotationCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     @SuppressWarnings({ "PMD.ExcessiveMethodLength" })   // switch statement and argument checking
-    public Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
+    Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
         EntityTypeEnum entityType = EntityTypeEnum.getByValue(abstractAnnotationCriterion.getEntityType());
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
