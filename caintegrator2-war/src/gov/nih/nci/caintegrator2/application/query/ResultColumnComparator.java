@@ -92,7 +92,7 @@ import java.util.Comparator;
 /**
  * 
  */
-public class ResultColumnComparator implements Comparator <ResultColumn> {
+class ResultColumnComparator implements Comparator<ResultColumn> {
 
     /**
      * {@inheritDoc}
