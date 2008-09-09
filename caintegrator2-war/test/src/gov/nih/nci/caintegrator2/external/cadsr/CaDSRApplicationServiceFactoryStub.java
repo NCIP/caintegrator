@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,31 +85,95 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.query.cql.CQLQuery;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This is the facade that interfaces with caDSR to access Common Data Elements.
- */
-public interface CaDSRFacade {
+import org.hibernate.criterion.DetachedCriteria;
 
-    /**
-     * To retrieve all candidate Data Elements given keywords.
-     * @param keywords List of keywords to search caDSR for.
-     * @return - DataElements that freestyle search found.
-     */
-    List<DataElement> retreiveCandidateDataElements(List<String> keywords);
+/**
+ * 
+ */
+public class CaDSRApplicationServiceFactoryStub implements CaDSRApplicationServiceFactory {
+
+    public ApplicationService retrieveCaDsrApplicationService(String caDsrUrl) throws IllegalStateException {
+        return new ApplicationServiceStub();
+    }
     
-    /**
-     * Retrieves the ValueDomain object from a data element ID.  Currently this function is disabled and
-     * won't work unless the proper caDSR URL and freestyle search URL are injected into the implemented version.
-     * The reason it's disabled is because caDSR 4.0 is on Stage environment, when it is in production, this can
-     * be activated to work by a simple spring configuration change of the URL.
-     * @param dataElementId - Id from caDSR data element.
-     * @return - ValueDomain object associated with data element.
-     * @throws ConnectionException - Error connecting to caDSR.
-     */
-    ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException; 
-    
+    static class ApplicationServiceStub implements ApplicationService {
+
+        public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
+            return null;
+        }
+
+        public Integer getMaxRecordsCount() throws ApplicationException {
+            return null;
+        }
+
+        public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName)
+                throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> query(Object criteria, Integer firstRow, String targetClassName)
+                throws ApplicationException {
+            return null;
+        }
+
+
+        public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
+            gov.nih.nci.cadsr.domain.DataElement de = new gov.nih.nci.cadsr.domain.DataElement();
+            gov.nih.nci.cadsr.domain.EnumeratedValueDomain vd = new gov.nih.nci.cadsr.domain.EnumeratedValueDomain();
+            de.setValueDomain(vd);
+            vd.setDatatypeName("NUMBER");
+            vd.setLongName("Some Value Domain");
+            vd.setPublicID(Long.valueOf(2));
+            List<Object> objects = new ArrayList<Object>();
+            objects.add(de);
+            return objects;
+        }
+
+        public List<Object> search(String path, List<?> objList) throws ApplicationException {
+            return null;
+        }
+
+        public List<Object> search(String path, Object obj) throws ApplicationException {
+            return null;
+        }
+        
+        
+    }
+
 }
