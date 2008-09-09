@@ -88,6 +88,8 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -118,6 +120,13 @@ public class CaDSRFacadeImplTest {
         assertEquals("test", de.getLongName());
         assertEquals("congestive heart failure", de.getDefinition());
         assertEquals(Long.valueOf(2), de.getPublicId());
+    }
+    
+    @Test
+    public void testRetrieveValueDomainForDataElement() throws ConnectionException {
+        ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1));
+        assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDatatype());
+        assertEquals(Long.valueOf(2),valueDomain.getPublicID());
     }
     
     @Test

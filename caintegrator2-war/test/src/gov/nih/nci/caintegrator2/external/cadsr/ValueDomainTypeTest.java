@@ -85,29 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.Collections;
-import java.util.List;
+import org.junit.Test;
 
-public class CaDSRFacadeStub implements CaDSRFacade {
+public class ValueDomainTypeTest {
 
-    public boolean retreiveCandidateDataElementsCalled;
-    public boolean retrieveValueDomainForDataElementCalled;
-    
-    public void clear() {
-        retreiveCandidateDataElementsCalled = false;
-        retrieveValueDomainForDataElementCalled = false;
+    @Test
+    public void testGetByValue() {
+        assertEquals(ValueDomainType.ENUMERATED, ValueDomainType.getByValue("enumerated"));
+        assertNull(ValueDomainType.getByValue(null));
     }
 
-    public List<DataElement> retreiveCandidateDataElements(List<String> keywords) {
-        retreiveCandidateDataElementsCalled = true;
-        return Collections.emptyList();
-    }
-
-    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
-        retrieveValueDomainForDataElementCalled = true;
-        return null;
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        ValueDomainType.checkType("no match");
     }
 
 }
