@@ -87,10 +87,12 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -99,17 +101,26 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CaDSRFacadeImplTestIntegration {
 
     private CaDSRFacadeImpl caDSRFacade;
-
+    private static final Logger LOGGER = Logger.getLogger(CaDSRFacadeImplTestIntegration.class);
+//    private Long validDataElementPublicId;
+    
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("cadsr-test-config.xml", CaDSRFacadeImplTestIntegration.class); 
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                "cadsr-test-config.xml", CaDSRFacadeImplTestIntegration.class); 
         caDSRFacade = (CaDSRFacadeImpl) context.getBean("caDSRFacade"); 
     }
 
     @Test
-    public void testRetreiveCandidateDataElements() {
-        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
-        assertNotNull(dataElements);
+    public void testRetreiveCandidateDataElements() throws ConnectionException {
+        List<DataElement> dataElements = 
+            caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
+        assertNotNull(dataElements);        
+//        validDataElementPublicId = dataElements.get(0).getPublicId();
     }
-
+    
+//    @Test
+//    public void testRetrieveValueDomainForDataElement() throws ConnectionException {
+//        assertNotNull(caDSRFacade.retrieveValueDomainForDataElement(validDataElementPublicId).getPublicID());
+//    }
 }

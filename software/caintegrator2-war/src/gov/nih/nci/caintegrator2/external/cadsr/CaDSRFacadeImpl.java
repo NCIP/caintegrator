@@ -85,8 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
+import gov.nih.nci.cadsr.domain.EnumeratedValueDomain;
+import gov.nih.nci.cadsr.domain.NonenumeratedValueDomain;
 import gov.nih.nci.cadsr.freestylesearch.util.Search;
+import gov.nih.nci.cadsr.freestylesearch.util.SearchAC;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchResults;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.system.applicationservice.ApplicationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,10 +101,14 @@ import java.util.List;
 /**
  * Implements the CaDSRFacade interface.
  */
+@SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity" }) // See retrieveValueDomainForDataElement
 public class CaDSRFacadeImpl implements CaDSRFacade {
+    
     
     private Search search;
     private String dataDescription;
+    private CaDSRApplicationServiceFactory caDsrApplicationServiceFactory;
+    private String caDsrUrl;
 
     /**
      * {@inheritDoc}
@@ -114,10 +124,55 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
           }
 
         String keywordsString = sb.toString();
-        search.setDataDescription(getDataDescription());
+        search.setDataDescription(dataDescription);
+        // Restrict results to only Data Elements
+        search.restrictResultsByType(SearchAC.DE);
         return convertSearchResultsToDataElements(search.findReturningSearchResults(keywordsString));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity" }) // Type checking and casting
+    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
+        ValueDomain valueDomain = new ValueDomain();
+        try {
+            // Won't have to provide a URL when it goes from stage to production.
+            ApplicationService cadsrApi = caDsrApplicationServiceFactory.retrieveCaDsrApplicationService(caDsrUrl);
+
+            gov.nih.nci.cadsr.domain.DataElement cadsrDataElement = new gov.nih.nci.cadsr.domain.DataElement();
+            cadsrDataElement.setPublicID(dataElementId);
+            List<Object> cadsrDataElements = cadsrApi.search(
+                    gov.nih.nci.cadsr.domain.DataElement.class, cadsrDataElement);
+            
+            if (!cadsrDataElements.isEmpty()) {
+                gov.nih.nci.cadsr.domain.DataElement cadsrRetrievedDataElement = 
+                    (gov.nih.nci.cadsr.domain.DataElement) cadsrDataElements.get(0);
+                gov.nih.nci.cadsr.domain.ValueDomain cadsrValueDomain = cadsrRetrievedDataElement.getValueDomain();
+                // Default will be String, Character, Alphanumeric, and Alpha DVG
+                AnnotationTypeEnum annotationType = AnnotationTypeEnum.STRING;
+                String cadsrDataType = cadsrValueDomain.getDatatypeName();
+                if (cadsrDataType.matches("DATE")) {
+                    annotationType = AnnotationTypeEnum.DATE;
+                }
+                if (cadsrDataType.matches("NUMBER")) {
+                    annotationType = AnnotationTypeEnum.NUMERIC;
+                }
+                valueDomain.setDatatype(annotationType.getValue());
+                valueDomain.setLongName(cadsrValueDomain.getLongName());
+                valueDomain.setPublicID(cadsrValueDomain.getPublicID());
+                if (cadsrValueDomain instanceof EnumeratedValueDomain) {
+                    valueDomain.setValueDomainType(ValueDomainType.ENUMERATED);
+                }
+                if (cadsrValueDomain instanceof NonenumeratedValueDomain) {
+                    valueDomain.setValueDomainType(ValueDomainType.NON_ENUMERATED);
+                }
+            }
+            return valueDomain;
+        } catch (Exception e) {
+            throw new ConnectionException("Couldn't connect to the specified server", e);
+    }
+    }
     
     private List<DataElement> convertSearchResultsToDataElements(List<SearchResults> searchResults) {
         List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -127,17 +182,9 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             de.setDefinition(sr.getPreferredDefinition());
             de.setLongName(sr.getLongName());
             de.setPublicId(Long.valueOf(sr.getPublicID()));
-            // de.setValueDomain = ?
             dataElements.add(de);
         }
         return dataElements;
-    }
-
-    /**
-     * @return the search
-     */
-    public Search getSearch() {
-        return search;
     }
 
     /**
@@ -147,20 +194,25 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
         this.search = search;
     }
 
-
-    /**
-     * @return the dataDescription
-     */
-    public String getDataDescription() {
-        return dataDescription;
-    }
-
-
     /**
      * @param dataDescription the dataDescription to set
      */
     public void setDataDescription(String dataDescription) {
         this.dataDescription = dataDescription;
+    }
+
+    /**
+     * @param caDsrUrl the caDsrUrl to set
+     */
+    public void setCaDsrUrl(String caDsrUrl) {
+        this.caDsrUrl = caDsrUrl;
+    }
+
+    /**
+     * @param caDsrApplicationServiceFactory the caDsrApplicationServiceFactory to set
+     */
+    public void setCaDsrApplicationServiceFactory(CaDSRApplicationServiceFactory caDsrApplicationServiceFactory) {
+        this.caDsrApplicationServiceFactory = caDsrApplicationServiceFactory;
     }
     
     
