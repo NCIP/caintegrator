@@ -13,14 +13,23 @@
     
     <bean id="caDSRFacade" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
         <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>
+        <!-- when 4.0 hits production, these URL's will change, need to wait on that. -->
+        <!-- <property name="dataDescription" value="http://freestyle-stage2.nci.nih.gov"/> -->
+        <!-- <property name="caDsrUrl" value="http://cadsrapi-stage2.nci.nih.gov/cadsrapi40/"/> -->
         <property name="search">
             <ref bean="search" />
+        </property>
+        <property name="caDsrApplicationServiceFactory">
+            <ref bean="caDsrApplicationServiceFactoryImpl"/>
         </property>
     </bean>
     
     <bean id="caDSRFacadeUnit" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
         <property name="search">
             <ref bean="searchStub" />
+        </property>
+        <property name="caDsrApplicationServiceFactory">
+            <ref bean="caDsrApplicationServiceFactoryStub"/>
         </property>
     </bean>
     
@@ -30,6 +39,10 @@
     <bean id="search" class="gov.nih.nci.cadsr.freestylesearch.util.Search" />
     
     <bean id="searchStub" class="gov.nih.nci.caintegrator2.external.cadsr.SearchStub" />
+    
+    <bean id="caDsrApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryImpl"/>
+    
+    <bean id="caDsrApplicationServiceFactoryStub" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryStub"/>
     
 
 </beans>
