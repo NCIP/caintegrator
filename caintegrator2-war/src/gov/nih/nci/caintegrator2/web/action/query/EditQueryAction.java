@@ -86,10 +86,14 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import java.util.HashSet;
+//import java.util.List;
 import java.util.Set;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
+//import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -108,12 +112,22 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 /**
  * Edits a study (new or existing).
  */
-public class EditQueryAction extends ActionSupport {
+public class EditQueryAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
     
+    private StudyManagementService studyManagementService;   
     private QueryResult queryResult = new QueryResult();
     private String injectTest = "no";
+    
+    /**
+     * The 'prepare' interceptor will look for this method enabling 
+     * preprocessing.
+     */
+    public void prepare() {
+        EditQueryHelper editQueryHelper = new EditQueryHelper();
+        editQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+    }
 
     /**
      * {@inheritDoc}
@@ -214,5 +228,20 @@ public class EditQueryAction extends ActionSupport {
         resultRows.add(row1);
         
         return resultRows;
-    }    
+    }
+    
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
+    }
+    
 }
