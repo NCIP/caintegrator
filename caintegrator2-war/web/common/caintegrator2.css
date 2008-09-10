@@ -181,6 +181,12 @@ LEGEND
 { border:1px solid #999; margin:0 0 10px 0; }
 .box P
 { margin:10px 10px 0 10px; }
+.box2
+{ border:1px solid #999; margin:0; background:#fff url("../images/bg_h2.gif") repeat-x; height:1%; }
+.box2 H2
+{ padding-top:10px; padding-bottom:8px; border:0; border-bottom:1px solid #999; }
+.whitebg
+{ background:#fff; margin-top:0; padding:10px 0 0 0; font-size:109%; height:1%; }
 .bigsearch_wrapper
 { background:#d9e3ec }
 .bigsearch
@@ -266,33 +272,6 @@ TABLE.login TD.value
 { padding:3px; }
 
 
-/* Tabbed Navigation */
-
-#tabbed 
-{	float:left; padding-left:10px; font-size:92%; font-weight:bold; }
-#tabbed LI
-{	margin:0 5px 0 0; padding:0 5px 0 0; background:url("../images/bg_tabs.gif") 100% -100px;	float:left;	text-align:center; }
-#tabbed LI.active
-{ background:url("../images/bg_tabs.gif") 100% 0; }
-#tabbed LI A, #tabbed LI A:visited, #tabbed LI SPAN 
-{	display:block; float:left; padding:5px 11px 5px 16px; text-align:center; white-space:nowrap; background:url("../images/bg_tabs.gif") 0 -100px;
-	text-decoration:none;	min-height:17px; /* fixes FX/Mac issue */	color:#146392; }
-#tabbed>LI A, #tabbed>LI A:visited, #tabbed>LI SPAN
-{ padding:7px 11px 3px 16px; }
-#tabbed LI.active A, #tabbed LI.active SPAN
-{	color:#333; background:url("../images/bg_tabs.gif") 0 0; }
-#tabbed LI:hover
-{	background-position:100% -200px;}
-#tabbed LI:hover A
-{	background-position:0 -200px; }
-#tabbed LI.active:hover
-{	background-position:100% 0;}
-#tabbed LI.active:hover A
-{	background-position:0 0; text-decoration:none; }
-#tabbed LI A:hover
-{text-decoration:none; }
-
-
 
 /* Confirmation or Error Messages */
 
@@ -302,6 +281,7 @@ TABLE.login TD.value
 { background:#fff; color:#c00; border:1px solid #c00; padding:15px; margin-bottom:15px; }
 .error_msg LABEL
 { font-size:100%; color:#c00; text-decoration:underline }
+
 
 
 /* Inline Error Messages */
@@ -407,17 +387,52 @@ TABLE.data TABLE TR.even
 { background:#fff }
 
 
-/* Tabs */
 
-.tabs
-{ color:#999; margin:10px 0; background:#fbfbfb url("../images/bg_tabbar.gif") repeat-x bottom; padding:7px; border-bottom:1px solid #999; font-weight:bold; }
-.tabs A
-{ font-size:120%; background:#dedede url("../images/bg_tab.gif") repeat-x bottom; border:1px solid #999; padding:7px 25px; margin:0 7px; text-decoration:underline !important }
-.tabs A.selected
-{ background:url("../images/bg_tabselected.gif") repeat-x top; border-bottom:1px solid #fbfbfb; color:#333; text-decoration:none !important }
-.tabbed .searchresults
-{ margin:10px auto; width:96%; }
+/* Control.Tabs */
 
+UL#maintabs
+{ height:1.6em; margin:0; font-weight:bold; list-style:none; padding-left:3px; clear:both; }
+UL#maintabs LI
+{ float:left;   margin:0; padding:0 0 0 5px; text-align:center; background:none }
+UL#maintabs LI A 
+{ font-size:115%; text-decoration:none !important; display:block; margin:0; padding:5px 10px; background:#e4e4e4 url("../images/bg_h2.gif") repeat-x 0 -10px; color:#475b82; text-decoration:none; border-top:2px solid #efefef;  border-right:1px solid #ccc;  }
+UL#maintabs LI A:hover 
+{   color:#333; background:#efefef; text-decoration:none !important; }
+UL#maintabs LI A.active, UL#maintabs LI A.active:hover  
+{ outline:none; color:#fff; background-color:#5d7ba2; border-top:3px solid #475b82; border-left:1px solid #475b82; border-right:0;  background-image:none }
+UL#maintabs LI.active
+{ color:#333; background-color:#5d7ba2; }
+UL#maintabs LI A:focus
+{ -moz-outline-style:none; }
+
+UL#sectabs
+{ height:1.4em; margin:-2.3em 10px 0 0; font-weight:bold; list-style:none; padding-left:3px; clear:both; float:right; }
+UL#sectabs LI
+{ float:left;   margin:0; padding:0 5px 0 0; text-align:center; background:none }
+UL#sectabs LI A 
+{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
+UL#sectabs LI A:hover 
+{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../images/bg_th.gif") repeat-x 0 -5px; color:#000; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
+UL#sectabs LI A.active, UL#sectabs LI A.active:hover 
+{ outline:none; color:#333; background-color:#fff; border-top:3px solid #5d7ba2; border-bottom:2px solid #fff; border-left:1px solid #999; border-right:1px solid #999; background-image:none }
+UL#sectabs LI.active
+{ color:#333;   background-color:#fff; }
+UL#sectabs LI A:focus
+{ -moz-outline-style:none; }
+
+#tabboxwrapper
+{ clear:both; padding:5px; background:#5d7ba2 url("../images/bg_tabboxwrapper.gif") repeat-x; border:1px solid #475b82; border-top:0; height:1%; }
+
+/* Forms */
+
+TABLE.form
+{ margin:10px auto; font-size:92% }
+TABLE.form TD
+{ padding:3px }
+.label LABEL
+{ font-size:92% }
+.value INPUT, .value SELECT, .value TEXTAREA
+{ display:block; margin-top:-7px }
 
 
 /* More Button Styles */
