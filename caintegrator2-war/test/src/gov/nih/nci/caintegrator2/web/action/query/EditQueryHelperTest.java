@@ -85,49 +85,32 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+//import static org.junit.Assert.assertNull;
+//import static org.junit.Assert.assertEquals;
 
-import com.opensymphony.xwork2.Action;
+import gov.nih.nci.caintegrator2.web.action.query.QueryCriteriaRow;
 
-public class EditQueryActionTest {
+public class EditQueryHelperTest {
 
-    private EditQueryAction editQueryAction;
-    private QueryResult qR;
-    private StudyManagementService studyManagementService;
+    private EditQueryHelper editQueryHelper = new EditQueryHelper();
+    private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
+
     
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", EditQueryActionTest.class); 
-        editQueryAction = (EditQueryAction) context.getBean("editQueryAction");
-        qR = new QueryResult();
+        editQueryHelper.setAdvancedView(Boolean.TRUE);
+        editQueryHelper.setSingleRowInList(queryCriteriaRow);
     }
-
+   
     @Test
-    public void testPrepare() {
-        editQueryAction.prepare();
-//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-//        editQueryAction.getModel().setId(1L);
-//        editQueryAction.prepare();
-//        studyConfiguration = editQueryAction.getStudyConfiguration();
-//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-    }
+    public void testIt() {        
+        assertTrue(editQueryHelper.isAdvancedView());
+        assertNotNull(editQueryHelper.getRowList());
+    }  
     
-    @Test
-    public void testExecute() {
-        assertEquals(Action.SUCCESS, editQueryAction.execute());
-        editQueryAction.setQueryResult(qR);
-        editQueryAction.getQueryResult();
-        editQueryAction.setInjectTest("yes");
-        editQueryAction.getInjectTest();
-        editQueryAction.getTestResultRows();
-        editQueryAction.setStudyManagementService(studyManagementService);
-        editQueryAction.getStudyManagementService();
-    }
 }
