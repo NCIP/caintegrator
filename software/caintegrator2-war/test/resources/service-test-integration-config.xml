@@ -29,6 +29,21 @@
             <ref local="arrayDataService"/>
         </property>
     </bean>
+
+    <bean id="queryManagementService" 
+        class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+        <property name="resultHandler">
+            <ref local="resultHandler"/>
+        </property>
+    </bean>
+    
+    <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
     
     <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
         <property name="sessionFactory">
