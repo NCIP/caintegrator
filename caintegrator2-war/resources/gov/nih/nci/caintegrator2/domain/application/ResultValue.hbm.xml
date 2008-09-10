@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+	<class name="ResultValue" table="RESULT_VALUE" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the ResultValue class -->
+		<!-- Associations mapping for the ResultValue class -->
+		<many-to-one name="column" class="gov.nih.nci.caintegrator2.domain.application.ResultColumn" column="RESULT_COLUMN_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="value" class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue" column="ANNOTATION_VALUE_ID" lazy="proxy" cascade="save-update" />
+	</class>
+</hibernate-mapping>

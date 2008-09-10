@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+	<class name="ArrayDataMatrix" table="ARRAY_DATA_MATRIX" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the ArrayDataMatrix class -->
+		<!-- Associations mapping for the ArrayDataMatrix class -->
+		<many-to-one name="reporterSet" class="gov.nih.nci.caintegrator2.domain.genomic.ReporterSet" column="REPORTER_SET_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update" />
+		<set name="sampleDataCollection" lazy="true" cascade="save-update" >
+			<cache usage="read-write" />
+			<key column="ARRAY_DATA_MATRIX_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
+		</set>
+	</class>
+</hibernate-mapping>

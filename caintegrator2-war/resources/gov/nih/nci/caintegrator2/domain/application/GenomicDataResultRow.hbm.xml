@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+	<class name="GenomicDataResultRow" table="GENOMIC_DATA_RESULT_ROW" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the GenomicDataResultRow class -->
+		<property name="rowIndex" type="integer" column="ROW_INDEX"/>
+		<!-- Associations mapping for the GenomicDataResultRow class -->
+		<set name="valueCollection" lazy="true" cascade="save-update" >
+			<cache usage="read-write" />
+			<key column="GENOMIC_DATA_RESULT_ROW_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue"/>
+		</set>
+		<many-to-one name="reporter" class="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter" column="ABSTRACT_REPORTER_ID" lazy="proxy" cascade="save-update" />
+	</class>
+</hibernate-mapping>

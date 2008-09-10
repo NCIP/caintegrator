@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.annotation">
+	<class name="AnnotationDefinition" table="ANNOTATION_DEFINITION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AnnotationDefinition class -->
+		<property name="displayName" type="string" column="DISPLAY_NAME"/>
+		<property name="preferredDefinition" type="string" column="PREFERRED_DEFINITION"/>
+		<property name="type" type="string" column="TYPE"/>
+		<property name="unitsOfMeasure" type="string" column="UNITS_OF_MEASURE"/>
+		<!-- Associations mapping for the AnnotationDefinition class -->
+		<set name="annotationValueCollection" lazy="true" cascade="save-update" >
+			<cache usage="read-write" />
+			<key column="ANNOTATION_DEFINITION_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>
+		</set>
+		<set name="permissableValueCollection" lazy="true" cascade="save-update" >
+			<cache usage="read-write" />
+			<key column="ANNOTATION_DEFINITION_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue"/>
+		</set>
+		<many-to-one name="cde" class="gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement" column="COMMON_DATA_ELEMENT_ID" unique="true" lazy="proxy" cascade="save-update"/>
+	</class>
+</hibernate-mapping>

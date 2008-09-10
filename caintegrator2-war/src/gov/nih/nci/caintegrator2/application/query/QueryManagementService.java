@@ -86,6 +86,7 @@
 
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
@@ -96,11 +97,19 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 public interface QueryManagementService {
 
     /**
-     * Executes a query and returns back the result.
+     * Executes a clinical query and returns back the result.
      * @param query item to execute.
      * @return - Result of the query being executed
      */
     QueryResult execute(Query query);
+    
+    /**
+     * Executes a query that returns a genomic data set.
+     * 
+     * @param query the query to execute.
+     * @return the resulting data.
+     */
+    GenomicDataQueryResult executeGenomicDataQuery(Query query);
     
     /**
      * Persists a query.

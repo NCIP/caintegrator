@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+	<class name="Query" table="QUERY" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the Query class -->
+		<property name="description" type="string" column="DESCRIPTION"/>
+		<property name="name" type="string" column="NAME"/>
+		<property name="resultType" type="string" column="RESULT_TYPE"/>
+		<property name="visibility" type="string" column="VISIBILITY"/>
+		<!-- Associations mapping for the Query class -->
+		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="save-update"/>
+		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update" />
+		<set name="columnCollection" lazy="true" cascade="save-update" >
+			<cache usage="read-write" />
+			<key column="QUERY_ID" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.ResultColumn"/>
+		</set>
+	</class>
+</hibernate-mapping>

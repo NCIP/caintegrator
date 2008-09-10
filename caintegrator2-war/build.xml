@@ -452,22 +452,19 @@
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2-ORM.JAR                                         ** -->
     <!-- ******************************************************************* -->
-    <target name="caintegrator2-orm.jar" depends="build:caintegrator2-cacore,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2-orm.jar" depends="hibernate.cfg.xml.deploy">
         <delete file="${caintegrator2-orm.jar}" />
         <jar destfile="${caintegrator2-orm.jar}">
             <manifest>
                 <attribute name="Generated-By" value="caCORE SDK Code Generator"/>
             </manifest>
-            <fileset dir="${caintegrator2-cacore.output.src.dir}">
+            <fileset dir="${caintegrator2.war.resources.src.dir}">
                 <include name="**/*.hbm.xml"/>
                 <include name="ehcache.xml"/>
             </fileset>
-            <fileset dir="${caintegrator2.war.resources.src.dir}">
-                <include name="**/*.hbm.xml"/>
+            <fileset dir="${caintegrator2.war.java.classes.dir}">
+                <include name="hibernate.cfg.xml"/>
             </fileset>
-                <fileset dir="${caintegrator2.war.java.classes.dir}">
-                    <include name="hibernate.cfg.xml"/>
-                </fileset>
         </jar>
     </target>
 
@@ -648,7 +645,7 @@
     </target>
 
     <target name="test:cobertura-check" depends="ivy:setup-test">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="80" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="70" totallinerate="78" />
     </target>
 
     <!-- ******************************************************************* -->

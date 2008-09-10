@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+	<class name="ArrayData" table="ARRAY_DATA" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the ArrayData class -->
+		<!-- Associations mapping for the ArrayData class -->
+		<many-to-one name="sample" class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="array" class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="ARRAY_ID" unique="true" lazy="proxy" cascade="save-update" />
+		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="reporterSet" class="gov.nih.nci.caintegrator2.domain.genomic.ReporterSet" column="REPORTER_SET_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="matrix" class="gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix" column="ARRAY_DATA_MATRIX_ID" lazy="proxy" cascade="save-update" />
+	</class>
+</hibernate-mapping>

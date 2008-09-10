@@ -85,12 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import java.util.Collection;
+
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-
-import java.util.List;
 
 /**
  * Interface to the subsystem used store and retrieve microarray data.
@@ -120,7 +120,8 @@ public interface ArrayDataService {
      * @param reporters retrieve the values for these reporters only
      * @return the values.
      */
-    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, List<Array> arrays, List<AbstractReporter> reporters);
+    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<Array> arrays, 
+            Collection<AbstractReporter> reporters);
     
     /**
      * Loads the given array design into the system.
