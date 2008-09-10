@@ -85,11 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -101,26 +108,37 @@ public class QueryManagementServiceImplTest {
     
     private QueryManagementServiceImpl queryManagementService;
     private CaIntegrator2DaoStub dao;
+    private ArrayDataServiceStub arrayDataService;
     private Query query;
     
     @Before
     public void setup() {
         dao = new CaIntegrator2DaoStub();
-        ResultHandler resultHandler = new ResultHandlerStub();
+        ResultHandler resultHandler = new ResultHandlerImpl();
         dao.clear();
+        arrayDataService = new ArrayDataServiceStub();
         queryManagementService = new QueryManagementServiceImpl();
         queryManagementService.setDao(dao);
+        queryManagementService.setArrayDataService(arrayDataService);
         queryManagementService.setResultHandler(resultHandler);
         query = new Query();
-        //query.setId(Long.valueOf(1));
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setSubscription(new StudySubscription());
     }
 
     
     @Test
     public void testExecute() {
-        // test createQuery method.
         QueryResult queryResult = queryManagementService.execute(query);
-        assertNull(queryResult.getRowCollection());
+        assertNotNull(queryResult.getRowCollection());
+    }
+    
+    @Test
+    public void test() {
+        GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
+        assertNotNull(result.getRowCollection());
+        assertNotNull(result.getColumnCollection());
     }
 
     

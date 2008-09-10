@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
+	<class name="AbstractList" table="ABSTRACT_LIST" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractList class -->
+		<property name="description" type="string" column="DESCRIPTION"/>
+		<property name="name" type="string" column="NAME"/>
+		<property name="visibility" type="string" column="VISIBILITY"/>
+		<!-- Associations mapping for the AbstractList class -->
+		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="save-update" />
+		<joined-subclass name="GeneList" table="GENE_LIST" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the GeneList class -->
+			<!-- Associations mapping for the GeneList class -->
+			<set name="geneCollection" table="GENE_LIST_GENE" lazy="true" inverse="true" cascade="save-update" >
+				<cache usage="read-write" />
+				<key column="GENE_LIST_ID" />
+				<many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" />
+			</set>
+		</joined-subclass>
+		<joined-subclass name="SubjectList" table="SUBJECT_LIST" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the SubjectList class -->
+			<!-- Associations mapping for the SubjectList class -->
+			<set name="subjectCollection" table="SUBJECT_LIST_SUBJECT" lazy="true" inverse="true" cascade="save-update" >
+				<cache usage="read-write" />
+				<key column="SUBJECT_LIST_ID" />
+				<many-to-many class="gov.nih.nci.caintegrator2.domain.translational.Subject" column="SUBJECT_ID" />
+			</set>
+		</joined-subclass>
+		<joined-subclass name="SampleList" table="SAMPLE_LIST" lazy="false">
+			<key column="ID" />
+			<!-- Associations mapping for the SampleList class -->
+			<set name="sampleCollection" table="SAMPLE_LIST_SAMPLE" lazy="true" inverse="true" cascade="save-update" >
+				<cache usage="read-write" />
+				<key column="SAMPLE_LIST_ID" />
+				<many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID" />
+			</set>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

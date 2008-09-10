@@ -98,6 +98,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@SuppressWarnings("unused")
 public class CaDSRFacadeImplTestIntegration {
 
     private CaDSRFacadeImpl caDSRFacade;

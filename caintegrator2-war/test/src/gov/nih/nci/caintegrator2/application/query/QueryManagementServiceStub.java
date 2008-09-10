@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
@@ -94,6 +95,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean saveCalled;
     public boolean executeCalled;
     public QueryResult QR;
+    public boolean executeGenomicDataQuery;
 
     public void save(Query query) {
         saveCalled = true;
@@ -102,6 +104,14 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public QueryResult execute(Query query) {
         executeCalled = true;
         return QR;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
+        executeGenomicDataQuery = true;
+        return null;
     }
     
 }

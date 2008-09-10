@@ -120,8 +120,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
     static CompoundCriterionHandler create(CompoundCriterion compoundCriterion) {
+        Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
         if (compoundCriterion.getCriterionCollection() != null) {
-            Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
             for (AbstractCriterion abstractCriterion : compoundCriterion.getCriterionCollection()) {
                 if (abstractCriterion instanceof AbstractAnnotationCriterion) {
                     handlers.add(new AnnotationCriterionHandler((AbstractAnnotationCriterion) abstractCriterion));
@@ -131,11 +131,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
             }
-            return new CompoundCriterionHandler(handlers, compoundCriterion);
-        } else {
-            // No handlers so we return a CompoundCriterionHandler with a null value.
-            return new CompoundCriterionHandler(null, compoundCriterion);
         }
+        return new CompoundCriterionHandler(handlers, compoundCriterion);
     }
 
     /**

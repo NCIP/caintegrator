@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -134,8 +135,8 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, List<Array> arrays, 
-            List<AbstractReporter> reporters) {
+    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<Array> arrays, 
+            Collection<AbstractReporter> reporters) {
         NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
         ArrayDataValues values = new ArrayDataValues();
         values.setArrayDataMatrix(arrayDataMatrix);

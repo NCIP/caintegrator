@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.annotation">
+	<class name="AbstractAnnotationValue" table="ABSTRACT_ANNOTATION_VALUE" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractAnnotationValue class -->
+		<!-- Associations mapping for the AbstractAnnotationValue class -->
+		<many-to-one name="annotationDefinition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="boundedValue" class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue" column="ABSTRACT_PERMISSABLE_VALUE_ID" lazy="proxy" cascade="save-update" />
+		<joined-subclass name="DateAnnotationValue" table="DATE_ANNOTATION_VALUE" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the DateAnnotationValue class -->
+			<property name="dateValue" type="java.util.Date" column="DATE_VALUE"/>
+		</joined-subclass>
+		<joined-subclass name="NumericAnnotationValue" table="NUMERIC_ANNOTATION_VALUE" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the NumericAnnotationValue class -->
+			<property name="numericValue" type="double" column="NUMERIC_VALUE"/>
+		</joined-subclass>
+		<joined-subclass name="StringAnnotationValue" table="STRING_ANNOTATION_VALUE" lazy="false">
+			<key column="ID" />
+			<!-- Attributes mapping for the StringAnnotationValue class -->
+			<property name="stringValue" type="string" column="STRING_VALUE"/>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
