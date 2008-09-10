@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.annotation">
+	<class name="CommonDataElement" table="COMMON_DATA_ELEMENT" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the CommonDataElement class -->
+		<property name="publicID" type="string" column="PUBLIC_ID"/>
+		<property name="version" type="string" column="VERSION"/>
+		<!-- Associations mapping for the CommonDataElement class -->
+	</class>
+</hibernate-mapping>

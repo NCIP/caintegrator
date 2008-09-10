@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
@@ -96,6 +98,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     
     private CaIntegrator2Dao dao;
     private ResultHandler resultHandler;
+    private ArrayDataService arrayDataService;
 
     /**
      * @param resultHandler the resultHandler to set
@@ -111,6 +114,14 @@ public class QueryManagementServiceImpl implements QueryManagementService {
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
         return queryTranslator.execute();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
+        GenomicQueryHandler handler = new GenomicQueryHandler(query, dao, arrayDataService);
+        return handler.execute();
+    }
 
     /**
      * {@inheritDoc}
@@ -124,5 +135,19 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 }

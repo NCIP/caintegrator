@@ -83,55 +83,131 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class ArrayDataServiceStub implements ArrayDataService {
+import org.apache.log4j.Logger;
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        Collection<Array> arrays = new HashSet<Array>();
-        arrays.add(new Array());
-        Collection<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.add(new GeneExpressionReporter());
-        return getData(arrayDataMatrix, arrays, reporters);
+/**
+ * Runs queries that return <code>GenomicDataQueryResults</code>.
+ */
+class GenomicQueryHandler {
+
+    private static final Logger LOG = Logger.getLogger(GenomicQueryHandler.class);
+    
+    private final Query query;
+    private final CaIntegrator2Dao dao;
+    private final ArrayDataService arrayDataService;
+
+    GenomicQueryHandler(Query query, CaIntegrator2Dao dao, ArrayDataService arrayDataService) {
+        this.query = query;
+        this.dao = dao;
+        this.arrayDataService = arrayDataService;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<Array> arrays, Collection<AbstractReporter> reporters) {
-        ArrayDataValues values = new ArrayDataValues();
-        for (AbstractReporter reporter : reporters) {
-            for (Array array : arrays) {
-                values.setValue(array, reporter, (float) 1.23);
+    GenomicDataQueryResult execute() {
+        ArrayDataValues values = getDataValues();
+        return createResult(values);
+    }
+
+    private GenomicDataQueryResult createResult(ArrayDataValues values) {
+        GenomicDataQueryResult result = createNewResult();
+        createResultRows(result, values);
+        Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
+        for (Array array : values.getAllArrays()) {
+            GenomicDataResultColumn column = new GenomicDataResultColumn();
+            result.getColumnCollection().add(column);
+            for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
+                GenomicDataResultRow row = reporterToRowMap.get(reporter);
+                GenomicDataResultValue value = new GenomicDataResultValue();
+                value.setColumn(column);
+                value.setValue(values.getValue(array, reporter));
+                row.getValueCollection().add(value);
             }
         }
-        return values;
+        result.setQuery(query);
+        return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
+    private Map<AbstractReporter, GenomicDataResultRow> createReporterToRowMap(GenomicDataQueryResult result) {
+        Map<AbstractReporter, GenomicDataResultRow> rowMap = new HashMap<AbstractReporter, GenomicDataResultRow>();
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            rowMap.put(row.getReporter(), row);
+        }
+        return rowMap;
+    }
+
+    private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
+        int index = 0;
+        for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
+            GenomicDataResultRow row = new GenomicDataResultRow();
+            row.setValueCollection(new ArrayList<GenomicDataResultValue>());
+            row.setReporter(reporter);
+            row.setRowIndex(index++);
+            result.getRowCollection().add(row);
+        }
+    }
+
+    private GenomicDataQueryResult createNewResult() {
+        GenomicDataQueryResult result = new GenomicDataQueryResult();
+        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
+        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
+        return result;
+    }
+
+    private ArrayDataValues getDataValues() {
+        Collection<Array> arrays = getMatchingArrays();
+        Collection<AbstractReporter> reporters = getMatchingReporters();
+        ArrayDataMatrix matrix = getDataMatrix();
+        return arrayDataService.getData(matrix, arrays, reporters);
+    }
+
+    private Collection<Array> getMatchingArrays() {
+        LOG.debug(dao.toString() + arrayDataService);
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
+        samplesOnly.add(EntityTypeEnum.SAMPLE);
+        Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
+        return getArrays(rows);
+    }
+
+    private Collection<Array> getArrays(Set<ResultRow> rows) {
+        Set<Array> arrays = new HashSet<Array>();
+        for (ResultRow row : rows) {
+            arrays.addAll(row.getSampleAcquisition().getSample().getArrayCollection());
+        }
+        return arrays;
+    }
+
+    private ArrayDataMatrix getDataMatrix() {
+        // TODO Auto-generated method stub
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void save(ArrayDataValues values) {
-        // no-op
+    private Collection<AbstractReporter> getMatchingReporters() {
+        // TODO Auto-generated method stub
+        return Collections.emptySet();
     }
 
 }

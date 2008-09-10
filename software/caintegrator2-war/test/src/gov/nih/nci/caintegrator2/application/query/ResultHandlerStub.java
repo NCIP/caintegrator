@@ -106,7 +106,7 @@ public class ResultHandlerStub implements ResultHandler {
      */
     public QueryResult createResults(Query query, Set<ResultRow> resultRows) {
         createResultsCalled = true;
-        return null;
+        return new QueryResult();
     }
 
 }
