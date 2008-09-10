@@ -14,19 +14,9 @@
     <h1>Login</h1>
     
     <s:form method="POST" action="j_acegi_security_check">
-        <table>
-            <tr>
-                <th>Username</th>
-                <td><s:textfield name="j_username" /></td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td><s:password name="j_password" /></td>
-            </tr>
-            <tr>
-                <td colspan="2"><s:submit value="Login" /></td>
-            </tr>
-        </table>
+	    <s:textfield label="Username" name="j_username" />
+	    <s:password label="Password" name="j_password" />
+	    <s:submit value="Login" />
     </s:form>
 
             
