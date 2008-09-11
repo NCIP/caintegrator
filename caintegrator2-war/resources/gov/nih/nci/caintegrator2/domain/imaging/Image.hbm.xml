@@ -7,6 +7,7 @@
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the Image class -->
+        <property name="identifier" type="string" column="IDENTIFIER"/>
 		<!-- Associations mapping for the Image class -->
 		<many-to-one name="series" class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeries" column="IMAGE_SERIES_ID" lazy="proxy" cascade="save-update" />
 		<set name="annotationCollection" lazy="true" cascade="save-update" >
