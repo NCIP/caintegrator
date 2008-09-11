@@ -305,6 +305,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn) {
         List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
         List<AnnotationFieldDescriptor> matchingDescriptors = 
@@ -320,6 +321,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
         return caDSRFacade.retreiveCandidateDataElements(fileColumn.getFieldDescriptor().getKeywordsAsList());
     }

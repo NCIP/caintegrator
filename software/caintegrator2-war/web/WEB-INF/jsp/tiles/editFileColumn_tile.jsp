@@ -11,111 +11,112 @@
     
     <h1>Assign Annotation Definition for Column: <s:property value="fileColumn.name" /></h1>
     
-    <s:form>
+    <s:form theme="simple">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="clinicalSource.id" />
         <s:hidden name="fileColumn.id" />
-        <table>
-            <tr>
-                <th>Column Type</th>
-                <td>
-                    <s:select name="columnType" list="columnTypes" required="true" />
-                </td>
-            </tr>
-            <tr>
-                <th>Keywords</th>
-                <td>
-                    <s:textfield name="fileColumn.fieldDescriptor.keywords"  />
-                </td>
-            </tr>
-            <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
-                <tr>
-                    <th>Name</th>
-                    <td>
-                        <s:textfield name="fileColumn.fieldDescriptor.definition.displayName"  />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Definition</th>
-                    <td>
-                        <s:textarea name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" />
-                    </td>
-                </tr>
-            </s:if>
-            <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
-                <tr>
-                    <th>CDE Public ID</th>
-                    <td>
-                        <s:property value="fileColumn.fieldDescriptor.definition.cde.publicID"  />
-                    </td>
-                </tr>
-            </s:if>
-            <tr>
-                <td colspan="2">
-                    <s:submit value="Update" action="updateFileColumn" /><s:submit value="Search" action="searchDefinitions" />
-                </td>
-            </tr>
-        </table>
+
+        <label class="label"> Column Type: </label> 
+        <s:select name="columnType" list="columnTypes" required="true" />
+        <s:submit value="Save Type" action= "saveColumnType" />
+        <br>
+        <br>
+        <s:if test="%{columnTypeAnnotation}">
+	        <label class="label"> Keywords: </label> 
+	        <s:textfield name="fileColumn.fieldDescriptor.keywords"  /> 
+	        <s:submit value="Search" action="searchDefinitions" />
+	        <br> <br>
+	        <s:submit value="New Definition" action="createNewDefinition" />
+	    </s:if>
+	</s:form>
+	
+	<s:form>
+	    <s:hidden name="studyConfiguration.id" />
+        <s:hidden name="clinicalSource.id" />
+        <s:hidden name="fileColumn.id" />
+	
+	    <s:if test="%{columnTypeAnnotation}">
+	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
+	           <hr>
+	           <h1>Current Annotation Definition: </h2>
+	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
+	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
+	            <s:select label="Annotation Type" name="annotationDataType" list="annotationDataTypes" required="true" />
+	        </s:if>
+	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
+	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 
+	            readonly="%{readOnly}"/> 
+	        </s:if>
+	        <s:submit value="Save Definition" action="updateFileColumn" />
+        </s:if>
     </s:form>
     
-    <table class="data">
-        <tr>
-            <th colspan="2">Matching Annotation Definitions</th>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <th>Definition</th>
-        </tr>
-        <s:iterator value="definitions" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-            <td>
-                <s:url id="selectDefinition" action="selectDefinition">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="fileColumn.id" value="fileColumn.id" />
-                    <s:param name="definitionIndex" value="#status.index" />
-                </s:url> 
-                <s:a href="%{selectDefinition}"><s:property value="displayName" /></s:a>
-            </td>
-            <td><s:property value="preferredDefinition" /></td>
-        </tr>
-        </s:iterator>
-    </table>
+    <s:if test="%{!definitions.isEmpty}">
+    <hr>
+	    <table class="data">
+	        <tr>
+	            <th colspan="2">Matching Annotation Definitions</th>
+	        </tr>
+	        <tr>
+	            <th>Name</th>
+	            <th>CDE Public ID</th>
+	            <th>Data Type</th>
+	            <th>Definition</th>
+	        </tr>
+	        <s:iterator value="definitions" status="status">
+	            <s:if test="#status.odd == true">
+	              <tr class="odd">
+	            </s:if>
+	            <s:else>
+	              <tr class="even">
+	            </s:else>            
+	            <td>
+	                <s:url id="selectDefinition" action="selectDefinition">
+	                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+	                    <s:param name="fileColumn.id" value="fileColumn.id" />
+	                    <s:param name="definitionIndex" value="#status.index" />
+	                </s:url> 
+	                <s:a href="%{selectDefinition}"><s:property value="displayName" /></s:a>
+	            </td>
+	            <td><s:property value="cde.publicID" /></td>
+	            <td><s:property value="type" /></td>
+	            <td><s:property value="preferredDefinition" /></td>
+	        </tr>
+	        </s:iterator>
+	    </table>
+    </s:if>
     
-    <table class="data">
-        <tr>
-            <th colspan="3">Matches from caDSR</th>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <th>Public ID</th>
-            <th>Definition</th>
-        </tr>
-        <s:iterator value="dataElements" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-            <td>
-                <s:url id="selectDataElement" action="selectDataElement">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="fileColumn.id" value="fileColumn.id" />
-                    <s:param name="dataElementIndex" value="#status.index" />
-                </s:url> 
-                <s:a href="%{selectDataElement}"><s:property value="longName" /></s:a>
-            </td>
-            <td><s:property value="publicId" /></td>
-            <td><s:property value="definition" /></td>
-        </tr>
-        </s:iterator>
-    </table>
-            
+    <s:if test="%{!dataElements.isEmpty}">
+	    <table class="data">
+	        <tr>
+	            <th colspan="3">Matches from caDSR</th>
+	        </tr>
+	        <tr>
+	            <th>Name</th>
+	            <th>Public ID</th>
+	            <th>Definition</th>
+	        </tr>
+	        <s:iterator value="dataElements" status="status">
+	            <s:if test="#status.odd == true">
+	              <tr class="odd">
+	            </s:if>
+	            <s:else>
+	              <tr class="even">
+	            </s:else>            
+	            <td>
+	                <s:url id="selectDataElement" action="selectDataElement">
+	                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+	                    <s:param name="fileColumn.id" value="fileColumn.id" />
+	                    <s:param name="dataElementIndex" value="#status.index" />
+	                </s:url> 
+	                <s:a href="%{selectDataElement}"><s:property value="longName" /></s:a>
+	            </td>
+	            <td><s:property value="publicId" /></td>
+	            <td><s:property value="definition" /></td>
+	        </tr>
+	        </s:iterator>
+	    </table>
+    </s:if>
 </div>
 
 <div class="clear"><br /></div>
