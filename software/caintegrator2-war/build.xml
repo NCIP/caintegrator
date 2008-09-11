@@ -285,12 +285,10 @@
     <target name="caintegrator2-beans.jar" depends="build:caintegrator2-cacore" />
 
     <target name="clean:caintegrator2-cacore">
-        <delete file="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
         <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="clean" />
     </target>
 
     <target name="build:caintegrator2-cacore">
-        <copy file="${docs.dir}/analysis_and_design/models/caintegrator2.xmi" tofile="${caintegrator2-cacore.dir}/models/caintegrator2.xmi" />
         <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="build-system" />
     </target>
 
