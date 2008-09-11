@@ -254,6 +254,10 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
                 }
                 definition.setPermissableValueCollection(permissableValues);
             }
+            
+            if (null != studyConfiguration.getStudy().getSubjectAnnotationCollection()) {
+                studyConfiguration.getStudy().getSubjectAnnotationCollection().add(definition);    
+            }
             dao.save(definition);
         }
     }
