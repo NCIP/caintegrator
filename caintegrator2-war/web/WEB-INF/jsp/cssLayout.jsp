@@ -12,6 +12,8 @@
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="common/caintegrator2.css" />
 		<script type="text/javascript" src="common/js/pde.js"></script>
+        <script type="text/javascript" src="common/js/prototype.js"></script>
+        <script type="text/javascript" src="common/js/control.tabs.js"></script>
         <s:head />
 	</head>
 	
