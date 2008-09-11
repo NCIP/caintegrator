@@ -70,7 +70,11 @@
         <action name="loadClinicalSource" class="loadClinicalSourceAction">
             <result type="tiles">editStudy</result>
         </action>
-              
+        
+        <action name="createNewDefinition" method="createNewDefinition" class="defineFileColumnAction">
+            <result type="tiles">editFileColumn</result>
+        </action>
+        
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
         </action>
@@ -80,6 +84,10 @@
         </action>
         
         <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
+            <result type="tiles">editFileColumn</result>
+        </action>
+        
+        <action name="saveColumnType" method="saveColumnType" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
         </action>
         
