@@ -17,7 +17,16 @@
             <li><a href="#savesearch">Save As...</a></li>
         </ul>
         
-        <!--/Tabs -->
+        <!--/Tabs -->        
+        
+        <!--Tab Box-->
+        
+        <div id="tabboxwrapper">       
+            <jsp:include page="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
+            <jsp:include page="/WEB-INF/jsp/tiles/showQueryResults_tile.jsp" />
+        </div>
+        
+        <!--/Tab Box-->
         
         <!-- 
             directions on http://livepipe.net/control/tabs 
@@ -32,16 +41,6 @@
                 });
             });
             //]]>
-        </script>
-        
-        
-        <!--Tab Box-->
-        
-        <div id="tabboxwrapper">       
-            <jsp:include page="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
-            <jsp:include page="/WEB-INF/jsp/tiles/showQueryResults_tile.jsp" />
-        </div>
-        
-        <!--/Tab Box-->
+        </script>       
         
 </div>
