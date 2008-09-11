@@ -1,9 +1,14 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+
 
 public class DefineFileColumnActionTest {
     
@@ -73,5 +79,28 @@ public class DefineFileColumnActionTest {
         action.setColumnType("Annotation");
         assertEquals("Annotation", action.getColumnType());
     }
+    
+    @Test
+    public void testSaveColumnType() {
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+    }
 
+    @Test
+    public void testAnnotationDataTypeFunctions() {
+        action.setFileColumn(new FileColumn());
+        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.getFileColumn().getFieldDescriptor().setDefinition(new AnnotationDefinition());
+        action.setAnnotationDataType(AnnotationTypeEnum.DATE.getValue());
+        assertEquals(AnnotationTypeEnum.DATE.getValue(), action.getAnnotationDataType());
+        // Assuming we will always have date, string, numeric, and possibly more later.
+        assertTrue(action.getAnnotationDataTypes().length >= 3);
+    }
+    
+    @Test
+    public void testCreateDefinition() {
+        assertEquals(Action.SUCCESS, action.createNewDefinition());
+        assertTrue(studyManagementServiceStub.createDefinitionCalled);
+        assertFalse(action.isReadOnly());
+        
+    }
 }

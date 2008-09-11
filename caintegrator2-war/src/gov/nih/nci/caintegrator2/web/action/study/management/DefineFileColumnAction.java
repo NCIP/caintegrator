@@ -85,12 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Action used to edit the type and annotation of a file column by a Study Manager.
@@ -105,6 +106,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE, TIMEPOINT_TYPE};
     
     private FileColumn fileColumn = new FileColumn();
+    private boolean readOnly;
     private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
     private List<DataElement> dataElements = new ArrayList<DataElement>();
     private int dataElementIndex;
@@ -119,6 +121,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
         }
+        setReadOnly(true);
     }
     
     /**
@@ -133,11 +136,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     }
     
     /**
+     * Saves the column type to the database.
+     * @return the Struts result.
+     */
+    public String saveColumnType() {
+        getStudyManagementService().save(getStudyConfiguration());
+        return SUCCESS;
+    }
+    /**
      * Retrieves from the database and from caDSR annotation definition that matches the current columns keywords.
      * 
      * @return the Struts result.
      */
     public String searchDefinitions() {
+        // Are we supposed to save before searching or not?
         getStudyManagementService().save(getStudyConfiguration());
         definitions = getStudyManagementService().getMatchingDefinitions(getFileColumn());
         dataElements = getStudyManagementService().getMatchingDataElements(getFileColumn());
@@ -151,6 +163,18 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public String selectDefinition() {
         getStudyManagementService().setDefinition(getFileColumn(), getDefinitions().get(getDefinitionIndex()));
+        return SUCCESS;
+    }
+    
+    /**
+     * Let's the user create a new AnnotationDefinition for a column.
+     * @return the Struts result.
+     */
+    public String createNewDefinition() {
+        getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor());
+        setReadOnly(false);
+        definitions.clear();
+        dataElements.clear();
         return SUCCESS;
     }
     
@@ -202,6 +226,17 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     }
 
     /**
+     * 
+     * @return if the ColumnType is ANNOTATION_TYPE.
+     */
+    public boolean isColumnTypeAnnotation() {
+        if (getColumnType().equals(ANNOTATION_TYPE)) {
+            return true;
+        } 
+        return false;
+    }
+
+    /**
      * @param columnType the columnType to set
      */
     public void setColumnType(String columnType) {
@@ -222,6 +257,41 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         return COLUMN_TYPES;
     }
 
+    /**
+     * 
+     * @return the annotationType.
+     */
+    public String getAnnotationDataType() {
+        String type = AnnotationTypeEnum.STRING.getValue();
+        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
+        if (annotationDefinition != null && annotationDefinition.getType() != null) {
+            type = annotationDefinition.getType();
+        }
+        return type;
+    }
+    
+    /**
+     * @param annotationDataType the annotationType to set.
+     */
+    public void setAnnotationDataType(String annotationDataType) {
+        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
+        if (annotationDefinition != null) {
+            annotationDefinition.setType(annotationDataType);
+        }
+    }
+    
+    /**
+     * Converts the enum to the string list.
+     * @return the annotationTypes
+     */
+    public String[] getAnnotationDataTypes() {
+        List<String> types = new ArrayList<String>();
+        for (AnnotationTypeEnum type : AnnotationTypeEnum.values()) {
+            types.add(type.getValue());
+        }
+        return types.toArray(new String[types.size()]);
+    }
+    
     /**
      * @return the definitions
      */
@@ -262,6 +332,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public void setDefinitionIndex(int definitionIndex) {
         this.definitionIndex = definitionIndex;
+    }
+
+    /**
+     * @return the readOnly
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * @param readOnly the readOnly to set
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
 
