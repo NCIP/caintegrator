@@ -85,10 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +172,9 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String createNewDefinition() {
-        getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor());
+        getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
+                                                     getStudyConfiguration().getStudy(),
+                                                     EntityTypeEnum.SUBJECT);
         setReadOnly(false);
         definitions.clear();
         dataElements.clear();
@@ -184,7 +187,10 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String selectDataElement() {
-        getStudyManagementService().setDataElement(getFileColumn(), getDataElements().get(getDataElementIndex()));
+        getStudyManagementService().setDataElement(getFileColumn(), 
+                                                   getDataElements().get(getDataElementIndex()),
+                                                   getStudyConfiguration().getStudy(),
+                                                   EntityTypeEnum.SUBJECT);
         return SUCCESS;
     }
     

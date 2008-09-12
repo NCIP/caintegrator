@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
@@ -184,7 +185,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
-    public void setDataElement(FileColumn fileColumn, DataElement dataElement) {
+    public void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType) {
         setDataElementCalled = true;
     }
 
@@ -221,7 +222,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
 
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor) {
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
         createDefinitionCalled = true;
         return null;
     }
