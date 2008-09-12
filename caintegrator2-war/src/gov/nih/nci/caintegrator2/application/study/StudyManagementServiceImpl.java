@@ -343,13 +343,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void setDataElement(FileColumn fileColumn, DataElement dataElement) {
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+    public void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType) {
+        AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
+                                                                     study, 
+                                                                     entityType);
         annotationDefinition.setDisplayName(dataElement.getLongName());
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
         CommonDataElement cde = translate(dataElement);
         annotationDefinition.setCde(cde);
-        fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
         dao.save(cde);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
@@ -458,12 +459,38 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor) {
+    @SuppressWarnings({ "PMD.ExcessiveMethodLength" })
+    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, 
+                                                 Study study, 
+                                                 EntityTypeEnum entityType) {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         descriptor.setDefinition(annotationDefinition);
         annotationDefinition.setDisplayName(descriptor.getName());
+        switch(entityType) {
+            case SUBJECT:
+                if (study.getSubjectAnnotationCollection() == null) {
+                    study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+                }
+                study.getSubjectAnnotationCollection().add(annotationDefinition);
+                break;
+            case IMAGESERIES:
+                if (study.getImageSeriesAnnotationCollection() == null) {
+                    study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+                }
+                study.getImageSeriesAnnotationCollection().add(annotationDefinition);
+                break;
+            case SAMPLE:
+                if (study.getSampleAnnotationCollection() == null) {
+                    study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
+                }
+                study.getSampleAnnotationCollection().add(annotationDefinition);
+                break;
+            default:
+                throw new IllegalStateException("Unknown EntityTypeEnum");
+        }
         dao.save(annotationDefinition);
         dao.save(descriptor);
+        dao.save(study);
         return annotationDefinition;
     }
 

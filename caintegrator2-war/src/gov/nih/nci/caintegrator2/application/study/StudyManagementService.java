@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
@@ -221,8 +222,10 @@ public interface StudyManagementService {
 
      * @param fileColumn column receiving definition.
      * @param dataElement the selected data element.
+     * @param study the study that the FileColumn belongs to.
+     * @param entityType the entityType for the data element.
      */
-    void setDataElement(FileColumn fileColumn, DataElement dataElement);
+    void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType);
 
     /**
      * Selects an existing annotation definition for a column.
@@ -253,8 +256,10 @@ public interface StudyManagementService {
     /**
      * Creates a new AnnotationDefinition based on an AnnotationFieldDescriptor.
      * @param descriptor annotation descriptor to use.
+     * @param study object to correlate the newly created definition to.
+     * @param entityType entity type for the annotation definition.
      * @return The annotation definition that was created.
      */
-    AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor);
+    AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType);
     
 }

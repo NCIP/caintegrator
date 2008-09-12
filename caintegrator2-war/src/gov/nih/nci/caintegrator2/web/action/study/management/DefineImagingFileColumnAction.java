@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
@@ -160,7 +161,10 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String selectDataElement() {
-        getStudyManagementService().setDataElement(getFileColumn(), getDataElements().get(getDataElementIndex()));
+        getStudyManagementService().setDataElement(getFileColumn(), 
+                                                   getDataElements().get(getDataElementIndex()), 
+                                                   getStudyConfiguration().getStudy(), 
+                                                   EntityTypeEnum.IMAGESERIES);
         return SUCCESS;
     }
     

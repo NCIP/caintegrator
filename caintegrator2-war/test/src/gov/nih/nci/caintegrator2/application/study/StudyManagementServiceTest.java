@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -252,7 +253,7 @@ public class StudyManagementServiceTest {
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
         dataElement.setPublicId(1234L);
-        studyManagementService.setDataElement(fileColumn, dataElement);
+        studyManagementService.setDataElement(fileColumn, dataElement, new Study(), EntityTypeEnum.SUBJECT);
         assertTrue(daoStub.saveCalled);
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCde());
@@ -383,8 +384,14 @@ public class StudyManagementServiceTest {
     @Test
     public void testCreateDefinition() {
         AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
+        Study study = new Study();
         descriptor.setName("testName");
-        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor);
+        AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT);
         assertEquals(descriptor.getName(), definition.getDisplayName());
+        assertEquals(1, study.getSubjectAnnotationCollection().size());
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES);
+        assertEquals(1, study.getImageSeriesAnnotationCollection().size());
+        definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE);
+        assertEquals(1, study.getSampleAnnotationCollection().size());
     }
 }
