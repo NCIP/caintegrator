@@ -85,42 +85,64 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import java.lang.String;
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 
 import org.junit.Before;
 import org.junit.Test;
-//import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
-public class ClinicalAnnotationCriteriaTest {
+public class ManageQueryActionTest {
 
-    private ClinicalAnnotationCriteria clinicalAnnotationCriteria = new ClinicalAnnotationCriteria();
-    private String str = new String("dummyAnnotation");
-    private List<String> list = new ArrayList<String>();
-
-
+    private ManageQueryAction manageQueryAction;
+    private QueryResult qR;
+    private StudyManagementService studyManagementService;
     
     @Before
     public void setUp() {
-        clinicalAnnotationCriteria.setAnnotationSelection(str);
-        clinicalAnnotationCriteria.setAnnotationOperatorSelection(str);
-        clinicalAnnotationCriteria.setAnnotationValue(str);
-        clinicalAnnotationCriteria.setAnnotationSelectList(list);
-        clinicalAnnotationCriteria.setAnnotationOperatorList(list);
+        ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
+        manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
+        qR = new QueryResult();
     }
-   
+
     @Test
-    public void testGetAnnotationSelection() {        
-        assertNotNull(clinicalAnnotationCriteria.getAnnotationSelection());
-        assertNotNull(clinicalAnnotationCriteria.getAnnotationSelectList());
-        assertNotNull(clinicalAnnotationCriteria.getAnnotationOperatorList());
-        assertEquals(str,clinicalAnnotationCriteria.getAnnotationOperatorSelection());
-        assertEquals(str,clinicalAnnotationCriteria.getAnnotationValue()); 
-    }  
+    public void testPrepare() {
+        manageQueryAction.prepare();
+//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+//        editQueryAction.getModel().setId(1L);
+//        editQueryAction.prepare();
+//        studyConfiguration = editQueryAction.getStudyConfiguration();
+//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+    }
     
+    @Test
+    public void testExecute() {
+        manageQueryAction.setInjectTest("yes");
+        manageQueryAction.execute();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        manageQueryAction.setInjectTest("vasari");
+        manageQueryAction.execute();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        manageQueryAction.setQueryResult(qR);
+        manageQueryAction.getQueryResult();
+        manageQueryAction.setInjectTest("yes");
+        manageQueryAction.getInjectTest();
+        manageQueryAction.getTestResultRows();
+        manageQueryAction.setStudyManagementService(studyManagementService);
+        manageQueryAction.getStudyManagementService();
+        assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
+        assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRow());
+        assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRowAll());
+        assertEquals(Action.SUCCESS, manageQueryAction.executeQuery());
+        assertEquals(Action.SUCCESS, manageQueryAction.selectColumns());
+        assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
+        assertEquals(Action.SUCCESS, manageQueryAction.saveQuery());
+        
+    }
 }

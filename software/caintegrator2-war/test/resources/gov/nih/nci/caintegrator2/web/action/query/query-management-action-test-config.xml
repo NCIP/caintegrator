@@ -7,6 +7,11 @@
     <bean id="editQueryAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.query.EditQueryAction">
-    </bean>   
+    </bean>
+    
+    <bean id="manageQueryAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.query.ManageQueryAction">
+    </bean>
 
 </beans>
