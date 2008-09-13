@@ -98,7 +98,9 @@ import gov.nih.nci.caintegrator2.web.action.query.QueryCriteriaRow;
 public class QueryCriteriaRowTest {
 
     private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
+    private QueryCriteriaRow queryCriteriaRow2;
     private String rowDataType = new String("test");
+    private QueryAnnotationCriteria annotationCriteria;
 
     
     @Before
@@ -108,6 +110,9 @@ public class QueryCriteriaRowTest {
         queryCriteriaRow.setEndParen(Boolean.TRUE);
         queryCriteriaRow.setAndOp(Boolean.TRUE);
         queryCriteriaRow.setOrOp(Boolean.TRUE);
+        queryCriteriaRow.setAnnotationCriteria(annotationCriteria);
+        queryCriteriaRow2 = new QueryCriteriaRow(Boolean.TRUE,Boolean.TRUE,rowDataType,annotationCriteria);
+        queryCriteriaRow2.setRowDataType(rowDataType);
 
     }
    
@@ -119,6 +124,9 @@ public class QueryCriteriaRowTest {
         assertTrue(queryCriteriaRow.isAndOp());
         assertTrue(queryCriteriaRow.isOrOp());
         assertNull(queryCriteriaRow.getAnnotationCriteria());
+        queryCriteriaRow.setAnnotationCriteria(annotationCriteria);
+        
+        
     }  
     
 }

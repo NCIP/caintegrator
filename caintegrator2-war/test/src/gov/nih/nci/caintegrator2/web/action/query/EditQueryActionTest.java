@@ -121,7 +121,14 @@ public class EditQueryActionTest {
     
     @Test
     public void testExecute() {
+        editQueryAction.setInjectTest("yes");
+        editQueryAction.execute();
         assertEquals(Action.SUCCESS, editQueryAction.execute());
+        
+        editQueryAction.setInjectTest("vasari");
+        editQueryAction.execute();
+        assertEquals(Action.SUCCESS, editQueryAction.execute());
+        
         editQueryAction.setQueryResult(qR);
         editQueryAction.getQueryResult();
         editQueryAction.setInjectTest("yes");

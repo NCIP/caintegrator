@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -99,12 +102,14 @@ public class EditQueryHelperTest {
 
     private EditQueryHelper editQueryHelper = new EditQueryHelper();
     private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
+    private List<QueryCriteriaRow> rowList = new ArrayList<QueryCriteriaRow>();
 
     
     @Before
     public void setUp() {
         editQueryHelper.setAdvancedView(Boolean.TRUE);
         editQueryHelper.setSingleRowInList(queryCriteriaRow);
+        editQueryHelper.setRowList(rowList);
     }
    
     @Test
