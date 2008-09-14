@@ -119,14 +119,15 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private StudyManagementService studyManagementService;   
     private QueryResult queryResult = new QueryResult();
     private String injectTest = "no";
+    private ManageQueryHelper manageQueryHelper;
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
      */
     public void prepare() {
-        EditQueryHelper editQueryHelper = new EditQueryHelper();
-        editQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+        manageQueryHelper = new ManageQueryHelper();
+        manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
     }
 
     /**
@@ -306,4 +307,18 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     public String saveQuery() {
         return SUCCESS;
     }
+    
+    /**
+     * @return the manageQueryHelper
+     */
+    public ManageQueryHelper getManageQueryHelper() {
+        return manageQueryHelper;
+    }
+
+    /**
+     * @param manageQueryHelper the manageQueryHelper to set
+     */
+//    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
+//        this.manageQueryHelper = manageQueryHelper;
+//    }
 }
