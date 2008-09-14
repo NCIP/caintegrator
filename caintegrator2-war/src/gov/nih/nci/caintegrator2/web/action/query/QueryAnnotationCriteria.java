@@ -85,49 +85,35 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import java.util.List;
 
 /**
- * 
+ * Interface for all query annotation criteria: Clinical, Gene 
+ * expression (sample), Imaging.
  */
 public interface QueryAnnotationCriteria {
     
     /**
-     * @return ArrayList of annotation entities comprising the 
-     * values used to populate an annotation select list
+     * @return boolean the begin paren.
      */
-    List<String> getAnnotationSelectList();
+    boolean isBeginParen();
     
     /**
-     * @param annotationSelectList List of annotation entities comprising the 
-     * values used to populate an annotation select list
+     * @param beginParen Set the begin paren.
      */
-    void setAnnotationSelectList(List<String> annotationSelectList);
+    void setBeginParen(boolean beginParen);
     
     /**
-     * @return String the user's selected annotation entity
+     * @return the user's selected annotation entity.
      */
     String getAnnotationSelection();
     
     /**
-     * @param annotationSelection Set the user's annotation entity selection
+     * @param annotationSelection Set the user's annotation entity selection.
      */
     void setAnnotationSelection(String annotationSelection);
     
     /**
-     * @return ArrayList of annotation entities comprising the 
-     * values used to populate an operator select list
-     */
-    List<String> getAnnotationOperatorList();
-    
-    /**
-     * @param annotationOperatorList List of annotation entities comprising the 
-     * values used to populate an operator select list
-     */
-    void setAnnotationOperatorList(List<String> annotationOperatorList);
-
-    /**
-     * @return String the user's selected annotation operator
+     * @return String the user's selected annotation operator.
      */
     String getAnnotationOperatorSelection();
     
@@ -145,5 +131,56 @@ public interface QueryAnnotationCriteria {
      * @param annotationValue Set the value criteria
      */
     void setAnnotationValue(String annotationValue);
+    
+    /**
+     * @return boolean the end paren.
+     */
+    boolean isEndParen();
+    
+    /**
+     * @param endParen Set the end paren.
+     */
+    void setEndParen(boolean endParen);
+
+    /**
+     * @return boolean is AND operation.
+     */
+    boolean isAndOp();
+    
+    /**
+     * @param andOp Set the AND operation.
+     */
+    void setAndOp(boolean andOp);
+    
+    /**
+     * @return boolean is OR operation.
+     */
+    boolean isOrOp();
+    
+    /**
+     * @param orOp Set the OR operation.
+     */
+    void setOrOp(boolean orOp);
+    
+    /**
+     * @return boolean delete row.
+     */
+    boolean isDeleteRow();
+    
+    /**
+     * @param deleteRow Set delete row.
+     */
+    void setDeleteRow(boolean deleteRow);
+    
+    /**
+     * @return String the 'data' type of the row.
+     */
+    String getRowType();
+    
+    /**
+     * @param rowType Set the 'data' type of the row.
+     */
+    void setRowType(String rowType);
+
 
 }
