@@ -125,8 +125,8 @@ public class EditQueryAction extends ActionSupport implements Preparable {
      * preprocessing.
      */
     public void prepare() {
-        EditQueryHelper editQueryHelper = new EditQueryHelper();
-        editQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+//        EditQueryHelper editQueryHelper = new EditQueryHelper();
+//        editQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
     }
 
     /**
