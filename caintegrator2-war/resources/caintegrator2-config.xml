@@ -181,9 +181,9 @@
 
     <!-- Query Management actions -->
     
-    <bean id="editQueryAction"
+    <bean id="manageQueryAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.query.EditQueryAction">
+        class="gov.nih.nci.caintegrator2.web.action.query.ManageQueryAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

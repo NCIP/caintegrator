@@ -98,7 +98,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 
 /**
- * Helper class for EditQueryAction.
+ * Helper class for ManageQueryAction.
  */
 public class ManageQueryHelper {
     private boolean advancedView = false;
