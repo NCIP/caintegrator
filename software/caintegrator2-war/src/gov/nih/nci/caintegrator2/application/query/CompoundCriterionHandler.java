@@ -92,7 +92,10 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
@@ -102,6 +105,7 @@ import java.util.Set;
 /**
  * Handles CompoundCriterion objects.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private final Collection <AbstractCriterionHandler> handlers;
@@ -119,6 +123,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * @param compoundCriterion - compound criterion to create from.
      * @return CompoundCriterionHandler object returned, with the handlers collection filled.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // requires switch-like statement
     static CompoundCriterionHandler create(CompoundCriterion compoundCriterion) {
         Collection<AbstractCriterionHandler> handlers = new HashSet<AbstractCriterionHandler>();
         if (compoundCriterion.getCriterionCollection() != null) {
@@ -127,6 +132,10 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(new AnnotationCriterionHandler((AbstractAnnotationCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof CompoundCriterion) {
                     handlers.add(CompoundCriterionHandler.create((CompoundCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof GeneCriterion) {
+                    handlers.add(GeneCriterionHandler.create((GeneCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof GeneListCriterion) {
+                    handlers.add(GeneListCriterionHandler.create((GeneListCriterion) abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
@@ -143,6 +152,9 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         boolean rowsRetrieved = false;
         Set<ResultRow> allValidRows = new HashSet<ResultRow>();
         for (AbstractCriterionHandler handler : handlers) {
+            if (!handler.isEntityMatchHandler()) {
+                continue;
+            }
             Set<ResultRow> newRows = handler.getMatches(dao, study, entityTypes);
             if (!rowsRetrieved) {
                 allValidRows = newRows;
@@ -210,6 +222,58 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         }
         return combinedResults;
     }
-    
+
+    @Override
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+        Set<AbstractReporter> reporters = null;
+        for (AbstractCriterionHandler handler : handlers) {
+            if (handler.isReporterMatchHandler()) {
+                reporters = getCombinedReporterMatches(reporters, handler.getReporterMatches(dao, study));
+            }
+        }
+        return reporters;
+    }
+
+    private Set<AbstractReporter> getCombinedReporterMatches(Set<AbstractReporter> reporters,
+            Set<AbstractReporter> reporterMatches) {
+        BooleanOperatorEnum operator = BooleanOperatorEnum.getByValue(compoundCriterion.getBooleanOperator());
+        if (reporters == null) {
+            return reporterMatches;
+        } else if (BooleanOperatorEnum.AND.equals(operator)) {
+            reporters.retainAll(reporterMatches);
+        } else if (BooleanOperatorEnum.OR.equals(operator)) {
+            reporters.addAll(reporterMatches);
+        }
+        return reporters;
+    }
+
+    @Override
+    boolean isEntityMatchHandler() {
+        return true;
+    }
+
+    @Override
+    boolean isReporterMatchHandler() {
+        return true;
+    }
+
+    @Override
+    boolean hasEntityCriterion() {
+        boolean hasEntityCriterion = false;
+        for (AbstractCriterionHandler handler : handlers) {
+            hasEntityCriterion |= handler.hasEntityCriterion();
+        }
+        return hasEntityCriterion;
+    }
+
+
+    @Override
+    boolean hasReporterCriterion() {
+        boolean hasReporterCriterion = false;
+        for (AbstractCriterionHandler handler : handlers) {
+            hasReporterCriterion |= handler.hasReporterCriterion();
+        }
+        return hasReporterCriterion;
+    }
     
 }

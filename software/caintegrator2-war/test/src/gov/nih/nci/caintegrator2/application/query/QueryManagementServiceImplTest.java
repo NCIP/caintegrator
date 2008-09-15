@@ -87,16 +87,33 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +122,8 @@ import org.junit.Test;
  * Test class for QueryManagementServiceImpl
  */
 public class QueryManagementServiceImplTest {
-    
+ 
+
     private QueryManagementServiceImpl queryManagementService;
     private CaIntegrator2DaoStub dao;
     private ArrayDataServiceStub arrayDataService;
@@ -123,8 +141,10 @@ public class QueryManagementServiceImplTest {
         queryManagementService.setResultHandler(resultHandler);
         query = new Query();
         query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(new StudySubscription());
+        query.getSubscription().setStudy(new Study());
     }
 
     
@@ -135,10 +155,38 @@ public class QueryManagementServiceImplTest {
     }
     
     @Test
-    public void test() {
+    public void testExecuteGenomicDataQuery() {
+        GenomicDataTestDaoStub daoStub = new GenomicDataTestDaoStub();
+        queryManagementService.setDao(daoStub);
+        Study study = query.getSubscription().getStudy();
+        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        assignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
+        SampleAcquisition acquisition = new SampleAcquisition();
+        Sample sample = new Sample();
+        sample.setArrayCollection(new HashSet<Array>());
+        Array array = new Array();
+        array.setArrayData(new ArrayData());
+        sample.getArrayCollection().add(array);
+        acquisition.setSample(sample);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
+        study.getAssignmentCollection().add(assignment);
+        GeneCriterion geneCriterion = new GeneCriterion();
+        Gene gene = new Gene();
+        gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        gene.getReporterCollection().add(reporter);
+        geneCriterion.setGene(gene);
+        query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
+        ArrayDataMatrix matrix = new ArrayDataMatrix();
+        matrix.setReporterSet(new ReporterSet());
+        matrix.getReporterSet().setReporters(new HashSet<AbstractReporter>());
+        matrix.getReporterSet().getReporters().add(reporter);
+        daoStub.matrix = matrix;
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
-        assertNotNull(result.getRowCollection());
-        assertNotNull(result.getColumnCollection());
+        assertEquals(1, result.getRowCollection().size());
+        assertEquals(1, result.getColumnCollection().size());
+        assertEquals(1, result.getRowCollection().iterator().next().getValueCollection().size());
     }
 
     
@@ -146,6 +194,19 @@ public class QueryManagementServiceImplTest {
     public void testSave() {
        queryManagementService.save(query);
        assertTrue(dao.saveCalled);
+    }
+
+    private static class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
+
+        ArrayDataMatrix matrix;
+
+        @Override
+        public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
+            List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
+            matrixes.add(matrix);
+            return matrixes;
+        }
+        
     }
 
 }
