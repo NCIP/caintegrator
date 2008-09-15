@@ -208,7 +208,8 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
         genomicSource.getServerProfile().setPort(8080);
-        genomicSource.setExperimentIdentifier("admin-00037");
+        //genomicSource.setExperimentIdentifier("admin-00037");
+        genomicSource.setExperimentIdentifier("rembr-00037");
         service.addGenomicSource(studyConfiguration, genomicSource);
         assertTrue(genomicSource.getSamples().size() > 0);
     }
