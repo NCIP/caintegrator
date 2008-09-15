@@ -86,8 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -100,24 +104,31 @@ public class ManageQueryActionTest {
 
     private ManageQueryAction manageQueryAction;
     private QueryResult qR;
-    private StudyManagementService studyManagementService;
+    
+    // Study objects
+//    private StudyHelper studyHelper = new StudyHelper();
+//    private Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+    private StudyManagementService studyManagementService = new StudyManagementServiceImpl();
+//    private StudyConfiguration studyConfiguration = new StudyConfiguration();
     
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
         qR = new QueryResult();
+//        studyManagementService.save(studyConfiguration);
+//        manageQueryAction.setStudyManagementService(studyManagementService);
     }
 
-    @Test
-    public void testPrepare() {
-        manageQueryAction.prepare();
+//    @Test
+//    public void testPrepare() {
+//        manageQueryAction.prepare();
 //        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
 //        editQueryAction.getModel().setId(1L);
 //        editQueryAction.prepare();
 //        studyConfiguration = editQueryAction.getStudyConfiguration();
 //        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-    }
+//    }
     
     @Test
     public void testExecute() {
