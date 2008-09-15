@@ -39,9 +39,9 @@ P
 H1
 { font-size:160%; font-weight:normal; padding:10px 0; color:#333; }
 H2
-{ font-family:arial,helvetica,sans-serif; background:#e4e4e4 url("../../images/bg_h2.gif") repeat-x; line-height:1.2em; margin:0; font-size:120%; font-weight:bold; color:#333; border:1px solid #fff; border-bottom:1px solid #ccc; padding:6px 0 5px 8px;  }
+{ font-family:arial,helvetica,sans-serif; background:#e4e4e4 url("../images/bg_h2.gif") repeat-x; line-height:1.2em; margin:0; font-size:120%; font-weight:bold; color:#333; border:1px solid #fff; border-bottom:1px solid #ccc; padding:6px 0 5px 8px;  }
 H2.darker
-{ background:#475b82 url("../../images/bg_appheader.gif") repeat-x 0 -10px; color:#fff; border:1px solid #475b82 }
+{ background:#475b82 url("../images/bg_appheader.gif") repeat-x 0 -10px; color:#fff; border:1px solid #475b82 }
 H2.smaller
 { font-size:92%; background:#fef9eb; border-bottom:2px solid #fdf0cc; }
 H3
@@ -90,11 +90,11 @@ LEGEND INPUT, LEGEND SELECT
 #nihtag
 { float:right; width:295px; height:37px; }
 #appheader
-{ background:#475b82 url("../../images/bg_appheader.gif") repeat-x bottom; border-top:1px solid #6f86b0; height:5em; min-width:770px  }
+{ background:#475b82 url("../images/bg_appheader.gif") repeat-x bottom; border-top:1px solid #6f86b0; height:5em; min-width:770px  }
 #mainlogo
 { padding:2px 0 0 10px; float:left; width:243px; }
 #userarea_wrapper
-{ background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:46em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
+{ background:#475b82 url("../images/bg_user.jpg") no-repeat left 0; height:30px; width:46em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
 #user
 { float:left; width:20em; margin-top:-5px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-weight:bold; }
 #user A
@@ -129,7 +129,7 @@ LEGEND INPUT, LEGEND SELECT
 .pagehelp
 { float:right;  margin-top:1.4em; width:7em; text-align:right; margin-right:50px }
 .pagehelp A.help
-{ text-decoration:none; background:url("../../images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
+{ text-decoration:none; background:url("../images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
 
 
 /* Navigation */
@@ -145,11 +145,11 @@ LEGEND INPUT, LEGEND SELECT
 #leftnav UL.menu LI.stdnav UL LI
 { background:#5d7ba2; color:#333; text-transform:none; padding:0; margin:0; height:1% }
 #leftnav UL.menu LI.stdnav A
-{ background:#e9e9e9 url("../../images/bg_appmenu.gif") repeat-y right; color:#333; display:block; padding:3px 3px 2px 15px; border-top:1px solid #fff; border-bottom:1px solid #ccc; height:1% }
+{ background:#e9e9e9 url("../images/bg_appmenu.gif") repeat-y right; color:#333; display:block; padding:3px 3px 2px 15px; border-top:1px solid #fff; border-bottom:1px solid #ccc; height:1% }
 #leftnav UL.menu LI.stdnav A:hover, #leftnav UL.menu LI.stdnav A:hover
-{ background:#f6f6f6 url("../../images/bg_appmenu.gif") repeat-y -80px 0; text-decoration:none; height:1%}
+{ background:#f6f6f6 url("../images/bg_appmenu.gif") repeat-y -80px 0; text-decoration:none; height:1%}
 #leftnav UL.menu LI.stdnav A.selected, #leftnav UL.menu LI.stdnav A:hover.selected
-{ background:#ccc url("../../images/ico_arrow.gif") no-repeat 5px .7em; color:#000; border-top:1px solid #efefef; height:1% }
+{ background:#ccc url("../images/ico_arrow.gif") no-repeat 5px .7em; color:#000; border-top:1px solid #efefef; height:1% }
 
 
 /* Tree Navigation */
@@ -174,9 +174,9 @@ LEGEND INPUT, LEGEND SELECT
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists
 { line-height:1.5em; color:#386ebf; padding:0 0 0 24px; font-weight:normal; display:block; }
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches
-{ background:url("../../images/ico_search.gif") no-repeat 6px 0; }
+{ background:url("../images/ico_search.gif") no-repeat 6px 0; }
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists
-{ background:url("../../images/ico_list.gif") no-repeat 6px 0;  }
+{ background:url("../images/ico_list.gif") no-repeat 6px 0;  }
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches:hover, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists:hover
 { color:#455681; }
 
@@ -196,7 +196,7 @@ LEGEND INPUT, LEGEND SELECT
 .box
 { border:1px solid #999; margin:0 0 10px 0; background:#fff;}
 .box2
-{ border:1px solid #999; margin:0; background:#fff url("../../images/bg_h2.gif") repeat-x; height:1%; }
+{ border:1px solid #999; margin:0; background:#fff url("../images/bg_h2.gif") repeat-x; height:1%; }
 .box2 H2
 { padding-top:10px; padding-bottom:8px; border:0; border-bottom:1px solid #999; }
 .whitebg
@@ -214,7 +214,7 @@ LEGEND INPUT, LEGEND SELECT
 #content UL
 { padding-left:10px; padding-bottom:10px  }
 #content UL LI
-{ background:url("../../images/bg_bullet.gif") no-repeat 0 5px; padding-left:10px; padding-bottom:10px }
+{ background:url("../images/bg_bullet.gif") no-repeat 0 5px; padding-left:10px; padding-bottom:10px }
 .intro
 { font-size:120%; padding-right:20px; line-height:1.3em }
 .small
@@ -226,7 +226,7 @@ LEGEND .small
 .clear, .clearfloat
 { clear:both; }
 #content A.external
-{ background:url("../../images/ico_externalsite.gif") no-repeat right; padding-right:12px }
+{ background:url("../images/ico_externalsite.gif") no-repeat right; padding-right:12px }
 .nowrap
 { white-space:nowrap }
 .absmiddle
@@ -262,7 +262,7 @@ P.intro, .homepage P
 .homepage UL
 { margin:10px }
 #homecontentbar
-{ margin:0; height:2.1em; background:#fff url("../../images/bg_bar_home.gif") repeat-x; }
+{ margin:0; height:2.1em; background:#fff url("../images/bg_bar_home.gif") repeat-x; }
 #homecontentwrapper
 { width:600px  }
 #homeinfo
@@ -328,7 +328,7 @@ TABLE.login TD.value
 
 
 .filterbox, .fadebox
-{ width:99%; border:1px solid #999; background:#fbfbfb url("../../images/bg_panel_gray.gif") repeat-x bottom }
+{ width:99%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 .searchresults
 { margin-top:10px; width:99%; border:1px solid #ccc; }
 
@@ -338,7 +338,7 @@ TABLE.login TD.value
 .paging
 { color:#999; font-size:92% !important; padding:5px; text-align:right }
 .pagecontrol
-{ padding:5px !important; height:1.4em !important; background:#fbfbfb url("../../images/bg_grayfade.gif") repeat-x bottom !important; border:0 !important; margin-top:0 !important}
+{ padding:5px !important; height:1.4em !important; background:#fbfbfb url("../images/bg_grayfade.gif") repeat-x bottom !important; border:0 !important; margin-top:0 !important}
 .pagecontrol .paging, .pagecontrol P.small, .pagecontrol P.count
 { width:48.5%; margin:0; padding:0 }
 .pagecontrol P.small, .pagecontrol P.count
@@ -348,9 +348,9 @@ TABLE.login TD.value
 
 
 .info
-{ padding:10px; background:#ffffcf url("../../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
+{ padding:10px; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
 .info P
-{ background:url("../../images/ico_info.gif") no-repeat 0 1px; padding:0 0 0 18px }
+{ background:url("../images/ico_info.gif") no-repeat 0 1px; padding:0 0 0 18px }
 .or
 { font-weight:bold; font-size:130%; text-align:center; border-top:1px dotted #ccc }
 .or P
@@ -370,7 +370,7 @@ TABLE.login TD.value
 TABLE.data
 { width:100%; font-size:92%; background:#fff; border-bottom:1px solid #ccc }
 TABLE.data TH
-{ padding:5px; border-top:1px solid #dcdcdc; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../../images/bg_th.gif") repeat-x top; color:#333 }
+{ padding:5px; border-top:1px solid #dcdcdc; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333 }
 TABLE .action
 { text-align:center; width:70px; padding-right:0}
 TABLE .actionthin
@@ -392,7 +392,7 @@ TABLE.data TR.odd TD
 TR.even
 { background:#fff }
 /* TABLE.data tr.over, TABLE.data tr:hover
-{background:#ffffcf url("../../images/bg_row_hilite.gif") repeat-x top; cursor:pointer } */
+{background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; cursor:pointer } */
 TABLE.data TH A
 { color:#000; text-decoration:underline !important;}
 TABLE.data TABLE
@@ -400,7 +400,7 @@ TABLE.data TABLE
 TABLE.data TABLE TD
 { border:1px solid #ccc; }
 TABLE.data TABLE TH
-{ white-space:nowrap; background:#f4f6f8 url("../../images/bg_th.gif") repeat-x 0 10px; border:1px solid #a8b8ce; }
+{ white-space:nowrap; background:#f4f6f8 url("../images/bg_th.gif") repeat-x 0 10px; border:1px solid #a8b8ce; }
 TABLE.data TABLE TR.odd
 { background:#f4f6f8 }
 TABLE.data TABLE TR.even
@@ -486,9 +486,9 @@ TD.value
 TD.title
 { font-weight:bold }
 .hidethis
-{ background:url("../../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
+{ background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
 .replace
-{ background:url("../../images/ico_displayhidden.gif") no-repeat; padding-left:18px; }
+{ background:url("../images/ico_displayhidden.gif") no-repeat; padding-left:18px; }
 .calendaricon
 { vertical-align:middle; padding-left:5px; }
 TD.btnrow
@@ -498,13 +498,13 @@ TD.btnrow
 /* Control.Tabs - Primary */
 
 #tabboxwrapper
-{ clear:both; padding:5px; background:#5d7ba2 url("../../images/bg_tabboxwrapper.gif") repeat-x; border:1px solid #475b82; border-top:0; height:1%; }
+{ clear:both; padding:5px; background:#5d7ba2 url("../images/bg_tabboxwrapper.gif") repeat-x; border:1px solid #475b82; border-top:0; height:1%; }
 UL#maintabs
 { height:1.6em; margin:0; font-weight:bold; list-style:none; padding-left:3px; clear:both; }
 UL#maintabs LI
 { float:left;   margin:0; padding:0 0 0 5px; text-align:center; background:none }
 UL#maintabs LI A 
-{ font-size:115%; text-decoration:none !important; display:block; margin:0; padding:5px 10px; background:#e4e4e4 url("../../images/bg_h2.gif") repeat-x 0 -10px; color:#475b82; text-decoration:none; border-top:2px solid #efefef;  border-right:1px solid #ccc;  }
+{ font-size:115%; text-decoration:none !important; display:block; margin:0; padding:5px 10px; background:#e4e4e4 url("../images/bg_h2.gif") repeat-x 0 -10px; color:#475b82; text-decoration:none; border-top:2px solid #efefef;  border-right:1px solid #ccc;  }
 UL#maintabs LI A:hover 
 {   color:#333; background:#efefef; text-decoration:none !important; }
 UL#maintabs LI A.active, UL#maintabs LI A.active:hover  
@@ -522,9 +522,9 @@ UL#sectabs
 UL#sectabs LI
 { float:left;   margin:0; padding:0 5px 0 0; text-align:center; background:none }
 UL#sectabs LI A 
-{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../../images/bg_th.gif") repeat-x top; color:#333; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
+{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
 UL#sectabs LI A:hover 
-{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../../images/bg_th.gif") repeat-x 0 -5px; color:#000; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
+{ font-size:100%; text-decoration:none !important; display:block; margin:0; padding:3px 10px; background:#d6dce6 url("../images/bg_th.gif") repeat-x 0 -5px; color:#000; text-decoration:none; border-left:1px solid #d6dce6; border-right:1px solid #d6dce6; border-top:1px solid #d6dce6; }
 UL#sectabs LI A.active, UL#sectabs LI A.active:hover 
 { outline:none; color:#333; background-color:#f8f8f8; border-top:3px solid #5d7ba2; border-bottom:2px solid #f8f8f8; border-left:1px solid #999; border-right:1px solid #999; background-image:none }
 UL#sectabs LI.active
@@ -552,7 +552,7 @@ TABLE.data TD.thin_inline
 #content .value_inline P
 {margin:0; padding:2px 0 3px 0; text-align:center; font-size:10pt }
 TABLE.data TD.tableheader
-{ background:#f8f8f8 url("../../images/bg_grayfade2.gif") repeat-x bottom; border-bottom:0; border-right:0; }
+{ background:#f8f8f8 url("../images/bg_grayfade2.gif") repeat-x bottom; border-bottom:0; border-right:0; }
 DIV.tableheader
 { width:25em; float:right; margin-top:-3em; padding:5px; text-align:right }
 .tablefooter
@@ -568,17 +568,17 @@ DIV>.search_float LABEL
 .icons
 { float:right; width:88px; margin-top:30px; }
 A.icon
-{ background:url("../../images/bg_grayfade.gif") repeat-x; border:1px solid #ccc; padding:4px; display:block; float:right; width:16px; height:16px; margin:0 0 0 2px }
+{ background:url("../images/bg_grayfade.gif") repeat-x; border:1px solid #ccc; padding:4px; display:block; float:right; width:16px; height:16px; margin:0 0 0 2px }
 A.icon:hover
-{ background:url("../../images/bg_grayfade.gif") repeat-x 0 -15px; border-right:1px solid #999; border-bottom:1px solid #999;  }
+{ background:url("../images/bg_grayfade.gif") repeat-x 0 -15px; border-right:1px solid #999; border-bottom:1px solid #999;  }
 A.icon_off,A.icon_off:hover
 { background:#dcdcdc; border:1px solid #ccc; padding:4px; display:block; float:left; width:16px; height:16px; margin:0 0 0 2px }
 .drop
 { text-decoration:line-through; color:#c00; } 
 A.remove
-{ font-size:92%; text-decoration:none; color:#666; background:url("../../images/ico_remove.gif") no-repeat; padding-left:15px; }
+{ font-size:92%; text-decoration:none; color:#666; background:url("../images/ico_remove.gif") no-repeat; padding-left:15px; }
 A.remove:hover
-{ color:#333; background:url("../../images/ico_remove.gif") 0 -24px no-repeat; }
+{ color:#333; background:url("../images/ico_remove.gif") 0 -24px no-repeat; }
 
 
 /* Centered Button Row at the Bottom */
@@ -588,7 +588,7 @@ A.remove:hover
 #content .btnrow LI, #content .btnrow2 LI 
 { display:table-cell; background:none }
 .actionsrow 
-{ height:31px; background:#fbfcfb url("../../images/bg_h2.gif") repeat-x bottom;  margin-top:0px; padding:7px 10px 0 10px; clear:both; text-decoration:none !important; text-align:center; border:1px solid #999; border-top:0; }
+{ height:31px; background:#fbfcfb url("../images/bg_h2.gif") repeat-x bottom;  margin-top:0px; padding:7px 10px 0 10px; clear:both; text-decoration:none !important; text-align:center; border:1px solid #999; border-top:0; }
 .box2 .actionsrow
 { border:0 }
 * .btnrow LI,* .btnrow2 LI { float:left; }
@@ -603,15 +603,15 @@ HTML>BODY .container { *display:inline-block; }
 /* Buttons */
 
 A.btn 
-{ width:auto; background:transparent url("../../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 20px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
+{ width:auto; background:transparent url("../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 20px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
 .actionsthin A.btn
 { margin:0 10px }
 A.btn SPAN.btn_img 
-{ background:transparent url("../../images/bg_btn_left.gif") no-repeat; display:block; line-height:17px; padding:4px 0 3px 9px; }
+{ background:transparent url("../images/bg_btn_left.gif") no-repeat; display:block; line-height:17px; padding:4px 0 3px 9px; }
 A.btn:hover
 { background-position:center right; text-decoration:none !important; }
 A.btn:hover SPAN.btn_img 
-{ background:transparent url("../../images/bg_btn_left.gif") no-repeat 0 -29px; display:block; line-height:17px; padding:4px 0 3px 9px; }
+{ background:transparent url("../images/bg_btn_left.gif") no-repeat 0 -29px; display:block; line-height:17px; padding:4px 0 3px 9px; }
 A.btn:active 
 { background-position:bottom right; color:#000; outline:none; /* hide dotted outline in Firefox */ }
 A.btn:active SPAN.btn_img 
@@ -619,35 +619,35 @@ A.btn:active SPAN.btn_img
 A.btn SPAN SPAN
 { display:block; padding:0 0 0 20px }
 A.btn SPAN.add
-{ background:url("../../images/ico_add.gif") no-repeat; }
+{ background:url("../images/ico_add.gif") no-repeat; }
 A.btn SPAN.back
-{ background:url("../../images/ico_back.gif") no-repeat; }
+{ background:url("../images/ico_back.gif") no-repeat; }
 A.btn SPAN.export
-{ background:url("../../images/ico_export.gif") no-repeat; }
+{ background:url("../images/ico_export.gif") no-repeat; }
 A.btn SPAN.next
-{ background:url("../../images/ico_next.gif") no-repeat; }
+{ background:url("../images/ico_next.gif") no-repeat; }
 A.btn SPAN.add_contact
-{ background:url("../../images/ico_add_contact_details.gif") no-repeat; }
+{ background:url("../images/ico_add_contact_details.gif") no-repeat; }
 A.btn SPAN.select_person
-{ background:url("../../images/ico_select_person.gif") no-repeat; }
+{ background:url("../images/ico_select_person.gif") no-repeat; }
 A.btn SPAN.edit
-{ background:url("../../images/ico_edit.gif") no-repeat; }
+{ background:url("../images/ico_edit.gif") no-repeat; }
 A.btn SPAN.confirm
-{ background:url("../../images/ico_check.gif") no-repeat; }
+{ background:url("../images/ico_check.gif") no-repeat; }
 A.btn SPAN.save
-{ background:url("../../images/ico_save.gif") no-repeat; }
+{ background:url("../images/ico_save.gif") no-repeat; }
 A.btn SPAN.saveconfirm
-{ background:url("../../images/ico_saveconfirm.gif") no-repeat; }
+{ background:url("../images/ico_saveconfirm.gif") no-repeat; }
 A.btn SPAN.search
-{ background:url("../../images/ico_search.gif") no-repeat; }
+{ background:url("../images/ico_search.gif") no-repeat; }
 A.btn SPAN.cancel
-{ background:url("../../images/ico_cancel.gif") no-repeat; }
+{ background:url("../images/ico_cancel.gif") no-repeat; }
 A.btn SPAN.copy
-{ background:url("../../images/ico_copy.gif") no-repeat; }
+{ background:url("../images/ico_copy.gif") no-repeat; }
 A.btn SPAN.delete
-{ background:url("../../images/ico_delete.gif") no-repeat; }
+{ background:url("../images/ico_delete.gif") no-repeat; }
 A.btn SPAN.upload
-{ background:url("../../images/ico_upload.gif") no-repeat; }
+{ background:url("../images/ico_upload.gif") no-repeat; }
 
 
 /* Check List - Columns Tabs */
@@ -657,9 +657,9 @@ A.btn SPAN.upload
 * html .checklistwrapper, *:first-child+html .checklistwrapper
 { width:24.9% }
 .checklistwrapper H3
-{ padding:4px 5px 2px 5px; border:0; border-top:1px solid #dcdcdc; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../../images/bg_th.gif") repeat-x top; color:#333; }
+{ padding:4px 5px 2px 5px; border:0; border-top:1px solid #dcdcdc; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../images/bg_th.gif") repeat-x top; color:#333; }
 #content UL.checklist
-{ border:0; border-bottom:1px solid #ccc; background:url("../../images/bg_shadow.gif") repeat-x fixed top ; clear:both; padding:0; margin:0; text-align:left; width:100%; height:105px; overflow:auto; font-size:90%; }
+{ border:0; border-bottom:1px solid #ccc; background:url("../images/bg_shadow.gif") repeat-x fixed top ; clear:both; padding:0; margin:0; text-align:left; width:100%; height:105px; overflow:auto; font-size:90%; }
 #content UL.checklist
 { background-attachment:scroll }
 #content UL.checklist LI
@@ -673,4 +673,4 @@ A.btn SPAN.upload
 #content UL.checklist LI LABEL:hover, #content UL.checklist LI LABEL.hover  
 { background:#ffc }
 .checklistfooter
-{ padding:2px 0; margin:0; border-right:1px solid #dcdcdc; background:#e5e5e5 url("../../images/bg_grad3d.gif") repeat-x; text-align:left; border-top:0; font-size:92%; font-weight:bold } 
+{ padding:2px 0; margin:0; border-right:1px solid #dcdcdc; background:#e5e5e5 url("../images/bg_grad3d.gif") repeat-x; text-align:left; border-top:0; font-size:92%; font-weight:bold } 
