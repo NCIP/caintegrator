@@ -83,132 +83,76 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Main DAO interface for storage and retrieval of persistent entities.
+ * Handler that matches a single Gene.
  */
-public interface CaIntegrator2Dao {
-    
-    /**
-     * Saves the object given.
-     * 
-     * @param persistentObject the object to save.
-     */
-    void save(Object persistentObject);
-    
-    /**
-     * Returns the persistent object with the id given.
-     * 
-     * @param <T> type of object being returned.
-     * @param id id of the object to retrieve
-     * @param objectClass the class of the object to retrieve
-     * @return the requested object.
-     */
-    <T> T get(Long id, Class<T> objectClass);
-    
-    /**
-     * Returns the workspace belonging to the specified user.
-     * 
-     * @param username retrieve workspace for this user.
-     * @return the user's workspace
-     */
-    UserWorkspace getWorkspace(String username);
-    
-    /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
-     * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
-     */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+final class GeneCriterionHandler extends AbstractCriterionHandler {
+
+    private final GeneCriterion criterion;
+
+    private GeneCriterionHandler(GeneCriterion criterion) {
+        this.criterion = criterion;
+    }
 
     /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
+     * {@inheritDoc}
      */
-    List<StudyConfiguration> getManagedStudies(String username);
-    
-    /**
-     * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study.
-     * @return the list of matches.
-     */
-    List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study);
-    
-    /**
-     * Returns the subjects (via their linked <code>ImageSeriesAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study. 
-     * @return the list of matches.
-     */
-    List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study);
-    
-    /**
-     * Returns the subjects (via their linked <code>SampleAcquisitions</code> that match
-     * the corresponding criterion.
-     * 
-     * @param criterion find subjects that match the given criterion.
-     * @param study restrict the search to the given study.
-     * @return the list of matches.
-     */
-    List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study);
+    @Override
+    Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
+        return Collections.emptySet();
+    }
 
     /**
-     * Returns the definitions that matches the name given (if one exists).
-     * 
-     * @param name find definitions for this name
-     * @return the matching definition or null.
+     * {@inheritDoc}
      */
-    AnnotationDefinition getAnnotationDefinition(String name);
+    @Override
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+        reporters.addAll(criterion.getGene().getReporterCollection());
+        return reporters;
+    }
 
     /**
-     * Returns the gene that matches the given symbol or null if no match is found.
-     * 
-     * @param symbol the gene symbol
-     * @return the matching gene or null.
+     * {@inheritDoc}
      */
-    Gene getGene(String symbol);
+    @Override
+    boolean isEntityMatchHandler() {
+        return false;
+    }
 
     /**
-     * Returns the array design platform that matches the given name.
-     * 
-     * @param name the platform name.
-     * @return the matching platform.
+     * {@inheritDoc}
      */
-    Platform getPlatform(String name);
+    @Override
+    boolean isReporterMatchHandler() {
+        return true;
+    }
 
-    /**
-     * Returns the <code>ArrayDatamatrixes</code> from the study given that match the given
-     * <code>ReporterType</code>.
-     * 
-     * @param study get matrixes from this study.
-     * @param reporterType get matrixes for this reporter type.
-     * @return the matching matrixes.
-     */
-    List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType);
-    
+    public static GeneCriterionHandler create(GeneCriterion criterion) {
+        return new GeneCriterionHandler(criterion);
+    }
+
+    @Override
+    boolean hasEntityCriterion() {
+        return false;
+    }
+
+    @Override
+    boolean hasReporterCriterion() {
+        return true;
+    }
+
 }

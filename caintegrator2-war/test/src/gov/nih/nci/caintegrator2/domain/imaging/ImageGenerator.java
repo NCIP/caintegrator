@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.domain.imaging;
 
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 
 public final class ImageGenerator extends AbstractTestDataGenerator<Image> {
@@ -100,7 +101,7 @@ public final class ImageGenerator extends AbstractTestDataGenerator<Image> {
      */
     @Override
     public void compareFields(Image original, Image retrieved) {
-        // no-op
+        assertEquals(original.getIdentifier(), retrieved.getIdentifier());
     }
 
     /**
@@ -116,7 +117,7 @@ public final class ImageGenerator extends AbstractTestDataGenerator<Image> {
      */
     @Override
     public void setValues(Image image) {
-        // no-op
+        image.setIdentifier(getUniqueString());
     }
 
 

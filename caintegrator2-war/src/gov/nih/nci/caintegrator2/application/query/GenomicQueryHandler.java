@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -98,23 +99,21 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
  */
 class GenomicQueryHandler {
-
-    private static final Logger LOG = Logger.getLogger(GenomicQueryHandler.class);
     
     private final Query query;
     private final CaIntegrator2Dao dao;
@@ -179,17 +178,34 @@ class GenomicQueryHandler {
     private ArrayDataValues getDataValues() {
         Collection<Array> arrays = getMatchingArrays();
         Collection<AbstractReporter> reporters = getMatchingReporters();
-        ArrayDataMatrix matrix = getDataMatrix();
-        return arrayDataService.getData(matrix, arrays, reporters);
+        List<ArrayDataMatrix> matrixes = getDataMatrixes();
+        ArrayDataValues values = new ArrayDataValues();
+        for (ArrayDataMatrix matrix : matrixes) {
+            values.addValues(arrayDataService.getData(matrix, arrays, reporters));               
+        }
+        return values;
     }
 
     private Collection<Array> getMatchingArrays() {
-        LOG.debug(dao.toString() + arrayDataService);
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
-        Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
-        samplesOnly.add(EntityTypeEnum.SAMPLE);
-        Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
-        return getArrays(rows);
+        if (criterionHandler.hasEntityCriterion()) {
+            Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
+            samplesOnly.add(EntityTypeEnum.SAMPLE);
+            Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
+            return getArrays(rows);
+        } else {
+            return getAllArrays();
+        }
+    }
+
+    private Collection<Array> getAllArrays() {
+        Collection<Array> arrays = new HashSet<Array>();
+        for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
+            for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
+                arrays.addAll(acquisition.getSample().getArrayCollection());
+            }
+        }
+        return arrays;
     }
 
     private Collection<Array> getArrays(Set<ResultRow> rows) {
@@ -200,14 +216,26 @@ class GenomicQueryHandler {
         return arrays;
     }
 
-    private ArrayDataMatrix getDataMatrix() {
-        // TODO Auto-generated method stub
-        return null;
+    private List<ArrayDataMatrix> getDataMatrixes() {
+        return dao.getArrayDataMatrixes(query.getSubscription().getStudy(), 
+                ReporterTypeEnum.getByValue(query.getReporterType()));
     }
 
     private Collection<AbstractReporter> getMatchingReporters() {
-        // TODO Auto-generated method stub
-        return Collections.emptySet();
+        CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
+        if (criterionHandler.hasReporterCriterion()) {
+            return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy());
+        } else {
+            return getAllReporters();
+        }
+    }
+
+    private Collection<AbstractReporter> getAllReporters() {
+        HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+        for (ArrayDataMatrix matrix : getDataMatrixes()) {
+            reporters.addAll(matrix.getReporterSet().getReporters());
+        }
+        return reporters;
     }
 
 }

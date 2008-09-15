@@ -103,7 +103,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
+//import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
 
 
 public class ManageQueryHelperTest {
