@@ -85,11 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -116,6 +118,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getPlatformCalled;
     private StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
     private Timepoint timepoint = new Timepoint();
+    public boolean getArrayDataMatrixesCalled;
 
     public UserWorkspace getWorkspace(String username) {
         return new UserWorkspace();
@@ -135,6 +138,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingSubjectsCalled = false;
         getGeneCalled = false;
         getPlatformCalled = false;
+        getArrayDataMatrixesCalled = false;
         studySubjectAssignment.setId(Long.valueOf(1));
         timepoint.setId(Long.valueOf(1));
     }
@@ -225,6 +229,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Platform platform = new Platform();
         platform.setName(name);
         return platform;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
+        getArrayDataMatrixesCalled = true;
+        return Collections.emptyList();
     }
 
 }

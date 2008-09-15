@@ -89,12 +89,14 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -220,6 +222,31 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         if (!imageSeriesFound) {
             resultRows.add(row);
         }
+    }
+
+    @Override
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    boolean isEntityMatchHandler() {
+        return true;
+    }
+
+    @Override
+    boolean isReporterMatchHandler() {
+        return false;
+    }
+
+    @Override
+    boolean hasEntityCriterion() {
+        return true;
+    }
+    
+    @Override
+    boolean hasReporterCriterion() {
+        return false;
     }
 
 }

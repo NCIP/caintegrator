@@ -9,7 +9,8 @@
 		<!-- Attributes mapping for the Query class -->
 		<property name="description" type="string" column="DESCRIPTION"/>
 		<property name="name" type="string" column="NAME"/>
-		<property name="resultType" type="string" column="RESULT_TYPE"/>
+        <property name="resultType" type="string" column="RESULT_TYPE"/>
+        <property name="reporterType" type="string" column="REPORTER_TYPE"/>
 		<property name="visibility" type="string" column="VISIBILITY"/>
 		<!-- Associations mapping for the Query class -->
 		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="save-update"/>

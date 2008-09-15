@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Set;
@@ -105,4 +106,30 @@ abstract class AbstractCriterionHandler {
      * @return set of ResultRows that match..
      */
     abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes);
+    
+    /**
+     * Gets all <code>AbstractReporters</code> matched by this handler.
+     * 
+     * @param dao DAO to use
+     * @param study being queried.
+     * @return the matching reporters.
+     */
+    abstract Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study);
+
+    /**
+     * Determines whether this handler provides reporter matches.
+     * 
+     * @return true if can match reporters.
+     */
+    abstract boolean isReporterMatchHandler();
+    /**
+     * Determines whether this handler provides entity matches.
+     * 
+     * @return true if can match entities.
+     */
+    abstract boolean isEntityMatchHandler();
+
+    abstract boolean hasEntityCriterion();
+
+    abstract boolean hasReporterCriterion();
 }

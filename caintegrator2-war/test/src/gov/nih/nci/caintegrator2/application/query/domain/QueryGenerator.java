@@ -111,15 +111,12 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
         CompoundCriterionGenerator.INSTANCE.compare(original.getCompoundCriterion(), retrieved.getCompoundCriterion());
         assertEquals(original.getColumnCollection().size(), retrieved.getColumnCollection().size());
         assertEquals(original.getColumnCollection().size(), 3);
-
     }
-
 
     @Override
     public Query createPersistentObject() {
         return new Query();
     }
-
 
     @Override
     public void setValues(Query query) {
@@ -129,6 +126,7 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
         for (int x=0; x<3; x++) {
             query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject());
         }
+        query.setReporterType(getUniqueString());
         CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion);
         query.setCompoundCriterion(compoundCriterion);
 
