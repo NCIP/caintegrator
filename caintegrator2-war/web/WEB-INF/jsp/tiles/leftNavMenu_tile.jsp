@@ -60,10 +60,10 @@
                         </li>
                         <li><a href="#">My Queries</a>
                             <ul>
-                                <li><s:url id="editQueryUrl" action="editQuery" includeParams="get">
+                                <li><s:url id="manageQueryUrl" action="manageQuery" includeParams="get">
                                         <s:param name="injectTest">yes</s:param>
                                     </s:url>
-                                    <a href="#" class="queries">My Query A</a> <a href='<s:property value="#editQueryUrl" />'>(edit)</a></li>
+                                    <a href="#" class="queries">My Query A</a> <a href='<s:property value="#manageQueryUrl" />'>(edit)</a></li>
                                 <li><a href="#" class="queries">My Query B</a></li>
                                 <li><a href="#" class="queries">My Query C</a></li>
                             </ul>
