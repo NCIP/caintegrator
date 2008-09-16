@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -127,6 +128,12 @@ public class DefineImagingFileColumnActionTest {
     
     @Test
     public void testSearchDefinitions() {
+        action.setKeywordsForSearch("");
+        assertEquals(Action.SUCCESS, action.searchDefinitions());
+        assertFalse(studyManagementServiceStub.getMatchingDefinitionsCalled);
+        assertFalse(studyManagementServiceStub.getMatchingDataElementsCalled);
+        
+        action.setKeywordsForSearch("anystring");
         assertEquals(Action.SUCCESS, action.searchDefinitions());
         assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
         assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);

@@ -105,9 +105,11 @@ import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -217,20 +219,15 @@ public class StudyManagementServiceTest {
     
     @Test
     public void testGetMatchingDefinitions() {
-        FileColumn fileColumn = new FileColumn();
-        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
-        fileColumn.getFieldDescriptor().setKeywords("test keywords");
-        List<AnnotationDefinition> definitions = studyManagementService.getMatchingDefinitions(fileColumn);
+        List<AnnotationDefinition> definitions = studyManagementService.getMatchingDefinitions(
+                Arrays.asList(StringUtils.split("test keywords")));
         assertEquals(1, definitions.size());
         assertEquals("definitionName", definitions.get(0).getDisplayName());
     }
     
     @Test
     public void testGetMatchingDataElements() {
-        FileColumn fileColumn = new FileColumn();
-        fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
-        fileColumn.getFieldDescriptor().setKeywords("test keywords");
-        studyManagementService.getMatchingDataElements(fileColumn);
+        studyManagementService.getMatchingDataElements(Arrays.asList(StringUtils.split("random String")));
         assertTrue(caDSRFacadeStub.retreiveCandidateDataElementsCalled);
     }
     

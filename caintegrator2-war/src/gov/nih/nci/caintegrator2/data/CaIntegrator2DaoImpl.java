@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -103,10 +102,12 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -156,21 +157,22 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)
-    public List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords) {
-        List<AnnotationFieldDescriptor> annotationFieldDescriptors = new ArrayList<AnnotationFieldDescriptor>();
-        List<AnnotationFieldDescriptor> results = getHibernateTemplate().find("from AnnotationFieldDescriptor");
-        for (AnnotationFieldDescriptor afd : results) {
-            if (containsKeyword(afd, keywords)) {
-                annotationFieldDescriptors.add(afd);
+    public List<AnnotationDefinition> findMatches(Collection<String> keywords) {
+        List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
+        List<AnnotationDefinition> results = getHibernateTemplate().find("from AnnotationDefinition");
+        for (AnnotationDefinition ad : results) {
+            if (containsKeyword(ad, keywords)) {
+                annotationDefinitions.add(ad);
             }
         }
-        Collections.sort(annotationFieldDescriptors, new MatchScoreComparator(keywords));
-        return annotationFieldDescriptors;
+        Collections.sort(annotationDefinitions, new MatchScoreComparator(keywords));
+        return annotationDefinitions;
     }
 
-    private boolean containsKeyword(AnnotationFieldDescriptor afd, Collection<String> keywords) {
+    private boolean containsKeyword(AnnotationDefinition ad, Collection<String> keywords) {
         for (String keyword : keywords) {
-            if (Cai2Util.containsIgnoreCase(afd.getKeywordsAsList(), keyword)) {
+            if (ad.getKeywords() != null 
+                && Cai2Util.containsIgnoreCase(Arrays.asList(StringUtils.split(ad.getKeywords())), keyword)) {
                 return true;
             }
         }

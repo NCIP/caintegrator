@@ -175,7 +175,7 @@ public class DataGenerator {
     private void addAnnotationFieldDescriptor() {
         AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
         afd.setDefinition(ad);
-        afd.setKeywords("congestive heart failure");
+        ad.setKeywords("congestive heart failure");
         afd.setName("Congestive Heart Failure");
         afd.setType(AnnotationFieldType.CHOICE);
         dao.save(afd);

@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -133,11 +132,11 @@ public interface CaIntegrator2Dao {
     UserWorkspace getWorkspace(String username);
     
     /**
-     * Returns a list of AnnotationFieldDescriptors that match the keywords.
+     * Returns a list of AnnotationDefinitions that match the keywords.
      * @param keywords - keywords to search on.
-     * @return - list of annotation field descriptors that match.
+     * @return - list of annotation definitions that match.
      */
-    List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords);
+    List<AnnotationDefinition> findMatches(Collection<String> keywords);
 
     /**
      * Returns the studies managed by this user.
