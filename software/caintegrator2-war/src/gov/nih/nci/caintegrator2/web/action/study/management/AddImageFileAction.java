@@ -88,7 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,24 +105,45 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     private File imagingFile;
     private String imagingFileContentType;
     private String imagingFileFileName;
-
+    //private StudyManagementService studyManagementService;
+    private String hostname;
+    private String username;
+    private String password;
+    private String protocolId;
+    
     /**
-     * {@inheritDoc}
+     * @return String.
      */
     @Override
-    public String execute()  {
+    public String execute() {
+       
         try {
-            ImageAnnotationConfiguration imagingSource = 
+            
+            ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
+            imageSource.getServerProfile().setUrl(getHostname());
+            // setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
+            imageSource.setTrialDataProvenance(getProtocolId());
+            imageSource.setStudyConfiguration(this.getStudyConfiguration());
+            //imageSource.getProtocolId();
+            // setting the values of imageSource
+            setImageSource(imageSource);
+            StudyConfiguration s1 = getStudyConfiguration();
+            getStudyManagementService().addImageSource(s1, getImageSource());
+            ImageAnnotationConfiguration imageAnnotationSource = 
                         getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(), getImagingFile(), 
                 getImagingFileFileName());
-        setImagingSource(imagingSource);
+            setImagingSource(imageAnnotationSource);
             return SUCCESS;
         } catch (ValidationException e) {
             addFieldError("imagingFile", "Invalid file: " + e.getResult().getInvalidMessage());
             return INPUT;
         } catch (IOException e) {
             return ERROR;
+        } catch (ConnectionException e) {
+            addActionError("The configured server couldn't reached. Please check the configuration settings.");
+            return INPUT;
         }
+        
     }
     
     /**
@@ -173,6 +197,63 @@ public String getImagingFileContentType() {
  */
 public void setImagingFileContentType(String imagingFileContentType) {
     this.imagingFileContentType = imagingFileContentType;
+}
+
+
+/**
+ * @return the username
+ */
+public String getUsername() {
+    return username;
+}
+
+/**
+ * @param username the username to set
+ */
+public void setUsername(String username) {
+    this.username = username;
+}
+
+/**
+ * @return the password
+ */
+public String getPassword() {
+    return password;
+}
+
+/**
+ * @param password the password to set
+ */
+public void setPassword(String password) {
+    this.password = password;
+}
+
+/**
+ * @return the protocolId
+ */
+public String getProtocolId() {
+    return protocolId;
+}
+
+/**
+ * @param protocolId the protocolId to set
+ */
+public void setProtocolId(String protocolId) {
+    this.protocolId = protocolId;
+}
+
+/**
+ * @return the hostname
+ */
+public String getHostname() {
+    return hostname;
+}
+
+/**
+ * @param hostname the hostname to set
+ */
+public void setHostname(String hostname) {
+    this.hostname = hostname;
 }
 
 }
