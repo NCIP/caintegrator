@@ -117,6 +117,7 @@ public class ManageQueryHelperTest {
     StudyHelper studyHelper = new StudyHelper();
     Study study = studyHelper.populateAndRetrieveStudy().getStudy();
     StudyManagementService studyManagementService = new StudyManagementServiceImpl();
+    ClinicalAnnotationSelection clinicalAnnotationSelections = new ClinicalAnnotationSelection();
     
 
     
@@ -126,7 +127,9 @@ public class ManageQueryHelperTest {
         manageQueryHelper.setQueryCriteriaRowList(rowList);
         manageQueryHelper.setClinicalAnnotationDefinitions(annotationDefinitionSet);
         manageQueryHelper.setSampleAnnotationDefinitions(annotationDefinitionSet);
-        manageQueryHelper.setImageAnnotationDefinitions(annotationDefinitionSet);        
+        manageQueryHelper.setImageAnnotationDefinitions(annotationDefinitionSet);
+        manageQueryHelper.setClinicalAnnotationSelections(clinicalAnnotationSelections);
+        
     }
    
     @Test
@@ -136,6 +139,7 @@ public class ManageQueryHelperTest {
         assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
+        assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
 
         // Below method needs a valid return from SecurityHelper.getCurrentUsername()
         //assertNotNull(manageQueryHelper.getCurrentStudy(studyManagementService, "Test Study"));
