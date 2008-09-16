@@ -90,12 +90,15 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.ncia.domain.Image;
+//import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
 import gov.nih.nci.ncia.domain.Study;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -152,39 +155,80 @@ public class NCIAFacadeImpl implements NCIAFacade {
             List<Series> nciaSeriesCollection = 
                 client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
             // ImageSeries is a caIntegrator2 datatype which is similar to NCIA series.
-            List<ImageSeries> imageSeriesCollection = new ArrayList<ImageSeries>();
+            //Set<ImageSeries> imageSeriesCollection = new HashSet<ImageSeries>();
             study.setSeriesCollection(nciaSeriesCollection);
             // Set our imageSeriesCollection
-            imageSeriesAcquisition.setSeriesCollection(imageSeriesCollection);
-            // Get all series for that study.
-            retrieveNCIASeries(client, nciaSeriesCollection);
+            
+            imageSeriesAcquisition.setSeriesCollection(retrieveNCIASeries(client, nciaSeriesCollection));
+                        // Get all series for that study.
+            
         }
     }
 
-    private void retrieveNCIASeries(NCIASearchService client, 
+    private Set<ImageSeries> retrieveNCIASeries(NCIASearchService client, 
                                 List<Series> nciaSeriesCollection) 
     throws ConnectionException {
+        Set<ImageSeries> imageSeriesCollection = new HashSet<ImageSeries>();
         for (Series series : nciaSeriesCollection) {
-            ImageSeries imageSeries = new ImageSeries();
-            convertSeriesToImageSeries(imageSeries, series);
             LOGGER.info("   IMAGE SERIES - " + series.getSeriesInstanceUID());
-            List<Image> imageCollection = 
+            // step 1 : get the image collection for the series object 
+             List<Image> imageCollection = 
                 client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
-            series.setImageCollection(imageCollection);
-            retrieveNCIAImage(imageCollection);
+             Set<gov.nih.nci.caintegrator2.domain.imaging.Image> imgColl = retrieveNCIAImage(imageCollection);
+             series.setImageCollection(imgColl);
+            
+            // step 2 : set it into image series collection            
+             ImageSeries imageSeries = new ImageSeries();
+             imageSeriesCollection.add(imageSeries);
+
+            // step 3 : convert series object to imageseries object
+            convertSeriesToImageSeries(imageSeries, series);
+           
+          
+            //retrieveNCIAImage(imageCollection);
+            
         }
+        
+        return imageSeriesCollection;
+
+    }
+    
+    private Set<gov.nih.nci.caintegrator2.domain.imaging.Image> retrieveNCIAImage(List<Image> imageCollection) {
+        Set<gov.nih.nci.caintegrator2.domain.imaging.Image> imageCollectionSet = 
+            new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>(); 
+        for (Image i : imageCollection) {
+            gov.nih.nci.caintegrator2.domain.imaging.Image image = new gov.nih.nci.caintegrator2.domain.imaging.Image();
+            
+            imageCollectionSet.add(image);
+            
+            convertNCIAImageToCaIntegrator2Image(image, i);
+          //LOGGER.info("      IMAGE - " + i.getImageType());
+          //LOGGER.info("      IMAGE - " + i.getSopInstanceUID());
+          LOGGER.info("      IMAGE - " + image.getIdentifier());
+        }
+        
+        return imageCollectionSet;
     }
 
     /**
      * @param imageCollection
      */
-    private void retrieveNCIAImage(List<Image> imageCollection) {
-        for (Image i : imageCollection) {
-          LOGGER.info("      IMAGE - " + i.getImageType());
-        }
-    }
+//    private Set<Image> retrieveNCIAImage(List<gov.nih.nci.caintegrator2.domain.imaging.Image> imageCollection) {
+//        
+//        Set<Image> imageCollectionSet = new HashSet<Image>(); 
+//        for (Image i : imageCollection) {
+//            Image image = new  Image();
+//           imageCollectionSet.add(image);
+//         convertNCIAImageToCaIntegrator2Image(image, i);
+//          LOGGER.info("      IMAGE - " + i.getImageType());
+//             
+//          
+//        }
+//        return imageCollectionSet;
+//    }
     
     
+
     private void convertStudyToImageSeriesAcquisition(ImageSeriesAcquisition imageSeriesAcquisition, Patient patient, 
             Study study) {
         imageSeriesAcquisition.setIdentifier(study.getStudyInstanceUID());
@@ -200,7 +244,17 @@ public class NCIAFacadeImpl implements NCIAFacade {
         // Actually fill this in properly later.
         imageSeries.setIdentifier(series.getSeriesInstanceUID());
     }
-
+    
+    private void convertNCIAImageToCaIntegrator2Image(
+            gov.nih.nci.caintegrator2.domain.imaging.Image caIntegrator2Image, 
+            gov.nih.nci.ncia.domain.Image nciaImage) {
+  
+//        for (Image i : imageCollection) {
+//            LOGGER.info("      IMAGE - " + i.getSOPInstanceUID());
+//        }
+ 
+ caIntegrator2Image.setIdentifier(nciaImage.getSopInstanceUID());
+}
     /**
      * @return the nciaServiceFactory
      */
@@ -216,12 +270,5 @@ public class NCIAFacadeImpl implements NCIAFacade {
     }
 
     
-//    private void convertNCIAImageToCaIntegrator2Image ( 
-//                  gov.nih.nci.caintegrator2.domain.imaging.Image caIntegrator2Image, 
-//                  gov.nih.nci.ncia.domain.Image nciaImage) {
-//        
-//    for (Image i : imageCollection) {
-//        LOGGER.info("      IMAGE - " + i.getImageType());
-//    }
-//    }
+  
 }
