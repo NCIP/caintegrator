@@ -99,7 +99,7 @@ public class ServerConnectionProfile implements PersistentObject {
     private String url;
     private String username;
     private String password;
-
+    private String protocolID;
     /**
      * @return the hostname
      */
@@ -199,6 +199,20 @@ public class ServerConnectionProfile implements PersistentObject {
     @Override
     public int hashCode() {
         return PersistentObjectHelper.hashCode(this);
+    }
+
+    /**
+     * @return the protocolID
+     */
+    public String getProtocolID() {
+        return protocolID;
+    }
+
+    /**
+     * @param protocolID the protocolID to set
+     */
+    public void setProtocolID(String protocolID) {
+        this.protocolID = protocolID;
     }
 
 }
