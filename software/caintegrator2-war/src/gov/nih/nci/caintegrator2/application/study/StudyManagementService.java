@@ -203,19 +203,19 @@ public interface StudyManagementService {
      * Returns an ordered list of existing definitions that match the keywords contained
      * in the given column.
      * 
-     * @param fileColumn match definitions for this column.
+     * @param keywords match definitions for these keywords.
      * @return the list of matching candidate definitions.
      */
-    List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn);
+    List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords);
 
     /**
      * Returns an ordered list of existing CaDSR data elements that match the keywords contained
      * in the given column.
      * 
-     * @param fileColumn match data elements for this column.
+     * @param keywords match data elements for these keywords.
      * @return the list of matching candidate data elements.
      */
-    List<DataElement> getMatchingDataElements(FileColumn fileColumn);
+    List<DataElement> getMatchingDataElements(List<String> keywords);
 
     /**
      * Selects an existing CaDSR data element as the definition for a column.

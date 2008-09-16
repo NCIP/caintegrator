@@ -91,7 +91,10 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 
@@ -110,6 +113,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     private List<DataElement> dataElements = new ArrayList<DataElement>();
     private int dataElementIndex;
     private int definitionIndex;
+    private String keywordsForSearch;
     
     /**
      * Refreshes the current Imaging source configuration.
@@ -139,9 +143,14 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String searchDefinitions() {
+        if (getKeywordsForSearch() == null || getKeywordsForSearch().length() == 0) {
+            return SUCCESS;
+        }
+        List<String> keywordsList = Arrays.asList(StringUtils.split(getKeywordsForSearch()));
+        // Are we supposed to save before searching or not?
         getStudyManagementService().save(getStudyConfiguration());
-        definitions = getStudyManagementService().getMatchingDefinitions(getFileColumn());
-        dataElements = getStudyManagementService().getMatchingDataElements(getFileColumn());
+        definitions = getStudyManagementService().getMatchingDefinitions(keywordsList);
+        dataElements = getStudyManagementService().getMatchingDataElements(keywordsList);
         return SUCCESS;
     }
     
@@ -265,6 +274,20 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      */
     public void setDefinitionIndex(int definitionIndex) {
         this.definitionIndex = definitionIndex;
+    }
+
+    /**
+     * @return the keywordsForSearch
+     */
+    public String getKeywordsForSearch() {
+        return keywordsForSearch;
+    }
+
+    /**
+     * @param keywordsForSearch the keywordsForSearch to set
+     */
+    public void setKeywordsForSearch(String keywordsForSearch) {
+        this.keywordsForSearch = keywordsForSearch;
     }
 
 }

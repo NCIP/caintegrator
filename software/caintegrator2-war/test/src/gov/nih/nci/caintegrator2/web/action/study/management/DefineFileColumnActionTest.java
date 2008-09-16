@@ -45,9 +45,16 @@ public class DefineFileColumnActionTest {
     
     @Test
     public void testSearchDefinitions() {
+        action.setKeywordsForSearch("");
+        assertEquals(Action.SUCCESS, action.searchDefinitions());
+        assertFalse(studyManagementServiceStub.getMatchingDefinitionsCalled);
+        assertFalse(studyManagementServiceStub.getMatchingDataElementsCalled);
+        
+        action.setKeywordsForSearch("anystring");
         assertEquals(Action.SUCCESS, action.searchDefinitions());
         assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
         assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);
+        
     }
     
     @Test

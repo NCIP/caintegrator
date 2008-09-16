@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
@@ -92,7 +93,10 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Action used to edit the type and annotation of a file column by a Study Manager.
@@ -112,6 +116,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private List<DataElement> dataElements = new ArrayList<DataElement>();
     private int dataElementIndex;
     private int definitionIndex;
+    private String keywordsForSearch;
     
     /**
      * Refreshes the current clinical source configuration.
@@ -141,6 +146,12 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String saveColumnType() {
+        definitions.clear();
+        dataElements.clear();
+        if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
+            getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+            getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
+        }
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
@@ -150,10 +161,14 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String searchDefinitions() {
+        if (getKeywordsForSearch() == null || getKeywordsForSearch().length() == 0) {
+            return SUCCESS;
+        }
+        List<String> keywordsList = Arrays.asList(StringUtils.split(getKeywordsForSearch()));
         // Are we supposed to save before searching or not?
         getStudyManagementService().save(getStudyConfiguration());
-        definitions = getStudyManagementService().getMatchingDefinitions(getFileColumn());
-        dataElements = getStudyManagementService().getMatchingDataElements(getFileColumn());
+        definitions = getStudyManagementService().getMatchingDefinitions(keywordsList);
+        dataElements = getStudyManagementService().getMatchingDataElements(keywordsList);
         return SUCCESS;
     }
     
@@ -352,6 +367,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    /**
+     * @return the keywordsForSearch
+     */
+    public String getKeywordsForSearch() {
+        return keywordsForSearch;
+    }
+
+    /**
+     * @param keywordsForSearch the keywordsForSearch to set
+     */
+    public void setKeywordsForSearch(String keywordsForSearch) {
+        this.keywordsForSearch = keywordsForSearch;
     }
 
 

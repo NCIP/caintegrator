@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,16 +102,16 @@ public class MatchScoreComparatorTest {
         keywords.add("test2");
         keywords.add("test3");
         
-        AnnotationFieldDescriptor afd1 = new AnnotationFieldDescriptor();
-        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
-        afd1.setKeywords("test1");
-        afd2.setKeywords("test2 test3");
+        AnnotationDefinition ad1 = new AnnotationDefinition();
+        AnnotationDefinition ad2 = new AnnotationDefinition();
+        ad1.setKeywords("test1");
+        ad2.setKeywords("test2 test3");
         
         
         MatchScoreComparator msc = new MatchScoreComparator(keywords);
         
-        assertTrue(msc.compare(afd1, afd2) > 0 );
-        assertTrue(msc.compare(afd2, afd1) < 0 );
+        assertTrue(msc.compare(ad1, ad2) > 0 );
+        assertTrue(msc.compare(ad2, ad1) < 0 );
         
        
     }

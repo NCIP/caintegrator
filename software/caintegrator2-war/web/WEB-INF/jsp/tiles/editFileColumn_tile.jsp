@@ -10,47 +10,59 @@
     <!--/Page Help-->           
     
     <h1>Assign Annotation Definition for Column: <s:property value="fileColumn.name" /></h1>
-    
-    <s:form theme="simple">
-        <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="clinicalSource.id" />
-        <s:hidden name="fileColumn.id" />
 
-        <label class="label"> Column Type: </label> 
-        <s:select name="columnType" list="columnTypes" required="true" />
-        <s:submit value="Save Type" action= "saveColumnType" />
-        <br>
-        <br>
-        <s:if test="%{columnTypeAnnotation}">
-	        <label class="label"> Keywords: </label> 
-	        <s:textfield name="fileColumn.fieldDescriptor.keywords"  /> 
-	        <s:submit value="Search" action="searchDefinitions" />
-	        <br> <br>
-	        <s:submit value="New Definition" action="createNewDefinition" />
-	    </s:if>
-	</s:form>
-	
-	<s:form>
+	<s:form action="saveColumnType">
 	    <s:hidden name="studyConfiguration.id" />
         <s:hidden name="clinicalSource.id" />
         <s:hidden name="fileColumn.id" />
 	
+        <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
+    </s:form>
+        
+    <s:form>
+        <s:hidden name="studyConfiguration.id" />
+        <s:hidden name="clinicalSource.id" />
+        <s:hidden name="fileColumn.id" />
 	    <s:if test="%{columnTypeAnnotation}">
 	        <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
 	           <hr>
-	           <h1>Current Annotation Definition: </h2>
+	           <h1>Current Annotation Definition: </h1>
 	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
 	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
-	            <s:select label="Annotation Type" name="annotationDataType" list="annotationDataTypes" required="true" />
+	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
+	            <s:select label="Data Type" name="annotationDataType" list="annotationDataTypes" required="true" />
 	        </s:if>
 	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
 	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 
 	            readonly="%{readOnly}"/> 
 	        </s:if>
-	        <s:submit value="Save Definition" action="updateFileColumn" />
+	        <br>
+	        <s:submit value="New" action="createNewDefinition" />
         </s:if>
+        <s:submit value="Save" action="updateFileColumn" />
     </s:form>
     
+    
+    <s:if test="%{columnTypeAnnotation}">
+    <hr>
+    <h1>Search For an Annotation Definition: </h1>
+    <s:form theme="simple" action="searchDefinitions">
+        <s:hidden name="studyConfiguration.id" />
+        <s:hidden name="clinicalSource.id" />
+        <s:hidden name="fileColumn.id" />
+        <tr>
+            <td>
+                <s:textfield label="Keywords" name="keywordsForSearch"  />
+            </td>
+           <td> 
+               <s:submit value="Search" action="searchDefinitions" />
+           </td>
+           <td>
+               <em>Search existing studies and caDSR for definitions.</em>
+           </td>
+    </s:form>
+        <br> <br>
+    </s:if>
     <s:if test="%{!definitions.isEmpty}">
     <hr>
 	    <table class="data">
@@ -93,6 +105,7 @@
 	        </tr>
 	        <tr>
 	            <th>Name</th>
+	            <th>Actions</th>
 	            <th>Public ID</th>
 	            <th>Definition</th>
 	        </tr>
@@ -104,13 +117,21 @@
 	              <tr class="even">
 	            </s:else>            
 	            <td>
-	                <s:url id="selectDataElement" action="selectDataElement">
-	                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-	                    <s:param name="fileColumn.id" value="fileColumn.id" />
-	                    <s:param name="dataElementIndex" value="#status.index" />
-	                </s:url> 
-	                <s:a href="%{selectDataElement}"><s:property value="longName" /></s:a>
+                    <s:property value="longName" />
 	            </td>
+	            <td>
+                    <s:url id="selectDataElement" action="selectDataElement">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="fileColumn.id" value="fileColumn.id" />
+                        <s:param name="dataElementIndex" value="#status.index" />
+                    </s:url> 
+                    <s:url id="viewDataElement" value="http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser">
+	                    <s:param name="publicId" value="publicId"/>
+	                    <s:param name="version" value="1"/>
+                    </s:url>
+                    <s:a href="%{selectDataElement}">Select</s:a> |
+                    <s:a href="%{viewDataElement}">View </s:a>
+                </td>
 	            <td><s:property value="publicId" /></td>
 	            <td><s:property value="definition" /></td>
 	        </tr>
