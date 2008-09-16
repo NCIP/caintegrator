@@ -90,7 +90,6 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.ncia.domain.Image;
-//import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
 import gov.nih.nci.ncia.domain.Study;
@@ -98,7 +97,6 @@ import gov.nih.nci.ncia.domain.Study;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -125,136 +123,64 @@ public class NCIAFacadeImpl implements NCIAFacade {
     public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException {
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
-        List<Patient> patientCollection;
-        List<ImageSeriesAcquisition> imageSeriesAcquisitionCollection = new ArrayList<ImageSeriesAcquisition>();
-        patientCollection = client.retrievePatientCollectionFromDataProvenanceProject(trialDataProvenanceProject);
+        List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
+        List<Patient> patientCollection = 
+            client.retrievePatientCollectionFromDataProvenanceProject(trialDataProvenanceProject);
         int patientCounter = 0;
-        // Get all patients
-        for (Patient p : patientCollection) {
-            LOGGER.info(++patientCounter + " PATIENT - " + p.getPatientName());
-            ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
-            imageSeriesAcquisitionCollection.add(imageSeriesAcquisition);
-            // This is where you set imageSeriesAcquisition.setNCIAPatientId (When we get that attribute)
-            List<Study> studyCollection = client.retrieveStudyCollectionFromPatient(p.getPatientId());
-            p.setStudyCollection(studyCollection);
-            // Get all studies for that patient
-            retrieveNCIAStudy(client, p, imageSeriesAcquisition, studyCollection);
+        for (Patient patient : patientCollection) {
+            LOGGER.info(++patientCounter + " PATIENT - " + patient.getPatientName());
+            imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
         }
-        return imageSeriesAcquisitionCollection;
+        return imageSeriesAcquisitions;
     }
 
-    private void retrieveNCIAStudy(NCIASearchService client, 
-                               Patient p, 
-                               ImageSeriesAcquisition imageSeriesAcquisition,
-                               List<Study> studyCollection) 
+    private List<ImageSeriesAcquisition> createImageSeriesAcquisitions(Patient patient, NCIASearchService client) 
     throws ConnectionException {
-        for (Study study : studyCollection) {
+        List<Study> studies = client.retrieveStudyCollectionFromPatient(patient.getPatientId());
+        List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>(studies.size());
+        for (Study study : studies) {
             LOGGER.info("  STUDY - " + study.getStudyInstanceUID() + " - " + study.getStudyDescription() + " - "
                     + study.getStudyDate());
-            convertStudyToImageSeriesAcquisition(imageSeriesAcquisition, p, study);
-            List<Series> nciaSeriesCollection = 
-                client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
-            // ImageSeries is a caIntegrator2 datatype which is similar to NCIA series.
-            //Set<ImageSeries> imageSeriesCollection = new HashSet<ImageSeries>();
-            study.setSeriesCollection(nciaSeriesCollection);
-            // Set our imageSeriesCollection
-            
-            imageSeriesAcquisition.setSeriesCollection(retrieveNCIASeries(client, nciaSeriesCollection));
-                        // Get all series for that study.
-            
+            acquisitions.add(convertToImageSeriesAcquisition(study, client));
         }
+        return acquisitions;
     }
 
-    private Set<ImageSeries> retrieveNCIASeries(NCIASearchService client, 
-                                List<Series> nciaSeriesCollection) 
+    private ImageSeriesAcquisition convertToImageSeriesAcquisition(Study study, NCIASearchService client) 
     throws ConnectionException {
-        Set<ImageSeries> imageSeriesCollection = new HashSet<ImageSeries>();
-        for (Series series : nciaSeriesCollection) {
+        ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
+        acquisition.setIdentifier(study.getStudyInstanceUID());
+        acquisition.setSeriesCollection(new HashSet<ImageSeries>());
+        List<Series> seriesList = client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
+        for (Series series : seriesList) {
             LOGGER.info("   IMAGE SERIES - " + series.getSeriesInstanceUID());
-            // step 1 : get the image collection for the series object 
-             List<Image> imageCollection = 
-                client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
-             Set<gov.nih.nci.caintegrator2.domain.imaging.Image> imgColl = retrieveNCIAImage(imageCollection);
-             series.setImageCollection(imgColl);
-            
-            // step 2 : set it into image series collection            
-             ImageSeries imageSeries = new ImageSeries();
-             imageSeriesCollection.add(imageSeries);
-
-            // step 3 : convert series object to imageseries object
-            convertSeriesToImageSeries(imageSeries, series);
-           
-          
-            //retrieveNCIAImage(imageCollection);
-            
+            ImageSeries imageSeries = convertToImageSeries(series, client);
+            acquisition.getSeriesCollection().add(imageSeries);
+            imageSeries.setImageStudy(acquisition);
         }
-        
-        return imageSeriesCollection;
-
-    }
-    
-    private Set<gov.nih.nci.caintegrator2.domain.imaging.Image> retrieveNCIAImage(List<Image> imageCollection) {
-        Set<gov.nih.nci.caintegrator2.domain.imaging.Image> imageCollectionSet = 
-            new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>(); 
-        for (Image i : imageCollection) {
-            gov.nih.nci.caintegrator2.domain.imaging.Image image = new gov.nih.nci.caintegrator2.domain.imaging.Image();
-            
-            imageCollectionSet.add(image);
-            
-            convertNCIAImageToCaIntegrator2Image(image, i);
-          //LOGGER.info("      IMAGE - " + i.getImageType());
-          //LOGGER.info("      IMAGE - " + i.getSopInstanceUID());
-          LOGGER.info("      IMAGE - " + image.getIdentifier());
-        }
-        
-        return imageCollectionSet;
+        return acquisition;
     }
 
-    /**
-     * @param imageCollection
-     */
-//    private Set<Image> retrieveNCIAImage(List<gov.nih.nci.caintegrator2.domain.imaging.Image> imageCollection) {
-//        
-//        Set<Image> imageCollectionSet = new HashSet<Image>(); 
-//        for (Image i : imageCollection) {
-//            Image image = new  Image();
-//           imageCollectionSet.add(image);
-//         convertNCIAImageToCaIntegrator2Image(image, i);
-//          LOGGER.info("      IMAGE - " + i.getImageType());
-//             
-//          
-//        }
-//        return imageCollectionSet;
-//    }
-    
-    
-
-    private void convertStudyToImageSeriesAcquisition(ImageSeriesAcquisition imageSeriesAcquisition, Patient patient, 
-            Study study) {
-        imageSeriesAcquisition.setIdentifier(study.getStudyInstanceUID());
-        // These are pointless.
-        patient.getId();
-        study.getId();
-        // imageSeriesAcquisition.setNCIAPatientId(p.getPatientId());
-        //imageSeriesAcquisition.setStudyDate(s.getStudyDate();
-        
-    }
-    
-    private void convertSeriesToImageSeries(ImageSeries imageSeries, Series series) {
-        // Actually fill this in properly later.
+    private ImageSeries convertToImageSeries(Series series, NCIASearchService client) throws ConnectionException {
+        ImageSeries imageSeries = new ImageSeries();
         imageSeries.setIdentifier(series.getSeriesInstanceUID());
+        imageSeries.setImageCollection(new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>());
+        List<Image> nciaImageList = client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
+        for (Image nciaImage : nciaImageList) {
+            LOGGER.info("      IMAGE - " + nciaImage.getSopInstanceUID());
+            gov.nih.nci.caintegrator2.domain.imaging.Image image = convertToImage(nciaImage);
+            imageSeries.getImageCollection().add(image);
+            image.setSeries(imageSeries);
+        }
+        return imageSeries;
     }
-    
-    private void convertNCIAImageToCaIntegrator2Image(
-            gov.nih.nci.caintegrator2.domain.imaging.Image caIntegrator2Image, 
-            gov.nih.nci.ncia.domain.Image nciaImage) {
-  
-//        for (Image i : imageCollection) {
-//            LOGGER.info("      IMAGE - " + i.getSOPInstanceUID());
-//        }
- 
- caIntegrator2Image.setIdentifier(nciaImage.getSopInstanceUID());
-}
+
+    private gov.nih.nci.caintegrator2.domain.imaging.Image convertToImage(Image nciaImage) {
+        gov.nih.nci.caintegrator2.domain.imaging.Image image = new gov.nih.nci.caintegrator2.domain.imaging.Image();
+        image.setIdentifier(nciaImage.getSopInstanceUID());
+        return image;
+    }
+
     /**
      * @return the nciaServiceFactory
      */
@@ -268,7 +194,5 @@ public class NCIAFacadeImpl implements NCIAFacade {
     public void setNciaServiceFactory(NCIAServiceFactory nciaServiceFactory) {
         this.nciaServiceFactory = nciaServiceFactory;
     }
-
-    
   
 }
