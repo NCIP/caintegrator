@@ -151,11 +151,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
             query.setDescription("This is test query composed for testing inside the action class");
             queryResult.setQuery(query);
             queryResult.setRowCollection(getTestResultRows());     
-        } else if (getInjectTest().equals("vasari")) {
-            // create and run more realistic vasari query           
-            query.setName("cai2 Test Query - vasari");
-            query.setDescription("This is test query composed for testing inside the action class");
-            queryResult.setQuery(query);            
         }
         
         // write query result object into the session scope

@@ -85,24 +85,31 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import static org.junit.Assert.assertEquals;
 //import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 //import gov.nih.nci.caintegrator2.domain.translational.Study;
 //import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
+import gov.nih.nci.caintegrator2.web.action.query.ManageQueryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+//import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertFalse;
+//import static org.junit.Assert.assertNotNull;
+//import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+
 import com.opensymphony.xwork2.Action;
 
 public class ManageQueryActionTest {
 
     private ManageQueryAction manageQueryAction;
+    private ManageQueryHelper manageQueryHelper;
     private QueryResult qR;
     
     // Study objects
@@ -131,19 +138,10 @@ public class ManageQueryActionTest {
 //    }
     
     @Test
-    public void testExecute() {
-        manageQueryAction.setInjectTest("yes");
-        manageQueryAction.execute();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        manageQueryAction.setInjectTest("vasari");
-        manageQueryAction.execute();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
+    public void testExecute() {       
         manageQueryAction.setQueryResult(qR);
         manageQueryAction.getQueryResult();
-        manageQueryAction.setInjectTest("yes");
-        manageQueryAction.getInjectTest();
+
         manageQueryAction.getTestResultRows();
         manageQueryAction.setStudyManagementService(studyManagementService);
         manageQueryAction.getStudyManagementService();
@@ -154,6 +152,17 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.selectColumns());
         assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
         assertEquals(Action.SUCCESS, manageQueryAction.saveQuery());
+        assertEquals(manageQueryHelper, manageQueryAction.getManageQueryHelper());
+        
+        manageQueryAction.setInjectTest("yes");
+        assertEquals("yes", manageQueryAction.getInjectTest());
+        manageQueryAction.execute();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        manageQueryAction.setInjectTest("vasari");
+        assertEquals("vasari", manageQueryAction.getInjectTest());
+        manageQueryAction.execute();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());        
         
     }
 }
