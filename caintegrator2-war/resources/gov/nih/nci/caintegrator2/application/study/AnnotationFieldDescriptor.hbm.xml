@@ -13,9 +13,7 @@
 		</id>
         
         <property name="name" type="string" column="NAME"/>
-        
-        <property name="keywords" type="string" column="KEYWORDS"/>
-        
+                
         <property name="type" type="AnnotationFieldType" column="TYPE"/>
         
         <property name="shownInBrowse" type="boolean" column="SHOWN_IN_BROWSE"/>

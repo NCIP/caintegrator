@@ -10,6 +10,7 @@
 		<property name="displayName" type="string" column="DISPLAY_NAME"/>
 		<property name="preferredDefinition" type="string" column="PREFERRED_DEFINITION"/>
 		<property name="type" type="string" column="TYPE"/>
+		<property name="keywords" type="string" column="KEYWORDS"/>
 		<property name="unitsOfMeasure" type="string" column="UNITS_OF_MEASURE"/>
 		<!-- Associations mapping for the AnnotationDefinition class -->
 		<set name="annotationValueCollection" lazy="true" cascade="save-update" >
