@@ -104,7 +104,6 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -306,24 +305,16 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn) {
-        List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-        List<AnnotationFieldDescriptor> matchingDescriptors = 
-            dao.findMatches(fileColumn.getFieldDescriptor().getKeywordsAsList());
-        for (AnnotationFieldDescriptor descriptor : matchingDescriptors) {
-            if (descriptor.getDefinition() != null && !definitions.contains(descriptor.getDefinition())) {
-                definitions.add(descriptor.getDefinition());
-            }
-        }
-        return definitions;
+    public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
+        return dao.findMatches(keywords);
     }
 
     /**
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
-        return caDSRFacade.retreiveCandidateDataElements(fileColumn.getFieldDescriptor().getKeywordsAsList());
+    public List<DataElement> getMatchingDataElements(List<String> keywords) {
+        return caDSRFacade.retreiveCandidateDataElements(keywords);
     }
 
     /**

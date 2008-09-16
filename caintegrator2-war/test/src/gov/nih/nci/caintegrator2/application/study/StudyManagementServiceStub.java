@@ -175,12 +175,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return entity;
     }
 
-    public List<AnnotationDefinition> getMatchingDefinitions(FileColumn fileColumn) {
+    public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
         getMatchingDefinitionsCalled = true;
         return Collections.emptyList();
     }
 
-    public List<DataElement> getMatchingDataElements(FileColumn fileColumn) {
+    public List<DataElement> getMatchingDataElements(List<String> keywords) {
         getMatchingDataElementsCalled = true;
         return Collections.emptyList();
     }

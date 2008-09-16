@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -116,8 +115,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findMatchingSubjectsCalled;
     public boolean getGeneCalled;
     public boolean getPlatformCalled;
-    private StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
-    private Timepoint timepoint = new Timepoint();
+    private final StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+    private final Timepoint timepoint = new Timepoint();
     public boolean getArrayDataMatrixesCalled;
 
     public UserWorkspace getWorkspace(String username) {
@@ -155,14 +154,13 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         }
     }
     
-    public List<AnnotationFieldDescriptor> findMatches(Collection<String> keywords) {
+    public List<AnnotationDefinition> findMatches(Collection<String> keywords) {
         findMatchesCalled = true;
-        List<AnnotationFieldDescriptor> descriptors = new ArrayList<AnnotationFieldDescriptor>();
-        AnnotationFieldDescriptor descriptor = new AnnotationFieldDescriptor();
-        descriptor.setDefinition(new AnnotationDefinition());
-        descriptor.getDefinition().setDisplayName("definitionName");
-        descriptors.add(descriptor);
-        return descriptors;
+        List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setDisplayName("definitionName");
+        definitions.add(definition);
+        return definitions;
     }
 
     public List<StudyConfiguration> getManagedStudies(String username) {

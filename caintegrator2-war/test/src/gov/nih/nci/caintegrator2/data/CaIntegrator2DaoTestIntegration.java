@@ -86,13 +86,12 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
-import gov.nih.nci.caintegrator2.application.study.AnnotationFieldType;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -158,22 +157,19 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @SuppressWarnings({"PMD.ExcessiveMethodLength"})
     public void testFindMatches() {
         // First load 2 AnnotationFieldDescriptors.
-        AnnotationFieldDescriptor afd = new AnnotationFieldDescriptor();
+        AnnotationDefinition afd = new AnnotationDefinition();
         afd.setKeywords("congestive heart failure");
-        afd.setName("Congestive Heart Failure");
-        afd.setType(AnnotationFieldType.CHOICE);
+        afd.setDisplayName("Congestive Heart Failure");
         dao.save(afd);
         
-        AnnotationFieldDescriptor afd2 = new AnnotationFieldDescriptor();
+        AnnotationDefinition afd2 = new AnnotationDefinition();
         afd2.setKeywords("congestive");
-        afd2.setName("Congestive");
-        afd2.setType(AnnotationFieldType.CHOICE);
+        afd2.setDisplayName("Congestive");
         dao.save(afd2);
         
-        AnnotationFieldDescriptor afd3 = new AnnotationFieldDescriptor();
+        AnnotationDefinition afd3 = new AnnotationDefinition();
         afd3.setKeywords("congestive failure");
-        afd3.setName("Congestive Failure");
-        afd3.setType(AnnotationFieldType.CHOICE);
+        afd3.setDisplayName("Congestive Failure");
         dao.save(afd3);
         
         // Now search for our item on the string "congestive"
@@ -181,17 +177,17 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         searchWords.add("CoNgeStiVe");
         searchWords.add("HearT");
         searchWords.add("failure");
-        List<AnnotationFieldDescriptor> afds1 = dao.findMatches(searchWords);
+        List<AnnotationDefinition> afds1 = dao.findMatches(searchWords);
         
         assertNotNull(afds1);
         // Make sure it sorted them properly.
-        assertEquals(afds1.get(0).getName(), "Congestive Heart Failure");
-        assertEquals(afds1.get(1).getName(), "Congestive Failure");
-        assertEquals(afds1.get(2).getName(), "Congestive");
+        assertEquals(afds1.get(0).getDisplayName(), "Congestive Heart Failure");
+        assertEquals(afds1.get(1).getDisplayName(), "Congestive Failure");
+        assertEquals(afds1.get(2).getDisplayName(), "Congestive");
         
         List<String> searchWords2 = new ArrayList<String>();
         searchWords2.add("afdsefda");
-        List<AnnotationFieldDescriptor> afds2 = dao.findMatches(searchWords2);
+        List<AnnotationDefinition> afds2 = dao.findMatches(searchWords2);
         assertEquals(0, afds2.size());
     }
     
