@@ -71,11 +71,11 @@
     <!-- These exist in the repository -->
     <dependency org="javax.activation" name="activation" rev="1.0.2" conf="compile"/>
     <dependency org="javax.mail" name="mail" rev="1.3" conf="compile"/>
-    <dependency org="globus" name="ws-addressing" rev="1.0" conf="compile"/>
-    <dependency org="globus" name="jcogfx" rev="noversion" conf="compile"/>
-    <dependency org="globus" name="jcog" rev="1.2" conf="compile"/>
-    <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="compile"/>
-    <dependency org="globus" name="wss4j" rev="noversion" conf="compile"/>
+    <dependency org="globus" name="ws-addressing" rev="1.0" conf="runtime"/>
+    <dependency org="globus" name="jcogfx" rev="noversion" conf="runtime"/>
+    <dependency org="globus" name="jcog" rev="1.2" conf="runtime"/>
+    <dependency org="globus" name="ws-enumeration" rev="4.0.3" conf="runtime"/>
+    <dependency org="globus" name="wss4j" rev="noversion" conf="runtime"/>
     <dependency org="org.antlr" name="antlr" rev="2.7.6" conf="runtime"/>
     <dependency org="objectweb" name="asm" rev="1.5.3" conf="runtime"/>
     <dependency org="apache" name="ant-contrib" rev="1.0b3" conf="compile"/>
@@ -98,9 +98,9 @@
     <dependency org="oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime"/>
     
     <!-- caGrid 1.2 stuff -->
-    <dependency org="caGrid" name="data" rev="1.2" conf="compile->stubs,utils" />
-    <dependency org="caGrid" name="transfer" rev="1.2" conf="compile->client" />
-    <dependency org="caGrid" name="dataExtensions" rev="1.2" conf="compile->style-cacore32" transitive="false"/>
+    <dependency org="caGrid" name="data" rev="1.2" conf="runtime->stubs,utils" />
+    <dependency org="caGrid" name="transfer" rev="1.2" conf="runtime->client" />
+    <dependency org="caGrid" name="dataExtensions" rev="1.2" conf="runtime->style-cacore32" transitive="false"/>
     
   </dependencies>
   
