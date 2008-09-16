@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-//import java.util.Set;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -106,12 +106,13 @@ public class ManageQueryHelper {
     // stored and retrieved (Struts2).
     private List<QueryAnnotationCriteria> queryCriteriaRowList;
     // The first three Collections below store data type specific
-    // annotation definitions. The last Collection will contain the 
-    // currently-selected data type Collection of annotation definitions.
+    // annotation definitions as stored in the DB.
     private Collection<AnnotationDefinition> clinicalAnnotationDefinitions;
     private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
     private Collection<AnnotationDefinition> imageAnnotationDefinitions;
-//    private Collection<AnnotationDefinition> currentAnnotationDefinitions;
+    // The objects below store the presentation-facing data necessary to 
+    // populate JSP/HTML elements
+    private ClinicalAnnotationSelection clinicalAnnotationSelections;
 
     /**
      * Default constructor.
@@ -205,6 +206,20 @@ public class ManageQueryHelper {
     }
 
     /**
+     * @return the clinicalAnnotationSelections
+     */
+    public ClinicalAnnotationSelection getClinicalAnnotationSelections() {
+        return clinicalAnnotationSelections;
+    }
+
+    /**
+     * @param clinicalAnnotationSelections the clinicalAnnotationSelections to set
+     */
+    public void setClinicalAnnotationSelections(ClinicalAnnotationSelection clinicalAnnotationSelections) {
+        this.clinicalAnnotationSelections = clinicalAnnotationSelections;
+    }
+    
+    /**
      * Fetch and store the annotation select lists.
      * @param studyManagementService enables retrieval of a study
      */
@@ -217,6 +232,9 @@ public class ManageQueryHelper {
         // Get all data type annotation field definitions:
         populateClinicalAnnotationDefinitions(study);
         // TODO get sample and imaging
+        
+        // Instantiate the annotation selection objects:
+        populateAnnotationSelections();
     }
     
     /**
@@ -247,5 +265,31 @@ public class ManageQueryHelper {
             clinicalAnnotationDefinitions = annoDefs;
         }
     }
+    
+    private void populateAnnotationSelections() {
+        populateClinicalAnnotationSelections();
+        
+        // TODO populate sample and image selection objects
+    }
+    
+    private void populateClinicalAnnotationSelections() {
+        if (this.clinicalAnnotationSelections == null) {
+            this.clinicalAnnotationSelections = new ClinicalAnnotationSelection();
+        }
+        if (clinicalAnnotationDefinitions != null && !clinicalAnnotationDefinitions.isEmpty()) {
+            ArrayList<String> annotationSelections = new ArrayList<String>(10);
+            Iterator<AnnotationDefinition> annoDefsIter = clinicalAnnotationDefinitions.iterator();
+            while (annoDefsIter.hasNext()) {
+                //AnnotationDefinition ad = annoDefsIter.next();
+                annotationSelections.add(annoDefsIter.next().getDisplayName());
+            }
+            annotationSelections.trimToSize();
+            // Set the annotation display selection list
+            clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
+        }
+        
+    }
+
+
     
 }
