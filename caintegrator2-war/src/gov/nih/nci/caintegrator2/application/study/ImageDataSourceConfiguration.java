@@ -103,7 +103,7 @@ public class ImageDataSourceConfiguration implements PersistentObject {
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
     private String trialDataProvenance;
-    
+    private String protocolId;
     /**
      * @return the id
      */
@@ -191,6 +191,20 @@ public class ImageDataSourceConfiguration implements PersistentObject {
     @SuppressWarnings("unused")
     private void setImageSeriesAcquisitions(List<ImageSeriesAcquisition> imageSeriesAcquisitions) {
         this.imageSeriesAcquisitions = imageSeriesAcquisitions;
+    }
+
+    /**
+     * @return the protocolId
+     */
+    public String getProtocolId() {
+        return protocolId;
+    }
+
+    /**
+     * @param protocolId the protocolId to set
+     */
+    public void setProtocolId(String protocolId) {
+        this.protocolId = protocolId;
     }
 
 }
