@@ -85,27 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
  * <code>AnnotationDefinition</code>.
  */
 public class AnnotationFieldDescriptor implements PersistentObject {
-    private static final int PERCENT_TO_NUMBER = 100;
     private Long id;
     private String name;
-    private String keywords;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
     private Boolean shownInBrowse = false;
@@ -122,20 +112,6 @@ public class AnnotationFieldDescriptor implements PersistentObject {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the keywords
-     */
-    public String getKeywords() {
-       return keywords;
-    }
-
-    /**
-     * @param keywords the keywords to set
-     */
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
     }
 
     /**
@@ -178,34 +154,6 @@ public class AnnotationFieldDescriptor implements PersistentObject {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    /**
-     * Gets the match score for this descriptor based on keywords.
-     * @param matchKeywords - keywords to match on.
-     * @return numeric value of matching words between (1-100)
-     */
-    public int getMatchScore(Collection<String> matchKeywords) {
-        int numMatched = 0;
-        for (String word : matchKeywords) {
-            if (Cai2Util.containsIgnoreCase(getKeywordsAsList(), word)) {
-                numMatched++;
-            }
-        }
-        return Math.round(((float) numMatched / (float) matchKeywords.size()) * PERCENT_TO_NUMBER);
-    }
-
-    /**
-     * Returns the keywords as a <code>List</code>.
-     * 
-     * @return the keywords.
-     */
-    public List<String> getKeywordsAsList() {
-        if (getKeywords() != null) {
-            return Arrays.asList(StringUtils.split(getKeywords()));
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     /**

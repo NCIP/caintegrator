@@ -8,7 +8,6 @@ create table ABSTRACT_CLINICAL_SOURCE_CONFIGURATION (
 create table ANNOTATION_FIELD_DESCRIPTOR (
     ID bigint not null auto_increment, 
     NAME varchar(255), 
-    KEYWORDS varchar(255),
     TYPE varchar(255), 
     ANNOTATION_DEFINITION_ID bigint, 
     SHOWN_IN_BROWSE tinyint,
