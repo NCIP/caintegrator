@@ -87,6 +87,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 
 /**
  * Base class for actions that require retrieval of persistent <code>ImageAnnotationConfigurations</code>.
@@ -95,28 +96,49 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
 
     private ImageAnnotationConfiguration imagingSource = new ImageAnnotationConfiguration();
    
+    private ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
+        if (getImageSource().getId() != null) {
+            setImageSource(getStudyManagementService().getRefreshedStudyEntity(getImageSource()));
+        }
         if (getImagingSource().getId() != null) {
             setImagingSource(getStudyManagementService().getRefreshedStudyEntity(getImagingSource()));
         }
+        
+    }
+
+
+    /**
+     * @return the imageSource
+     */
+    public ImageDataSourceConfiguration getImageSource() {
+        return imageSource;
     }
 
     /**
-     * @return ImagingSource
+     * @param imageSource the imageSource to set
      */
-    public ImageAnnotationConfiguration getImagingSource() {
-            return imagingSource;
+    public void setImageSource(ImageDataSourceConfiguration imageSource) {
+        this.imageSource = imageSource;
     }
 
+    /**
+     * @return the imagingSource
+     */
+    public ImageAnnotationConfiguration getImagingSource() {
+        return imagingSource;
+    }
     /**
      * @param imagingSource the imagingSource to set
      */
     public void setImagingSource(ImageAnnotationConfiguration imagingSource) {
         this.imagingSource = imagingSource;
     }
-    
+
+
+
 }
