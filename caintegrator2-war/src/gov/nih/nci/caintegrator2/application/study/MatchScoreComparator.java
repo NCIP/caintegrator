@@ -85,16 +85,25 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Comparator to get the higher match score between two different AnnotationFieldDescriptors.
  * It sorts the list from highest to lowest match scores.
  */
-public class MatchScoreComparator implements Comparator<AnnotationFieldDescriptor> {
+public class MatchScoreComparator implements Comparator<AnnotationDefinition> {
 
     private final Collection<String> keywords;
+    private static final int PERCENT_TO_NUMBER = 100;
     
     /**
      * Constructor based on Keywords.
@@ -107,8 +116,31 @@ public class MatchScoreComparator implements Comparator<AnnotationFieldDescripto
     /**
      * {@inheritDoc}
      */
-    public int compare(AnnotationFieldDescriptor afd1, AnnotationFieldDescriptor afd2) {
-        return afd2.getMatchScore(keywords) - afd1.getMatchScore(keywords);
+    public int compare(AnnotationDefinition ad1, AnnotationDefinition ad2) {
+        return getMatchScore(ad2.getKeywords()) - getMatchScore(ad1.getKeywords());
+    }
+    
+    private int getMatchScore(String annotationDefinitionKeywords) {
+        int numMatched = 0;
+        for (String word : keywords) {
+            if (Cai2Util.containsIgnoreCase(convertStringToList(annotationDefinitionKeywords), word)) {
+                numMatched++;
+            }
+        }
+        return Math.round(((float) numMatched / (float) keywords.size()) * PERCENT_TO_NUMBER);
+    }
+
+    /**
+     * Returns the keywords as a <code>List</code>.
+     * @param keywordsString a string with keywords seperated by spaces.
+     * @return the keywords.
+     */
+    public List<String> convertStringToList(String keywordsString) {
+        if (keywordsString != null) {
+            return Arrays.asList(StringUtils.split(keywordsString));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
 
