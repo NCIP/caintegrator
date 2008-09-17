@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+//import java.io.File;
+
 /**
  * Action called to load an imaging data source.
  */
@@ -92,12 +94,18 @@ public class LoadImagingSourceAction extends AbstractImagingSourceAction {
 
 private static final long serialVersionUID = 1L;
 
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
         getStudyManagementService().loadImageAnnotation(getStudyConfiguration());
+        // TODO load mapping from patient id to image series id.
+        // for now this will be done by hardcoding a mapping file.
+        //final File holdFile;
+        //holdFile = new File("/rembrandt_clinical_image_mapping.csv");
+        //getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(), holdFile); 
         return SUCCESS;
     }
 }
