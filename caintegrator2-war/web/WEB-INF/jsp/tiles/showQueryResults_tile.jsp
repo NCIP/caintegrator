@@ -7,50 +7,7 @@
     <div id="searchresults" class="box2" style="display:none;">                                             
         
         <h2>Search Results for: "<s:property value="queryResult.getQuery().getName()"/>"</h2>
-        
-        <s:form>
-        
-                 This query result id is: <s:property value="queryResult.getId()"/><br>
-                 query name: <s:property value="queryResult.getQuery().getName()"/><br>
-                 query description: <s:property value="queryResult.getQuery().getDescription()"/><br>  
-                 <br>
-            <table class="data">
-                <tr>
-                    <th>struts iterator</th>
-                    <th>Row Index</th>
-                    <th>Row Id</th>
-                    <th>Subject Identifier</th>
-                    <th>Sample Name</th>
-                </tr>
-                
-                 <s:iterator value="queryResult.getRowCollection()" status="status">
-                    <s:if test="#status.odd == true">
-                      <tr class="odd">
-                    </s:if>
-                    <s:else>
-                      <tr class="even">
-                    </s:else>
-                        <td><s:property value="#status.count" /></td>       
-                        <td><s:property value="rowIndex" /></td>
-                        <td><s:property value="id" /></td>
-                        <td><s:property value="subjectAssignment.identifier" /></td>
-                        <td><s:property value="sampleAcquisition.sample.name" /></td>
-                        
-                        <s:if test="getValueCollection() != null && !getValueCollection().isEmpty()">
-                            <s:iterator value="getValueCollection()" status="valueStatus">
-                                        <td><s:property value="#valueStatus.getCount" /><s:property value="value" /></td>                
-                            </s:iterator>
-                        </s:if>
-                        <s:else>
-                          <td>No Result Values</td>
-                        </s:else>                
-                        
-                    </tr>
-                </s:iterator>       
-            </table>
-        </s:form>        
-        
-        
+
         <div class="tableheader">
             <label for="numres">Results per Page:</label>
             <select name="numres" id="numres">
@@ -62,6 +19,61 @@
             </select>
             <input type="button" id="resultsnum" value="Apply" />
         </div>
+
+        <s:form>
+        
+                 This query result id is: <s:property value="queryResult.getId()"/><br>
+                 query name: <s:property value="queryResult.getQuery().getName()"/><br>
+                 query description: <s:property value="queryResult.getQuery().getDescription()"/><br>  
+                 <br>
+            <table class="data">
+<!--           
+                <tr>
+                    <th>struts iterator</th>
+                    <th>Row Index</th>
+                    <th>Row Id</th>
+                    <th>Subject Identifier</th>
+                    <th>Sample Name</th>
+                </tr>
+ --> 
+                 
+                 <s:iterator value="queryResult.getRowCollection()" status="status">
+                    <s:if test="#status.count == 1">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <s:if test="getValueCollection() != null && !getValueCollection().isEmpty()">
+                                <s:iterator value="getValueCollection()" status="valueStatus">
+                                   <th>column.annotationDefinition.displayName : <s:property value="column.annotationDefinition.displayName" /></th>                
+                                </s:iterator>
+                            </s:if>
+                            <s:else>
+                              <th>No Result Values</td>
+                            </s:else> 
+                        </tr>
+                    </s:if>
+                    <s:if test="#status.odd == true">
+                      <tr class="odd">
+                    </s:if>
+                    <s:else>
+                      <tr class="even">
+                    </s:else>
+                        <td><s:property value="#status.count" /></td>       
+                        <td><s:property value="subjectAssignment.identifier" /></td>
+                        
+                        <s:if test="getValueCollection() != null && !getValueCollection().isEmpty()">
+                            <s:iterator value="getValueCollection()" status="valueStatus">
+                                        <td>column.annotationDefinition.displayName : <s:property value="column.annotationDefinition.displayName" /></td>                
+                            </s:iterator>
+                        </s:if>
+                        <s:else>
+                          <td>No Result Values</td>
+                        </s:else>                
+                        
+                      </tr>
+                </s:iterator>       
+            </table>
+        </s:form>        
     
         <!--Data List-->
 
