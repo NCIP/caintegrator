@@ -85,9 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -164,10 +165,13 @@ public class QueryManagementServiceImplTest {
         assignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
+        sample.setSampleAcquisition(acquisition);
         sample.setArrayCollection(new HashSet<Array>());
         Array array = new Array();
         array.setArrayData(new ArrayData());
         sample.getArrayCollection().add(array);
+        array.setSampleCollection(new HashSet<Sample>());
+        array.getSampleCollection().add(sample);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
@@ -187,6 +191,9 @@ public class QueryManagementServiceImplTest {
         assertEquals(1, result.getRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
         assertEquals(1, result.getRowCollection().iterator().next().getValueCollection().size());
+        GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
+        assertNotNull(column.getSampleAcquisition());
+        assertNotNull(column.getSampleAcquisition().getSample());
     }
 
     

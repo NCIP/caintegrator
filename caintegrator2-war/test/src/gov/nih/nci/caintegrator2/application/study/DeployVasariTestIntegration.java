@@ -90,14 +90,30 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultLogger;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
@@ -107,6 +123,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,11 +133,15 @@ import au.com.bytecode.opencsv.CSVReader;
 @Transactional(timeout = 1440)
 public class DeployVasariTestIntegration extends AbstractTransactionalSpringContextTests {
     
+    private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
+    
     private StudyManagementService service;
+    private QueryManagementService queryManagementService;
     private StudyConfiguration studyConfiguration;
     private DelimitedTextClinicalSourceConfiguration sourceConfiguration;
     private CaIntegrator2Dao dao;
     private ArrayDataService arrayDataService;
+    private Platform design;
     
     public DeployVasariTestIntegration() {
         setDefaultRollback(false);
@@ -141,7 +162,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
     public void testDeployVasari() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
             AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-            arrayDataService.loadArrayDesign(designSource);
+            design = arrayDataService.loadArrayDesign(designSource);
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText("Rembrandt/VASARI");
             studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
@@ -155,6 +176,7 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
             mapImages();
             deploy();
             checkArrayData();
+            checkQueries();
         } finally {
             cleanup();            
         }
@@ -283,6 +305,64 @@ public class DeployVasariTestIntegration extends AbstractTransactionalSpringCont
      */
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
+    }
+
+    private void checkQueries() {
+        checkClinicalQuery();
+        checkGenomicQuery();
+    }
+
+    private void checkClinicalQuery() {
+        Query query = createQuery();
+        query.setResultType(ResultTypeEnum.CLINICAL.getValue());
+    }
+
+    private void checkGenomicQuery() {
+        Query query = createQuery();
+        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        GeneCriterion geneCriterion = new GeneCriterion();
+        geneCriterion.setGene(getGene("EGFR"));
+        query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
+        
+        GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
+        ResultLogger.log(result, LOGGER);
+    }
+
+    private Gene getGene(String name) {
+        ReporterSet geneReporters = new PlatformHelper(design).getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        for (AbstractReporter reporter : geneReporters.getReporters()) {
+            GeneExpressionReporter expressionReporter = (GeneExpressionReporter) reporter;
+            if (name.equals(expressionReporter.getGene().getSymbol())) {
+                return expressionReporter.getGene();
+            }
+        }
+        return null;
+    }
+
+    private Query createQuery() {
+        Query query = new Query();
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(new StudySubscription());
+        query.getSubscription().setStudy(studyConfiguration.getStudy());
+        return query;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
 
 }
