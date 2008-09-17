@@ -1,0 +1,16 @@
+Image Series ID,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex,Enhancement Quality,Proportion Enhancing,Cyst(s),Multifocal or Multicentric,Thickness of Enhancing Margin,Lesion Size (cm)
+1.2.840.113619.2.25.1.1762525322.19309.674.1039106996.3,aflanders,well defined insular tumor,"Frontal, Temporal, Insular",Right,None,None,n/a,No,n/a,n/a,5.5
+1.2.840.113619.2.5.1762525322.1690.1038396261.116,aflanders,,Temporal,Left,None,Marked/Avid,6-33%,No,n/a,Thick,4
+1.2.840.113619.2.25.1.1762897327.3028.559.1038992236.1,aflanders,,Temporal,Right,None,Marked/Avid,6-33%,No,n/a,Thin,5
+1.2.840.113619.2.5.1762525322.1691.1040990031.970,aflanders,,Frontal,Right,None,Marked/Avid,<5%,No,n/a,Thick,7
+1.2.840.113619.2.5.1762388187.289456.1043320209.136,aflanders,,Frontal,Left,Motor,Marked/Avid,6-33%,No,n/a,Thick,6
+1.2.840.113619.2.5.1762525322.1695.1044011791.885,aflanders,,"Frontal, Temporal, Insular",Right,None,Marked/Avid,6-33%,No,n/a,Thick,10
+1.2.840.113619.2.5.1762525322.1697.1044616304.446,aflanders,,Temporal,Right,None,Marked/Avid,6-33%,No,n/a,Thick,10
+1.2.840.113619.2.25.1.1762388187.31261.299.1045773600.1,aflanders,,"Frontal, Temporal, Brainstem, Cerebellum",Left,Motor,Marked/Avid,<5%,No,Gliomatosis,Thick,7
+1.2.840.113619.2.25.1.1762388187.31245.288.1045577307.1,aflanders,,Frontal,Right,None,None,n/a,Yes,n/a,n/a,3.5
+1.2.840.113619.2.25.1.1762525322.19963.816.1046363436.1,aflanders,,Temporal,Left,None,Marked/Avid,6-33%,No,n/a,Thick,7
+1.2.840.113619.2.5.1762388187.2336.1046171329.16,aflanders,,"Frontal, Temporal, Insular",Left,Speech Motor,None,n/a,No,n/a,n/a,8
+1.2.840.113619.2.5.1762525322.1698.1047035773.411,aflanders,problematic case,"Parietal, Occipital",Left,Vision,Marked/Avid,34-67%,No,Multifocal,Thick,7
+1.2.840.113619.2.5.1762897327.1928.1046947039.674,aflanders,,Occipital,Left,Vision,Marked/Avid,6-33%,No,n/a,Thin,5.5
+1.2.840.113619.2.5.1762388187.736229.1048158390.323,aflanders,,Frontal,Left,None,None,n/a,No,n/a,n/a,3
+1.2.840.113619.2.5.1762525322.1716.1048158635.921,aflanders,,Frontal,Left,None,Marked/Avid,6-33%,No,Multifocal,Thick,10
