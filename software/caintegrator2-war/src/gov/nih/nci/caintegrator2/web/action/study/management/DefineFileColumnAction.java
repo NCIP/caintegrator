@@ -206,6 +206,12 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
                                                    getDataElements().get(getDataElementIndex()),
                                                    getStudyConfiguration().getStudy(),
                                                    EntityTypeEnum.SUBJECT);
+        if (getFileColumn() != null 
+            && getFileColumn().getFieldDescriptor() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition().getKeywords() == null) {
+            getFileColumn().getFieldDescriptor().getDefinition().setKeywords(getKeywordsForSearch());
+        }
         return SUCCESS;
     }
     

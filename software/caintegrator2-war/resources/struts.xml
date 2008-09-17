@@ -75,6 +75,10 @@
             <result type="tiles">editFileColumn</result>
         </action>
         
+        <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFileColumnAction">
+            <result type="tiles">editImagingFileColumn</result>
+        </action>
+        
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
         </action>
@@ -89,6 +93,10 @@
         
         <action name="saveColumnType" method="saveColumnType" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
+        </action>
+        
+        <action name="saveImagingColumnType" method="saveColumnType" class="defineImagingFileColumnAction">
+            <result type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="searchImagingDefinitions" method="searchDefinitions" class="defineImagingFileColumnAction">
