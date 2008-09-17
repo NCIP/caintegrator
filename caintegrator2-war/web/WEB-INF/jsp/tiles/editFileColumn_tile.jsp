@@ -125,12 +125,12 @@
                         <s:param name="fileColumn.id" value="fileColumn.id" />
                         <s:param name="dataElementIndex" value="#status.index" />
                     </s:url> 
-                    <s:url id="viewDataElement" value="http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser">
+                    <s:url id="viewDataElement" value="http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser" escapeAmp="false">
 	                    <s:param name="publicId" value="publicId"/>
 	                    <s:param name="version" value="1"/>
                     </s:url>
-                    <s:a href="%{selectDataElement}">Select</s:a> |
-                    <s:a href="%{viewDataElement}">View </s:a>
+                    <s:a href="%{selectDataElement}">Select</s:a>
+                    <a href="<s:property value='%{viewDataElement}'/>" target="_blank">View</a>
                 </td>
 	            <td><s:property value="publicId" /></td>
 	            <td><s:property value="definition" /></td>

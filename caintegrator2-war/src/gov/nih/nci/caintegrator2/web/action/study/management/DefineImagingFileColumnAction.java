@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -109,6 +111,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE, TIMEPOINT_TYPE};
     
     private FileColumn fileColumn = new FileColumn();
+    private boolean readOnly;
     private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
     private List<DataElement> dataElements = new ArrayList<DataElement>();
     private int dataElementIndex;
@@ -116,7 +119,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     private String keywordsForSearch;
     
     /**
-     * Refreshes the current Imaging source configuration.
+     * Refreshes the current imaging source configuration.
      */
     @Override
     public void prepare() {
@@ -124,10 +127,11 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
         }
+        setReadOnly(true);
     }
     
     /**
-     * Edit a image data source file column.
+     * Edit a clinical data source file column.
      * 
      * @return the Struts result.
      */
@@ -137,6 +141,20 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         return SUCCESS;
     }
     
+    /**
+     * Saves the column type to the database.
+     * @return the Struts result.
+     */
+    public String saveColumnType() {
+        definitions.clear();
+        dataElements.clear();
+        if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
+            getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+            getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
+        }
+        getStudyManagementService().save(getStudyConfiguration());
+        return SUCCESS;
+    }
     /**
      * Retrieves from the database and from caDSR annotation definition that matches the current columns keywords.
      * 
@@ -165,20 +183,40 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     }
     
     /**
+     * Let's the user create a new AnnotationDefinition for a column.
+     * @return the Struts result.
+     */
+    public String createNewDefinition() {
+        getStudyManagementService().createDefinition(getFileColumn().getFieldDescriptor(), 
+                                                     getStudyConfiguration().getStudy(),
+                                                     EntityTypeEnum.IMAGESERIES);
+        setReadOnly(false);
+        definitions.clear();
+        dataElements.clear();
+        return SUCCESS;
+    }
+    
+    /**
      * Selects an existing CaDSR data element as the definition for a column.
      * 
      * @return the Struts result.
      */
     public String selectDataElement() {
         getStudyManagementService().setDataElement(getFileColumn(), 
-                                                   getDataElements().get(getDataElementIndex()), 
-                                                   getStudyConfiguration().getStudy(), 
+                                                   getDataElements().get(getDataElementIndex()),
+                                                   getStudyConfiguration().getStudy(),
                                                    EntityTypeEnum.IMAGESERIES);
+        if (getFileColumn() != null 
+            && getFileColumn().getFieldDescriptor() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition().getKeywords() == null) {
+            getFileColumn().getFieldDescriptor().getDefinition().setKeywords(getKeywordsForSearch());
+        }
         return SUCCESS;
     }
     
     /**
-     * Updates a Image data source file column.
+     * Updates a clinical data source file column.
      * 
      * @return the Struts result.
      */
@@ -186,6 +224,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
+
     /**
      * @return the fileColumn
      */
@@ -199,7 +238,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     public void setFileColumn(FileColumn fileColumn) {
         this.fileColumn = fileColumn;
     }
-    
+
     /**
      * @return the columnType
      */
@@ -211,6 +250,17 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         } else {
             return ANNOTATION_TYPE;
         }
+    }
+
+    /**
+     * 
+     * @return if the ColumnType is ANNOTATION_TYPE.
+     */
+    public boolean isColumnTypeAnnotation() {
+        if (getColumnType().equals(ANNOTATION_TYPE)) {
+            return true;
+        } 
+        return false;
     }
 
     /**
@@ -234,6 +284,41 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         return COLUMN_TYPES;
     }
 
+    /**
+     * 
+     * @return the annotationType.
+     */
+    public String getAnnotationDataType() {
+        String type = AnnotationTypeEnum.STRING.getValue();
+        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
+        if (annotationDefinition != null && annotationDefinition.getType() != null) {
+            type = annotationDefinition.getType();
+        }
+        return type;
+    }
+    
+    /**
+     * @param annotationDataType the annotationType to set.
+     */
+    public void setAnnotationDataType(String annotationDataType) {
+        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
+        if (annotationDefinition != null) {
+            annotationDefinition.setType(annotationDataType);
+        }
+    }
+    
+    /**
+     * Converts the enum to the string list.
+     * @return the annotationTypes
+     */
+    public String[] getAnnotationDataTypes() {
+        List<String> types = new ArrayList<String>();
+        for (AnnotationTypeEnum type : AnnotationTypeEnum.values()) {
+            types.add(type.getValue());
+        }
+        return types.toArray(new String[types.size()]);
+    }
+    
     /**
      * @return the definitions
      */
@@ -277,6 +362,20 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     }
 
     /**
+     * @return the readOnly
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * @param readOnly the readOnly to set
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    /**
      * @return the keywordsForSearch
      */
     public String getKeywordsForSearch() {
@@ -289,5 +388,6 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     public void setKeywordsForSearch(String keywordsForSearch) {
         this.keywordsForSearch = keywordsForSearch;
     }
+
 
 }
