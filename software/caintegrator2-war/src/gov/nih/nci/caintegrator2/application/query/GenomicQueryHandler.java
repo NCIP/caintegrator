@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -135,7 +136,17 @@ class GenomicQueryHandler {
         createResultRows(result, values);
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
         for (Array array : values.getAllArrays()) {
+            addToResult(values, result, reporterToRowMap, array);
+        }
+        result.setQuery(query);
+        return result;
+    }
+
+    private void addToResult(ArrayDataValues values, GenomicDataQueryResult result,
+            Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, Array array) {
+        for (Sample sample : array.getSampleCollection()) {
             GenomicDataResultColumn column = new GenomicDataResultColumn();
+            column.setSampleAcquisition(sample.getSampleAcquisition());
             result.getColumnCollection().add(column);
             for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
                 GenomicDataResultRow row = reporterToRowMap.get(reporter);
@@ -144,9 +155,8 @@ class GenomicQueryHandler {
                 value.setValue(values.getValue(array, reporter));
                 row.getValueCollection().add(value);
             }
+            
         }
-        result.setQuery(query);
-        return result;
     }
 
     private Map<AbstractReporter, GenomicDataResultRow> createReporterToRowMap(GenomicDataQueryResult result) {
