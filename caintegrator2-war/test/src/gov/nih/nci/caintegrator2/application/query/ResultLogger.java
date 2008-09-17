@@ -83,89 +83,37 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import au.com.bytecode.opencsv.CSVReader;
+import org.apache.log4j.Logger;
 
 /**
- * Helper class used to map samples to subjects.
+ * Logs query result sets.
  */
-class SampleMappingHelper {
+public final class ResultLogger {
 
-    private final StudyConfiguration studyConfiguration;
-    private final File mappingFile;
-    private Map<String, Sample> sampleNameMap;
-
-    SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
-        this.studyConfiguration = studyConfiguration;
-        this.mappingFile = mappingFile;
-    }
-
-    void mapSamples() {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(mappingFile));
-            String[] values;
-            while ((values = reader.readNext()) != null) {
-                String subjectIdentifier = values[0];
-                String sampleName = values[1];
-                
-                StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
-                
-                // map is throwing an exception.  This is a temporary check for null to prevent it.
-                if (!(sja == null)) {
-                     map(sja, getSample(sampleName));
-                }
+    public static void log(GenomicDataQueryResult result, Logger logger) {
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            StringBuffer sb = new StringBuffer();
+            if (row.getReporter() instanceof GeneExpressionReporter) {
+                GeneExpressionReporter expressionReporter = (GeneExpressionReporter) row.getReporter();
+                sb.append(expressionReporter.getName());
+                sb.append(" [Gene = ");
+                sb.append(expressionReporter.getGene().getSymbol());
+                sb.append("]: ");
             }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unexpected IO error", e);
-        }
-        
-    }
-
-    private void map(StudySubjectAssignment subjectAssignment, Sample sample) {
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        sampleAcquisition.setSample(sample);
-        sample.setSampleAcquisition(sampleAcquisition);
-        if (subjectAssignment.getSampleAcquisitionCollection() == null) {
-            subjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
-        }
-        subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
-    }
-
-    private Sample getSample(String sampleName) {
-        return getSampleNameMap().get(sampleName);
-    }
-
-    private Map<String, Sample> getSampleNameMap() {
-        if (sampleNameMap == null) {
-            sampleNameMap = createSampleNameMap();
-        }
-        return sampleNameMap;
-    }
-
-    private Map<String, Sample> createSampleNameMap() {
-        sampleNameMap = new HashMap<String, Sample>();
-        for (GenomicDataSourceConfiguration sourceConfiguration : studyConfiguration.getGenomicDataSources()) {
-            for (Sample sample : sourceConfiguration.getSamples()) {
-                sampleNameMap.put(sample.getName(), sample);
+            for (GenomicDataResultValue value : row.getValueCollection()) {
+                sb.append(value.getColumn().getSampleAcquisition().getSample().getName());
+                sb.append("=");
+                sb.append(value.getValue());
             }
+            logger.info(sb.toString());
         }
-        return sampleNameMap;
-    }
-
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
-        return studyConfiguration.getSubjectAssignment(subjectIdentifier);
     }
 
 }
