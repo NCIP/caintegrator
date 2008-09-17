@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 //import java.util.List;
 import java.util.Set;
 
@@ -100,10 +102,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
 // import things needed for creating test results
 //import gov.nih.nci.caintegrator2.web.action.query.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -195,34 +194,44 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     /**
      * @return resultRows
      */
+    @SuppressWarnings({ "PMD" }) // suppress warning for this long test method
     public final Set<ResultRow> getTestResultRows() {
-        
         //Create dummy results rows
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
-        
-        ResultRow row1 = new ResultRow();       
-        ImageSeriesAcquisition imageSeriesAcquisition1 = new ImageSeriesAcquisition();
+        ResultRow row1 = new ResultRow();
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
-        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-        Sample sample1 = new Sample();
         ResultValue resultValue1 = new ResultValue();
+        ResultValue resultValue2 = new ResultValue();
+        ResultValue resultValue3 = new ResultValue();
         ResultColumn resultColumn1 = new ResultColumn();
+        ResultColumn resultColumn2 = new ResultColumn();
+        ResultColumn resultColumn3 = new ResultColumn();
         AbstractAnnotationValue abstractAnnotationValue1 = new AbstractAnnotationValue();
-        Set<ResultValue> resultValuesCollection1 = new HashSet<ResultValue>();
+        List<ResultValue> resultValuesCollection1 = new ArrayList<ResultValue>();
+        AnnotationDefinition genderAnnotationDef = new AnnotationDefinition();
+        AnnotationDefinition raceAnnotationDef = new AnnotationDefinition();
+        AnnotationDefinition ageAnnotationDef = new AnnotationDefinition();
         
-        row1.setImageSeriesAcquisition(imageSeriesAcquisition1);
         studySubjectAssignment1.setIdentifier("SubjectID1");
         row1.setSubjectAssignment(studySubjectAssignment1);
-        sample1.setName("SampleName1");
-        sampleAcquisition1.setSample(sample1);
-        row1.setSampleAcquisition(sampleAcquisition1);
-        row1.getSampleAcquisition().getSample().setName("SampleId1");
-        resultColumn1.setAnnotationDefinition(new AnnotationDefinition());
+        genderAnnotationDef.setDisplayName("Gender");
+        resultColumn1.setAnnotationDefinition(genderAnnotationDef);
         resultValue1.setValue(abstractAnnotationValue1);
-        row1.setValueCollection(resultValuesCollection1);
-        row1.getValueCollection().add(resultValue1);
-        resultRows.add(row1);
+        resultValue1.setColumn(resultColumn1);
+        resultValuesCollection1.add(resultValue1);
+        raceAnnotationDef.setDisplayName("race");
+        resultColumn2.setAnnotationDefinition(raceAnnotationDef);
+        resultValue2.setValue(abstractAnnotationValue1);
+        resultValue2.setColumn(resultColumn2);
+        resultValuesCollection1.add(resultValue2);
+        ageAnnotationDef.setDisplayName("age");
+        resultColumn3.setAnnotationDefinition(ageAnnotationDef);
+        resultValue3.setValue(abstractAnnotationValue1);
+        resultValue3.setColumn(resultColumn3);
+        resultValuesCollection1.add(resultValue3);
         
+        row1.setValueCollection(resultValuesCollection1);
+        resultRows.add(row1);
         return resultRows;
     }
     
