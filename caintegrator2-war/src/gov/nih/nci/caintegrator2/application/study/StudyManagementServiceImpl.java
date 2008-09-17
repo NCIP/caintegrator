@@ -357,8 +357,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
-        fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
-        dao.save(fileColumn);
+        if (fileColumn.getFieldDescriptor().getDefinition() == null 
+            || !fileColumn.getFieldDescriptor().getDefinition().equals(annotationDefinition)) {
+            fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
+            dao.save(fileColumn);
+        }
     }
 
     /**
