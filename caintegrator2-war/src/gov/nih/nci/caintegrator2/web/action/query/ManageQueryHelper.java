@@ -286,6 +286,8 @@ public class ManageQueryHelper {
             annotationSelections.trimToSize();
             // Set the annotation display selection list
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
+            // Set the annotation definitions
+            clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
         }
     }
     
@@ -299,6 +301,7 @@ public class ManageQueryHelper {
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
         queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
         queryAnnotationCriteria.setRowType("clinical"); //TODO make clinical a constant
+
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
     }
 
