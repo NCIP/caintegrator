@@ -93,14 +93,34 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 7200)
-public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegration {
+@Transactional(timeout = 1440)
+public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestIntegration {
     
-    private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
+    private final static Logger LOGGER = Logger.getLogger(DeploySmallStudyTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException {
         runTest();
+    }
+    
+    @Override
+    protected boolean getMapImages() {
+        return true;
+    }
+    
+    @Override
+    protected boolean getLoadImageAnnotation() {
+        return true;
+    }
+
+    @Override
+    protected boolean getLoadDesign() {
+        return false;
+    }
+    
+    @Override
+    protected boolean getLoadSamples() {
+        return false;
     }
     
     @Override
@@ -110,7 +130,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     int getExpectedSampleCount() {
-        return 68;
+        return 4;
     }
 
     @Override
@@ -120,12 +140,12 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     protected String getNCIATrialId() {
-        return "GBM Rembrandt";
+        return "ISPY";
     }
 
     @Override
     protected String getStudyName() {
-        return "Rembrandt/VASARI";
+        return "ISPY";
     }
 
     @Override
@@ -134,16 +154,16 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     File getImageAnnotationFile() {
-        return TestDataFiles.VASARI_IMAGE_ANNOTATION_FILE;
+        return TestDataFiles.ISPY_IMAGE_ANNOTATION_FILE;
     }
 
     @Override
     protected File getImageMappingFile() {
-        return TestDataFiles.REMBRANDT_IMAGE_SERIES_TO_SUBJECT_FILE;
+        return TestDataFiles.ISPY_IMAGE_SERIES_TO_SUBJECT_FILE;
     }
     @Override
     protected File getSampleMappingFile() {
-        return TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE;
+        return TestDataFiles.SHORT_REMBRANDT_SAMPLE_MAPPING_FILE;
     }
 
     @Override
