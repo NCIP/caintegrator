@@ -97,6 +97,7 @@ import com.opensymphony.xwork2.ActionContext;
 
 //import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -116,7 +117,8 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
     
-    private StudyManagementService studyManagementService;   
+    private StudyManagementService studyManagementService;
+    private QueryManagementService queryManagementService;
     private QueryResult queryResult = new QueryResult();
     private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
@@ -446,6 +448,20 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public void setBasicQueryOperator(String basicQueryOperator) {
         this.basicQueryOperator = basicQueryOperator;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
     
 }
