@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -116,5 +119,15 @@ public interface AnnotationSelection {
      * @param currentAnnotationOperatorSelections List of annotation type-specific operators to set
      */
     void setCurrentAnnotationOperatorSelections(List<String> currentAnnotationOperatorSelections);
+    
+    /**
+     * @return the annotationDefinitions
+     */
+    Collection<AnnotationDefinition> getAnnotationDefinitions();
+
+    /**
+     * @param annotationDefinitions the annotationDefinitions to set
+     */
+    void setAnnotationDefinitions(Collection<AnnotationDefinition> annotationDefinitions);
     
 }
