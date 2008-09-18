@@ -9,7 +9,6 @@ Image Series ID,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloq
 1.2.840.113619.2.131.4194992901.1168975085.303116,aflanders,,"Frontal, Temporal, Brainstem, Cerebellum",Left,Motor,Marked/Avid,<5%,No,Gliomatosis,Thick
 1.2.840.113619.2.5.1762805546.2047.1034003231.127,aflanders,,Frontal,Right,None,None,n/a,Yes,n/a,n/a
 1.2.840.113619.2.5.1762805546.2047.1034003231.173,aflanders,,Temporal,Left,None,Marked/Avid,6-33%,No,n/a,Thick
-1.2.840.113619.2.5.1762805546.2047.1034003231.18,aflanders,,"Frontal, Temporal, Insular",Left,Speech Motor,None,n/a,No,n/a,n/a
 1.2.840.113619.2.5.1762805546.2047.1034003231.347,aflanders,problematic case,"Parietal, Occipital",Left,Vision,Marked/Avid,34-67%,No,Multifocal,Thick
 1.2.840.113619.2.5.1762805546.2376.1041867495.89,aflanders,,Occipital,Left,Vision,Marked/Avid,6-33%,No,n/a,Thin
 1.2.840.113619.2.5.1762805546.2376.1041867495.36,aflanders,,Frontal,Left,None,None,n/a,No,n/a,n/a
