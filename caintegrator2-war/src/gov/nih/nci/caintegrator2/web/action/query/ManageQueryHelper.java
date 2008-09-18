@@ -111,7 +111,10 @@ public class ManageQueryHelper {
     private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
     private Collection<AnnotationDefinition> imageAnnotationDefinitions;
     // The objects below store the presentation-facing data necessary to 
-    // populate JSP/HTML elements
+    // populate JSP/HTML elements:
+    // The currently selected set of annotations
+    //private AnnotationSelection currentAnnotationSelections;
+    // Clinical Annotations
     private ClinicalAnnotationSelection clinicalAnnotationSelections;
 
     /**
@@ -139,6 +142,10 @@ public class ManageQueryHelper {
      * @return the queryCriteriaRowList
      */
     public List<QueryAnnotationCriteria> getQueryCriteriaRowList() {
+        if (this.queryCriteriaRowList == null) {
+            this.queryCriteriaRowList = new ArrayList<QueryAnnotationCriteria>(); 
+        }
+        
         return this.queryCriteriaRowList;
     }
 
@@ -148,21 +155,14 @@ public class ManageQueryHelper {
     public void setQueryCriteriaRowList(List<QueryAnnotationCriteria> queryCriteriaRowList) {
         this.queryCriteriaRowList = queryCriteriaRowList;
     }
+    
+    /**
+     * @param queryAnnotationCriteria the QueryAnnotationCriteria to add
+     */
+    public void addQueryAnnotationCriteriaToList(QueryAnnotationCriteria queryAnnotationCriteria) {
+        this.getQueryCriteriaRowList().add(queryAnnotationCriteria);
+    }
       
-    /**
-     * @return the currentAnnotationDefinitions
-     */
-//    public Collection<AnnotationDefinition> getCurrentAnnotationDefinitions() {
-//        return currentAnnotationDefinitions;
-//    }
-
-    /**
-     * @param currentAnnotationDefinitions the currentAnnotationDefinitions to set
-     */
-//    public void setCurrentAnnotationDefinitions(Collection<AnnotationDefinition> currentAnnotationDefinitions) {
-//        this.currentAnnotationDefinitions = currentAnnotationDefinitions;
-//    }
-
     /**
      * @return the clinicalAnnotationDefinitions
      */
@@ -287,8 +287,34 @@ public class ManageQueryHelper {
             // Set the annotation display selection list
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
         }
-        
     }
+    
+    /**
+     * Configures clinical row.
+     */
+    public void configureClinicalQueryCriterionRow() {
+        //this.setCurrentAnnotationSelections(this.getClinicalAnnotationSelections());
+        // Add new query criteria row to queryCriteriaRowList
+        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteriaImpl();
+        //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
+        queryAnnotationCriteria.setRowType("clinical"); //TODO make clinical a constant
+        this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
+    }
+
+    /**
+     * @return the currentAnnotationSelections
+     */
+//    public AnnotationSelection getCurrentAnnotationSelections() {
+//        return currentAnnotationSelections;
+//    }
+
+    /**
+     * @param currentAnnotationSelections the currentAnnotationSelections to set
+     */
+//    public void setCurrentAnnotationSelections(AnnotationSelection currentAnnotationSelections) {
+//        this.currentAnnotationSelections = currentAnnotationSelections;
+//    }
 
 
     

@@ -11,10 +11,15 @@
     <!--/Study Logo-->
     
     <!--Menu-->
+    <s:url id="manageQueryUrl" action="manageQuery" includeParams="get">
+        <s:param name="injectTest">yes</s:param>
+    </s:url>
     
     <ul class="menu">
         <li class="stdnav"><div>VASARI</div>
             <ul>
+                <li><a href="home.html" class="selected">Homepage</a></li>
+                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search VASARI</a></li>            
                 <li><s:url id="workspaceUrl" action="workspace" />
                 <a href="${workspaceUrl}">Workspace</a></li>
                 <li class="stdnav"><a href="search.html">Advanced Search</a></li>
@@ -60,10 +65,7 @@
                         </li>
                         <li><a href="#">My Queries</a>
                             <ul>
-                                <li><s:url id="manageQueryUrl" action="manageQuery" includeParams="get">
-                                        <s:param name="injectTest">yes</s:param>
-                                    </s:url>
-                                    <a href="#" class="queries">My Query A</a> <a href='<s:property value="#manageQueryUrl" />'>(edit)</a></li>
+                                <li><a href="#" class="queries">My Query A</a> <a href='<s:property value="#manageQueryUrl" />'>(edit)</a></li>
                                 <li><a href="#" class="queries">My Query B</a></li>
                                 <li><a href="#" class="queries">My Query C</a></li>
                             </ul>

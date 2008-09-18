@@ -101,13 +101,14 @@ import static org.junit.Assert.assertEquals;
 public class QueryAnnotationCriteriaImplTest {
     private QueryAnnotationCriteriaImpl queryAnnotationCriteriaImpl = new QueryAnnotationCriteriaImpl();
     private String str = new String("dummyAnnotation");
+    private AnnotationSelection annotationSelections = new ClinicalAnnotationSelection();
     
     @Before
     public void setUp() {
+        queryAnnotationCriteriaImpl.setAnnotationSelections(annotationSelections);
         queryAnnotationCriteriaImpl.setAnnotationSelection(str);
         queryAnnotationCriteriaImpl.setAnnotationOperatorSelection(str);
         queryAnnotationCriteriaImpl.setAnnotationValue(str);
-        
         queryAnnotationCriteriaImpl.setAndOp(true);
         queryAnnotationCriteriaImpl.setBeginParen(false);
         queryAnnotationCriteriaImpl.setEndParen(false);
@@ -118,10 +119,10 @@ public class QueryAnnotationCriteriaImplTest {
    
     @Test
     public void testGetAnnotationSelection() {        
+        assertNotNull(queryAnnotationCriteriaImpl.getAnnotationSelections());
         assertNotNull(queryAnnotationCriteriaImpl.getAnnotationSelection());
         assertEquals(str,queryAnnotationCriteriaImpl.getAnnotationOperatorSelection());
-        assertEquals(str,queryAnnotationCriteriaImpl.getAnnotationValue());
-        
+        assertEquals(str,queryAnnotationCriteriaImpl.getAnnotationValue());        
         assertEquals(true,queryAnnotationCriteriaImpl.isAndOp());
         assertEquals(false,queryAnnotationCriteriaImpl.isBeginParen());
         assertEquals(false,queryAnnotationCriteriaImpl.isEndParen());

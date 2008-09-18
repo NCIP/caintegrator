@@ -129,7 +129,7 @@ public class ManageQueryHelperTest {
         manageQueryHelper.setSampleAnnotationDefinitions(annotationDefinitionSet);
         manageQueryHelper.setImageAnnotationDefinitions(annotationDefinitionSet);
         manageQueryHelper.setClinicalAnnotationSelections(clinicalAnnotationSelections);
-        
+        //manageQueryHelper.setCurrentAnnotationSelections(clinicalAnnotationSelections);
     }
    
     @Test
@@ -140,7 +140,8 @@ public class ManageQueryHelperTest {
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
-
+        //assertNotNull(manageQueryHelper.getCurrentAnnotationSelections());
+        
         // Below method needs a valid return from SecurityHelper.getCurrentUsername()
         //assertNotNull(manageQueryHelper.getCurrentStudy(studyManagementService, "Test Study"));
         
