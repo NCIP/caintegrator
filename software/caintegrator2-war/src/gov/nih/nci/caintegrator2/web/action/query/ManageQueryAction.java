@@ -88,11 +88,12 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-//import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.ActionContext;
 
 //import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -119,21 +120,41 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private QueryResult queryResult = new QueryResult();
     private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
+    private String doMethod = "";  //TODO delete in favor of direction call to action
+    private String selectedRowCriterion = "";
+    //Struts should automatically populate these arrays from the form element.
+    private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
+    private String[] selectedOperators; //selected operators for all criterion as a list.
+    private String[] selectedValues; //selected values for all criterion as a list.
+    private String basicQueryOperator;
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
      */
+    @SuppressWarnings({ "PMD" })
     public void prepare() {
-        manageQueryHelper = new ManageQueryHelper();
-        manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+        // Instantiate/prepopulate manageQueryHelper if necessary
+        ActionContext context = ActionContext.getContext();
+        Map sessionMap = context.getSession();
+        manageQueryHelper = (ManageQueryHelper) sessionMap.get("manageQueryHelper");
+        if (manageQueryHelper == null) {
+            manageQueryHelper = new ManageQueryHelper();
+            manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+            sessionMap.put("manageQueryHelper", manageQueryHelper);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings({ "PMD" })
     @Override
     public String execute()  {
+        
+        if ("addRow".equals(doMethod)) {
+            addCriterionRow();
+        }
         
         // declarations and such
         final Long id;
@@ -255,6 +276,11 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String addCriterionRow() {
+        if ("clinical".equals(this.selectedRowCriterion)) { //TODO make clinical a constant
+            manageQueryHelper.configureClinicalQueryCriterionRow();
+        }
+        // TODO handle other criteria
+
         return SUCCESS;
     }
     
@@ -263,7 +289,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * 
      * @return the Struts result.
      */
-    public String deleteCriterionRow() {
+    public String deleteCriterionRow() {        
         return SUCCESS;
     }
     
@@ -318,11 +344,108 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     public ManageQueryHelper getManageQueryHelper() {
         return manageQueryHelper;
     }
-
+    
     /**
      * @param manageQueryHelper the manageQueryHelper to set
      */
-//    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
-//        this.manageQueryHelper = manageQueryHelper;
-//    }
+    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
+        this.manageQueryHelper = manageQueryHelper;
+    }
+
+    /**
+     * @return the doMethod
+     */
+    public String getDoMethod() {
+        return doMethod;
+    }
+
+    /**
+     * @param doMethod the doMethod to set
+     */
+    public void setDoMethod(String doMethod) {
+        this.doMethod = doMethod;
+    }
+
+    /**
+     * @return the selectedRowCriterion
+     */
+    public String getSelectedRowCriterion() {
+        return selectedRowCriterion;
+    }
+
+    /**
+     * @param selectedRowCriterion the selectedRowCriterion to set
+     */
+    public void setSelectedRowCriterion(String selectedRowCriterion) {
+        this.selectedRowCriterion = selectedRowCriterion;
+    }
+
+    /**
+     * @return the selectedAnnotations
+     */
+    public String[] getSelectedAnnotations() {
+        String [] holdArray;
+        holdArray = selectedAnnotations.clone();
+        return holdArray;
+    }
+
+    /**
+     * @param selectedAnnotations the selectedAnnotations to set
+     */
+    public void setSelectedAnnotations(String[] selectedAnnotations) {
+        String [] holdArray;
+        holdArray = selectedAnnotations.clone();
+        this.selectedAnnotations = holdArray;
+    }
+
+    /**
+     * @return the selectedOperators
+     */
+    public String[] getSelectedOperators() {
+        String [] holdArray;
+        holdArray = selectedOperators.clone();
+        return holdArray;
+    }
+
+    /**
+     * @param selectedOperators the selectedOperators to set
+     */
+    public void setSelectedOperators(String[] selectedOperators) {
+        String [] holdArray;
+        holdArray = selectedOperators.clone();
+        this.selectedOperators = holdArray;
+    }
+
+    /**
+     * @return the selectedValues
+     */
+    public String[] getSelectedValues() {
+        String [] holdArray;
+        holdArray = selectedValues.clone();
+        return holdArray;
+    }
+
+    /**
+     * @param selectedValues the selectedValues to set
+     */
+    public void setSelectedValues(String[] selectedValues) {
+        String [] holdArray;
+        holdArray = selectedValues.clone();
+        this.selectedValues = holdArray;
+    }
+
+    /**
+     * @return the basicQueryOperator
+     */
+    public String getBasicQueryOperator() {
+        return basicQueryOperator;
+    }
+
+    /**
+     * @param basicQueryOperator the basicQueryOperator to set
+     */
+    public void setBasicQueryOperator(String basicQueryOperator) {
+        this.basicQueryOperator = basicQueryOperator;
+    }
+    
 }

@@ -91,15 +91,17 @@ package gov.nih.nci.caintegrator2.web.action.query;
  */
 public class QueryAnnotationCriteriaImpl implements QueryAnnotationCriteria {
 
-    private boolean beginParen = false;
-    private String annotationSelection = null;
-    private String annotationOperatorSelection = null;
-    private String annotationValue = null;
-    private String rowType = null;
-    private boolean endParen = false;
-    private boolean andOp = false;
-    private boolean orOp = false;
-    private boolean deleteRow = false;
+    private AnnotationSelection annotationSelections = null;
+    private boolean beginParen;
+    private String annotationSelection = null;  //This is the selected annotation.
+    private String annotationOperatorSelection = null;  //This is the selected operator.
+    private String annotationValue = null; //This is the value input by user for this criterion.
+    private String rowType = null; // This is the entity type for the row
+    private String rowLable = null; // This is the label for the entity annotation for this row.
+    private boolean endParen;
+    private boolean andOp;
+    private boolean orOp;
+    private boolean deleteRow;
     
     
     /**
@@ -145,7 +147,7 @@ public class QueryAnnotationCriteriaImpl implements QueryAnnotationCriteria {
     }
 
     /**
-     * @return is begin Paren.
+     * @return begin paren.
      */
     public boolean isBeginParen() {
         return this.beginParen;
@@ -159,7 +161,7 @@ public class QueryAnnotationCriteriaImpl implements QueryAnnotationCriteria {
     }
 
     /**
-     * @return is end paren.
+     * @return end paren.
      */
     public boolean isEndParen() {
         return this.endParen;
@@ -233,6 +235,34 @@ public class QueryAnnotationCriteriaImpl implements QueryAnnotationCriteria {
      */
     public void setRowType(String rowType) {
         this.rowType = rowType;
+    }
+
+    /**
+     * @return the annotationSelections
+     */
+    public AnnotationSelection getAnnotationSelections() {
+        return annotationSelections;
+    }
+
+    /**
+     * @param annotationSelections the annotationSelections to set
+     */
+    public void setAnnotationSelections(AnnotationSelection annotationSelections) {
+        this.annotationSelections = annotationSelections;
+    }
+
+    /**
+     * @return the rowLable
+     */
+    public String getRowLable() {
+        return rowLable;
+    }
+
+    /**
+     * @param rowLable the rowLable to set
+     */
+    public void setRowLable(String rowLable) {
+        this.rowLable = rowLable;
     }
 
 }
