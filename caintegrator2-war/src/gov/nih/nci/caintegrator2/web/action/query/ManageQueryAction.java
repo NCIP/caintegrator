@@ -145,6 +145,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
             manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
             sessionMap.put("manageQueryHelper", manageQueryHelper);
         }
+        // TODO Check current study name against stored study. If different, re-prepopulateAnnotationSelectLists()
     }
 
     /**
