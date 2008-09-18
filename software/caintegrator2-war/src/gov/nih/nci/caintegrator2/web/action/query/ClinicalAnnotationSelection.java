@@ -86,19 +86,21 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 /**
  * Helper class to store and retrieve clinical annotation definitions, and 
  * their type-based associated operators.
  */
 public class ClinicalAnnotationSelection implements AnnotationSelection {
-    // annotationSelections is found by looking in Study object
+    private Collection<AnnotationDefinition> annotationDefinitions;
     private List<String> annotationSelections;
     // currentAnnotationOperatorSelections is the current set of operations, based on type
     // ! Make sure you set based on data type before fetching
@@ -232,6 +234,20 @@ public class ClinicalAnnotationSelection implements AnnotationSelection {
      */
     public void setNumericOptionToEnumMap(Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap) {
         this.numericOptionToEnumMap = numericOptionToEnumMap;
+    }
+    
+    /**
+     * @return the annotationDefinitions
+     */
+    public Collection<AnnotationDefinition> getAnnotationDefinitions() {
+        return annotationDefinitions;
+    }
+
+    /**
+     * @param annotationDefinitions the annotationDefinitions to set
+     */
+    public void setAnnotationDefinitions(Collection<AnnotationDefinition> annotationDefinitions) {
+        this.annotationDefinitions = annotationDefinitions;
     }
 
     @SuppressWarnings({ "PMD" })
