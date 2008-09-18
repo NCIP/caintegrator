@@ -89,6 +89,8 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 //import gov.nih.nci.caintegrator2.domain.translational.Study;
 //import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
 import gov.nih.nci.caintegrator2.web.action.query.ManageQueryHelper;
@@ -120,6 +122,7 @@ public class ManageQueryActionTest {
 //    private StudyConfiguration studyConfiguration = new StudyConfiguration();
     private String doMethod = "clinical";
     private String selectedRowCriterion = "clinical";
+    private QueryManagementService queryManagementService = new QueryManagementServiceImpl();
     
     @Before
     public void setUp() {
@@ -128,6 +131,7 @@ public class ManageQueryActionTest {
         qR = new QueryResult();
         manageQueryAction.setDoMethod(doMethod);
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
+        manageQueryAction.setQueryManagementService(queryManagementService);
         
 //        studyManagementService.save(studyConfiguration);
 //        manageQueryAction.setStudyManagementService(studyManagementService);
@@ -161,6 +165,7 @@ public class ManageQueryActionTest {
         assertEquals(manageQueryHelper, manageQueryAction.getManageQueryHelper());
         assertNotNull(manageQueryAction.getDoMethod());
         assertNotNull(manageQueryAction.getSelectedRowCriterion());
+        assertNotNull(manageQueryAction.getQueryManagementService());
         
         manageQueryAction.setInjectTest("yes");
         assertEquals("yes", manageQueryAction.getInjectTest());
