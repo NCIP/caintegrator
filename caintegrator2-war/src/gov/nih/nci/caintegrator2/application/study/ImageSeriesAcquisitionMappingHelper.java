@@ -95,12 +95,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Helper class used to map samples to subjects.
  */
 class ImageSeriesAcquisitionMappingHelper {
+    
+    private static final Logger LOGGER = Logger.getLogger(ImageSeriesAcquisitionMappingHelper.class);
 
     private final StudyConfiguration studyConfiguration;
     private final File mappingFile;
@@ -127,16 +131,22 @@ class ImageSeriesAcquisitionMappingHelper {
     }
 
     private void map(StudySubjectAssignment subjectAssignment, ImageSeriesAcquisition acquisition) {
-        if (subjectAssignment != null && acquisition != null) {
-            if (subjectAssignment.getImageStudyCollection() == null) {
-                subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
-            }
-            subjectAssignment.getImageStudyCollection().add(acquisition);
+        if (subjectAssignment == null || acquisition == null) {
+            LOGGER.warn("Couldn't map ImageSeriesAcquisition to StudySubjectAssignment due to null entity");
+            return;
         }
+        if (subjectAssignment.getImageStudyCollection() == null) {
+            subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
+        }
+        subjectAssignment.getImageStudyCollection().add(acquisition);
     }
 
     private ImageSeriesAcquisition getImageSeriesAcquisition(String identifier) {
-        return getImageSeriesAcquisitionIdentifierMap().get(identifier);
+        ImageSeriesAcquisition acquisition = getImageSeriesAcquisitionIdentifierMap().get(identifier);
+        if (acquisition == null) {
+            LOGGER.warn("No ImageSeriesAcquisition found for identifier " + identifier);
+        }
+        return acquisition;
     }
 
     private Map<String, ImageSeriesAcquisition> getImageSeriesAcquisitionIdentifierMap() {
@@ -157,7 +167,11 @@ class ImageSeriesAcquisitionMappingHelper {
     }
 
     private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
-        return studyConfiguration.getSubjectAssignment(subjectIdentifier);
+        StudySubjectAssignment assignment = studyConfiguration.getSubjectAssignment(subjectIdentifier);
+        if (assignment == null) {
+            LOGGER.warn("No StudySubjectAssigment found for identifier " + subjectIdentifier);
+        }
+        return assignment;
     }
 
 }

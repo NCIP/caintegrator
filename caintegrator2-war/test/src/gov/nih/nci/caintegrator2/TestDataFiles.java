@@ -97,11 +97,16 @@ public class TestDataFiles {
     public static final String INVALID_FILE_EMPTY_RESOURCE_PATH = "/emptyfile.txt";
     public static final String INVALID_FILE_NO_DATA_RESOURCE_PATH = "/csvtestclinical-no-data.csv";
     public static final String INVALID_FILE_DOESNT_EXIST_PATH = "nofile.txt";
-    public static final String REMBRANDT_CLINICAL_FILE_PATH = "/rembrandt_clinical_June08.csv";
+    public static final String REMBRANDT_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset.csv";
     public static final String REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH = "/rembrandt_annotation_definitions.csv";
-    public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_sample_mapping.csv";
+    public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_caarray_sample_mapping.csv";
+    public static final String SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/short_rembrandt_sample_mapping.csv";
+    public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
+    public static final String REMBRANDT_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/rembrandt_ncia_image_series.csv";
     public static final String SIMPLE_SAMPLE_MAPPING_FILE_PATH = "/simple_sample_mapping.csv";
     public static final String SIMPLE_IMAGE_MAPPING_FILE_PATH = "/simple_image_mapping.csv";
+    public static final String ISPY_IMAGE_ANNOTATION_FILE_PATH = "/ispy_image_annotations.csv";
+    public static final String ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ispy_clinical_image_mapping.csv";
 
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
@@ -112,8 +117,13 @@ public class TestDataFiles {
     public static final File REMBRANDT_CLINICAL_FILE = getFile(REMBRANDT_CLINICAL_FILE_PATH);
     public static final File REMBRANDT_ANNOTATION_DEFINITIONS_FILE = getFile(REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH);
     public static final File REMBRANDT_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
+    public static final File SHORT_REMBRANDT_SAMPLE_MAPPING_FILE = getFile(SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_SAMPLE_MAPPING_FILE = getFile(SIMPLE_SAMPLE_MAPPING_FILE_PATH);
     public static final File SIMPLE_IMAGE_MAPPING_FILE = getFile(SIMPLE_IMAGE_MAPPING_FILE_PATH);
+    public static final File VASARI_IMAGE_ANNOTATION_FILE = getFile(VASARI_IMAGE_ANNOTATION_FILE_PATH);
+    public static final File REMBRANDT_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(REMBRANDT_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
+    public static final File ISPY_IMAGE_ANNOTATION_FILE = getFile(ISPY_IMAGE_ANNOTATION_FILE_PATH);
+    public static final File ISPY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
 
     public static File getFile(String resourcePath) {
         return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());
