@@ -94,6 +94,7 @@ import java.util.Map;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 /**
  * Helper class to store and retrieve clinical annotation definitions, and 
@@ -113,7 +114,23 @@ public class ClinicalAnnotationSelection implements AnnotationSelection {
     private Map<String, WildCardTypeEnum> stringOptionToEnumMap;
     // Maps numeric operator display to corresponding NumericComparisonOperatorEnum
     private Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap;
+    // Current Study configuration
+    private StudyConfiguration studyConfiguration;
       
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
+
     /**
      * Default constructor. 
      */
