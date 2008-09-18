@@ -20,7 +20,7 @@
             <input type="button" id="resultsnum" value="Apply" />
         </div>
 
-        <s:form>
+        <s:form name="resultsForm">
         
                  This query result id is: <s:property value="queryResult.getId()"/><br>
                  query name: <s:property value="queryResult.getQuery().getName()"/><br>

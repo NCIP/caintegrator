@@ -1,4 +1,11 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" 
+import="java.util.*, 
+    com.opensymphony.xwork2.ActionContext,
+    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria,
+    gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
+    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteriaImpl" 
+pageEncoding="ISO-8859-1" %>
+
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <!--Search Criteria-->
@@ -18,38 +25,70 @@
     
 
     
-            <s:form>
+
                      query name: <s:property value="queryResult.getQuery().getName()"/><br>
                      query description: <s:property value="queryResult.getQuery().getDescription()"/><br>  
                      <br>
-            </s:form>
+
             
             <!--Basic Criteria Definition-->
             
             <div id="basic">
-                                                                                                
+                
+                <s:form action="manageQuery" name="addCriterionRowForm">
+                <s:hidden name="doMethod" value="addRow" />
+                <s:hidden name="manageQueryHelper.sAdvancedView" value="true" />
+                
+                <!-- Reproduce existing query criteria rows if any -->
+
+                <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus">
+                    iter count:<s:property value="#itStatus.count" />
+                    <s:property value="manageQueryHelper.advancedView" />
+                    <tr>
+                    <td><s:checkbox name="beginParen" fieldValue="true"  value="beginParen" label="(" /></td>
+                <!--
+                    <td><s:checkbox name="endParen" fieldValue="true" value="true" label=")" /></td>
+                    <td><s:checkbox name="andOp" fieldValue="true" value="true" label="AND" /></td>
+                    <td><s:checkbox name="orOp" fieldValue="true" value="true" label="OR" /></td>
+                    <td><s:checkbox name="deleteRow" fieldValue="true" value="true" label="Delete Row" /></td>
+                -->
+                    </tr>
+                </s:iterator>
+                
+                <!-- Add query criterion row selection -->
                 <table class="data">
                     <tr>
-                        <td colspan="3" class="tableheader">
-                            <select name="selectcriteria" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
+                        <td colspan="2" class="tableheader">
+                            <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
                                 <option>&ndash; Select Criteria Type &ndash;</option>
 
-                                <option>Clinical</option>
-                                <option>Gene Expression</option>
-                                <option>Image</option>
+                                <option value="clinical">Clinical</option>
+                                <option value="sample">Gene Expression</option>
+                                <option value="image">Image</option>
                             </select>
+                            
+                             <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
+                                <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="add">Add</span></span></s:a></li>
+                            </ul>                           
+                            <!--
                             <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
-                                <li><a href="default2.html" style="margin:0 5px;" class="btn" onclick="javascript://"><span class="btn_img"><span class="add">Add</span></span></a></li>
+                                <li><s:submit value="Add" cssClass="btn_img" theme="simple"/></li>
                             </ul>
 
+                            <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
+                                <li><a href="#" style="margin:0 5px;" class="btn" onclick="javascript://"><span class="btn_img"><span class="add">Add</span></span></a></li>
+                            </ul>
+                            -->
                         </td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="3" class="value_inline">
+                        <td colspan="2" class="value_inline">
                             <p style="margin:0; padding:2px 0 3px 0; text-align:center;"><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>
                         </td>
                     </tr>
                 </table>
+                
+                </s:form>
 
                                                                         
                 <div class="tablefooter">

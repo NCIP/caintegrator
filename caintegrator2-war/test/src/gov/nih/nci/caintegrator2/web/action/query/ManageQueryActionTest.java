@@ -103,6 +103,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 //import static org.junit.Assert.assertNotNull;
 //import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import com.opensymphony.xwork2.Action;
 
@@ -117,12 +118,17 @@ public class ManageQueryActionTest {
 //    private Study study = studyHelper.populateAndRetrieveStudy().getStudy();
     private StudyManagementService studyManagementService = new StudyManagementServiceImpl();
 //    private StudyConfiguration studyConfiguration = new StudyConfiguration();
+    private String doMethod = "clinical";
+    private String selectedRowCriterion = "clinical";
     
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
         qR = new QueryResult();
+        manageQueryAction.setDoMethod(doMethod);
+        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
+        
 //        studyManagementService.save(studyConfiguration);
 //        manageQueryAction.setStudyManagementService(studyManagementService);
     }
@@ -145,7 +151,7 @@ public class ManageQueryActionTest {
         manageQueryAction.getTestResultRows();
         manageQueryAction.setStudyManagementService(studyManagementService);
         manageQueryAction.getStudyManagementService();
-        assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
+        //assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
         assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRow());
         assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRowAll());
         assertEquals(Action.SUCCESS, manageQueryAction.executeQuery());
@@ -153,6 +159,8 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
         assertEquals(Action.SUCCESS, manageQueryAction.saveQuery());
         assertEquals(manageQueryHelper, manageQueryAction.getManageQueryHelper());
+        assertNotNull(manageQueryAction.getDoMethod());
+        assertNotNull(manageQueryAction.getSelectedRowCriterion());
         
         manageQueryAction.setInjectTest("yes");
         assertEquals("yes", manageQueryAction.getInjectTest());

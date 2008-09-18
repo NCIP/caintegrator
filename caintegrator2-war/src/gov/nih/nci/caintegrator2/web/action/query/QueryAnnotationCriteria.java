@@ -91,6 +91,16 @@ package gov.nih.nci.caintegrator2.web.action.query;
  * expression (sample), Imaging.
  */
 public interface QueryAnnotationCriteria {
+
+    /**
+     * @return the annotationSelections
+     */
+    AnnotationSelection getAnnotationSelections();
+    
+    /**
+     * @param annotationSelections the annotationSelections to set
+     */
+    void setAnnotationSelections(AnnotationSelection annotationSelections);
     
     /**
      * @return boolean the begin paren.
