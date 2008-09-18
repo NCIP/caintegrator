@@ -102,21 +102,23 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
  */
 public class ManageQueryHelper {
     private boolean advancedView = false;
-    // The below list is where all the user's query criteria is both
-    // stored and retrieved (Struts2).
+    // The below list contains all the user's query criteria 
+    // (one object per row).
     private List<QueryAnnotationCriteria> queryCriteriaRowList;
     // The first three Collections below store data type specific
     // annotation definitions as stored in the DB.
     private Collection<AnnotationDefinition> clinicalAnnotationDefinitions;
     private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
     private Collection<AnnotationDefinition> imageAnnotationDefinitions;
-    // The objects below store the presentation-facing data necessary to 
-    // populate JSP/HTML elements:
+    // The objects below store annotation specific presentation-facing and 
+    // query building data:
+    private ClinicalAnnotationSelection clinicalAnnotationSelections;
+    // TODO Code the classes below
+    //private SampleAnnotationSelection sampleAnnotationSelections;
+    //private ImageAnnotationSelection imageAnnotationSelections;
     // The currently selected set of annotations
     //private AnnotationSelection currentAnnotationSelections;
-    // Clinical Annotations
-    private ClinicalAnnotationSelection clinicalAnnotationSelections;
-
+    
     /**
      * Default constructor.
      */
@@ -225,24 +227,27 @@ public class ManageQueryHelper {
      */
     public void prepopulateAnnotationSelectLists(StudyManagementService studyManagementService) {
         Study study;
+        StudyConfiguration studyConfiguration;
         
         // TODO Use the currently selected study title below
-        study = getCurrentStudy(studyManagementService, "Rembrandt/VASARI");
+        studyConfiguration = getCurrentStudyConfiguration(studyManagementService, "Rembrandt/VASARI");
+        study = studyConfiguration.getStudy();
         
         // Get all data type annotation field definitions:
         populateClinicalAnnotationDefinitions(study);
         // TODO get sample and imaging
         
         // Instantiate the annotation selection objects:
-        populateAnnotationSelections();
+        populateAnnotationSelections(studyConfiguration);
     }
     
     /**
      * @param studyManagementService the studyManagementService object.
      * @param studyShortTitle the short title of the study to retrieve.
-     * @return Study the named study retrieved from the studyManagementService object.
+     * @return StudyConfiguration the studyConfiguration that wraps the named study.
      */
-    public Study getCurrentStudy(StudyManagementService studyManagementService, String studyShortTitle) {
+    public StudyConfiguration getCurrentStudyConfiguration(StudyManagementService studyManagementService, 
+            String studyShortTitle) {
         List<StudyConfiguration> studyConfigurations;
         
         studyConfigurations = studyManagementService.getManagedStudies(SecurityHelper.getCurrentUsername());
@@ -255,7 +260,13 @@ public class ManageQueryHelper {
             }
         }
         
-        return sc.getStudy();         
+        return sc;
+    }
+    
+    private void populateAnnotationSelections(StudyConfiguration studyConfiguration) {
+        populateClinicalAnnotationSelections(studyConfiguration);
+        
+        // TODO populate sample and image selection objects
     }
     
     private void populateClinicalAnnotationDefinitions(Study study) {
@@ -266,13 +277,7 @@ public class ManageQueryHelper {
         }
     }
     
-    private void populateAnnotationSelections() {
-        populateClinicalAnnotationSelections();
-        
-        // TODO populate sample and image selection objects
-    }
-    
-    private void populateClinicalAnnotationSelections() {
+    private void populateClinicalAnnotationSelections(StudyConfiguration studyConfiguration) {
         if (this.clinicalAnnotationSelections == null) {
             this.clinicalAnnotationSelections = new ClinicalAnnotationSelection();
         }
@@ -280,7 +285,6 @@ public class ManageQueryHelper {
             ArrayList<String> annotationSelections = new ArrayList<String>(10);
             Iterator<AnnotationDefinition> annoDefsIter = clinicalAnnotationDefinitions.iterator();
             while (annoDefsIter.hasNext()) {
-                //AnnotationDefinition ad = annoDefsIter.next();
                 annotationSelections.add(annoDefsIter.next().getDisplayName());
             }
             annotationSelections.trimToSize();
@@ -288,6 +292,7 @@ public class ManageQueryHelper {
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
             // Set the annotation definitions
             clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
+            clinicalAnnotationSelections.setStudyConfiguration(studyConfiguration);
         }
     }
     
