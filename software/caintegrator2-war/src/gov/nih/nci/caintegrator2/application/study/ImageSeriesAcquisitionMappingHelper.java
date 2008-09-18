@@ -127,10 +127,12 @@ class ImageSeriesAcquisitionMappingHelper {
     }
 
     private void map(StudySubjectAssignment subjectAssignment, ImageSeriesAcquisition acquisition) {
-        if (subjectAssignment.getImageStudyCollection() == null) {
-            subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
+        if (subjectAssignment != null && acquisition != null) {
+            if (subjectAssignment.getImageStudyCollection() == null) {
+                subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
+            }
+            subjectAssignment.getImageStudyCollection().add(acquisition);
         }
-        subjectAssignment.getImageStudyCollection().add(acquisition);
     }
 
     private ImageSeriesAcquisition getImageSeriesAcquisition(String identifier) {
