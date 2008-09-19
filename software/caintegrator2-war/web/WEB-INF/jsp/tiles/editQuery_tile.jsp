@@ -35,25 +35,11 @@ pageEncoding="ISO-8859-1" %>
             
             <div id="basic">
                 
-                <s:form action="manageQuery" name="addCriterionRowForm">
+                <s:form action="manageQuery.addCriterionRow" name="addCriterionRowForm">
+<!--          
                 <s:hidden name="doMethod" value="addRow" />
+-->
                 <s:hidden name="manageQueryHelper.sAdvancedView" value="true" />
-                
-                <!-- Reproduce existing query criteria rows if any -->
-
-                <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus">
-                    iter count:<s:property value="#itStatus.count" />
-                    <s:property value="manageQueryHelper.advancedView" />
-                    <tr>
-                    <td><s:checkbox name="beginParen" fieldValue="true"  value="beginParen" label="(" /></td>
-                <!--
-                    <td><s:checkbox name="endParen" fieldValue="true" value="true" label=")" /></td>
-                    <td><s:checkbox name="andOp" fieldValue="true" value="true" label="AND" /></td>
-                    <td><s:checkbox name="orOp" fieldValue="true" value="true" label="OR" /></td>
-                    <td><s:checkbox name="deleteRow" fieldValue="true" value="true" label="Delete Row" /></td>
-                -->
-                    </tr>
-                </s:iterator>
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
@@ -69,18 +55,21 @@ pageEncoding="ISO-8859-1" %>
                             
                              <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
                                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="add">Add</span></span></s:a></li>
-                            </ul>                           
-                            <!--
-                            <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
-                                <li><s:submit value="Add" cssClass="btn_img" theme="simple"/></li>
                             </ul>
-
-                            <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
-                                <li><a href="#" style="margin:0 5px;" class="btn" onclick="javascript://"><span class="btn_img"><span class="add">Add</span></span></a></li>
-                            </ul>
-                            -->
                         </td>
                     </tr>
+                    
+                    <!-- Reproduce existing query criteria rows if any -->
+<!-- 
+                        <s:select name="selectionistranmittedonthisproperty" list="list-being-iterated-over-to-display" listValue="thisisthedisplayedstring" listKey="this-is-the-value-that-is-submitted" />
+ -->    
+                    <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="userobj">
+                        <tr>
+                        <td> rowLabel:<s:property value="#userobj.rowLabel"/> annotationSelection:<s:property value="#userobj.annotationSelection"/></td>
+                        <td><s:select name="selectedAnnotations" list="manageQueryHelper.clinicalAnnotationDefinitions" listValue="displayName" listKey="displayName" value="#userobj.annotationSelection" label="#userobj.rowLabel"/></td>
+
+                        </tr>
+                    </s:iterator>                    
                     <tr class="odd">
                         <td colspan="2" class="value_inline">
                             <p style="margin:0; padding:2px 0 3px 0; text-align:center;"><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>

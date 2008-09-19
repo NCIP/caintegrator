@@ -191,6 +191,15 @@ public interface QueryAnnotationCriteria {
      * @param rowType Set the 'data' type of the row.
      */
     void setRowType(String rowType);
-
+    
+    /**
+     * @param rowLabel Set the label for the results row.
+     */
+    void setRowLable(String rowLabel);
+    
+    /**
+     * @return rowLabel Get the label for the results row.
+     */
+    String getRowLable();
 
 }
