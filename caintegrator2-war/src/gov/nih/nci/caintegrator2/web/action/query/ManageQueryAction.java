@@ -134,7 +134,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
      */
-    @SuppressWarnings({ "PMD" })
+    @SuppressWarnings({ "PMD", "unchecked" })
     public void prepare() {
         // Instantiate/prepopulate manageQueryHelper if necessary
         ActionContext context = ActionContext.getContext();
