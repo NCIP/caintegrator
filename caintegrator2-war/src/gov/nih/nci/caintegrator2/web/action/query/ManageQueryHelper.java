@@ -306,7 +306,7 @@ public class ManageQueryHelper {
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
         queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
         queryAnnotationCriteria.setRowType("clinical"); //TODO make clinical a constant
-
+        queryAnnotationCriteria.setRowLable("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
     }
 
@@ -324,6 +324,22 @@ public class ManageQueryHelper {
 //        this.currentAnnotationSelections = currentAnnotationSelections;
 //    }
 
-
+    /**
+     * @param selectedValues the selected Value array.
+     */
+    public void updateSelectedClinicalValues(String[] selectedValues) {
+        //QueryAnnotationCriteria
+        QueryAnnotationCriteria tempAnnotationCriteria = null;
+        Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
+        int i = 0;
+        while (rowIter.hasNext()) {
+            tempAnnotationCriteria = rowIter.next();
+            if (selectedValues[i] != null) {
+                tempAnnotationCriteria.setAnnotationSelection(selectedValues[i]);
+                this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
+            }
+            i++;
+        }
+    }
     
 }

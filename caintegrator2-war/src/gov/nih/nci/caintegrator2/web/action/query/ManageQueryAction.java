@@ -122,8 +122,8 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private QueryResult queryResult = new QueryResult();
     private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
-    private String doMethod = "";  //TODO delete in favor of direction call to action
-    private String selectedRowCriterion = "";
+    private String doMethod = "";  //TODO delete in favor of direct call to action
+    private String selectedRowCriterion = "uninitializedselectedRowCriterion";
     //Struts should automatically populate these arrays from the form element.
     private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
     private String[] selectedOperators; //selected operators for all criterion as a list.
@@ -155,9 +155,9 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     @Override
     public String execute()  {
         
-        if ("addRow".equals(doMethod)) {
-            addCriterionRow();
-        }
+//        if ("addRow".equals(doMethod)) {
+//            addCriterionRow();
+//        }
         
         // declarations and such
         final Long id;
@@ -280,6 +280,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public String addCriterionRow() {
         if ("clinical".equals(this.selectedRowCriterion)) { //TODO make clinical a constant
+            manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
             manageQueryHelper.configureClinicalQueryCriterionRow();
         }
         // TODO handle other criteria
@@ -387,8 +388,12 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the selectedAnnotations
      */
     public String[] getSelectedAnnotations() {
-        String [] holdArray;
-        holdArray = selectedAnnotations.clone();
+        //String [] holdArray = new String[3];;
+        //String[] holdArray = {"", "", "", "", "", ""}; //TODO fix this
+        String[] holdArray = {""};
+        if (selectedAnnotations != null) {
+             holdArray = this.selectedAnnotations.clone();
+        }
         return holdArray;
     }
 
@@ -405,8 +410,10 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the selectedOperators
      */
     public String[] getSelectedOperators() {
-        String [] holdArray;
-        holdArray = selectedOperators.clone();
+        String [] holdArray = {""};
+        if (selectedOperators != null) {
+            holdArray = selectedOperators.clone();
+        }
         return holdArray;
     }
 
@@ -423,8 +430,10 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the selectedValues
      */
     public String[] getSelectedValues() {
-        String [] holdArray;
-        holdArray = selectedValues.clone();
+        String [] holdArray = {""};
+        if (selectedValues != null) {
+            holdArray = selectedValues.clone();
+        }
         return holdArray;
     }
 
