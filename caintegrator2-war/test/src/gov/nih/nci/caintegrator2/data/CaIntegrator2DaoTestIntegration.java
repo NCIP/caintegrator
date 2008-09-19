@@ -99,7 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -263,9 +263,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion1.setStringValue("string1");
         criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
         criterion1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
-        List<ImageSeriesAcquisition> matchingImageSeriesAcquisitions = dao.findMatchingImageSeries(criterion1, study);
+        List<ImageSeries> matchingImageSeries = dao.findMatchingImageSeries(criterion1, study);
         
-        assertEquals(1, matchingImageSeriesAcquisitions.size());
+        assertEquals(1, matchingImageSeries.size());
         
         // Try a wildcard search now.
         StringComparisonCriterion criterion2 = new StringComparisonCriterion();
@@ -273,17 +273,17 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
         criterion2.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
         criterion2.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
-        List<ImageSeriesAcquisition> matchingImageSeriesAcquisitions2 = dao.findMatchingImageSeries(criterion2, study);
+        List<ImageSeries> matchingImageSeries2 = dao.findMatchingImageSeries(criterion2, study);
         
-        assertEquals(5, matchingImageSeriesAcquisitions2.size());
+        assertEquals(5, matchingImageSeries2.size());
         
         // Change only the annotation definition and see if it returns 0.
         StringComparisonCriterion criterion3 = new StringComparisonCriterion();
         criterion3.setStringValue("string1");
         criterion3.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
         criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        List<ImageSeriesAcquisition> matchingImageSeriesAcquisitions3 = dao.findMatchingImageSeries(criterion3, study);
-        assertEquals(0, matchingImageSeriesAcquisitions3.size());
+        List<ImageSeries> matchingImageSeries3 = dao.findMatchingImageSeries(criterion3, study);
+        assertEquals(0, matchingImageSeries3.size());
     }
     
     @Test

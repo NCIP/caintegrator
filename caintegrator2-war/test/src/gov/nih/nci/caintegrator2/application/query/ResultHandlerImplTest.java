@@ -87,11 +87,12 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
@@ -111,7 +112,8 @@ public class ResultHandlerImplTest {
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         ResultRow row = new ResultRow();
         row.setSampleAcquisition(new SampleAcquisition());
-        row.setImageSeriesAcquisition(new ImageSeriesAcquisition());
+        row.setImageSeries(new ImageSeries());
+        row.getImageSeries().setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         row.setSubjectAssignment(new StudySubjectAssignment());
         resultRows.add(row);
         

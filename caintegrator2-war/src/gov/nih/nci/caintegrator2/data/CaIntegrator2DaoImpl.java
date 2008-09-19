@@ -97,7 +97,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -192,13 +192,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
-    public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
+    public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
-            return new ArrayList<ImageSeriesAcquisition>();
+            return new ArrayList<ImageSeries>();
         } else {
-            Criteria imageSeriesAcquisitionCrit = getCurrentSession().createCriteria(ImageSeriesAcquisition.class);
+            Criteria imageSeriesAcquisitionCrit = getCurrentSession().createCriteria(ImageSeries.class);
             createAnnotationValuesCriteria(criterion, 
-                                           imageSeriesAcquisitionCrit.createCriteria("seriesCollection"), 
+                                            imageSeriesAcquisitionCrit, 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
             return imageSeriesAcquisitionCrit.list();
         }
