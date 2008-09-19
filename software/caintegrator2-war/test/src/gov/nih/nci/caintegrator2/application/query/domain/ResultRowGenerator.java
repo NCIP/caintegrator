@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.HashSet;
@@ -108,8 +108,8 @@ public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRo
     public void compareFields(ResultRow original, ResultRow retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getRowIndex(), retrieved.getRowIndex());
-        assertEquals(original.getImageSeriesAcquisition().getId(), 
-                     retrieved.getImageSeriesAcquisition().getId());
+        assertEquals(original.getImageSeries().getId(), 
+                     retrieved.getImageSeries().getId());
         assertEquals(original.getSampleAcquisition().getId(),
                      retrieved.getSampleAcquisition().getId());
         assertEquals(original.getSubjectAssignment().getId(),
@@ -131,7 +131,7 @@ public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRo
         for (int i = 0; i < 3; i++) {
             resultRow.getValueCollection().add(ResultValueGenerator.INSTANCE.createPersistentObject());
         }
-        resultRow.setImageSeriesAcquisition(new ImageSeriesAcquisition());
+        resultRow.setImageSeries(new ImageSeries());
         resultRow.setSampleAcquisition(new SampleAcquisition());
         resultRow.setSubjectAssignment(new StudySubjectAssignment());
 

@@ -10,7 +10,7 @@
 		<property name="rowIndex" type="integer" column="ROW_INDEX"/>
 		<!-- Associations mapping for the ResultRow class -->
 		<many-to-one name="subjectAssignment" class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment" column="STUDY_SUBJECT_ASSIGNMENT_ID" lazy="proxy" cascade="save-update" />
-		<many-to-one name="imageSeriesAcquisition" class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition" column="IMAGE_SERIES_ACQUISITION_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="imageSeries" class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeries" column="IMAGE_SERIES_ID" lazy="proxy" cascade="save-update" />
 		<set name="valueCollection" lazy="true" cascade="save-update" >
 			<cache usage="read-write" />
 			<key column="RESULT_ROW_ID" />

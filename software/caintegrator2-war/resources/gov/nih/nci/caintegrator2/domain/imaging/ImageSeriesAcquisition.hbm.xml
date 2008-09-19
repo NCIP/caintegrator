@@ -7,7 +7,8 @@
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the ImageSeriesAcquisition class -->
-		<property name="identifier" type="string" column="IDENTIFIER"/>
+        <property name="identifier" type="string" column="IDENTIFIER"/>
+        <property name="nciaTrialIdentifier" type="string" column="NCIA_TRIAL_IDENTIFIER"/>
 		<!-- Associations mapping for the ImageSeriesAcquisition class -->
 		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" lazy="proxy" cascade="save-update" />
 		<set name="seriesCollection" lazy="true" cascade="save-update" >

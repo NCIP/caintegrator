@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -157,14 +157,14 @@ public interface CaIntegrator2Dao {
     List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study);
     
     /**
-     * Returns the subjects (via their linked <code>ImageSeriesAcquisitions</code> that match
+     * Returns the subjects (via their linked <code>ImageSeries</code> that match
      * the corresponding criterion.
      * 
      * @param criterion find subjects that match the given criterion.
      * @param study restrict the search to the given study. 
      * @return the list of matches.
      */
-    List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study);
+    List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study);
     
     /**
      * Returns the subjects (via their linked <code>SampleAcquisitions</code> that match

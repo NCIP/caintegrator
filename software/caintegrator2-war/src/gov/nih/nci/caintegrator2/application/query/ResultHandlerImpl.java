@@ -95,7 +95,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
@@ -165,14 +164,11 @@ public class ResultHandlerImpl implements ResultHandler {
 
     @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Have to iterate over many collections to get values.
     private AbstractAnnotationValue handleImageSeriesRow(ResultRow row, ResultColumn column) {
-        ImageSeriesAcquisition imageSeriesAcquisition = row.getImageSeriesAcquisition();
-        if (imageSeriesAcquisition != null
-                && imageSeriesAcquisition.getSeriesCollection() != null) {
-            for (ImageSeries imageSeries : imageSeriesAcquisition.getSeriesCollection()) {
-                for (AbstractAnnotationValue annotationValue : imageSeries.getAnnotationCollection()) {
-                    if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
-                        return annotationValue;
-                    }
+        ImageSeries imageSeries = row.getImageSeries();
+        if (imageSeries != null) {
+            for (AbstractAnnotationValue annotationValue : imageSeries.getAnnotationCollection()) {
+                if (annotationValue.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
+                    return annotationValue;
                 }
             }
         }
