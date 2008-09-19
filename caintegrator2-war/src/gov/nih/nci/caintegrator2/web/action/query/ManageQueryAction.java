@@ -279,8 +279,15 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String addCriterionRow() {
+        
+        manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
+        manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
+        manageQueryHelper.updateSelectedUserValues(getSelectedValues());
+        
         if ("clinical".equals(this.selectedRowCriterion)) { //TODO make clinical a constant
-            manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
+        //    manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
+        //    manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
+        //    manageQueryHelper.updateSelectedUserValues(getSelectedValues());
             manageQueryHelper.configureClinicalQueryCriterionRow();
         }
         // TODO handle other criteria
@@ -388,8 +395,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the selectedAnnotations
      */
     public String[] getSelectedAnnotations() {
-        //String [] holdArray = new String[3];;
-        //String[] holdArray = {"", "", "", "", "", ""}; //TODO fix this
         String[] holdArray = {""};
         if (selectedAnnotations != null) {
              holdArray = this.selectedAnnotations.clone();
@@ -474,4 +479,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         this.queryManagementService = queryManagementService;
     }
     
+    // TODO 
+    //public void updateSelections.
 }

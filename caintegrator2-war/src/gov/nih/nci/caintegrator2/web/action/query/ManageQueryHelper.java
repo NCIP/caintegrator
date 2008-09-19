@@ -305,6 +305,7 @@ public class ManageQueryHelper {
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteriaImpl();
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
         queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType("clinical"); //TODO make clinical a constant
         queryAnnotationCriteria.setRowLable("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
@@ -325,10 +326,10 @@ public class ManageQueryHelper {
 //    }
 
     /**
-     * @param selectedValues the selected Value array.
+     * @param selectedValues The array of values to be added.
      */
     public void updateSelectedClinicalValues(String[] selectedValues) {
-        //QueryAnnotationCriteria
+
         QueryAnnotationCriteria tempAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
         int i = 0;
@@ -342,4 +343,39 @@ public class ManageQueryHelper {
         }
     }
     
+    /**
+     * @param selectedValues The array of values to be added.
+     */
+    public void updateSelectedOperatorValues(String[] selectedValues) {
+
+        QueryAnnotationCriteria tempAnnotationCriteria = null;
+        Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
+        int i = 0;
+        while (rowIter.hasNext()) {
+            tempAnnotationCriteria = rowIter.next();
+            if (selectedValues[i] != null) {
+                tempAnnotationCriteria.setAnnotationOperatorSelection(selectedValues[i]);
+                this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
+            }
+            i++;
+        }
+    }    
+
+    /**
+     * @param selectedValues The array of values to be added.
+     */
+    public void updateSelectedUserValues(String[] selectedValues) {
+
+        QueryAnnotationCriteria tempAnnotationCriteria = null;
+        Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
+        int i = 0;
+        while (rowIter.hasNext()) {
+            tempAnnotationCriteria = rowIter.next();
+            if (selectedValues[i] != null) {
+                tempAnnotationCriteria.setAnnotationValue(selectedValues[i]);
+                this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
+            }
+            i++;
+        }
+    }    
 }
