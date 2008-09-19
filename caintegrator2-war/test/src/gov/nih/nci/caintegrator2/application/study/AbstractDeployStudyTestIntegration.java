@@ -153,9 +153,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         this.service = studyManagementService;
     }
     
-    abstract public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException;
-
-    public void runTest() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
+    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
             loadDesign();
             studyConfiguration = new StudyConfiguration();
@@ -186,10 +184,21 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void loadDesign() throws PlatformLoadingException {
         if (getLoadDesign()) {
-            AffymetrixPlatformSource designSource = new AffymetrixPlatformSource("HG-U133_Plus_2", TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-            design = arrayDataService.loadArrayDesign(designSource);
+            design = getExistingDesign();
+            if (design == null) {
+                AffymetrixPlatformSource designSource = new AffymetrixPlatformSource(getPlatformName(), getPlatformAnnotationFile());
+                design = arrayDataService.loadArrayDesign(designSource);
+            }
         }
     }
+    
+    private Platform getExistingDesign() {
+        return dao.getPlatform(getPlatformName());
+    }
+
+    abstract String getPlatformName();
+    
+    abstract File getPlatformAnnotationFile();
 
     protected boolean getLoadDesign() {
         return true;

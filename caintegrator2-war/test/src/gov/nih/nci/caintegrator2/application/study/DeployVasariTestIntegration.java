@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 
 import java.io.File;
@@ -100,7 +101,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Test
     public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException {
-        runTest();
+        deployStudy();
     }
     
     @Override
@@ -149,6 +150,16 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_CLINICAL_FILE;
+    }
+
+    @Override
+    File getPlatformAnnotationFile() {
+        return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
+    }
+
+    @Override
+    String getPlatformName() {
+        return "HG-U133_Plus_2";
     }
 
 }

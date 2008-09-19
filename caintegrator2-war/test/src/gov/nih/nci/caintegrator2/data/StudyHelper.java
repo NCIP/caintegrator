@@ -414,22 +414,27 @@ public class StudyHelper {
         ImageSeriesAcquisition isAcquisition1 = new ImageSeriesAcquisition();
         isAcquisition1.setSeriesCollection(isCollection1);
         isAcquisition1.setAssignment(studySubjectAssignment1);
+        imageSeries1.setImageStudy(isAcquisition1);
 //        isAcquisition1.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition2 = new ImageSeriesAcquisition();
         isAcquisition2.setSeriesCollection(isCollection2);
         isAcquisition2.setAssignment(studySubjectAssignment2);
+        imageSeries2.setImageStudy(isAcquisition2);
 //        isAcquisition2.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition3 = new ImageSeriesAcquisition();
         isAcquisition3.setSeriesCollection(isCollection3);
         isAcquisition3.setAssignment(studySubjectAssignment3);
+        imageSeries3.setImageStudy(isAcquisition3);
 //        isAcquisition3.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition4 = new ImageSeriesAcquisition();
         isAcquisition4.setSeriesCollection(isCollection4);
         isAcquisition4.setAssignment(studySubjectAssignment4);
+        imageSeries4.setImageStudy(isAcquisition4);
 //        isAcquisition4.setTimepoint(defaultTimepoint);
         ImageSeriesAcquisition isAcquisition5 = new ImageSeriesAcquisition();
         isAcquisition5.setSeriesCollection(isCollection5);
         isAcquisition5.setAssignment(studySubjectAssignment5);
+        imageSeries5.setImageStudy(isAcquisition5);
 //        isAcquisition5.setTimepoint(defaultTimepoint);
         
         Collection<ImageSeriesAcquisition> isaCollection1 = new HashSet<ImageSeriesAcquisition>();
