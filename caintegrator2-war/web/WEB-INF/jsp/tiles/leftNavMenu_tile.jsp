@@ -19,10 +19,7 @@
         <li class="stdnav"><div>VASARI</div>
             <ul>
                 <li><a href="home.html" class="selected">Homepage</a></li>
-                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search VASARI</a></li>            
-                <li><s:url id="workspaceUrl" action="workspace" />
-                <a href="${workspaceUrl}">Workspace</a></li>
-                <li class="stdnav"><a href="search.html">Advanced Search</a></li>
+                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search VASARI</a></li>
             </ul>
         </li>
         <authz:authorize ifAnyGranted="MODIFY_STUDY_CREATE">
@@ -112,6 +109,9 @@
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
                 <li><a href="#">Deploy New Study</a></li>
+                <li><s:url id="workspaceUrl" action="workspace" />
+                <a href="${workspaceUrl}">Workspace</a></li>
+                <li class="stdnav"><a href="search.html">Advanced Search</a></li>                
                 <li><a href="#">Support</a></li>
                 <li><a href="#">Tutorials</a></li>
                 <li><a href="#">User Guide</a></li>

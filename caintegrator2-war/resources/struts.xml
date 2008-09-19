@@ -179,8 +179,12 @@
         
         <action name="manageQuery" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
-        </action>        
+        </action>
         
+        <action name="manageQuery.addCriterionRow" method="addCriterionRow" class="manageQueryAction">
+            <result type="tiles">manageQuery</result>
+        </action> 
+                
     </package>
     
 </struts>
