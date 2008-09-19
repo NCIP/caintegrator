@@ -76,6 +76,20 @@
         </s:form>        
     
         <!--Data List-->
+        
+        <!--Buttons-->
+        <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
+        </s:url>
+
+        <div class="actionsrow">
+            <del class="btnwrapper">
+                <ul class="btnrow">
+                    <li><s:a href="#" cssClass="btn" href="%{testUrlId}" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                </ul>   
+            </del>
+        </div>
+        
+        <!--/Buttons-->
 
         <table class="data">
             <tr>

@@ -36,15 +36,13 @@ pageEncoding="ISO-8859-1" %>
             <div id="basic">
                 
                 <s:form action="manageQuery.addCriterionRow" name="addCriterionRowForm">
-<!--          
-                <s:hidden name="doMethod" value="addRow" />
--->
+
                 <s:hidden name="manageQueryHelper.sAdvancedView" value="true" />
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
                     <tr>
-                        <td colspan="2" class="tableheader">
+                        <td colspan="4" class="tableheader">
                             <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
                                 <option>&ndash; Select Criteria Type &ndash;</option>
 
@@ -62,19 +60,24 @@ pageEncoding="ISO-8859-1" %>
                     <!-- Reproduce existing query criteria rows if any -->
 <!-- 
                         <s:select name="selectionistranmittedonthisproperty" list="list-being-iterated-over-to-display" listValue="thisisthedisplayedstring" listKey="this-is-the-value-that-is-submitted" />
- -->    
-                    <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="userobj">
-                        <tr>
-                        <td> rowLabel:<s:property value="#userobj.rowLabel"/> annotationSelection:<s:property value="#userobj.annotationSelection"/></td>
-                        <td><s:select name="selectedAnnotations" list="manageQueryHelper.clinicalAnnotationDefinitions" listValue="displayName" listKey="displayName" value="#userobj.annotationSelection" label="#userobj.rowLabel"/></td>
-
+ -->
+                    <s:if test="manageQueryHelper.queryCriteriaRowList != null && !(manageQueryHelper.queryCriteriaRowList.isEmpty())">
+                        <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
+                            <tr>
+                            <td></td>
+                            <td><s:select name="selectedAnnotations" list="manageQueryHelper.clinicalAnnotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                            <td><s:select name="selectedOperators" list="manageQueryHelper.clinicalAnnotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
+                            <td><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
+                            </tr>
+                        </s:iterator>
+                     </s:if>
+                     <s:else>   
+                        <tr class="odd">
+                            <td colspan="4" class="value_inline">
+                                <p style="margin:0; padding:2px 0 3px 0; text-align:center;"><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>
+                            </td>
                         </tr>
-                    </s:iterator>                    
-                    <tr class="odd">
-                        <td colspan="2" class="value_inline">
-                            <p style="margin:0; padding:2px 0 3px 0; text-align:center;"><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>
-                        </td>
-                    </tr>
+                     </s:else>   
                 </table>
                 
                 </s:form>
@@ -87,9 +90,23 @@ pageEncoding="ISO-8859-1" %>
                 </div>
                 
             </div>
+            
+            <!--Buttons-->
+            <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
+            </s:url>
 
+            <div class="actionsrow">
+                <del class="btnwrapper">
+                    <ul class="btnrow">
+                        <li><s:a href="#" cssClass="btn" href="%{testUrlId}" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                    </ul>   
+                </del>
+            </div>
+            
+            <!--/Buttons-->
             
             <!--/Basic Criteria Definition-->
+                                                                     
 
             
             <!--Advanced Criteria Definition-->
