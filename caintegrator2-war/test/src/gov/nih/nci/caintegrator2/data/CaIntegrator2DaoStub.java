@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -171,14 +172,16 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    public List<ImageSeriesAcquisition> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
+    public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         findMatchingImageSeriesCalled = true;
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
         imageSeriesAcquisition.setAssignment(studySubjectAssignment);
         imageSeriesAcquisition.setTimepoint(timepoint);
-        List<ImageSeriesAcquisition> isaList = new ArrayList<ImageSeriesAcquisition>();
-        isaList.add(imageSeriesAcquisition);
-        return isaList;
+        ImageSeries series = new ImageSeries();
+        series.setImageStudy(imageSeriesAcquisition);
+        List<ImageSeries> isList = new ArrayList<ImageSeries>();
+        isList.add(series);
+        return isList;
     }
 
     /**

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -126,14 +127,14 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
         case IMAGESERIES:
-            for (ImageSeriesAcquisition imageSeriesAcquisition 
+            for (ImageSeries imageSeries
                     : dao.findMatchingImageSeries(abstractAnnotationCriterion, study)) {
                 ResultRow row = new ResultRow();
-                StudySubjectAssignment studySubjectAssignment = imageSeriesAcquisition.getAssignment();
-                row.setImageSeriesAcquisition(imageSeriesAcquisition);
+                StudySubjectAssignment studySubjectAssignment = imageSeries.getImageStudy().getAssignment();
+                row.setImageSeries(imageSeries);
                 row.setSubjectAssignment(studySubjectAssignment);
                 if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
-                    Timepoint imageSeriesTimepoint = imageSeriesAcquisition.getTimepoint();
+                    Timepoint imageSeriesTimepoint = imageSeries.getImageStudy().getTimepoint();
                     addSampleRows(resultRows, row, studySubjectAssignment, imageSeriesTimepoint);
                 } else {
                     resultRows.add(row);
@@ -213,10 +214,12 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         for (ImageSeriesAcquisition imageSeriesAcquisition : studySubjectAssignment.getImageStudyCollection()) {
             if (timepoint == null 
                 || timepoint == imageSeriesAcquisition.getTimepoint()) {
-                ResultRow newRow = row;
-                newRow.setImageSeriesAcquisition(imageSeriesAcquisition);
-                resultRows.add(newRow);
-                imageSeriesFound = true;
+                for (ImageSeries series : imageSeriesAcquisition.getSeriesCollection()) {
+                    ResultRow newRow = row;
+                    newRow.setImageSeries(series);
+                    resultRows.add(newRow);
+                    imageSeriesFound = true;
+                }
             }
         }
         if (!imageSeriesFound) {

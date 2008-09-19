@@ -128,7 +128,7 @@ public final class Cai2Util {
                                                         ResultRow rowToTest) {
         for (ResultRow curRow : rowSet) {
             if (curRow.getSubjectAssignment() == rowToTest.getSubjectAssignment()
-                    && curRow.getImageSeriesAcquisition() == rowToTest.getImageSeriesAcquisition()
+                    && curRow.getImageSeries() == rowToTest.getImageSeries()
                     && curRow.getSampleAcquisition() == rowToTest.getSampleAcquisition()) {
                     return true;
                 }
