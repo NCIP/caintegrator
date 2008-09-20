@@ -319,6 +319,9 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String executeQuery() {
+      
+        this.setQueryResult(manageQueryHelper.executeQuery(queryManagementService, basicQueryOperator));
+        
         return SUCCESS;
     }
     
