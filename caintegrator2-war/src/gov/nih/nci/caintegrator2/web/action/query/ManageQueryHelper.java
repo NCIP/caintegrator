@@ -90,12 +90,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.application.query.QueryHelper;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+//import gov.nih.nci.caintegrator2.application.query.SortTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-
 
 /**
  * Helper class for ManageQueryAction.
@@ -324,7 +327,7 @@ public class ManageQueryHelper {
 //    public void setCurrentAnnotationSelections(AnnotationSelection currentAnnotationSelections) {
 //        this.currentAnnotationSelections = currentAnnotationSelections;
 //    }
-
+    
     /**
      * @param selectedValues The array of values to be added.
      */
@@ -378,4 +381,32 @@ public class ManageQueryHelper {
             i++;
         }
     }    
+
+    /**
+     * @param queryManagementService A QueryManagementService instance
+     * @param basicQueryOperator String AND or OR
+     * @return QueryResult Valid results from the query execution, or null 
+     */
+    public QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
+        QueryResult queryResult = null;
+        
+        // Temporarily create a dummy queryCriteriaRowList
+//        List<QueryAnnotationCriteria> rowObjList = createDummyClinicalQueryCriteria();  
+//        Query query = buildQuery(rowObjList, basicQueryOperator);
+//        queryResult = queryManagementService.execute(query);
+        
+        QueryHelper queryHelper = new QueryHelper();
+        queryHelper.setAdvancedView(advancedView);
+        if (basicQueryOperator == null || basicQueryOperator.equals("")) {
+            // default to AND operation
+            queryHelper.setBasicQueryOperator("and");
+        } else {
+            queryHelper.setBasicQueryOperator(basicQueryOperator);
+        }
+        
+        queryResult = queryHelper.executeQuery(queryManagementService, this.getQueryCriteriaRowList());
+        
+        return queryResult;
+    }
+    
 }
