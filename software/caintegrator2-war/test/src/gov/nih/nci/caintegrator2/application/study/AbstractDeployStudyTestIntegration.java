@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;

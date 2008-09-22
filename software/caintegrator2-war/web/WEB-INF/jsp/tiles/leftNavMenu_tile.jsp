@@ -42,13 +42,14 @@
         </authz:authorize>
         <!--Tree Control-->
         
+        <s:url id="executeQueryUrl" action="executeQuery" />
         <li class="treenav"><div>Study Data</div>
             <ul class="pde">
                 <li><a href="#">Queries</a>
                     <ul>
                         <li><a href="#">Global Queries</a>
                             <ul>
-                                <li><a href="#" class="queries">Sample Global Query A</a></li>
+                                <li><a href='<s:property value="#executeQueryUrl" />'>Global Query A</a></li>
                                 <li><a href="#" class="queries">Sample Global Query B</a></li>
                                 <li><a href="#" class="queries">Sample Global Query C</a></li>
                             </ul>

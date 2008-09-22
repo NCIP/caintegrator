@@ -83,22 +83,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -106,22 +101,28 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
-
-public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests {
+/**
+ * comment.
+ */
+@SuppressWarnings("PMD")
+public final class TestQueries {
     
-    private CaIntegrator2Dao dao;
-    private QueryManagementService queryManagementService;
-    
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
+    private TestQueries() {
+        super();
     }
-
-    @Test
-    public void testClincialQuery() {
+   
+    /**
+     * comment.
+     * 
+     * @param studyManagementService comment
+     * @return comment
+     */
+    public static Query getSimpleQuery(StudyManagementService studyManagementService) {
+        
         Query query = createQuery();
-        Study study = dao.getManagedStudies("manager").iterator().next().getStudy();
+        query.setDescription("Simple Query");
+        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
+        Study study = studyConfiguration.getStudy();
         query.getSubscription().setStudy(study);
 
         // Retrieve annotation definitions for disease and gender;
@@ -148,30 +149,10 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
         astrocytomaCriterion.setAnnotationDefinition(disease);
         query.getCompoundCriterion().getCriterionCollection().add(astrocytomaCriterion);
         
-        // Run the query
-        QueryResult result = queryManagementService.execute(query);
-        print(result);
-        
-        // Add criterion for females only with disease = astrocytoma
-        StringComparisonCriterion femaleCriterion = new StringComparisonCriterion();
-        femaleCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        femaleCriterion.setStringValue("F");
-        femaleCriterion.setAnnotationDefinition(gender);
-        query.getCompoundCriterion().getCriterionCollection().add(femaleCriterion);
-        
-        // Get samples also in result
-        ResultColumn sampleColumn = new ResultColumn();
-        sampleColumn.setColumnIndex(2);
-        sampleColumn.setEntityType(EntityTypeEnum.SAMPLE.getValue());
-        query.getColumnCollection().add(sampleColumn);
-        
-        // Run the query
-        result = queryManagementService.execute(query);
-        print(result);
-        
+        return query;
     }
 
-    private AnnotationDefinition getDefinition(String name,
+    private static AnnotationDefinition getDefinition(String name,
             Collection<AnnotationDefinition> definitionCollection) {
         for (AnnotationDefinition definition : definitionCollection) {
             if (name.equals(definition.getDisplayName())) {
@@ -181,31 +162,7 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
         return null;
     }
 
-    public static void print(QueryResult result) {
-        System.out.println("Found " + result.getRowCollection().size() + " results..");
-        for (ResultRow row : result.getRowCollection()) {
-            System.out.print("Row for Subject " + row.getSubjectAssignment().getIdentifier());
-            if (row.getSampleAcquisition() != null) {
-                System.out.print(" and Sample " + row.getSampleAcquisition().getSample().getName());
-            }
-            for (ResultColumn column : result.getQuery().getColumnCollection()) {
-                ResultValue value = Cai2Util.retrieveValueFromRowColumn(row, column);
-                if (value != null) {
-                    if (value.getValue() instanceof StringAnnotationValue) {
-                        StringAnnotationValue stringValue = (StringAnnotationValue) value.getValue();
-                        System.out.print(" - " + stringValue.getStringValue());
-                    }
-                    if (value.getValue() instanceof NumericAnnotationValue) {
-                        NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getValue();
-                        System.out.print(" - " + numericValue.getNumericValue());    
-                    }
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    private Query createQuery() {
+    private static Query createQuery() {
         Query query = new Query();
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setResultType("clinical");
@@ -216,32 +173,4 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
         return query;
     }
 
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * @return the queryManagementService
-     */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
-    }
-
-    /**
-     * @param queryManagementService the queryManagementService to set
-     */
-    public void setQueryManagementService(QueryManagementService queryManagementService) {
-        this.queryManagementService = queryManagementService;
-    }
-    
 }

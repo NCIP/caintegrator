@@ -75,6 +75,7 @@
     <rule ref="rulesets/migrating.xml" />
 
     <rule ref="rulesets/naming.xml">
+        <exclude name="BooleanGetMethodName" />
         <exclude name="LongVariable" />
         <exclude name="ShortVariable" />
     </rule>
