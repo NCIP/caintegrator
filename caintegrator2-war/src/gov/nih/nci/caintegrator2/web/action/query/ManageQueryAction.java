@@ -119,13 +119,14 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private DisplayableQueryResult queryResult;
     private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
-    private String doMethod = "";  //TODO delete in favor of direct call to action
+    private String doMethod = "";
     private String selectedRowCriterion = "uninitializedselectedRowCriterion";
     //Struts should automatically populate these arrays from the form element.
     private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
     private String[] selectedOperators; //selected operators for all criterion as a list.
     private String[] selectedValues; //selected values for all criterion as a list.
     private String basicQueryOperator;
+    private String newQuery = "";
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
@@ -137,6 +138,11 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         ActionContext context = ActionContext.getContext();
         Map sessionMap = context.getSession();
         manageQueryHelper = (ManageQueryHelper) sessionMap.get("manageQueryHelper");
+        // If a new query is desired, clear the old
+        if ("true".equals(newQuery)) {
+            manageQueryHelper = null;
+            this.setNewQuery("false");
+        }
         if (manageQueryHelper == null) {
             manageQueryHelper = new ManageQueryHelper();
             manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
@@ -284,6 +290,10 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
         
+        if ("executeQuery".equals(doMethod)) {
+            executeQuery();
+        }
+        
         if ("clinical".equals(this.selectedRowCriterion)) { //TODO make clinical a constant
         //    manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
         //    manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
@@ -319,8 +329,10 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String executeQuery() {
+                
         QueryResult result = manageQueryHelper.executeQuery(queryManagementService, basicQueryOperator);
         setQueryResult(new DisplayableQueryResult(result));        
+
         return SUCCESS;
     }
     
@@ -479,6 +491,20 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
+    }
+
+    /**
+     * @return the newQuery
+     */
+    public String getNewQuery() {
+        return newQuery;
+    }
+
+    /**
+     * @param newQuery the newQuery to set
+     */
+    public void setNewQuery(String newQuery) {
+        this.newQuery = newQuery;
     }
     
     // TODO 
