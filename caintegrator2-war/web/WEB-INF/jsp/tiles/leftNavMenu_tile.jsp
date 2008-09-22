@@ -12,9 +12,10 @@
     
     <!--Menu-->
     <s:url id="manageQueryUrl" action="manageQuery" includeParams="get">
-        <s:param name="injectTest">yes</s:param>
+        <s:param name="injectTest" value="no" />
+		<s:param name="newQuery" value="true" />
     </s:url>
-    
+
     <ul class="menu">
         <li class="stdnav"><div>VASARI</div>
             <ul>
