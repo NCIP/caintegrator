@@ -85,30 +85,27 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.ActionContext;
-
-//import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-
-// import things needed for creating test results
-//import gov.nih.nci.caintegrator2.web.action.query.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 
 /**
  * Edits a study (new or existing).
@@ -119,7 +116,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     
     private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
-    private QueryResult queryResult = new QueryResult();
+    private DisplayableQueryResult queryResult;
     private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
     private String doMethod = "";  //TODO delete in favor of direct call to action
@@ -167,13 +164,16 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         
         //check if test data is requested
         if (getInjectTest().equals("yes")) {
+            QueryResult result = new QueryResult();
             //create test results for now
             id = Long.parseLong("123");
-            queryResult.setId(id);
+            result.setId(id);
             query.setName("cai2 Test Query - basic");
             query.setDescription("This is test query composed for testing inside the action class");
-            queryResult.setQuery(query);
-            queryResult.setRowCollection(getTestResultRows());     
+            query.setColumnCollection(new ArrayList<ResultColumn>());
+            result.setQuery(query);
+            result.setRowCollection(getTestResultRows());     
+            setQueryResult(new DisplayableQueryResult(result));
         }
         
         // write query result object into the session scope
@@ -185,7 +185,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * Struts Setter method for the QueryResult which will be displayed.
      * @param qR the query result to be set
      */
-    public void setQueryResult(QueryResult qR) {
+    public void setQueryResult(DisplayableQueryResult qR) {
         this.queryResult = qR;
     }
     
@@ -193,7 +193,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * Gets the QueryResult to be handled by struts.
      * @return final result from the rows.
      */
-    public QueryResult getQueryResult() {
+    public DisplayableQueryResult getQueryResult() {
         return queryResult;
     }
     
@@ -230,7 +230,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         ResultColumn resultColumn1 = new ResultColumn();
         ResultColumn resultColumn2 = new ResultColumn();
         ResultColumn resultColumn3 = new ResultColumn();
-        AbstractAnnotationValue abstractAnnotationValue1 = new AbstractAnnotationValue();
+        AbstractAnnotationValue abstractAnnotationValue1 = new StringAnnotationValue();
         List<ResultValue> resultValuesCollection1 = new ArrayList<ResultValue>();
         AnnotationDefinition genderAnnotationDef = new AnnotationDefinition();
         AnnotationDefinition raceAnnotationDef = new AnnotationDefinition();
@@ -319,9 +319,8 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String executeQuery() {
-      
-        this.setQueryResult(manageQueryHelper.executeQuery(queryManagementService, basicQueryOperator));
-        
+        QueryResult result = manageQueryHelper.executeQuery(queryManagementService, basicQueryOperator);
+        setQueryResult(new DisplayableQueryResult(result));        
         return SUCCESS;
     }
     

@@ -86,26 +86,17 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 //import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-//import gov.nih.nci.caintegrator2.domain.translational.Study;
-//import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
-import gov.nih.nci.caintegrator2.web.action.query.ManageQueryHelper;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-//import static org.junit.Assert.assertTrue;
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import com.opensymphony.xwork2.Action;
 
@@ -113,7 +104,7 @@ public class ManageQueryActionTest {
 
     private ManageQueryAction manageQueryAction;
     private ManageQueryHelper manageQueryHelper;
-    private QueryResult qR;
+    private DisplayableQueryResult qR;
     
     // Study objects
 //    private StudyHelper studyHelper = new StudyHelper();
@@ -128,7 +119,7 @@ public class ManageQueryActionTest {
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
-        qR = new QueryResult();
+        qR = DisplayableQueryResultTest.getTestResult();
         manageQueryAction.setDoMethod(doMethod);
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);

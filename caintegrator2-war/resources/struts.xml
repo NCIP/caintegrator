@@ -167,8 +167,6 @@
             <result name="input" type="tiles">editImagingSource</result>
         </action>
         
-        
-        
         <action name="loadImagingSource" class="loadImagingSourceAction">
             <result type="tiles">editStudy</result>
         </action>
@@ -183,11 +181,15 @@
         
         <action name="manageQuery.addCriterionRow" method="addCriterionRow" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
-        </action>
+        </action> 
         
-        <action name="manageQuery.executeQuery" method="executeQuery" class="manageQueryAction">
+   		<action name="manageQuery.executeQuery" method="executeQuery" class="manageQueryAction">
             <result type="tiles">viewResults</result>
         </action>         
+                
+        <action name="executeQuery" class="executeQueryAction">
+            <result type="tiles">viewResults</result>
+        </action>
                 
     </package>
     
