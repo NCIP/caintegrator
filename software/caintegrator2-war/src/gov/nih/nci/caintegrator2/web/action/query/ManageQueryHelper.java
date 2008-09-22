@@ -398,8 +398,8 @@ public class ManageQueryHelper {
         QueryHelper queryHelper = new QueryHelper();
         queryHelper.setAdvancedView(advancedView);
         if (basicQueryOperator == null || basicQueryOperator.equals("")) {
-            // default to AND operation
-            queryHelper.setBasicQueryOperator("and");
+            // default to OR operation if necessary
+            queryHelper.setBasicQueryOperator("or");
         } else {
             queryHelper.setBasicQueryOperator(basicQueryOperator);
         }
