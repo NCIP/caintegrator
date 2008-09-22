@@ -93,9 +93,9 @@ function submitform()
 
                                                                         
                 <div class="tablefooter">
-                    <input type="radio" name="basicQueryOperator" id="basicor1" value="or" /><label for="basicor1" style="font-weight:normal"><strong>OR</strong> Search (match any)</label>
+                    <input type="radio" name="basicQueryOperator" id="basicor1" value="or" checked="checked" /><label for="basicor1" style="font-weight:normal"><strong>OR</strong> Search (match any)</label>
                     &nbsp;
-                    <input type="radio" name="basicQueryOperator" id="basicand1" value="and" checked="checked" /><label for="basicand1" style="font-weight:normal"><strong>AND</strong> Search (match all)</label>
+                    <input type="radio" name="basicQueryOperator" id="basicand1" value="and"/><label for="basicand1" style="font-weight:normal"><strong>AND</strong> Search (match all)</label>
                 </div>
 				
 
