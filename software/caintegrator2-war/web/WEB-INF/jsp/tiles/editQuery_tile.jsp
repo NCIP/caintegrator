@@ -9,6 +9,14 @@ pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <!--Search Criteria-->
+
+<script language="JavaScript">
+function submitform()
+{
+	document.addCriterionRowForm.doMethod.value = "executeQuery"
+	document.addCriterionRowForm.submit();
+}
+</script>
     
 <div id="criteria" class="box2">
     
@@ -37,7 +45,8 @@ pageEncoding="ISO-8859-1" %>
                 
                 <s:form action="manageQuery.addCriterionRow" name="addCriterionRowForm">
 
-                <s:hidden name="manageQueryHelper.sAdvancedView" value="true" />
+                <s:hidden name="manageQueryHelper.advancedView" value="false" />
+				<s:hidden name="doMethod" value="" />
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
@@ -80,28 +89,33 @@ pageEncoding="ISO-8859-1" %>
                      </s:else>   
                 </table>
                 
-                </s:form>
+                
 
                                                                         
                 <div class="tablefooter">
-                    <input type="radio" name="basictype1" id="basicor1" checked="checked" /><label for="basicor1" style="font-weight:normal"><strong>OR</strong> Search (match any)</label>
+                    <input type="radio" name="basicQueryOperator" id="basicor1" value="or" /><label for="basicor1" style="font-weight:normal"><strong>OR</strong> Search (match any)</label>
                     &nbsp;
-                    <input type="radio" name="basictype1" id="basicand1" /><label for="basicand1" style="font-weight:normal"><strong>AND</strong> Search (match all)</label>
+                    <input type="radio" name="basicQueryOperator" id="basicand1" value="and" checked="checked" /><label for="basicand1" style="font-weight:normal"><strong>AND</strong> Search (match all)</label>
                 </div>
-                
-            </div>
-            
-            <!--Buttons-->
-            <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
-            </s:url>
+				
 
-            <div class="actionsrow">
-                <del class="btnwrapper">
-                    <ul class="btnrow">
-                        <li><s:a href="#" cssClass="btn" href="%{testUrlId}" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
-                    </ul>   
-                </del>
-            </div>
+            
+	            <!--Buttons-->
+	            <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
+	            </s:url>
+
+	            <div class="actionsrow">
+	                <del class="btnwrapper">
+	                    <ul class="btnrow">
+	                       <!-- <li><s:a href="#" cssClass="btn" href="%{testUrlId}" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li> -->
+						   <li><a href="javascript: submitform()" class="btn"><span class="btn_img"><span class="search">Run Search</span></span></a></li>
+	                    </ul>   
+	                </del>
+	            </div>
+			
+				</s:form>
+		
+			</div>
             
             <!--/Buttons-->
             
