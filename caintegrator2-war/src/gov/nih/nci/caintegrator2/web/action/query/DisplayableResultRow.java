@@ -118,15 +118,20 @@ public class DisplayableResultRow {
         }
     }
 
+    @SuppressWarnings({ "PMD" })
     private String getStringValue(ResultValue value) {
-        if (value.getValue() instanceof StringAnnotationValue) {
-            return ((StringAnnotationValue) value.getValue()).getStringValue();
-        } else if (value.getValue() instanceof NumericAnnotationValue) {
-            return ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
-        } else if (value.getValue() instanceof DateAnnotationValue) {
-            return dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
-        } else {
-            throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
+        try {
+            if (value.getValue() instanceof StringAnnotationValue) {
+                return ((StringAnnotationValue) value.getValue()).getStringValue();
+            } else if (value.getValue() instanceof NumericAnnotationValue) {
+                return ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
+            } else if (value.getValue() instanceof DateAnnotationValue) {
+                return dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
+            } else {
+                throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
+            }
+        } catch (NullPointerException npe) {
+            return "";
         }
     }
     
