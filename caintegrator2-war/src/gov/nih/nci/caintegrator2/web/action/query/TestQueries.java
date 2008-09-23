@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -120,7 +122,7 @@ public final class TestQueries {
     public static Query getSimpleQuery(StudyManagementService studyManagementService) {
         
         Query query = createQuery();
-        query.setName("Simple Query");
+        query.setName("Disease = Astrocytoma");
         query.setDescription("A simple demonstration query that finds all subjects with Disease = ASTROCYTOMA");
         StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
         Study study = studyConfiguration.getStudy();
@@ -161,7 +163,7 @@ public final class TestQueries {
     public static Query getImageQuery(StudyManagementService studyManagementService) {
         
         Query query = createQuery();
-        query.setName("Image Query");
+        query.setName("Image Series Query");
         query.setDescription("A demonstration query that displays Subject and ImageSeries data where the ImageSeries "
                 + "annotation has Tumor Location = Frontal");
         StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
@@ -202,6 +204,26 @@ public final class TestQueries {
         
         return query;
     }
+    /**
+     * comment.
+     * 
+     * @param studyManagementService comment
+     * @return comment
+     */
+    public static Query getGenomicQuery(StudyManagementService studyManagementService) {
+        Query query = createQuery();
+        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        query.setName("Gene=EGFR Expression Values");
+        query.setDescription("A demonstration query that lists expression value for the gene EGFR");
+        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
+        Study study = studyConfiguration.getStudy();
+        query.getSubscription().setStudy(study);
+        
+        // Look for subjects with Disease = ASTROCYTOMA
+        return query;
+    }
+        
 
     private static AnnotationDefinition getDefinition(String name,
             Collection<AnnotationDefinition> definitionCollection) {

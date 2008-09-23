@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -104,14 +106,22 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
 
     private Query query;
     private DisplayableQueryResult queryResult;
+    private GenomicDataQueryResult genomicDataQueryResult;
     private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
+    private String queryName;
     
     /**
      * {@inheritDoc}
      */
     public void prepare() {
-        query = TestQueries.getImageQuery(getStudyManagementService());
+        if ("image".equals(queryName)) {
+            query = TestQueries.getImageQuery(getStudyManagementService());            
+        } else if ("genomic".equals(queryName)) {
+            query = TestQueries.getGenomicQuery(getStudyManagementService());            
+        } else {
+            query = TestQueries.getSimpleQuery(getStudyManagementService());            
+        }
     }
     
     /**
@@ -120,7 +130,11 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
     @Override
     public String execute() {
         LOGGER.info("Executing query " + getQuery().getName());
-        setQueryResult(new DisplayableQueryResult(getQueryManagementService().execute(getQuery())));
+        if (ResultTypeEnum.GENOMIC.getValue().equals(getQuery().getResultType())) {
+            setGenomicDataQueryResult(getQueryManagementService().executeGenomicDataQuery(getQuery()));
+        } else {            
+            setQueryResult(new DisplayableQueryResult(getQueryManagementService().execute(getQuery())));
+        }
         return SUCCESS;
     }
 
@@ -178,6 +192,34 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
      */
     public void setQueryResult(DisplayableQueryResult queryResult) {
         this.queryResult = queryResult;
+    }
+
+    /**
+     * @return the queryName
+     */
+    public String getQueryName() {
+        return queryName;
+    }
+
+    /**
+     * @param queryName the queryName to set
+     */
+    public void setQueryName(String queryName) {
+        this.queryName = queryName;
+    }
+
+    /**
+     * @return the genomicDataQueryResult
+     */
+    public GenomicDataQueryResult getGenomicDataQueryResult() {
+        return genomicDataQueryResult;
+    }
+
+    /**
+     * @param genomicDataQueryResult the genomicDataQueryResult to set
+     */
+    public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
+        this.genomicDataQueryResult = genomicDataQueryResult;
     }
 
 }
