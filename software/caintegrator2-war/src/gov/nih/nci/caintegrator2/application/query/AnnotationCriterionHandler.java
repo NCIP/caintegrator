@@ -179,8 +179,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
             }
             break;
         default:
-            // Might need to handle this differently in the future.
-            return null;
+            throw new IllegalArgumentException("Unsupported EntityType: " + entityType);
         }
         return resultRows;
     }
