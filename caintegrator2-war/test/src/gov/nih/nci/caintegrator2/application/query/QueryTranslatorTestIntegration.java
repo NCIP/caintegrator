@@ -140,17 +140,17 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         ResultColumn column3 = new ResultColumn();
         
         column1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
-        column1.setColumnIndex(1);
+        column1.setColumnIndex(0);
         column1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
         
         column2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        column2.setColumnIndex(2);
+        column2.setColumnIndex(1);
         column2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         column2.setSortOrder(2);
         column2.setSortType(SortTypeEnum.ASCENDING.getValue());
         
         column3.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
-        column3.setColumnIndex(3);
+        column3.setColumnIndex(2);
         column3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
         column3.setSortOrder(1);
         column3.setSortType(SortTypeEnum.DESCENDING.getValue());
@@ -217,16 +217,16 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
             
             genderColumn.setAnnotationDefinition(genderDefinition);
             genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-            genderColumn.setColumnIndex(1);
+            genderColumn.setColumnIndex(0);
             
             raceColumn.setAnnotationDefinition(raceDefinition);
             raceColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-            raceColumn.setColumnIndex(2);
+            raceColumn.setColumnIndex(1);
             raceColumn.setSortOrder(1);
             
             karnofskyColumn.setAnnotationDefinition(karnofskyDefinition);
             karnofskyColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-            karnofskyColumn.setColumnIndex(3);
+            karnofskyColumn.setColumnIndex(2);
             karnofskyColumn.setSortOrder(2);
             karnofskyColumn.setSortType(SortTypeEnum.DESCENDING.getValue());
             
