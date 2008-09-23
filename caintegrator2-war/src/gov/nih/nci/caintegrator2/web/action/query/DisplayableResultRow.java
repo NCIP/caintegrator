@@ -107,14 +107,22 @@ public class DisplayableResultRow {
     private final List<String> values = new ArrayList<String>();
     private final ResultRow resultRow;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+    private final List<String> headers;
 
-    DisplayableResultRow(ResultRow resultRow) {
+    DisplayableResultRow(ResultRow resultRow, List<String> headers) {
         this.resultRow = resultRow;
+        this.headers = headers;
         loadValues();
     }
     private void loadValues() {
-        for (ResultValue value : resultRow.getValueCollection()) {
-            values.add(getStringValue(value));
+        // TODO Modify to handle sorting
+        for (String header : headers) {
+            for (ResultValue value : resultRow.getValueCollection()) {
+                if (value.getColumn().getAnnotationDefinition().getDisplayName().equals(header)) {
+                    values.add(getStringValue(value));
+                    break;
+                }
+            }
         }
     }
 
