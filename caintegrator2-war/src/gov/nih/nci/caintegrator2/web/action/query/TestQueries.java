@@ -120,7 +120,8 @@ public final class TestQueries {
     public static Query getSimpleQuery(StudyManagementService studyManagementService) {
         
         Query query = createQuery();
-        query.setDescription("Simple Query");
+        query.setName("Simple Query");
+        query.setDescription("A simple demonstration query that finds all subjects with Disease = ASTROCYTOMA");
         StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
         Study study = studyConfiguration.getStudy();
         query.getSubscription().setStudy(study);
@@ -137,7 +138,7 @@ public final class TestQueries {
         query.getColumnCollection().add(diseaseColumn);
         
         ResultColumn genderColumn = new ResultColumn();
-        genderColumn.setColumnIndex(0);
+        genderColumn.setColumnIndex(1);
         genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
         genderColumn.setAnnotationDefinition(gender);
         query.getColumnCollection().add(genderColumn);
@@ -148,6 +149,56 @@ public final class TestQueries {
         astrocytomaCriterion.setStringValue("ASTROCYTOMA");
         astrocytomaCriterion.setAnnotationDefinition(disease);
         query.getCompoundCriterion().getCriterionCollection().add(astrocytomaCriterion);
+        
+        return query;
+    }
+    /**
+     * comment.
+     * 
+     * @param studyManagementService comment
+     * @return comment
+     */
+    public static Query getImageQuery(StudyManagementService studyManagementService) {
+        
+        Query query = createQuery();
+        query.setName("Image Query");
+        query.setDescription("A demonstration query that displays Subject and ImageSeries data where the ImageSeries "
+                + "annotation has Tumor Location = Frontal");
+        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
+        Study study = studyConfiguration.getStudy();
+        query.getSubscription().setStudy(study);
+
+        // Retrieve annotation definitions for disease and gender;
+        AnnotationDefinition disease = getDefinition("Disease", study.getSubjectAnnotationCollection());
+        AnnotationDefinition gender = getDefinition("Gender", study.getSubjectAnnotationCollection());
+        AnnotationDefinition tumorLocation = 
+            getDefinition("Tumor Location", study.getImageSeriesAnnotationCollection());
+        
+        // Add columns Disease and Gender to the query
+        ResultColumn diseaseColumn = new ResultColumn();
+        diseaseColumn.setColumnIndex(0);
+        diseaseColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        diseaseColumn.setAnnotationDefinition(disease);
+        query.getColumnCollection().add(diseaseColumn);
+        
+        ResultColumn genderColumn = new ResultColumn();
+        genderColumn.setColumnIndex(1);
+        genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        genderColumn.setAnnotationDefinition(gender);
+        query.getColumnCollection().add(genderColumn);
+        
+        ResultColumn tumorLocationColumn = new ResultColumn();
+        tumorLocationColumn.setColumnIndex(2);
+        tumorLocationColumn.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        tumorLocationColumn.setAnnotationDefinition(tumorLocation);
+        query.getColumnCollection().add(tumorLocationColumn);
+        
+        // Look for subjects with tumorLocationColumn = Frontal
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion.setStringValue("Frontal");
+        criterion.setAnnotationDefinition(tumorLocation);
+        query.getCompoundCriterion().getCriterionCollection().add(criterion);
         
         return query;
     }

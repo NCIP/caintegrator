@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -135,13 +134,16 @@ public class ResultHandlerImpl implements ResultHandler {
         Collection<ResultColumn> columns = query.getColumnCollection();
         Collection<ResultRow> resultRows = queryResult.getRowCollection();
         for (ResultRow row : resultRows) {
-            Collection<ResultValue> valueCollection = new HashSet<ResultValue>();
+            List<ResultValue> valueList = new ArrayList<ResultValue>();
+            for (int i = 0; i < columns.size(); i++) {
+                 valueList.add(null);
+            }
             for (ResultColumn column : columns) {
                 EntityTypeEnum entityType = EntityTypeEnum.getByValue(column.getEntityType());
                 ResultValue resultValue = new ResultValue();
                 resultValue.setColumn(column);
                 resultValue.setValue(null);
-                valueCollection.add(resultValue);
+                valueList.set(column.getColumnIndex(), resultValue);
                 switch(entityType) {
                 case IMAGESERIES:
                     resultValue.setValue(handleImageSeriesRow(row, column));
@@ -158,7 +160,7 @@ public class ResultHandlerImpl implements ResultHandler {
                 break;
                 }
             }
-            row.setValueCollection(valueCollection);
+            row.setValueCollection(valueList);
         }
     }
 

@@ -6,7 +6,7 @@
     
     <div id="searchresults" class="box2" style="display:none;">                                             
         
-        <h2>Search Results for: "<s:property value="queryResult.getQuery().getName()"/>"</h2>
+        <h2>Search Results for: <s:property value="queryResult.getQuery().getName()"/></h2>
 
         <div class="tableheader">
             <label for="numres">Results per Page:</label>
@@ -21,14 +21,17 @@
 
         <s:form name="resultsForm">
         
-                 query name: <s:property value="queryResult.getQuery().getName()"/><br>
-                 query description: <s:property value="queryResult.getQuery().getDescription()"/><br>  
+                 <s:property value="queryResult.getQuery().getDescription()"/><br>  
                  <br>
             <table class="data">
                  
                 <tr>
-                    <th></th>
-                    <th></th>
+                    <s:if test="queryResult.hasSubjects" >
+                        <th>Subject Identifier</th>
+                    </s:if>
+                    <s:if test="queryResult.hasImageSeries" >
+                        <th>Image Series Identifier</th>
+                    </s:if>
                     <s:iterator value="queryResult.headers">
                         <th><s:property /></th>
                     </s:iterator>
@@ -41,14 +44,20 @@
                     <s:else>
                       <tr class="even">
                     </s:else>
-                        <td><s:property value="#status.count" /></td>       
-                        <td><s:property value="subjectAssignment.identifier" /></td>
+                        <s:if test="queryResult.hasSubjects" >
+                            <td><s:property value="subjectAssignment.identifier" /></td>
+                        </s:if>
+                        <s:if test="queryResult.hasImageSeries" >
+                            <td>
+                                <s:property value="imageSeries.identifier" />
+                                <a href='<s:property value="nciaLink" />' target="_">View in NCIA</a>
+                            </td>
+                        </s:if>
                         <s:iterator value="values">
                             <td><s:property /></td>
                         </s:iterator>
                 </s:iterator>
             </table>
-        </s:form>        
     
            <!--Buttons-->
         <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
@@ -70,22 +79,23 @@
         
             <p class="small">
 
-                Displaying 1-20 of 240 Total.
+                Displaying 1-<s:property value="queryResult.numberOfRows"/> of <s:property value="queryResult.numberOfRows"/> Total.
             </p>
             
             <div class="paging">
 
-                Page 1 <span class="bar">|</span> <a href="#">2</a> <span class="bar">|</span> <a href="#">3</a> <span class="bar">|</span> <a href="#">4</a> <span class="bar">|</span> <a href="#">5</a> <span class="bar">|</span> <a href="#">6</a> <span class="bar">|</span> <a href="#">7</a> <span class="bar">|</span> <a href="#">8</a> <span class="bar">|</span> <a href="#">9</a> <span class="bar">|</span> <a href="#">10</a> <span class="bar">|</span> <a href="#">11</a> <span class="bar">|</span> <a href="#">12</a>
+                Page 1 
 
 
                 &nbsp;&nbsp;
                 &lt; Back <span class="bar">|</span> 
-                <a href="#">Next &gt;</a>
+                Next &gt;
             </div>
         
         </div>
         
         <!--/Paging-->
+        </s:form>        
                                                                                                             
     </div>
 

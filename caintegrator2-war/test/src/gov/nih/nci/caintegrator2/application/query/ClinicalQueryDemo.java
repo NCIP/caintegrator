@@ -170,7 +170,52 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
         print(result);
         
     }
+    
+    @Test
+    public void testImageQuery() {
+        
+        Query query = createQuery();
+        query.setDescription("Image Query");
+        Study study = dao.getManagedStudies("manager").iterator().next().getStudy();
+        query.getSubscription().setStudy(study);
 
+        // Retrieve annotation definitions for disease and gender;
+        AnnotationDefinition disease = getDefinition("Disease", study.getSubjectAnnotationCollection());
+        AnnotationDefinition gender = getDefinition("Gender", study.getSubjectAnnotationCollection());
+        AnnotationDefinition tumorLocation = dao.getAnnotationDefinition("Tumor Location");
+        
+        // Add columns Disease and Gender to the query
+        ResultColumn diseaseColumn = new ResultColumn();
+        diseaseColumn.setColumnIndex(0);
+        diseaseColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        diseaseColumn.setAnnotationDefinition(disease);
+        query.getColumnCollection().add(diseaseColumn);
+        
+        ResultColumn genderColumn = new ResultColumn();
+        genderColumn.setColumnIndex(1);
+        genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        genderColumn.setAnnotationDefinition(gender);
+        query.getColumnCollection().add(genderColumn);
+        
+        ResultColumn tumorLocationColumn = new ResultColumn();
+        tumorLocationColumn.setColumnIndex(2);
+        tumorLocationColumn.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        tumorLocationColumn.setAnnotationDefinition(tumorLocation);
+        query.getColumnCollection().add(tumorLocationColumn);
+        
+        // Look for subjects with tumorLocationColumn = Frontal
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion.setStringValue("Frontal");
+        criterion.setAnnotationDefinition(tumorLocation);
+        query.getCompoundCriterion().getCriterionCollection().add(criterion);
+        
+
+        // Run the query
+        QueryResult result = queryManagementService.execute(query);
+        print(result);
+    }
+    
     private AnnotationDefinition getDefinition(String name,
             Collection<AnnotationDefinition> definitionCollection) {
         for (AnnotationDefinition definition : definitionCollection) {
@@ -184,9 +229,15 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
     public static void print(QueryResult result) {
         System.out.println("Found " + result.getRowCollection().size() + " results..");
         for (ResultRow row : result.getRowCollection()) {
-            System.out.print("Row for Subject " + row.getSubjectAssignment().getIdentifier());
+            System.out.print("Row for");
+            if (row.getSubjectAssignment() != null) {
+                System.out.print(" Subject " + row.getSubjectAssignment().getIdentifier());
+            }
             if (row.getSampleAcquisition() != null) {
-                System.out.print(" and Sample " + row.getSampleAcquisition().getSample().getName());
+                System.out.print(" Sample " + row.getSampleAcquisition().getSample().getName());
+            }
+            if (row.getImageSeries() != null) {
+                System.out.print(" Image Series " + row.getImageSeries().getIdentifier());
             }
             for (ResultColumn column : result.getQuery().getColumnCollection()) {
                 ResultValue value = Cai2Util.retrieveValueFromRowColumn(row, column);

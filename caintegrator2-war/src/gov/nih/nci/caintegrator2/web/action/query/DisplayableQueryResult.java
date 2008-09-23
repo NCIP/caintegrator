@@ -91,13 +91,16 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Wraps access to a <code>QueryResult</code> object for easy use in display JSPs.
  */
 public final class DisplayableQueryResult {
-    
+  
+    private static final Comparator<ResultColumn> COLUMN_COMPARATOR = new ColumnComparator();
     private final QueryResult result;
     private final List<String> headers = new ArrayList<String>();
     private final List<DisplayableResultRow> rows = new ArrayList<DisplayableResultRow>();
@@ -117,7 +120,7 @@ public final class DisplayableQueryResult {
 
     private void loadRows() {
         for (ResultRow row : result.getRowCollection()) {
-            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row, headers);
+            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row);
             rows.add(displayableResultRow);
             hasSubjects |= displayableResultRow.getSubjectAssignment() != null;
             hasSamples |= displayableResultRow.getSampleAcquisition() != null;
@@ -126,7 +129,10 @@ public final class DisplayableQueryResult {
     }
 
     private void loadHeaders() {
-        for (ResultColumn column : getQuery().getColumnCollection()) {
+        List<ResultColumn> sortedColumns = new ArrayList<ResultColumn>();
+        sortedColumns.addAll(getQuery().getColumnCollection());
+        Collections.sort(sortedColumns, COLUMN_COMPARATOR);
+        for (ResultColumn column : sortedColumns) {
             headers.add(column.getAnnotationDefinition().getDisplayName());
         }
     }
@@ -175,6 +181,27 @@ public final class DisplayableQueryResult {
      */
     public List<DisplayableResultRow> getRows() {
         return rows;
+    }
+    
+    /**
+     * @return the number of rows.
+     */
+    public int getNumberOfRows() {
+        return getRows().size();
+    }
+
+    /**
+     * Used to put columns in order by index.
+     */
+    private static class ColumnComparator implements Comparator<ResultColumn> {
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare(ResultColumn column1, ResultColumn column2) {
+            return column1.getColumnIndex() - column2.getColumnIndex();
+        }
+
     }
 
 }
