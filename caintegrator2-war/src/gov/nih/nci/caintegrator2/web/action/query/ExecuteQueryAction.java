@@ -111,7 +111,7 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
      * {@inheritDoc}
      */
     public void prepare() {
-        query = TestQueries.getSimpleQuery(getStudyManagementService());
+        query = TestQueries.getImageQuery(getStudyManagementService());
     }
     
     /**

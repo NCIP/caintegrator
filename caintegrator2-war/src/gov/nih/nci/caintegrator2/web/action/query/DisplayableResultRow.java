@@ -102,44 +102,35 @@ import java.util.Locale;
 /**
  * Represents a row in a result set.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class DisplayableResultRow {
 
     private final List<String> values = new ArrayList<String>();
     private final ResultRow resultRow;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-    private final List<String> headers;
 
-    DisplayableResultRow(ResultRow resultRow, List<String> headers) {
+    DisplayableResultRow(ResultRow resultRow) {
         this.resultRow = resultRow;
-        this.headers = headers;
         loadValues();
     }
     private void loadValues() {
-        // TODO Modify to handle sorting
-        for (String header : headers) {
-            for (ResultValue value : resultRow.getValueCollection()) {
-                if (value.getColumn().getAnnotationDefinition().getDisplayName().equals(header)) {
-                    values.add(getStringValue(value));
-                    break;
-                }
-            }
+        for (ResultValue value : resultRow.getValueCollection()) {
+            values.add(getStringValue(value));
         }
     }
 
-    @SuppressWarnings({ "PMD" })
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private String getStringValue(ResultValue value) {
-        try {
-            if (value.getValue() instanceof StringAnnotationValue) {
-                return ((StringAnnotationValue) value.getValue()).getStringValue();
-            } else if (value.getValue() instanceof NumericAnnotationValue) {
-                return ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
-            } else if (value.getValue() instanceof DateAnnotationValue) {
-                return dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
-            } else {
-                throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
-            }
-        } catch (NullPointerException npe) {
+        if (value == null || value.getValue() == null) {
             return "";
+        } else if (value.getValue() instanceof StringAnnotationValue) {
+            return ((StringAnnotationValue) value.getValue()).getStringValue();
+        } else if (value.getValue() instanceof NumericAnnotationValue) {
+            return ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
+        } else if (value.getValue() instanceof DateAnnotationValue) {
+            return dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
+        } else {
+            throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
         }
     }
     
@@ -171,6 +162,36 @@ public class DisplayableResultRow {
      */
     public SampleAcquisition getSampleAcquisition() {
         return resultRow.getSampleAcquisition();
+    }
+    
+//    &image1Label=Pre
+//    &image1dataName=Patient%20Id&image1dataValue=2
+//    &image1dataName=Baseline%20Morphology
+//    &image1dataValue=3=Area%20enhancement%20with%20irregular%20margins%20-%20with%20nodularity
+//    &image1dataName=Longest%20Diameter_PCT_CHANGE_T1-T2&image1dataValue=-10.34
+//    &image1dataName=Clinical%20Response_T1-T2&image1dataValue=3=Stable%20Disease
+    /**
+     * @return the link to the image series in NCIA.
+     */
+    public String getNciaLink() {
+        if (getImageSeries() != null) {
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("https://imaging-dev.nci.nih.gov/ncia/faces/referencedImages.tiles?source=");
+            stringBuffer.append(getImageSeries().getImageStudy().getNciaTrialIdentifier());
+            stringBuffer.append("&image1TrialId=");
+            stringBuffer.append(getImageSeries().getImageStudy().getNciaTrialIdentifier());
+            stringBuffer.append("&image1PatientId=");
+            stringBuffer.append(getImageSeries().getImageStudy().getAssignment().getIdentifier());
+            stringBuffer.append("&image1StudyInstanceUid=");
+            stringBuffer.append(getImageSeries().getImageStudy().getIdentifier());
+            stringBuffer.append("&image1SeriesInstanceUid=");
+            stringBuffer.append(getImageSeries().getIdentifier());
+            stringBuffer.append("&image1ImageSopInstanceUid=");
+            stringBuffer.append(getImageSeries().getImageCollection().iterator().next().getIdentifier());
+            return stringBuffer.toString();
+        } else {
+            return "";
+        }
     }
     
 }

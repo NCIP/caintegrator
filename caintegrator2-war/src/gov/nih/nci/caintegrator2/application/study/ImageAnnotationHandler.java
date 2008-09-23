@@ -86,9 +86,12 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 /**
@@ -134,6 +137,19 @@ public class ImageAnnotationHandler extends AbstractAnnotationHandler {
         handleAnnotationValue(annotationValue);
         Timepoint timepoint = imageAnnotationConfiguration.getStudyConfiguration().getOrCreateTimepoint(timepointValue);
         currentImageSeries.getImageStudy().setTimepoint(timepoint);
+    }
+
+    @Override
+    void addDefinitionsToStudy(Set<AnnotationDefinition> annotationDefinitions) {
+        Study study = imageAnnotationConfiguration.getStudyConfiguration().getStudy();
+        if (study.getImageSeriesAnnotationCollection() == null) {
+            study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        }
+        for (AnnotationDefinition definition : annotationDefinitions) {
+            if (!study.getImageSeriesAnnotationCollection().contains(definition)) {
+                study.getImageSeriesAnnotationCollection().add(definition);
+            }
+        }
     }
 
 }

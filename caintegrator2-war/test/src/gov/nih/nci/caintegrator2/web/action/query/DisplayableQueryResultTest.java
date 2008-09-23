@@ -41,11 +41,13 @@ public class DisplayableQueryResultTest {
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
         annotationDefinition1.setDisplayName("Column1");
         column1.setAnnotationDefinition(annotationDefinition1 );
+        column1.setColumnIndex(0);
         query.getColumnCollection().add(column1);
         ResultColumn column2 = new ResultColumn();
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
         annotationDefinition2.setDisplayName("Column2");
         column2.setAnnotationDefinition(annotationDefinition2 );
+        column2.setColumnIndex(1);
         query.getColumnCollection().add(column2);
         
         sourceResult.setRowCollection(new ArrayList<ResultRow>());

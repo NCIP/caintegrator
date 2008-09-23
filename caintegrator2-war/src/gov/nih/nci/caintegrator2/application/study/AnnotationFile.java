@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
@@ -103,9 +104,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -401,12 +404,23 @@ public class AnnotationFile implements PersistentObject {
     }
 
     void loadAnnontation(AbstractAnnotationHandler handler) {
+        handler.addDefinitionsToStudy(getAnnotationDefinitions());
         positionAtData();
         while (hasNextDataLine()) {
             String identifier = getDataValue(getIdentifierColumn());
             handler.handleIdentifier(identifier);
             loadAnnotationLine(handler);
         }
+    }
+
+    private Set<AnnotationDefinition> getAnnotationDefinitions() {
+        Set<AnnotationDefinition> definitions = new HashSet<AnnotationDefinition>();
+        for (AnnotationFieldDescriptor descriptor : getDescriptors()) {
+            if (descriptor.getDefinition() != null) {
+                definitions.add(descriptor.getDefinition());
+            }
+        }
+        return definitions;
     }
 
     private void loadAnnotationLine(AbstractAnnotationHandler handler) {

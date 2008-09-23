@@ -270,12 +270,11 @@ public class QueryHelper {
         int i = 0;
         // TODO Handle user-selected columns
         while (iter.hasNext()) {
-            i++; 
             AnnotationDefinition annoDef = (AnnotationDefinition) iter.next();
             
             ResultColumn column = new ResultColumn();
             column.setAnnotationDefinition(annoDef);
-            column.setColumnIndex(i);
+            column.setColumnIndex(i++);
             column.setEntityType(EntityTypeEnum.SUBJECT.getValue());
             
             columnCollection.add(column);
