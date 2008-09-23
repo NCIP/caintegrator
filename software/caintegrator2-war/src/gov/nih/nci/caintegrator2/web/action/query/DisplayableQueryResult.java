@@ -117,7 +117,7 @@ public final class DisplayableQueryResult {
 
     private void loadRows() {
         for (ResultRow row : result.getRowCollection()) {
-            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row);
+            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row, headers);
             rows.add(displayableResultRow);
             hasSubjects |= displayableResultRow.getSubjectAssignment() != null;
             hasSamples |= displayableResultRow.getSampleAcquisition() != null;
