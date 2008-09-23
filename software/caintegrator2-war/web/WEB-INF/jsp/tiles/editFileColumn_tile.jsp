@@ -119,7 +119,7 @@
 	            <td>
                     <s:property value="longName" />
 	            </td>
-	            <td>
+	            <td nowrap>
                     <s:url id="selectDataElement" action="selectDataElement">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="fileColumn.id" value="fileColumn.id" />
@@ -129,7 +129,7 @@
 	                    <s:param name="publicId" value="publicId"/>
 	                    <s:param name="version" value="1"/>
                     </s:url>
-                    <s:a href="%{selectDataElement}">Select</s:a>
+                    <s:a href="%{selectDataElement}">Select</s:a> | 
                     <a href="<s:property value='%{viewDataElement}'/>" target="_blank">View</a>
                 </td>
 	            <td><s:property value="publicId" /></td>
