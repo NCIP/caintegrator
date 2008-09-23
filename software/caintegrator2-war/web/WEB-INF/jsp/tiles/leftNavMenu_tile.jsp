@@ -43,14 +43,13 @@
         </authz:authorize>
         <!--Tree Control-->
         
-        <s:url id="executeQueryUrl" action="executeQuery" />
         <li class="treenav"><div>Study Data</div>
             <ul class="pde">
                 <li><a href="#">Queries</a>
                     <ul>
                         <li><a href="#">Global Queries</a>
                             <ul>
-                                <li><a href='<s:property value="#executeQueryUrl" />'>Global Query A</a></li>
+                                <li><a href='<s:property value="#executeQueryUrl" />'>Sample Global Query A</a></li>
                                 <li><a href="#" class="queries">Sample Global Query B</a></li>
                                 <li><a href="#" class="queries">Sample Global Query C</a></li>
                             </ul>
@@ -64,9 +63,9 @@
                         </li>
                         <li><a href="#">My Queries</a>
                             <ul>
-                                <li><a href="#" class="queries">My Query A</a> <a href='<s:property value="#manageQueryUrl" />'>(edit)</a></li>
-                                <li><a href="#" class="queries">My Query B</a></li>
-                                <li><a href="#" class="queries">My Query C</a></li>
+                                <li><a href='/caintegrator2/executeQuery.action?queryName=simple' class="queries">Disease = Astrocytoma</a></li>
+                                <li><a href='/caintegrator2/executeQuery.action?queryName=image' class="queries">Image Series Query</a></li>
+                                <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->
                             </ul>
                         </li>
                     </ul>

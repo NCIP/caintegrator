@@ -25,6 +25,9 @@
                  <br>
             <table class="data">
                  
+                 <s:if test='%{getQuery().getResultType().equals("genomic")}'>
+                 </s:if>
+                 <s:else>
                 <tr>
                     <s:if test="queryResult.hasSubjects" >
                         <th>Subject Identifier</th>
@@ -57,6 +60,7 @@
                             <td><s:property /></td>
                         </s:iterator>
                 </s:iterator>
+                </s:else>
             </table>
     
            <!--Buttons-->
