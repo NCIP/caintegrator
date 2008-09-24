@@ -121,17 +121,23 @@ public class DisplayableResultRow {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private String getStringValue(ResultValue value) {
+        String returnString = "";
         if (value == null || value.getValue() == null) {
-            return "";
+            return returnString;
         } else if (value.getValue() instanceof StringAnnotationValue) {
-            return ((StringAnnotationValue) value.getValue()).getStringValue();
+            returnString = ((StringAnnotationValue) value.getValue()).getStringValue();
         } else if (value.getValue() instanceof NumericAnnotationValue) {
-            return ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
+            if (((NumericAnnotationValue) value.getValue()).getNumericValue() != null) {
+                returnString = ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
+            }
         } else if (value.getValue() instanceof DateAnnotationValue) {
-            return dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
+            if (((DateAnnotationValue) value.getValue()).getDateValue() != null) {
+                returnString = dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
+            }
         } else {
             throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
         }
+        return returnString;
     }
     
     /**
