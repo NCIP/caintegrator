@@ -170,12 +170,6 @@ public class DisplayableResultRow {
         return resultRow.getSampleAcquisition();
     }
     
-//    &image1Label=Pre
-//    &image1dataName=Patient%20Id&image1dataValue=2
-//    &image1dataName=Baseline%20Morphology
-//    &image1dataValue=3=Area%20enhancement%20with%20irregular%20margins%20-%20with%20nodularity
-//    &image1dataName=Longest%20Diameter_PCT_CHANGE_T1-T2&image1dataValue=-10.34
-//    &image1dataName=Clinical%20Response_T1-T2&image1dataValue=3=Stable%20Disease
     /**
      * @return the link to the image series in NCIA.
      */
