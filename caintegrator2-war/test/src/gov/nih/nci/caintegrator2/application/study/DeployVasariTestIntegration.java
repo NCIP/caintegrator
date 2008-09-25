@@ -140,7 +140,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     protected File getImageMappingFile() {
-        return TestDataFiles.REMBRANDT_IMAGE_SERIES_TO_SUBJECT_FILE;
+        return TestDataFiles.REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE;
     }
     @Override
     protected File getSampleMappingFile() {
