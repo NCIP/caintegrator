@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-1.5.3.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/asm-attrs-1.5.3.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.4.2_10.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bcprov-jdk15-1.38.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/bufr-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/c3p0-0.9.0.jar"/>
@@ -120,5 +119,6 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/sdk-ws-framework.jar"/>
 	<classpathentry kind="lib" path="software/lib/test-junit/spring-mock-2.0.3.jar" sourcepath="software/lib/src/spring-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/AffxFusion-1.0.10b.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.2RC2.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
