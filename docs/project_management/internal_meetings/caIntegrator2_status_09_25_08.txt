@@ -1,0 +1,26 @@
+caIntegrator Meeting
+Demo Updates
+ -Feedback from Aris
+
+   Design to handle multiple values for annotations from the same time-point - To be added a feature 
+   Handling dimensions other than signal values for Array data (log2) - To be added as a feature 
+   All analysis to be done in external system – discussed as a strategy/roadmap 
+   Saving analysis results in caIntegrator2 - discussed as a strategy/roadmap
+   Update/Refresh from other systems (like NCIA/caArray) for changes - To be added as a feature
+   Creation and Authorization of Groups of Users - To be added as a feature
+   Aris is willing to give some sample data (after de-identification) for caIntegrator2 - Shine to follow-up
+
+- Other users 
+    
+    University of Indiana and University of Pittsburg are interested to work with caIntegrator2 team. Details of User Meeting, LIST SERV setup to be planned.
+
+Pending work for Current Release 
+   Project plan to be updated for the pending work
+   Demo for Novelties on Nov 10th. 
+
+Strategy and Roadmap
+  Saving Results
+     More discussion and user requirements to be gathered. Eric and Will to lead this effort. 
+  Analysis (within caIntegrator or external tools)
+    It was decided to complete KM-plot within caIntegrator2. 
+
