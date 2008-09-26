@@ -23,7 +23,7 @@
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">
             <result name="workspaceStudy" type="tiles">workspaceStudy</result>
-            <result name="workspaceNoStudy">workspaceNoStudy.jsp</result>
+            <result name="workspaceNoStudy" type="tiles">homepage</result>
         </action>
         
         
@@ -134,7 +134,13 @@
                 <param name="imagingSource.id">${imagingSource.id}</param>
             </result>
         </action>
-
+        
+        <action name="homepage.getStudyDetails" method="getStudyDetails" class="homepageAction">
+            <result type="redirectAction">
+                <param name="actionName">browseStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
         <action name="addGenomicSource" class="editGenomicSourceAction">
             <result type="tiles">editGenomicSource</result>
         </action>
