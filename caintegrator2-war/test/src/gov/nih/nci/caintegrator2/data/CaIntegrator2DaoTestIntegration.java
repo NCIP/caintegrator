@@ -125,9 +125,10 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testGetWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
+        workspace.setUsername("username");
         dao.save(workspace);
 
-        UserWorkspace workspace2 = this.dao.getWorkspace("Anything.");
+        UserWorkspace workspace2 = this.dao.getWorkspace("username");
         assertEquals(workspace.getId(), workspace2.getId());
         
     }
