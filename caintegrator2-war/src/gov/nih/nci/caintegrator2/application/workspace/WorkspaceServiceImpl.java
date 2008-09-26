@@ -85,12 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+
+import java.util.HashSet;
+import java.util.List;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation entry point for the WorkspaceService subsystem.
  */
+@Transactional(propagation = Propagation.REQUIRED)
 public class WorkspaceServiceImpl implements WorkspaceService {
     
     private CaIntegrator2Dao dao;
@@ -99,7 +109,22 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * {@inheritDoc}
      */
     public UserWorkspace getWorkspace(String username) {
-        return dao.getWorkspace("1".equals(username) ? username : "1");
+        UserWorkspace userWorkspace = dao.getWorkspace(username);
+        if (userWorkspace == null) {
+            userWorkspace = new UserWorkspace();
+            userWorkspace.setUsername(username);
+            userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
+            List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
+            for (StudyConfiguration studyConfiguration : studyConfigurations) {
+                StudySubscription subscription = new StudySubscription();
+                subscription.setStudy(studyConfiguration.getStudy());
+                userWorkspace.getSubscriptionCollection().add(subscription);
+            }
+            dao.save(userWorkspace);    
+        }
+        DisplayableUserWorkspace.getInstance().refreshUserWorkspace(userWorkspace);
+        return userWorkspace;
     }
 
     /**

@@ -5,14 +5,14 @@
 <!--NCI/NIH Header-->
             
 <div id="nciheader">        
-	<div id="ncilogo"><a href="http://www.cancer.gov"><img
-		src="images/logotype.gif" width="283" height="37"
-		alt="Logo: National Cancer Institute" /></a>
-	</div>
-	<div id="nihtag"><a href="http://www.cancer.gov"><img
-		src="images/tagline.gif" width="295" height="37"
-		alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a>
-	</div>
+    <div id="ncilogo"><a href="http://www.cancer.gov"><img
+        src="images/logotype.gif" width="283" height="37"
+        alt="Logo: National Cancer Institute" /></a>
+    </div>
+    <div id="nihtag"><a href="http://www.cancer.gov"><img
+        src="images/tagline.gif" width="295" height="37"
+        alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a>
+    </div>
 
 </div>
         
@@ -22,23 +22,36 @@
 
 <div id="appheader">
 
-	<div id="mainlogo"><a href="index.jsp"><img
-		src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
-	</div>
+    <div id="mainlogo"><a href="index.jsp"><img
+        src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+    </div>
 
 
-	<div id="userarea_wrapper">
-	
-	    <div id="user">Welcome, <a href="account.html"><authz:authentication operation="username"/></a> | <a
-		   href="logout.jsp">Logout</a></div>
-	
-	    <div id="mystudies"><label for="studynav">My Studies:</label> <select
-		   name="studynav" id="studynav">
-		   <option>VASARI</option>
-		   <option>Other studies</option>
-	    </select>
-	    </div>
-
+    <div id="userarea_wrapper">
+        <s:set name="userWorkspace" value="#session['userWorkspace']" />
+        <s:if test="!#userWorkspace.authenticated">
+            <s:action name="workspace"/>
+        </s:if>
+        <div id="user">Welcome, <a href="account.html"><s:property value="#userWorkspace.username"/> </a> | <a
+           href="logout.jsp">Logout</a></div>
+        <div id="mystudies">
+               <s:form action="homepage.getStudyDetails">
+               <table>
+               
+               <tr>
+                    <td>
+                    <s:select label="My Studies" name="studynav" headerKey="1" headerValue="-- Please Select --"
+                    list="#userWorkspace.studySubscriptions" listKey="study.shortTitleText" listValue="study.shortTitleText" />
+                    </td>
+                    <td><s:submit value="Go" action="homepage.getStudyDetails"/></td>
+               </tr>
+               
+               </table>
+               </s:form>
+        </div>    
+   
+         
+        
     </div>
 
 </div>

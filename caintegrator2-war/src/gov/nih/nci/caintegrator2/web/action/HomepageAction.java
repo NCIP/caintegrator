@@ -94,6 +94,7 @@ public class HomepageAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
 
+    private String studynav;
     /**
      * {@inheritDoc}
      */
@@ -101,6 +102,26 @@ public class HomepageAction extends ActionSupport {
     public String execute() {
         return SUCCESS;
     }
-    
+    /**
+     * @return studyconfigurationdetails for selected option
+     */ 
+    public String getStudyDetails() {
+//        String selectStudy = getStudynav();
+        return SUCCESS;
+    }
+
+    /**
+     * @return the studynav
+     */
+    public String getStudynav() {
+        return studynav;
+    }
+
+    /**
+     * @param studynav the studynav to set
+     */
+    public void setStudynav(String studynav) {
+        this.studynav = studynav;
+    }
 
 }
