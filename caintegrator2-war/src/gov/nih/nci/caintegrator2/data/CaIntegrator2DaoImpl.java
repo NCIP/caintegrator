@@ -129,8 +129,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED)
     public UserWorkspace getWorkspace(String username) {
-        // TODO Real implementation requires checking ownership in CSM using username argument
-        List results = getHibernateTemplate().find("from UserWorkspace");
+        List results = getCurrentSession().
+                        createCriteria(UserWorkspace.class).
+                        add(Restrictions.eq("username", username)).list();
         if (results.isEmpty()) {
             return null;
         } else {
