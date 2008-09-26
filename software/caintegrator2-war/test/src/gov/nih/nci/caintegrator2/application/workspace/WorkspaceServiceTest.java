@@ -88,10 +88,15 @@ package gov.nih.nci.caintegrator2.application.workspace;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.opensymphony.xwork2.ActionContext;
 
 public class WorkspaceServiceTest {
     
@@ -105,6 +110,8 @@ public class WorkspaceServiceTest {
 
     @Test
     public void testGetWorkspace() {
+        Map<String, Object> session = new HashMap<String, Object>();
+        ActionContext.getContext().setSession(session);
         UserWorkspace workspace = workspaceService.getWorkspace("username");
         assertNotNull(workspace);
     }
