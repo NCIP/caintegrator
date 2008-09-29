@@ -86,9 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,6 +99,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 public class SaveStudyActionTest {
 
@@ -111,9 +115,15 @@ public class SaveStudyActionTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() { 
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        assertEquals(Action.ERROR, action.execute());
+        // Must add authentication and username to pass the action.
+        DisplayableUserWorkspace.getInstance().setAuthenticated(true);
+        DisplayableUserWorkspace.getInstance().setUsername("username");
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(studyManagementServiceStub.saveCalled);
+        assertTrue(studyManagementServiceStub.subscribeUserCalled);
     }
     
     @Test
