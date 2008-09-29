@@ -99,5 +99,11 @@ public interface WorkspaceService {
      * @return the user's workspace.
      */
     UserWorkspace getWorkspace(String username);
+    
+    /**
+     * Refreshes the Session's work space for the view layer.
+     * @param userWorkspace - UserWorkspace object that needs to be updated.
+     */
+    void refreshSessionUserWorkspace(UserWorkspace userWorkspace);
 
 }

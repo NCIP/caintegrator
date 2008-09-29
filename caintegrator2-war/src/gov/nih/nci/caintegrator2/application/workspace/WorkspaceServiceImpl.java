@@ -89,7 +89,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -123,8 +123,15 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }
             dao.save(userWorkspace);    
         }
-        DisplayableUserWorkspace.getInstance().refreshUserWorkspace(userWorkspace);
+        refreshSessionUserWorkspace(userWorkspace);
         return userWorkspace;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void refreshSessionUserWorkspace(UserWorkspace userWorkspace) {
+        SessionHelper.getInstance().refreshUserWorkspace(userWorkspace);
     }
 
     /**
@@ -140,5 +147,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
+
+
 
 }

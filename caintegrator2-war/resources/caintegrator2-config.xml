@@ -66,6 +66,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="addClinicalFileAction"
