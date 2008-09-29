@@ -35,18 +35,13 @@
         <div id="user">Welcome, <a href="account.html"><s:property value="#userWorkspace.username"/> </a> | <a
            href="logout.jsp">Logout</a></div>
         <div id="mystudies">
-               <s:form action="homepage.getStudyDetails">
-               <table>
-               
-               <tr>
-                    <td>
+               <s:form action="homepage.getStudyDetails" theme="simple">
+
+                    <label for="studynav">My Studies:</label>
                     <s:select label="My Studies" name="studynav" headerKey="1" headerValue="-- Please Select --"
-                    list="#userWorkspace.studySubscriptions" listKey="study.shortTitleText" listValue="study.shortTitleText" />
-                    </td>
-                    <td><s:submit value="Go" action="homepage.getStudyDetails"/></td>
-               </tr>
-               
-               </table>
+                    list="#userWorkspace.studySubscriptions" listKey="study.shortTitleText"
+                    listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
+
                </s:form>
         </div>    
    
