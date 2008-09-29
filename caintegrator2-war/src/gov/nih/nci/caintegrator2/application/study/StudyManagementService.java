@@ -108,6 +108,13 @@ public interface StudyManagementService {
     void save(StudyConfiguration studyConfiguration);
     
     /**
+     * Subscribes a user to a study.
+     * @param username - user name of the user.
+     * @param study - study to subscribe to.
+     */
+    void subscribeUser(String username, Study study);
+    
+    /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
      * file provided as an argument to be removed after completion of this method.
      * 
