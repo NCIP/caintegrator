@@ -124,6 +124,13 @@ public interface CaIntegrator2Dao {
     <T> T get(Long id, Class<T> objectClass);
     
     /**
+     * Deletes all given objects from the database.
+     * @param objects - persistent objects to be removed.
+     */
+    @SuppressWarnings("unchecked")
+    void removeObjects(Collection objects);
+    
+    /**
      * Returns the workspace belonging to the specified user.
      * 
      * @param username retrieve workspace for this user.

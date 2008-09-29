@@ -113,16 +113,19 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         if (userWorkspace == null) {
             userWorkspace = new UserWorkspace();
             userWorkspace.setUsername(username);
-            userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
-            List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
-            for (StudyConfiguration studyConfiguration : studyConfigurations) {
-                StudySubscription subscription = new StudySubscription();
-                subscription.setStudy(studyConfiguration.getStudy());
-                userWorkspace.getSubscriptionCollection().add(subscription);
-            }
-            dao.save(userWorkspace);    
         }
+        // Not sure if we need to get a new subscription collection every time the user logs in.
+        // Especially items the user is not actually subscribed to.
+        dao.removeObjects(userWorkspace.getSubscriptionCollection());
+        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
+        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
+        for (StudyConfiguration studyConfiguration : studyConfigurations) {
+            StudySubscription subscription = new StudySubscription();
+            subscription.setStudy(studyConfiguration.getStudy());
+            userWorkspace.getSubscriptionCollection().add(subscription);
+        }
+        dao.save(userWorkspace);   
         refreshSessionUserWorkspace(userWorkspace);
         return userWorkspace;
     }
