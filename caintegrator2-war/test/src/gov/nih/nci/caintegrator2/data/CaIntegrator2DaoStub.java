@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -103,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
@@ -119,9 +121,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     private final StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
     private final Timepoint timepoint = new Timepoint();
     public boolean getArrayDataMatrixesCalled;
+    public boolean getWorkspaceCalled;
 
     public UserWorkspace getWorkspace(String username) {
-        return new UserWorkspace();
+        getWorkspaceCalled = true;
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername(username);
+        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        return userWorkspace;
     }
 
     public void save(Object entity) {
@@ -141,6 +148,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getArrayDataMatrixesCalled = false;
         studySubjectAssignment.setId(Long.valueOf(1));
         timepoint.setId(Long.valueOf(1));
+        getWorkspaceCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
