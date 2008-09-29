@@ -98,25 +98,7 @@ public class DisplayableUserWorkspace {
     /**
      * String to use to store and retrieve this object from session.
      */
-//    public static final String USER_WORKSPACE_SESSION_STRING = "userWorkspace"; 
     private Collection<StudySubscription> studySubscriptions = new HashSet<StudySubscription>();
-
-
-    
-//    /**
-//     * Singleton method to get the instance off of the sessionMap object or create a new one.
-//     * @return - CSMUserHelper object.
-//     */
-//    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
-//    public static DisplayableUserWorkspace getInstance() {
-//        DisplayableUserWorkspace instance = 
-//            (DisplayableUserWorkspace) ActionContext.getContext().getSession().get(USER_WORKSPACE_SESSION_STRING);
-//        if (instance == null) {
-//            instance = new DisplayableUserWorkspace();
-//            ActionContext.getContext().getSession().put(USER_WORKSPACE_SESSION_STRING, instance);
-//        }
-//        return instance;
-//    }
     
     /**
      * Refreshes Workspace.
@@ -126,8 +108,6 @@ public class DisplayableUserWorkspace {
     public void refreshUserWorkspace(UserWorkspace userWorkspace) {
         setStudySubscriptions(userWorkspace.getSubscriptionCollection());
     }
-
- 
 
     /**
      * @return the studySubscriptions
