@@ -90,6 +90,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,7 +102,7 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * 
  */
-public class DisplayableUserWorkspaceTest {
+public class SessionHelperTest {
 
     /**
      * Test method for {@link gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace#refreshUserWorkspace(gov.nih.nci.caintegrator2.domain.application.UserWorkspace)}.
@@ -109,7 +110,7 @@ public class DisplayableUserWorkspaceTest {
     @Test
     public void testRefreshUserWorkspace() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
-        DisplayableUserWorkspace workspace = DisplayableUserWorkspace.getInstance();
+        SessionHelper sessionHelper = SessionHelper.getInstance();
         UserWorkspace userWorkspace = new UserWorkspace();
         StudySubscription studySubscription = new StudySubscription();
         gov.nih.nci.caintegrator2.domain.translational.Study study = new Study();
@@ -118,11 +119,11 @@ public class DisplayableUserWorkspaceTest {
         userWorkspace.setUsername("user");
         userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         userWorkspace.getSubscriptionCollection().add(studySubscription);
-        workspace.refreshUserWorkspace(userWorkspace);
+        sessionHelper.refreshUserWorkspace(userWorkspace);
         
-        assertTrue(workspace.getStudySubscriptions().size() == 1);
-        assertEquals(workspace.getUsername(), "user");
-        assertTrue(workspace.isAuthenticated());
+        assertTrue(sessionHelper.getDisplayableUserWorkspace().getStudySubscriptions().size() == 1);
+        assertEquals(sessionHelper.getUsername(), "user");
+        assertTrue(sessionHelper.isAuthenticated());
     }
 
 }

@@ -89,7 +89,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 
@@ -105,12 +106,15 @@ public class SaveStudyActionTest {
 
     private SaveStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
-
+    private WorkspaceServiceStub workspaceServiceStub;
+    
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditStudyActionTest.class); 
         action = (SaveStudyAction) context.getBean("saveStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
+        workspaceServiceStub.clear();
         studyManagementServiceStub.clear();
     }
 
@@ -119,11 +123,12 @@ public class SaveStudyActionTest {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         assertEquals(Action.ERROR, action.execute());
         // Must add authentication and username to pass the action.
-        DisplayableUserWorkspace.getInstance().setAuthenticated(true);
-        DisplayableUserWorkspace.getInstance().setUsername("username");
+        SessionHelper.getInstance().setAuthenticated(true);
+        SessionHelper.getInstance().setUsername("username");
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(studyManagementServiceStub.saveCalled);
         assertTrue(studyManagementServiceStub.subscribeUserCalled);
+        assertTrue(workspaceServiceStub.refreshSessionUserWorkspaceCalled);
     }
     
     @Test

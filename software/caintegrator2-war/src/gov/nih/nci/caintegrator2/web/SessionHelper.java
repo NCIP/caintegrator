@@ -83,65 +83,98 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web;
 
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
 
-import java.util.Collection;
-import java.util.HashSet;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
- * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
+ * Stores helper variables to our session.
  */
-public class DisplayableUserWorkspace {
+public final class SessionHelper {
     /**
      * String to use to store and retrieve this object from session.
      */
-//    public static final String USER_WORKSPACE_SESSION_STRING = "userWorkspace"; 
-    private Collection<StudySubscription> studySubscriptions = new HashSet<StudySubscription>();
-
-
+    public static final String SESSION_HELPER_STRING = "sessionHelper"; 
     
-//    /**
-//     * Singleton method to get the instance off of the sessionMap object or create a new one.
-//     * @return - CSMUserHelper object.
-//     */
-//    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
-//    public static DisplayableUserWorkspace getInstance() {
-//        DisplayableUserWorkspace instance = 
-//            (DisplayableUserWorkspace) ActionContext.getContext().getSession().get(USER_WORKSPACE_SESSION_STRING);
-//        if (instance == null) {
-//            instance = new DisplayableUserWorkspace();
-//            ActionContext.getContext().getSession().put(USER_WORKSPACE_SESSION_STRING, instance);
-//        }
-//        return instance;
-//    }
+    private DisplayableUserWorkspace displayableUserWorkspace;
+    private String username;
+    private boolean authenticated = false;
+    
+    
+    private SessionHelper() {
+        
+    }
     
     /**
-     * Refreshes Workspace.
-     * @param userWorkspace - userWorkspace to update on.
+     * Singleton method to get the instance off of the sessionMap object or create a new one.
+     * @return - CSMUserHelper object.
+     */
+    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
+    public static SessionHelper getInstance() {
+        SessionHelper instance = 
+            (SessionHelper) ActionContext.getContext().getSession().get(SESSION_HELPER_STRING);
+        if (instance == null) {
+            instance = new SessionHelper();
+            instance.setDisplayableUserWorkspace(new DisplayableUserWorkspace());
+            ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, instance);
+        }
+        return instance;
+    }
+    /**
+     * Updates user workspace on session.
+     * @param userWorkspace - user workspace to update on.
      */
     @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
     public void refreshUserWorkspace(UserWorkspace userWorkspace) {
-        setStudySubscriptions(userWorkspace.getSubscriptionCollection());
-    }
-
- 
-
-    /**
-     * @return the studySubscriptions
-     */
-    public Collection<StudySubscription> getStudySubscriptions() {
-        return studySubscriptions;
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        username = userWorkspace.getUsername();
+        setAuthenticated(true);
+        displayableUserWorkspace.refreshUserWorkspace(userWorkspace);
+        ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, this);
     }
 
     /**
-     * @param studySubscriptions the studySubscriptions to set
+     * @return the username
      */
-    public void setStudySubscriptions(Collection<StudySubscription> studySubscriptions) {
-        this.studySubscriptions = studySubscriptions;
+    public String getUsername() {
+        return username;
+    }
+    
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 
+    /**
+     * @return the authenticated
+     */
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
 
+    /**
+     * @param authenticated the authenticated to set
+     */
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    /**
+     * @return the displayableUserWorkspace
+     */
+    public DisplayableUserWorkspace getDisplayableUserWorkspace() {
+        return displayableUserWorkspace;
+    }
+
+    /**
+     * @param displayableUserWorkspace the displayableUserWorkspace to set
+     */
+    public void setDisplayableUserWorkspace(DisplayableUserWorkspace displayableUserWorkspace) {
+        this.displayableUserWorkspace = displayableUserWorkspace;
+    }
 }

@@ -28,18 +28,18 @@
 
 
     <div id="userarea_wrapper">
-        <s:set name="userWorkspace" value="#session['userWorkspace']" />
-        <s:if test="!#userWorkspace.authenticated">
+        <s:set name="sessionHelper" value="#session['sessionHelper']" />
+        <s:if test="!#sessionHelper.authenticated">
             <s:action name="workspace"/>
         </s:if>
-        <div id="user">Welcome, <a href="account.html"><s:property value="#userWorkspace.username"/> </a> | <a
+        <div id="user">Welcome, <a href="account.html"><s:property value="#sessionHelper.username"/> </a> | <a
            href="logout.jsp">Logout</a></div>
         <div id="mystudies">
                <s:form action="homepage.getStudyDetails" theme="simple">
 
                     <label for="studynav">My Studies:</label>
                     <s:select label="My Studies" name="studynav" headerKey="1" headerValue="-- Please Select --"
-                    list="#userWorkspace.studySubscriptions" listKey="study.shortTitleText"
+                    list="#sessionHelper.displayableUserWorkspace.studySubscriptions" listKey="study.shortTitleText"
                     listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
 
                </s:form>

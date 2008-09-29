@@ -98,6 +98,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="defineFileColumnAction"
@@ -150,6 +153,11 @@
 
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub" 
+        singleton="true">
+    </bean>
+    
+    <bean id="workspaceService" 
+        class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" 
         singleton="true">
     </bean>
 

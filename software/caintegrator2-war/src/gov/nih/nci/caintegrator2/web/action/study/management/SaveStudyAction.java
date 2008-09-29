@@ -85,7 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -95,16 +96,19 @@ import org.apache.commons.lang.StringUtils;
 public class SaveStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
-
+    private WorkspaceService workspaceService;
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute()  {
-        if (DisplayableUserWorkspace.getInstance().isAuthenticated()) {
-            getStudyManagementService().subscribeUser(DisplayableUserWorkspace.getInstance().getUsername(), 
+        if (SessionHelper.getInstance().isAuthenticated()) {
+            getStudyManagementService().subscribeUser(SessionHelper.getInstance().getUsername(), 
                                                       getStudyConfiguration().getStudy());
             getStudyManagementService().save(getStudyConfiguration());
+            getWorkspaceService().refreshSessionUserWorkspace(
+                                    getWorkspaceService().getWorkspace(SessionHelper.getInstance().getUsername()));   
             return SUCCESS;
         }
         addActionError("User is unauthenticated");
@@ -121,4 +125,18 @@ public class SaveStudyAction extends AbstractStudyAction {
         }
     }
     
+    /**
+     * @return the workspaceService
+     */
+    public WorkspaceService getWorkspaceService() {
+        return workspaceService;
+    }
+
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
+    }
+
 }
