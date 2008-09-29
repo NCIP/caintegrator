@@ -153,6 +153,16 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public void removeObjects(Collection objects) {
+        if (objects != null) {
+            getHibernateTemplate().deleteAll(objects);
+        }
+    }
 
     /**
      * {@inheritDoc}

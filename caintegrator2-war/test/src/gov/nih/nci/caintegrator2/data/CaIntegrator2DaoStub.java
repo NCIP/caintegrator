@@ -122,6 +122,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     private final Timepoint timepoint = new Timepoint();
     public boolean getArrayDataMatrixesCalled;
     public boolean getWorkspaceCalled;
+    public boolean removeObjectsCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -149,6 +150,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         studySubjectAssignment.setId(Long.valueOf(1));
         timepoint.setId(Long.valueOf(1));
         getWorkspaceCalled = false;
+        removeObjectsCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -246,6 +248,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
         getArrayDataMatrixesCalled = true;
         return Collections.emptyList();
+    }
+
+
+    public void removeObjects(Collection objects) {
+        removeObjectsCalled = true;
     }
 
 }
