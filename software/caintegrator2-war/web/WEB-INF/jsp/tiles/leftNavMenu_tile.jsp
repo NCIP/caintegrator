@@ -23,24 +23,28 @@
                 <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search VASARI</a></li>
             </ul>
         </li>
-        <authz:authorize ifAnyGranted="MODIFY_STUDY_CREATE">
-        <li class="stdnav"><div>Study Management</div>
-            <ul>
-                <li><s:url id="manageStudiesUrl" action="manageStudies" />
-                <a href="${manageStudiesUrl}">Manage Studies</a></li>
-                <li><s:url id="createStudyUrl" action="createStudy" />
-                <a href="${createStudyUrl}">Create New Study</a></li>
-            </ul>
-        </li>
-         <li class="stdnav"><div>Study Elements</div>
-            <ul>
-                <li><a href="study_elements/subjects.html">Subjects</a></li>
-                <li><a href="study_elements/samples.html">Samples</a></li>
-                <li><a href="study_elements/array_data.html">Array Data</a></li>
-                <li><a href="study_elements/images.html">Images</a></li>
-            </ul>
-        </li>
-        </authz:authorize>
+        <s:set name="sessionHelper" value="#session['sessionHelper']" />
+        <s:if test="!#sessionHelper.authenticated">
+            <s:action name="workspace"/>
+        </s:if>
+        <s:if test="#sessionHelper.studyManager">
+	        <li class="stdnav"><div>Study Management</div>
+	            <ul>
+	                <li><s:url id="manageStudiesUrl" action="manageStudies" />
+	                <a href="${manageStudiesUrl}">Manage Studies</a></li>
+	                <li><s:url id="createStudyUrl" action="createStudy" />
+	                <a href="${createStudyUrl}">Create New Study</a></li>
+	            </ul>
+	        </li>
+	         <li class="stdnav"><div>Study Elements</div>
+	            <ul>
+	                <li><a href="study_elements/subjects.html">Subjects</a></li>
+	                <li><a href="study_elements/samples.html">Samples</a></li>
+	                <li><a href="study_elements/array_data.html">Array Data</a></li>
+	                <li><a href="study_elements/images.html">Images</a></li>
+	            </ul>
+	        </li>
+        </s:if>
         <!--Tree Control-->
         
         <li class="treenav"><div>Study Data</div>

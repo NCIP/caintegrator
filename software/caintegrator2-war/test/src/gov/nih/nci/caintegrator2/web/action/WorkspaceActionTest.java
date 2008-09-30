@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -99,11 +101,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class WorkspaceActionTest {
 
     private WorkspaceAction workspaceAction;
-    
+    private WorkspaceServiceStub workspaceServiceStub;
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", WorkspaceActionTest.class); 
         workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
+        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
     }
 
     @Test
@@ -124,8 +127,9 @@ public class WorkspaceActionTest {
         };
         SecurityContextHolder.getContext().setAuthentication(authentication);
         assertEquals("workspaceStudy", workspaceAction.openWorkspace());
+        assertTrue(workspaceServiceStub.refreshSessionStudySubscriptionCalled);
         assertNotNull(workspaceAction.getWorkspace());
-        assertNotNull(workspaceAction.getOpenStudySubscription());
+        assertNotNull(workspaceAction.getCurrentStudySubscriptionId());
     }
 
 }

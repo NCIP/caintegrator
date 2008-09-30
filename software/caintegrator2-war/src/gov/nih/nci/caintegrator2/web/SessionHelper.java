@@ -85,8 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.action.DisplayableStudySubscription;
 import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.context.SecurityContextHolder;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -98,11 +103,12 @@ public final class SessionHelper {
      * String to use to store and retrieve this object from session.
      */
     public static final String SESSION_HELPER_STRING = "sessionHelper"; 
-    
+    private static final String MODIFY_STUDY_ROLE = "MODIFY_STUDY_UPDATE";
     private DisplayableUserWorkspace displayableUserWorkspace;
+    private DisplayableStudySubscription displayableStudySubscription;
     private String username;
     private boolean authenticated = false;
-    
+    private boolean studyManager = false;
     
     private SessionHelper() {
         
@@ -129,10 +135,25 @@ public final class SessionHelper {
      */
     @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
     public void refreshUserWorkspace(UserWorkspace userWorkspace) {
-        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (SecurityContextHolder.getContext() != null 
+            && SecurityContextHolder.getContext().getAuthentication() != null) {
+            setStudyManager(
+                    hasManagerPriveleges(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+        }
         username = userWorkspace.getUsername();
         setAuthenticated(true);
         displayableUserWorkspace.refreshUserWorkspace(userWorkspace);
+        ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, this);
+    }
+    
+    /**
+     * When a user selects a study subscription, update session items.
+     * @param studySubscription - subscription that is selected.
+     */
+    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
+    public void refreshStudySubscription(StudySubscription studySubscription) {
+        displayableStudySubscription = new DisplayableStudySubscription();
+        displayableStudySubscription.refreshSelectedStudy(studySubscription);
         ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, this);
     }
 
@@ -177,4 +198,43 @@ public final class SessionHelper {
     public void setDisplayableUserWorkspace(DisplayableUserWorkspace displayableUserWorkspace) {
         this.displayableUserWorkspace = displayableUserWorkspace;
     }
+
+    /**
+     * @return the displayableStudySubscription
+     */
+    public DisplayableStudySubscription getDisplayableStudySubscription() {
+        return displayableStudySubscription;
+    }
+
+    /**
+     * @param displayableStudySubscription the displayableStudySubscription to set
+     */
+    public void setDisplayableStudySubscription(DisplayableStudySubscription displayableStudySubscription) {
+        this.displayableStudySubscription = displayableStudySubscription;
+    }
+
+    private boolean hasManagerPriveleges(GrantedAuthority[] authorities) {
+        for (GrantedAuthority authority : authorities) {
+            if (authority.getAuthority().equalsIgnoreCase(MODIFY_STUDY_ROLE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return the studyManager
+     */
+    public boolean isStudyManager() {
+        return studyManager;
+    }
+
+    /**
+     * @param studyManager the studyManager to set
+     */
+    public void setStudyManager(boolean studyManager) {
+        this.studyManager = studyManager;
+    }
+
+
 }

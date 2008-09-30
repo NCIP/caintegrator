@@ -86,14 +86,21 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.DisplayableStudySubscription;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * 
@@ -101,18 +108,28 @@ import com.opensymphony.xwork2.Action;
 public class BrowseStudyActionTest {
     
     private BrowseStudyAction action;
-    private StudyManagementServiceStub studyManagementServiceStub;
+//    private StudyManagementServiceStub studyManagementServiceStub;
     
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", BrowseStudyActionTest.class); 
         action = (BrowseStudyAction) context.getBean("browseStudyAction");
-        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
-        studyManagementServiceStub.clear();
+//        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+//        studyManagementServiceStub.clear();
+        Map<String, Object> session = new HashMap<String, Object>();
+        ActionContext.getContext().setSession(session);
     }
     @Test
+    @SuppressWarnings("unchecked")
     public void testExecute() {
+        assertEquals(Action.ERROR, action.execute());
+        ActionContext.getContext().getSession().put(SessionHelper.SESSION_HELPER_STRING, SessionHelper.getInstance());
+        DisplayableStudySubscription displayableStudySubscription = new DisplayableStudySubscription();
+        StudySubscription currentStudySubscription = new StudySubscription();
+        currentStudySubscription.setStudy(new Study());
+        displayableStudySubscription.setCurrentStudySubscription(currentStudySubscription);
+        SessionHelper.getInstance().setDisplayableStudySubscription(displayableStudySubscription);
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+//        assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
     }
 }

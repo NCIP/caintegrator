@@ -95,16 +95,13 @@ import java.util.HashSet;
  * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
 public class DisplayableUserWorkspace {
-    /**
-     * String to use to store and retrieve this object from session.
-     */
+    
     private Collection<StudySubscription> studySubscriptions = new HashSet<StudySubscription>();
     
     /**
      * Refreshes Workspace.
      * @param userWorkspace - userWorkspace to update on.
      */
-    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
     public void refreshUserWorkspace(UserWorkspace userWorkspace) {
         setStudySubscriptions(userWorkspace.getSubscriptionCollection());
     }
