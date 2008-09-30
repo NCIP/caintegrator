@@ -35,11 +35,11 @@
         <div id="user">Welcome, <a href="account.html"><s:property value="#sessionHelper.username"/> </a> | <a
            href="logout.jsp">Logout</a></div>
         <div id="mystudies">
-               <s:form action="homepage.getStudyDetails" theme="simple">
+               <s:form action="browseStudy" theme="simple">
 
                     <label for="studynav">My Studies:</label>
                     <s:select label="My Studies" name="studynav" headerKey="1" headerValue="-- Please Select --"
-                    list="#sessionHelper.displayableUserWorkspace.studySubscriptions" listKey="study.shortTitleText"
+                    list="#sessionHelper.displayableUserWorkspace.studySubscriptions" listKey="study.id"
                     listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
 
                </s:form>

@@ -53,6 +53,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/homepage_tile.jsp" />
     </definition>
     
+    <definition name="browseStudy" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/browseStudy_tile.jsp" />
+    </definition>
+    
     <definition name="login" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
