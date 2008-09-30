@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 /**
@@ -102,8 +103,21 @@ public interface WorkspaceService {
     
     /**
      * Refreshes the Session's work space for the view layer.
-     * @param userWorkspace - UserWorkspace object that needs to be updated.
+     * @param userWorkspace - object that needs to be updated.
      */
     void refreshSessionUserWorkspace(UserWorkspace userWorkspace);
+    
+    /**
+     * Refreshes the Session's current StudySubscription for the view layer.
+     * @param studySubscription - object that needs to be updated.
+     */
+    void refreshSessionStudySubscription(StudySubscription studySubscription);
+    
+    /**
+     * Retrieves the StudySubscription given a valid ID.
+     * @param id value of the id for StudySubscription.
+     * @return StudySubscription belonging to the id.
+     */
+    StudySubscription retrieveStudySubscription(Long id);
 
 }

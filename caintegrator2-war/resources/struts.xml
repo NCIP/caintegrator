@@ -30,6 +30,11 @@
             <result name="workspaceNoStudy" type="tiles">homepage</result>
         </action>
         
+        <action name="workspace.openStudy" method="openWorkspaceStudy" class="workspaceAction">
+            <result name="workspaceStudy" type="redirectAction">
+                <param name="actionName">browseStudy</param>
+            </result>
+        </action>
         
         <!--  Study Actions -->
    

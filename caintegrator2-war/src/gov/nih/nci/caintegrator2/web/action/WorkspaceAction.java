@@ -89,10 +89,12 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
+import com.opensymphony.xwork2.ActionSupport;
+
 /**
  * Struts 2 action for user workspace access and management.
  */
-public class WorkspaceAction {
+public class WorkspaceAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
 
@@ -101,8 +103,8 @@ public class WorkspaceAction {
     
     private WorkspaceService workspaceService;
     private UserWorkspace workspace;
-    private StudySubscription openStudySubscription;
-
+    private Long currentStudySubscriptionId;
+    
     /**
      * Opens the current user's workspace.
      * 
@@ -111,10 +113,29 @@ public class WorkspaceAction {
     public String openWorkspace() {
         setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
         if (workspace.getDefaultSubscription() != null) {
-            setOpenStudySubscription(workspace.getDefaultSubscription());
-            return WORKSPACE_STUDY;
+            currentStudySubscriptionId = workspace.getDefaultSubscription().getId();
+            return openWorkspaceStudy();
         } else {
             return WORKSPACE_NO_STUDY;
+        }
+    }
+    
+    /**
+     * Opens a selected user's workspace.
+     * @return forward to workspace study.
+     */
+    public String openWorkspaceStudy() {
+        if (getWorkspace() == null) {
+            setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
+        }
+        if (getCurrentStudySubscriptionId() != null) {
+            StudySubscription currentSubscription = workspaceService
+                    .retrieveStudySubscription(getCurrentStudySubscriptionId());
+            getWorkspaceService().refreshSessionStudySubscription(currentSubscription);
+            return WORKSPACE_STUDY;
+        } else {
+            addActionError("No study subscription selected!");
+            return ERROR;
         }
     }
 
@@ -144,17 +165,17 @@ public class WorkspaceAction {
     }
 
     /**
-     * @return the openStudySubscription
+     * @return the currentStudySubscriptionId
      */
-    public StudySubscription getOpenStudySubscription() {
-        return openStudySubscription;
+    public Long getCurrentStudySubscriptionId() {
+        return currentStudySubscriptionId;
     }
 
     /**
-     * @param openStudySubscription the openStudySubscription to set
+     * @param currentStudySubscriptionId the currentStudySubscriptionId to set
      */
-    public void setOpenStudySubscription(StudySubscription openStudySubscription) {
-        this.openStudySubscription = openStudySubscription;
+    public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
+        this.currentStudySubscriptionId = currentStudySubscriptionId;
     }
 
 }
