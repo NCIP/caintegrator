@@ -2,20 +2,18 @@
  * JobInfo.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 public class JobInfo  implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
     private java.util.Calendar dateCompleted;
     private java.util.Calendar dateSubmitted;
     private int jobNumber;
     private java.lang.String parameterInfo;
-    private analysis.ParameterInfo[] parameterInfoArray;
+    private edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray;
     private java.lang.String status;
     private int taskID;
     private java.lang.String taskLSID;
@@ -30,7 +28,7 @@ public class JobInfo  implements java.io.Serializable {
            java.util.Calendar dateSubmitted,
            int jobNumber,
            java.lang.String parameterInfo,
-           analysis.ParameterInfo[] parameterInfoArray,
+           edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray,
            java.lang.String status,
            int taskID,
            java.lang.String taskLSID,
@@ -134,7 +132,7 @@ public class JobInfo  implements java.io.Serializable {
      * 
      * @return parameterInfoArray
      */
-    public analysis.ParameterInfo[] getParameterInfoArray() {
+    public edu.mit.broad.genepattern.gp.services.ParameterInfo[] getParameterInfoArray() {
         return parameterInfoArray;
     }
 
@@ -144,7 +142,7 @@ public class JobInfo  implements java.io.Serializable {
      * 
      * @param parameterInfoArray
      */
-    public void setParameterInfoArray(analysis.ParameterInfo[] parameterInfoArray) {
+    public void setParameterInfoArray(edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray) {
         this.parameterInfoArray = parameterInfoArray;
     }
 
@@ -345,13 +343,11 @@ public class JobInfo  implements java.io.Serializable {
         elemField.setFieldName("dateCompleted");
         elemField.setXmlName(new javax.xml.namespace.QName("", "dateCompleted"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("dateSubmitted");
         elemField.setXmlName(new javax.xml.namespace.QName("", "dateSubmitted"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("jobNumber");
@@ -362,19 +358,16 @@ public class JobInfo  implements java.io.Serializable {
         elemField.setFieldName("parameterInfo");
         elemField.setXmlName(new javax.xml.namespace.QName("", "parameterInfo"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("parameterInfoArray");
         elemField.setXmlName(new javax.xml.namespace.QName("", "parameterInfoArray"));
         elemField.setXmlType(new javax.xml.namespace.QName("Analysis", "ParameterInfo"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("status");
         elemField.setXmlName(new javax.xml.namespace.QName("", "status"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("taskID");
@@ -385,19 +378,16 @@ public class JobInfo  implements java.io.Serializable {
         elemField.setFieldName("taskLSID");
         elemField.setXmlName(new javax.xml.namespace.QName("", "taskLSID"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("taskName");
         elemField.setXmlName(new javax.xml.namespace.QName("", "taskName"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("userId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "userId"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 
