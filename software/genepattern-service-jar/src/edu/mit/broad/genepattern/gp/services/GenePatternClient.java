@@ -1,24 +1,3 @@
-package edu.mit.broad.genepattern.gp.services;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.rpc.ServiceException;
-
-import edu.mit.broad.genepattern.gp.services.Analysis;
-import edu.mit.broad.genepattern.gp.services.AnalysisService;
-import edu.mit.broad.genepattern.gp.services.AnalysisServiceLocator;
-import edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub;
-import edu.mit.broad.genepattern.gp.services.JobInfo;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import edu.mit.broad.genepattern.gp.services.TaskInfo;
-import edu.mit.broad.genepattern.gp.services.WebServiceException;
-
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The caIntegrator2
@@ -104,6 +83,27 @@ import edu.mit.broad.genepattern.gp.services.WebServiceException;
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.mit.broad.genepattern.gp.services;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.rpc.ServiceException;
+
+import edu.mit.broad.genepattern.gp.services.Analysis;
+import edu.mit.broad.genepattern.gp.services.AnalysisService;
+import edu.mit.broad.genepattern.gp.services.AnalysisServiceLocator;
+import edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import edu.mit.broad.genepattern.gp.services.TaskInfo;
+import edu.mit.broad.genepattern.gp.services.WebServiceException;
 
 /**
  * Wrapper around the GenePattern web service.
