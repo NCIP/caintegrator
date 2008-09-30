@@ -2,15 +2,13 @@
  * TaskInfo.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 public class TaskInfo  implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
     private int ID;
     private int accessId;
     private java.util.HashMap attributes;
@@ -18,7 +16,7 @@ public class TaskInfo  implements java.io.Serializable {
     private java.lang.String lsid;
     private java.lang.String name;
     private java.lang.String parameterInfo;
-    private analysis.ParameterInfo[] parameterInfoArray;
+    private edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray;
     private boolean pipeline;
     private java.lang.String shortName;
     private java.lang.Object taskInfoAttributes;
@@ -35,7 +33,7 @@ public class TaskInfo  implements java.io.Serializable {
            java.lang.String lsid,
            java.lang.String name,
            java.lang.String parameterInfo,
-           analysis.ParameterInfo[] parameterInfoArray,
+           edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray,
            boolean pipeline,
            java.lang.String shortName,
            java.lang.Object taskInfoAttributes,
@@ -200,7 +198,7 @@ public class TaskInfo  implements java.io.Serializable {
      * 
      * @return parameterInfoArray
      */
-    public analysis.ParameterInfo[] getParameterInfoArray() {
+    public edu.mit.broad.genepattern.gp.services.ParameterInfo[] getParameterInfoArray() {
         return parameterInfoArray;
     }
 
@@ -210,7 +208,7 @@ public class TaskInfo  implements java.io.Serializable {
      * 
      * @param parameterInfoArray
      */
-    public void setParameterInfoArray(analysis.ParameterInfo[] parameterInfoArray) {
+    public void setParameterInfoArray(edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray) {
         this.parameterInfoArray = parameterInfoArray;
     }
 
@@ -409,37 +407,31 @@ public class TaskInfo  implements java.io.Serializable {
         elemField.setFieldName("attributes");
         elemField.setXmlName(new javax.xml.namespace.QName("", "attributes"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "Map"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("description");
         elemField.setXmlName(new javax.xml.namespace.QName("", "description"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("lsid");
         elemField.setXmlName(new javax.xml.namespace.QName("", "lsid"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("name");
         elemField.setXmlName(new javax.xml.namespace.QName("", "name"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("parameterInfo");
         elemField.setXmlName(new javax.xml.namespace.QName("", "parameterInfo"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("parameterInfoArray");
         elemField.setXmlName(new javax.xml.namespace.QName("", "parameterInfoArray"));
         elemField.setXmlType(new javax.xml.namespace.QName("Analysis", "ParameterInfo"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("pipeline");
@@ -450,19 +442,16 @@ public class TaskInfo  implements java.io.Serializable {
         elemField.setFieldName("shortName");
         elemField.setXmlName(new javax.xml.namespace.QName("", "shortName"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("taskInfoAttributes");
         elemField.setXmlName(new javax.xml.namespace.QName("", "taskInfoAttributes"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "anyType"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("userId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "userId"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

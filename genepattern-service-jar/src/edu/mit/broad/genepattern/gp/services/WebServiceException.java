@@ -2,15 +2,13 @@
  * WebServiceException.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package org.genepattern.webservice;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 public class WebServiceException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
     private java.lang.Object rootCause;
 
     public WebServiceException() {
@@ -84,7 +82,6 @@ public class WebServiceException  extends org.apache.axis.AxisFault  implements 
         elemField.setFieldName("rootCause");
         elemField.setXmlName(new javax.xml.namespace.QName("", "rootCause"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "anyType"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 
