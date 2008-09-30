@@ -134,8 +134,8 @@ public class WorkspaceAction extends ActionSupport {
             getWorkspaceService().refreshSessionStudySubscription(currentSubscription);
             return WORKSPACE_STUDY;
         } else {
-            addActionError("No study subscription selected!");
-            return ERROR;
+//            addActionError("No study subscription selected!");
+            return WORKSPACE_NO_STUDY;
         }
     }
 
