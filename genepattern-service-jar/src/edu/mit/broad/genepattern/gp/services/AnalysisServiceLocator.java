@@ -2,15 +2,13 @@
  * AnalysisServiceLocator.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package edu.mit.broad.genepattern.gp.services.Analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
-public class AnalysisServiceLocator extends org.apache.axis.client.Service implements edu.mit.broad.genepattern.gp.services.Analysis.AnalysisService {
-
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings({ "unchecked", "serial" })
+public class AnalysisServiceLocator extends org.apache.axis.client.Service implements edu.mit.broad.genepattern.gp.services.AnalysisService {
 
     public AnalysisServiceLocator() {
     }
@@ -18,10 +16,6 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
 
     public AnalysisServiceLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
-    }
-
-    public AnalysisServiceLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
-        super(wsdlLoc, sName);
     }
 
     // Use to get a proxy class for Analysis
@@ -42,7 +36,7 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
         AnalysisWSDDServiceName = name;
     }
 
-    public edu.mit.broad.genepattern.gp.services.Analysis.Analysis getAnalysis() throws javax.xml.rpc.ServiceException {
+    public edu.mit.broad.genepattern.gp.services.Analysis getAnalysis() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(Analysis_address);
@@ -53,9 +47,9 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
         return getAnalysis(endpoint);
     }
 
-    public edu.mit.broad.genepattern.gp.services.Analysis.Analysis getAnalysis(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public edu.mit.broad.genepattern.gp.services.Analysis getAnalysis(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            edu.mit.broad.genepattern.gp.services.Analysis.AnalysisSoapBindingStub _stub = new edu.mit.broad.genepattern.gp.services.Analysis.AnalysisSoapBindingStub(portAddress, this);
+            edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub _stub = new edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub(portAddress, this);
             _stub.setPortName(getAnalysisWSDDServiceName());
             return _stub;
         }
@@ -75,8 +69,8 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (edu.mit.broad.genepattern.gp.services.Analysis.Analysis.class.isAssignableFrom(serviceEndpointInterface)) {
-                edu.mit.broad.genepattern.gp.services.Analysis.AnalysisSoapBindingStub _stub = new edu.mit.broad.genepattern.gp.services.Analysis.AnalysisSoapBindingStub(new java.net.URL(Analysis_address), this);
+            if (edu.mit.broad.genepattern.gp.services.Analysis.class.isAssignableFrom(serviceEndpointInterface)) {
+                edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub _stub = new edu.mit.broad.genepattern.gp.services.AnalysisSoapBindingStub(new java.net.URL(Analysis_address), this);
                 _stub.setPortName(getAnalysisWSDDServiceName());
                 return _stub;
             }

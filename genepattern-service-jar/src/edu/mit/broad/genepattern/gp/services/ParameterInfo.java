@@ -2,15 +2,13 @@
  * ParameterInfo.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 public class ParameterInfo  implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
     private java.util.HashMap attributes;
     private java.util.HashMap choices;
     private java.lang.String defaultValue;
@@ -358,25 +356,21 @@ public class ParameterInfo  implements java.io.Serializable {
         elemField.setFieldName("attributes");
         elemField.setXmlName(new javax.xml.namespace.QName("", "attributes"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "Map"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("choices");
         elemField.setXmlName(new javax.xml.namespace.QName("", "choices"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "Map"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("defaultValue");
         elemField.setXmlName(new javax.xml.namespace.QName("", "defaultValue"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("description");
         elemField.setXmlName(new javax.xml.namespace.QName("", "description"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("inputFile");
@@ -387,13 +381,11 @@ public class ParameterInfo  implements java.io.Serializable {
         elemField.setFieldName("label");
         elemField.setXmlName(new javax.xml.namespace.QName("", "label"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("name");
         elemField.setXmlName(new javax.xml.namespace.QName("", "name"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("optional");
@@ -414,7 +406,6 @@ public class ParameterInfo  implements java.io.Serializable {
         elemField.setFieldName("value");
         elemField.setXmlName(new javax.xml.namespace.QName("", "value"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

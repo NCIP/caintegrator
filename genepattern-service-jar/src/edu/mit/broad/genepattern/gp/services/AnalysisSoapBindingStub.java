@@ -2,13 +2,13 @@
  * AnalysisSoapBindingStub.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package edu.mit.broad.genepattern.gp.services.Analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
-public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub implements edu.mit.broad.genepattern.gp.services.Analysis.Analysis {
+@SuppressWarnings({ "unchecked", "unused" })
+public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub implements edu.mit.broad.genepattern.gp.services.Analysis {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -35,7 +35,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -45,13 +45,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setName("getJob");
         oper.addParameter(new javax.xml.namespace.QName("", "jobId"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getJobReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -65,7 +65,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -80,7 +80,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -94,7 +94,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -107,13 +107,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.addParameter(new javax.xml.namespace.QName("", "maxEntries"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "allJobs"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"), boolean.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo"));
-        oper.setReturnClass(analysis.JobInfo[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getJobsReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -128,13 +128,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.addParameter(new javax.xml.namespace.QName("", "jobSortOrder"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "anyType"), java.lang.Object.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "asc"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"), boolean.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo"));
-        oper.setReturnClass(analysis.JobInfo[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getJobsReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -142,7 +142,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("createProvenancePipeline");
-        oper.addParameter(new javax.xml.namespace.QName("", "jobs"), new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo"), analysis.JobInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
+        oper.addParameter(new javax.xml.namespace.QName("", "jobs"), new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo"), edu.mit.broad.genepattern.gp.services.JobInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "pipelineName"), new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
         oper.setReturnClass(java.lang.String.class);
@@ -151,7 +151,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -168,7 +168,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -177,16 +177,16 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("submitJob");
         oper.addParameter(new javax.xml.namespace.QName("", "taskID"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
-        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), analysis.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
+        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), edu.mit.broad.genepattern.gp.services.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "files"), new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "Map"), java.util.HashMap.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "submitJobReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -199,17 +199,17 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("submitJob");
         oper.addParameter(new javax.xml.namespace.QName("", "taskID"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
-        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), analysis.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
+        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), edu.mit.broad.genepattern.gp.services.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "files"), new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "Map"), java.util.HashMap.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "parentJobId"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "submitJobReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -219,13 +219,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setName("checkStatus");
         oper.addParameter(new javax.xml.namespace.QName("", "jobID"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "checkStatusReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -234,15 +234,15 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("recordClientJob");
         oper.addParameter(new javax.xml.namespace.QName("", "taskID"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
-        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), analysis.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
+        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), edu.mit.broad.genepattern.gp.services.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "recordClientJobReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -251,16 +251,16 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("recordClientJob");
         oper.addParameter(new javax.xml.namespace.QName("", "taskID"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
-        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), analysis.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
+        oper.addParameter(new javax.xml.namespace.QName("", "parameters"), new javax.xml.namespace.QName("Analysis", "ParameterInfoArray"), edu.mit.broad.genepattern.gp.services.ParameterInfo[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "parentJobNumber"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "JobInfo"));
-        oper.setReturnClass(analysis.JobInfo.class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "recordClientJobReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -275,7 +275,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -284,13 +284,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("getTasks");
         oper.setReturnType(new javax.xml.namespace.QName("Analysis", "TaskInfoArray"));
-        oper.setReturnClass(analysis.TaskInfo[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.TaskInfo[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getTasksReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -300,13 +300,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setName("findJobsThatCreatedFile");
         oper.addParameter(new javax.xml.namespace.QName("", "fileURLOrJobNumber"), new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo"));
-        oper.setReturnClass(analysis.JobInfo[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.JobInfo[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "findJobsThatCreatedFileReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -317,13 +317,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.addParameter(new javax.xml.namespace.QName("", "jobId"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.addParameter(new javax.xml.namespace.QName("", "filenames"), new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_soapenc_string"), java.lang.String[].class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_FileWrapper"));
-        oper.setReturnClass(analysis.FileWrapper[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.FileWrapper[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getResultFilesReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -333,13 +333,13 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setName("getResultFiles");
         oper.addParameter(new javax.xml.namespace.QName("", "jobId"), new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, org.apache.axis.description.ParameterDesc.IN, false, false);
         oper.setReturnType(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_FileWrapper"));
-        oper.setReturnClass(analysis.FileWrapper[].class);
+        oper.setReturnClass(edu.mit.broad.genepattern.gp.services.FileWrapper[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getResultFilesReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -353,7 +353,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "fault"),
-                      "org.genepattern.webservice.WebServiceException",
+                      "edu.mit.broad.genepattern.gp.services.WebServiceException",
                       new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException"), 
                       true
                      ));
@@ -445,95 +445,97 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
             javax.xml.namespace.QName qName;
             java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
             java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
-             qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo");
-            cachedSerQNames.add(qName);
-            cls = analysis.JobInfo[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("Analysis", "JobInfo");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("Analysis", "ParameterInfoArray");
-            cachedSerQNames.add(qName);
-            cls = analysis.ParameterInfo[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("Analysis", "ParameterInfo");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_xsd_int");
-            cachedSerQNames.add(qName);
-            cls = int[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("Analysis", "TaskInfo");
-            cachedSerQNames.add(qName);
-            cls = analysis.TaskInfo.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
+            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
+            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
+            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
+            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
+            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
+            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
+            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
+            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://webservice.genepattern.org", "WebServiceException");
             cachedSerQNames.add(qName);
-            cls = org.genepattern.webservice.WebServiceException.class;
+            cls = edu.mit.broad.genepattern.gp.services.WebServiceException.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("Analysis", "ParameterInfo");
+            qName = new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "mapItem");
             cachedSerQNames.add(qName);
-            cls = analysis.ParameterInfo.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_soapenc_string");
-            cachedSerQNames.add(qName);
-            cls = java.lang.String[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("Analysis", "FileWrapper");
-            cachedSerQNames.add(qName);
-            cls = analysis.FileWrapper.class;
+            cls = edu.mit.broad.genepattern.gp.services.MapItem.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_FileWrapper");
             cachedSerQNames.add(qName);
-            cls = analysis.FileWrapper[].class;
+            cls = edu.mit.broad.genepattern.gp.services.FileWrapper[].class;
             cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
+
+            qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_tns3_JobInfo");
+            cachedSerQNames.add(qName);
+            cls = edu.mit.broad.genepattern.gp.services.JobInfo[].class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
+
+            qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_soapenc_string");
+            cachedSerQNames.add(qName);
+            cls = java.lang.String[].class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
+
+            qName = new javax.xml.namespace.QName("Analysis", "ParameterInfo");
+            cachedSerQNames.add(qName);
+            cls = edu.mit.broad.genepattern.gp.services.ParameterInfo.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("Analysis", "FileWrapper");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("Analysis", "TaskInfoArray");
             cachedSerQNames.add(qName);
-            cls = analysis.TaskInfo[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("Analysis", "TaskInfo");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
-            qName = new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "mapItem");
-            cachedSerQNames.add(qName);
-            cls = org.apache.xml.xml_soap.MapItem.class;
+            cls = edu.mit.broad.genepattern.gp.services.FileWrapper.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("Analysis", "JobInfo");
             cachedSerQNames.add(qName);
-            cls = analysis.JobInfo.class;
+            cls = edu.mit.broad.genepattern.gp.services.JobInfo.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "ArrayOf_xsd_int");
+            cachedSerQNames.add(qName);
+            cls = int[].class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
+
+            qName = new javax.xml.namespace.QName("Analysis", "TaskInfo");
+            cachedSerQNames.add(qName);
+            cls = edu.mit.broad.genepattern.gp.services.TaskInfo.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("Analysis", "TaskInfoArray");
+            cachedSerQNames.add(qName);
+            cls = edu.mit.broad.genepattern.gp.services.TaskInfo[].class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
+
+            qName = new javax.xml.namespace.QName("Analysis", "ParameterInfoArray");
+            cachedSerQNames.add(qName);
+            cls = edu.mit.broad.genepattern.gp.services.ParameterInfo[].class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(arraysf);
+            cachedDeserFactories.add(arraydf);
 
     }
 
@@ -578,21 +580,11 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
                         java.lang.Class cls = (java.lang.Class) cachedSerClasses.get(i);
                         javax.xml.namespace.QName qName =
                                 (javax.xml.namespace.QName) cachedSerQNames.get(i);
-                        Object x = cachedSerFactories.get(i);
-                        if (x instanceof Class) {
-                            java.lang.Class sf = (java.lang.Class)
+                        java.lang.Class sf = (java.lang.Class)
                                  cachedSerFactories.get(i);
-                            java.lang.Class df = (java.lang.Class)
+                        java.lang.Class df = (java.lang.Class)
                                  cachedDeserFactories.get(i);
-                            _call.registerTypeMapping(cls, qName, sf, df, false);
-                        }
-                        else if (x instanceof javax.xml.rpc.encoding.SerializerFactory) {
-                            org.apache.axis.encoding.SerializerFactory sf = (org.apache.axis.encoding.SerializerFactory)
-                                 cachedSerFactories.get(i);
-                            org.apache.axis.encoding.DeserializerFactory df = (org.apache.axis.encoding.DeserializerFactory)
-                                 cachedDeserFactories.get(i);
-                            _call.registerTypeMapping(cls, qName, sf, df, false);
-                        }
+                        _call.registerTypeMapping(cls, qName, sf, df, false);
                     }
                 }
             }
@@ -603,7 +595,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    public int[] getChildren(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public int[] getChildren(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -631,7 +623,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    public analysis.JobInfo getJob(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo getJob(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -652,14 +644,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public void deleteJob(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public void deleteJob(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -680,7 +672,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         extractAttachments(_call);
     }
 
-    public void deleteJobResultFile(int jobId, java.lang.String value) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public void deleteJobResultFile(int jobId, java.lang.String value) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -701,7 +693,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         extractAttachments(_call);
     }
 
-    public void terminateJob(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public void terminateJob(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -722,7 +714,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         extractAttachments(_call);
     }
 
-    public analysis.JobInfo[] getJobs(java.lang.String username, int maxJobNumber, int maxEntries, boolean allJobs) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo[] getJobs(java.lang.String username, int maxJobNumber, int maxEntries, boolean allJobs) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -743,14 +735,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo[].class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo[].class);
             }
         }
     }
 
-    public analysis.JobInfo[] getJobs(java.lang.String username, int maxJobNumber, int maxEntries, boolean allJobs, java.lang.Object jobSortOrder, boolean asc) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo[] getJobs(java.lang.String username, int maxJobNumber, int maxEntries, boolean allJobs, java.lang.Object jobSortOrder, boolean asc) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -771,14 +763,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo[].class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo[].class);
             }
         }
     }
 
-    public java.lang.String createProvenancePipeline(analysis.JobInfo[] jobs, java.lang.String pipelineName) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public java.lang.String createProvenancePipeline(edu.mit.broad.genepattern.gp.services.JobInfo[] jobs, java.lang.String pipelineName) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -806,7 +798,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    public java.lang.String createProvenancePipeline(java.lang.String fileUrlOrJobNumber, java.lang.String pipelineName) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public java.lang.String createProvenancePipeline(java.lang.String fileUrlOrJobNumber, java.lang.String pipelineName) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -834,7 +826,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    public analysis.JobInfo submitJob(int taskID, analysis.ParameterInfo[] parameters, java.util.HashMap files) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo submitJob(int taskID, edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameters, java.util.HashMap files) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -855,14 +847,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public analysis.JobInfo submitJob(int taskID, analysis.ParameterInfo[] parameters, java.util.HashMap files, int parentJobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo submitJob(int taskID, edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameters, java.util.HashMap files, int parentJobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -883,14 +875,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public analysis.JobInfo checkStatus(int jobID) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo checkStatus(int jobID) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -911,14 +903,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public analysis.JobInfo recordClientJob(int taskID, analysis.ParameterInfo[] parameters) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo recordClientJob(int taskID, edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameters) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -939,14 +931,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public analysis.JobInfo recordClientJob(int taskID, analysis.ParameterInfo[] parameters, int parentJobNumber) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo recordClientJob(int taskID, edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameters, int parentJobNumber) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -967,14 +959,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo.class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo.class);
             }
         }
     }
 
-    public void setJobStatus(int jobId, java.lang.String status) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public void setJobStatus(int jobId, java.lang.String status) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -995,7 +987,7 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         extractAttachments(_call);
     }
 
-    public analysis.TaskInfo[] getTasks() throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.TaskInfo[] getTasks() throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -1016,14 +1008,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.TaskInfo[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.TaskInfo[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.TaskInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.TaskInfo[].class);
+                return (edu.mit.broad.genepattern.gp.services.TaskInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.TaskInfo[].class);
             }
         }
     }
 
-    public analysis.JobInfo[] findJobsThatCreatedFile(java.lang.String fileURLOrJobNumber) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.JobInfo[] findJobsThatCreatedFile(java.lang.String fileURLOrJobNumber) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -1044,14 +1036,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.JobInfo[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.JobInfo[].class);
+                return (edu.mit.broad.genepattern.gp.services.JobInfo[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.JobInfo[].class);
             }
         }
     }
 
-    public analysis.FileWrapper[] getResultFiles(int jobId, java.lang.String[] filenames) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.FileWrapper[] getResultFiles(int jobId, java.lang.String[] filenames) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -1072,14 +1064,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.FileWrapper[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.FileWrapper[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.FileWrapper[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.FileWrapper[].class);
+                return (edu.mit.broad.genepattern.gp.services.FileWrapper[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.FileWrapper[].class);
             }
         }
     }
 
-    public analysis.FileWrapper[] getResultFiles(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public edu.mit.broad.genepattern.gp.services.FileWrapper[] getResultFiles(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -1100,14 +1092,14 @@ public class AnalysisSoapBindingStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (analysis.FileWrapper[]) _resp;
+                return (edu.mit.broad.genepattern.gp.services.FileWrapper[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (analysis.FileWrapper[]) org.apache.axis.utils.JavaUtils.convert(_resp, analysis.FileWrapper[].class);
+                return (edu.mit.broad.genepattern.gp.services.FileWrapper[]) org.apache.axis.utils.JavaUtils.convert(_resp, edu.mit.broad.genepattern.gp.services.FileWrapper[].class);
             }
         }
     }
 
-    public void purgeJob(int jobId) throws java.rmi.RemoteException, org.genepattern.webservice.WebServiceException {
+    public void purgeJob(int jobId) throws java.rmi.RemoteException, edu.mit.broad.genepattern.gp.services.WebServiceException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }

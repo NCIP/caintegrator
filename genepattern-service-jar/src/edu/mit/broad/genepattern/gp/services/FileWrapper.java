@@ -2,15 +2,13 @@
  * FileWrapper.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.2RC2 Nov 16, 2004 (12:19:44 EST) WSDL2Java emitter.
  */
 
-package analysis;
+package edu.mit.broad.genepattern.gp.services;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 public class FileWrapper  implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
     private javax.activation.DataHandler dataHandler;
     private java.lang.String filename;
     private long lastModified;
@@ -163,13 +161,11 @@ public class FileWrapper  implements java.io.Serializable {
         elemField.setFieldName("dataHandler");
         elemField.setXmlName(new javax.xml.namespace.QName("", "dataHandler"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://xml.apache.org/xml-soap", "DataHandler"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("filename");
         elemField.setXmlName(new javax.xml.namespace.QName("", "filename"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
-        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("lastModified");
