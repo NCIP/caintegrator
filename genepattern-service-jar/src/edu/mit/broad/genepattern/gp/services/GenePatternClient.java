@@ -136,7 +136,14 @@ public class GenePatternClient {
         }
     }
     
-    private TaskInfo getTaskInfo(String name) throws GenePatternServiceException {
+    /**
+     * Returns the task information for the requested task.
+     * 
+     * @param name name of the task to retrieve.
+     * @return the information.
+     * @throws GenePatternServiceException if there's a problem communicating with the service.
+     */
+    public TaskInfo getTaskInfo(String name) throws GenePatternServiceException {
         return getTaskMap().get(name);
     }
     
