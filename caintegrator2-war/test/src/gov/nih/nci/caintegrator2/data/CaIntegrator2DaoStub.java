@@ -250,7 +250,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return Collections.emptyList();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings({"unchecked"})
     public void removeObjects(Collection objects) {
         removeObjectsCalled = true;
     }
