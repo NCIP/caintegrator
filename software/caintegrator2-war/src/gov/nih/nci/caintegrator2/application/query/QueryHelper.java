@@ -230,7 +230,7 @@ public class QueryHelper {
         return nCriterion;
     }
     
-    @SuppressWarnings({ "PMD" })
+    @SuppressWarnings({ "PMD", "unchecked" })
     private AnnotationDefinition getAnnotationDefinition(QueryAnnotationCriteria queryAnnotationCriteria) {
         AnnotationDefinition annoDef = null;
         
@@ -258,7 +258,7 @@ public class QueryHelper {
         return studySubscription;
     }
     
-    @SuppressWarnings({ "PMD" })
+    @SuppressWarnings({ "PMD", "unchecked" })
     private Collection<ResultColumn> getClinicalColumnCollection(QueryAnnotationCriteria queryAnnotationCriteria) {
         Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
         
