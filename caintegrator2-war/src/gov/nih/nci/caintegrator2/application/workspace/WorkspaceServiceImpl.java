@@ -136,6 +136,20 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public void refreshSessionUserWorkspace(UserWorkspace userWorkspace) {
         SessionHelper.getInstance().refreshUserWorkspace(userWorkspace);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void refreshSessionStudySubscription(StudySubscription studySubscription) {
+        SessionHelper.getInstance().refreshStudySubscription(studySubscription);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public StudySubscription retrieveStudySubscription(Long id) {
+        return dao.get(id, StudySubscription.class);
+    }
 
     /**
      * @return the dao

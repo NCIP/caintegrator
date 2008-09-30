@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,60 +83,58 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.web.action;
 
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import java.util.Collection;
+import java.util.HashSet;
 
-import com.opensymphony.xwork2.ActionSupport;
 /**
- * 
+ * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
-public class BrowseStudyAction extends ActionSupport {
-    private static final long serialVersionUID = 1L;
-    private StudyManagementService studyManagementService;
-    private Study study = new Study();
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute() {
-        SessionHelper sessionHelper = SessionHelper.getInstance();
-        if (sessionHelper.getDisplayableStudySubscription() != null 
-            && sessionHelper.getDisplayableStudySubscription().getCurrentStudySubscription() != null) {
-            study = sessionHelper.getDisplayableStudySubscription().getCurrentStudySubscription().getStudy();
-            return SUCCESS;
-        } else {
-            addActionError("There is no DisplayableStudySubscription object on the session");
-            return ERROR;
-        }
-    }
-  
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
+public class DisplayableStudySubscription {
+    
+    private StudySubscription currentStudySubscription;
+    private Collection<Query> queryCollection = new HashSet<Query>();
+//    private Collection<AbstractList> listCollection = new HashSet<AbstractList>();
     
     /**
-     * @return the studyManagementService
+     * Refreshes Selected Study.
+     * @param studySubscription - object to update on.
      */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
+    public void refreshSelectedStudy(StudySubscription studySubscription) {
+        setQueryCollection(studySubscription.getQueryCollection());
+        setCurrentStudySubscription(studySubscription);
     }
+
     /**
-     * @param studyManagementService the studyManagementService to set
+     * @return the queryCollection
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public Collection<Query> getQueryCollection() {
+        return queryCollection;
     }
+
+    /**
+     * @param queryCollection the queryCollection to set
+     */
+    public void setQueryCollection(Collection<Query> queryCollection) {
+        this.queryCollection = queryCollection;
+    }
+
+    /**
+     * @return the currentStudySubscription
+     */
+    public StudySubscription getCurrentStudySubscription() {
+        return currentStudySubscription;
+    }
+
+    /**
+     * @param currentStudySubscription the currentStudySubscription to set
+     */
+    public void setCurrentStudySubscription(StudySubscription currentStudySubscription) {
+        this.currentStudySubscription = currentStudySubscription;
+    }
+
 }
