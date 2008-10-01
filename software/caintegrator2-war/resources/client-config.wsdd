@@ -8,7 +8,6 @@
     <parameter name="sendMultiRefs" value="true" />
     <parameter name="sendXMLDeclaration" value="true" />
     <requestFlow>
-      <handler type="java:org.globus.wsrf.handlers.AddressingHandler" />
       <handler type="java:org.globus.wsrf.impl.security.authorization.ClientPropertiesHandler" />
       <handler type="java:org.globus.wsrf.impl.security.authentication.ClientPropertiesHandler" />
       <handler type="java:org.apache.axis.handlers.JAXRPCHandler">
