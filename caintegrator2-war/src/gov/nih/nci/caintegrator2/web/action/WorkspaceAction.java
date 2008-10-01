@@ -111,22 +111,12 @@ public class WorkspaceAction extends ActionSupport {
      * @return forward to workspace.
      */
     public String openWorkspace() {
-        setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
-        if (workspace.getDefaultSubscription() != null) {
-            currentStudySubscriptionId = workspace.getDefaultSubscription().getId();
-            return openWorkspaceStudy();
-        } else {
-            return WORKSPACE_NO_STUDY;
-        }
-    }
-    
-    /**
-     * Opens a selected user's workspace.
-     * @return forward to workspace study.
-     */
-    public String openWorkspaceStudy() {
         if (getWorkspace() == null) {
             setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
+        }
+        if (getCurrentStudySubscriptionId() == null 
+            && workspace.getDefaultSubscription() != null) {
+            currentStudySubscriptionId = workspace.getDefaultSubscription().getId();
         }
         if (getCurrentStudySubscriptionId() != null) {
             StudySubscription currentSubscription = workspaceService
@@ -134,7 +124,6 @@ public class WorkspaceAction extends ActionSupport {
             getWorkspaceService().refreshSessionStudySubscription(currentSubscription);
             return WORKSPACE_STUDY;
         } else {
-//            addActionError("No study subscription selected!");
             return WORKSPACE_NO_STUDY;
         }
     }

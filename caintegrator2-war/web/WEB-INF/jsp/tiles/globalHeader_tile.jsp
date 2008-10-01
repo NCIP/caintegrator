@@ -35,7 +35,7 @@
         <div id="user">Welcome, <a href="account.html"><s:property value="#sessionHelper.username"/> </a> | <a
            href="logout.jsp">Logout</a></div>
         <div id="mystudies">
-               <s:form action="workspace.openStudy" theme="simple">
+               <s:form action="workspace" theme="simple">
 
                     <label for="currentStudySubscriptionId">My Studies:</label>
                     <s:select label="My Studies" name="currentStudySubscriptionId" headerKey="1" headerValue="-- Please Select --"
