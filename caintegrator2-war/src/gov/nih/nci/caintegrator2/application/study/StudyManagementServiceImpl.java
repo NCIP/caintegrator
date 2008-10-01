@@ -482,6 +482,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         descriptor.setDefinition(annotationDefinition);
         annotationDefinition.setDisplayName(descriptor.getName());
+        annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         switch(entityType) {
             case SUBJECT:
                 if (study.getSubjectAnnotationCollection() == null) {
