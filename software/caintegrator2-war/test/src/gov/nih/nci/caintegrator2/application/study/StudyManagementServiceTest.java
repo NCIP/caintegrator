@@ -392,6 +392,7 @@ public class StudyManagementServiceTest {
         descriptor.setName("testName");
         AnnotationDefinition definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SUBJECT);
         assertEquals(descriptor.getName(), definition.getDisplayName());
+        assertEquals(descriptor.getName(), definition.getKeywords());
         assertEquals(1, study.getSubjectAnnotationCollection().size());
         definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.IMAGESERIES);
         assertEquals(1, study.getImageSeriesAnnotationCollection().size());
