@@ -326,6 +326,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         while ((fields = reader.readNext()) != null) {
             AnnotationDefinition definition = new AnnotationDefinition();
             definition.setDisplayName(fields[0]);
+            definition.setKeywords(definition.getDisplayName());
             definition.setType(AnnotationTypeEnum.getByValue(fields[1]).getValue());
             if (!StringUtils.isBlank(fields[2])) {
                 Collection<AbstractPermissableValue> permissableValues = new HashSet<AbstractPermissableValue>();
