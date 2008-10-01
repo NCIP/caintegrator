@@ -26,11 +26,6 @@
         </action>
         
         <action name="workspace" method="openWorkspace" class="workspaceAction">
-            <result name="workspaceStudy" type="tiles">workspaceStudy</result>
-            <result name="workspaceNoStudy" type="tiles">homepage</result>
-        </action>
-        
-        <action name="workspace.openStudy" method="openWorkspaceStudy" class="workspaceAction">
             <result name="workspaceStudy" type="redirectAction">
                 <param name="actionName">browseStudy</param>
             </result>
