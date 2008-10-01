@@ -13,8 +13,9 @@
   </publications>
   
   <dependencies>
-    <dependency org="apache" name="axis" rev="1.4.2_10" conf="compile"/>
+    <dependency org="apache" name="axis" rev="1.2RC2" conf="compile"/>
     <dependency org="javax.activation" name="activation" rev="1.0.2" conf="compile"/>
+    <dependency org="jcp" name="jaxrpc" rev="1.1" conf="compile"/>
   </dependencies>
   
 </ivy-module>

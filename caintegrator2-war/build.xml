@@ -273,6 +273,16 @@
 
     
     <!-- ******************************************************************* -->
+    <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
+    <!-- ******************************************************************* -->
+    
+    <property name="genepattern-service.jar.dir" location="${software.dir}/genepattern-service-jar" />
+    <property name="genepattern-service.jar.target.dir" location="${genepattern-service.jar.dir}/target" />
+    <property name="genepattern-service.jar" location="${genepattern-service.jar.target.dir}/genepattern-service.jar" />
+    <property name="genepattern-service.jar.compile.lib.dir" location="${genepattern-service.jar.dir}/lib/compile"/>
+    
+    
+    <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
     <!-- ******************************************************************* -->
     <property name="caintegrator2-cacore.output.dir" location="${caintegrator2-cacore.dir}/output/caintegrator2" />
@@ -314,11 +324,15 @@
             <pathelement location="${caintegrator2.war.java.classes.dir}" />
             <pathelement location="${caintegrator2-beans.jar}" />
             <pathelement location="${caintegrator2-orm.jar}" />
+            <pathelement location="${genepattern-service.jar}" />
             <fileset dir="${caintegrator2.war.compile.lib.dir}">
                 <include name="*.jar" />
                 <exclude name="log4j*.jar" />
             </fileset>
             <fileset dir="${external.runtime.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${genepattern-service.jar.compile.lib.dir}">
                 <include name="*.jar" />
             </fileset>
         </path>
@@ -351,8 +365,9 @@
             <lib dir="${caintegrator2.war.runtime.lib.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
             </lib>
+            <lib dir="${genepattern-service.jar.target.dir}" includes="*.jar"/> 
+            <lib dir="${genepattern-service.jar.compile.lib.dir}" includes="*.jar"/> 
             <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
-            
             <classes dir="${caintegrator2-cacore.output.src.dir}">
                 <include name="${csm.security.config.file}"/>
             </classes>
