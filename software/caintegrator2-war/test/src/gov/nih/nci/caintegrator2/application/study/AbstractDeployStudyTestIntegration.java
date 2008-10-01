@@ -339,10 +339,6 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
                 }
                 definition.setPermissableValueCollection(permissableValues);
             }
-            
-            if (null != studyConfiguration.getStudy().getSubjectAnnotationCollection()) {
-                studyConfiguration.getStudy().getSubjectAnnotationCollection().add(definition);    
-            }
             dao.save(definition);
         }
     }
