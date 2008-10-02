@@ -89,7 +89,6 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -103,9 +102,9 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
 
     private static final long serialVersionUID = 1L;
     private File imagingFile;
+    private File imageClinicalMappingFile;
     private String imagingFileContentType;
     private String imagingFileFileName;
-    //private StudyManagementService studyManagementService;
     private String hostname;
     private String username;
     private String password;
@@ -116,23 +115,20 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
      */
     @Override
     public String execute() {
-       
         try {
-            
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
             imageSource.getServerProfile().setUrl(getHostname());
             // setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
             imageSource.setTrialDataProvenance(getProtocolId());
             imageSource.setStudyConfiguration(this.getStudyConfiguration());
-            //imageSource.getProtocolId();
-            // setting the values of imageSource
             setImageSource(imageSource);
-            StudyConfiguration s1 = getStudyConfiguration();
-            getStudyManagementService().addImageSource(s1, getImageSource());
+            getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSource());
             ImageAnnotationConfiguration imageAnnotationSource = 
                         getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(), getImagingFile(), 
                 getImagingFileFileName());
             setImagingSource(imageAnnotationSource);
+            getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
+                    getImageClinicalMappingFile()); 
             return SUCCESS;
         } catch (ValidationException e) {
             addFieldError("imagingFile", "Invalid file: " + e.getResult().getInvalidMessage());
@@ -143,7 +139,6 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
             addActionError("The configured server couldn't reached. Please check the configuration settings.");
             return INPUT;
         }
-        
     }
     
     /**
@@ -153,6 +148,9 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
 public void validate() {
         if (imagingFile == null) {
             addFieldError("imagingFile", "Imaging File is required");
+        }
+        if (imageClinicalMappingFile == null) {
+            addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
         }
     }
 
@@ -254,6 +252,20 @@ public String getHostname() {
  */
 public void setHostname(String hostname) {
     this.hostname = hostname;
+}
+
+/**
+ * @return the imageClinicalMappingFile
+ */
+public File getImageClinicalMappingFile() {
+    return imageClinicalMappingFile;
+}
+
+/**
+ * @param imageClinicalMappingFile the imageClinicalMappingFile to set
+ */
+public void setImageClinicalMappingFile(File imageClinicalMappingFile) {
+    this.imageClinicalMappingFile = imageClinicalMappingFile;
 }
 
 }

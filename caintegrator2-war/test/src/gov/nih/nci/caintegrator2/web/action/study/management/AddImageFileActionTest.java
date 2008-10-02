@@ -119,6 +119,7 @@ public class AddImageFileActionTest {
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.setImagingFile(TestDataFiles.VALID_FILE);
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -130,7 +131,9 @@ public class AddImageFileActionTest {
         action.setImagingFile(TestDataFiles.VALID_FILE);
         action.setImagingFileFileName(TestDataFiles.VALID_FILE.getName());
         assertEquals(Action.SUCCESS, action.execute());
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertTrue(studyManagementServiceStub.addImageAnnotationFileCalled);
+        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
         action.setImagingFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
         assertEquals(Action.INPUT, action.execute());
         action.setImagingFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);

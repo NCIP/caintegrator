@@ -27,7 +27,8 @@
       
     <tr>
         <th colspan="3">
-    		<s:file name="imagingFile" label="Tab-delimited Text File" />
+    		<s:file name="imagingFile" label="Image Series Annotation File" />
+    		<s:file name="imageClinicalMappingFile" label="Clinical/Imaging Mapping File" />
         	<s:submit value="Add" align="center" />
         </th>    
     </tr>
