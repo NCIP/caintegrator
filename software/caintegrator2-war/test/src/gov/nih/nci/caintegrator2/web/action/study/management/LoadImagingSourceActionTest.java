@@ -114,9 +114,7 @@ public class LoadImagingSourceActionTest {
 
     @Test
     public void testExecute() {
-        action.setClinicalImageMapping("ispy_clinical_image_mapping.csv");
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
         assertTrue(studyManagementServiceStub.loadImageAnnotationCalled);
     }
 }

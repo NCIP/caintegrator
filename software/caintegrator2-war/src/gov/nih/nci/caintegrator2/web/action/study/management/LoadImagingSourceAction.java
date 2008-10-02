@@ -85,55 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.io.File;
-
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.util.ServletContextAware;
-
-//import java.io.File;
-
 /**
  * Action called to load an imaging data source.
  */
-public class LoadImagingSourceAction extends AbstractImagingSourceAction implements ServletContextAware {
+public class LoadImagingSourceAction extends AbstractImagingSourceAction {
 
 private static final long serialVersionUID = 1L;
-    private ServletContext servletContext;
-    private String clinicalImageMapping;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
-        // TODO load mapping from patient id to image series id.
-        // for now this will be done by hardcoding a mapping file.
-        final File holdFile;
-        if (clinicalImageMapping == null || clinicalImageMapping.length() == 0) {
-            clinicalImageMapping = servletContext.getRealPath("WEB-INF") 
-                                        + File.separator 
-                                        + "classes" 
-                                        + File.separator 
-                                        + "ispy_clinical_image_mapping.csv";
-        }
-        holdFile = new File(clinicalImageMapping);
-        getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(), holdFile); 
         getStudyManagementService().loadImageAnnotation(getStudyConfiguration());
         return SUCCESS;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
-
-    /**
-     * @param clinicalImageMapping the clinicalImageMapping to set
-     */
-    public void setClinicalImageMapping(String clinicalImageMapping) {
-        this.clinicalImageMapping = clinicalImageMapping;
-    }
 }
