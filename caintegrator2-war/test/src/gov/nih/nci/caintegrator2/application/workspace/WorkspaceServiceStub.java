@@ -98,11 +98,13 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public boolean refreshSessionUserWorkspaceCalled;
     public boolean refreshSessionStudySubscriptionCalled;
+    public boolean mergeandSaveCalled;
     private StudySubscription subscription;
     
     public void clear() {
         refreshSessionUserWorkspaceCalled = false;
         refreshSessionStudySubscriptionCalled = false;
+        mergeandSaveCalled = false;
     }
     public UserWorkspace getWorkspace(String username) {
         UserWorkspace workspace = new UserWorkspace();
@@ -128,5 +130,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public StudySubscription retrieveStudySubscription(Long id) {
         return subscription;
     }
-
+    public void saveUserWorkspace(UserWorkspace workspace) {
+        mergeandSaveCalled = true; 
+    }
 }
