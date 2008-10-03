@@ -145,6 +145,14 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public void save(Object persistentObject) {
         getHibernateTemplate().saveOrUpdate(persistentObject);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void mergeAndSave(Object persistentObject) {
+        getHibernateTemplate().saveOrUpdate(getSession().merge(persistentObject));
+    }
+
 
     /**
      * {@inheritDoc}

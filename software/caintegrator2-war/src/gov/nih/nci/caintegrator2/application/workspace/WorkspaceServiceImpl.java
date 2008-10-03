@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -114,20 +115,27 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             userWorkspace = new UserWorkspace();
             userWorkspace.setUsername(username);
         }
-        // Not sure if we need to get a new subscription collection every time the user logs in.
-        // Especially items the user is not actually subscribed to.
-        dao.removeObjects(userWorkspace.getSubscriptionCollection());
-        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-        // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
-        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
-        for (StudyConfiguration studyConfiguration : studyConfigurations) {
-            StudySubscription subscription = new StudySubscription();
-            subscription.setStudy(studyConfiguration.getStudy());
-            userWorkspace.getSubscriptionCollection().add(subscription);
-        }
-        dao.save(userWorkspace);   
+        retrieveAllSubscriptions(username, userWorkspace);   
         refreshSessionUserWorkspace(userWorkspace);
         return userWorkspace;
+    }
+
+    private void retrieveAllSubscriptions(String username, UserWorkspace userWorkspace) {
+        // Not sure if we need to get a new subscription collection every time the user logs in.
+        // Especially items the user is not actually subscribed to.
+        // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
+        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
+        if (userWorkspace.getSubscriptionCollection() == null) {
+            userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        }
+        for (StudyConfiguration studyConfiguration : studyConfigurations) {
+            if (!Cai2Util.userSubscribedToStudy(userWorkspace, studyConfiguration.getStudy())) {
+                StudySubscription subscription = new StudySubscription();
+                subscription.setStudy(studyConfiguration.getStudy());
+                userWorkspace.getSubscriptionCollection().add(subscription);
+            }
+        }
+        dao.save(userWorkspace);
     }
     
     /**
@@ -164,7 +172,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
-
-
+    
+    /**
+     * @param workspace saves workspace.
+     */
+    public void saveUserWorkspace(UserWorkspace workspace) {
+        dao.mergeAndSave(workspace);
+    }
 
 }

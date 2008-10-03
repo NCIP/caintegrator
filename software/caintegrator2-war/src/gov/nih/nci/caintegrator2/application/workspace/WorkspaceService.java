@@ -119,5 +119,10 @@ public interface WorkspaceService {
      * @return StudySubscription belonging to the id.
      */
     StudySubscription retrieveStudySubscription(Long id);
-
+    
+    /**
+     * Saves the current changes.
+     * @param workspace - object that needs to be updated.
+     */
+    void saveUserWorkspace(UserWorkspace workspace);
 }
