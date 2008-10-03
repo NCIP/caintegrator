@@ -17,16 +17,18 @@
     </s:url>
 
     <ul class="menu">
-        <li class="stdnav"><div>VASARI</div>
-            <ul>
-                <li><a href="home.html" class="selected">Homepage</a></li>
-                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search VASARI</a></li>
-            </ul>
-        </li>
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
         <s:if test="!#sessionHelper.authenticated">
             <s:action name="workspace"/>
         </s:if>
+        <li class="stdnav"><div><s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li></div>
+            <ul>
+                <s:url id="homePageUrl" action="workspace" />
+                <a href="${ homePageUrl }">Home</a>
+                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
+            </ul>
+        </li>
+        
         <s:if test="#sessionHelper.studyManager">
 	        <li class="stdnav"><div>Study Management</div>
 	            <ul>
