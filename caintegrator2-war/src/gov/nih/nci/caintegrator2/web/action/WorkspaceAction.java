@@ -122,6 +122,8 @@ public class WorkspaceAction extends ActionSupport {
             StudySubscription currentSubscription = workspaceService
                     .retrieveStudySubscription(getCurrentStudySubscriptionId());
             getWorkspaceService().refreshSessionStudySubscription(currentSubscription);
+            workspace.setDefaultSubscription(currentSubscription);
+            workspaceService.saveUserWorkspace(workspace);
             return WORKSPACE_STUDY;
         } else {
             return WORKSPACE_NO_STUDY;
