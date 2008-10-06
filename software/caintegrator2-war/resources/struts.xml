@@ -188,15 +188,8 @@
         
         <action name="manageQuery" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
-        </action>
-        
-        <action name="manageQuery.addCriterionRow" method="addCriterionRow" class="manageQueryAction">
-            <result type="tiles">manageQuery</result>
-        </action> 
-        
-   		<action name="manageQuery.executeQuery" method="executeQuery" class="manageQueryAction">
-            <result type="tiles">viewResults</result>
-        </action>         
+            <result name="error">manageQuery</result>
+        </action>           
                 
         <action name="executeQuery" class="executeQueryAction">
             <result type="tiles">viewResults</result>
