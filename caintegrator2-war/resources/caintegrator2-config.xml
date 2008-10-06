@@ -31,7 +31,7 @@
     </bean>
     
     <bean id="workspaceAction"
-        scope="session"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.WorkspaceAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
