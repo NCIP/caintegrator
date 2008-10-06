@@ -87,29 +87,18 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
 /**
- * Edits a study (new or existing).
+ * Handles the form in which the user constructs, edits and runs a query.
  */
+@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // see execute method
 public class ManageQueryAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
@@ -117,16 +106,16 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
     private DisplayableQueryResult queryResult;
-    private String injectTest = "no";
     private ManageQueryHelper manageQueryHelper;
-    private String doMethod = "";
+    private String selectedAction = "";
     private String selectedRowCriterion = "uninitializedselectedRowCriterion";
     //Struts should automatically populate these arrays from the form element.
     private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
     private String[] selectedOperators; //selected operators for all criterion as a list.
     private String[] selectedValues; //selected values for all criterion as a list.
-    private String basicQueryOperator;
-    private String newQuery = "";
+    private String selectedBasicOperator = "or"; // user selects AND or OR operation for a basic query
+
+
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
@@ -139,16 +128,15 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         Map sessionMap = context.getSession();
         manageQueryHelper = (ManageQueryHelper) sessionMap.get("manageQueryHelper");
         // If a new query is desired, clear the old
-        if ("true".equals(newQuery)) {
+        if ("createNewQuery".equals(selectedAction)) {
             manageQueryHelper = null;
-            this.setNewQuery("false");
         }
         if (manageQueryHelper == null) {
             manageQueryHelper = new ManageQueryHelper();
             manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
             sessionMap.put("manageQueryHelper", manageQueryHelper);
         }
-        // TODO Check current study name against stored study. If different, re-prepopulateAnnotationSelectLists()
+
     }
 
     /**
@@ -158,33 +146,34 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     @Override
     public String execute()  {
         
-//        if ("addRow".equals(doMethod)) {
-//            addCriterionRow();
-//        }
+        // declarations
+        String returnValue = ERROR;
         
-        // declarations and such
-        final Long id;
-        final Query query = new Query();
+        // Save form data
+        saveFormData();
         
-        // obtain Query results
+        // Check which user action is submitted
+
+        if ("addCriterionRow".equals(selectedAction)) {
+            addCriterionRow();
+            returnValue = SUCCESS;
+        } else if ("executeQuery".equals(selectedAction)) {
+            executeQuery();
+            returnValue = SUCCESS;
+        } else if ("saveQuery".equals(selectedAction)) {
+            saveQuery();
+            returnValue = SUCCESS;
+        } else if ("editQuery".equals(selectedAction)) {
+            // call editQuery
+            returnValue = SUCCESS;
+        } else if ("createNewQuery".equals(selectedAction)) {
+            // call new query
+            returnValue = SUCCESS;    
+        } else {
+            returnValue = ERROR; 
+        }     
         
-        //check if test data is requested
-        if (getInjectTest().equals("yes")) {
-            QueryResult result = new QueryResult();
-            //create test results for now
-            id = Long.parseLong("123");
-            result.setId(id);
-            query.setName("cai2 Test Query - basic");
-            query.setDescription("This is test query composed for testing inside the action class");
-            query.setColumnCollection(new ArrayList<ResultColumn>());
-            result.setQuery(query);
-            result.setRowCollection(getTestResultRows());     
-            setQueryResult(new DisplayableQueryResult(result));
-        }
-        
-        // write query result object into the session scope
-        
-        return SUCCESS;
+        return returnValue;
     }
     
     /**
@@ -201,68 +190,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public DisplayableQueryResult getQueryResult() {
         return queryResult;
-    }
-    
-    /**
-     * Struts Setter method for the test injection parameter.
-     * This parameter determines if test values are used for query results.
-     * @param iP the test selection parameter.
-     */
-    public void setInjectTest(String iP) {
-        this.injectTest = iP;
-    }
-    
-    /**
-     * Struts getter method for the test injection parameter.
-     * This parameter determines if test values are used for query results.
-     * @return the test selection parameter.
-     */
-    public String getInjectTest() {
-        return injectTest;
-    }
-    
-    /**
-     * @return resultRows
-     */
-    @SuppressWarnings({ "PMD" }) // suppress warning for this long test method
-    public final Set<ResultRow> getTestResultRows() {
-        //Create dummy results rows
-        Set<ResultRow> resultRows = new HashSet<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
-        ResultValue resultValue1 = new ResultValue();
-        ResultValue resultValue2 = new ResultValue();
-        ResultValue resultValue3 = new ResultValue();
-        ResultColumn resultColumn1 = new ResultColumn();
-        ResultColumn resultColumn2 = new ResultColumn();
-        ResultColumn resultColumn3 = new ResultColumn();
-        AbstractAnnotationValue abstractAnnotationValue1 = new StringAnnotationValue();
-        List<ResultValue> resultValuesCollection1 = new ArrayList<ResultValue>();
-        AnnotationDefinition genderAnnotationDef = new AnnotationDefinition();
-        AnnotationDefinition raceAnnotationDef = new AnnotationDefinition();
-        AnnotationDefinition ageAnnotationDef = new AnnotationDefinition();
-        
-        studySubjectAssignment1.setIdentifier("SubjectID1");
-        row1.setSubjectAssignment(studySubjectAssignment1);
-        genderAnnotationDef.setDisplayName("Gender");
-        resultColumn1.setAnnotationDefinition(genderAnnotationDef);
-        resultValue1.setValue(abstractAnnotationValue1);
-        resultValue1.setColumn(resultColumn1);
-        resultValuesCollection1.add(resultValue1);
-        raceAnnotationDef.setDisplayName("race");
-        resultColumn2.setAnnotationDefinition(raceAnnotationDef);
-        resultValue2.setValue(abstractAnnotationValue1);
-        resultValue2.setColumn(resultColumn2);
-        resultValuesCollection1.add(resultValue2);
-        ageAnnotationDef.setDisplayName("age");
-        resultColumn3.setAnnotationDefinition(ageAnnotationDef);
-        resultValue3.setValue(abstractAnnotationValue1);
-        resultValue3.setColumn(resultColumn3);
-        resultValuesCollection1.add(resultValue3);
-        
-        row1.setValueCollection(resultValuesCollection1);
-        resultRows.add(row1);
-        return resultRows;
     }
     
     /**
@@ -286,24 +213,18 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public String addCriterionRow() {
         
-        manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
-        manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
-        manageQueryHelper.updateSelectedUserValues(getSelectedValues());
-        
-        if ("executeQuery".equals(doMethod)) {
-            executeQuery();
-        }
-        
-        if ("clinical".equals(this.selectedRowCriterion)) { //TODO make clinical a constant
-        //    manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
-        //    manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
-        //    manageQueryHelper.updateSelectedUserValues(getSelectedValues());
+        if ("clinical".equals(this.selectedRowCriterion)) {
             manageQueryHelper.configureClinicalQueryCriterionRow();
         }
-        // TODO handle other criteria
 
         return SUCCESS;
     }
+
+    private void saveFormData() {
+        manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
+        manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
+        manageQueryHelper.updateSelectedUserValues(getSelectedValues());
+    }    
     
     /**
      * Delete a criterion row from the query.
@@ -330,7 +251,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public String executeQuery() {
                 
-        QueryResult result = manageQueryHelper.executeQuery(queryManagementService, basicQueryOperator);
+        QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
         setQueryResult(new DisplayableQueryResult(result));        
 
         return SUCCESS;
@@ -375,20 +296,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      */
     public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
         this.manageQueryHelper = manageQueryHelper;
-    }
-
-    /**
-     * @return the doMethod
-     */
-    public String getDoMethod() {
-        return doMethod;
-    }
-
-    /**
-     * @param doMethod the doMethod to set
-     */
-    public void setDoMethod(String doMethod) {
-        this.doMethod = doMethod;
     }
 
     /**
@@ -466,20 +373,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     }
 
     /**
-     * @return the basicQueryOperator
-     */
-    public String getBasicQueryOperator() {
-        return basicQueryOperator;
-    }
-
-    /**
-     * @param basicQueryOperator the basicQueryOperator to set
-     */
-    public void setBasicQueryOperator(String basicQueryOperator) {
-        this.basicQueryOperator = basicQueryOperator;
-    }
-
-    /**
      * @return the queryManagementService
      */
     public QueryManagementService getQueryManagementService() {
@@ -494,19 +387,31 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     }
 
     /**
-     * @return the newQuery
+     * @return the selectedAction
      */
-    public String getNewQuery() {
-        return newQuery;
+    public String getSelectedAction() {
+        return selectedAction;
     }
 
     /**
-     * @param newQuery the newQuery to set
+     * @param selectedAction the action as selected in the input form
      */
-    public void setNewQuery(String newQuery) {
-        this.newQuery = newQuery;
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
     }
-    
-    // TODO 
-    //public void updateSelections.
+
+    /**
+     * @return the selectedBasicOperator
+     */
+    public String getSelectedBasicOperator() {
+        return selectedBasicOperator;
+    }
+
+    /**
+     * @param selectedBasicOperator the selectedBasicOperator to set
+     */
+    public void setSelectedBasicOperator(String selectedBasicOperator) {
+        this.selectedBasicOperator = selectedBasicOperator;
+    }
+
 }

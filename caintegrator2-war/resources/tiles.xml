@@ -80,9 +80,10 @@
     </definition>
 
     <!-- Query Management pages -->
+
     <definition name="manageQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
-    </definition>
+    </definition> 
     
     <definition name="viewResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
