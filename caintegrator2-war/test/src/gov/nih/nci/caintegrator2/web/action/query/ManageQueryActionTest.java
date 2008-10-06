@@ -88,6 +88,11 @@ package gov.nih.nci.caintegrator2.web.action.query;
 //import gov.nih.nci.caintegrator2.data.StudyHelper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertArrayEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -103,70 +108,120 @@ import com.opensymphony.xwork2.Action;
 public class ManageQueryActionTest {
 
     private ManageQueryAction manageQueryAction;
-    private ManageQueryHelper manageQueryHelper;
     private DisplayableQueryResult qR;
     
     // Study objects
-//    private StudyHelper studyHelper = new StudyHelper();
-//    private Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+
     private StudyManagementService studyManagementService = new StudyManagementServiceImpl();
-//    private StudyConfiguration studyConfiguration = new StudyConfiguration();
-    private String doMethod = "clinical";
     private String selectedRowCriterion = "clinical";
     private QueryManagementService queryManagementService = new QueryManagementServiceImpl();
+    
+    // dummy string array for testing
+    private String [] holdStringArray =  {"testString1","testString2"};
     
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
+        
         qR = DisplayableQueryResultTest.getTestResult();
-        manageQueryAction.setDoMethod(doMethod);
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);
         
-//        studyManagementService.save(studyConfiguration);
-//        manageQueryAction.setStudyManagementService(studyManagementService);
+        ManageQueryHelper manageQueryHelper = new ManageQueryHelper();
+        manageQueryAction.setManageQueryHelper(manageQueryHelper);
+        
+        // the first time the parameter is null so
+        // confirm that the getter method returns an empty array
+        String[] emptyArray = {""};  // test the first time when the array is null
+        assertArrayEquals(emptyArray,manageQueryAction.getSelectedAnnotations());
+        manageQueryAction.setSelectedAnnotations(holdStringArray);
+        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedAnnotations());
+        
+        assertArrayEquals(emptyArray,manageQueryAction.getSelectedOperators());
+        manageQueryAction.setSelectedOperators(holdStringArray);
+        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedOperators());
+        
+        assertArrayEquals(emptyArray,manageQueryAction.getSelectedValues());
+        manageQueryAction.setSelectedValues(holdStringArray);
+        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedValues());
+        
+        manageQueryAction.setSelectedBasicOperator("or");
+        assertEquals("or",manageQueryAction.getSelectedBasicOperator());
+        
+        manageQueryAction.setSelectedRowCriterion("clinical");
+        manageQueryAction.setStudyManagementService(studyManagementService);
+        
+        manageQueryAction.setSelectedAction("");
+        assertEquals("", manageQueryAction.getSelectedAction());    
     }
 
-//    @Test
-//    public void testPrepare() {
-//        manageQueryAction.prepare();
-//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-//        editQueryAction.getModel().setId(1L);
-//        editQueryAction.prepare();
-//        studyConfiguration = editQueryAction.getStudyConfiguration();
-//        assertNotNull(studyManagementServiceStub.getRefreshedStudyEntityCalled);
-//    }
     
     @Test
-    public void testExecute() {       
-        manageQueryAction.setQueryResult(qR);
-        manageQueryAction.getQueryResult();
+    public void testExecute() {
+        
+        // test setup of helper class
+        ManageQueryHelper manageQueryHelper = new ManageQueryHelper();
+        
+        manageQueryAction.setManageQueryHelper(manageQueryHelper);
+        manageQueryHelper = manageQueryAction.getManageQueryHelper();
+        
+        final List<QueryAnnotationCriteria> queryCriteriaRowList = new ArrayList<QueryAnnotationCriteria>();
+        manageQueryHelper.setQueryCriteriaRowList(queryCriteriaRowList);
+        manageQueryHelper.getQueryCriteriaRowList();
+        
+        manageQueryAction.setManageQueryHelper(manageQueryHelper);
+        manageQueryAction.getManageQueryHelper().updateSelectedClinicalValues(holdStringArray);
+        manageQueryAction.getManageQueryHelper().updateSelectedOperatorValues(holdStringArray);
+        manageQueryAction.getManageQueryHelper().updateSelectedUserValues(holdStringArray);
+        
+        // test create new query
+        manageQueryAction.setSelectedAction("createNewQuery");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test - addition of criteria rows
 
-        manageQueryAction.getTestResultRows();
+        // test - addition of row with non-clinical criterion
+        manageQueryAction.setSelectedRowCriterion("notaclinicalrow");
+        assertEquals("notaclinicalrow",manageQueryAction.getSelectedRowCriterion());
+        manageQueryAction.setSelectedAction("addCriterionRow");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test - addition of row with clinical criterion
+        manageQueryAction.setSelectedRowCriterion("clinical");
+        assertEquals("clinical",manageQueryAction.getSelectedRowCriterion());
+        manageQueryAction.setSelectedAction("addCriterionRow");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test edit new query
+        manageQueryAction.setSelectedAction("editQuery");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test execute query
+        //manageQueryAction.setSelectedAction("executeQuery");
+        //assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test save query
+        manageQueryAction.setSelectedAction("saveQuery");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test for invalid action
+        manageQueryAction.setSelectedAction(null);
+        assertEquals(Action.ERROR, manageQueryAction.execute());
+        
+        // misc tests of getters and setters
         manageQueryAction.setStudyManagementService(studyManagementService);
-        manageQueryAction.getStudyManagementService();
-        //assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
+        assertEquals(studyManagementService,manageQueryAction.getStudyManagementService());
+
+        assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
         assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRow());
         assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRowAll());
-        //assertEquals(Action.SUCCESS, manageQueryAction.executeQuery());
         assertEquals(Action.SUCCESS, manageQueryAction.selectColumns());
         assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
         assertEquals(Action.SUCCESS, manageQueryAction.saveQuery());
-        assertEquals(manageQueryHelper, manageQueryAction.getManageQueryHelper());
-        assertNotNull(manageQueryAction.getDoMethod());
-        assertNotNull(manageQueryAction.getSelectedRowCriterion());
         assertNotNull(manageQueryAction.getQueryManagementService());
         
-        manageQueryAction.setInjectTest("yes");
-        assertEquals("yes", manageQueryAction.getInjectTest());
-        manageQueryAction.execute();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        manageQueryAction.setInjectTest("vasari");
-        assertEquals("vasari", manageQueryAction.getInjectTest());
-        manageQueryAction.execute();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());        
-        
+        manageQueryAction.setQueryResult(qR);
+        assertEquals(qR,manageQueryAction.getQueryResult());
     }
 }

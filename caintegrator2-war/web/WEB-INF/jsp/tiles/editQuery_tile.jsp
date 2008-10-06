@@ -9,14 +9,6 @@ pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <!--Search Criteria-->
-
-<script language="JavaScript">
-function submitform()
-{
-	document.addCriterionRowForm.doMethod.value = "executeQuery"
-	document.addCriterionRowForm.submit();
-}
-</script>
     
 <div id="criteria" class="box2">
     
@@ -32,21 +24,15 @@ function submitform()
     <div class="whitebg">
     
 
-    
-
-                     query name: <s:property value="queryResult.getQuery().getName()"/><br>
-                     query description: <s:property value="queryResult.getQuery().getDescription()"/><br>  
-                     <br>
-
             
             <!--Basic Criteria Definition-->
             
             <div id="basic">
                 
-                <s:form action="manageQuery.addCriterionRow" name="addCriterionRowForm">
+                <s:form action="manageQuery" name="manageQueryForm">
 
                 <s:hidden name="manageQueryHelper.advancedView" value="false" />
-				<s:hidden name="doMethod" value="" />
+                <s:hidden name="selectedAction" value="" />
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
@@ -61,7 +47,7 @@ function submitform()
                             </select>
                             
                              <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
-                                <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="add">Add</span></span></s:a></li>
+                                <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.manageQueryForm.selectedAction.value = 'addCriterionRow';document.manageQueryForm.submit();"><span class="btn_img"><span class="add">Add</span></span></s:a></li>
                             </ul>
                         </td>
                     </tr>
@@ -93,31 +79,26 @@ function submitform()
 
                                                                         
                 <div class="tablefooter">
-                    <input type="radio" name="basicQueryOperator" id="basicor1" value="or" checked="checked" /><label for="basicor1" style="font-weight:normal"><strong>OR</strong> Search (match any)</label>
-                    &nbsp;
-                    <input type="radio" name="basicQueryOperator" id="basicand1" value="and"/><label for="basicand1" style="font-weight:normal"><strong>AND</strong> Search (match all)</label>
+                    <s:radio name="selectedBasicOperator" list="{'or','and'}"></s:radio>
                 </div>
 				
 
             
 	            <!--Buttons-->
-	            <s:url id="testUrlId" namespace="" action="manageQuery.executeQuery">
-	            </s:url>
 
 	            <div class="actionsrow">
 	                <del class="btnwrapper">
 	                    <ul class="btnrow">
-	                       <!-- <li><s:a href="#" cssClass="btn" href="%{testUrlId}" onclick="document.addCriterionRowForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li> -->
-						   <li><a href="javascript: submitform()" class="btn"><span class="btn_img"><span class="search">Run Search</span></span></a></li>
+                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
 	                    </ul>   
 	                </del>
 	            </div>
+                
+                <!--/Buttons-->
 			
 				</s:form>
 		
 			</div>
-            
-            <!--/Buttons-->
             
             <!--/Basic Criteria Definition-->
                                                                      

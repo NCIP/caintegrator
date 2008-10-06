@@ -11,20 +11,18 @@
     <!--/Study Logo-->
     
     <!--Menu-->
-    <s:url id="manageQueryUrl" action="manageQuery" includeParams="get">
-        <s:param name="injectTest" value="no" />
-		<s:param name="newQuery" value="true" />
-    </s:url>
+    <s:url id="manageQueryUrl" action="manageQuery" includeParams="all" escapeAmp ="false">
+		<s:param name="selectedAction">createNewQuery</s:param>
+	</s:url>
 
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
         <s:if test="!#sessionHelper.authenticated">
             <s:action name="workspace"/>
         </s:if>
-        <li class="stdnav"><div><s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li></div>
+        <li class="stdnav"><div><s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></div>
             <ul>
-                <s:url id="homePageUrl" action="workspace" />
-                <a href="${ homePageUrl }">Home</a>
+                <li><s:url id="homePageUrl" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
                 <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
             </ul>
         </li>
