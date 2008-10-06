@@ -94,6 +94,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.xml.rpc.ServiceException;
 
 import edu.mit.broad.genepattern.gp.services.Analysis;
@@ -112,7 +114,10 @@ public class GenePatternClient {
     
     private static final String CLIENT_FILENAME_ATTRIBUTE = "client_filename";
     private static final String MODE_ATTRIBUTE = "MODE";
-    private static final String TYPE_ATTRIBUTE = "FILE";
+    private static final String TYPE_ATTRIBUTE = "TYPE";
+    private static final String INPUT_MODE = "IN";
+    private static final String URL_INPUT_MODE = "URL_IN";
+    private static final String FILE_TYPE = "FILE";
     private final Analysis analysis;
     private Map<String, TaskInfo> taskMap;
     
@@ -177,14 +182,47 @@ public class GenePatternClient {
      */
     public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
         TaskInfo taskInfo = getTaskInfo(taskName);
-        HashMap<String, File> files = new HashMap<String, File>();
+        ParameterInfo[] fullJobParameters = getFullJobParameters(parameters, taskInfo);
+        HashMap<String, DataHandler> fileDataHandlers = getFileDataHandlers(fullJobParameters);
         try {
-            return analysis.submitJob(taskInfo.getID(), getFullJobParameters(parameters, taskInfo), files);
+            return analysis.submitJob(taskInfo.getID(), fullJobParameters, fileDataHandlers);
         } catch (WebServiceException e) {
             throw new GenePatternServiceException(e);
         } catch (RemoteException e) {
             throw new GenePatternServiceException(e);
         }
+    }
+
+    private HashMap<String, DataHandler> getFileDataHandlers(ParameterInfo[] parameters) {
+        HashMap<String, DataHandler> handlers = new HashMap<String, DataHandler>();
+        for (ParameterInfo parameter : parameters) {
+            if (isFileParameter(parameter)) {
+                DataHandler handler = getFileDataHandler(parameter);
+                handlers.put(handler.getName(), handler);
+            }
+        }
+        return handlers;
+    }
+
+    @SuppressWarnings("unchecked")  // parameter attributes is untyped
+    private boolean isFileParameter(ParameterInfo parameter) {
+        Map attributes = parameter.getAttributes();
+        return attributes != null
+            && FILE_TYPE.equals(attributes.get(TYPE_ATTRIBUTE))
+            && INPUT_MODE.equals(attributes.get(MODE_ATTRIBUTE));
+    }
+
+    private DataHandler getFileDataHandler(ParameterInfo parameter) {
+        String filePath = parameter.getValue();
+        FileDataSource fileDataSource = new FileDataSource(filePath) {
+            @Override
+            public String getName() {
+                return getFile().getName();
+            }
+        };
+        DataHandler handler = new DataHandler(fileDataSource);
+        parameter.setValue(fileDataSource.getName());
+        return handler;
     }
 
     private ParameterInfo[] getFullJobParameters(List<ParameterInfo> parameters, TaskInfo taskInfo) {
@@ -215,11 +253,11 @@ public class GenePatternClient {
         attributes.put(CLIENT_FILENAME_ATTRIBUTE, parameter.getValue());
         parameter.setInputFile(true);
         if (parameter.getValue() != null && new File(parameter.getValue()).exists()) {
-            attributes.put(TYPE_ATTRIBUTE, "FILE");
-            attributes.put(MODE_ATTRIBUTE, "IN");
+            attributes.put(TYPE_ATTRIBUTE, FILE_TYPE);
+            attributes.put(MODE_ATTRIBUTE, INPUT_MODE);
         } else if (parameter.getValue() != null) {
             attributes.remove(TYPE_ATTRIBUTE);
-            attributes.put(MODE_ATTRIBUTE, "URL_IN");
+            attributes.put(MODE_ATTRIBUTE, URL_INPUT_MODE);
         }
     }
 
