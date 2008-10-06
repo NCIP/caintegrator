@@ -177,7 +177,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * @param workspace saves workspace.
      */
     public void saveUserWorkspace(UserWorkspace workspace) {
-        dao.mergeAndSave(workspace);
+        dao.save(workspace);
     }
 
 }
