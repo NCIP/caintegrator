@@ -111,9 +111,7 @@ public class WorkspaceAction extends ActionSupport {
      * @return forward to workspace.
      */
     public String openWorkspace() {
-        if (getWorkspace() == null) {
-            setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
-        }
+        setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
         if (getCurrentStudySubscriptionId() == null 
             && workspace.getDefaultSubscription() != null) {
             currentStudySubscriptionId = workspace.getDefaultSubscription().getId();

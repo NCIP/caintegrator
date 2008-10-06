@@ -112,13 +112,7 @@ public interface CaIntegrator2Dao {
      * @param persistentObject the object to save.
      */
     void save(Object persistentObject);
-    
-    /**
-     * Merges and Saves the object given.
-     * 
-     * @param persistentObject the object to merge and save.
-     */
-    void mergeAndSave(Object persistentObject);
+
     /**
      * Returns the persistent object with the id given.
      * 
