@@ -53,7 +53,7 @@
                         <s:if test="queryResult.hasImageSeries" >
                             <td>
                                 <s:property value="imageSeries.identifier" />
-                                <a href='<s:property value="nciaLink" />' target="_">View in NCIA</a>
+                                <a href='<s:property value="nciaLink" escape="false"/>' target="_">View in NCIA</a>
                             </td>
                         </s:if>
                         <s:iterator value="values">
