@@ -182,6 +182,7 @@ public class QueryHelper {
         compoundCriterion.setBooleanOperator(booleanOperator);
         
         query = new Query();
+        query.setName(queryName);
         query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
         
