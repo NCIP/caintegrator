@@ -19,7 +19,7 @@
             <input type="button" id="resultsnum" value="Apply" />
         </div>
 
-        <s:form name="resultsForm">
+
         
                  <s:property value="queryResult.getQuery().getDescription()"/><br>  
                  <br>
@@ -99,7 +99,7 @@
         </div>
         
         <!--/Paging-->
-        </s:form>        
+
                                                                                                             
     </div>
 

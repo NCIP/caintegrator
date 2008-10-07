@@ -85,16 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 /**
  * Helper class to store and retrieve clinical annotation definitions, and 
@@ -115,21 +115,7 @@ public class ClinicalAnnotationSelection implements AnnotationSelection {
     // Maps numeric operator display to corresponding NumericComparisonOperatorEnum
     private Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap;
     // Current Study configuration
-    private StudyConfiguration studyConfiguration;
-      
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
+    private StudySubscription studySubscription;
 
     /**
      * Default constructor. 
@@ -310,6 +296,20 @@ public class ClinicalAnnotationSelection implements AnnotationSelection {
         numericAnnotationDisplayOperatorList.add(">=");
         ((ArrayList<String>) numericAnnotationDisplayOperatorList).trimToSize();
         
+    }
+
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
+    }
+
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    public void setStudySubscription(StudySubscription studySubscription) {
+        this.studySubscription = studySubscription;
     }
 
 }

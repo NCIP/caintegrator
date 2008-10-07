@@ -83,7 +83,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.query;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -96,6 +96,7 @@ import org.hibernate.collection.PersistentSet;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
@@ -106,8 +107,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.web.action.query.ClinicalAnnotationSelection;
-import gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria;
 
 
 /**
@@ -126,7 +125,7 @@ public class QueryHelper {
             List<QueryAnnotationCriteria> rowObjList) {
         QueryResult queryResult = null;
                
-        Query query = buildQuery(queryManagementService, rowObjList);
+        Query query = buildQuery(queryManagementService, rowObjList, null, null);
         queryResult = queryManagementService.execute(query);
         
         return queryResult;
@@ -135,14 +134,18 @@ public class QueryHelper {
     /**
      * @param queryManagementService An instance of QueryManagementService.
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
+     * @param queryName The name of the query.
+     * @param queryDescription The description of the query.
      * @return Query An instantiated, populated Query object.
      */
     public Query buildQuery(QueryManagementService queryManagementService,
-            List<QueryAnnotationCriteria> rowObjList) {
+            List<QueryAnnotationCriteria> rowObjList,
+            String queryName,
+            String queryDescription) {
         Query query = null;
         
         if (!advancedView) {
-            query = buildBasicQuery(queryManagementService, rowObjList);
+            query = buildBasicQuery(queryManagementService, rowObjList, queryName, queryDescription);
         }
         // TODO Advanced query
         
@@ -153,11 +156,15 @@ public class QueryHelper {
      * 
      * @param queryManagementService An instance of QueryManagementService.
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
+     * @param queryName The name of the query.
+     * @param queryDescription The description of the query.
      * @return Query An instantiated, populated Query object.
      */
     @SuppressWarnings({ "PMD" })
     public Query buildBasicQuery(QueryManagementService queryManagementService,
-            List<QueryAnnotationCriteria> rowObjList) {
+            List<QueryAnnotationCriteria> rowObjList,
+            String queryName,
+            String queryDescription) {
         Query query = null;
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -175,7 +182,7 @@ public class QueryHelper {
         compoundCriterion.setBooleanOperator(booleanOperator);
         
         query = new Query();
-        query.setName("Test Clinical Query");  // TODO Get name from user?
+        query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
         
         StudySubscription studySubscription = getStudySubscription(queryAnnotationCriteria);
@@ -253,7 +260,7 @@ public class QueryHelper {
         StudySubscription studySubscription = new StudySubscription();    
         ClinicalAnnotationSelection annoHelper = 
             (ClinicalAnnotationSelection) queryAnnotationCriteria.getAnnotationSelections();
-        studySubscription.setStudy(annoHelper.getStudyConfiguration().getStudy());
+        studySubscription.setStudy(annoHelper.getStudySubscription().getStudy());
         
         return studySubscription;
     }
@@ -264,14 +271,10 @@ public class QueryHelper {
         
         ClinicalAnnotationSelection annoHelper = 
             (ClinicalAnnotationSelection) queryAnnotationCriteria.getAnnotationSelections();
-        PersistentSet annoDefs = (PersistentSet) annoHelper.getAnnotationDefinitions();
-        
-        Iterator iter = annoDefs.iterator();
         int i = 0;
-        // TODO Handle user-selected columns
-        while (iter.hasNext()) {
-            AnnotationDefinition annoDef = (AnnotationDefinition) iter.next();
-            
+//        // TODO Handle user-selected columns
+
+        for (AnnotationDefinition annoDef : annoHelper.getAnnotationDefinitions()) {    
             ResultColumn column = new ResultColumn();
             column.setAnnotationDefinition(annoDef);
             column.setColumnIndex(i++);
