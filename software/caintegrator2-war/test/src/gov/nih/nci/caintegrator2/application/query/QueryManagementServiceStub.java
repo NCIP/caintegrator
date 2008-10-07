@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
+import java.util.Collections;
+
 @SuppressWarnings("PMD")
 public class QueryManagementServiceStub implements QueryManagementService {
 
@@ -103,6 +105,9 @@ public class QueryManagementServiceStub implements QueryManagementService {
     
     public QueryResult execute(Query query) {
         executeCalled = true;
+        QR = new QueryResult();
+        QR.setQuery(query);
+        QR.setRowCollection(Collections.EMPTY_SET);
         return QR;
     }
 

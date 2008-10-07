@@ -80,12 +80,16 @@
     </definition>
 
     <!-- Query Management pages -->
-
     <definition name="manageQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
-    </definition> 
-    
+    </definition>
+    <!-- Needs to open up the Search Results tab -->
     <definition name="viewResults" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
+    </definition>
+    
+    <!-- Needs to open up the Save As... tab -->
+    <definition name="saveQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
 

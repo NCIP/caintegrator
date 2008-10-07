@@ -6,17 +6,16 @@
     <div id="savesearch" class="box2" style="display:none;">                                                
                 
         <h2>Save This Search</h2> 
-        
-        <table class="form">
 
+        <table class="form">
         
             <tr>
                 <td class="label"><label for="searchname">Search Name:</label></td>
-                <td class="value"><input type="text" name="searchname" id="searchname" style="width:230px;"/></td>
+                <td class="value"><s:textfield label="Search Name" name="searchName" theme="simple"/></td>
             </tr>
             <tr>
                 <td class="label"><label for="searchdesc">Search Description:</label></td>
-                <td class="value"><textarea rows="2" cols="40" name="searchdesc" id="searchdesc" style="width:250px;"></textarea></td>
+                <td class="value"><s:textarea label="Search Description" name="searchDescription" cols="40" rows="2" theme="simple"/></td>
 
             </tr>
             <tr>
@@ -30,20 +29,19 @@
             </tr>
 
         </table>
-    
-        <!--Buttons-->
         
-        <div class="actionsrow">
-            <del class="btnwrapper">
-                <ul class="btnrow">         
-                    <li><a href="javascript://" class="btn" onclick="this.blur();"><span class="btn_img"><span class="save">Save</span></span></a></li>
-                </ul>   
-            </del>
-
-        </div>
-        
-        <!--Buttons-->
-                                                                
+	        <!--Buttons-->
+	        
+	        <div class="actionsrow">
+	            <del class="btnwrapper">
+	                <ul class="btnrow">         
+	                    <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'saveQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="save">Save</span></span></s:a></li>
+	                </ul>   
+	            </del>
+	
+	        </div>
+	
+	        <!--Buttons-->
     </div>
     
 <!--/Save Search--> 

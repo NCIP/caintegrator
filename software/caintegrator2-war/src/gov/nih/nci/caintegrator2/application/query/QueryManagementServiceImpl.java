@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -94,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 /**
  * Implementation of the QueryManagementService interface.
  */
+@Transactional(propagation = Propagation.REQUIRED)
 public class QueryManagementServiceImpl implements QueryManagementService {
     
     private CaIntegrator2Dao dao;

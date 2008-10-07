@@ -40,9 +40,11 @@
         <!--Tab Box-->
         
         <div id="tabboxwrapper">       
-            <jsp:include page="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
-            <jsp:include page="/WEB-INF/jsp/tiles/showQueryResults_tile.jsp" />
-            <jsp:include page="/WEB-INF/jsp/tiles/saveQuery_tile.jsp" />
+            <s:form action="manageQuery" name="manageQueryForm" theme="simple">
+	            <jsp:include page="/WEB-INF/jsp/tiles/editQuery_tile.jsp" />
+	            <jsp:include page="/WEB-INF/jsp/tiles/showQueryResults_tile.jsp" />
+	            <jsp:include page="/WEB-INF/jsp/tiles/saveQuery_tile.jsp" />
+	        </s:form>
         </div>
         
         <!--/Tab Box-->

@@ -188,7 +188,8 @@
         
         <action name="manageQuery" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
-            <result name="error">manageQuery</result>
+            <result name="input" type="tiles">manageQuery</result>
+            <result name="error" type="tiles">manageQuery</result>
         </action>           
                 
         <action name="executeQuery" class="executeQueryAction">

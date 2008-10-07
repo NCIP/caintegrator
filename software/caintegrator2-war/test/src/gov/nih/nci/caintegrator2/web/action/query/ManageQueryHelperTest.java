@@ -85,30 +85,33 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.DisplayableStudySubscription;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
-//import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertEquals;
 
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-//import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
+import com.opensymphony.xwork2.ActionContext;
 
 
 public class ManageQueryHelperTest {
 
-    private ManageQueryHelper manageQueryHelper = new ManageQueryHelper();
+    private ManageQueryHelper manageQueryHelper;
     //private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
     private List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
@@ -123,6 +126,8 @@ public class ManageQueryHelperTest {
     
     @Before
     public void setUp() {
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        manageQueryHelper = ManageQueryHelper.getInstance();
         manageQueryHelper.setAdvancedView(Boolean.TRUE);
         manageQueryHelper.setQueryCriteriaRowList(rowList);
         manageQueryHelper.setClinicalAnnotationDefinitions(annotationDefinitionSet);
@@ -135,18 +140,16 @@ public class ManageQueryHelperTest {
     @Test
     public void testIt() {        
         assertTrue(manageQueryHelper.isAdvancedView());
-        assertNotNull(manageQueryHelper.getQueryCriteriaRowList());
+        manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteriaImpl());
+        assertEquals(1, manageQueryHelper.getQueryCriteriaRowList().size());
         assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
-        //assertNotNull(manageQueryHelper.getCurrentAnnotationSelections());
         
-        // Below method needs a valid return from SecurityHelper.getCurrentUsername()
-        //assertNotNull(manageQueryHelper.getCurrentStudy(studyManagementService, "Test Study"));
         
-        // to do?
-        //public void prepopulateAnnotationSelectLists(StudyManagementService studyManagementService)
+        manageQueryHelper = ManageQueryHelper.resetSessionInstance();
+        assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());
     }  
     
 }
