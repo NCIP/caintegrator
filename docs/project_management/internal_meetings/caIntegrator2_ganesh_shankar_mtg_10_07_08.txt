@@ -1,0 +1,20 @@
+Notes from Meeting with Ganesh Shankar from Indiana University School of Medicine
+
+Shine and Will talked with Ganesh on 10/7/08
+
+He said he was interested in caIntegrator2, but had several good questions.  He asked about time points,
+such as pre- and post-surgery.
+
+And he wanted to know about saving of results, especially in the case of doing an analysis for publication.
+He wanted a good way of going back to a full query result and validating it.
+
+His biggest concern was about summarization of probesets for a gene.  He said they routinely do this and
+would only consider analyzing data that was a gene-level summary.  We discussed several ways of doing this:
+	
+	1. Store summary data in caArray after pulling out the probeset-level data and calculating it themselves.
+	2. Calculate summary data themselves and then loading it into caIntegrator2 directly (through file?)
+	3. Have caIntegrator2 do the calculations and give the option of using that gene-level data or the
+	   probeset data.
+
+He said he would check to see what sumarization algorithms they usuaully used.  And he would see if he could get
+us some de-identified clinical data.
