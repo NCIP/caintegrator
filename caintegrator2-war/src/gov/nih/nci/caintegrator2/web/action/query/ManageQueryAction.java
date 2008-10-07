@@ -89,9 +89,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
-import java.util.Map;
-
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
@@ -114,55 +111,56 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     private String[] selectedOperators; //selected operators for all criterion as a list.
     private String[] selectedValues; //selected values for all criterion as a list.
     private String selectedBasicOperator = "or"; // user selects AND or OR operation for a basic query
-
+    private String searchName;
+    private String searchDescription;
 
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
      */
-    @SuppressWarnings({ "PMD", "unchecked" })
     public void prepare() {
         // Instantiate/prepopulate manageQueryHelper if necessary
-        ActionContext context = ActionContext.getContext();
-        Map sessionMap = context.getSession();
-        manageQueryHelper = (ManageQueryHelper) sessionMap.get("manageQueryHelper");
-        // If a new query is desired, clear the old
+        manageQueryHelper = ManageQueryHelper.getInstance();
         if ("createNewQuery".equals(selectedAction)) {
-            manageQueryHelper = null;
+            manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         }
-        if (manageQueryHelper == null) {
-            manageQueryHelper = new ManageQueryHelper();
+        if (!manageQueryHelper.isPrepopulated()) {
             manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
-            sessionMap.put("manageQueryHelper", manageQueryHelper);
         }
-
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        saveFormData();
+        // If it's a Save or Execute, and there are no criteria, throw an error.
+        if (("executeQuery".equals(selectedAction) || "saveQuery".equals(selectedAction)) 
+                && manageQueryHelper.getQueryCriteriaRowList().isEmpty()) {
+            addFieldError("searchcriteriaadd1", "No Criterion Added!");
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ "PMD" })
     @Override
+    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking action type.
     public String execute()  {
         
         // declarations
         String returnValue = ERROR;
         
-        // Save form data
-        saveFormData();
-        
         // Check which user action is submitted
 
         if ("addCriterionRow".equals(selectedAction)) {
-            addCriterionRow();
-            returnValue = SUCCESS;
+            returnValue = addCriterionRow();
         } else if ("executeQuery".equals(selectedAction)) {
-            executeQuery();
-            returnValue = SUCCESS;
+            returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
-            saveQuery();
-            returnValue = SUCCESS;
+            returnValue = saveQuery();
         } else if ("editQuery".equals(selectedAction)) {
             // call editQuery
             returnValue = SUCCESS;
@@ -253,7 +251,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
                 
         QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
         setQueryResult(new DisplayableQueryResult(result));        
-
         return SUCCESS;
     }
     
@@ -281,9 +278,10 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * @return the Struts result.
      */
     public String saveQuery() {
+        manageQueryHelper.saveQuery(queryManagementService, selectedBasicOperator, searchName, searchDescription);
         return SUCCESS;
     }
-    
+
     /**
      * @return the manageQueryHelper
      */
@@ -385,7 +383,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
-
+    
     /**
      * @return the selectedAction
      */
@@ -414,4 +412,31 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         this.selectedBasicOperator = selectedBasicOperator;
     }
 
+    /**
+     * @return the searchName
+     */
+    public String getSearchName() {
+        return searchName;
+    }
+
+    /**
+     * @param searchName the searchName to set
+     */
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
+
+    /**
+     * @return the searchDescription
+     */
+    public String getSearchDescription() {
+        return searchDescription;
+    }
+
+    /**
+     * @param searchDescription the searchDescription to set
+     */
+    public void setSearchDescription(String searchDescription) {
+        this.searchDescription = searchDescription;
+    }
 }

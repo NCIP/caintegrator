@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.Collection;
 import java.util.List;
@@ -98,14 +98,14 @@ import java.util.List;
 public interface AnnotationSelection {
     
     /**
-     * @return the studyConfiguration
+     * @return the studySubscription
      */
-    StudyConfiguration getStudyConfiguration();
+    StudySubscription getStudySubscription();
 
     /**
-     * @param studyConfiguration the studyConfiguration to set
+     * @param studySubscription the studySubscription to set
      */
-    void setStudyConfiguration(StudyConfiguration studyConfiguration);
+    void setStudySubscription(StudySubscription studySubscription);
     
     /**
      * 

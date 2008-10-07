@@ -29,8 +29,7 @@ pageEncoding="ISO-8859-1" %>
             
             <div id="basic">
                 
-                <s:form action="manageQuery" name="manageQueryForm">
-
+                
                 <s:hidden name="manageQueryHelper.advancedView" value="false" />
                 <s:hidden name="selectedAction" value="" />
                 
@@ -74,9 +73,6 @@ pageEncoding="ISO-8859-1" %>
                         </tr>
                      </s:else>   
                 </table>
-                
-                
-
                                                                         
                 <div class="tablefooter">
                     <s:radio name="selectedBasicOperator" list="{'or','and'}"></s:radio>
@@ -87,18 +83,18 @@ pageEncoding="ISO-8859-1" %>
 	            <!--Buttons-->
 
 	            <div class="actionsrow">
+	                
 	                <del class="btnwrapper">
 	                    <ul class="btnrow">
                            <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
 	                    </ul>   
 	                </del>
 	            </div>
-                
-                <!--/Buttons-->
 			
-				</s:form>
 		
 			</div>
+            
+            <!--/Buttons-->
             
             <!--/Basic Criteria Definition-->
                                                                      

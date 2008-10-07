@@ -85,25 +85,32 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import gov.nih.nci.caintegrator2.application.query.QueryHelper;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-//import gov.nih.nci.caintegrator2.application.query.SortTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * Helper class for ManageQueryAction.
  */
-public class ManageQueryHelper {
+public final class ManageQueryHelper {
+    /**
+     * String to use to store and retrieve this object from session.
+     */
+    public static final String MANAGE_QUERY_HELPER_STRING = "manageQueryHelper";
+    
     private boolean advancedView = false;
     // The below list contains all the user's query criteria 
     // (one object per row).
@@ -121,14 +128,46 @@ public class ManageQueryHelper {
     //private ImageAnnotationSelection imageAnnotationSelections;
     // The currently selected set of annotations
     //private AnnotationSelection currentAnnotationSelections;
+    private boolean prepopulated;
     
     /**
      * Default constructor.
      */
-    public ManageQueryHelper() {
-        // Default constructor
+    private ManageQueryHelper() {
+        prepopulated = false;
     }
     
+    /**
+     * Singleton method to get the instance off of the sessionMap object or create a new one. 
+     * @return instance of ManageQueryHelper.
+     */
+    public static ManageQueryHelper getInstance() {
+        return retrieveProperInstance(false);
+    }
+    
+    /**
+     * Resets the session's ManageQueryHelper object to new.
+     * @return new instance of ManageQueryHelper.
+     */
+    public static ManageQueryHelper resetSessionInstance() {
+        return retrieveProperInstance(true);
+    }
+    
+    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
+    private static ManageQueryHelper retrieveProperInstance(boolean reset) {
+        if (ActionContext.getContext() != null 
+                && ActionContext.getContext().getSession() != null) {
+            ManageQueryHelper instance =
+                (ManageQueryHelper) ActionContext.getContext().getSession().get(MANAGE_QUERY_HELPER_STRING);
+            if (instance == null || reset) {
+                instance = new ManageQueryHelper();
+                ActionContext.getContext().getSession().put(MANAGE_QUERY_HELPER_STRING, instance);
+            }
+            return instance;
+        } else {
+            throw new IllegalStateException("Not inside of an ActionContext!");
+        }
+    }
     /**
      * @return the advancedView
      */
@@ -229,58 +268,41 @@ public class ManageQueryHelper {
      * @param studyManagementService enables retrieval of a study
      */
     public void prepopulateAnnotationSelectLists(StudyManagementService studyManagementService) {
+        if (SessionHelper.getInstance().getDisplayableStudySubscription() == null) {
+           throw new IllegalStateException("No current StudySubscription is selected on the Session."); 
+        }
         Study study;
-        StudyConfiguration studyConfiguration;
+        StudySubscription studySubscription;
         
         // TODO Use the currently selected study title below
-        studyConfiguration = getCurrentStudyConfiguration(studyManagementService, "Rembrandt/VASARI");
-        study = studyConfiguration.getStudy();
+        studySubscription = studyManagementService.getRefreshedStudyEntity(
+                        SessionHelper.getInstance().getDisplayableStudySubscription().getCurrentStudySubscription());
+        study = studySubscription.getStudy();
         
         // Get all data type annotation field definitions:
         populateClinicalAnnotationDefinitions(study);
         // TODO get sample and imaging
         
         // Instantiate the annotation selection objects:
-        populateAnnotationSelections(studyConfiguration);
+        populateAnnotationSelections(studySubscription);
+        setPrepopulated(true);
     }
     
-    /**
-     * @param studyManagementService the studyManagementService object.
-     * @param studyShortTitle the short title of the study to retrieve.
-     * @return StudyConfiguration the studyConfiguration that wraps the named study.
-     */
-    public StudyConfiguration getCurrentStudyConfiguration(StudyManagementService studyManagementService, 
-            String studyShortTitle) {
-        List<StudyConfiguration> studyConfigurations;
-        
-        studyConfigurations = studyManagementService.getManagedStudies(SecurityHelper.getCurrentUsername());
-        StudyConfiguration sc = null;
-        Iterator<StudyConfiguration> iter = studyConfigurations.iterator();
-        while (iter.hasNext()) {
-            sc = iter.next(); 
-            if ((sc.getStudy().getShortTitleText()).equals(studyShortTitle)) {
-                break;
-            }
-        }
-        
-        return sc;
-    }
-    
-    private void populateAnnotationSelections(StudyConfiguration studyConfiguration) {
-        populateClinicalAnnotationSelections(studyConfiguration);
+    private void populateAnnotationSelections(StudySubscription studySubscription) {
+        populateClinicalAnnotationSelections(studySubscription);
         
         // TODO populate sample and image selection objects
     }
     
     private void populateClinicalAnnotationDefinitions(Study study) {
         Collection<AnnotationDefinition> annoDefs = study.getSubjectAnnotationCollection();
-        // Below should trigger Hibernate lazy loading
+
         if (annoDefs != null && !annoDefs.isEmpty()) {
             clinicalAnnotationDefinitions = annoDefs;
         }
     }
     
-    private void populateClinicalAnnotationSelections(StudyConfiguration studyConfiguration) {
+    private void populateClinicalAnnotationSelections(StudySubscription studySubscription) {
         if (this.clinicalAnnotationSelections == null) {
             this.clinicalAnnotationSelections = new ClinicalAnnotationSelection();
         }
@@ -295,7 +317,7 @@ public class ManageQueryHelper {
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
             // Set the annotation definitions
             clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
-            clinicalAnnotationSelections.setStudyConfiguration(studyConfiguration);
+            clinicalAnnotationSelections.setStudySubscription(studySubscription);
         }
     }
     
@@ -395,6 +417,36 @@ public class ManageQueryHelper {
 //        Query query = buildQuery(rowObjList, basicQueryOperator);
 //        queryResult = queryManagementService.execute(query);
         
+        queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
+                this.getQueryCriteriaRowList());
+        
+        return queryResult;
+    }
+    
+    /**
+     * Saves the query based on the queryCriteriaRowList.
+     * @param queryManagementService - service object to pass to the query helper.
+     * @param basicQueryOperator - String AND or OR.
+     * @param queryName The name of the query.
+     * @param queryDescription The description of the query.
+     * @return - true/false depending on if it gets saved or not.
+     */
+    public boolean saveQuery(QueryManagementService queryManagementService, 
+                             String basicQueryOperator,
+                             String queryName, 
+                             String queryDescription) {
+        
+        Query query = createQueryHelper(basicQueryOperator).buildQuery(queryManagementService,
+                getQueryCriteriaRowList(), queryName, queryDescription);
+        if (query != null) {
+            query.setResultType(ResultTypeEnum.CLINICAL.getValue()); // TODO Do Genomic result type as well.
+            queryManagementService.save(query);
+            return true;
+        }
+        return false;
+    }
+    
+    private QueryHelper createQueryHelper(String basicQueryOperator) {
         QueryHelper queryHelper = new QueryHelper();
         queryHelper.setAdvancedView(advancedView);
         if (basicQueryOperator == null || basicQueryOperator.equals("")) {
@@ -403,10 +455,21 @@ public class ManageQueryHelper {
         } else {
             queryHelper.setBasicQueryOperator(basicQueryOperator);
         }
-        
-        queryResult = queryHelper.executeQuery(queryManagementService, this.getQueryCriteriaRowList());
-        
-        return queryResult;
+        return queryHelper;
+    }
+
+    /**
+     * @return the prepopulated
+     */
+    public boolean isPrepopulated() {
+        return prepopulated;
+    }
+
+    /**
+     * @param prepopulated the prepopulated to set
+     */
+    public void setPrepopulated(boolean prepopulated) {
+        this.prepopulated = prepopulated;
     }
     
 }
