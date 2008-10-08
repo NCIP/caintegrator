@@ -87,21 +87,50 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.util.List;
 
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import edu.mit.broad.genepattern.gp.services.TaskInfo;
 
 /**
- * Interface to analysis functionality.
+ * 
  */
-public interface AnalysisService {
-    
+public class GenePatternClientStub implements GenePatternClient {
+
     /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * {@inheritDoc}
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
-    
+    public TaskInfo getTaskInfo(String name) throws GenePatternServiceException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public TaskInfo[] getTasks() throws GenePatternServiceException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setUrl(String url) {
+        // no-op
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setUsername(String username) {
+        // no-op
+    }
+
 }

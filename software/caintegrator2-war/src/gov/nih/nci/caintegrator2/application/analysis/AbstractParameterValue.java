@@ -85,23 +85,36 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.List;
-
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import java.io.Serializable;
 
 /**
- * Interface to analysis functionality.
+ * Base class for parameter values.
  */
-public interface AnalysisService {
+public abstract class AbstractParameterValue implements Serializable {
     
+    private AnalysisParameter parameter;
+
     /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * Instantiates a new instance.
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
-    
+    protected AbstractParameterValue() {
+        super();
+    }
+
+    /**
+     * @return the parameter
+     */
+    public AnalysisParameter getParameter() {
+        return parameter;
+    }
+
+    /**
+     * @param parameter the parameter to set
+     */
+    public void setParameter(AnalysisParameter parameter) {
+        this.parameter = parameter;
+    }
+
+    abstract void setValueFromString(String stringValue);
+
 }
