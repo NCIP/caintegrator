@@ -35,6 +35,9 @@ pageEncoding="ISO-8859-1" %>
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
+	                <tr>
+	                <s:actionerror/>
+	                </tr>
                     <tr>
                         <td colspan="4" class="tableheader">
                             <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
