@@ -67,8 +67,8 @@
                         </li>
                         <li><a href="#">My Queries</a>
                             <ul>
-                                <li><a href='/caintegrator2/executeQuery.action?queryName=simple' class="queries">Disease = Astrocytoma</a></li>
-                                <li><a href='/caintegrator2/executeQuery.action?queryName=image' class="queries">Image Series Query</a></li>
+                                <li><a href='/caintegrator2/executeQuery.action?queryName=simple#searchresults' class="queries">Disease = Astrocytoma</a></li>
+                                <li><a href='/caintegrator2/executeQuery.action?queryName=image#searchresults' class="queries">Image Series Query</a></li>
                                 <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->
                             </ul>
                         </li>
