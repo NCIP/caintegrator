@@ -103,6 +103,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
         saveCalled = true;
     }
     
+    @SuppressWarnings("unchecked")
     public QueryResult execute(Query query) {
         executeCalled = true;
         QR = new QueryResult();
