@@ -87,7 +87,11 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -136,10 +140,39 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     @Override
     public void validate() {
         saveFormData();
-        // If it's a Save or Execute, and there are no criteria, throw an error.
-        if (("executeQuery".equals(selectedAction) || "saveQuery".equals(selectedAction)) 
-                && manageQueryHelper.getQueryCriteriaRowList().isEmpty()) {
-            addFieldError("searchcriteriaadd1", "No Criterion Added!");
+        if ("executeQuery".equals(selectedAction)) {
+            validateExecuteQuery(); 
+        }
+            
+        if ("saveQuery".equals(selectedAction)) {
+            validateSaveQuery();
+        }
+            
+    }
+    
+    private void validateExecuteQuery() {
+        validateHasCriterion();
+    }
+    
+    private void validateSaveQuery() {
+        validateHasCriterion();
+        // Need to see if there's non-space characters in the saved name.
+        if (StringUtils.isEmpty(searchName)) {
+            addActionError("Must have a name for your query");
+        } else {
+            for (Query query : SessionHelper.getInstance().getDisplayableStudySubscription().getQueryCollection()) {
+                if (searchName.equals(query.getName())) {
+                    addActionError("There is already a query named " + searchName
+                            + ", either delete that one, or use a different name.");
+                    break;
+                }
+            }
+        }
+    }
+    
+    private void validateHasCriterion() {
+        if (manageQueryHelper.getQueryCriteriaRowList().isEmpty()) {
+            addActionError("No Criterion Added, must have Criteria to Search or Save a Query.");
         }
     }
 
