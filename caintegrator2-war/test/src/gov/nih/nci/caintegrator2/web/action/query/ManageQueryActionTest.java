@@ -162,6 +162,7 @@ public class ManageQueryActionTest {
         
     }
 
+    @SuppressWarnings("unchecked")
     private void setupSession() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SessionHelper sessionHelper = SessionHelper.getInstance();
