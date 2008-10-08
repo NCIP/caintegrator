@@ -85,23 +85,113 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.List;
-
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import java.io.Serializable;
 
 /**
- * Interface to analysis functionality.
+ * A parameter belonging to an analysis method.
  */
-public interface AnalysisService {
+public class AnalysisParameter implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    private String name;
+    private String description;
+    private boolean required;
+    private AnalysisParameterType type;
+    private AbstractParameterValue defaultValue;
     
     /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * @return the name
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
+    public String getName() {
+        return name;
+    }
     
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * @return the required
+     */
+    public boolean isRequired() {
+        return required;
+    }
+    
+    /**
+     * @param required the required to set
+     */
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+    
+    /**
+     * @return the type
+     */
+    public AnalysisParameterType getType() {
+        return type;
+    }
+    
+    /**
+     * @param type the type to set
+     */
+    public void setType(AnalysisParameterType type) {
+        this.type = type;
+    }
+    
+    /**
+     * @return the defaultValue
+     */
+    public AbstractParameterValue getDefaultValue() {
+        return defaultValue;
+    }
+    
+    /**
+     * @param defaultValue the defaultValue to set
+     */
+    public void setDefaultValue(AbstractParameterValue defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    /**
+     * Creates a value instance that corresponds to the parameter.
+     * 
+     * @return the value.
+     */
+    public AbstractParameterValue createValue() {
+        AbstractParameterValue value;
+        switch (getType()) {
+        case INTEGER:
+            value = new IntegerParameterValue();
+            break;
+        case STRING:
+            value = new StringParameterValue();
+            break;
+        case FLOAT:
+        case GENOMIC_DATA:
+        case SAMPLE_CLASSIFICATION:
+        default:
+            throw new IllegalStateException("Unsupported parameter type: " + getType());
+        }
+        value.setParameter(this);
+        return value;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

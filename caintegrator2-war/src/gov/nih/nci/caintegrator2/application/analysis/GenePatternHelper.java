@@ -85,23 +85,130 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.List;
-
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
- * Interface to analysis functionality.
+ * Provides methods for working with GenePattern.
  */
-public interface AnalysisService {
+@SuppressWarnings("PMD.CyclomaticComplexity")   // switch-like statement
+class GenePatternHelper {
+
+    private static final String TYPE_ATTRIBUTE = "type";
+    private static final String STRING_TYPE = "java.lang.String";
+    private static final String INTEGER_TYPE = "java.lang.Integer";
+    private static final String PASSWORD_TYPE = "PASSWORD";
+    private static final String FLOAT_TYPE = "java.lang.Float";
+    private static final String FILE_TYPE = "java.io.File";
+    private static final String GENE_CLUSTER_TEXT_EXTENSION = "gct";
+    private static final String CLASS_EXTENSION = "cls";
+    private static final String FILE_FORMAT_ATTRIBUTE = "fileFormat";
+    private static final String OPTIONAL_ON = "on";
+    private static final String OPTIONAL_ATTRIBUTE = "optional";
     
-    /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
-     */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
+    List<AnalysisMethod> getMethods(GenePatternClient client, ServerConnectionProfile server) 
+    throws GenePatternServiceException {
+        client.setUrl(server.getUrl());
+        client.setUrl(server.getUsername());
+        TaskInfo[] allTasks = client.getTasks();
+        List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
+        for (TaskInfo task : allTasks) {
+            if (isSupportedTask(task)) {
+                methods.add(convert(task));
+            }
+        }
+        return methods;
+    }
+
+    private boolean isSupportedTask(TaskInfo task) {
+        int gctParameterCount = 0;
+        int clsParameterCount = 0;
+        for (ParameterInfo parameterInfo : task.getParameterInfoArray()) {
+            if (isInputFileParameter(parameterInfo)) {
+                if (getFileFormats(parameterInfo).contains(GENE_CLUSTER_TEXT_EXTENSION)) {
+                    gctParameterCount++;
+                    break;
+                } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION)) {
+                    clsParameterCount++;
+                    break;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return gctParameterCount == 1 && clsParameterCount <= 1;
+    }
     
+    private Set<String> getFileFormats(ParameterInfo parameterInfo) {
+        String fileFormatValue = getAttributeValue(parameterInfo, FILE_FORMAT_ATTRIBUTE);
+        Set<String> formats = new HashSet<String>();
+        formats.addAll(Arrays.asList(fileFormatValue.split(";")));
+        return formats;
+    }
+
+    private boolean isInputFileParameter(ParameterInfo parameterInfo) {
+        return FILE_TYPE.equals(getAttributeValue(parameterInfo, TYPE_ATTRIBUTE));
+    }
+
+    private AnalysisMethod convert(TaskInfo task) {
+        AnalysisMethod method = new AnalysisMethod();
+        method.setServiceType(AnalysisServiceType.GENEPATTERN);
+        method.setName(task.getName());
+        method.setDescription(task.getDescription());
+        for (ParameterInfo parameterInfo : task.getParameterInfoArray()) {
+            method.getParameters().add(convert(parameterInfo));
+        }
+        return method;
+    }
+
+    private AnalysisParameter convert(ParameterInfo parameterInfo) {
+        AnalysisParameter parameter = new AnalysisParameter();
+        parameter.setName(parameterInfo.getName());
+        parameter.setDescription(parameterInfo.getDescription());
+        parameter.setType(getType(parameterInfo));
+        parameter.setRequired(!OPTIONAL_ON.equalsIgnoreCase(getAttributeValue(parameterInfo, OPTIONAL_ATTRIBUTE)));
+        if (!StringUtils.isBlank(parameterInfo.getDefaultValue())) {
+            parameter.setDefaultValue(parameter.createValue());
+            parameter.getDefaultValue().setValueFromString(parameterInfo.getDefaultValue());
+        }
+        return parameter;
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch-like statement
+    private AnalysisParameterType getType(ParameterInfo parameterInfo) {
+        String genePatternType = getAttributeValue(parameterInfo, TYPE_ATTRIBUTE);
+        if (STRING_TYPE.equals(genePatternType)) {
+            return AnalysisParameterType.STRING;
+        } else if (INTEGER_TYPE.equals(genePatternType)) {
+            return AnalysisParameterType.INTEGER;
+        } else if (PASSWORD_TYPE.equals(genePatternType)) {
+            return AnalysisParameterType.STRING;
+        } else if (FLOAT_TYPE.equals(genePatternType)) {
+            return AnalysisParameterType.FLOAT;
+        } else if (isInputFileParameter(parameterInfo) 
+                && getFileFormats(parameterInfo).contains(GENE_CLUSTER_TEXT_EXTENSION)) {
+            return AnalysisParameterType.GENOMIC_DATA;
+        } else if (isInputFileParameter(parameterInfo) 
+                && getFileFormats(parameterInfo).contains(CLASS_EXTENSION)) {
+            return AnalysisParameterType.SAMPLE_CLASSIFICATION;
+        } else {
+            throw new IllegalArgumentException("Unsupported GenePattern parameter type " + genePatternType);
+        }
+    }
+
+    private String getAttributeValue(ParameterInfo parameterInfo, String attributeName) {
+        return (String) parameterInfo.getAttributes().get(attributeName);
+    }
+
 }

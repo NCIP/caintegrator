@@ -85,23 +85,34 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.List;
-
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
 /**
- * Interface to analysis functionality.
+ * Parameter type.
  */
-public interface AnalysisService {
+public enum AnalysisParameterType {
+
+    /**
+     * Float.
+     */
+    FLOAT,
+
+    /**
+     * Integer.
+     */
+    INTEGER,
+
+    /**
+     * String.
+     */
+    STRING,
+
+    /**
+     * <code>GenomicDataResultSet</code>.
+     */
+    GENOMIC_DATA, 
     
     /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * Groups samples in <code>GENOMIC_DATA</code>.
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
+    SAMPLE_CLASSIFICATION;
     
 }

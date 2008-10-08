@@ -85,23 +85,112 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-/**
- * Interface to analysis functionality.
- */
-public interface AnalysisService {
+import org.junit.Before;
+import org.junit.Test;
+
+public class AnalysisServiceTest {
+
+    private AnalysisService service;
     
-    /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
-     */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
-    
+    @Before
+    public void setUp() {
+        AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
+        serviceImpl.setGenePatternClient(new TestGenePatternClientStub()); 
+        service = serviceImpl;
+    }
+
+    @Test
+    public void testGetGenePatternMethods() throws GenePatternServiceException {
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        List<AnalysisMethod> methods = service.getGenePatternMethods(server);
+        assertEquals(2, methods.size());
+        assertEquals(AnalysisServiceType.GENEPATTERN, methods.get(0).getServiceType());
+        assertEquals("task1", methods.get(0).getName());
+        assertEquals("description1", methods.get(0).getDescription());
+        assertEquals(3, methods.get(0).getParameters().size());
+        assertEquals("parameter1", methods.get(0).getParameters().get(0).getName());
+        assertEquals(true, methods.get(0).getParameters().get(0).isRequired());
+        assertEquals(false, methods.get(0).getParameters().get(1).isRequired());
+        assertEquals(AnalysisParameterType.STRING, methods.get(0).getParameters().get(0).getType());
+        IntegerParameterValue value = (IntegerParameterValue) methods.get(0).getParameters().get(2).getDefaultValue();
+        assertEquals(methods.get(0).getParameters().get(2), value.getParameter());
+        assertEquals(Integer.valueOf(3), value.getValue());
+    }
+
+    private final class TestGenePatternClientStub extends GenePatternClientStub {
+
+        @SuppressWarnings("unchecked")
+        public TaskInfo[] getTasks() throws GenePatternServiceException {
+            TaskInfo[] tasks = new TaskInfo[3];
+            tasks[0] = new TaskInfo();
+            tasks[0].setName("task1");
+            tasks[0].setDescription("description1");
+            tasks[0].setParameterInfoArray(new ParameterInfo[3]);
+            tasks[0].getParameterInfoArray()[0] = new ParameterInfo();
+            tasks[0].getParameterInfoArray()[0].setName("parameter1");
+            tasks[0].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+            tasks[0].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
+            tasks[0].getParameterInfoArray()[0].getAttributes().put("optional", "");
+            tasks[0].getParameterInfoArray()[0].setDefaultValue("default");
+            
+
+            tasks[0].getParameterInfoArray()[1] = new ParameterInfo();
+            tasks[0].getParameterInfoArray()[1].setName("parameter2");
+            tasks[0].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+            tasks[0].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+            tasks[0].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
+            tasks[0].getParameterInfoArray()[1].getAttributes().put("optional", "on");
+
+            tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
+            tasks[0].getParameterInfoArray()[2].setName("parameter3");
+            tasks[0].getParameterInfoArray()[2].setDefaultValue("3");
+            tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
+            tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
+
+            tasks[1] = new TaskInfo();
+            tasks[1].setName("task2");
+            tasks[1].setDescription("description2");
+            tasks[1].setParameterInfoArray(new ParameterInfo[1]);
+            tasks[1].getParameterInfoArray()[0] = new ParameterInfo();
+            tasks[1].getParameterInfoArray()[0].setName("parameter1");
+            tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+            tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
+            
+            tasks[2] = new TaskInfo();
+            tasks[2].setName("task3");
+            tasks[2].setDescription("description3");
+            tasks[2].setParameterInfoArray(new ParameterInfo[3]);
+            tasks[2].getParameterInfoArray()[0] = new ParameterInfo();
+            tasks[2].getParameterInfoArray()[0].setName("parameter1");
+            tasks[2].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
+            tasks[2].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.Float");
+
+            tasks[2].getParameterInfoArray()[1] = new ParameterInfo();
+            tasks[2].getParameterInfoArray()[1].setName("parameter2");
+            tasks[2].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+            tasks[2].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+            tasks[2].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
+
+            tasks[2].getParameterInfoArray()[2] = new ParameterInfo();
+            tasks[2].getParameterInfoArray()[2].setName("parameter3");
+            tasks[2].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
+            tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
+            tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
+
+            return tasks;
+        }
+
+
+    }
+
 }

@@ -85,23 +85,39 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.List;
-
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.List;
+
 /**
- * Interface to analysis functionality.
+ * Implementation of the AnalysisService subsystem.
  */
-public interface AnalysisService {
+public class AnalysisServiceImpl implements AnalysisService {
     
+    private GenePatternClient genePatternClient;
+
     /**
-     * Returns a list of GenePattern analysis tasks that may be run.
-     * 
-     * @param server the gene pattern server.
-     * @return the list of available tasks
-     * @throws GenePatternServiceException if the service couldn't be reached.
+     * {@inheritDoc}
      */
-    List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
-    
+    public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
+            throws GenePatternServiceException {
+        return new GenePatternHelper().getMethods(getGenePatternClient(), server);
+    }
+
+    /**
+     * @return the genePatternClient
+     */
+    public GenePatternClient getGenePatternClient() {
+        return genePatternClient;
+    }
+
+    /**
+     * @param genePatternClient the genePatternClient to set
+     */
+    public void setGenePatternClient(GenePatternClient genePatternClient) {
+        this.genePatternClient = genePatternClient;
+    }
+
 }
