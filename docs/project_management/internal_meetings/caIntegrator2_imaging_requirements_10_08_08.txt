@@ -1,0 +1,36 @@
+Notes from VASARI/NCIA Meeting on 10/8/08
+
+Attending were JP Marple, Shine Jacob, Carl Jaffe, John Freymann, Adam Flanders and Daniel Rubin.
+
+This was a very useful and wide-ranging discussion.  We showed the way that we currently link to a page in NCIA
+that shows a particular image (for now the first one) in an image series.  We discussed that this could be used to go
+to a single representative image from a series if needed.
+
+John Freymann showed us the Cine mode capability of NCIA which allows a smoother way to go through all the images in 
+a series by sliding a pointer or clicking on back-and-forth arrows.  He said it woukd be possible to change it so that
+it went directly to a specified image in the series.
+
+We talked about how the imaging features that radiologist identifies and records can be associated with a one or more
+images, from one or more image series.  This is a way to record what actual images they looked at to come up with the
+value for the feature.  This being so, it's possible that for each feature there might be different key image(s) from
+different image series(s).
+
+It was suggested that the AIM format was best place to store these lists of images associated with each feature.  It 
+sounded like the mechanisms for recording and storing that data were still being thought about.
+
+We then discussed how to show images in caIntegrator2.  A useful model was that you would query a certain subset of the
+subjects based on clinical parameters and genomic parameters ('everyone under age 40 with a tumor has high expression
+levels for genes in pathway X') and then see the clinical data for those subjects, the gene expression data for those
+genes, and the images from those subjects, all in a table so they could be browsed.
+
+Also discussed was the need to figure out how and when a JPEG was appropriate and when a full-resolution image was
+needed.
+
+Daniel showed us an app for searching and browsing ROI's (regions of interest) along with the image annotations for
+the images.  At http://rufus.stanford.edu.  He also mentioned WADO (Web Access to DICOM Persistent Objects) Service
+which is a web service to access DICOM images.
+
+Daniel and John expressed interest in knowing more about how caIntegrator2 works under the hood.  What data it pulls 
+from  different sources at deploy study time and which it queries as needed later as users access it?  How it stores
+data for multiple studies?
+
