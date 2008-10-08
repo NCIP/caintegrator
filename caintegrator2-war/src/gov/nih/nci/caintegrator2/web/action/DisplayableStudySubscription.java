@@ -105,7 +105,11 @@ public class DisplayableStudySubscription {
      * @param studySubscription - object to update on.
      */
     public void refreshSelectedStudy(StudySubscription studySubscription) {
-        setQueryCollection(studySubscription.getQueryCollection());
+        // If-Check is for hibernate lazy loading, we want to actually populate the queryCollection.
+        if (studySubscription.getQueryCollection() != null 
+            && !studySubscription.getQueryCollection().isEmpty()) {
+            setQueryCollection(studySubscription.getQueryCollection());
+        }
         setCurrentStudySubscription(studySubscription);
     }
 

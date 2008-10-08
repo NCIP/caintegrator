@@ -186,7 +186,7 @@ public class QueryHelper {
         query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
         
-        StudySubscription studySubscription = getStudySubscription(queryAnnotationCriteria);
+        StudySubscription studySubscription = queryAnnotationCriteria.getAnnotationSelections().getStudySubscription();
         query.setSubscription(studySubscription);
 
         Collection<ResultColumn> columnCollection = getClinicalColumnCollection(queryAnnotationCriteria);
@@ -256,15 +256,7 @@ public class QueryHelper {
         
         return annoDef;
     }
-    
-    private StudySubscription getStudySubscription(QueryAnnotationCriteria queryAnnotationCriteria) {
-        StudySubscription studySubscription = new StudySubscription();    
-        ClinicalAnnotationSelection annoHelper = 
-            (ClinicalAnnotationSelection) queryAnnotationCriteria.getAnnotationSelections();
-        studySubscription.setStudy(annoHelper.getStudySubscription().getStudy());
-        
-        return studySubscription;
-    }
+
     
     @SuppressWarnings({ "PMD", "unchecked" })
     private Collection<ResultColumn> getClinicalColumnCollection(QueryAnnotationCriteria queryAnnotationCriteria) {
