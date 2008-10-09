@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -112,22 +114,12 @@ public final class ManageQueryHelper {
     public static final String MANAGE_QUERY_HELPER_STRING = "manageQueryHelper";
     
     private boolean advancedView = false;
-    // The below list contains all the user's query criteria 
-    // (one object per row).
     private List<QueryAnnotationCriteria> queryCriteriaRowList;
-    // The first three Collections below store data type specific
-    // annotation definitions as stored in the DB.
     private Collection<AnnotationDefinition> clinicalAnnotationDefinitions;
     private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
     private Collection<AnnotationDefinition> imageAnnotationDefinitions;
-    // The objects below store annotation specific presentation-facing and 
-    // query building data:
-    private ClinicalAnnotationSelection clinicalAnnotationSelections;
-    // TODO Code the classes below
-    //private SampleAnnotationSelection sampleAnnotationSelections;
-    //private ImageAnnotationSelection imageAnnotationSelections;
-    // The currently selected set of annotations
-    //private AnnotationSelection currentAnnotationSelections;
+    private AnnotationSelection clinicalAnnotationSelections;
+    private AnnotationSelection imageSeriesAnnotationSelections;
     private boolean prepopulated;
     
     /**
@@ -252,14 +244,14 @@ public final class ManageQueryHelper {
     /**
      * @return the clinicalAnnotationSelections
      */
-    public ClinicalAnnotationSelection getClinicalAnnotationSelections() {
+    public AnnotationSelection getClinicalAnnotationSelections() {
         return clinicalAnnotationSelections;
     }
 
     /**
      * @param clinicalAnnotationSelections the clinicalAnnotationSelections to set
      */
-    public void setClinicalAnnotationSelections(ClinicalAnnotationSelection clinicalAnnotationSelections) {
+    public void setClinicalAnnotationSelections(AnnotationSelection clinicalAnnotationSelections) {
         this.clinicalAnnotationSelections = clinicalAnnotationSelections;
     }
     
@@ -281,7 +273,9 @@ public final class ManageQueryHelper {
         
         // Get all data type annotation field definitions:
         populateClinicalAnnotationDefinitions(study);
-        // TODO get sample and imaging
+        populateImageSeriesAnnotationDefinitions(study);
+        populateSampleAnnotationDefinitions(study);
+        // TODO get sample
         
         // Instantiate the annotation selection objects:
         populateAnnotationSelections(studySubscription);
@@ -290,8 +284,8 @@ public final class ManageQueryHelper {
     
     private void populateAnnotationSelections(StudySubscription studySubscription) {
         populateClinicalAnnotationSelections(studySubscription);
-        
-        // TODO populate sample and image selection objects
+        populateImageSeriesAnnotationSelections(studySubscription);
+
     }
     
     private void populateClinicalAnnotationDefinitions(Study study) {
@@ -302,58 +296,94 @@ public final class ManageQueryHelper {
         }
     }
     
+    private void populateImageSeriesAnnotationDefinitions(Study study) {
+        Collection<AnnotationDefinition> annoDefs = study.getImageSeriesAnnotationCollection();
+
+        if (annoDefs != null && !annoDefs.isEmpty()) {
+            imageAnnotationDefinitions = annoDefs;
+        }
+    }
+    
+    private void populateSampleAnnotationDefinitions(Study study) {
+        Collection<AnnotationDefinition> annoDefs = study.getSampleAnnotationCollection();
+
+        if (annoDefs != null && !annoDefs.isEmpty()) {
+            sampleAnnotationDefinitions = annoDefs;
+        }
+    }
+    
     private void populateClinicalAnnotationSelections(StudySubscription studySubscription) {
         if (this.clinicalAnnotationSelections == null) {
-            this.clinicalAnnotationSelections = new ClinicalAnnotationSelection();
+            this.clinicalAnnotationSelections = new AnnotationSelection();
         }
         if (clinicalAnnotationDefinitions != null && !clinicalAnnotationDefinitions.isEmpty()) {
-            ArrayList<String> annotationSelections = new ArrayList<String>(10);
-            Iterator<AnnotationDefinition> annoDefsIter = clinicalAnnotationDefinitions.iterator();
-            while (annoDefsIter.hasNext()) {
-                annotationSelections.add(annoDefsIter.next().getDisplayName());
-            }
-            annotationSelections.trimToSize();
-            // Set the annotation display selection list
+            List<String> annotationSelections = getDefinitionDisplayNames(clinicalAnnotationDefinitions);
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
-            // Set the annotation definitions
             clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
             clinicalAnnotationSelections.setStudySubscription(studySubscription);
         }
     }
     
+    private void populateImageSeriesAnnotationSelections(StudySubscription studySubscription) {
+        if (this.imageSeriesAnnotationSelections == null) {
+            this.imageSeriesAnnotationSelections = new AnnotationSelection();
+        }
+        if (imageAnnotationDefinitions != null && !imageAnnotationDefinitions.isEmpty()) {
+            List<String> annotationSelections = getDefinitionDisplayNames(imageAnnotationDefinitions);
+            imageSeriesAnnotationSelections.setAnnotationSelections(annotationSelections);
+            imageSeriesAnnotationSelections.setAnnotationDefinitions(imageAnnotationDefinitions);
+            imageSeriesAnnotationSelections.setStudySubscription(studySubscription);
+        }
+    }
+    
+    private List<String> getDefinitionDisplayNames(Collection<AnnotationDefinition> annotationDefinitions) {
+        List<String> annotationSelections = new ArrayList<String>();
+        for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+            annotationSelections.add(annotationDefinition.getDisplayName());
+        }
+        return annotationSelections;
+    }
     /**
      * Configures clinical row.
+     * @return true/false depending on if there's anything to add (any clinical data for study).
      */
-    public void configureClinicalQueryCriterionRow() {
-        //this.setCurrentAnnotationSelections(this.getClinicalAnnotationSelections());
-        // Add new query criteria row to queryCriteriaRowList
-        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteriaImpl();
-        //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
+    public boolean configureClinicalQueryCriterionRow() {
+        if (getClinicalAnnotationSelections() == null 
+             || getClinicalAnnotationSelections().getAnnotationDefinitions().isEmpty()) {
+            return false;
+        }
+        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
         queryAnnotationCriteria.setAnnotationValue("");
-        queryAnnotationCriteria.setRowType("clinical"); //TODO make clinical a constant
-        queryAnnotationCriteria.setRowLable("Clinical");
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT); //TODO make clinical a constant
+        queryAnnotationCriteria.setRowLabel("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
+        return true;
     }
-
+    
     /**
-     * @return the currentAnnotationSelections
+     * Configures image series row.
+     * @return true/false depending on if there's anything to add (any image series data for study).
      */
-//    public AnnotationSelection getCurrentAnnotationSelections() {
-//        return currentAnnotationSelections;
-//    }
-
-    /**
-     * @param currentAnnotationSelections the currentAnnotationSelections to set
-     */
-//    public void setCurrentAnnotationSelections(AnnotationSelection currentAnnotationSelections) {
-//        this.currentAnnotationSelections = currentAnnotationSelections;
-//    }
+    public boolean configureImageSeriesQueryCriterionRow() {
+        if (getImageSeriesAnnotationSelections() == null 
+                || getImageSeriesAnnotationSelections().getAnnotationDefinitions().isEmpty()) {
+               return false;
+           }
+        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
+        //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationValue("");
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES); //TODO make clinical a constant
+        queryAnnotationCriteria.setRowLabel("Image");
+        this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
+        return true;
+    }
     
     /**
      * @param selectedValues The array of values to be added.
      */
-    public void updateSelectedClinicalValues(String[] selectedValues) {
+    public void updateSelectedValues(String[] selectedValues) {
 
         QueryAnnotationCriteria tempAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
@@ -411,12 +441,7 @@ public final class ManageQueryHelper {
      */
     public QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
         QueryResult queryResult = null;
-        
-        // Temporarily create a dummy queryCriteriaRowList
-//        List<QueryAnnotationCriteria> rowObjList = createDummyClinicalQueryCriteria();  
-//        Query query = buildQuery(rowObjList, basicQueryOperator);
-//        queryResult = queryManagementService.execute(query);
-        
+
         queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
                 this.getQueryCriteriaRowList());
         
@@ -439,7 +464,7 @@ public final class ManageQueryHelper {
         Query query = createQueryHelper(basicQueryOperator).buildQuery(queryManagementService,
                 getQueryCriteriaRowList(), queryName, queryDescription);
         if (query != null) {
-            query.setResultType(ResultTypeEnum.CLINICAL.getValue()); // TODO Do Genomic result type as well.
+            query.setResultType(ResultTypeEnum.CLINICAL.getValue());
             queryManagementService.save(query);
             return true;
         }
@@ -450,8 +475,7 @@ public final class ManageQueryHelper {
         QueryHelper queryHelper = new QueryHelper();
         queryHelper.setAdvancedView(advancedView);
         if (basicQueryOperator == null || basicQueryOperator.equals("")) {
-            // default to OR operation if necessary
-            queryHelper.setBasicQueryOperator("or");
+            queryHelper.setBasicQueryOperator(BooleanOperatorEnum.OR.getValue());
         } else {
             queryHelper.setBasicQueryOperator(basicQueryOperator);
         }
@@ -471,5 +495,20 @@ public final class ManageQueryHelper {
     public void setPrepopulated(boolean prepopulated) {
         this.prepopulated = prepopulated;
     }
-    
+
+    /**
+     * @return the imageSeriesAnnotationSelections
+     */
+    public AnnotationSelection getImageSeriesAnnotationSelections() {
+        return imageSeriesAnnotationSelections;
+    }
+
+    /**
+     * @param imageSeriesAnnotationSelections the imageSeriesAnnotationSelections to set
+     */
+    public void setImageSeriesAnnotationSelections(AnnotationSelection imageSeriesAnnotationSelections) {
+        this.imageSeriesAnnotationSelections = imageSeriesAnnotationSelections;
+    }
+
+
 }

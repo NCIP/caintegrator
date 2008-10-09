@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -238,21 +239,26 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
     }
     
     /**
-     * Add a a criterion row to the query.
+     * Add a a criterion row to the query, and validates that row has data for this study.
      * 
      * @return the Struts result.
      */
     public String addCriterionRow() {
         
-        if ("clinical".equals(this.selectedRowCriterion)) {
-            manageQueryHelper.configureClinicalQueryCriterionRow();
+        if (EntityTypeEnum.SUBJECT.getValue().equals(this.selectedRowCriterion) 
+            && !manageQueryHelper.configureClinicalQueryCriterionRow()) {
+                addActionError("There are no clinical annotations defined for this study.");
+        }
+        if (EntityTypeEnum.IMAGESERIES.getValue().equals(this.selectedRowCriterion)
+            && !manageQueryHelper.configureImageSeriesQueryCriterionRow()) {
+                addActionError("There are no image series annotations defined for this study.");
         }
 
         return SUCCESS;
     }
 
     private void saveFormData() {
-        manageQueryHelper.updateSelectedClinicalValues(getSelectedAnnotations());
+        manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
     }    

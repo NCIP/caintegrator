@@ -85,184 +85,49 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+
+import org.junit.Before;
+import org.junit.Test;
+
 
 /**
- * This class functions as a bean, bound to the Edit Query form set of parameters.
+ * Test class for queryAnnotationCriteria.
  */
-public class QueryAnnotationCriteriaImpl implements QueryAnnotationCriteria {
-
-    private AnnotationSelection annotationSelections = null;
-    private boolean beginParen;
-    private String annotationSelection = null;  //This is the selected annotation.
-    private String annotationOperatorSelection = null;  //This is the selected operator.
-    private String annotationValue = null; //This is the value input by user for this criterion.
-    private String rowType = null; // This is the entity type for the row
-    private String rowLable = null; // This is the label for the entity annotation for this row.
-    private boolean endParen;
-    private boolean andOp;
-    private boolean orOp;
-    private boolean deleteRow;
+public class QueryAnnotationCriteriaTest {
+    private final QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
+    private final static String str = "dummyAnnotation";
+    private final AnnotationSelection annotationSelections = new AnnotationSelection();
     
-    
-    /**
-     * Default constructor.
-     */
-    public QueryAnnotationCriteriaImpl() {
-        // Default constructor.
+    @Before
+    public void setUp() {
+        queryAnnotationCriteria.setAnnotationSelections(annotationSelections);
+        queryAnnotationCriteria.setAnnotationSelection(str);
+        queryAnnotationCriteria.setAnnotationOperatorSelection(str);
+        queryAnnotationCriteria.setAnnotationValue(str);
+        queryAnnotationCriteria.setAndOp(true);
+        queryAnnotationCriteria.setBeginParen(false);
+        queryAnnotationCriteria.setEndParen(false);
+        queryAnnotationCriteria.setDeleteRow(false);
+        queryAnnotationCriteria.setOrOp(false);
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
     }
-    
-    /**
-     * @return String the user's selected annotation operator
-     */
-    public String getAnnotationOperatorSelection() {
-        return this.annotationOperatorSelection;
-    }
-
-    /**
-     * @return String the user's selected annotation entity
-     */
-    public String getAnnotationSelection() {
-        return this.annotationSelection;
-    }
-
-    /**
-     * @return String the value criteria
-     */
-    public String getAnnotationValue() {
-        return this.annotationValue;
-    }
-
-    /** 
-     * @return the row 'data' type.
-     */
-    public String getRowType() {
-        return this.rowType;
-    }
-
-    /**
-     * @return is AND operation. 
-     */
-    public boolean isAndOp() {
-        return this.andOp;
-    }
-
-    /**
-     * @return begin paren.
-     */
-    public boolean isBeginParen() {
-        return this.beginParen;
-    }
-
-    /**
-     * @return is delete row
-     */
-    public boolean isDeleteRow() {
-        return this.deleteRow;
-    }
-
-    /**
-     * @return end paren.
-     */
-    public boolean isEndParen() {
-        return this.endParen;
-    }
-
-    /**
-     * @return is OR operation. 
-     */
-    public boolean isOrOp() {
-        return this.orOp;
-    }
-
-    /**
-     * @param andOp Set the AND operation. 
-     */
-    public void setAndOp(boolean andOp) {
-        this.andOp = andOp;
-    }
-
-    /**
-     * @param annotationOperatorSelection Set the user's annotation operator selection
-     */
-    public void setAnnotationOperatorSelection(String annotationOperatorSelection) {
-        this.annotationOperatorSelection = annotationOperatorSelection;
-    }
-
-    /**
-     * @param annotationSelection Set the user's annotation entity selection
-     */
-    public void setAnnotationSelection(String annotationSelection) {
-        this.annotationSelection = annotationSelection;
-    }
-
-    /**
-     * @param annotationValue Set the value criteria
-     */
-    public void setAnnotationValue(String annotationValue) {
-        this.annotationValue = annotationValue;
-    }
-
-    /**
-     * @param beginParen Set the begin paren.
-     */
-    public void setBeginParen(boolean beginParen) {
-        this.beginParen = beginParen;
-    }
-
-    /**
-     * @param deleteRow Set delete row.
-     */
-    public void setDeleteRow(boolean deleteRow) {
-        this.deleteRow = deleteRow;
-    }
-
-    /**
-     * @param endParen Set the end paren.
-     */
-    public void setEndParen(boolean endParen) {
-        this.endParen = endParen;
-    }
-
-    /**
-     * @param orOp Set the OR operation.
-     */
-    public void setOrOp(boolean orOp) {
-        this.orOp = orOp;
-    }
-
-    /**
-     * @param rowType Set the row 'data' type.
-     */
-    public void setRowType(String rowType) {
-        this.rowType = rowType;
-    }
-
-    /**
-     * @return the annotationSelections
-     */
-    public AnnotationSelection getAnnotationSelections() {
-        return annotationSelections;
-    }
-
-    /**
-     * @param annotationSelections the annotationSelections to set
-     */
-    public void setAnnotationSelections(AnnotationSelection annotationSelections) {
-        this.annotationSelections = annotationSelections;
-    }
-
-    /**
-     * @return the rowLable
-     */
-    public String getRowLable() {
-        return rowLable;
-    }
-
-    /**
-     * @param rowLable the rowLable to set
-     */
-    public void setRowLable(String rowLable) {
-        this.rowLable = rowLable;
-    }
+   
+    @Test
+    public void testGetAnnotationSelection() {        
+        assertNotNull(queryAnnotationCriteria.getAnnotationSelections());
+        assertNotNull(queryAnnotationCriteria.getAnnotationSelection());
+        assertEquals(str,queryAnnotationCriteria.getAnnotationOperatorSelection());
+        assertEquals(str,queryAnnotationCriteria.getAnnotationValue());        
+        assertEquals(true,queryAnnotationCriteria.isAndOp());
+        assertEquals(false,queryAnnotationCriteria.isBeginParen());
+        assertEquals(false,queryAnnotationCriteria.isEndParen());
+        assertEquals(false,queryAnnotationCriteria.isDeleteRow());
+        assertEquals(false,queryAnnotationCriteria.isOrOp());
+        assertEquals(EntityTypeEnum.SUBJECT,queryAnnotationCriteria.getRowType());
+    }  
+        
 
 }

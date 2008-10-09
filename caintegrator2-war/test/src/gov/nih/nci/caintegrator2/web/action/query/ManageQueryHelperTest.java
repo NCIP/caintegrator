@@ -110,14 +110,14 @@ public class ManageQueryHelperTest {
 
     private ManageQueryHelper manageQueryHelper;
     //private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
-    private List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
-    private Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
+    private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
+    private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
     
     // Study objects
     StudyHelper studyHelper = new StudyHelper();
     Study study = studyHelper.populateAndRetrieveStudy().getStudy();
     StudyManagementService studyManagementService = new StudyManagementServiceImpl();
-    ClinicalAnnotationSelection clinicalAnnotationSelections = new ClinicalAnnotationSelection();
+    AnnotationSelection clinicalAnnotationSelections = new AnnotationSelection();
     
 
     
@@ -137,7 +137,7 @@ public class ManageQueryHelperTest {
     @Test
     public void testIt() {        
         assertTrue(manageQueryHelper.isAdvancedView());
-        manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteriaImpl());
+        manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteria());
         assertEquals(1, manageQueryHelper.getQueryCriteriaRowList().size());
         assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());

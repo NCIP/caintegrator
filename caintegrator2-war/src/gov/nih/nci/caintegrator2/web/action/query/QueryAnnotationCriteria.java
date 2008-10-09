@@ -85,121 +85,181 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+
 
 /**
- * Interface for all query annotation criteria: Clinical, Gene 
- * expression (sample), Imaging.
+ * This class functions as a bean, bound to the Edit Query form set of parameters.
  */
-public interface QueryAnnotationCriteria {
+public class QueryAnnotationCriteria {
+
+    private AnnotationSelection annotationSelections = null;
+    private boolean beginParen;
+    private String annotationSelection = null;  //This is the selected annotation.
+    private String annotationOperatorSelection = null;  //This is the selected operator.
+    private String annotationValue = null; //This is the value input by user for this criterion.
+    private EntityTypeEnum rowType = null; // This is the entity type for the row
+    private String rowLabel = null; // This is the label for the entity annotation for this row.
+    private boolean endParen;
+    private boolean andOp;
+    private boolean orOp;
+    private boolean deleteRow;
+    
+    
+    /**
+     * @return String the user's selected annotation operator
+     */
+    public String getAnnotationOperatorSelection() {
+        return this.annotationOperatorSelection;
+    }
+
+    /**
+     * @return String the user's selected annotation entity
+     */
+    public String getAnnotationSelection() {
+        return this.annotationSelection;
+    }
+
+    /**
+     * @return String the value criteria
+     */
+    public String getAnnotationValue() {
+        return this.annotationValue;
+    }
+
+    /** 
+     * @return the row 'data' type.
+     */
+    public EntityTypeEnum getRowType() {
+        return this.rowType;
+    }
+
+    /**
+     * @return is AND operation. 
+     */
+    public boolean isAndOp() {
+        return this.andOp;
+    }
+
+    /**
+     * @return begin paren.
+     */
+    public boolean isBeginParen() {
+        return this.beginParen;
+    }
+
+    /**
+     * @return is delete row
+     */
+    public boolean isDeleteRow() {
+        return this.deleteRow;
+    }
+
+    /**
+     * @return end paren.
+     */
+    public boolean isEndParen() {
+        return this.endParen;
+    }
+
+    /**
+     * @return is OR operation. 
+     */
+    public boolean isOrOp() {
+        return this.orOp;
+    }
+
+    /**
+     * @param andOp Set the AND operation. 
+     */
+    public void setAndOp(boolean andOp) {
+        this.andOp = andOp;
+    }
+
+    /**
+     * @param annotationOperatorSelection Set the user's annotation operator selection
+     */
+    public void setAnnotationOperatorSelection(String annotationOperatorSelection) {
+        this.annotationOperatorSelection = annotationOperatorSelection;
+    }
+
+    /**
+     * @param annotationSelection Set the user's annotation entity selection
+     */
+    public void setAnnotationSelection(String annotationSelection) {
+        this.annotationSelection = annotationSelection;
+    }
+
+    /**
+     * @param annotationValue Set the value criteria
+     */
+    public void setAnnotationValue(String annotationValue) {
+        this.annotationValue = annotationValue;
+    }
+
+    /**
+     * @param beginParen Set the begin paren.
+     */
+    public void setBeginParen(boolean beginParen) {
+        this.beginParen = beginParen;
+    }
+
+    /**
+     * @param deleteRow Set delete row.
+     */
+    public void setDeleteRow(boolean deleteRow) {
+        this.deleteRow = deleteRow;
+    }
+
+    /**
+     * @param endParen Set the end paren.
+     */
+    public void setEndParen(boolean endParen) {
+        this.endParen = endParen;
+    }
+
+    /**
+     * @param orOp Set the OR operation.
+     */
+    public void setOrOp(boolean orOp) {
+        this.orOp = orOp;
+    }
+
+    /**
+     * @param rowType Set the row 'data' type.
+     */
+    public void setRowType(EntityTypeEnum rowType) {
+        this.rowType = rowType;
+    }
 
     /**
      * @return the annotationSelections
      */
-    AnnotationSelection getAnnotationSelections();
-    
+    public AnnotationSelection getAnnotationSelections() {
+        return annotationSelections;
+    }
+
     /**
      * @param annotationSelections the annotationSelections to set
      */
-    void setAnnotationSelections(AnnotationSelection annotationSelections);
-    
-    /**
-     * @return boolean the begin paren.
-     */
-    boolean isBeginParen();
-    
-    /**
-     * @param beginParen Set the begin paren.
-     */
-    void setBeginParen(boolean beginParen);
-    
-    /**
-     * @return the user's selected annotation entity.
-     */
-    String getAnnotationSelection();
-    
-    /**
-     * @param annotationSelection Set the user's annotation entity selection.
-     */
-    void setAnnotationSelection(String annotationSelection);
-    
-    /**
-     * @return String the user's selected annotation operator.
-     */
-    String getAnnotationOperatorSelection();
-    
-    /**
-     * @param annotationOperatorSelection Set the user's annotation operator selection
-     */
-    void setAnnotationOperatorSelection(String annotationOperatorSelection);
-    
-    /**
-     * @return String the value criteria
-     */
-    String getAnnotationValue();
-    
-    /**
-     * @param annotationValue Set the value criteria
-     */
-    void setAnnotationValue(String annotationValue);
-    
-    /**
-     * @return boolean the end paren.
-     */
-    boolean isEndParen();
-    
-    /**
-     * @param endParen Set the end paren.
-     */
-    void setEndParen(boolean endParen);
+    public void setAnnotationSelections(AnnotationSelection annotationSelections) {
+        this.annotationSelections = annotationSelections;
+    }
 
     /**
-     * @return boolean is AND operation.
+     * @return the rowLabel
      */
-    boolean isAndOp();
-    
+    public String getRowLabel() {
+        return rowLabel;
+    }
+
     /**
-     * @param andOp Set the AND operation.
+     * @param rowLabel the rowLabel to set
      */
-    void setAndOp(boolean andOp);
-    
-    /**
-     * @return boolean is OR operation.
-     */
-    boolean isOrOp();
-    
-    /**
-     * @param orOp Set the OR operation.
-     */
-    void setOrOp(boolean orOp);
-    
-    /**
-     * @return boolean delete row.
-     */
-    boolean isDeleteRow();
-    
-    /**
-     * @param deleteRow Set delete row.
-     */
-    void setDeleteRow(boolean deleteRow);
-    
-    /**
-     * @return String the 'data' type of the row.
-     */
-    String getRowType();
-    
-    /**
-     * @param rowType Set the 'data' type of the row.
-     */
-    void setRowType(String rowType);
-    
-    /**
-     * @param rowLabel Set the label for the results row.
-     */
-    void setRowLable(String rowLabel);
-    
-    /**
-     * @return rowLabel Get the label for the results row.
-     */
-    String getRowLable();
+    public void setRowLabel(String rowLabel) {
+        this.rowLabel = rowLabel;
+    }
+
+
 
 }

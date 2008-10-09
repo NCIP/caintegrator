@@ -177,5 +177,23 @@ public final class Cai2Util {
         }
         return false;
     }
+    
+    
+    /**
+     * Tests a collection of result columns to see if a particular result column already exists in it.
+     * @param columns collection of ResultColumns to test.
+     * @param column object we are testing to see if it exist in the collection.
+     * @return true or false depending on if column exists in result columns colleection
+     */
+    public static boolean columnCollectionContainsColumn(Collection<ResultColumn> columns, ResultColumn column) {
+        if (columns != null && !columns.isEmpty()) {
+            for (ResultColumn currentColumn : columns) {
+                if (currentColumn.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
