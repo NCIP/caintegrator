@@ -91,7 +91,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -118,14 +118,15 @@ public class ManageQueryActionTest {
     private DisplayableQueryResult qR;
     
     // Study objects
-    private StudyManagementService studyManagementService = new StudyManagementServiceStub();
-    private String selectedRowCriterion = "clinical";
-    private QueryManagementService queryManagementService = new QueryManagementServiceStub();
+    private final StudyManagementService studyManagementService = new StudyManagementServiceStub();
+    private static final String selectedRowCriterion = "clinical";
+    private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
 
     // dummy string array for testing
-    private String [] holdStringArray =  {"testString1","testString2"};
+    private final String [] holdStringArray =  {"testString1","testString2"};
     
     @Before
+    @SuppressWarnings({"PMD"})
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
@@ -154,7 +155,7 @@ public class ManageQueryActionTest {
         manageQueryAction.setSelectedBasicOperator("or");
         assertEquals("or",manageQueryAction.getSelectedBasicOperator());
         
-        manageQueryAction.setSelectedRowCriterion("clinical");
+        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setStudyManagementService(studyManagementService);
         
         manageQueryAction.setSelectedAction("");
@@ -162,7 +163,7 @@ public class ManageQueryActionTest {
         
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"PMD", "unchecked"})
     private void setupSession() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SessionHelper sessionHelper = SessionHelper.getInstance();
@@ -177,27 +178,28 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         manageQueryAction.getManageQueryHelper().getClinicalAnnotationSelections().setStudySubscription(studySubscription);
         manageQueryAction.getManageQueryHelper().setQueryCriteriaRowList(new ArrayList<QueryAnnotationCriteria>());
-        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteriaImpl();
-        AnnotationSelection annotationSelection = new ClinicalAnnotationSelection();
+        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
+        AnnotationSelection annotationSelection = new AnnotationSelection();
         annotationSelection.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection.getAnnotationDefinitions().add(new AnnotationDefinition());
         annotationSelection.setStudySubscription(studySubscription);
         queryAnnotationCriteria.setAnnotationSelections(annotationSelection);
-        queryAnnotationCriteria.setRowType(ResultTypeEnum.CLINICAL.getValue());
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria);
 
-        QueryAnnotationCriteria queryAnnotationCriteria2 = new QueryAnnotationCriteriaImpl();
-        AnnotationSelection annotationSelection2 = new ClinicalAnnotationSelection();
+        QueryAnnotationCriteria queryAnnotationCriteria2 = new QueryAnnotationCriteria();
+        AnnotationSelection annotationSelection2 = new AnnotationSelection();
         annotationSelection2.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection2.getAnnotationDefinitions().add(new AnnotationDefinition());
         annotationSelection2.setStudySubscription(studySubscription);
         queryAnnotationCriteria2.setAnnotationSelections(annotationSelection2);
-        queryAnnotationCriteria2.setRowType(ResultTypeEnum.CLINICAL.getValue());
+        queryAnnotationCriteria2.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria2);
     }
 
 
     @Test
+    @SuppressWarnings({"PMD"})
     public void testExecute() {      
         // test create new query
         manageQueryAction.setSelectedAction("createNewQuery");
@@ -231,8 +233,8 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
         // test - addition of row with clinical criterion
-        manageQueryAction.setSelectedRowCriterion("clinical");
-        assertEquals("clinical",manageQueryAction.getSelectedRowCriterion());
+        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
+        assertEquals(selectedRowCriterion,manageQueryAction.getSelectedRowCriterion());
         manageQueryAction.setSelectedAction("addCriterionRow");
         manageQueryAction.prepare();
         manageQueryAction.validate();

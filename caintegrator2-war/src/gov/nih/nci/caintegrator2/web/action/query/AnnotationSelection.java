@@ -85,60 +85,229 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
- * This interface defines helper methods to store and retrieve annotation
- * selections, and type-associated operator selections. 
+ * Helper class to store and retrieve annotation definitions, and 
+ * their type-based associated operators.
  */
-public interface AnnotationSelection {
-    
-    /**
-     * @return the studySubscription
-     */
-    StudySubscription getStudySubscription();
+public class AnnotationSelection {
+    private Collection<AnnotationDefinition> annotationDefinitions = new HashSet<AnnotationDefinition>();
+    private List<String> annotationSelections = new ArrayList<String>();
+     private List<String> currentAnnotationOperatorSelections = new ArrayList<String>();
+    private List<String> stringAnnotationDisplayOperatorList = new ArrayList<String>();
+    private List<String> numericAnnotationDisplayOperatorList = new ArrayList<String>();
+    // Maps string operator display to corresponding WildCardTypeEnum
+    private Map<String, WildCardTypeEnum> stringOptionToEnumMap = new HashMap<String, WildCardTypeEnum>();
+    // Maps numeric operator display to corresponding NumericComparisonOperatorEnum
+    private Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap 
+                    = new HashMap<String, NumericComparisonOperatorEnum>();
+    // Current Study configuration
+    private StudySubscription studySubscription;
 
     /**
-     * @param studySubscription the studySubscription to set
+     * Default constructor. 
      */
-    void setStudySubscription(StudySubscription studySubscription);
+    public AnnotationSelection() {
+        initializeOperatorSets();
+    }
     
     /**
-     * 
      * @return List of annotation selections
      */
-    List<String> getAnnotationSelections();
-    
-    /**
-     * 
-     * @param annotationSelections List of annotation selections to set
-     */
-    void setAnnotationSelections(List<String> annotationSelections);
-    
-    /**
-     * 
-     * @return List of annotation type-specific operators
-     */
-    List<String> getCurrentAnnotationOperatorSelections();
+    public List<String> getAnnotationSelections() {
+        return this.annotationSelections;
+    }
 
     /**
-     * 
-     * @param currentAnnotationOperatorSelections List of annotation type-specific operators to set
+     * @param annotationSelections the List to set
      */
-    void setCurrentAnnotationOperatorSelections(List<String> currentAnnotationOperatorSelections);
+    public void setAnnotationSelections(List<String> annotationSelections) {
+        this.annotationSelections = annotationSelections;
+    }
+    
+    /**
+     * @return List of currently-selected annotation type-based operator selections
+     */
+    public List<String> getCurrentAnnotationOperatorSelections() {
+        if (currentAnnotationOperatorSelections == null || currentAnnotationOperatorSelections.isEmpty()) {
+            // Default to combined string and numeric operators
+            currentAnnotationOperatorSelections = stringAnnotationDisplayOperatorList;
+            currentAnnotationOperatorSelections.addAll(numericAnnotationDisplayOperatorList);
+        }
+        
+        return this.currentAnnotationOperatorSelections;
+    }
+    
+    /**
+     * @param currentAnnotationOperatorSelections the List to set
+     */
+    public void setCurrentAnnotationOperatorSelections(List<String> currentAnnotationOperatorSelections) {
+        this.currentAnnotationOperatorSelections = currentAnnotationOperatorSelections;
+    }
+    
+    /**
+     * @param dataType Sets and returns currentAnnotationOperatorSelections based on the type of data.
+     * @return List the set of operators based on dataType
+     */
+    public List<String> getCurrentAnnotationOperatorSelections(String dataType) {
+        if ("string".equals(dataType)) {
+            this.currentAnnotationOperatorSelections = this.getStringAnnotationDisplayOperatorList();
+        } else if ("numeric".equals(dataType)) {
+            this.currentAnnotationOperatorSelections = this.getNumericAnnotationDisplayOperatorList();
+        }
+        
+        return this.currentAnnotationOperatorSelections;
+    }
+    
+    /**
+     * @param dataType Sets currentAnnotationOperatorSelections based on the type of data.
+     */
+    public void setCurrentAnnotationOperatorSelections(String dataType) {
+        if ("string".equals(dataType)) {
+            this.currentAnnotationOperatorSelections = this.getStringAnnotationDisplayOperatorList();
+        } else if ("numeric".equals(dataType)) {
+            this.currentAnnotationOperatorSelections = this.getNumericAnnotationDisplayOperatorList();
+        }
+    }
+    
+    /**
+     * @return the stringAnnotationDisplayOperatorList
+     */
+    public List<String> getStringAnnotationDisplayOperatorList() {
+        return stringAnnotationDisplayOperatorList;
+    }
+
+    /**
+     * @param stringAnnotationDisplayOperatorList the stringAnnotationDisplayOperatorList to set
+     */
+    public void setStringAnnotationDisplayOperatorList(List<String> stringAnnotationDisplayOperatorList) {
+        this.stringAnnotationDisplayOperatorList = stringAnnotationDisplayOperatorList;
+    }
+
+    /**
+     * @return the numericAnnotationDisplayOperatorList
+     */
+    public List<String> getNumericAnnotationDisplayOperatorList() {
+        return numericAnnotationDisplayOperatorList;
+    }
+
+    /**
+     * @param numericAnnotationDisplayOperatorList the numericAnnotationDisplayOperatorList to set
+     */
+    public void setNumericAnnotationDisplayOperatorList(List<String> numericAnnotationDisplayOperatorList) {
+        this.numericAnnotationDisplayOperatorList = numericAnnotationDisplayOperatorList;
+    }
+
+    /**
+     * @return the stringOptionToEnumMap
+     */
+    public Map<String, WildCardTypeEnum> getStringOptionToEnumMap() {
+        return stringOptionToEnumMap;
+    }
+
+    /**
+     * @param stringOptionToEnumMap the stringOptionToEnumMap to set
+     */
+    public void setStringOptionToEnumMap(Map<String, WildCardTypeEnum> stringOptionToEnumMap) {
+        this.stringOptionToEnumMap = stringOptionToEnumMap;
+    }
+
+    /**
+     * @return the numericOptionToEnumMap
+     */
+    public Map<String, NumericComparisonOperatorEnum> getNumericOptionToEnumMap() {
+        return numericOptionToEnumMap;
+    }
+
+    /**
+     * @param numericOptionToEnumMap the numericOptionToEnumMap to set
+     */
+    public void setNumericOptionToEnumMap(Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap) {
+        this.numericOptionToEnumMap = numericOptionToEnumMap;
+    }
     
     /**
      * @return the annotationDefinitions
      */
-    Collection<AnnotationDefinition> getAnnotationDefinitions();
+    public Collection<AnnotationDefinition> getAnnotationDefinitions() {
+        return annotationDefinitions;
+    }
 
     /**
      * @param annotationDefinitions the annotationDefinitions to set
      */
-    void setAnnotationDefinitions(Collection<AnnotationDefinition> annotationDefinitions);
-    
+    public void setAnnotationDefinitions(Collection<AnnotationDefinition> annotationDefinitions) {
+        this.annotationDefinitions = annotationDefinitions;
+    }
+
+    @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Long initializer function
+    private void initializeOperatorSets() {
+        // Populate the string display operators to Enum definitions
+        stringOptionToEnumMap = new HashMap<String, WildCardTypeEnum>();
+        // From Will's email:
+        // Implemented: equals, contains, does not contain, begins with, ends with 
+        // Not implemented: does not equal, [matches (for regular expressions)]
+        stringOptionToEnumMap.put("equals", WildCardTypeEnum.WILDCARD_OFF);
+        stringOptionToEnumMap.put("begins with", WildCardTypeEnum.WILDCARD_AFTER_STRING);
+        stringOptionToEnumMap.put("ends with", WildCardTypeEnum.WILDCARD_BEFORE_STRING);
+        stringOptionToEnumMap.put("contains", WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
+        
+        // Populate the numeric display operators to Enum definitions
+        numericOptionToEnumMap = new HashMap<String, NumericComparisonOperatorEnum>();
+        // From Will's email:
+        // Implemented: equals, not equals, less than, greater than, less than or equal to, greater than or equal to
+        // Not implemented: [linear correlation greater than 0.8, linear correlation greater than 0.9, 
+        //   spearman correlation greater than 0.8, spearman correlation greater than 0.9]
+        numericOptionToEnumMap.put("=", NumericComparisonOperatorEnum.EQUAL);
+        numericOptionToEnumMap.put("!=", NumericComparisonOperatorEnum.NOTEQUAL);
+        numericOptionToEnumMap.put("<", NumericComparisonOperatorEnum.LESS);
+        numericOptionToEnumMap.put(">", NumericComparisonOperatorEnum.GREATER);
+        numericOptionToEnumMap.put("<=", NumericComparisonOperatorEnum.LESSOREQUAL);
+        numericOptionToEnumMap.put(">=", NumericComparisonOperatorEnum.GREATEROREQUAL);
+        
+        // Populate the string display operators
+        stringAnnotationDisplayOperatorList = new ArrayList<String>(10);
+        stringAnnotationDisplayOperatorList.add("equals");
+        stringAnnotationDisplayOperatorList.add("begins with");
+        stringAnnotationDisplayOperatorList.add("ends with");
+        stringAnnotationDisplayOperatorList.add("contains");
+        ((ArrayList<String>) stringAnnotationDisplayOperatorList).trimToSize();
+        
+        // Populate the numeric display operators
+        numericAnnotationDisplayOperatorList = new ArrayList<String>(10);
+        numericAnnotationDisplayOperatorList.add("=");
+        numericAnnotationDisplayOperatorList.add("!=");
+        numericAnnotationDisplayOperatorList.add("<");
+        numericAnnotationDisplayOperatorList.add(">");
+        numericAnnotationDisplayOperatorList.add("<=");
+        numericAnnotationDisplayOperatorList.add(">=");
+        ((ArrayList<String>) numericAnnotationDisplayOperatorList).trimToSize();
+        
+    }
+
+    /**
+     * @return the studySubscription
+     */
+    public StudySubscription getStudySubscription() {
+        return studySubscription;
+    }
+
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    public void setStudySubscription(StudySubscription studySubscription) {
+        this.studySubscription = studySubscription;
+    }
+
 }

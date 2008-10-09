@@ -167,5 +167,17 @@ public class Cai2UtilTest {
         assertTrue(Cai2Util.userSubscribedToStudy(userWorkspace, study));
         
     }
+    
+    @Test
+    public void testColumnCollectionContainsColumn() {
+        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+        ResultColumn column = new ResultColumn();
+        AnnotationDefinition ad = new AnnotationDefinition();
+        column.setAnnotationDefinition(ad);
+        ad.setId(Long.valueOf(1));
+        assertFalse(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
+        columnCollection.add(column);
+        assertTrue(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
+    }
 
 }

@@ -43,9 +43,9 @@ pageEncoding="ISO-8859-1" %>
                             <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
                                 <option>&ndash; Select Criteria Type &ndash;</option>
 
-                                <option value="clinical">Clinical</option>
+                                <option value="subject">Clinical</option>
                                 <option value="sample">Gene Expression</option>
-                                <option value="image">Image</option>
+                                <option value="imageSeries">Image Series</option>
                             </select>
                             
                              <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
@@ -62,8 +62,8 @@ pageEncoding="ISO-8859-1" %>
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
                             <tr>
                             <td></td>
-                            <td><s:select name="selectedAnnotations" list="manageQueryHelper.clinicalAnnotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
-                            <td><s:select name="selectedOperators" list="manageQueryHelper.clinicalAnnotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
+                            <td><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                            <td><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
                             <td><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
                             </tr>
                         </s:iterator>
