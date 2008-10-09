@@ -85,28 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.collection.PersistentSet;
-
-//import gov.nih.nci.caintegrator2.application.query.SortTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 
 /**
@@ -171,11 +171,19 @@ public class QueryHelper {
         
         QueryAnnotationCriteria queryAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> iter = rowObjList.iterator();
+        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
         // Iterate over the list of query annotation criteria objects
         while (iter.hasNext()) {
             queryAnnotationCriteria = iter.next();
             AbstractCriterion abstractCriterion = buildCriterion(queryAnnotationCriteria);
             compoundCriterion.getCriterionCollection().add(abstractCriterion);
+            // Right now, we are adding all columns for the criterion, but only once per AnnotationDefinition
+            Collection<ResultColumn> columns = getColumnCollection(queryAnnotationCriteria);
+            for (ResultColumn column : columns) {
+                if (!Cai2Util.columnCollectionContainsColumn(columnCollection, column)) {
+                    columnCollection.add(column);
+                }
+            }
         }
         
         String booleanOperator = getBasicQueryBooleanOperator();
@@ -189,7 +197,7 @@ public class QueryHelper {
         StudySubscription studySubscription = queryAnnotationCriteria.getAnnotationSelections().getStudySubscription();
         query.setSubscription(studySubscription);
 
-        Collection<ResultColumn> columnCollection = getClinicalColumnCollection(queryAnnotationCriteria);
+        
         query.setColumnCollection(columnCollection);
 
         return query;
@@ -198,41 +206,36 @@ public class QueryHelper {
     private AbstractCriterion buildCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         // Initialize the CompoundCriterion
         AbstractCriterion abstractCriterion = null;
-
-        if (queryAnnotationCriteria.getRowType().equals("clinical")) {
-            // TODO Branch on parameter that conveys type of query -- string, numeric --
-            //      rather than below
-            String queryType = getQueryType(queryAnnotationCriteria);
-            if ("string".equals(queryType)) {
-                abstractCriterion = buildClinicalStringCriterion(queryAnnotationCriteria);
-            } else if ("numeric".equals(queryType)) {
-                abstractCriterion = buildClinicalNumericCriterion(queryAnnotationCriteria);
-            }
-            // TODO Handle date type                
+        String queryType = getQueryType(queryAnnotationCriteria);
+        if ("string".equals(queryType)) {
+            abstractCriterion = buildStringCriterion(queryAnnotationCriteria, queryAnnotationCriteria.getRowType());
+        } else if ("numeric".equals(queryType)) {
+            abstractCriterion = buildNumericCriterion(queryAnnotationCriteria, queryAnnotationCriteria.getRowType());
         }
-        // TODO Handle other data types
-        
+
         return abstractCriterion;
     }
     
-    private StringComparisonCriterion buildClinicalStringCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+    private StringComparisonCriterion buildStringCriterion(QueryAnnotationCriteria queryAnnotationCriteria, 
+                                                            EntityTypeEnum type) {
         StringComparisonCriterion sCriterion = new StringComparisonCriterion();
         
         sCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
         sCriterion.setWildCardType(getWildCardType(queryAnnotationCriteria.getAnnotationOperatorSelection()));
-        sCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        sCriterion.setEntityType(type.getValue());
         sCriterion.setStringValue(queryAnnotationCriteria.getAnnotationValue());
         
         return sCriterion;
     }
     
-    private NumericComparisonCriterion buildClinicalNumericCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+    private NumericComparisonCriterion buildNumericCriterion(QueryAnnotationCriteria queryAnnotationCriteria, 
+                                                             EntityTypeEnum type) {
         NumericComparisonCriterion nCriterion = new NumericComparisonCriterion();
         
         nCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
         nCriterion.setNumericComparisonOperator((NumericComparisonOperatorEnum.getByValue(
                 queryAnnotationCriteria.getAnnotationOperatorSelection()).getValue()));
-        nCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        nCriterion.setEntityType(type.getValue());
         nCriterion.setNumericValue(Double.valueOf(queryAnnotationCriteria.getAnnotationValue()));
         
         return nCriterion;
@@ -242,8 +245,7 @@ public class QueryHelper {
     private AnnotationDefinition getAnnotationDefinition(QueryAnnotationCriteria queryAnnotationCriteria) {
         AnnotationDefinition annoDef = null;
         
-        ClinicalAnnotationSelection annoHelper = 
-            (ClinicalAnnotationSelection) queryAnnotationCriteria.getAnnotationSelections();
+        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
         PersistentSet annoDefs = (PersistentSet) annoHelper.getAnnotationDefinitions();
         
         Iterator iter = annoDefs.iterator();
@@ -259,11 +261,10 @@ public class QueryHelper {
 
     
     @SuppressWarnings({ "PMD", "unchecked" })
-    private Collection<ResultColumn> getClinicalColumnCollection(QueryAnnotationCriteria queryAnnotationCriteria) {
+    private Collection<ResultColumn> getColumnCollection(QueryAnnotationCriteria queryAnnotationCriteria) {
         Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
         
-        ClinicalAnnotationSelection annoHelper = 
-            (ClinicalAnnotationSelection) queryAnnotationCriteria.getAnnotationSelections();
+        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
         int i = 0;
 //        // TODO Handle user-selected columns
 
@@ -271,7 +272,7 @@ public class QueryHelper {
             ResultColumn column = new ResultColumn();
             column.setAnnotationDefinition(annoDef);
             column.setColumnIndex(i++);
-            column.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            column.setEntityType(queryAnnotationCriteria.getRowType().getValue());
             
             columnCollection.add(column);
         }
@@ -304,8 +305,7 @@ public class QueryHelper {
         String queryType = "";
         
         String annotationOperator = queryAnnotationCriteria.getAnnotationOperatorSelection();
-        ClinicalAnnotationSelection annoHelper = (ClinicalAnnotationSelection) 
-            queryAnnotationCriteria.getAnnotationSelections();
+        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
         if (annoHelper.getStringOptionToEnumMap().containsKey(annotationOperator)) {
             queryType = "string";
         } else if (annoHelper.getNumericOptionToEnumMap().containsKey(annotationOperator)) {
