@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -92,6 +93,7 @@ import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -110,6 +112,7 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
     private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
     private String queryName;
+    private Long queryId;
     
     /**
      * {@inheritDoc}
@@ -119,8 +122,10 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
             query = TestQueries.getImageQuery(getStudyManagementService());            
         } else if ("genomic".equals(queryName)) {
             query = TestQueries.getGenomicQuery(getStudyManagementService());            
-        } else {
+        } else if ("simple".equals(queryName)) {
             query = TestQueries.getSimpleQuery(getStudyManagementService());            
+        } else {
+            query = retrieveQuery();
         }
     }
     
@@ -220,6 +225,37 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
      */
     public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         this.genomicDataQueryResult = genomicDataQueryResult;
+    }
+
+    /**
+     * @return Query
+     * 
+     */
+    public Query retrieveQuery() {
+       
+        if (queryId != null) {
+            for (Query nextQuery : SessionHelper.getInstance().getDisplayableStudySubscription().getQueryCollection()) {
+                if (queryId.equals(nextQuery.getId())) {
+                  return nextQuery;
+                }
+                
+            }
+        }
+        return null;
+    }
+        
+     /**
+     * @return the queryId
+     */
+    public Long getQueryId() {
+        return queryId;
+    }
+
+    /**
+     * @param queryId the queryId to set
+     */
+    public void setQueryId(Long queryId) {
+        this.queryId = queryId;
     }
 
 }
