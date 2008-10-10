@@ -28,15 +28,7 @@
         </li>
         
         <s:if test="#sessionHelper.studyManager">
-	        <li class="stdnav"><div>Study Management</div>
-	            <ul>
-	                <li><s:url id="manageStudiesUrl" action="manageStudies" />
-	                <a href="${manageStudiesUrl}">Manage Studies</a></li>
-	                <li><s:url id="createStudyUrl" action="createStudy" />
-	                <a href="${createStudyUrl}">Create New Study</a></li>
-	            </ul>
-	        </li>
-	         <li class="stdnav"><div>Study Elements</div>
+	        <li class="stdnav"><div>Study Elements</div>
 	            <ul>
 	                <li><a href="study_elements/subjects.html">Subjects</a></li>
 	                <li><a href="study_elements/samples.html">Samples</a></li>
@@ -69,6 +61,14 @@
                             <ul>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=simple#searchresults' class="queries">Disease = Astrocytoma</a></li>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=image#searchresults' class="queries">Image Series Query</a></li>
+                                
+                                <s:iterator value="#sessionHelper.displayableStudySubscription.queryCollection">
+                                    <s:url id="queryURL" action="executeQuery">
+                                        <s:param name="queryId" value="id" />
+                                    </s:url>
+                                    <li><s:a href="%{queryURL}" cssClass="queries"><s:property value="name"/></s:a></li>
+                                </s:iterator>
+                                
                                 <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->
                             </ul>
                         </li>
@@ -111,9 +111,19 @@
                 <li><a href="analysis_tools/genepattern_analysis.html">GenePattern Analysis</a></li>
             </ul>
         </li>
+        <s:if test="#sessionHelper.studyManager">
+            <li class="stdnav"><div>Study Management</div>
+                <ul>
+                    <li><s:url id="manageStudiesUrl" action="manageStudies" />
+                    <a href="${manageStudiesUrl}">Manage Studies</a></li>
+                    <li><s:url id="createStudyUrl" action="createStudy" />
+                    <a href="${createStudyUrl}">Create New Study</a></li>
+                </ul>
+            </li>
+        </s:if>
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
-                <li><a href="#">Deploy New Study</a></li>
+                
                 <li><s:url id="workspaceUrl" action="workspace" />
                 <a href="${workspaceUrl}">Workspace</a></li>
                 <li class="stdnav"><a href="search.html">Advanced Search</a></li>                
