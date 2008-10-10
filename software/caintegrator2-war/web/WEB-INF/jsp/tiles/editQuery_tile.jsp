@@ -3,7 +3,7 @@ import="java.util.*,
     com.opensymphony.xwork2.ActionContext,
     gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria,
     gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
-    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteriaImpl" 
+    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria" 
 pageEncoding="ISO-8859-1" %>
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
