@@ -204,8 +204,9 @@ public final class TestQueries {
         
         return query;
     }
+    
     /**
-     * comment.
+     * Returns a sample genomic data query.
      * 
      * @param studyManagementService comment
      * @return comment
@@ -214,13 +215,11 @@ public final class TestQueries {
         Query query = createQuery();
         query.setResultType(ResultTypeEnum.GENOMIC.getValue());
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        query.setName("Gene=EGFR Expression Values");
-        query.setDescription("A demonstration query that lists expression value for the gene EGFR");
+        query.setName("Gene Expression Values");
+        query.setDescription("A demonstration query that lists expression values for all samples.");
         StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
         Study study = studyConfiguration.getStudy();
         query.getSubscription().setStudy(study);
-        
-        // Look for subjects with Disease = ASTROCYTOMA
         return query;
     }
         
