@@ -1,5 +1,4 @@
 Image Series ID,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex,Enhancement Quality,Proportion Enhancing,Cyst(s),Multifocal or Multicentric,Thickness of Enhancing Margin
-1.2.840.113619.2.131.4194992901.1168975085.303116,aflanders,well defined insular tumor,"Frontal, Temporal, Insular",Right,None,None,n/a,No,n/a,n/a
 1.2.840.113619.2.5.1762805546.2669.1028061810.639,aflanders,,Temporal,Left,None,Marked/Avid,6-33%,No,n/a,Thick
 1.3.12.2.1107.5.2.12.21236.4.0.2989833757861226,aflanders,,Temporal,Right,None,Marked/Avid,6-33%,No,n/a,Thin
 1.2.840.113619.2.131.4194992901.1158336200.54586,aflanders,,Frontal,Right,None,Marked/Avid,<5%,No,n/a,Thick
