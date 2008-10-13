@@ -61,6 +61,7 @@
                             <ul>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=simple#searchresults' class="queries">Disease = Astrocytoma</a></li>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=image#searchresults' class="queries">Image Series Query</a></li>
+                                <li><a href='/caintegrator2/executeQuery.action?queryName=genomic#searchresults' class="queries">Genomic Data Query</a></li>
                                 
                                 <s:iterator value="#sessionHelper.displayableStudySubscription.queryCollection">
                                     <s:url id="queryURL" action="executeQuery">
