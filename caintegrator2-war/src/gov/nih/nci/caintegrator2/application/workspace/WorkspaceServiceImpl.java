@@ -150,10 +150,21 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * {@inheritDoc}
      */
     public void subscribe(UserWorkspace workspace, Study study) {
-        StudySubscription subscription = new StudySubscription();
-        subscription.setStudy(study);
-        workspace.getSubscriptionCollection().add(subscription);
-        saveUserWorkspace(workspace);
+        if (!isSubscribed(workspace, study)) {
+            StudySubscription subscription = new StudySubscription();
+            subscription.setStudy(study);
+            workspace.getSubscriptionCollection().add(subscription);
+            saveUserWorkspace(workspace);
+        }
+    }
+
+    private boolean isSubscribed(UserWorkspace workspace, Study study) {
+        for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
+            if (subscription.getStudy().equals(study)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
