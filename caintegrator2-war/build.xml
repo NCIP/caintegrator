@@ -655,7 +655,7 @@
     </target>
 
     <target name="test:cobertura-check" depends="ivy:setup-test">
-        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="60" totallinerate="70" />
+        <cobertura-check failureproperty="cobertura.failure" datafile="${cobertura.file}" haltonfailure="false" linerate="0" packagebranchrate="0" packagelinerate="0" totalbranchrate="65" totallinerate="75" />
     </target>
 
     <!-- ******************************************************************* -->
