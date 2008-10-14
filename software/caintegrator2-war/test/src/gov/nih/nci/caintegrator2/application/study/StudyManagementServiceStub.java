@@ -116,7 +116,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean loadImageAnnotationCalled;
     public boolean mapImageSeriesCalled;
     public boolean createDefinitionCalled;
-    public boolean subscribeUserCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -148,7 +147,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadImageAnnotationCalled = false;
         mapImageSeriesCalled = false;
         createDefinitionCalled = false;
-        subscribeUserCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -227,11 +225,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
         createDefinitionCalled = true;
         return null;
-    }
-
-    
-    public void subscribeUser(String username, Study study) {
-        subscribeUserCalled = true;
     }
     
 }

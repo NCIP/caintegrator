@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -94,6 +95,9 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -101,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
@@ -216,6 +221,29 @@ public class ClinicalQueryDemo  extends AbstractTransactionalSpringContextTests 
         print(result);
     }
     
+    @Test
+    public void testGenomicQuery() {
+        Query query = createQuery();
+        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        query.setName("Gene Expression Values");
+        query.setDescription("A demonstration query that lists expression values for all samples.");
+        Study study = dao.getManagedStudies("manager").iterator().next().getStudy();
+        query.getSubscription().setStudy(study);        
+        GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
+        print(result);
+    }
+
+    private void print(GenomicDataQueryResult result) {
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            System.out.print(row.getReporter().getName() + " " + ((GeneExpressionReporter) row.getReporter()).getGene().getSymbol());
+            for (GenomicDataResultValue value : row.getValueCollection()) {
+                System.out.print(" " + value.getValue());
+            }
+            System.out.println();
+        }
+    }
+
     private AnnotationDefinition getDefinition(String name,
             Collection<AnnotationDefinition> definitionCollection) {
         for (AnnotationDefinition definition : definitionCollection) {

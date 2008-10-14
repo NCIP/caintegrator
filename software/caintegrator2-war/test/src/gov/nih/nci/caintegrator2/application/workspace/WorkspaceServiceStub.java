@@ -96,17 +96,15 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
  */
 public class WorkspaceServiceStub implements WorkspaceService {
 
-    public boolean refreshSessionUserWorkspaceCalled;
-    public boolean refreshSessionStudySubscriptionCalled;
-    public boolean mergeandSaveCalled;
     private StudySubscription subscription;
+    public boolean subscribeCalled;
+    public boolean saveUserWorspaceCalled;
     
     public void clear() {
-        refreshSessionUserWorkspaceCalled = false;
-        refreshSessionStudySubscriptionCalled = false;
-        mergeandSaveCalled = false;
+        subscribeCalled = false;
+        saveUserWorspaceCalled = false; 
     }
-    public UserWorkspace getWorkspace(String username) {
+    public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
         subscription = new StudySubscription();
         subscription.setId(Long.valueOf(1));
@@ -118,19 +116,15 @@ public class WorkspaceServiceStub implements WorkspaceService {
         return workspace;
     }
 
-    public void refreshSessionUserWorkspace(UserWorkspace userWorkspace) {
-        refreshSessionUserWorkspaceCalled = true;
-    }
-
-    public void refreshSessionStudySubscription(StudySubscription studySubscription) {
-        refreshSessionStudySubscriptionCalled = true;
-        
-    }
-
     public StudySubscription retrieveStudySubscription(Long id) {
         return subscription;
     }
+
     public void saveUserWorkspace(UserWorkspace workspace) {
-        mergeandSaveCalled = true; 
+        saveUserWorspaceCalled = true; 
+    }
+
+    public void subscribe(UserWorkspace workspace, Study study) {
+        subscribeCalled = true;
     }
 }

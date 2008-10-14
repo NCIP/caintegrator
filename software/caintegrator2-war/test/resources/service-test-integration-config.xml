@@ -28,6 +28,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService" />
+        </property>
     </bean>
 
     <bean id="queryManagementService" 
@@ -40,6 +43,13 @@
         </property>
         <property name="resultHandler">
             <ref local="resultHandler"/>
+        </property>
+    </bean>
+    
+    <bean id="workspaceService" 
+        class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceImpl">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
         </property>
     </bean>
     

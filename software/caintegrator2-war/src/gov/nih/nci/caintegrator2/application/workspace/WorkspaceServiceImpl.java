@@ -85,15 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 
 import java.util.HashSet;
-import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,54 +107,22 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     /**
      * {@inheritDoc}
      */
-    public UserWorkspace getWorkspace(String username) {
+    public UserWorkspace getWorkspace() {
+        String username = SecurityHelper.getCurrentUsername();
         UserWorkspace userWorkspace = dao.getWorkspace(username);
         if (userWorkspace == null) {
-            userWorkspace = new UserWorkspace();
-            userWorkspace.setUsername(username);
+            userWorkspace = createUserWorkspace(username);
+            saveUserWorkspace(userWorkspace);
         }
-        retrieveAllSubscriptions(username, userWorkspace);   
-        refreshSessionUserWorkspace(userWorkspace);
         return userWorkspace;
     }
 
-    private void retrieveAllSubscriptions(String username, UserWorkspace userWorkspace) {
-        // Not sure if we need to get a new subscription collection every time the user logs in.
-        // Especially items the user is not actually subscribed to.
-        // TODO need to get the studies from WorkspaceService.getDeployedStudies eventually.
-        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
-        if (userWorkspace.getSubscriptionCollection() == null) {
-            userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-        }
-        for (StudyConfiguration studyConfiguration : studyConfigurations) {
-            if (!Cai2Util.userSubscribedToStudy(userWorkspace, studyConfiguration.getStudy())) {
-                StudySubscription subscription = new StudySubscription();
-                subscription.setStudy(studyConfiguration.getStudy());
-                userWorkspace.getSubscriptionCollection().add(subscription);
-            }
-        }
-        dao.save(userWorkspace);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void refreshSessionUserWorkspace(UserWorkspace userWorkspace) {
-        SessionHelper.getInstance().refreshUserWorkspace(userWorkspace);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void refreshSessionStudySubscription(StudySubscription studySubscription) {
-        SessionHelper.getInstance().refreshStudySubscription(studySubscription);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public StudySubscription retrieveStudySubscription(Long id) {
-        return dao.get(id, StudySubscription.class);
+    private UserWorkspace createUserWorkspace(String username) {
+        UserWorkspace userWorkspace;
+        userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername(username);
+        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        return userWorkspace;
     }
 
     /**
@@ -178,6 +144,16 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public void saveUserWorkspace(UserWorkspace workspace) {
         dao.save(workspace);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void subscribe(UserWorkspace workspace, Study study) {
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        workspace.getSubscriptionCollection().add(subscription);
+        saveUserWorkspace(workspace);
     }
 
 }

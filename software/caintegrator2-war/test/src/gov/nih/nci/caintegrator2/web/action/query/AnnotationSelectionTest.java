@@ -89,7 +89,6 @@ import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -111,7 +110,6 @@ public class AnnotationSelectionTest {
     private final Map<String, WildCardTypeEnum> dummyWildCardMap = new HashMap<String, WildCardTypeEnum>();
     private final Map<String, NumericComparisonOperatorEnum> dummyNumericMap = new HashMap<String, NumericComparisonOperatorEnum>();
     private final Collection<AnnotationDefinition> clinicalAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-    private final StudySubscription studySubscription = new StudySubscription();
     
     @Before
     public void setUp() {
@@ -124,7 +122,6 @@ public class AnnotationSelectionTest {
         clinicalAnnotationSelections.setStringAnnotationDisplayOperatorList(dummyStringList);
         clinicalAnnotationSelections.setStringOptionToEnumMap(dummyWildCardMap);
         clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
-        clinicalAnnotationSelections.setStudySubscription(studySubscription);
         
     }
    
@@ -139,7 +136,6 @@ public class AnnotationSelectionTest {
         assertNotNull(clinicalAnnotationSelections.getStringAnnotationDisplayOperatorList());
         assertNotNull(clinicalAnnotationSelections.getStringOptionToEnumMap());
         assertNotNull(clinicalAnnotationSelections.getAnnotationDefinitions());
-        assertNotNull(clinicalAnnotationSelections.getStudySubscription());
         
     }  
 }

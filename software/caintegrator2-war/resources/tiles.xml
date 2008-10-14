@@ -93,4 +93,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
 
+    <!-- Analysis pages -->
+    <definition name="genePatternAnalysis" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysis_tile.jsp" />
+    </definition>
+
 </tiles-definitions>

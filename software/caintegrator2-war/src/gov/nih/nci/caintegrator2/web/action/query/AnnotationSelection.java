@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,8 +111,6 @@ public class AnnotationSelection {
     // Maps numeric operator display to corresponding NumericComparisonOperatorEnum
     private Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap 
                     = new HashMap<String, NumericComparisonOperatorEnum>();
-    // Current Study configuration
-    private StudySubscription studySubscription;
 
     /**
      * Default constructor. 
@@ -294,20 +291,6 @@ public class AnnotationSelection {
         numericAnnotationDisplayOperatorList.add(">=");
         ((ArrayList<String>) numericAnnotationDisplayOperatorList).trimToSize();
         
-    }
-
-    /**
-     * @return the studySubscription
-     */
-    public StudySubscription getStudySubscription() {
-        return studySubscription;
-    }
-
-    /**
-     * @param studySubscription the studySubscription to set
-     */
-    public void setStudySubscription(StudySubscription studySubscription) {
-        this.studySubscription = studySubscription;
     }
 
 }

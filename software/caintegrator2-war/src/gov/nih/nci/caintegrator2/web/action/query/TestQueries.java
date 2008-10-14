@@ -89,8 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -99,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -114,19 +113,17 @@ public final class TestQueries {
     }
    
     /**
-     * comment.
+     * Create a simple clinical query.
      * 
-     * @param studyManagementService comment
-     * @return comment
+     * @return the query.
      */
-    public static Query getSimpleQuery(StudyManagementService studyManagementService) {
+    public static Query getSimpleQuery() {
         
         Query query = createQuery();
         query.setName("Disease = Astrocytoma");
         query.setDescription("A simple demonstration query that finds all subjects with Disease = ASTROCYTOMA");
-        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
-        Study study = studyConfiguration.getStudy();
-        query.getSubscription().setStudy(study);
+        Study study = getStudy();
+        query.getSubscription().setStudy(getStudy());
 
         // Retrieve annotation definitions for disease and gender;
         AnnotationDefinition disease = getDefinition("Disease", study.getSubjectAnnotationCollection());
@@ -154,20 +151,23 @@ public final class TestQueries {
         
         return query;
     }
+
+    private static Study getStudy() {
+        return SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription().getStudy();
+    }
+    
     /**
-     * comment.
+     * Create a clinical query combining image and clinical data.
      * 
-     * @param studyManagementService comment
-     * @return comment
+     * @return the query.
      */
-    public static Query getImageQuery(StudyManagementService studyManagementService) {
+    public static Query getImageQuery() {
         
         Query query = createQuery();
         query.setName("Image Series Query");
         query.setDescription("A demonstration query that displays Subject and ImageSeries data where the ImageSeries "
                 + "annotation has Tumor Location = Frontal");
-        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
-        Study study = studyConfiguration.getStudy();
+        Study study = getStudy();
         query.getSubscription().setStudy(study);
 
         // Retrieve annotation definitions for disease and gender;
@@ -208,17 +208,15 @@ public final class TestQueries {
     /**
      * Returns a sample genomic data query.
      * 
-     * @param studyManagementService comment
-     * @return comment
+     * @return the query.
      */
-    public static Query getGenomicQuery(StudyManagementService studyManagementService) {
+    public static Query getGenomicQuery() {
         Query query = createQuery();
         query.setResultType(ResultTypeEnum.GENOMIC.getValue());
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         query.setName("Gene Expression Values");
         query.setDescription("A demonstration query that lists expression values for all samples.");
-        StudyConfiguration studyConfiguration = studyManagementService.getManagedStudies("manager").iterator().next();
-        Study study = studyConfiguration.getStudy();
+        Study study = getStudy();
         query.getSubscription().setStudy(study);
         return query;
     }
@@ -237,7 +235,7 @@ public final class TestQueries {
     private static Query createQuery() {
         Query query = new Query();
         query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setResultType("clinical");
+        query.setResultType(ResultTypeEnum.CLINICAL.getValue());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());

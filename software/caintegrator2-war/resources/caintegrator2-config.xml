@@ -20,13 +20,16 @@
     <bean id="homepageAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.HomepageAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
     
     <bean id="browseStudyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.BrowseStudyAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
     
@@ -41,6 +44,9 @@
     <bean id="loginAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.LoginAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
     <!-- Study Management -->
 
@@ -50,6 +56,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="deployStudyAction"
@@ -58,6 +67,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="editStudyAction"
@@ -65,6 +77,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditStudyAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
 
@@ -85,6 +100,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="addImagingFileAction"
@@ -92,6 +110,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.AddImageFileAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
     
@@ -101,6 +122,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
     
     <bean id="editClinicalSourceAction"
@@ -108,6 +132,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.EditClinicalSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
 
@@ -117,6 +144,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
 	<bean id="saveImagingSourceAction"
@@ -124,6 +154,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveImagingSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
     
@@ -133,6 +166,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
 	<bean id="loadImagingSourceAction"
@@ -140,6 +176,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.LoadImagingSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
     
@@ -149,6 +188,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="defineImagingFileColumnAction"
@@ -156,6 +198,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineImagingFileColumnAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
     
@@ -165,6 +210,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="saveGenomicSourceAction"
@@ -172,6 +220,9 @@
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveGenomicSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>
 
@@ -181,6 +232,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+         <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="saveSampleMappingAction"
@@ -189,6 +243,9 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+         <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <!-- Query Management actions -->
@@ -196,22 +253,35 @@
     <bean id="manageQueryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.ManageQueryAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>   
     
     <bean id="executeQueryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.ExecuteQueryAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>   
+
+    <!-- Analysis actions -->
+    
+    <bean id="genePatternAnalysisAction"
+        scope="session"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisAction">
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
         </property>
     </bean>   
 
@@ -239,6 +309,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
 
     <bean id="workspaceService" 
@@ -258,6 +331,13 @@
         </property>
         <property name="resultHandler">
             <ref local="resultHandler"/>
+        </property>
+    </bean>
+
+    <bean id="analysisService" 
+        class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceImpl">
+        <property name="genePatternClient">
+            <ref local="genePatternClient"/>
         </property>
     </bean>
 
@@ -319,6 +399,8 @@
     
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
+    
+    <bean id="genePatternClient" class="edu.mit.broad.genepattern.gp.services.GenePatternClientImpl" />
 
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
