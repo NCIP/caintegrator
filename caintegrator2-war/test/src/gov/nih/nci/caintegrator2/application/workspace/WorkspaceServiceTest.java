@@ -85,8 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -107,6 +109,18 @@ public class WorkspaceServiceTest {
     public void testGetWorkspace() {
         UserWorkspace workspace = workspaceService.getWorkspace();
         assertNotNull(workspace);
+    }
+    
+    @Test
+    public void testSubscribe() {
+        Study study = new Study();
+        study.setId(1L);
+        UserWorkspace workspace = workspaceService.getWorkspace();
+        assertEquals(0, workspace.getSubscriptionCollection().size());
+        workspaceService.subscribe(workspace, study);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
+        workspaceService.subscribe(workspace, study);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
     }
 
 }
