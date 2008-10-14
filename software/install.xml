@@ -460,6 +460,19 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		upgrade:jboss,
 		install:validation:post-install
 		"/>
+        
+    <!-- Wrapper target to upgrade all container and install the database. Does not install or configure binaries -->
+    <target name="upgrade:newdb" description="Deploys application and reinstalls database" 
+        depends="
+        upgrade:check,
+        upgrade:init,
+        install:validation:pre-install,
+        install:jboss:stop,
+        install:init,
+        install:database,
+        upgrade:jboss,
+        install:validation:post-install
+        "/>        
 
 	<!-- Wrapper upgrade database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database. -->
 	<target name="upgrade:database" description="Apply incremental DB changes" unless="exclude.database"
