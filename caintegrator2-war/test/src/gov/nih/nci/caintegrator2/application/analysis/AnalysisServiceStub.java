@@ -83,150 +83,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
- * for the current request.
- */
-public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
-    
-    private WorkspaceService workspaceService;
+public class AnalysisServiceStub implements AnalysisService {
 
     /**
      * {@inheritDoc}
      */
-    public void prepare() {
-        SessionHelper.getInstance().refresh(getWorkspaceService());
+    public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) {
+        List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
+        AnalysisMethod method = new AnalysisMethod();
+        method.setName("method");
+        methods.add(method);
+        return methods;
     }
 
-    /**
-     * @return the workspaceService
-     */
-    protected final WorkspaceService getWorkspaceService() {
-        return workspaceService;
-    }
-
-    /**
-     * @param workspaceService the workspaceService to set
-     */
-    public final void setWorkspaceService(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
-    }
-
-    /**
-     * @return the workspace
-     */
-    protected final UserWorkspace getWorkspace() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getUserWorkspace();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the displayableWorkspace
-     */
-    protected final DisplayableUserWorkspace getDisplayableWorkspace() {
-        return SessionHelper.getInstance().getDisplayableUserWorkspace();
-    }
-
-    /**
-     * @return the studySubscription
-     */
-    protected final StudySubscription getStudySubscription() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getCurrentStudySubscription();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param studySubscription the studySubscription to set
-     */
-    protected final void setStudySubscription(StudySubscription studySubscription) {
-        getDisplayableWorkspace().setCurrentStudySubscription(studySubscription);
-    }
-
-    /**
-     * @return the study
-     */
-    protected final Study getStudy() {
-        if (getStudySubscription() != null) {
-            return getStudySubscription().getStudy();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the query
-     */
-    protected final Query getQuery() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getQuery();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the queryResult
-     */
-    protected final DisplayableQueryResult getQueryResult() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getQueryResult();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the genomicDataQueryResult
-     */
-    protected final GenomicDataQueryResult getGenomicDataQueryResult() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getGenomicDataQueryResult();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param query the query to set
-     */
-    protected final void setQuery(Query query) {
-        getDisplayableWorkspace().setQuery(query);
-    }
-
-    /**
-     * @param queryResult the queryResult to set
-     */
-    protected final void setQueryResult(DisplayableQueryResult queryResult) {
-        getDisplayableWorkspace().setQueryResult(queryResult);
-    }
-
-    /**
-     * @param genomicDataQueryResult the genomicDataQueryResult to set
-     */
-    protected final void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
-        getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
-    }
-
-    
 }

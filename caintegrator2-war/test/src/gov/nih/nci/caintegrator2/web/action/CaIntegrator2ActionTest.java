@@ -85,148 +85,71 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
+import java.util.HashMap;
 
-/**
- * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
- * for the current request.
- */
-public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
+import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.opensymphony.xwork2.ActionContext;
+
+public class CaIntegrator2ActionTest {
     
-    private WorkspaceService workspaceService;
-
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() {
-        SessionHelper.getInstance().refresh(getWorkspaceService());
+    @Before
+    public void setUp() {
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
     }
 
-    /**
-     * @return the workspaceService
-     */
-    protected final WorkspaceService getWorkspaceService() {
-        return workspaceService;
+    @Test
+    public void testPrepare() {
+        AbstractCaIntegrator2Action action = new AbstractCaIntegrator2ActionStub();
+        assertNull(action.getWorkspace());
+        action.prepare();
+        assertNotNull(action.getWorkspace());
     }
 
-    /**
-     * @param workspaceService the workspaceService to set
-     */
-    public final void setWorkspaceService(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
+    @Test
+    public void testGetters() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        AbstractCaIntegrator2Action action = new AbstractCaIntegrator2ActionStub();
+        assertNull(action.getDisplayableWorkspace());
+        assertNull(action.getStudySubscription());
+        assertNull(action.getStudy());
+        assertNull(action.getQuery());
+        assertNull(action.getQueryResult());
+        assertNull(action.getGenomicDataQueryResult());
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        action.prepare();
+        assertNotNull(action.getDisplayableWorkspace());
+        assertNotNull(action.getStudySubscription());
+        assertNotNull(action.getStudy());
+        Query query = new Query();
+        query.setId(1L);
+        action.setQuery(query);
+        assertEquals(query, action.getQuery());
+        GenomicDataQueryResult genomicDataQueryResult = new GenomicDataQueryResult();
+        genomicDataQueryResult.setId(1L);
+        action.setGenomicDataQueryResult(genomicDataQueryResult);
+        assertEquals(genomicDataQueryResult, action.getGenomicDataQueryResult());
     }
-
-    /**
-     * @return the workspace
-     */
-    protected final UserWorkspace getWorkspace() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getUserWorkspace();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the displayableWorkspace
-     */
-    protected final DisplayableUserWorkspace getDisplayableWorkspace() {
-        return SessionHelper.getInstance().getDisplayableUserWorkspace();
-    }
-
-    /**
-     * @return the studySubscription
-     */
-    protected final StudySubscription getStudySubscription() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getCurrentStudySubscription();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param studySubscription the studySubscription to set
-     */
-    protected final void setStudySubscription(StudySubscription studySubscription) {
-        getDisplayableWorkspace().setCurrentStudySubscription(studySubscription);
-    }
-
-    /**
-     * @return the study
-     */
-    protected final Study getStudy() {
-        if (getStudySubscription() != null) {
-            return getStudySubscription().getStudy();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the query
-     */
-    protected final Query getQuery() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getQuery();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the queryResult
-     */
-    protected final DisplayableQueryResult getQueryResult() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getQueryResult();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the genomicDataQueryResult
-     */
-    protected final GenomicDataQueryResult getGenomicDataQueryResult() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getGenomicDataQueryResult();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param query the query to set
-     */
-    protected final void setQuery(Query query) {
-        getDisplayableWorkspace().setQuery(query);
-    }
-
-    /**
-     * @param queryResult the queryResult to set
-     */
-    protected final void setQueryResult(DisplayableQueryResult queryResult) {
-        getDisplayableWorkspace().setQueryResult(queryResult);
-    }
-
-    /**
-     * @param genomicDataQueryResult the genomicDataQueryResult to set
-     */
-    protected final void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
-        getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
-    }
-
     
+    private static class AbstractCaIntegrator2ActionStub extends AbstractCaIntegrator2Action {
+
+        private static final long serialVersionUID = 1L;
+        
+        private AbstractCaIntegrator2ActionStub() {
+            setWorkspaceService(new WorkspaceServiceStub());
+        }
+        
+    }
+
 }
