@@ -86,13 +86,11 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -130,6 +128,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private NCIAFacade nciaFacade;
     private CaArrayFacade caArrayFacade;
     private ArrayDataService arrayDataService;
+    private WorkspaceService workspaceService;
 
     /**
      * {@inheritDoc}
@@ -137,27 +136,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void save(StudyConfiguration studyConfiguration) {
         if (isNew(studyConfiguration)) {
             configureNew(studyConfiguration);
+            getWorkspaceService().subscribe(getWorkspaceService().getWorkspace(), studyConfiguration.getStudy());
         }
         persist(studyConfiguration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void subscribeUser(String username, Study study) {
-        UserWorkspace userWorkspace = dao.getWorkspace(username);
-        if (userWorkspace == null) {
-            throw new IllegalStateException("User " + username + " doesn't have a valid UserWorkspace.");
-        }
-        if (!Cai2Util.userSubscribedToStudy(userWorkspace, study)) {
-            if (userWorkspace.getSubscriptionCollection() == null) {
-                userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            }
-            StudySubscription studySubscription = new StudySubscription();
-            studySubscription.setStudy(study);
-            userWorkspace.getSubscriptionCollection().add(studySubscription);
-            dao.save(userWorkspace);
-        } 
     }
 
     private boolean isNew(StudyConfiguration studyConfiguration) {
@@ -509,6 +490,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         dao.save(descriptor);
         dao.save(study);
         return annotationDefinition;
+    }
+
+    /**
+     * @return the workspaceService
+     */
+    public WorkspaceService getWorkspaceService() {
+        return workspaceService;
+    }
+
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
     }
 
 

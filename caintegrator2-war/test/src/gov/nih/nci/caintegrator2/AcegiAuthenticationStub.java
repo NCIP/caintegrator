@@ -83,34 +83,64 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2;
 
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.providers.AbstractAuthenticationToken;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Stub implementation of <code>Authentication</code> interface for use in tests.
  */
-public interface WorkspaceService {
+@SuppressWarnings("deprecation")
+public class AcegiAuthenticationStub extends AbstractAuthenticationToken {
+
+    private static final long serialVersionUID = 1L;
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    private String username = "username";
+
+    private GrantedAuthority[] authorities = new GrantedAuthority[0];
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * {@inheritDoc}
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public Object getCredentials() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object getPrincipal() {
+        return getUsername();
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GrantedAuthority[] getAuthorities() {
+        return authorities;
+    }
+
+    /**
+     * @param authorities the authorities to set
+     */
+    public void setAuthorities(GrantedAuthority[] authorities) {
+        this.authorities = authorities;
+    }
+    
 }

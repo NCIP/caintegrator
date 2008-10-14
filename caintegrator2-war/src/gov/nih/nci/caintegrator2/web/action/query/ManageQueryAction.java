@@ -87,27 +87,21 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // see execute method
-public class ManageQueryAction extends ActionSupport implements Preparable {
+public class ManageQueryAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
     
-    private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
-    private DisplayableQueryResult queryResult;
     private ManageQueryHelper manageQueryHelper;
     private String selectedAction = "";
     private String selectedRowCriterion = "uninitializedselectedRowCriterion";
@@ -125,13 +119,14 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
      * preprocessing.
      */
     public void prepare() {
+        super.prepare();
         // Instantiate/prepopulate manageQueryHelper if necessary
         manageQueryHelper = ManageQueryHelper.getInstance();
         if ("createNewQuery".equals(selectedAction)) {
             manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         }
         if (!manageQueryHelper.isPrepopulated()) {
-            manageQueryHelper.prepopulateAnnotationSelectLists(studyManagementService);
+            manageQueryHelper.prepopulateAnnotationSelectLists();
         }
     }
     
@@ -161,7 +156,7 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         if (StringUtils.isEmpty(searchName)) {
             addActionError("Must have a name for your query");
         } else {
-            for (Query query : SessionHelper.getInstance().getDisplayableStudySubscription().getQueryCollection()) {
+            for (Query query : getStudySubscription().getQueryCollection()) {
                 if (searchName.equals(query.getName())) {
                     addActionError("There is already a query named " + searchName
                             + ", either delete that one, or use a different name.");
@@ -206,36 +201,6 @@ public class ManageQueryAction extends ActionSupport implements Preparable {
         }     
         
         return returnValue;
-    }
-    
-    /**
-     * Struts Setter method for the QueryResult which will be displayed.
-     * @param qR the query result to be set
-     */
-    public void setQueryResult(DisplayableQueryResult qR) {
-        this.queryResult = qR;
-    }
-    
-    /**
-     * Gets the QueryResult to be handled by struts.
-     * @return final result from the rows.
-     */
-    public DisplayableQueryResult getQueryResult() {
-        return queryResult;
-    }
-    
-    /**
-     * @return the studyManagementService
-     */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
     }
     
     /**

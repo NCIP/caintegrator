@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -121,6 +122,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -154,6 +156,9 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     
     public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
         try {
+            AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+            authentication.setUsername("manager");
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             loadDesign();
             studyConfiguration = new StudyConfiguration();
             studyConfiguration.getStudy().setShortTitleText(getStudyName());

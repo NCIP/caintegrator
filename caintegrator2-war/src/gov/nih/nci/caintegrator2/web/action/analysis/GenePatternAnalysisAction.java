@@ -83,34 +83,149 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Action to configure and run GenePattern analysis jobs.
  */
-public interface WorkspaceService {
+public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
+    private static final long serialVersionUID = 1L;
     
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
+    private List<AnalysisMethod> analysisMethods;
+    private AnalysisService analysisService;
+    private AnalysisMethodInvocation invocation;
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * Configures information about the current analysis service job.
+     * 
+     * @return the struts result.
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public String configure() {
+        try {
+            if (!StringUtils.isBlank(server.getUrl()) && getAnalysisMethods() == null) {
+                setAnalysisMethods(getAnalysisService().getGenePatternMethods(server));
+            }
+            return SUCCESS;
+        } catch (GenePatternServiceException e) { 
+            addActionError("Couldn't retrieve GenePattern analysis method information: " + e.getMessage());
+            return ERROR;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        return SUCCESS;
+    }
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
+
+    /**
+     * @return the analysisMethods
+     */
+    public List<AnalysisMethod> getAnalysisMethods() {
+        return analysisMethods;
+    }
+
+    /**
+     * @param analysisMethods the analysisMethods to set
+     */
+    public void setAnalysisMethods(List<AnalysisMethod> analysisMethods) {
+        this.analysisMethods = analysisMethods;
+    }
+
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return server.getUrl();
+    }
+
+    /**
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        if (!url.equals(server.getUrl())) {
+            setAnalysisMethods(null);
+            server.setUrl(url);
+            server.setUsername("etavela@5amsolutions.com");
+        }
+    }
+    
+    /**
+     * Returns the name of the currently selected <code>AnalysisMethod</code>.
+     * 
+     * @return the name.
+     */
+    public String getAnalysisMethodName() {
+        if (getInvocation() != null) {
+            return getInvocation().getMethod().getName();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Sets the currently selected <code>AnalysisMethod</code> by name.
+     * 
+     * @param name the method name
+     */
+    public void setAnalysisMethodName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            setInvocation(null);
+        } else if (!name.equals(getAnalysisMethodName())) {
+            setInvocation(getAnalysisMethod(name).createInvocation());
+        }
+    }
+
+    private AnalysisMethod getAnalysisMethod(String name) {
+        for (AnalysisMethod method : analysisMethods) {
+            if (name.equals(method.getName())) {
+                return method;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the invocation
+     */
+    public AnalysisMethodInvocation getInvocation() {
+        return invocation;
+    }
+
+    /**
+     * @param invocation the invocation to set
+     */
+    public void setInvocation(AnalysisMethodInvocation invocation) {
+        this.invocation = invocation;
+    }
+
 }

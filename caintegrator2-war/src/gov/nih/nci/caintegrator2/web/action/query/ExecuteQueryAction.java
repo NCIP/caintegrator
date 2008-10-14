@@ -85,31 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-
-import org.apache.log4j.Logger;
-
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
+import org.apache.log4j.Logger;
 
 /**
  * Executes an existing query.
  */
-public class ExecuteQueryAction extends ActionSupport implements Preparable {
+public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
     
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(ExecuteQueryAction.class);
 
-    private Query query;
-    private DisplayableQueryResult queryResult;
-    private GenomicDataQueryResult genomicDataQueryResult;
-    private StudyManagementService studyManagementService;
     private QueryManagementService queryManagementService;
     private String queryName;
     private Long queryId;
@@ -118,14 +108,15 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
      * {@inheritDoc}
      */
     public void prepare() {
+        super.prepare();
         if ("image".equals(queryName)) {
-            query = TestQueries.getImageQuery(getStudyManagementService());            
+            setQuery(TestQueries.getImageQuery());            
         } else if ("genomic".equals(queryName)) {
-            query = TestQueries.getGenomicQuery(getStudyManagementService());            
+            setQuery(TestQueries.getGenomicQuery());            
         } else if ("simple".equals(queryName)) {
-            query = TestQueries.getSimpleQuery(getStudyManagementService());            
+            setQuery(TestQueries.getSimpleQuery());            
         } else {
-            query = retrieveQuery();
+            setQuery(retrieveQuery());
         }
     }
     
@@ -144,34 +135,6 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
     }
 
     /**
-     * @return the query
-     */
-    public Query getQuery() {
-        return query;
-    }
-
-    /**
-     * @param query the query to set
-     */
-    public void setQuery(Query query) {
-        this.query = query;
-    }
-
-    /**
-     * @return the studyManagementService
-     */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
-    }
-
-    /**
      * @return the queryManagementService
      */
     public QueryManagementService getQueryManagementService() {
@@ -183,20 +146,6 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
      */
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
-    }
-
-    /**
-     * @return the queryResult
-     */
-    public DisplayableQueryResult getQueryResult() {
-        return queryResult;
-    }
-
-    /**
-     * @param queryResult the queryResult to set
-     */
-    public void setQueryResult(DisplayableQueryResult queryResult) {
-        this.queryResult = queryResult;
     }
 
     /**
@@ -213,32 +162,12 @@ public class ExecuteQueryAction extends ActionSupport implements Preparable {
         this.queryName = queryName;
     }
 
-    /**
-     * @return the genomicDataQueryResult
-     */
-    public GenomicDataQueryResult getGenomicDataQueryResult() {
-        return genomicDataQueryResult;
-    }
-
-    /**
-     * @param genomicDataQueryResult the genomicDataQueryResult to set
-     */
-    public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
-        this.genomicDataQueryResult = genomicDataQueryResult;
-    }
-
-    /**
-     * @return Query
-     * 
-     */
-    public Query retrieveQuery() {
-       
+    private Query retrieveQuery() {
         if (queryId != null) {
-            for (Query nextQuery : SessionHelper.getInstance().getDisplayableStudySubscription().getQueryCollection()) {
+            for (Query nextQuery : getStudySubscription().getQueryCollection()) {
                 if (queryId.equals(nextQuery.getId())) {
                   return nextQuery;
                 }
-                
             }
         }
         return null;

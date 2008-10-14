@@ -122,9 +122,13 @@ public class AnalysisServiceTest {
         assertEquals(true, methods.get(0).getParameters().get(0).isRequired());
         assertEquals(false, methods.get(0).getParameters().get(1).isRequired());
         assertEquals(AnalysisParameterType.STRING, methods.get(0).getParameters().get(0).getType());
-        IntegerParameterValue value = (IntegerParameterValue) methods.get(0).getParameters().get(2).getDefaultValue();
+        AnalysisParameter parameterWithChoices = methods.get(0).getParameters().get(2);
+        IntegerParameterValue value = (IntegerParameterValue) parameterWithChoices.getDefaultValue();
         assertEquals(methods.get(0).getParameters().get(2), value.getParameter());
-        assertEquals(Integer.valueOf(3), value.getValue());
+        assertEquals(Integer.valueOf(2), value.getValue());
+        assertEquals("parameter3", parameterWithChoices.getName());
+        assertEquals(2, parameterWithChoices.getChoices().size());
+        assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoices().get("choice1")).getValue());
     }
 
     private final class TestGenePatternClientStub extends GenePatternClientStub {
@@ -142,6 +146,7 @@ public class AnalysisServiceTest {
             tasks[0].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
             tasks[0].getParameterInfoArray()[0].getAttributes().put("optional", "");
             tasks[0].getParameterInfoArray()[0].setDefaultValue("default");
+            tasks[0].getParameterInfoArray()[0].setChoices(new HashMap());
             
 
             tasks[0].getParameterInfoArray()[1] = new ParameterInfo();
@@ -150,12 +155,16 @@ public class AnalysisServiceTest {
             tasks[0].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
             tasks[0].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
             tasks[0].getParameterInfoArray()[1].getAttributes().put("optional", "on");
+            tasks[0].getParameterInfoArray()[1].setChoices(new HashMap());
 
             tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
             tasks[0].getParameterInfoArray()[2].setName("parameter3");
-            tasks[0].getParameterInfoArray()[2].setDefaultValue("3");
+            tasks[0].getParameterInfoArray()[2].setDefaultValue("2");
             tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
             tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
+            tasks[0].getParameterInfoArray()[2].setChoices(new HashMap());
+            tasks[0].getParameterInfoArray()[2].getChoices().put("choice1", "1");
+            tasks[0].getParameterInfoArray()[2].getChoices().put("choice2", "2");
 
             tasks[1] = new TaskInfo();
             tasks[1].setName("task2");
@@ -165,6 +174,7 @@ public class AnalysisServiceTest {
             tasks[1].getParameterInfoArray()[0].setName("parameter1");
             tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
+            tasks[1].getParameterInfoArray()[0].setChoices(new HashMap());
             
             tasks[2] = new TaskInfo();
             tasks[2].setName("task3");
@@ -174,18 +184,21 @@ public class AnalysisServiceTest {
             tasks[2].getParameterInfoArray()[0].setName("parameter1");
             tasks[2].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.Float");
+            tasks[2].getParameterInfoArray()[0].setChoices(new HashMap());
 
             tasks[2].getParameterInfoArray()[1] = new ParameterInfo();
             tasks[2].getParameterInfoArray()[1].setName("parameter2");
             tasks[2].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
             tasks[2].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
+            tasks[2].getParameterInfoArray()[1].setChoices(new HashMap());
 
             tasks[2].getParameterInfoArray()[2] = new ParameterInfo();
             tasks[2].getParameterInfoArray()[2].setName("parameter3");
             tasks[2].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
             tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
             tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
+            tasks[2].getParameterInfoArray()[2].setChoices(new HashMap());
 
             return tasks;
         }

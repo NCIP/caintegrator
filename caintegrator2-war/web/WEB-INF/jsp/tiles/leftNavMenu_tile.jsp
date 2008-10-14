@@ -12,15 +12,12 @@
     
     <!--Menu-->
     <s:url id="manageQueryUrl" action="manageQuery" includeParams="all" escapeAmp ="false">
-		<s:param name="selectedAction">createNewQuery</s:param>
-	</s:url>
+        <s:param name="selectedAction">createNewQuery</s:param>
+    </s:url>
 
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
-        <s:if test="!#sessionHelper.authenticated">
-            <s:action name="workspace"/>
-        </s:if>
-        <li class="stdnav"><div><s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></div>
+        <li class="stdnav"><div><s:property value="study.shortTitleText"/></a></div>
             <ul>
                 <li><s:url id="homePageUrl" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
                 <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
@@ -28,14 +25,14 @@
         </li>
         
         <s:if test="#sessionHelper.studyManager">
-	        <li class="stdnav"><div>Study Elements</div>
-	            <ul>
-	                <li><a href="study_elements/subjects.html">Subjects</a></li>
-	                <li><a href="study_elements/samples.html">Samples</a></li>
-	                <li><a href="study_elements/array_data.html">Array Data</a></li>
-	                <li><a href="study_elements/images.html">Images</a></li>
-	            </ul>
-	        </li>
+             <li class="stdnav"><div>Study Elements</div>
+                <ul>
+                    <li><a href="study_elements/subjects.html">Subjects</a></li>
+                    <li><a href="study_elements/samples.html">Samples</a></li>
+                    <li><a href="study_elements/array_data.html">Array Data</a></li>
+                    <li><a href="study_elements/images.html">Images</a></li>
+                </ul>
+            </li>
         </s:if>
         <!--Tree Control-->
         
@@ -63,7 +60,7 @@
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=image#searchresults' class="queries">Image Series Query</a></li>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=genomic#searchresults' class="queries">Genomic Data Query</a></li>
                                 
-                                <s:iterator value="#sessionHelper.displayableStudySubscription.queryCollection">
+                                <s:iterator value="studySubscription.queryCollection">
                                     <s:url id="queryURL" action="executeQuery">
                                         <s:param name="queryId" value="id" />
                                     </s:url>
@@ -109,7 +106,10 @@
             <ul>
                 <li><a href="analysis_tools/generate_km_plot.html">Generate KM Plot</a></li>
                 <li><a href="analysis_tools/generate_heat_map.html">Generate Heat Map</a></li>
-                <li><a href="analysis_tools/genepattern_analysis.html">GenePattern Analysis</a></li>
+                <li>
+                    <s:url id="genePatternAnalysisUrl" action="genePatternAnalysis" />
+                    <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
+                </li>
             </ul>
         </li>
         <s:if test="#sessionHelper.studyManager">

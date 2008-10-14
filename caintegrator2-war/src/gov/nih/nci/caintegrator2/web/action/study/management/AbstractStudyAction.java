@@ -87,15 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
  */
-public abstract class AbstractStudyAction extends ActionSupport implements Preparable, ModelDriven<StudyConfiguration> {
+public abstract class AbstractStudyAction extends AbstractCaIntegrator2Action 
+implements ModelDriven<StudyConfiguration> {
     
     private StudyConfiguration studyConfiguration = new StudyConfiguration();
     private StudyManagementService studyManagementService;
@@ -104,6 +104,7 @@ public abstract class AbstractStudyAction extends ActionSupport implements Prepa
      * {@inheritDoc}
      */
     public void prepare() {
+        super.prepare();
         if (studyConfiguration.getId() != null) {
             studyConfiguration = studyManagementService.getRefreshedStudyEntity(studyConfiguration);
         }

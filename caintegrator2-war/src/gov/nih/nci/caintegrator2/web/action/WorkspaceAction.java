@@ -85,25 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-
-import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * Struts 2 action for user workspace access and management.
  */
-public class WorkspaceAction extends ActionSupport {
+public class WorkspaceAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
 
     private static final String WORKSPACE_STUDY = "workspaceStudy";
     private static final String WORKSPACE_NO_STUDY = "workspaceNoStudy";
-    
-    private WorkspaceService workspaceService;
-    private UserWorkspace workspace;
-    private Long currentStudySubscriptionId;
     
     /**
      * Opens the current user's workspace.
@@ -111,17 +101,11 @@ public class WorkspaceAction extends ActionSupport {
      * @return forward to workspace.
      */
     public String openWorkspace() {
-        setWorkspace(getWorkspaceService().getWorkspace(SecurityHelper.getCurrentUsername()));
-        if (getCurrentStudySubscriptionId() == null 
-            && workspace.getDefaultSubscription() != null) {
-            currentStudySubscriptionId = workspace.getDefaultSubscription().getId();
-        }
-        if (getCurrentStudySubscriptionId() != null) {
-            StudySubscription currentSubscription = workspaceService
-                    .retrieveStudySubscription(getCurrentStudySubscriptionId());
-            getWorkspaceService().refreshSessionStudySubscription(currentSubscription);
-            workspace.setDefaultSubscription(currentSubscription);
-            workspaceService.saveUserWorkspace(workspace);
+        if (getStudySubscription() != null) {
+            if (getWorkspace().getDefaultSubscription() == null) {
+                getWorkspace().setDefaultSubscription(getStudySubscription());
+            }
+            getWorkspaceService().saveUserWorkspace(getWorkspace());
             return WORKSPACE_STUDY;
         } else {
             return WORKSPACE_NO_STUDY;
@@ -129,42 +113,17 @@ public class WorkspaceAction extends ActionSupport {
     }
 
     /**
-     * @param workspaceService the workspaceService to set
-     */
-    public void setWorkspaceService(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
-    }
-
-    /**
-     * @return the workspaceService
-     */
-    public WorkspaceService getWorkspaceService() {
-        return workspaceService;
-    }
-
-    /**
-     * @return the workspace
-     */
-    public UserWorkspace getWorkspace() {
-        return workspace;
-    }
-
-    private void setWorkspace(UserWorkspace workspace) {
-        this.workspace = workspace;
-    }
-
-    /**
      * @return the currentStudySubscriptionId
      */
     public Long getCurrentStudySubscriptionId() {
-        return currentStudySubscriptionId;
+        return getDisplayableWorkspace().getCurrentStudySubscriptionId();
     }
 
     /**
      * @param currentStudySubscriptionId the currentStudySubscriptionId to set
      */
     public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
-        this.currentStudySubscriptionId = currentStudySubscriptionId;
+        getDisplayableWorkspace().setCurrentStudySubscriptionId(currentStudySubscriptionId);
     }
 
 }

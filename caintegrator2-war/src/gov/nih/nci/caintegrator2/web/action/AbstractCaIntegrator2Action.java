@@ -83,34 +83,138 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action;
 
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
+ * for the current request.
  */
-public interface WorkspaceService {
+public abstract class AbstractCaIntegrator2Action extends ActionSupport implements Preparable {
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    private WorkspaceService workspaceService;
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * {@inheritDoc}
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public void prepare() {
+        SessionHelper.getInstance().refresh(getWorkspaceService());
+    }
+
+    /**
+     * @return the workspaceService
+     */
+    protected final WorkspaceService getWorkspaceService() {
+        return workspaceService;
+    }
+
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public final void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
+    }
+
+    /**
+     * @return the workspace
+     */
+    protected final UserWorkspace getWorkspace() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getUserWorkspace();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the displayableWorkspace
+     */
+    protected final DisplayableUserWorkspace getDisplayableWorkspace() {
+        return SessionHelper.getInstance().getDisplayableUserWorkspace();
+    }
+
+    /**
+     * @return the studySubscription
+     */
+    protected final StudySubscription getStudySubscription() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentStudySubscription();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param studySubscription the studySubscription to set
+     */
+    protected final void setStudySubscription(StudySubscription studySubscription) {
+        getDisplayableWorkspace().setCurrentStudySubscription(studySubscription);
+    }
+
+    /**
+     * @return the study
+     */
+    protected final Study getStudy() {
+        if (getStudySubscription() != null) {
+            return getStudySubscription().getStudy();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the query
+     */
+    protected final Query getQuery() {
+        return getDisplayableWorkspace().getQuery();
+    }
+
+    /**
+     * @return the queryResult
+     */
+    protected final DisplayableQueryResult getQueryResult() {
+        return getDisplayableWorkspace().getQueryResult();
+    }
+
+    /**
+     * @return the genomicDataQueryResult
+     */
+    protected final GenomicDataQueryResult getGenomicDataQueryResult() {
+        return getDisplayableWorkspace().getGenomicDataQueryResult();
+    }
+
+    /**
+     * @param query the query to set
+     */
+    protected final void setQuery(Query query) {
+        getDisplayableWorkspace().setQuery(query);
+    }
+
+    /**
+     * @param queryResult the queryResult to set
+     */
+    protected final void setQueryResult(DisplayableQueryResult queryResult) {
+        getDisplayableWorkspace().setQueryResult(queryResult);
+    }
+
+    /**
+     * @param genomicDataQueryResult the genomicDataQueryResult to set
+     */
+    protected final void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
+        getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
+    }
+
+    
 }

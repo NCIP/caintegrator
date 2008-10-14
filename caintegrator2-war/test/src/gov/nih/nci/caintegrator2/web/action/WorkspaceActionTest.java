@@ -87,47 +87,34 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 
-import org.acegisecurity.Authentication;
+import java.util.HashMap;
+
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.opensymphony.xwork2.ActionContext;
+
 public class WorkspaceActionTest {
 
     private WorkspaceAction workspaceAction;
-    private WorkspaceServiceStub workspaceServiceStub;
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("action-test-config.xml", WorkspaceActionTest.class); 
         workspaceAction = (WorkspaceAction) context.getBean("workspaceAction"); 
-        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceService");
+        ActionContext.getContext().setSession(new HashMap());
     }
 
     @Test
     public void testOpenWorkspace() {
-        Authentication authentication = new AbstractAuthenticationToken(null) {
-
-            private static final long serialVersionUID = 1L;
-
-            public Object getCredentials() {
-                return null;
-            }
-
-            public Object getPrincipal() {
-                return "username";
-            }
-
-            
-        };
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        workspaceAction.prepare();
         assertEquals("workspaceStudy", workspaceAction.openWorkspace());
-        assertTrue(workspaceServiceStub.refreshSessionStudySubscriptionCalled);
         assertNotNull(workspaceAction.getWorkspace());
         assertNotNull(workspaceAction.getCurrentStudySubscriptionId());
     }

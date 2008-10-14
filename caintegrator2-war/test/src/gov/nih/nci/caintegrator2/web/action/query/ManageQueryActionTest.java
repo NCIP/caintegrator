@@ -89,21 +89,21 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.DisplayableStudySubscription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -115,10 +115,8 @@ import com.opensymphony.xwork2.ActionContext;
 public class ManageQueryActionTest {
 
     private ManageQueryAction manageQueryAction;
-    private DisplayableQueryResult qR;
     
     // Study objects
-    private final StudyManagementService studyManagementService = new StudyManagementServiceStub();
     private static final String selectedRowCriterion = "clinical";
     private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
 
@@ -130,11 +128,9 @@ public class ManageQueryActionTest {
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
-        qR = DisplayableQueryResultTest.getTestResult();
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);
-        manageQueryAction.setStudyManagementService(studyManagementService);
-
+        manageQueryAction.setWorkspaceService(new WorkspaceServiceStub());
         setupSession();
         
         // the first time the parameter is null so
@@ -156,7 +152,6 @@ public class ManageQueryActionTest {
         assertEquals("or",manageQueryAction.getSelectedBasicOperator());
         
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
-        manageQueryAction.setStudyManagementService(studyManagementService);
         
         manageQueryAction.setSelectedAction("");
         assertEquals("", manageQueryAction.getSelectedAction());    
@@ -165,24 +160,26 @@ public class ManageQueryActionTest {
 
     @SuppressWarnings({"PMD", "unchecked"})
     private void setupSession() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SessionHelper sessionHelper = SessionHelper.getInstance();
+        manageQueryAction.prepare();
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
+        studySubscription.setId(1L);
         StudySubscription studySubscription2 = new StudySubscription();
         studySubscription2.setStudy(new Study());
-        sessionHelper.setDisplayableStudySubscription(new DisplayableStudySubscription());
-        sessionHelper.getDisplayableStudySubscription().setCurrentStudySubscription(studySubscription);
-        ActionContext.getContext().getSession().put(SessionHelper.SESSION_HELPER_STRING, sessionHelper);
-        manageQueryAction.prepare();
+        studySubscription2.setId(2L);
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription2);
+        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
         manageQueryAction.validate();
-        manageQueryAction.getManageQueryHelper().getClinicalAnnotationSelections().setStudySubscription(studySubscription);
         manageQueryAction.getManageQueryHelper().setQueryCriteriaRowList(new ArrayList<QueryAnnotationCriteria>());
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         AnnotationSelection annotationSelection = new AnnotationSelection();
         annotationSelection.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection.getAnnotationDefinitions().add(new AnnotationDefinition());
-        annotationSelection.setStudySubscription(studySubscription);
         queryAnnotationCriteria.setAnnotationSelections(annotationSelection);
         queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria);
@@ -191,7 +188,6 @@ public class ManageQueryActionTest {
         AnnotationSelection annotationSelection2 = new AnnotationSelection();
         annotationSelection2.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection2.getAnnotationDefinitions().add(new AnnotationDefinition());
-        annotationSelection2.setStudySubscription(studySubscription);
         queryAnnotationCriteria2.setAnnotationSelections(annotationSelection2);
         queryAnnotationCriteria2.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria2);
@@ -243,10 +239,6 @@ public class ManageQueryActionTest {
         // test for invalid action
         manageQueryAction.setSelectedAction(null);
         assertEquals(Action.ERROR, manageQueryAction.execute());
-        
-        // misc tests of getters and setters
-        manageQueryAction.setStudyManagementService(studyManagementService);
-        assertEquals(studyManagementService,manageQueryAction.getStudyManagementService());
 
         assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
         assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRow());
@@ -255,9 +247,5 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
 //        assertEquals(Action.SUCCESS, manageQueryAction.saveQuery());
         assertNotNull(manageQueryAction.getQueryManagementService());
-        
-        manageQueryAction.setQueryResult(qR);
-        assertEquals(qR,manageQueryAction.getQueryResult());
-
     }
 }

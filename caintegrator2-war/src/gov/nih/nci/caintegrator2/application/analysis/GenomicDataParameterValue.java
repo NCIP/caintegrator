@@ -83,34 +83,47 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Genomic data set.
  */
-public interface WorkspaceService {
-    
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+public class GenomicDataParameterValue extends AbstractParameterValue {
+
+    private static final long serialVersionUID = 1L;
+    private GenomicDataResultValue genomicData;
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * {@inheritDoc}
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    @Override
+    String getValueAsString() {
+        return genomicData.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void setValueFromString(String stringValue) {
+        throw new IllegalStateException("Can't set value from String");
+    }
+
+    /**
+     * @return the genomicData
+     */
+    public GenomicDataResultValue getGenomicData() {
+        return genomicData;
+    }
+
+    /**
+     * @param genomicData the genomicData to set
+     */
+    public void setGenomicData(GenomicDataResultValue genomicData) {
+        this.genomicData = genomicData;
+    }
+
+
 }

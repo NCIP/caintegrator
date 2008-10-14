@@ -6,7 +6,7 @@
     
     <div id="searchresults" class="box2" style="display:none;">                                             
         
-        <h2>Search Results for: <s:property value="queryResult.getQuery().getName()"/></h2>
+        <h2>Search Results for: <s:property value="query.name"/></h2>
 
         <div class="tableheader">
             <label for="numres">Results per Page:</label>
@@ -21,11 +21,11 @@
 
 
         
-                 <s:property value="queryResult.getQuery().getDescription()"/><br>  
+                 <s:property value="query.description"/><br>  
                  <br>
             <table class="data">
                  
-                 <s:if test='%{getQuery().getResultType().equals("genomic")}'>
+                 <s:if test='%{query.resultType.equals("genomic")}'>
                  </s:if>
                  <s:else>
                 <tr>

@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -107,11 +106,11 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * Helper class for ManageQueryAction.
  */
-public final class ManageQueryHelper {
+final class ManageQueryHelper {
     /**
      * String to use to store and retrieve this object from session.
      */
-    public static final String MANAGE_QUERY_HELPER_STRING = "manageQueryHelper";
+    static final String MANAGE_QUERY_HELPER_STRING = "manageQueryHelper";
     
     private boolean advancedView = false;
     private List<QueryAnnotationCriteria> queryCriteriaRowList;
@@ -133,7 +132,7 @@ public final class ManageQueryHelper {
      * Singleton method to get the instance off of the sessionMap object or create a new one. 
      * @return instance of ManageQueryHelper.
      */
-    public static ManageQueryHelper getInstance() {
+    static ManageQueryHelper getInstance() {
         return retrieveProperInstance(false);
     }
     
@@ -141,7 +140,7 @@ public final class ManageQueryHelper {
      * Resets the session's ManageQueryHelper object to new.
      * @return new instance of ManageQueryHelper.
      */
-    public static ManageQueryHelper resetSessionInstance() {
+    static ManageQueryHelper resetSessionInstance() {
         return retrieveProperInstance(true);
     }
     
@@ -160,6 +159,7 @@ public final class ManageQueryHelper {
             throw new IllegalStateException("Not inside of an ActionContext!");
         }
     }
+    
     /**
      * @return the advancedView
      */
@@ -195,7 +195,7 @@ public final class ManageQueryHelper {
     /**
      * @param queryAnnotationCriteria the QueryAnnotationCriteria to add
      */
-    public void addQueryAnnotationCriteriaToList(QueryAnnotationCriteria queryAnnotationCriteria) {
+    void addQueryAnnotationCriteriaToList(QueryAnnotationCriteria queryAnnotationCriteria) {
         this.getQueryCriteriaRowList().add(queryAnnotationCriteria);
     }
       
@@ -257,34 +257,24 @@ public final class ManageQueryHelper {
     
     /**
      * Fetch and store the annotation select lists.
-     * @param studyManagementService enables retrieval of a study
      */
-    public void prepopulateAnnotationSelectLists(StudyManagementService studyManagementService) {
-        if (SessionHelper.getInstance().getDisplayableStudySubscription() == null) {
+    void prepopulateAnnotationSelectLists() {
+        StudySubscription studySubscription = 
+            SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription();
+        if (studySubscription == null) {
            throw new IllegalStateException("No current StudySubscription is selected on the Session."); 
         }
-        Study study;
-        StudySubscription studySubscription;
-        
-        // TODO Use the currently selected study title below
-        studySubscription = studyManagementService.getRefreshedStudyEntity(
-                        SessionHelper.getInstance().getDisplayableStudySubscription().getCurrentStudySubscription());
-        study = studySubscription.getStudy();
-        
-        // Get all data type annotation field definitions:
+        Study study = studySubscription.getStudy();
         populateClinicalAnnotationDefinitions(study);
         populateImageSeriesAnnotationDefinitions(study);
         populateSampleAnnotationDefinitions(study);
-        // TODO get sample
-        
-        // Instantiate the annotation selection objects:
-        populateAnnotationSelections(studySubscription);
+        populateAnnotationSelections();
         setPrepopulated(true);
     }
     
-    private void populateAnnotationSelections(StudySubscription studySubscription) {
-        populateClinicalAnnotationSelections(studySubscription);
-        populateImageSeriesAnnotationSelections(studySubscription);
+    private void populateAnnotationSelections() {
+        populateClinicalAnnotationSelections();
+        populateImageSeriesAnnotationSelections();
 
     }
     
@@ -312,7 +302,7 @@ public final class ManageQueryHelper {
         }
     }
     
-    private void populateClinicalAnnotationSelections(StudySubscription studySubscription) {
+    private void populateClinicalAnnotationSelections() {
         if (this.clinicalAnnotationSelections == null) {
             this.clinicalAnnotationSelections = new AnnotationSelection();
         }
@@ -320,11 +310,10 @@ public final class ManageQueryHelper {
             List<String> annotationSelections = getDefinitionDisplayNames(clinicalAnnotationDefinitions);
             clinicalAnnotationSelections.setAnnotationSelections(annotationSelections);
             clinicalAnnotationSelections.setAnnotationDefinitions(clinicalAnnotationDefinitions);
-            clinicalAnnotationSelections.setStudySubscription(studySubscription);
         }
     }
     
-    private void populateImageSeriesAnnotationSelections(StudySubscription studySubscription) {
+    private void populateImageSeriesAnnotationSelections() {
         if (this.imageSeriesAnnotationSelections == null) {
             this.imageSeriesAnnotationSelections = new AnnotationSelection();
         }
@@ -332,7 +321,6 @@ public final class ManageQueryHelper {
             List<String> annotationSelections = getDefinitionDisplayNames(imageAnnotationDefinitions);
             imageSeriesAnnotationSelections.setAnnotationSelections(annotationSelections);
             imageSeriesAnnotationSelections.setAnnotationDefinitions(imageAnnotationDefinitions);
-            imageSeriesAnnotationSelections.setStudySubscription(studySubscription);
         }
     }
     
@@ -347,7 +335,7 @@ public final class ManageQueryHelper {
      * Configures clinical row.
      * @return true/false depending on if there's anything to add (any clinical data for study).
      */
-    public boolean configureClinicalQueryCriterionRow() {
+    boolean configureClinicalQueryCriterionRow() {
         if (getClinicalAnnotationSelections() == null 
              || getClinicalAnnotationSelections().getAnnotationDefinitions().isEmpty()) {
             return false;
@@ -365,7 +353,7 @@ public final class ManageQueryHelper {
      * Configures image series row.
      * @return true/false depending on if there's anything to add (any image series data for study).
      */
-    public boolean configureImageSeriesQueryCriterionRow() {
+    boolean configureImageSeriesQueryCriterionRow() {
         if (getImageSeriesAnnotationSelections() == null 
                 || getImageSeriesAnnotationSelections().getAnnotationDefinitions().isEmpty()) {
                return false;
@@ -383,7 +371,7 @@ public final class ManageQueryHelper {
     /**
      * @param selectedValues The array of values to be added.
      */
-    public void updateSelectedValues(String[] selectedValues) {
+    void updateSelectedValues(String[] selectedValues) {
 
         QueryAnnotationCriteria tempAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
@@ -401,7 +389,7 @@ public final class ManageQueryHelper {
     /**
      * @param selectedValues The array of values to be added.
      */
-    public void updateSelectedOperatorValues(String[] selectedValues) {
+    void updateSelectedOperatorValues(String[] selectedValues) {
 
         QueryAnnotationCriteria tempAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
@@ -419,7 +407,7 @@ public final class ManageQueryHelper {
     /**
      * @param selectedValues The array of values to be added.
      */
-    public void updateSelectedUserValues(String[] selectedValues) {
+    void updateSelectedUserValues(String[] selectedValues) {
 
         QueryAnnotationCriteria tempAnnotationCriteria = null;
         Iterator<QueryAnnotationCriteria> rowIter = this.getQueryCriteriaRowList().iterator();
@@ -439,12 +427,11 @@ public final class ManageQueryHelper {
      * @param basicQueryOperator String AND or OR
      * @return QueryResult Valid results from the query execution, or null 
      */
-    public QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
+    QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
         QueryResult queryResult = null;
 
         queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
                 this.getQueryCriteriaRowList());
-        
         return queryResult;
     }
     
@@ -456,7 +443,7 @@ public final class ManageQueryHelper {
      * @param queryDescription The description of the query.
      * @return - true/false depending on if it gets saved or not.
      */
-    public boolean saveQuery(QueryManagementService queryManagementService, 
+    boolean saveQuery(QueryManagementService queryManagementService, 
                              String basicQueryOperator,
                              String queryName, 
                              String queryDescription) {
@@ -468,6 +455,7 @@ public final class ManageQueryHelper {
             queryManagementService.save(query);
             return true;
         }
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setQuery(query);
         return false;
     }
     
@@ -485,14 +473,14 @@ public final class ManageQueryHelper {
     /**
      * @return the prepopulated
      */
-    public boolean isPrepopulated() {
+    boolean isPrepopulated() {
         return prepopulated;
     }
 
     /**
      * @param prepopulated the prepopulated to set
      */
-    public void setPrepopulated(boolean prepopulated) {
+    void setPrepopulated(boolean prepopulated) {
         this.prepopulated = prepopulated;
     }
 

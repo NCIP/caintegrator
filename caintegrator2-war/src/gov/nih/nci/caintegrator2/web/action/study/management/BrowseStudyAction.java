@@ -86,57 +86,26 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import com.opensymphony.xwork2.ActionSupport;
 /**
- * 
+ * Opens the currently selected study.
  */
-public class BrowseStudyAction extends ActionSupport {
+public class BrowseStudyAction extends AbstractCaIntegrator2Action {
+    
     private static final long serialVersionUID = 1L;
-    private StudyManagementService studyManagementService;
-    private Study study = new Study();
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
-        SessionHelper sessionHelper = SessionHelper.getInstance();
-        if (sessionHelper.getDisplayableStudySubscription() != null 
-            && sessionHelper.getDisplayableStudySubscription().getCurrentStudySubscription() != null) {
-            study = sessionHelper.getDisplayableStudySubscription().getCurrentStudySubscription().getStudy();
+        if (getStudySubscription() != null) {
             return SUCCESS;
         } else {
             addActionError("There is no DisplayableStudySubscription object on the session");
             return ERROR;
         }
     }
-  
-    /**
-     * @return the study
-     */
-    public Study getStudy() {
-        return study;
-    }
-    /**
-     * @param study the study to set
-     */
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-    
-    /**
-     * @return the studyManagementService
-     */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
-    }
+
 }

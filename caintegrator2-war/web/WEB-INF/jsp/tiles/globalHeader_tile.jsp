@@ -38,9 +38,14 @@
                <s:form action="workspace" theme="simple">
 
                     <label for="currentStudySubscriptionId">My Studies:</label>
-                    <s:select label="My Studies" name="currentStudySubscriptionId" headerKey="1" headerValue="-- Please Select --"
-                    list="#sessionHelper.displayableUserWorkspace.studySubscriptions" listKey="id"
-                    listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
+                    <s:select label="My Studies" 
+                        name="currentStudySubscriptionId" 
+                        value="displayableWorkspace.currentStudySubscriptionId" 
+                        headerKey="%{@gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace@NO_STUDY_SELECTED_ID}" 
+                        headerValue="-- Please Select --"
+                        list="workspace.subscriptionCollection" 
+                        listKey="id"
+                        listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
 
                </s:form>
         </div>    
