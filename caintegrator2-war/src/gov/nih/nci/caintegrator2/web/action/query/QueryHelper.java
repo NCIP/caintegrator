@@ -103,9 +103,11 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.collection.PersistentSet;
 
@@ -187,6 +189,8 @@ public class QueryHelper {
             }
         }
         
+        validateColumnColection(columnCollection);
+        
         String booleanOperator = getBasicQueryBooleanOperator();
         compoundCriterion.setBooleanOperator(booleanOperator);
         
@@ -205,6 +209,36 @@ public class QueryHelper {
         return query;
     }
     
+    /**
+     * The purpose of this function is to make sure that all of the column's indexes are unique so that
+     * they are placed in the proper order.
+     * @param columnCollection
+     */
+    private void validateColumnColection(Collection<ResultColumn> columnCollection) {
+        Map<Integer, Boolean> usedColumns = new HashMap<Integer, Boolean>();
+        for (int i = 0; i < columnCollection.size(); i++) {
+            usedColumns.put(i, false);
+        }
+        for (ResultColumn column : columnCollection) {
+            validateColumn(columnCollection, usedColumns, column);
+        }
+    }
+
+    private void validateColumn(Collection<ResultColumn> columnCollection, 
+                                Map<Integer, Boolean> usedColumns,
+                                ResultColumn column) {
+        if (!(column.getColumnIndex() < columnCollection.size())
+             || usedColumns.get(column.getColumnIndex())) {
+            for (int x = 0; x < columnCollection.size(); x++) {
+                if (!usedColumns.get(x)) {
+                    column.setColumnIndex(x);
+                    break;
+                }
+            }
+        }
+        usedColumns.put(column.getColumnIndex(), true);
+    }
+
     private AbstractCriterion buildCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         // Initialize the CompoundCriterion
         AbstractCriterion abstractCriterion = null;

@@ -93,7 +93,9 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Wraps access to a <code>QueryResult</code> object for easy use in display JSPs.
@@ -104,6 +106,7 @@ public final class DisplayableQueryResult {
     private final QueryResult result;
     private final List<String> headers = new ArrayList<String>();
     private final List<DisplayableResultRow> rows = new ArrayList<DisplayableResultRow>();
+    private final Map<String, Integer> newColumnLocations = new HashMap<String, Integer>();
     private boolean hasSubjects;
     private boolean hasSamples;
     private boolean hasImageSeries;
@@ -120,7 +123,7 @@ public final class DisplayableQueryResult {
 
     private void loadRows() {
         for (ResultRow row : result.getRowCollection()) {
-            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row);
+            DisplayableResultRow displayableResultRow = new DisplayableResultRow(row, newColumnLocations);
             rows.add(displayableResultRow);
             hasSubjects |= displayableResultRow.getSubjectAssignment() != null;
             hasSamples |= displayableResultRow.getSampleAcquisition() != null;
@@ -132,8 +135,11 @@ public final class DisplayableQueryResult {
         List<ResultColumn> sortedColumns = new ArrayList<ResultColumn>();
         sortedColumns.addAll(getQuery().getColumnCollection());
         Collections.sort(sortedColumns, COLUMN_COMPARATOR);
+        int columnLocation = 0;
         for (ResultColumn column : sortedColumns) {
-            headers.add(column.getAnnotationDefinition().getDisplayName());
+            String columnName = column.getAnnotationDefinition().getDisplayName();
+            headers.add(columnLocation, columnName);
+            newColumnLocations.put(columnName, columnLocation++);
         }
     }
 
