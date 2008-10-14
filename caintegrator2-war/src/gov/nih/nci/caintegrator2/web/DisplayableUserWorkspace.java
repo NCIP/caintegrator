@@ -128,8 +128,9 @@ public class DisplayableUserWorkspace {
         if (getCurrentStudySubscriptionId() == null  && getUserWorkspace().getDefaultSubscription() != null) {
             currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
         }
+        putCurrentStudyOnValueStack();
         refreshQuery();
-        putObjectsOnValueStack();
+        putQueryObjectsOnValueStack();
     }
 
     private void refreshQuery() {
@@ -198,11 +199,16 @@ public class DisplayableUserWorkspace {
      * @param currentStudySubscriptionId the currentStudySubscriptionId to set
      */
     public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
+        if (currentStudySubscriptionId == null || currentStudySubscriptionId.equals(NO_STUDY_SELECTED_ID)) {
+            setQuery(null);
+            setQueryResult(null);
+            setGenomicDataQueryResult(null);
+        }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
-        putObjectsOnValueStack();
+        putCurrentStudyOnValueStack();
     }
 
-    private void putObjectsOnValueStack() {
+    private void putCurrentStudyOnValueStack() {
         if (getUserWorkspace() == null) {
             return;
         }
@@ -216,6 +222,9 @@ public class DisplayableUserWorkspace {
         }
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
         getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
+    }
+    
+    private void putQueryObjectsOnValueStack() {
         getValueStack().set(CURRENT_QUERY_VALUE_STACK_KEY, getQuery());
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
