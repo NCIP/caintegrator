@@ -83,62 +83,187 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 
-import java.util.Collection;
-import java.util.HashSet;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.util.ValueStack;
 
 /**
  * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
-public class DisplayableStudySubscription {
-    
-    private StudySubscription currentStudySubscription;
-    private Collection<Query> queryCollection = new HashSet<Query>();
-//    private Collection<AbstractList> listCollection = new HashSet<AbstractList>();
-    
+public class DisplayableUserWorkspace {
+
     /**
-     * Refreshes Selected Study.
-     * @param studySubscription - object to update on.
+     * Value to use in UI for no study in drop down list.
      */
-    public void refreshSelectedStudy(StudySubscription studySubscription) {
-        // If-Check is for hibernate lazy loading, we want to actually populate the queryCollection.
-        if (studySubscription.getQueryCollection() != null 
-            && !studySubscription.getQueryCollection().isEmpty()) {
-            setQueryCollection(studySubscription.getQueryCollection());
+    public static final Long NO_STUDY_SELECTED_ID = Long.valueOf(-1L);
+    
+    private static final String USER_WORKSPACE_VALUE_STACK_KEY = "workspace";
+    private static final String CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY = "studySubscription";
+    private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
+    private static final String CURRENT_QUERY_VALUE_STACK_KEY = "query";
+    private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
+    private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
+    
+    private Long currentStudySubscriptionId;
+    private Query query;
+    private DisplayableQueryResult queryResult;
+    private GenomicDataQueryResult genomicDataQueryResult;
+
+    /**
+     * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
+     *
+     * @param workspaceService service used to 
+     */
+    void refresh(WorkspaceService workspaceService) {
+        setUserWorkspace(workspaceService.getWorkspace());
+        if (getCurrentStudySubscriptionId() == null  && getUserWorkspace().getDefaultSubscription() != null) {
+            currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
         }
-        setCurrentStudySubscription(studySubscription);
+        refreshQuery();
+        putObjectsOnValueStack();
+    }
+
+    private void refreshQuery() {
+        if (query != null) {
+            if (query.getId() != null) {
+                retrieveQueryFromStudySubscription();
+            } else {
+                refreshQueryAssociations();
+            }
+        }
+    }
+
+    private void refreshQueryAssociations() {
+        query.setSubscription(getCurrentStudySubscription());
+    }
+
+    private void retrieveQueryFromStudySubscription() {
+        for (Query nextQuery : getCurrentStudySubscription().getQueryCollection()) {
+            if (nextQuery.equals(query)) {
+                query = nextQuery;
+            }
+        }
     }
 
     /**
-     * @return the queryCollection
+     * @return the userWorkspace
      */
-    public Collection<Query> getQueryCollection() {
-        return queryCollection;
+    public UserWorkspace getUserWorkspace() {
+        return (UserWorkspace) getValueStack().findValue(USER_WORKSPACE_VALUE_STACK_KEY);
     }
 
-    /**
-     * @param queryCollection the queryCollection to set
-     */
-    public void setQueryCollection(Collection<Query> queryCollection) {
-        this.queryCollection = queryCollection;
+    private ValueStack getValueStack() {
+        return ActionContext.getContext().getValueStack();
+    }
+
+    private void setUserWorkspace(UserWorkspace userWorkspace) {
+        getValueStack().set(USER_WORKSPACE_VALUE_STACK_KEY, userWorkspace);
     }
 
     /**
      * @return the currentStudySubscription
      */
     public StudySubscription getCurrentStudySubscription() {
-        return currentStudySubscription;
+        return (StudySubscription) getValueStack().findValue(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY);
     }
 
     /**
      * @param currentStudySubscription the currentStudySubscription to set
      */
     public void setCurrentStudySubscription(StudySubscription currentStudySubscription) {
-        this.currentStudySubscription = currentStudySubscription;
+        if (currentStudySubscription == null) {
+            setCurrentStudySubscriptionId(null);
+        } else {
+            setCurrentStudySubscriptionId(currentStudySubscription.getId());
+        }
+    }
+
+    /**
+     * @return the currentStudySubscriptionId
+     */
+    public Long getCurrentStudySubscriptionId() {
+        return currentStudySubscriptionId;
+    }
+
+    /**
+     * @param currentStudySubscriptionId the currentStudySubscriptionId to set
+     */
+    public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
+        this.currentStudySubscriptionId = currentStudySubscriptionId;
+        putObjectsOnValueStack();
+    }
+
+    private void putObjectsOnValueStack() {
+        if (getUserWorkspace() == null) {
+            return;
+        }
+        StudySubscription currentStudySubscription = null;
+        Study currentStudy = null;
+        for (StudySubscription subscription : getUserWorkspace().getSubscriptionCollection()) {
+            if (subscription.getId().equals(getCurrentStudySubscriptionId())) {
+                currentStudySubscription = subscription;
+                currentStudy = subscription.getStudy();
+            }
+        }
+        getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
+        getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
+        getValueStack().set(CURRENT_QUERY_VALUE_STACK_KEY, getQuery());
+        getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
+        getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
+    }
+
+    /**
+     * @return the query
+     */
+    public Query getQuery() {
+        return query;
+    }
+
+    /**
+     * @param query the query to set
+     */
+    public void setQuery(Query query) {
+        this.query = query;
+        getValueStack().set(CURRENT_QUERY_VALUE_STACK_KEY, query);
+    }
+
+    /**
+     * @return the queryResult
+     */
+    public DisplayableQueryResult getQueryResult() {
+        return queryResult;
+    }
+
+    /**
+     * @param queryResult the queryResult to set
+     */
+    public void setQueryResult(DisplayableQueryResult queryResult) {
+        this.queryResult = queryResult;
+        getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, queryResult);
+    }
+
+    /**
+     * @return the genomicDataQueryResult
+     */
+    public GenomicDataQueryResult getGenomicDataQueryResult() {
+        return genomicDataQueryResult;
+    }
+
+    /**
+     * @param genomicDataQueryResult the genomicDataQueryResult to set
+     */
+    public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
+        this.genomicDataQueryResult = genomicDataQueryResult;
+        getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, genomicDataQueryResult);
     }
 
 }

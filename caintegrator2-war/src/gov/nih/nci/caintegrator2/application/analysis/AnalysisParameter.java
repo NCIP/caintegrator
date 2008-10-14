@@ -86,10 +86,13 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A parameter belonging to an analysis method.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // see createValue()
 public class AnalysisParameter implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,6 +102,7 @@ public class AnalysisParameter implements Serializable {
     private boolean required;
     private AnalysisParameterType type;
     private AbstractParameterValue defaultValue;
+    private Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
     
     /**
      * @return the name
@@ -161,6 +165,7 @@ public class AnalysisParameter implements Serializable {
      * 
      * @return the value.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // instantiation by type requires these cases
     public AbstractParameterValue createValue() {
         AbstractParameterValue value;
         switch (getType()) {
@@ -171,8 +176,14 @@ public class AnalysisParameter implements Serializable {
             value = new StringParameterValue();
             break;
         case FLOAT:
+            value = new FloatParameterValue();
+            break;
         case GENOMIC_DATA:
+            value = new GenomicDataParameterValue();
+            break;
         case SAMPLE_CLASSIFICATION:
+            value = new SampleClassificationParameterValue();
+            break;
         default:
             throw new IllegalStateException("Unsupported parameter type: " + getType());
         }
@@ -192,6 +203,20 @@ public class AnalysisParameter implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return the choices
+     */
+    public Map<String, AbstractParameterValue> getChoices() {
+        return choices;
+    }
+
+    /**
+     * @param choices the choices to set
+     */
+    public void setChoices(Map<String, AbstractParameterValue> choices) {
+        this.choices = choices;
     }
 
 }

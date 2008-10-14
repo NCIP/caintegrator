@@ -93,9 +93,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
@@ -154,20 +151,7 @@ public class Cai2UtilTest {
         ResultValue retrievedRealValue = Cai2Util.retrieveValueFromRowColumn(row, column);
         assertEquals(realValue, retrievedRealValue);
     }
-    
-    @Test
-    public void testUserSubscribedToStudy() {
-        UserWorkspace userWorkspace = new UserWorkspace();
-        StudySubscription studySubscription = new StudySubscription();
-        Study study = new Study();
-        studySubscription.setStudy(study);
-        userWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>()); 
-        assertFalse(Cai2Util.userSubscribedToStudy(userWorkspace, study));
-        userWorkspace.getSubscriptionCollection().add(studySubscription);
-        assertTrue(Cai2Util.userSubscribedToStudy(userWorkspace, study));
-        
-    }
-    
+
     @Test
     public void testColumnCollectionContainsColumn() {
         Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
@@ -179,5 +163,4 @@ public class Cai2UtilTest {
         columnCollection.add(column);
         assertTrue(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
     }
-
 }

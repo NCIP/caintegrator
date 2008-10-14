@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -194,7 +195,8 @@ public class QueryHelper {
         query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
         
-        StudySubscription studySubscription = queryAnnotationCriteria.getAnnotationSelections().getStudySubscription();
+        StudySubscription studySubscription = 
+            SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription();
         query.setSubscription(studySubscription);
 
         

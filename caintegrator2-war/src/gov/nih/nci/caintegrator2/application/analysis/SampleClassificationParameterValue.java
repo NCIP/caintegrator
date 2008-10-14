@@ -83,38 +83,29 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
-
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.UserDetails;
+package gov.nih.nci.caintegrator2.application.analysis;
 
 /**
- * Providers helper methods to access authentication and authorization data.
+ * Sample classification.
  */
-public final class SecurityHelper {
-    
-    private SecurityHelper() {
-        super();
+public class SampleClassificationParameterValue extends AbstractParameterValue {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getValueAsString() {
+        return null;
     }
 
     /**
-     * Returns the username of the current user.
-     * 
-     * @return the current user's username.
+     * {@inheritDoc}
      */
-    public static String getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if (authentication != null) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-        }
-        return username;
+    @Override
+    void setValueFromString(String stringValue) {
+        throw new IllegalStateException("Can't set value from String");
     }
 
 }

@@ -83,34 +83,48 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * Contains the configuration for invoking an analysis job.
  */
-public interface WorkspaceService {
+public class AnalysisMethodInvocation implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
-    /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
-     */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    private AnalysisMethod method;
+    private List<AbstractParameterValue> parameterValues = new ArrayList<AbstractParameterValue>();
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * @return the method
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public AnalysisMethod getMethod() {
+        return method;
+    }
+    
+    /**
+     * @param method the method to set
+     */
+    public void setMethod(AnalysisMethod method) {
+        this.method = method;
+    }
+    
+    /**
+     * @return the parameterValues
+     */
+    public List<AbstractParameterValue> getParameterValues() {
+        return parameterValues;
+    }
+    
+    /**
+     * @param parameterValues the parameterValues to set
+     */
+    public void setParameterValues(List<AbstractParameterValue> parameterValues) {
+        this.parameterValues = parameterValues;
+    }
+    
 }

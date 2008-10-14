@@ -83,34 +83,45 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
-
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+package gov.nih.nci.caintegrator2.application.analysis;
 
 /**
- * Provides <code>UserWorkspace</code> access and management functionality.
+ * A float value.
  */
-public interface WorkspaceService {
+public class FloatParameterValue extends AbstractParameterValue {
+
+    private static final long serialVersionUID = 1L;
+    
+    private Float value;
     
     /**
-     * Returns the workspace belonging to the current user.
-     * 
-     * @return the current user's workspace.
+     * {@inheritDoc}
      */
-    UserWorkspace getWorkspace();
-    
-    /**
-     * Subscribes a user to a study.
-     * 
-     * @param workspace workspace of the user.
-     * @param study - study to subscribe to.
-     */
-    void subscribe(UserWorkspace workspace, Study study);
+    @Override
+    void setValueFromString(String stringValue) {
+        setValue(Float.parseFloat(stringValue));
+    }
 
     /**
-     * Saves the current changes.
-     * @param workspace - object that needs to be updated.
+     * @return the value
      */
-    void saveUserWorkspace(UserWorkspace workspace);
+    public Float getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(Float value) {
+        this.value = value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getValueAsString() {
+        return getValue().toString();
+    }
+
 }

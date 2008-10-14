@@ -89,7 +89,7 @@ package gov.nih.nci.caintegrator2.web.action;
 /**
  * Action used to log in a user (may not actually need this action when using ACEGI).
  */
-public class LoginAction {
+public class LoginAction extends AbstractCaIntegrator2Action {
     
     private static final long serialVersionUID = 1L;
 

@@ -22,6 +22,9 @@
         <property name="arrayDataService">
             <ref local="arrayDataServiceStub"/>
         </property>
+        <property name="workspaceService">
+            <ref local="workspaceServiceStub"/>
+        </property>
     </bean>
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
@@ -48,5 +51,8 @@
 
     <bean id="arrayDataServiceStub"
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" />
+        
+    <bean id="workspaceServiceStub"
+        class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" />
 
 </beans>

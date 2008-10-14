@@ -4,11 +4,7 @@
 <div id="content"><!--Page Help-->
 
         <div class="pagehelp"><a href="#" class="help"></a></div>
-        <s:set name="sessionHelper" value="#session['sessionHelper']" />
-        <s:if test="!#sessionHelper.authenticated">
-            <s:action name="workspace"/>
-        </s:if>
-        <h1>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></h1>
+        <h1>Search <s:property value="study.shortTitleText"/></h1>
         
         <!--Tabs -->
             

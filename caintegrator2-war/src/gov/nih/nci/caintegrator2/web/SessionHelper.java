@@ -85,29 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.web.action.DisplayableStudySubscription;
-import gov.nih.nci.caintegrator2.web.action.DisplayableUserWorkspace;
+import java.util.Map;
+
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.util.ValueStack;
 
 /**
  * Stores helper variables to our session.
  */
 public final class SessionHelper {
-    /**
-     * String to use to store and retrieve this object from session.
-     */
-    public static final String SESSION_HELPER_STRING = "sessionHelper"; 
+
+    private static final String SESSION_HELPER_SESSION_KEY = "sessionHelper"; 
     private static final String MODIFY_STUDY_ROLE = "MODIFY_STUDY_UPDATE";
-    private DisplayableUserWorkspace displayableUserWorkspace;
-    private DisplayableStudySubscription displayableStudySubscription;
-    private String username;
-    private boolean authenticated = false;
+    private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
+    private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
     private boolean studyManager = false;
     
     private SessionHelper() {
@@ -121,96 +118,78 @@ public final class SessionHelper {
     @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
     public static SessionHelper getInstance() {
         SessionHelper instance = 
-            (SessionHelper) ActionContext.getContext().getSession().get(SESSION_HELPER_STRING);
+            (SessionHelper) getSession().get(SESSION_HELPER_SESSION_KEY);
         if (instance == null) {
             instance = new SessionHelper();
-            instance.setDisplayableUserWorkspace(new DisplayableUserWorkspace());
-            ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, instance);
+            getSession().put(SESSION_HELPER_SESSION_KEY, instance);
         }
         return instance;
     }
+    
     /**
-     * Updates user workspace on session.
-     * @param userWorkspace - user workspace to update on.
+     * Refreshes the objects held by this object so that that are up to date and attached
+     * to the current Hibernate session. After calling this method, clients can expect the
+     * following objects on the object stack.
+     * <ul>
+     *  <li><b>displayableWorkspace</b> - The current <code>DisplayableUserWorkspace</code></li>
+     *  <li><b>workspace</b> - The current <code>UserWorkspace</code></li>
+     *  <li><b>studySubscription</b> - The current <code>StudySubscription</code> if one has been selected</li>
+     *  <li><b>study</b> - The current <code>Study</code> if one has been selected</li>
+     *  <li><b>query</b> - The current <code>Query</code> if one has been selected or is being defined</li>
+     *  <li><b>queryResult</b> - The current <code>QueryResult</code> from the last clinical query executed</li>
+     *  <li><b>genomicDataQueryResult</b> - The current <code>GenomicDataQueryResult</code> from the last 
+     *  genomic data query executed</li>
+     * </ul>
+     * 
+     * @param workspaceService session used to retrieve workspace.
      */
     @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
-    public void refreshUserWorkspace(UserWorkspace userWorkspace) {
+    public void refresh(WorkspaceService workspaceService) {
         if (SecurityContextHolder.getContext() != null 
             && SecurityContextHolder.getContext().getAuthentication() != null) {
             setStudyManager(
                     hasManagerPriveleges(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
         }
-        username = userWorkspace.getUsername();
-        setAuthenticated(true);
-        displayableUserWorkspace.refreshUserWorkspace(userWorkspace);
-        ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, this);
-    }
-    
-    /**
-     * When a user selects a study subscription, update session items.
-     * @param studySubscription - subscription that is selected.
-     */
-    @SuppressWarnings("unchecked") // sessionMap is not parameterized in struts2.
-    public void refreshStudySubscription(StudySubscription studySubscription) {
-        displayableStudySubscription = new DisplayableStudySubscription();
-        displayableStudySubscription.refreshSelectedStudy(studySubscription);
-        ActionContext.getContext().getSession().put(SESSION_HELPER_STRING, this);
+        if (isAuthenticated()) {
+            getDisplayableUserWorkspace().refresh(workspaceService);
+            getValueStack().set(DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY, getDisplayableUserWorkspace());
+        }
     }
 
     /**
      * @return the username
      */
     public String getUsername() {
-        return username;
-    }
-    
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
+        return SecurityHelper.getCurrentUsername();
     }
 
     /**
      * @return the authenticated
      */
     public boolean isAuthenticated() {
-        return authenticated;
-    }
-
-    /**
-     * @param authenticated the authenticated to set
-     */
-    public void setAuthenticated(boolean authenticated) {
-        this.authenticated = authenticated;
+        return getUsername() != null;
     }
 
     /**
      * @return the displayableUserWorkspace
      */
     public DisplayableUserWorkspace getDisplayableUserWorkspace() {
+        DisplayableUserWorkspace displayableUserWorkspace =
+            (DisplayableUserWorkspace) getSession().get(DISPLAYABLE_USER_WORKSPACE_SESSION_KEY);
+        if (displayableUserWorkspace == null && isAuthenticated()) {
+            displayableUserWorkspace = new DisplayableUserWorkspace();
+            getSession().put(DISPLAYABLE_USER_WORKSPACE_SESSION_KEY, displayableUserWorkspace);
+        }
         return displayableUserWorkspace;
     }
 
-    /**
-     * @param displayableUserWorkspace the displayableUserWorkspace to set
-     */
-    public void setDisplayableUserWorkspace(DisplayableUserWorkspace displayableUserWorkspace) {
-        this.displayableUserWorkspace = displayableUserWorkspace;
+    @SuppressWarnings("unchecked")  // Session attribute map is untyped
+    private static Map<String, Object> getSession() {
+        return ActionContext.getContext().getSession();
     }
 
-    /**
-     * @return the displayableStudySubscription
-     */
-    public DisplayableStudySubscription getDisplayableStudySubscription() {
-        return displayableStudySubscription;
-    }
-
-    /**
-     * @param displayableStudySubscription the displayableStudySubscription to set
-     */
-    public void setDisplayableStudySubscription(DisplayableStudySubscription displayableStudySubscription) {
-        this.displayableStudySubscription = displayableStudySubscription;
+    private ValueStack getValueStack() {
+        return ActionContext.getContext().getValueStack();
     }
 
     private boolean hasManagerPriveleges(GrantedAuthority[] authorities) {
@@ -229,10 +208,7 @@ public final class SessionHelper {
         return studyManager;
     }
 
-    /**
-     * @param studyManager the studyManager to set
-     */
-    public void setStudyManager(boolean studyManager) {
+    private void setStudyManager(boolean studyManager) {
         this.studyManager = studyManager;
     }
 

@@ -112,5 +112,13 @@ public class IntegerParameterValue extends AbstractParameterValue {
     void setValueFromString(String stringValue) {
         setValue(Integer.parseInt(stringValue));
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getValueAsString() {
+        return getValue().toString();
+    }
+
 }

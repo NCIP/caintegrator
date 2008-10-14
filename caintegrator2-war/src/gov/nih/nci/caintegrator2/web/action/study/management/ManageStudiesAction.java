@@ -87,16 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.web.action.SecurityHelper;
+import gov.nih.nci.caintegrator2.security.SecurityHelper;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.List;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Action used to review studies owned by a Study Manager.
  */
-public class ManageStudiesAction extends ActionSupport {
+public class ManageStudiesAction extends AbstractCaIntegrator2Action {
     
     private static final long serialVersionUID = 1L;
     

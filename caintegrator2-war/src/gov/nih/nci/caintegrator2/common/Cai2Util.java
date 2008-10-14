@@ -88,9 +88,6 @@ package gov.nih.nci.caintegrator2.common;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -160,24 +157,6 @@ public final class Cai2Util {
         }
         return null;
     }
-    
-    /**
-     * Tests to see if a user is already subscribed to a study.
-     * @param userWorkspace - work space for user.
-     * @param study - study to test for.
-     * @return true/false value.
-     */
-    public static boolean userSubscribedToStudy(UserWorkspace userWorkspace, Study study) {
-        if (userWorkspace.getSubscriptionCollection() != null) {
-            for (StudySubscription subscription : userWorkspace.getSubscriptionCollection()) {
-                if (subscription.getStudy() == study) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
     
     /**
      * Tests a collection of result columns to see if a particular result column already exists in it.

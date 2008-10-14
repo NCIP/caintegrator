@@ -95,6 +95,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -120,7 +121,7 @@ class GenePatternHelper {
     List<AnalysisMethod> getMethods(GenePatternClient client, ServerConnectionProfile server) 
     throws GenePatternServiceException {
         client.setUrl(server.getUrl());
-        client.setUrl(server.getUsername());
+        client.setUsername(server.getUsername());
         TaskInfo[] allTasks = client.getTasks();
         List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
         for (TaskInfo task : allTasks) {
@@ -138,10 +139,10 @@ class GenePatternHelper {
             if (isInputFileParameter(parameterInfo)) {
                 if (getFileFormats(parameterInfo).contains(GENE_CLUSTER_TEXT_EXTENSION)) {
                     gctParameterCount++;
-                    break;
+                    continue;
                 } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION)) {
                     clsParameterCount++;
-                    break;
+                    continue;
                 } else {
                     return false;
                 }
@@ -153,7 +154,9 @@ class GenePatternHelper {
     private Set<String> getFileFormats(ParameterInfo parameterInfo) {
         String fileFormatValue = getAttributeValue(parameterInfo, FILE_FORMAT_ATTRIBUTE);
         Set<String> formats = new HashSet<String>();
-        formats.addAll(Arrays.asList(fileFormatValue.split(";")));
+        if (fileFormatValue != null) {
+            formats.addAll(Arrays.asList(fileFormatValue.split(";")));
+        }
         return formats;
     }
 
@@ -178,11 +181,48 @@ class GenePatternHelper {
         parameter.setDescription(parameterInfo.getDescription());
         parameter.setType(getType(parameterInfo));
         parameter.setRequired(!OPTIONAL_ON.equalsIgnoreCase(getAttributeValue(parameterInfo, OPTIONAL_ATTRIBUTE)));
+        if (!parameterInfo.getChoices().isEmpty()) {
+            loadChoices(parameter, parameterInfo);
+        }
         if (!StringUtils.isBlank(parameterInfo.getDefaultValue())) {
-            parameter.setDefaultValue(parameter.createValue());
-            parameter.getDefaultValue().setValueFromString(parameterInfo.getDefaultValue());
+            setDefaultValue(parameterInfo, parameter);
         }
         return parameter;
+    }
+
+    @SuppressWarnings("unchecked")  // HashMap in ParameterInfo is untyped
+    private void loadChoices(AnalysisParameter parameter, ParameterInfo parameterInfo) {
+        Map<String, String> sourceChoices = parameterInfo.getChoices();
+        boolean useKeyForValue = sourceChoices.containsValue("");
+        for (String name : sourceChoices.keySet()) {
+            String stringValue;
+            if (useKeyForValue) {
+                stringValue = name;
+            } else {
+                stringValue = sourceChoices.get(name);
+            }
+            AbstractParameterValue value = parameter.createValue();
+            value.setValueFromString(stringValue);
+            parameter.getChoices().put(name, value);
+        }
+    }
+
+    private void setDefaultValue(ParameterInfo parameterInfo, AnalysisParameter parameter) {
+        if (parameter.getChoices().isEmpty()) {
+            parameter.setDefaultValue(parameter.createValue());
+            parameter.getDefaultValue().setValueFromString(parameterInfo.getDefaultValue());
+        } else {
+            parameter.setDefaultValue(getValue(parameterInfo.getDefaultValue(), parameter.getChoices()));
+        }
+    }
+
+    private AbstractParameterValue getValue(String stringValue, Map<String, AbstractParameterValue> choices) {
+        for (AbstractParameterValue value : choices.values()) {
+            if (stringValue.equals(value.getValueAsString())) {
+                return value;
+            }
+        }
+        return choices.get(stringValue);
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch-like statement
@@ -203,7 +243,8 @@ class GenePatternHelper {
                 && getFileFormats(parameterInfo).contains(CLASS_EXTENSION)) {
             return AnalysisParameterType.SAMPLE_CLASSIFICATION;
         } else {
-            throw new IllegalArgumentException("Unsupported GenePattern parameter type " + genePatternType);
+            throw new IllegalArgumentException("Unsupported GenePattern parameter type " + genePatternType
+                    + " for parameter " + parameterInfo.getName());
         }
     }
 

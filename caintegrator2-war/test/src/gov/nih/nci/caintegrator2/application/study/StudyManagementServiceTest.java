@@ -140,13 +140,6 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testSubscribeUser() {
-        studyManagementService.subscribeUser("username", new Study());
-        assertTrue(daoStub.getWorkspaceCalled);
-        assertTrue(daoStub.saveCalled);
-        
-    }
-    @Test
     public void testDeploy() throws ConnectionException, DataRetrievalException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();

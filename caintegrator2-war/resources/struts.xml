@@ -201,6 +201,8 @@
         <action name="saveImagingSource" class="saveImagingSourceAction">
             <result type="tiles">editStudy</result>
         </action>
+                
+        <!--  Query Actions -->
         
         <action name="manageQuery" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
@@ -210,6 +212,17 @@
                 
         <action name="executeQuery" class="executeQueryAction">
             <result type="tiles">viewResults</result>
+        </action>
+                     
+        <!--  Analysis Actions -->
+   
+        <action name="genePatternAnalysis" method="configure" class="genePatternAnalysisAction">
+            <result type="tiles">genePatternAnalysis</result>
+            <result name="error" type="tiles">genePatternAnalysis</result>
+        </action>
+
+        <action name="executeGenePatternAnalysis" method="execute" class="genePatternAnalysisAction">
+            <result type="tiles">genePatternAnalysis</result>
         </action>
                 
     </package>

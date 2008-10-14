@@ -116,5 +116,15 @@ public abstract class AbstractParameterValue implements Serializable {
     }
 
     abstract void setValueFromString(String stringValue);
+    
+    abstract String getValueAsString();
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getValueAsString();
+    }
 
 }

@@ -55,10 +55,8 @@ pageEncoding="ISO-8859-1" %>
                     </tr>
                     
                     <!-- Reproduce existing query criteria rows if any -->
-<!-- 
-                        <s:select name="selectionistranmittedonthisproperty" list="list-being-iterated-over-to-display" listValue="thisisthedisplayedstring" listKey="this-is-the-value-that-is-submitted" />
- -->
-                    <s:if test="manageQueryHelper.queryCriteriaRowList != null && !(manageQueryHelper.queryCriteriaRowList.isEmpty())">
+ 
+                    <s:if test="!manageQueryHelper.queryCriteriaRowList.isEmpty()">
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
                             <tr>
                             <td></td>

@@ -116,4 +116,12 @@ public class StringParameterValue extends AbstractParameterValue {
         this.value = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getValueAsString() {
+        return getValue().toString();
+    }
+
 }

@@ -107,6 +107,7 @@ public class AnalysisMethod implements Serializable {
     public String getName() {
         return name;
     }
+    
     /**
      * @param name the name to set
      */
@@ -155,6 +156,32 @@ public class AnalysisMethod implements Serializable {
     @SuppressWarnings("unused") // For use by Hibernate
     private void setParameters(List<AnalysisParameter> parameters) {
         this.parameters = parameters;
+    }
+    
+    /**
+     * Creates a configured invocation object for this method.
+     * 
+     * @return the invocation object.
+     */
+    public AnalysisMethodInvocation createInvocation() {
+        AnalysisMethodInvocation invocation = new AnalysisMethodInvocation();
+        invocation.setMethod(this);
+        for (AnalysisParameter parameter : parameters) {
+            if (parameter.getDefaultValue() != null) {
+                invocation.getParameterValues().add(parameter.getDefaultValue());
+            } else {
+                invocation.getParameterValues().add(parameter.createValue());
+            }
+        }
+        return invocation;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getName();
     }
 
 }

@@ -85,12 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Takes the current user to the application homepage.
  */
-public class HomepageAction extends ActionSupport {
+public class HomepageAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
 
@@ -106,7 +105,6 @@ public class HomepageAction extends ActionSupport {
      * @return studyconfigurationdetails for selected option
      */ 
     public String getStudyDetails() {
-//        String selectStudy = getStudynav();
         return SUCCESS;
     }
 
