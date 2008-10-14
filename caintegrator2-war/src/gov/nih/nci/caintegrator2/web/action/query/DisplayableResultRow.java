@@ -98,6 +98,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Represents a row in a result set.
@@ -109,13 +110,21 @@ public class DisplayableResultRow {
     private final ResultRow resultRow;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
-    DisplayableResultRow(ResultRow resultRow) {
+    DisplayableResultRow(ResultRow resultRow, Map<String, Integer> columnLocations) {
         this.resultRow = resultRow;
-        loadValues();
+        loadValues(columnLocations);
     }
-    private void loadValues() {
+    
+    private void loadValues(Map<String, Integer> columnLocations) {
+        for (int i = 0; i < columnLocations.size(); i++) {
+            values.add("");
+        }
         for (ResultValue value : resultRow.getValueCollection()) {
-            values.add(getStringValue(value));
+            values.set(columnLocations.get(
+                                           value.getColumn().
+                                           getAnnotationDefinition().
+                                           getDisplayName()),
+                                           getStringValue(value));
         }
     }
 

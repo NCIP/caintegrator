@@ -130,7 +130,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         assertEquals(1, compoundCriterionHandler1.getMatches(dao, study, entityTypesInQuery).size());
         
         compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        assertEquals(6, compoundCriterionHandler1.getMatches(dao, study, entityTypesInQuery).size());
+        assertEquals(10, compoundCriterionHandler1.getMatches(dao, study, entityTypesInQuery).size());
         
         // Try compoundCriterion2.
         CompoundCriterion compoundCriterion2 = studyHelper.createCompoundCriterion2();
@@ -139,7 +139,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         assertEquals(0, compoundCriterionHandler2.getMatches(dao, study, entityTypesInQuery).size());
 
         compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
-        assertEquals(5, compoundCriterionHandler2.getMatches(dao, study, entityTypesInQuery).size());
+        assertEquals(11, compoundCriterionHandler2.getMatches(dao, study, entityTypesInQuery).size());
         
         // Try to combine criterion 1 and criterion 2 into a new compoundCriterion.
         CompoundCriterion compoundCriterion3 = new CompoundCriterion();
@@ -151,15 +151,15 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         // 4 results for 2
         compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
         
-        // If we AND them together we should get 4 results
+        // If we AND them together we should get 7 results
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
         CompoundCriterionHandler compoundCriterionHandler3 = CompoundCriterionHandler.create(compoundCriterion3);
-        assertEquals(4, compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery).size());
+        assertEquals(7, compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery).size());
         
         // If we OR them together we should get 7 results, all 5 subjects, plus 2 more samples for subject1.
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
         Set<ResultRow> mostComplexRows = compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery);
-        assertEquals(7, mostComplexRows.size());
+        assertEquals(14, mostComplexRows.size());
         
         // Test out the selected value criterion on the permissable value's for Samples.
         entityTypesInQuery = new HashSet<EntityTypeEnum>();

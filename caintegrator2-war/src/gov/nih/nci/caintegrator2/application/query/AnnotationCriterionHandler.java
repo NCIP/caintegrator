@@ -104,7 +104,7 @@ import java.util.Set;
 /**
  * Handles AnnotationCriterion objects by retrieving the proper data from the DAO.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")   // See getMatches()
+@SuppressWarnings({"PMD.CyclomaticComplexity" }) // See handleSubjectRow()
 class AnnotationCriterionHandler extends AbstractCriterionHandler {
 
     private final AbstractAnnotationCriterion abstractAnnotationCriterion;
@@ -121,67 +121,85 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "PMD.ExcessiveMethodLength" })   // switch statement and argument checking
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
         EntityTypeEnum entityType = EntityTypeEnum.getByValue(abstractAnnotationCriterion.getEntityType());
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
         case IMAGESERIES:
-            for (ImageSeries imageSeries
-                    : dao.findMatchingImageSeries(abstractAnnotationCriterion, study)) {
-                ResultRow row = new ResultRow();
-                StudySubjectAssignment studySubjectAssignment = imageSeries.getImageStudy().getAssignment();
-                row.setImageSeries(imageSeries);
-                row.setSubjectAssignment(studySubjectAssignment);
-                if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
-                    Timepoint imageSeriesTimepoint = imageSeries.getImageStudy().getTimepoint();
-                    addSampleRows(resultRows, row, studySubjectAssignment, imageSeriesTimepoint);
-                } else {
-                    resultRows.add(row);
-                }
-            }
+            handleImageSeriesRow(dao, study, entityTypes, resultRows);
             break;
         case SAMPLE:
-            for (SampleAcquisition sampleAcquisition 
-                    : dao.findMatchingSamples(abstractAnnotationCriterion, study)) {
-                ResultRow row = new ResultRow();
-                StudySubjectAssignment studySubjectAssignment = sampleAcquisition.getAssignment();
-                row.setSampleAcquisition(sampleAcquisition);
-                row.setSubjectAssignment(studySubjectAssignment);
-                if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
-                    Timepoint sampleAcquisitionTimepoint = sampleAcquisition.getTimepoint();
-                    addImageSeriesRows(resultRows, row, studySubjectAssignment, sampleAcquisitionTimepoint);
-                } else {
-                    resultRows.add(row);
-                }
-            }
+            handleSampleRow(dao, study, entityTypes, resultRows);
             break;
         case SUBJECT:
-            for (StudySubjectAssignment studySubjectAssignment 
-                    : dao.findMatchingSubjects(abstractAnnotationCriterion, study)) {
-                ResultRow row = new ResultRow();
-                row.setSubjectAssignment(studySubjectAssignment);
-                if (entityTypes.contains(EntityTypeEnum.SAMPLE)) { // Sample
-                    Set <ResultRow> newResultRows = new HashSet<ResultRow>();
-                    addSampleRows(newResultRows, row, studySubjectAssignment, null);
-                    if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Sample + Image Series
-                        for (ResultRow newRow : newResultRows) {
-                            addImageSeriesRows(newResultRows, newRow, studySubjectAssignment, 
-                                               newRow.getSampleAcquisition().getTimepoint());
-                        }
-                    }
-                    resultRows.addAll(newResultRows);
-                } else if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Image Series w/o Sample
-                    addImageSeriesRows(resultRows, row, studySubjectAssignment, null);
-                } else { // No image series or rows, just clinical
-                    resultRows.add(row);
-                }
-            }
+            handleSubjectRow(dao, study, entityTypes, resultRows);
             break;
         default:
             throw new IllegalArgumentException("Unsupported EntityType: " + entityType);
         }
         return resultRows;
+    }
+
+
+    private void handleImageSeriesRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
+            Set<ResultRow> resultRows) {
+        for (ImageSeries imageSeries
+                : dao.findMatchingImageSeries(abstractAnnotationCriterion, study)) {
+            ResultRow row = new ResultRow();
+            StudySubjectAssignment studySubjectAssignment = imageSeries.getImageStudy().getAssignment();
+            row.setImageSeries(imageSeries);
+            row.setSubjectAssignment(studySubjectAssignment);
+            if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
+                Timepoint imageSeriesTimepoint = imageSeries.getImageStudy().getTimepoint();
+                addSampleRows(resultRows, row, studySubjectAssignment, imageSeriesTimepoint);
+            } else {
+                resultRows.add(row);
+            }
+        }
+    }
+
+    private void handleSampleRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
+            Set<ResultRow> resultRows) {
+        for (SampleAcquisition sampleAcquisition 
+                : dao.findMatchingSamples(abstractAnnotationCriterion, study)) {
+            ResultRow row = new ResultRow();
+            StudySubjectAssignment studySubjectAssignment = sampleAcquisition.getAssignment();
+            row.setSampleAcquisition(sampleAcquisition);
+            row.setSubjectAssignment(studySubjectAssignment);
+            if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
+                Timepoint sampleAcquisitionTimepoint = sampleAcquisition.getTimepoint();
+                addImageSeriesRows(resultRows, row, studySubjectAssignment, sampleAcquisitionTimepoint);
+            } else {
+                resultRows.add(row);
+            }
+        }
+    }
+
+    @SuppressWarnings({"PMD.CyclomaticComplexity" }) // Lots of type checking and row adding.
+    private void handleSubjectRow(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes,
+            Set<ResultRow> resultRows) {
+        for (StudySubjectAssignment studySubjectAssignment 
+                : dao.findMatchingSubjects(abstractAnnotationCriterion, study)) {
+            ResultRow row = new ResultRow();
+            row.setSubjectAssignment(studySubjectAssignment);
+            if (entityTypes.contains(EntityTypeEnum.SAMPLE)) { // Sample
+                Set <ResultRow> newResultRows = new HashSet<ResultRow>();
+                addSampleRows(newResultRows, row, studySubjectAssignment, null);
+                if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Sample + Image Series
+                    Set <ResultRow> addedSampleRows = new HashSet<ResultRow>();
+                    addedSampleRows.addAll(newResultRows);
+                    for (ResultRow newRow : addedSampleRows) {
+                        addImageSeriesRows(newResultRows, newRow, studySubjectAssignment, 
+                                           newRow.getSampleAcquisition().getTimepoint());
+                    }
+                }
+                resultRows.addAll(newResultRows);
+            } else if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) { // Image Series w/o Sample
+                addImageSeriesRows(resultRows, row, studySubjectAssignment, null);
+            } else { // No image series or rows, just clinical
+                resultRows.add(row);
+            }
+        }
     }
 
 
@@ -194,7 +212,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
                 : studySubjectAssignment.getSampleAcquisitionCollection()) {
             if (timepoint == null 
                 || timepoint == sampleAcquisition.getTimepoint()) {
-                ResultRow newRow = row;
+                ResultRow newRow = cloneResultRow(row);
                 newRow.setSampleAcquisition(sampleAcquisition);
                 resultRows.add(newRow);
                 samplesFound = true;
@@ -205,6 +223,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         }
     }
     
+    @SuppressWarnings({"PMD.CyclomaticComplexity" })
     private void addImageSeriesRows(Set<ResultRow> resultRows, 
                                         ResultRow row, 
                                         StudySubjectAssignment studySubjectAssignment,
@@ -214,7 +233,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
             if (timepoint == null 
                 || timepoint == imageSeriesAcquisition.getTimepoint()) {
                 for (ImageSeries series : imageSeriesAcquisition.getSeriesCollection()) {
-                    ResultRow newRow = row;
+                    ResultRow newRow = cloneResultRow(row);
                     newRow.setImageSeries(series);
                     resultRows.add(newRow);
                     imageSeriesFound = true;
@@ -224,6 +243,16 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
         if (!imageSeriesFound) {
             resultRows.add(row);
         }
+    }
+    
+    private ResultRow cloneResultRow(ResultRow row) {
+        ResultRow newRow = new ResultRow();
+        newRow.setImageSeries(row.getImageSeries());
+        newRow.setRowIndex(row.getRowIndex());
+        newRow.setSampleAcquisition(row.getSampleAcquisition());
+        newRow.setSubjectAssignment(row.getSubjectAssignment());
+        newRow.setValueCollection(row.getValueCollection());
+        return newRow;
     }
 
     @Override
