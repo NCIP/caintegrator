@@ -141,6 +141,11 @@ public class CaIntegrator2ActionTest {
         genomicDataQueryResult.setId(1L);
         action.setGenomicDataQueryResult(genomicDataQueryResult);
         assertEquals(genomicDataQueryResult, action.getGenomicDataQueryResult());
+        action.setStudySubscription(null);
+        action.prepare();
+        assertNull(action.getQuery());
+        assertNull(action.getQueryResult());
+        assertNull(action.getGenomicDataQueryResult());
     }
     
     private static class AbstractCaIntegrator2ActionStub extends AbstractCaIntegrator2Action {
