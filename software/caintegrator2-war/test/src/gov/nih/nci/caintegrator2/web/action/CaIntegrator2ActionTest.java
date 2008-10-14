@@ -106,13 +106,14 @@ public class CaIntegrator2ActionTest {
     @Before
     public void setUp() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
     }
 
     @Test
     public void testPrepare() {
         AbstractCaIntegrator2Action action = new AbstractCaIntegrator2ActionStub();
+        SecurityContextHolder.getContext().setAuthentication(null);
         assertNull(action.getWorkspace());
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         action.prepare();
         assertNotNull(action.getWorkspace());
     }
