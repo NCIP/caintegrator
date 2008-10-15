@@ -452,6 +452,13 @@ final class ManageQueryHelper {
                 getQueryCriteriaRowList(), queryName, queryDescription);
         if (query != null) {
             query.setResultType(ResultTypeEnum.CLINICAL.getValue());
+            if (SessionHelper.getInstance().getDisplayableUserWorkspace() != null
+                    && SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription() != null
+                    && SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription()
+                            .getQueryCollection() != null) {
+                SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription()
+                        .getQueryCollection().add(query);
+            }
             queryManagementService.save(query);
             return true;
         }

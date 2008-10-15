@@ -157,9 +157,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             addActionError("Must have a name for your query");
         } else {
             for (Query query : getStudySubscription().getQueryCollection()) {
-                if (searchName.equals(query.getName())) {
-                    addActionError("There is already a query named " + searchName
-                            + ", either delete that one, or use a different name.");
+                if (searchName.equalsIgnoreCase(query.getName())) {
+                    addActionError("There is already a query named '" + searchName
+                            + "', either delete that one, or use a different name.");
                     break;
                 }
             }
@@ -283,6 +283,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public String saveQuery() {
         manageQueryHelper.saveQuery(queryManagementService, selectedBasicOperator, searchName, searchDescription);
+        getWorkspaceService().saveUserWorkspace(getWorkspace());
         return SUCCESS;
     }
 
