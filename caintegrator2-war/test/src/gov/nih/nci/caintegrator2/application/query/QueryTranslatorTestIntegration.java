@@ -168,19 +168,19 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
         
         QueryResult queryResult = queryTranslator.execute();
-        assertEquals(6, queryResult.getRowCollection().size());
+        assertEquals(10, queryResult.getRowCollection().size());
         for (ResultRow row : queryResult.getRowCollection()) {
             assertNotNull(row.getRowIndex());
             if (row.getRowIndex() == 5) {
                 // Subject should be 1 because these were sorted Descending
                 for (SubjectAnnotation value : row.getSubjectAssignment().getSubjectAnnotationCollection()) {
                     NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getAnnotationValue();
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
+                    assertEquals(Double.valueOf(3.0), numericValue.getNumericValue());
                 }
                 // Sample should be 1.0 because samples are sorted Ascending
                 for (AbstractAnnotationValue value : row.getSampleAcquisition().getAnnotationCollection()) {
                     NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
+                    assertEquals(Double.valueOf(12.0), numericValue.getNumericValue());
                 }
             }
             
@@ -188,12 +188,12 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
                 // Subject should be 1 because these were sorted Descending
                 for (SubjectAnnotation value : row.getSubjectAssignment().getSubjectAnnotationCollection()) {
                     NumericAnnotationValue numericValue = (NumericAnnotationValue) value.getAnnotationValue();
-                    assertEquals(Double.valueOf(1.0), numericValue.getNumericValue());
+                    assertEquals(Double.valueOf(3.0), numericValue.getNumericValue());
                 }
                 // Sample should be 10.0 because samples are sorted Ascending
                 for (AbstractAnnotationValue value : row.getSampleAcquisition().getAnnotationCollection()) {
                     NumericAnnotationValue numericValue = (NumericAnnotationValue) value;
-                    assertEquals(Double.valueOf(10.0), numericValue.getNumericValue());
+                    assertEquals(Double.valueOf(12.0), numericValue.getNumericValue());
                 }
             }
         }
