@@ -85,62 +85,126 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.lang.StringUtils;
 
-public class GenePatternAnalysisActionTest {
+/**
+ * Used for Struts representation of the currently configured analysis method.
+ */
+public class AnalysisForm {
     
-    private GenePatternAnalysisAction action;
+    private List<AnalysisMethod> analysisMethods = new ArrayList<AnalysisMethod>();
+    private final List<String> analysisMethodNames = new ArrayList<String>();
+    private AnalysisMethodInvocation invocation;
+    private final List<AnalysisFormParameter> parameters = new ArrayList<AnalysisFormParameter>();
 
-
-    @Before
-    public void setUp() {
-        action = new GenePatternAnalysisAction();
-        action.setAnalysisService(new AnalysisServiceStub());
-    }
-    
-    @Test
-    public void testConfigure() {
-        assertEquals(ActionSupport.SUCCESS, action.configure());
-        assertTrue(action.getAnalysisForm().getAnalysisMethods().isEmpty());
-        action.setUrl("url");
-        action.configure();
-        assertNotNull(action.getAnalysisForm().getAnalysisMethods());
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethods().size());
+    /**
+     * Returns the list of all analysis method names.
+     * 
+     * @return the list of analysis method names.
+     */
+    public List<String> getAnalysisMethodNames() {
+        return analysisMethodNames;
     }
 
-    @Test
-    public void testSetAnalysisMethodName() {
-        assertNull(action.getAnalysisForm().getInvocation());
-        action.setUrl("url");
-        assertEquals("url", action.getUrl());
-        action.configure();
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethodNames().size());
-        action.getAnalysisForm().setAnalysisMethodName("method");
-        assertNotNull(action.getAnalysisForm().getInvocation());
-        assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
-        assertEquals(1, action.getAnalysisForm().getParameters().size());
-        AnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
-        assertEquals("parameter", parameter.getName());
-        assertTrue(parameter.isRequired());
-        assertTrue(action.getAnalysisForm().isExecutable());
-        action.getAnalysisForm().setAnalysisMethodName("");
-        assertNull(action.getAnalysisForm().getInvocation());
-        assertFalse(action.getAnalysisForm().isExecutable());
+    /**
+     * Returns the name of the currently selected <code>AnalysisMethod</code>.
+     * 
+     * @return the name.
+     */
+    public String getAnalysisMethodName() {
+        if (getInvocation() != null) {
+            return getInvocation().getMethod().getName();
+        } else {
+            return null;
+        }
     }
     
-    @Test
-    public void testExecute() {
-        assertEquals(ActionSupport.SUCCESS, action.execute());
+    /**
+     * Sets the currently selected <code>AnalysisMethod</code> by name.
+     * 
+     * @param name the method name
+     */
+    public void setAnalysisMethodName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            handleMethodChange(null);
+        } else if (!name.equals(getAnalysisMethodName())) {
+            handleMethodChange(getAnalysisMethod(name));
+        }
     }
 
+    private void handleMethodChange(AnalysisMethod analysisMethod) {
+        parameters.clear();
+        if (analysisMethod == null) {
+            setInvocation(null);
+        } else {
+            setInvocation(analysisMethod.createInvocation());
+        }
+    }
+
+    private AnalysisMethod getAnalysisMethod(String name) {
+        for (AnalysisMethod method : analysisMethods) {
+            if (name.equals(method.getName())) {
+                return method;
+            }
+        }
+        return null;
+    }
+
+    AnalysisMethodInvocation getInvocation() {
+        return invocation;
+    }
+
+    private void setInvocation(AnalysisMethodInvocation invocation) {
+        this.invocation = invocation;
+        if (invocation != null) {
+            loadParameters();
+        }
+    }
+
+    private void loadParameters() {
+        for (AbstractParameterValue parameterValue : invocation.getParameterValues()) {
+            if (AnalysisFormParameter.isDisplayableParameter(parameterValue)) {
+                parameters.add(new AnalysisFormParameter(parameterValue));
+            }
+        }
+    }
+
+    List<AnalysisMethod> getAnalysisMethods() {
+        return analysisMethods;
+    }
+
+    void setAnalysisMethods(List<AnalysisMethod> analysisMethods) {
+        if (analysisMethods == null) {
+            throw new IllegalArgumentException("analysisMethods may not be null");
+        }
+        this.analysisMethods = analysisMethods;
+        analysisMethodNames.clear();
+        for (AnalysisMethod analysisMethod : analysisMethods) {
+            analysisMethodNames.add(analysisMethod.getName());
+        }
+    }
+
+    /**
+     * @return the parameters
+     */
+    public List<AnalysisFormParameter> getParameters() {
+        return parameters;
+    }
+    
+    /**
+     * Indicates that the form is ready to submit to execute an analysis job.
+     * 
+     * @return true if the form may be submitted
+     */
+    public boolean isExecutable() {
+        return getInvocation() != null;
+    }
+    
 }

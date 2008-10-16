@@ -97,7 +97,7 @@ public class AnalysisMethodInvocation implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private AnalysisMethod method;
-    private List<AbstractParameterValue> parameterValues = new ArrayList<AbstractParameterValue>();
+    private final List<AbstractParameterValue> parameterValues = new ArrayList<AbstractParameterValue>();
 
     /**
      * @return the method
@@ -118,13 +118,6 @@ public class AnalysisMethodInvocation implements Serializable {
      */
     public List<AbstractParameterValue> getParameterValues() {
         return parameterValues;
-    }
-    
-    /**
-     * @param parameterValues the parameterValues to set
-     */
-    public void setParameterValues(List<AbstractParameterValue> parameterValues) {
-        this.parameterValues = parameterValues;
     }
     
 }

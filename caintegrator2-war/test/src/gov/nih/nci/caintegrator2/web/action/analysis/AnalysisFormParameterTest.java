@@ -86,61 +86,86 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
+import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionSupport;
-
-public class GenePatternAnalysisActionTest {
+public class AnalysisFormParameterTest {
     
-    private GenePatternAnalysisAction action;
-
-
+    private StringParameterValue parameterValue1;
+    private IntegerParameterValue parameterValue2;
+    private AnalysisFormParameter formParameter1;
+    private AnalysisFormParameter formParameter2;
+    
     @Before
     public void setUp() {
-        action = new GenePatternAnalysisAction();
-        action.setAnalysisService(new AnalysisServiceStub());
-    }
-    
-    @Test
-    public void testConfigure() {
-        assertEquals(ActionSupport.SUCCESS, action.configure());
-        assertTrue(action.getAnalysisForm().getAnalysisMethods().isEmpty());
-        action.setUrl("url");
-        action.configure();
-        assertNotNull(action.getAnalysisForm().getAnalysisMethods());
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethods().size());
+        parameterValue1 = new StringParameterValue();
+        AnalysisParameter parameter1 = new AnalysisParameter();
+        parameterValue1.setParameter(parameter1);
+        parameter1.setName("parameter1");
+        parameter1.setDescription("description1");
+        parameter1.setRequired(false);
+        parameter1.setType(AnalysisParameterType.STRING);
+        parameterValue1.setValue("value1");
+        
+        parameterValue2 = new IntegerParameterValue();
+        AnalysisParameter parameter2 = new AnalysisParameter();
+        parameterValue2.setParameter(parameter2);
+        parameter2.setName("parameter2");
+        parameter2.setDescription("description2");
+        parameter2.setRequired(false);
+        parameter2.setType(AnalysisParameterType.INTEGER);
+        parameterValue2.setValue(2);
+        
+        Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
+        choices.put("2", parameterValue2);
+        parameter2.setChoices(choices);
+        IntegerParameterValue choice2 = new IntegerParameterValue();
+        choice2.setValue(3);
+        choice2.setParameter(parameter2);
+        choices.put("3", choice2);
+        
+        formParameter1 = new AnalysisFormParameter(parameterValue1);
+        formParameter2 = new AnalysisFormParameter(parameterValue2);
     }
 
     @Test
-    public void testSetAnalysisMethodName() {
-        assertNull(action.getAnalysisForm().getInvocation());
-        action.setUrl("url");
-        assertEquals("url", action.getUrl());
-        action.configure();
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethodNames().size());
-        action.getAnalysisForm().setAnalysisMethodName("method");
-        assertNotNull(action.getAnalysisForm().getInvocation());
-        assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
-        assertEquals(1, action.getAnalysisForm().getParameters().size());
-        AnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
-        assertEquals("parameter", parameter.getName());
-        assertTrue(parameter.isRequired());
-        assertTrue(action.getAnalysisForm().isExecutable());
-        action.getAnalysisForm().setAnalysisMethodName("");
-        assertNull(action.getAnalysisForm().getInvocation());
-        assertFalse(action.getAnalysisForm().isExecutable());
+    public void testGetters() {
+        assertFalse(formParameter1.isSelect());
+        assertTrue(formParameter2.isSelect());
+        assertEquals("description1", formParameter1.getDescription());
+        assertEquals("textfield", formParameter1.getDisplayType());
+        assertEquals("select", formParameter2.getDisplayType());
+        assertEquals("parameter1", formParameter1.getName());
+        assertEquals("value1", formParameter1.getValue());
+        assertEquals("2", formParameter2.getValue());
+        assertEquals(2, formParameter2.getChoices().size());
+        assertTrue(formParameter2.getChoices().contains("2"));
     }
     
     @Test
-    public void testExecute() {
-        assertEquals(ActionSupport.SUCCESS, action.execute());
+    public void testSetValue() {
+        formParameter1.setValue("new value");
+        assertEquals("new value", formParameter1.getParameterValue().getValueAsString());
+        formParameter2.setValue("3");
+        assertEquals("3", formParameter2.getParameterValue().getValueAsString());
+    }
+
+    @Test
+    public void testIsDisplayableParameter() {
+        parameterValue2.getParameter().setType(AnalysisParameterType.GENOMIC_DATA);
+        assertTrue(AnalysisFormParameter.isDisplayableParameter(parameterValue1));
+        assertFalse(AnalysisFormParameter.isDisplayableParameter(parameterValue2));
     }
 
 }
