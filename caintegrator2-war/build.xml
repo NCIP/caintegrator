@@ -34,7 +34,7 @@
     <property environment="env" />
     <property file="${build.dir}/local.properties" />
     <property file="${build.dir}/default.properties" />
-    <property file="${software.dir}/project.properties"/>
+    <property file="${software.dir}/build/project.properties"/>
     <property file="${envpropertyfile}" />
 
     <!-- Filtersets -->
