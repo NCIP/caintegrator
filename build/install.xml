@@ -21,6 +21,20 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
 	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
 	<property file="${properties.file}" />
+	<!-- Set application.base.path based on platform -->
+	<condition property="application.base.path" value="${application.base.path.linux}">
+		<or>
+			<os family="unix" />
+			<os family="mac" />
+		</or>
+	</condition>
+
+	<condition property="application.base.path" value="${application.base.path.windows}">
+		<os family="windows" />
+	</condition>
+	<echo message="application.base.path=${application.base.path}"/>
+	<property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+
 	
 	<!-- Generic properties -->
 	<property name="log.dir" value="${basedir}/logs" />
@@ -34,8 +48,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<property name="tools.dir.src" value="${basedir}/${tools.dist.relative.dir}" />
 	<property name="common.dir.src" value="${basedir}/${common.dist.relative.dir}" />
 	<property name="common.dir.target" value="${working.dir}/${common.dist.relative.dir}" />
-	<property name="db-install.target.dir" value="${working.dir}/${db-install.dist.relative.dir}" />
-	<property name="db-upgrade.dir.target" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
+	<property name="db-install.dir.dest" value="${working.dir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
 	<property name="jboss-conf.dir.target" value="${working.dir}/${jboss-conf.dist.relative.dir}" />
 
 	<!-- *-ds.xml and WAR -->
@@ -70,6 +84,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			<pathelement location="${bda-utils.dir}/ivy-1.3.1.jar"/>
 		</classpath>
 	</taskdef>
+	<taskdef resource="liquibasetasks.properties" classpathref="bda-utils.classpath"/>
 
 	<!-- Conditionals -->
 	<available file="${jboss.home}/server/${jboss.server.name}/conf/jboss-service.xml" property="jboss.exists"/>
@@ -110,45 +125,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Includes-->
 	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
-	<!-- Generated and used by database incremental build process, copied deploy:*:prep of build.xml -->
-	<import file="db-integrate.xml" />
-
-	<!-- Read db configs from existing ds.xml if it exists for use in upgrade installs, if already set in properties file values from properties file will be used -->
-	<available file="${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file}" property="ds.exists"/>
-	<if>
-		<isset property="ds.exists"/>
-		<then>
-			<jboss-read-dbconfig
-				jboss.ds-xml.file="${caintegrator2-war.ds.file}"
-				/>
-		</then>
-		<else>
-			<echo message="Warning- could not find ${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file}"/>
-		</else>
-	</if>
-
-	<!-- There is any issue with copying files with a filtersfile, any properties with a value of
-		another property do not get expanded (xx=${yy} @xx@ will be replaced with ${yy} not the
-		value).  I have defined a filter set below for these properties, I then two two copies
-		one to the resource.dir.temp using the filterset and then one to the desired directory 
-		with the filter file.  If you add new properties that refer to other properties in the
-		properties file please add them to the filterset-pre below.
-	     Also you should include properties that are declared in this file, like database info below.
-	-->
-	<property name="resource.dir.temp" value="${working.dir}/temp" />
-	<filterset id="filterset.pre">
-		<filter token="application.base.path" value="${application.base.path}"/>
-		<filter token="application.url" value="${application.url}"/>
-		<filter token="database.url" value="${database.url}"/>
-		<filter token="database.system.url" value="${database.system.url}"/>
-		<filter token="jboss.home" value="${jboss.home}"/>
-		<!-- added internal properties that may be used in a filtered copy -->
-		<filter token="database.driver" value="${database.driver}"/>
-		<filter token="database.dialect" value="${database.dialect}"/>
-		<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
-	</filterset>
-	
-
 	<!-- Start logging --> 
 	<mkdir dir="${log.dir}" />
 	<tstamp>
@@ -170,50 +146,62 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 
 	<!-- Does directory management and copy some files with filtering to ensure token expansion -->
 	<target name="install:init" description="Does directory management to initialize install">
+		<filterset id="filterset.pre">
+			<filter token="application.base.path" value="${application.base.path}"/>
+			<filter token="application.url" value="${application.url}"/>
+			<filter token="database.url" value="${database.url}"/>
+			<filter token="database.user" value="${database.user}"/>
+			<filter token="database.password" value="${database.password}"/>
+			<filter token="database.system.url" value="${database.system.url}"/>
+			<!-- added internal properties that may be used in a filtered copy -->
+			<filter token="database.driver" value="${database.driver}"/>
+			<filter token="database.dialect" value="${database.dialect}"/>
+			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
+			<filter token="jboss.home" value="${jboss.home}"/>
+		</filterset>
+		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
+		<echo  message="Checking if database properties exist: ${db.prop.list}"/>
+		<properties-exist properties.list="${db.prop.list}"/>
+
 		<mkdir dir="${working.dir}" />
 		<delete dir="${working.dir}"/>
 		<mkdir dir="${working.dir}" />
 		<mkdir dir="${resource.dir.temp}"/>
 		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in filterset.pre and then copy with filter files -->
-		<copy todir="${resource.dir.temp}" filtering="true">
+		<copy todir="${common.dir.target}" filtering="true">
 			<fileset dir="${common.dir.src}">
 				<include name="**/*"/>
 			</fileset>
 			<filterset refid="filterset.pre"/>
-		</copy> 
-		<copy todir="${common.dir.target}" filtering="true">
-			<fileset dir="${resource.dir.temp}">
-				<include name="**/*"/>
-			</fileset>
 			<filterset>
 				<filtersfile file="${properties.file}"/>
 				<filtersfile file="project.properties"/>
 			</filterset>
 		</copy> 
 	</target>
+	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="install:init">
+		<!-- do nothing since files were copied and filtered with common filter in init -->
+	</target>
 
-	<!-- Wrapper install database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database also calls upgrade:database -->
-	<target name="install:database" description="Re-creates database and users from baseline and applys incremental database changes." unless="exclude.database"
+	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database"
 		depends="
-		install:init
+		install:init,
+		install:database:prep
 		">
+		<!-- Drop all schema objects or re-create the db -->
+		<database-clean/>
+		<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
 		<switch value="${database.type}">
 			<case value="mysql">
-				<database-create/>
-				<for list="${db.install.mysql.file.list}" param="db.install.mysql.file">
-					<sequential>
-						<run-sql-script
-							database.url="${database.url}"
-							database.user="${database.user}"
-							database.password="${database.password}"
-							sql.file="${db-install.target.dir}/${database.type}/@{db.install.mysql.file}"
-							/>
-					</sequential>
-				</for>
+				<database-install
+					db.install.create.file.list="${db.install.create.mysql.file.list}"
+					/>
 			</case>
 		</switch>
-		<antcall target="upgrade:database" inheritAll="false"/>
+		<database-upgrade/>
+		<database-tag/>
 	</target>
+
 
 	<target name="install:jboss:binaries" description="Unzip JBoss binary" unless="exclude.jboss">
 		<unzip dest="${application.base.path}" src="${tools.dir.src}/${jboss.binaries.file}" />
@@ -245,12 +233,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper target to configure jboss container, not deployed application -->
 	<target name="install:jboss:configure" description="Configure caintegrator2-war" unless="exclude.jboss"
 		depends="install:jboss:binaries,
+		-install:jboss:configure:secure-console,
 		-install:jboss:configure:ports,
 		-install:jboss:configure:login-conf,
 		-install:jboss:configure:log4j,
 		-install:jboss:configure:update-shutdown
 		"/>
 
+	        <target name="-install:jboss:configure:secure-console" description="Configure JBoss ports using bindings files" unless="exclude.jboss">
+			<secure-jboss-console/>
+		</target>
 	<!-- Configure ports used by JBOSS (either bindings or editing jboss config.files) -->
 	<target name="-install:jboss:configure:ports" description="Configure caintegrator2-war" unless="exclude.jboss">
 		<jboss-bindings
@@ -392,7 +384,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper target to deploy JBOSS container -->
 	<target name="install:jboss" unless="exclude.jboss"
 		depends="
-		install:check,
 		install:validation:pre-install,
 		install:jboss:stop,
 		install:validation:pre-install:ports,
@@ -409,7 +400,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper target to deploy all containers to one server -->
 	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application" 
 		depends="
-		install:check,
 		install:validation:pre-install,
 		install:jboss:stop,
 		install:validation:pre-install:ports,
@@ -438,7 +428,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
 	<target name="upgrade:jboss" unless="exclude.jboss"
 		depends="
-		upgrade:check,
 		install:validation:pre-install,
 		install:jboss:stop,
 		install:init,
@@ -451,7 +440,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<!-- Wrapper target to upgrade all container. Does not install or configure binaries -->
 	<target name="upgrade" description="Deploys application and runs incremental database build" 
 		depends="
-		upgrade:check,
 		upgrade:init,
 		install:validation:pre-install,
 		install:jboss:stop,
@@ -464,7 +452,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <!-- Wrapper target to upgrade all container and install the database. Does not install or configure binaries -->
     <target name="upgrade:newdb" description="Deploys application and reinstalls database" 
         depends="
-        upgrade:check,
         upgrade:init,
         install:validation:pre-install,
         install:jboss:stop,
@@ -475,74 +462,41 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         "/>        
 
 	<!-- Wrapper upgrade database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database. -->
-	<target name="upgrade:database" description="Apply incremental DB changes" unless="exclude.database"
-		depends="
-		install:init,
-		upgrade:init
-		">
-		<!-- **figure out the changes/scripts based upon current version IN the database, if any ** -->
-		<switch value="${database.type}">
-			<case value="mysql">
-				<if>
-					<available file="${db-upgrade.list.file}"/>
-					<then>
-						<property name="db.continue" value="true"/>
-						<database-create-control-table
-							database.url="${database.url}"
-							database.user="${database.user}"
-							database.password="${database.password}"
-							/>
-						<database-identify-scripts
-							sqlfiles.list.file="${db-upgrade.list.file}"
-							build.properties.file="${db-upgrade.conf.file}"
-							database.sql.dir="${db-upgrade.dir.target}"
-							/>
-					</then>
-					<else>
-						<echo message="Could not find an incremental file list file ${db-upgrade.list.file}, there must not be any incrmental updates."/>
-					</else>
-				</if>
-			</case>
-		</switch>
-		<echo  message="db.continue=${db.continue}"/>
-		<if>
-			<isset property="db.continue"/>
-			<then>
-				<!-- **make the changes to the db aka invoke the proper scripts ** -->
-				<antcall target="database-integrate" />
-				<!-- ** make sure the versioning information IN the database is updated to reflect what we just did ** -->
-				<database-update-version-table
-					database.driver="${database.driver}"
-					database.url="${database.url}"
-					database.user="${database.user}"
-					database.password="${database.password}"/>
-			</then>
-		</if>
-	</target>
 
 	<target name="upgrade:init">
-		<echo  message="Checking if database properties exist.  If they do not on an upgrade install then ${jboss.home}/server/${jboss.server.name}/deploy/${caintegrator2-war.ds.file} may not exist."/>
-		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
-		<properties-exist properties.list="${db.prop.list}"/>
+		<jboss-read-dbconfig
+			jboss.ds-xml.file="${caintegrator2-war.ds.file}"
+			/>
+		<jboss-read-ldapconfig
+			/>
 	</target>
-	<target name="install:check">
-		<if>
-			<not>   
-				<contains string="${properties.file}" substring="install"/>
-			</not>  
-			<then>  
-				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'install' in the name."/>
-			</then> 
-		</if>   
+	<target name="upgrade:database" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
+		depends="
+		upgrade:init,
+		install:init,
+		install:database:prep
+		">
+		<database-upgrade/>
+		<database-tag/>
 	</target>
-	<target name="upgrade:check">
-		<if>
-			<not>   
-				<contains string="${properties.file}" substring="upgrade"/>
-			</not>  
-			<then>  
-				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'upgrade' in the name."/>
-			</then> 
-		</if>   
+
+
+	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
+		depends="
+		upgrade:init,
+		install:init,
+		install:database:prep
+		">
+		<database-tag/>
 	</target>
+
+	<target name="upgrade:database:rollback" description="Rolls back database to previous tagged version using rollback scripts." unless="exclude.database"
+		depends="
+		upgrade:init,
+		install:init,
+		install:database:prep
+		">
+		<database-rollback/>
+	</target>
+
 </project>

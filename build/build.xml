@@ -13,15 +13,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
 	<property file="local.properties" />
 	<property file="project.properties" />
-	<condition property="properties.file" value="linux-install.properties">
-		<or>
-			<os family="unix" />
-			<os family="mac" />
-		</or>
-	</condition>
-	<condition property="properties.file" value="windows-install.properties">
-		<os family="windows" />
-	</condition>
+	<property name="properties.file" value="install.properties"/>
 	<echo message="Using properties file of ${properties.file}."/>
 	<available file="${properties.file}" property="properties.file.exists" />
 	<fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
@@ -32,27 +24,39 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<!-- added for remote deployments since file is copied to root of install dir -->
 	<basename property="properties.file.name" file="${properties.file}" />
 
-	<!-- Default values in case property file is not used -->
-	<property name="application.base.path" value="${user.home}/apps" />
+	<!-- Set application.base.path based on platform -->
+	<condition property="application.base.path" value="${application.base.path.linux}">
+		<or>            
+			<os family="unix" />    
+			<os family="mac" />     
+		</or>           
+	</condition>
 
-	<!-- Generic build time properties -->
-	<property name="software.dir" value="${basedir}" />
-	<property name="common.dir" value="${software.dir}/common" />
-	<property name="build.dir" value="${software.dir}/build" />
-	<property name="local.repo.dir" value="${software.dir}/local-ivy-repo" />
-	<property name="bda-download.dir" value="${common.dir}/bda-download" />
-	<property name="target.dir" value="${software.dir}/target" />
-	<property name="lib.dir" value="${target.dir}/lib" />
-	<property name="temp.dir" value="${target.dir}/temp" />
-	<property name="reports.dir" value="${target.dir}/reports" />
-	<property name="bda-utils.dir" value="${target.dir}/bda-utils" />
-	<property name="log.dir" value="${target.dir}/logs" />
-	<property name="dist.dir" value="${target.dir}/dist" />
-	<property name="download.dir" value="${target.dir}/download" />
+	<condition property="application.base.path" value="${application.base.path.windows}">
+		<os family="windows" />
+	</condition>
+	<property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+
+	<!-- BDA standard structure -->
+	<property name="build.dir" location="." />
+	<property name="software.dir" location=".." />
+	<property name="common.dir" location="${software.dir}/common" />
+	<property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+	<property name="target.dir" location="${software.dir}/target" />
+	<property name="bda-download.dir" location="${common.dir}/bda-download" />
+	<property name="ivy.settings.dir" location="${common.dir}/ivy" />
+	<property name="lib.dir" location="${target.dir}/lib" />
+	<property name="temp.dir" location="${target.dir}/temp" />
+	<property name="reports.dir" location="${target.dir}/reports" />
+	<property name="bda-utils.dir" location="${target.dir}/bda-utils" />
+	<property name="log.dir" location="${target.dir}/logs" />
+	<property name="dist.dir" location="${target.dir}/dist" />
+	<property name="download.dir" location="${target.dir}/download" />
+	<property name="pt.dir" location="${target.dir}/persistent-transient" />
+	<property name="working.dir" location="${target.dir}/working" />
 	<property name="ivy.settings.file" location="${build.dir}/ivy-bda-settings.xml" />
 	<property name="ivy.file" value="ivy-2.0.0-beta2.jar" />
 	<property name="ivy-cacore.file" value="ivy-cacore-2.0.0-beta2.jar" />
-
 
 	<!-- Used by dist:*:prep to copy resource files to distribution area -->
 
@@ -104,17 +108,18 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="common.dir" value="common" />
 
 	<!-- retrive ivy files then retrieve bda files and librarires -->
-	<echo message="software.dir=${software.dir}"/>
-	<mkdir dir="lib" />
-	<ant inheritAll="false" inheritRefs="false"
-		antfile="bda-ivy-build.xml"
-		target="retrieve-bda"
-		dir="${bda-download.dir}"
-		>
+	<property name="bda-download.file" value="bda-ivy-build.xml" />
+	<!-- Use the snippet below if you want these to be transcient files
+	<mkdir dir="${bda-download.dir}" />
+	<property name="bda-download.src.url" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download/${bda-download.file}" />
+	<get src="${bda-download.src.url}" dest="${bda-download.dir}/${bda-download.file}" />
+	-->
+
+	<ant inheritAll="false" inheritRefs="false" antfile="${bda-download.file}" target="retrieve-bda" dir="${bda-download.dir}">
 		<property name="bda.version" value="${bda.version}" />
-		<property name="bda-utils.dir" value="${bda-utils.dir}" />
-		<property name="lib.dir" value="${lib.dir}" />
-		<property name="software.dir" value="${software.dir}" />
+		<property name="bda-utils.dir" location="${bda-utils.dir}" />
+		<property name="lib.dir" location="${lib.dir}" />
+		<property name="software.dir" location="${software.dir}" />
 	</ant>
 
 	<!-- Paths -->
@@ -250,17 +255,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	<!-- Copies install time resources into distribution tree -->
 	<target name="dist:installer:prep" depends="dist:tools:retrieve">
-		<!-- added for incremental database build -->
-		<!-- Need to call database-build-filelist once for each type of database you support.
-			db-upgrade.* propertes are stored in project.properties because they are used in both
-			install.xml and build.xml
-		-->
-		<database-build-filelist sqlfiles.list.file="${dist.exploded.dir}/${db-upgrade.mysql.list.file}" build.properties.file="${dist.exploded.dir}/${db-upgrade.mysql.conf.file}" incr.sql.dir="${db-upgrade.src.dir}/mysql" />
-		<copy tofile="${dist.exploded.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml" />
-
 		<!-- Copy install related xml and properties files -->
 		<copy todir="${dist.exploded.dir}" overwrite="true">
-			<fileset dir="${software.dir}">
+			<fileset dir="${build.dir}">
 				<include name="install.xml" />
 				<include name="install.properties" />
 				<include name="*properties.template" />
@@ -269,8 +266,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</copy>
 		<!-- Set default target on install xml to install -->
 		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1install\2" />
-		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.*property name=.\$\{properties.file\} value=.)[\w\.\d\-\_]+(.\s+.*)" replace="\1install.properties\2" />
-		<!-- Rename install.xml to build.xml so manual installs will not need to include the -f optoin on ant, simplifying the install proces. -->
 		<move file="${dist.exploded.dir}/install.xml" tofile="${dist.exploded.dir}/build.xml" />
 
 		<!-- Copy over BDA macrodefs and librarires -->
@@ -312,27 +307,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</fileset>
 		</delete>
 
-		<!-- added for incremental database build -->
-		<!-- Need to call database-build-filelist once for each type of database you support.
-			db-upgrade.* propertes are stored in project.properties because they are used in both
-			install.xml and build.xml
-		-->
-		<database-build-filelist sqlfiles.list.file="${dist.exploded.dir}/${db-upgrade.mysql.list.file}" build.properties.file="${dist.exploded.dir}/${db-upgrade.mysql.conf.file}" incr.sql.dir="${db-upgrade.src.dir}/mysql" />
-		<copy tofile="${dist.exploded.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml" />
-
 		<!-- Copy install related xml and properties files -->
 		<copy todir="${dist.exploded.dir}" overwrite="true">
-			<fileset dir="${software.dir}">
+			<fileset dir="${build.dir}">
 				<include name="install.xml" />
-				<include name="upgrade.properties" />
+				<include name="install.properties" />
 				<include name="*properties.template" />
 				<include name="project.properties" />
 			</fileset>
 		</copy>
 		<!-- Change default target of install.xml to upgrade -->
 		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1upgrade\2" />
-		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.*property name=.properties.file. value=.)[\w\.\d\-\_\$\{\}\/]+(.\s*\/.*)" replace="\1upgrade.properties\2" />
-		<!-- Rename install.xml to build.xml to simply install but not having to provide -f option to ant command line -->
 		<move file="${dist.exploded.dir}/install.xml" tofile="${dist.exploded.dir}/build.xml" />
 
 		<!-- Copy BDA macrodefs and library files -->
@@ -368,20 +353,20 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 		<!-- Copies over all files so linux and windows properties are present -->
 		<copy todir="${dist.exploded.dir}">
-			<fileset dir="${software.dir}">
+			<fileset dir="${build.dir}">
 				<include name="*.properties" />
 			</fileset>
 		</copy>
 		<exec osfamily="unix" executable="ant" dir="${dist.exploded.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=linux-install.properties" />
+			<arg value="-Dproperties.file=${properties.file}" />
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true" />
 			<arg value="${install.target}" />
 		</exec>
 		<exec osfamily="windows" executable="ant.bat" dir="${dist.exploded.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=windows-install.properties" />
+			<arg value="-Dproperties.file=${properties.file}" />
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true" />
 			<arg value="${install.target}" />
@@ -396,7 +381,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 		<!-- Copies over all files so linux and windows properties are present -->
 		<copy todir="${dist.exploded.dir}">
-			<fileset dir="${software.dir}">
+			<fileset dir="${build.dir}">
 				<include name="*.properties" />
 			</fileset>
 		</copy>
@@ -416,7 +401,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 		<exec osfamily="unix" executable="ant" dir="${dist.exploded.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=linux-upgrade.properties" />
+			<arg value="-Dproperties.file=${properties.file}" />
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true" />
 			<arg value="-Dlocal.install=true" />
@@ -424,7 +409,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</exec>
 		<exec osfamily="windows" executable="ant.bat" dir="${dist.exploded.dir}" failonerror="true">
 			<!-- use alternate properties file since default has replace values -->
-			<arg value="-Dproperties.file=windows-upgrade.properties" />
+			<arg value="-Dproperties.file=${properties.file}" />
 			<!-- force reinstall of database and jboss without prompting -->
 			<arg value="-Dforce.reinstall=true" />
 			<arg value="-Dlocal.install=true" />
@@ -462,14 +447,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		build:all,
 		dist:installer
 		">
-		<if>
-			<not>
-				<contains string="${properties.file}" substring="install"/>
-			</not>
-			<then>
-				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'install' in the name."/>
-			</then>
-		</if>
 		<deploy-files dist.file="${caintegrator2.install.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
 	</target>
@@ -479,14 +456,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		build:all,
 		dist:upgrader
 		">
-		<if>
-			<not>
-				<contains string="${properties.file}" substring="upgrade"/>
-			</not>
-			<then>
-				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'upgrade' in the name."/>
-			</then>
-		</if>
 		<deploy-files dist.file="${caintegrator2.upgrade.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
 	</target>
@@ -505,26 +474,15 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<svn-co svn.project.base.url="${svn.project.base.url}" svn.project.name="${svn.project.name}" svn.tag="${svn.tag}" svn.co.base.dir="${svn.co.base.dir}" />
 	</target>
 	<!-- this target generates visio like diagrams of the build files -->
-	<target name="report:grand" description="Generates grand graphs for build.xml files">
+	<target name="report:grand" depends="build:all" description="Generates grand graphs for build.xml files">
 		<!-- Temporary fix to make grand work for install.xml -->
-		<ant inheritAll="false" inheritRefs="false"
-			antfile="bda-ivy-build.xml"
-			target="retrieve-bda"
-			dir="${bda-download.dir}"
-			>
-			<property name="bda-utils.dir" value="${software.dir}/bda-utils" />
-			<property name="lib.dir" value="${lib.dir}" />
-			<property name="software.dir" value="${software.dir}" />
-		</ant>  
-		<copy tofile="${software.dir}/db-integrate.xml" file="${bda-utils.dir}/resource/template-db-integrate.xml"/>
-
 		<report-grand 
 			build.file.location="build.xml" 
 			output.file.dir="${grand.rpt.dir}"
 			output.file.name="master-build.xml"
 		       	/>
 		<report-grand 
-			build.file.location="install.xml" 
+			build.file.location="${dist.exploded.dir}/build.xml" 
 			output.file.dir="${grand.rpt.dir}"
 			output.file.name="master-install.xml"
 		       	/>
