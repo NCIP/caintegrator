@@ -85,62 +85,108 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Collection;
 
-import com.opensymphony.xwork2.ActionSupport;
+/**
+ * Represents a single parameter and value on an <code>AnalysisForm</code>.
+ */
+public class AnalysisFormParameter {
 
-public class GenePatternAnalysisActionTest {
-    
-    private GenePatternAnalysisAction action;
+    private AbstractParameterValue parameterValue;
 
+    AnalysisFormParameter(AbstractParameterValue parameterValue) {
+        if (parameterValue == null) {
+            throw new IllegalArgumentException("Null value for parameterValue");
+        }
+        setParameterValue(parameterValue);
+    }
 
-    @Before
-    public void setUp() {
-        action = new GenePatternAnalysisAction();
-        action.setAnalysisService(new AnalysisServiceStub());
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return getParameterValue().getParameter().getName();
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return getParameterValue().getParameter().getDescription();
+    }
+
+    /**
+     * @return the required
+     */
+    public boolean isRequired() {
+        return getParameterValue().getParameter().isRequired();
     }
     
-    @Test
-    public void testConfigure() {
-        assertEquals(ActionSupport.SUCCESS, action.configure());
-        assertTrue(action.getAnalysisForm().getAnalysisMethods().isEmpty());
-        action.setUrl("url");
-        action.configure();
-        assertNotNull(action.getAnalysisForm().getAnalysisMethods());
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethods().size());
+    /**
+     * @return the type of display element to use.
+     */
+    public String getDisplayType() {
+        if (isSelect()) {
+            return "select";
+        } else {
+            return "textfield";
+        }
     }
 
-    @Test
-    public void testSetAnalysisMethodName() {
-        assertNull(action.getAnalysisForm().getInvocation());
-        action.setUrl("url");
-        assertEquals("url", action.getUrl());
-        action.configure();
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethodNames().size());
-        action.getAnalysisForm().setAnalysisMethodName("method");
-        assertNotNull(action.getAnalysisForm().getInvocation());
-        assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
-        assertEquals(1, action.getAnalysisForm().getParameters().size());
-        AnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
-        assertEquals("parameter", parameter.getName());
-        assertTrue(parameter.isRequired());
-        assertTrue(action.getAnalysisForm().isExecutable());
-        action.getAnalysisForm().setAnalysisMethodName("");
-        assertNull(action.getAnalysisForm().getInvocation());
-        assertFalse(action.getAnalysisForm().isExecutable());
+    /**
+     * Indicates whether parameter is a select list.
+     * 
+     * @return true if is a select list.
+     */
+    public boolean isSelect() {
+        return !getParameterValue().getParameter().getChoices().isEmpty();
     }
     
-    @Test
-    public void testExecute() {
-        assertEquals(ActionSupport.SUCCESS, action.execute());
+    /**
+     * @return the available choices
+     */
+    public Collection<String> getChoices() {
+        return getParameterValue().getParameter().getChoices().keySet();
     }
+
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return getParameterValue().getValueAsString();
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        if (isSelect()) {
+            setParameterValue(getParameterValue().getParameter().getChoices().get(value));
+        } else {
+            getParameterValue().setValueFromString(value);
+        }
+    }
+
+    static boolean isDisplayableParameter(AbstractParameterValue parameterValue) {
+        switch (parameterValue.getParameter().getType()) {
+            case GENOMIC_DATA:
+                return false;
+            case SAMPLE_CLASSIFICATION:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    AbstractParameterValue getParameterValue() {
+        return parameterValue;
+    }
+
+    private void setParameterValue(AbstractParameterValue parameterValue) {
+        this.parameterValue = parameterValue;
+    }
+    
 
 }

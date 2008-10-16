@@ -98,7 +98,7 @@ public class FloatParameterValue extends AbstractParameterValue {
      * {@inheritDoc}
      */
     @Override
-    void setValueFromString(String stringValue) {
+    public void setValueFromString(String stringValue) {
         setValue(Float.parseFloat(stringValue));
     }
 
@@ -120,7 +120,7 @@ public class FloatParameterValue extends AbstractParameterValue {
      * {@inheritDoc}
      */
     @Override
-    String getValueAsString() {
+    public String getValueAsString() {
         return getValue().toString();
     }
 

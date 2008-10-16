@@ -108,8 +108,11 @@ public class IntegerParameterValue extends AbstractParameterValue {
         this.value = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    void setValueFromString(String stringValue) {
+    public void setValueFromString(String stringValue) {
         setValue(Integer.parseInt(stringValue));
     }
 
@@ -117,7 +120,7 @@ public class IntegerParameterValue extends AbstractParameterValue {
      * {@inheritDoc}
      */
     @Override
-    String getValueAsString() {
+    public String getValueAsString() {
         return getValue().toString();
     }
 
