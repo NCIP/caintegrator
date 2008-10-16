@@ -100,6 +100,15 @@ public class AnalysisServiceStub implements AnalysisService {
         AnalysisMethod method = new AnalysisMethod();
         method.setName("method");
         methods.add(method);
+        AnalysisParameter parameter = new AnalysisParameter();
+        parameter.setName("parameter");
+        parameter.setType(AnalysisParameterType.STRING);
+        StringParameterValue defaultValue = new StringParameterValue();
+        defaultValue.setParameter(parameter);
+        defaultValue.setValue("default");
+        parameter.setDefaultValue(defaultValue);
+        parameter.setRequired(true);
+        method.getParameters().add(parameter);
         return methods;
     }
 

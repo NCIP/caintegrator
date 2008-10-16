@@ -99,7 +99,7 @@ public class GenomicDataParameterValue extends AbstractParameterValue {
      * {@inheritDoc}
      */
     @Override
-    String getValueAsString() {
+    public String getValueAsString() {
         return genomicData.toString();
     }
 
@@ -107,7 +107,7 @@ public class GenomicDataParameterValue extends AbstractParameterValue {
      * {@inheritDoc}
      */
     @Override
-    void setValueFromString(String stringValue) {
+    public void setValueFromString(String stringValue) {
         throw new IllegalStateException("Can't set value from String");
     }
 

@@ -14,14 +14,33 @@
     <s:actionerror />
     
     <div id="analysisParameters" class="box2">   
-        <s:form action="genePatternAnalysis" >
+        <s:form id="genePatternAnalysisForm" action="genePatternAnalysis">
         
             <s:textfield name="url" label="GenePattern Server URL" value="http://localhost:28080/gp/services/Analysis" />
-            <s:if test="analysisMethods != null">
+            <s:if test="%{!analysisForm.analysisMethodNames.empty}">
                 <s:select label="Analysis Method" 
-                    name="analysisMethodName" 
-                    value="analysisMethodName"
-                    list="analysisMethods" />
+                    name="analysisForm.analysisMethodName" 
+                    list="analysisForm.analysisMethodNames"
+                    onchange="genePatternAnalysisForm.submit();" />
+            </s:if>
+            <s:iterator status="status" value="analysisForm.parameters">
+                <s:if test='%{displayType == "textfield"}'>
+                    <s:textfield 
+                        label="%{name}" 
+                        name="analysisForm.parameters[%{#status.index}].value" 
+                        required="required" 
+                        value="%{value}" />
+                </s:if>
+                <s:elseif test='%{displayType == "select"}'>
+                    <s:select 
+                        label="%{name}" 
+                        name="analysisForm.parameters[%{#status.index}].value" 
+                        list="choices" 
+                        value="%{value}" />
+                </s:elseif>
+            </s:iterator>
+            <s:if test='%{analysisForm.executable}'>
+                <s:submit value="Perform Analysis" action="executeGenePatternAnalysis" />
             </s:if>
         </s:form>
     </div>                                                                                                      

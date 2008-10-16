@@ -219,6 +219,7 @@
         <action name="genePatternAnalysis" method="configure" class="genePatternAnalysisAction">
             <result type="tiles">genePatternAnalysis</result>
             <result name="error" type="tiles">genePatternAnalysis</result>
+            <result name="input" type="tiles">genePatternAnalysis</result>
         </action>
 
         <action name="executeGenePatternAnalysis" method="execute" class="genePatternAnalysisAction">

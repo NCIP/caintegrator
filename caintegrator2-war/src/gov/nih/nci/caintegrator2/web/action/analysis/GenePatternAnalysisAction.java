@@ -86,13 +86,9 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
-
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -104,9 +100,8 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     private static final long serialVersionUID = 1L;
     
     private final ServerConnectionProfile server = new ServerConnectionProfile();
-    private List<AnalysisMethod> analysisMethods;
     private AnalysisService analysisService;
-    private AnalysisMethodInvocation invocation;
+    private final AnalysisForm analysisForm = new AnalysisForm();
 
     /**
      * Configures information about the current analysis service job.
@@ -115,8 +110,8 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public String configure() {
         try {
-            if (!StringUtils.isBlank(server.getUrl()) && getAnalysisMethods() == null) {
-                setAnalysisMethods(getAnalysisService().getGenePatternMethods(server));
+            if (!StringUtils.isBlank(server.getUrl()) && analysisForm.getAnalysisMethods().isEmpty()) {
+                analysisForm.setAnalysisMethods(getAnalysisService().getGenePatternMethods(server));
             }
             return SUCCESS;
         } catch (GenePatternServiceException e) { 
@@ -148,20 +143,6 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
 
     /**
-     * @return the analysisMethods
-     */
-    public List<AnalysisMethod> getAnalysisMethods() {
-        return analysisMethods;
-    }
-
-    /**
-     * @param analysisMethods the analysisMethods to set
-     */
-    public void setAnalysisMethods(List<AnalysisMethod> analysisMethods) {
-        this.analysisMethods = analysisMethods;
-    }
-
-    /**
      * @return the url
      */
     public String getUrl() {
@@ -173,59 +154,17 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public void setUrl(String url) {
         if (!url.equals(server.getUrl())) {
-            setAnalysisMethods(null);
+            analysisForm.getAnalysisMethods().clear();
             server.setUrl(url);
             server.setUsername("etavela@5amsolutions.com");
         }
     }
-    
+   
     /**
-     * Returns the name of the currently selected <code>AnalysisMethod</code>.
-     * 
-     * @return the name.
+     * @return the analysisForm
      */
-    public String getAnalysisMethodName() {
-        if (getInvocation() != null) {
-            return getInvocation().getMethod().getName();
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-     * Sets the currently selected <code>AnalysisMethod</code> by name.
-     * 
-     * @param name the method name
-     */
-    public void setAnalysisMethodName(String name) {
-        if (StringUtils.isEmpty(name)) {
-            setInvocation(null);
-        } else if (!name.equals(getAnalysisMethodName())) {
-            setInvocation(getAnalysisMethod(name).createInvocation());
-        }
-    }
-
-    private AnalysisMethod getAnalysisMethod(String name) {
-        for (AnalysisMethod method : analysisMethods) {
-            if (name.equals(method.getName())) {
-                return method;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return the invocation
-     */
-    public AnalysisMethodInvocation getInvocation() {
-        return invocation;
-    }
-
-    /**
-     * @param invocation the invocation to set
-     */
-    public void setInvocation(AnalysisMethodInvocation invocation) {
-        this.invocation = invocation;
+    public AnalysisForm getAnalysisForm() {
+        return analysisForm;
     }
 
 }

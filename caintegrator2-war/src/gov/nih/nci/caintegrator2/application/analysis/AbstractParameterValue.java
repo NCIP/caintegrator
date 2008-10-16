@@ -115,9 +115,19 @@ public abstract class AbstractParameterValue implements Serializable {
         this.parameter = parameter;
     }
 
-    abstract void setValueFromString(String stringValue);
+    /**
+     * Sets the value from a <code>String</code>.
+     * 
+     * @param stringValue the value
+     */
+    public abstract void setValueFromString(String stringValue);
     
-    abstract String getValueAsString();
+    /**
+     * Returns the value as a <code>String</code>.
+     * 
+     * @return the value
+     */
+    public abstract String getValueAsString();
     
     /**
      * {@inheritDoc}
