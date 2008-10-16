@@ -413,9 +413,30 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 
 	<!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
 	<target name="install:jboss:caintegrator2-war:re-configure" unless="exclude.jboss">
+		<!--
 		<delete dir="${working.dir}/caintegrator2-war"/>
 		<unzip src="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" dest="${working.dir}/caintegrator2-war"/>
-		<copy todir="${working.dir}/caintegrator2-war/WEB-INF/classes" file="${jboss-conf.dir.target}/hibernate.cfg.xml"/>
+
+		<replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
+			match="(connection.driver_class&quot;&lt;).*(&gt;)"
+			replace="\1${database.driver}\2"
+			flags="sg"/>
+		<replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
+			match="(connection.url&quot;&lt;).*(&gt;)"
+			replace="\1${database.url}\2"
+			flags="sg"/>
+		<replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
+			match="(connection.username&quot;&lt;).*(&gt;)"
+			replace="\1${database.user}\2"
+			flags="sg"/>
+		<replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
+			match="(connection.password&quot;&lt;).*(&gt;)"
+			replace="\1${database.password}\2"
+			flags="sg"/>
+		<replaceregexp file="${working.dir}/caintegrator2-war/WEB-INF/classes/hibernate.cfg.xml"
+			match="(dialect&quot;&lt;).*(&gt;)"
+			replace="\1${database.dialect}\2"
+			flags="sg"/>
 
 		<move file="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" tofile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}.orig"/>
 		<war destfile="${caintegrator2-war.dir.dist}/${caintegrator2-war.war.file}" compress="false" webxml="${working.dir}/caintegrator2-war/WEB-INF/web.xml" >
@@ -423,6 +444,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 				<include name="*/**" />
 			</fileset>
 		</war>
+		-->
 	</target>
 
 	<!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
