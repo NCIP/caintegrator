@@ -449,6 +449,22 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		">
 		<deploy-files dist.file="${caintegrator2.install.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${install.target}" />
+        
+        <!-- Test basic http request to the application to confirm it is running -->
+        <echo message="Checking if @{validate.port} is running."/>
+        <condition property="port.listening">
+                <http url="http://@{hostname}:@{validate.port}/caintegrator2/login.action" />
+        </condition>
+        <if>
+                <isset property="port.listening"/>
+                <then>
+                        <echo message="Port is @{validate.port} RUNNNING as expected."/>
+                </then>
+                <else>
+                        <echo message="Port is not responding or giving an HTTP error code @{hostname}:@{validate.port}. You may experience problems using the application."/>
+                </else>
+        </if>
+        
 	</target>
 
 	<!-- Upgrades the application remotely. Depends on above targets to copy and extract distribution. Will use the target from install.xml specified in ${upgrade.target} (defaults to upgrade unless passed in on command line).  Calls ant from sshexec task to ensure properties are do not carry over from current ant runtime and also to emulate a manual install. Requires specifying -Dproperties.file=@file@ on the command line to point upgrader to correct enviornment to upgrade -->
@@ -458,6 +474,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		">
 		<deploy-files dist.file="${caintegrator2.upgrade.zip.file}" />
 		<remote-ssh remotesshcommand=". .bash_profile;cd ${ssh.dir.temp}; ant -Dproperties.file=${properties.file.name} -Dforce.reinstall=true ${upgrade.target}" />
+        
+        <!-- Test basic http request to the application to confirm it is running -->
+        <echo message="Checking if @{validate.port} is running."/>
+        <condition property="port.listening">
+                <http url="http://@{hostname}:@{validate.port}/caintegrator2/login.action" />
+        </condition>
+        <if>
+                <isset property="port.listening"/>
+                <then>
+                        <echo message="Port is @{validate.port} RUNNNING as expected."/>
+                </then>
+                <else>
+                        <echo message="Port is not responding or giving an HTTP error code @{hostname}:@{validate.port}. You may experience problems using the application."/>
+                </else>
+        </if>
 	</target>
 
 	<target name="usage" description="Explains how to use this build script">
