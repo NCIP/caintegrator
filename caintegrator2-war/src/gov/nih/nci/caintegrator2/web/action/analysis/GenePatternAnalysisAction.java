@@ -86,9 +86,23 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+
+import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -101,7 +115,9 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     
     private final ServerConnectionProfile server = new ServerConnectionProfile();
     private AnalysisService analysisService;
+    private QueryManagementService queryManagementService;
     private final AnalysisForm analysisForm = new AnalysisForm();
+    private String resultUrl;
 
     /**
      * Configures information about the current analysis service job.
@@ -125,7 +141,37 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     @Override
     public String execute() {
-        return SUCCESS;
+        try {
+            AnalysisMethodInvocation invocation = getAnalysisForm().getInvocation();
+            configureGenomicData(invocation);
+            setResultUrl(getAnalysisService().executeGenePatternJob(server, invocation));
+            return SUCCESS;
+        } catch (GenePatternServiceException e) {
+            addActionError("Couldn't execute GenePattern analysis job: " + e.getMessage());
+            return ERROR;
+        }
+    }
+
+    private void configureGenomicData(AnalysisMethodInvocation invocation) {
+        Query query = new Query();
+        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(getStudySubscription());
+        GenomicDataQueryResult result = getQueryManagementService().executeGenomicDataQuery(query);
+        getGenomicDataParameterValue(invocation).setGenomicData(result);
+    }
+
+    private GenomicDataParameterValue getGenomicDataParameterValue(AnalysisMethodInvocation invocation) {
+        for (AbstractParameterValue value : invocation.getParameterValues()) {
+            if (value instanceof GenomicDataParameterValue) {
+                return (GenomicDataParameterValue) value;
+            }
+        }
+        return null;
     }
 
     /**
@@ -165,6 +211,34 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public AnalysisForm getAnalysisForm() {
         return analysisForm;
+    }
+
+    /**
+     * @return the resultUrl
+     */
+    public String getResultUrl() {
+        return resultUrl;
+    }
+
+    /**
+     * @param resultUrl the resultUrl to set
+     */
+    private void setResultUrl(String resultUrl) {
+        this.resultUrl = resultUrl;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
 
 }

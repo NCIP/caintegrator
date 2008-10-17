@@ -121,7 +121,11 @@ public class IntegerParameterValue extends AbstractParameterValue {
      */
     @Override
     public String getValueAsString() {
-        return getValue().toString();
+        if (getValue() == null) {
+            return "";
+        } else {
+            return getValue().toString();
+        }
     }
 
 }

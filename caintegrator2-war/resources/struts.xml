@@ -224,6 +224,7 @@
 
         <action name="executeGenePatternAnalysis" method="execute" class="genePatternAnalysisAction">
             <result type="tiles">genePatternAnalysis</result>
+            <result name="error" type="tiles">genePatternAnalysis</result>
         </action>
                 
     </package>

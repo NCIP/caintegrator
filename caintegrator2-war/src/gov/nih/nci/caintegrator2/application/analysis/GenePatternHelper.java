@@ -85,12 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import edu.mit.broad.genepattern.gp.services.GenePatternClient;
-import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import edu.mit.broad.genepattern.gp.services.ParameterInfo;
-import edu.mit.broad.genepattern.gp.services.TaskInfo;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -99,6 +94,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
+import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.ParameterInfo;
+import edu.mit.broad.genepattern.gp.services.TaskInfo;
 
 /**
  * Provides methods for working with GenePattern.
@@ -118,10 +118,15 @@ class GenePatternHelper {
     private static final String OPTIONAL_ON = "on";
     private static final String OPTIONAL_ATTRIBUTE = "optional";
     
-    List<AnalysisMethod> getMethods(GenePatternClient client, ServerConnectionProfile server) 
+    private final GenePatternClient client;
+    private static int tempFileCounter = 0;
+
+    GenePatternHelper(GenePatternClient client) {
+        this.client = client;
+    }
+    
+    List<AnalysisMethod> getMethods() 
     throws GenePatternServiceException {
-        client.setUrl(server.getUrl());
-        client.setUsername(server.getUsername());
         TaskInfo[] allTasks = client.getTasks();
         List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
         for (TaskInfo task : allTasks) {
@@ -250,6 +255,38 @@ class GenePatternHelper {
 
     private String getAttributeValue(ParameterInfo parameterInfo, String attributeName) {
         return (String) parameterInfo.getAttributes().get(attributeName);
+    }
+
+    void execute(AnalysisMethodInvocation invocation) throws GenePatternServiceException {
+        List<ParameterInfo> parameters = convert(invocation.getParameterValues());
+        client.runAnalysis(invocation.getMethod().getName(), parameters);
+    }
+
+    private List<ParameterInfo> convert(List<AbstractParameterValue> parameterValues) {
+        List<ParameterInfo> genePatternParameters = new ArrayList<ParameterInfo>();
+        for (AbstractParameterValue parameterValue : parameterValues) {
+            genePatternParameters.add(convert(parameterValue));
+        }
+        return genePatternParameters;
+    }
+
+    private ParameterInfo convert(AbstractParameterValue parameterValue) {
+        ParameterInfo genePatternParameter = new ParameterInfo();
+        genePatternParameter.setName(parameterValue.getParameter().getName());
+        if (AnalysisParameterType.GENOMIC_DATA.equals(parameterValue.getParameter().getType())) {
+            handleGenomicData(parameterValue, genePatternParameter);
+        } else {            
+            genePatternParameter.setValue(parameterValue.getValueAsString());
+        }
+        return genePatternParameter;
+    }
+
+    private void handleGenomicData(AbstractParameterValue parameterValue, ParameterInfo genePatternParameter) {
+        GenomicDataParameterValue genomicDataParameterValue = (GenomicDataParameterValue) parameterValue;
+        File gctFile = 
+            new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".gct");
+        ResultSetToGctConverter.writeAsGct(genomicDataParameterValue.getGenomicData(), gctFile.getAbsolutePath());
+        genePatternParameter.setValue(gctFile.getAbsolutePath());
     }
 
 }

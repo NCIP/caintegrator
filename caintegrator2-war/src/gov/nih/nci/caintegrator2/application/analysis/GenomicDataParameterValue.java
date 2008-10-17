@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 
 /**
  * Genomic data set.
@@ -93,7 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 public class GenomicDataParameterValue extends AbstractParameterValue {
 
     private static final long serialVersionUID = 1L;
-    private GenomicDataResultValue genomicData;
+    private GenomicDataQueryResult genomicData;
 
     /**
      * {@inheritDoc}
@@ -114,14 +114,14 @@ public class GenomicDataParameterValue extends AbstractParameterValue {
     /**
      * @return the genomicData
      */
-    public GenomicDataResultValue getGenomicData() {
+    public GenomicDataQueryResult getGenomicData() {
         return genomicData;
     }
 
     /**
      * @param genomicData the genomicData to set
      */
-    public void setGenomicData(GenomicDataResultValue genomicData) {
+    public void setGenomicData(GenomicDataQueryResult genomicData) {
         this.genomicData = genomicData;
     }
 

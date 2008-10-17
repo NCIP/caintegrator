@@ -91,6 +91,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -101,11 +102,12 @@ import org.junit.Test;
 public class AnalysisServiceTest {
 
     private AnalysisService service;
+    private TestGenePatternClientStub genePatternClientStub = new TestGenePatternClientStub();
     
     @Before
     public void setUp() {
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
-        serviceImpl.setGenePatternClient(new TestGenePatternClientStub()); 
+        serviceImpl.setGenePatternClient(genePatternClientStub); 
         service = serviceImpl;
     }
 
@@ -130,8 +132,33 @@ public class AnalysisServiceTest {
         assertEquals(2, parameterWithChoices.getChoices().size());
         assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoices().get("choice1")).getValue());
     }
+    
+    @Test
+    public void testExecuteGenePatternJob() throws GenePatternServiceException {
+        AnalysisMethodInvocation invocation = new AnalysisMethodInvocation();
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        AnalysisMethod method = new AnalysisMethod();
+        method.setName("method");
+        invocation.setMethod(method);
+        StringParameterValue parameterValue = new StringParameterValue();
+        parameterValue.setValue("value");
+        AnalysisParameter parameter = new AnalysisParameter();
+        parameter.setType(AnalysisParameterType.STRING);
+        parameter.setName("parameter");
+        parameterValue.setParameter(parameter);
+        invocation.getParameterValues().add(parameterValue);
+        service.executeGenePatternJob(server, invocation);
+        assertEquals("method", genePatternClientStub.taskName);
+        assertEquals(1, genePatternClientStub.parameters.size());
+        ParameterInfo genePatternParameter = genePatternClientStub.parameters.get(0);
+        assertEquals("parameter", genePatternParameter.getName());
+        assertEquals("value", genePatternParameter.getValue());
+    }
 
     private final class TestGenePatternClientStub extends GenePatternClientStub {
+
+        private String taskName;
+        private List<ParameterInfo> parameters;
 
         @SuppressWarnings("unchecked")
         public TaskInfo[] getTasks() throws GenePatternServiceException {
@@ -201,6 +228,16 @@ public class AnalysisServiceTest {
             tasks[2].getParameterInfoArray()[2].setChoices(new HashMap());
 
             return tasks;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public JobInfo runAnalysis(String taskName, List<ParameterInfo> parameters) throws GenePatternServiceException {
+            this.taskName = taskName;
+            this.parameters = parameters;
+            return null;
         }
 
 

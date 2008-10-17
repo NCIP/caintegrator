@@ -112,4 +112,11 @@ public class AnalysisServiceStub implements AnalysisService {
         return methods;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public String executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) {
+        return "resultUrl";
+    }
+
 }
