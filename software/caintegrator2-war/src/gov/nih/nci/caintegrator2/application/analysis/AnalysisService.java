@@ -103,5 +103,16 @@ public interface AnalysisService {
      * @throws GenePatternServiceException if the service couldn't be reached.
      */
     List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server) throws GenePatternServiceException;
+
+    /**
+     * Executes a job on a GenePattern server.
+     * 
+     * @param server the GenePattern server
+     * @param invocation contains the configuration of the job to execute
+     * @return the URL where the results may be seen.
+     * @throws GenePatternServiceException if the service couldn't be reached.
+     */
+    String executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    throws GenePatternServiceException;
     
 }

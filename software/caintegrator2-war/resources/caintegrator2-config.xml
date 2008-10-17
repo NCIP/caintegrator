@@ -280,6 +280,9 @@
         <property name="analysisService">
             <ref local="analysisService"/>
         </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
