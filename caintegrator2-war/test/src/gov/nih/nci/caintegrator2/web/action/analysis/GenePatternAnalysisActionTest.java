@@ -90,11 +90,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class GenePatternAnalysisActionTest {
@@ -104,8 +110,10 @@ public class GenePatternAnalysisActionTest {
 
     @Before
     public void setUp() {
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
+        action.setQueryManagementService(new QueryManagementServiceStub());
     }
     
     @Test
@@ -140,7 +148,13 @@ public class GenePatternAnalysisActionTest {
     
     @Test
     public void testExecute() {
+        action.setUrl("url");
+        action.configure();
+        action.getAnalysisForm().setAnalysisMethodName("method");
+        GenomicDataParameterValue genomicParameter = new GenomicDataParameterValue();
+        action.getAnalysisForm().getInvocation().getParameterValues().add(genomicParameter);
         assertEquals(ActionSupport.SUCCESS, action.execute());
+        assertEquals("resultUrl", action.getResultUrl());
     }
 
 }

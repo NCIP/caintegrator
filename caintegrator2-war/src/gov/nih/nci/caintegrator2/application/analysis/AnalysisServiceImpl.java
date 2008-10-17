@@ -103,7 +103,13 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
             throws GenePatternServiceException {
-        return new GenePatternHelper().getMethods(getGenePatternClient(), server);
+        configureClient(server);
+        return new GenePatternHelper(getGenePatternClient()).getMethods();
+    }
+
+    private void configureClient(ServerConnectionProfile server) {
+        getGenePatternClient().setUrl(server.getUrl());
+        getGenePatternClient().setUsername(server.getUsername());
     }
 
     /**
@@ -118,6 +124,17 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public void setGenePatternClient(GenePatternClient genePatternClient) {
         this.genePatternClient = genePatternClient;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws GenePatternServiceException 
+     */
+    public String executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    throws GenePatternServiceException {
+        configureClient(server);
+        new GenePatternHelper(getGenePatternClient()).execute(invocation);
+        return server.getUrl();
     }
 
 }

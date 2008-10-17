@@ -121,7 +121,7 @@ public class StringParameterValue extends AbstractParameterValue {
      */
     @Override
     public String getValueAsString() {
-        return getValue().toString();
+        return getValue();
     }
 
 }

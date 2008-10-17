@@ -130,6 +130,11 @@ public class GenePatternClientImpl implements GenePatternClient {
         return analysis;
     }
 
+    private void closeAnalysisService() {
+        analysis = null;
+        taskMap = null;
+    }
+
     private Analysis openAnalysisSerivce() throws GenePatternServiceException {
         if (url == null || username == null) {
             throw new IllegalStateException("Must set URL and username prior to using GenePattern service");
@@ -317,6 +322,7 @@ public class GenePatternClientImpl implements GenePatternClient {
      * @param url the url to set
      */
     public void setUrl(String url) {
+        closeAnalysisService();
         this.url = url;
     }
 
