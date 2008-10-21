@@ -107,6 +107,7 @@ public class AnalysisFormParameter {
             throw new IllegalArgumentException("Null value for parameterValue");
         }
         setParameterValue(parameterValue);
+        stringValue = parameterValue.getValueAsString();
     }
 
     /**
@@ -193,7 +194,6 @@ public class AnalysisFormParameter {
 
     private void setParameterValue(AbstractParameterValue parameterValue) {
         this.parameterValue = parameterValue;
-        stringValue = parameterValue.getValueAsString();
     }
 
     void validate(String fieldName, ValidationAware action) {

@@ -87,6 +87,10 @@ package gov.nih.nci.caintegrator2.domain.translational;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+
+import java.util.HashSet;
 
 public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
     
@@ -100,6 +104,7 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void compareFields(Study original, Study retrieved) {
         assertEquals(original.getLongTitleText(), retrieved.getLongTitleText());
         assertEquals(original.getShortTitleText(), retrieved.getShortTitleText());
+        compareCollections(original.getControlSampleCollection(), retrieved.getControlSampleCollection(), SampleGenerator.INSTANCE);
     }
 
     @Override
@@ -111,6 +116,10 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void setValues(Study study) {
         study.setShortTitleText(getUniqueString());
         study.setLongTitleText(getUniqueString());
+        study.setControlSampleCollection(new HashSet<Sample>());
+        for (int i = 0; i < 3; i++) {
+            study.getControlSampleCollection().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+        }
     }
 
 }
