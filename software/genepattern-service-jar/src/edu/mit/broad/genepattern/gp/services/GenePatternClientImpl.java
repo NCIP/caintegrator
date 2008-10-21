@@ -122,6 +122,7 @@ public class GenePatternClientImpl implements GenePatternClient {
     private Map<String, TaskInfo> taskMap;
     private String url;
     private String username;
+    private String password;
 
     private Analysis getAnalysis() throws GenePatternServiceException {
         if (analysis == null) {
@@ -144,6 +145,7 @@ public class GenePatternClientImpl implements GenePatternClient {
             URL address = new URL(url);
             Analysis analysis = service.getAnalysis(address);
             ((AnalysisSoapBindingStub) analysis).setUsername(username);
+            ((AnalysisSoapBindingStub) analysis).setPassword(password);
             ((AnalysisSoapBindingStub) analysis).setMaintainSession(true);
             return analysis;
         } catch (ServiceException e) {
@@ -331,6 +333,20 @@ public class GenePatternClientImpl implements GenePatternClient {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

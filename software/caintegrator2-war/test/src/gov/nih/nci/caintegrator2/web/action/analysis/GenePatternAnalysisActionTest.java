@@ -86,17 +86,19 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 
+import java.util.HashMap;
+
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -110,6 +112,7 @@ public class GenePatternAnalysisActionTest {
 
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
@@ -117,23 +120,27 @@ public class GenePatternAnalysisActionTest {
     }
     
     @Test
-    public void testConfigure() {
-        assertEquals(ActionSupport.SUCCESS, action.configure());
+    public void testConnect() {
+        action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
         assertTrue(action.getAnalysisForm().getAnalysisMethods().isEmpty());
-        action.setUrl("url");
-        action.configure();
+        action.getAnalysisForm().setUrl("url");
+        action.execute();
         assertNotNull(action.getAnalysisForm().getAnalysisMethods());
         assertEquals(1, action.getAnalysisForm().getAnalysisMethods().size());
     }
 
     @Test
     public void testSetAnalysisMethodName() {
+        action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
         assertNull(action.getAnalysisForm().getInvocation());
-        action.setUrl("url");
-        assertEquals("url", action.getUrl());
-        action.configure();
+        action.getAnalysisForm().setUrl("url");
+        assertEquals("url", action.getAnalysisForm().getUrl());
+        action.execute();
+        action.setSelectedAction(GenePatternAnalysisAction.CHANGE_METHOD_ACTION);
         assertEquals(1, action.getAnalysisForm().getAnalysisMethodNames().size());
-        action.getAnalysisForm().setAnalysisMethodName("method");
+        action.setAnalysisMethodName("method");
+        action.execute();
         assertNotNull(action.getAnalysisForm().getInvocation());
         assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
         assertEquals(1, action.getAnalysisForm().getParameters().size());
@@ -141,20 +148,61 @@ public class GenePatternAnalysisActionTest {
         assertEquals("parameter", parameter.getName());
         assertTrue(parameter.isRequired());
         assertTrue(action.getAnalysisForm().isExecutable());
-        action.getAnalysisForm().setAnalysisMethodName("");
+        action.setAnalysisMethodName("");
+        action.execute();
         assertNull(action.getAnalysisForm().getInvocation());
         assertFalse(action.getAnalysisForm().isExecutable());
     }
     
     @Test
     public void testExecute() {
-        action.setUrl("url");
-        action.configure();
-        action.getAnalysisForm().setAnalysisMethodName("method");
+        action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
+        action.getAnalysisForm().setUrl("url");
+        action.execute();
+        action.setSelectedAction(GenePatternAnalysisAction.CHANGE_METHOD_ACTION);
+        action.setAnalysisMethodName("method");
+        action.execute();
         GenomicDataParameterValue genomicParameter = new GenomicDataParameterValue();
         action.getAnalysisForm().getInvocation().getParameterValues().add(genomicParameter);
-        assertEquals(ActionSupport.SUCCESS, action.execute());
-        assertEquals("resultUrl", action.getResultUrl());
+        action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
+        assertEquals("results", action.execute());
+        assertEquals("http://localhost/resultUrl", action.getResultUrl());
+    }
+    
+    @Test
+    public void testValidate() {
+        action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
+        action.getAnalysisForm().setUrl("");
+        action.getAnalysisForm().setUsername("username");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getAnalysisForm().setUrl("bad url");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getAnalysisForm().setUrl("http://localhost/directory");
+        action.validate();
+        assertFalse(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.execute();
+        action.setSelectedAction(GenePatternAnalysisAction.CHANGE_METHOD_ACTION);
+        action.setAnalysisMethodName("method");
+        action.execute();
+        action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
+        action.getAnalysisForm().getParameters().get(0).setValue("");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getAnalysisForm().getParameters().get(0).setValue("value");
+        action.validate();
+        assertFalse(action.hasErrors());
+        action.getAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.INTEGER);
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.FLOAT);
+        action.validate();
     }
 
 }

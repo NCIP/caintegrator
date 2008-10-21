@@ -138,6 +138,7 @@ public class AnalysisServiceTest {
         AnalysisMethodInvocation invocation = new AnalysisMethodInvocation();
         ServerConnectionProfile server = new ServerConnectionProfile();
         AnalysisMethod method = new AnalysisMethod();
+        server.setUrl("http://localhost");
         method.setName("method");
         invocation.setMethod(method);
         StringParameterValue parameterValue = new StringParameterValue();

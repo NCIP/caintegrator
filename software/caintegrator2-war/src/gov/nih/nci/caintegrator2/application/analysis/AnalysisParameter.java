@@ -219,4 +219,12 @@ public class AnalysisParameter implements Serializable {
         this.choices = choices;
     }
 
+    AbstractParameterValue getDefaultValueCopy() {
+        if (getChoices().isEmpty()) {
+            return (AbstractParameterValue) getDefaultValue().clone();
+        } else {
+            return getDefaultValue();
+        }
+    }
+
 }

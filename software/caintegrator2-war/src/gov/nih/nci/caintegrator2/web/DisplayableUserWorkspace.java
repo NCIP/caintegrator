@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -115,6 +116,7 @@ public class DisplayableUserWorkspace {
     
     private Long currentStudySubscriptionId;
     private Query query;
+    private AnalysisForm analysisForm = new AnalysisForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
 
@@ -273,6 +275,20 @@ public class DisplayableUserWorkspace {
     public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         this.genomicDataQueryResult = genomicDataQueryResult;
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, genomicDataQueryResult);
+    }
+
+    /**
+     * @return the analysisForm
+     */
+    public AnalysisForm getAnalysisForm() {
+        return analysisForm;
+    }
+
+    /**
+     * @param analysisForm the analysisForm to set
+     */
+    public void setAnalysisForm(AnalysisForm analysisForm) {
+        this.analysisForm = analysisForm;
     }
 
 }

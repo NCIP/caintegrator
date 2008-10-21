@@ -168,7 +168,7 @@ public class AnalysisMethod implements Serializable {
         invocation.setMethod(this);
         for (AnalysisParameter parameter : parameters) {
             if (parameter.getDefaultValue() != null) {
-                invocation.getParameterValues().add(parameter.getDefaultValue());
+                invocation.getParameterValues().add(parameter.getDefaultValueCopy());
             } else {
                 invocation.getParameterValues().add(parameter.createValue());
             }

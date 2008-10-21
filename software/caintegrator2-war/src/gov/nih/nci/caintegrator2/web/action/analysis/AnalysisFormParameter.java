@@ -86,8 +86,13 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 
 import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ValidationAware;
 
 /**
  * Represents a single parameter and value on an <code>AnalysisForm</code>.
@@ -95,6 +100,7 @@ import java.util.Collection;
 public class AnalysisFormParameter {
 
     private AbstractParameterValue parameterValue;
+    private String stringValue;
 
     AnalysisFormParameter(AbstractParameterValue parameterValue) {
         if (parameterValue == null) {
@@ -107,21 +113,21 @@ public class AnalysisFormParameter {
      * @return the name
      */
     public String getName() {
-        return getParameterValue().getParameter().getName();
+        return getParameter().getName();
     }
 
     /**
      * @return the description
      */
     public String getDescription() {
-        return getParameterValue().getParameter().getDescription();
+        return getParameter().getDescription();
     }
 
     /**
      * @return the required
      */
     public boolean isRequired() {
-        return getParameterValue().getParameter().isRequired();
+        return getParameter().isRequired();
     }
     
     /**
@@ -141,29 +147,30 @@ public class AnalysisFormParameter {
      * @return true if is a select list.
      */
     public boolean isSelect() {
-        return !getParameterValue().getParameter().getChoices().isEmpty();
+        return !getParameter().getChoices().isEmpty();
     }
     
     /**
      * @return the available choices
      */
     public Collection<String> getChoices() {
-        return getParameterValue().getParameter().getChoices().keySet();
+        return getParameter().getChoices().keySet();
     }
 
     /**
      * @return the value
      */
     public String getValue() {
-        return getParameterValue().getValueAsString();
+        return stringValue;
     }
 
     /**
      * @param value the value to set
      */
     public void setValue(String value) {
+        stringValue = value;
         if (isSelect()) {
-            setParameterValue(getParameterValue().getParameter().getChoices().get(value));
+            setParameterValue(getParameter().getChoices().get(value));
         } else {
             getParameterValue().setValueFromString(value);
         }
@@ -186,6 +193,50 @@ public class AnalysisFormParameter {
 
     private void setParameterValue(AbstractParameterValue parameterValue) {
         this.parameterValue = parameterValue;
+        stringValue = parameterValue.getValueAsString();
+    }
+
+    void validate(String fieldName, ValidationAware action) {
+        if (StringUtils.isBlank(stringValue)) {
+            validateEmptyField(fieldName, action);
+            return;
+        }
+        switch (getParameter().getType()) {
+        case FLOAT:
+            validateFloat(fieldName, action);
+            break;
+        case INTEGER:
+            validateInteger(fieldName, action);
+            break;
+        default:
+            // no-op
+        }
+    }
+
+    private void validateEmptyField(String fieldName, ValidationAware action) {
+        if (getParameter().isRequired()) {
+            action.addFieldError(fieldName, getParameter().getName() + " is required.");
+        }
+    }
+
+    private void validateFloat(String fieldName, ValidationAware action) {
+        try {
+            Float.parseFloat(stringValue);
+        } catch (NumberFormatException e) {
+            action.addFieldError(fieldName, getParameter().getName() + " requires a floating point numeric value");
+        }
+    }
+
+    private void validateInteger(String fieldName, ValidationAware action) {
+        try {
+            Integer.parseInt(stringValue);
+        } catch (NumberFormatException e) {
+            action.addFieldError(fieldName, getParameter().getName() + " requires an integer value");
+        }
+    }
+
+    private AnalysisParameter getParameter() {
+        return getParameterValue().getParameter();
     }
     
 

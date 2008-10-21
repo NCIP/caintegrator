@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * A float value.
  */
@@ -99,7 +101,11 @@ public class FloatParameterValue extends AbstractParameterValue {
      */
     @Override
     public void setValueFromString(String stringValue) {
-        setValue(Float.parseFloat(stringValue));
+        if (StringUtils.isBlank(stringValue)) {
+            setValue(null);
+        } else {
+            setValue(Float.parseFloat(stringValue));
+        }
     }
 
     /**
