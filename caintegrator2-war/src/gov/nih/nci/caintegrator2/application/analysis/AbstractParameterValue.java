@@ -90,7 +90,7 @@ import java.io.Serializable;
 /**
  * Base class for parameter values.
  */
-public abstract class AbstractParameterValue implements Serializable {
+public abstract class AbstractParameterValue implements Serializable, Cloneable {
     
     private AnalysisParameter parameter;
 
@@ -135,6 +135,19 @@ public abstract class AbstractParameterValue implements Serializable {
     @Override
     public String toString() {
         return getValueAsString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("PMD.CloneThrowsCloneNotSupportedException") // exception will never be thrown.
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Unexpected CloneNotSupportedException", e);
+        }
     }
 
 }

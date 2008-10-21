@@ -89,6 +89,8 @@ import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -110,6 +112,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private void configureClient(ServerConnectionProfile server) {
         getGenePatternClient().setUrl(server.getUrl());
         getGenePatternClient().setUsername(server.getUsername());
+        getGenePatternClient().setPassword(server.getPassword());
     }
 
     /**
@@ -130,11 +133,20 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      * @throws GenePatternServiceException 
      */
-    public String executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    public URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
     throws GenePatternServiceException {
         configureClient(server);
         new GenePatternHelper(getGenePatternClient()).execute(invocation);
-        return server.getUrl();
+        URL serviceUrl;
+        URL resultUrl;
+        try {
+            serviceUrl = new URL(server.getUrl());
+            resultUrl = new URL(serviceUrl.getProtocol(), serviceUrl.getHost(), serviceUrl.getPort(), 
+                    "/gp/pages/jobResults.jsf");
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid URL provided for server " + server.getUrl(), e);
+        }
+        return resultUrl;
     }
 
 }

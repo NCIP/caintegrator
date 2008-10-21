@@ -13,15 +13,21 @@
     
     <s:actionerror />
     
-    <div id="analysisParameters" class="box2">   
+    <div class="box2">   
+    <div class="whitebg">   
         <s:form id="genePatternAnalysisForm" action="genePatternAnalysis">
         
-            <s:textfield name="url" label="GenePattern Server URL" value="http://localhost:28080/gp/services/Analysis" />
+            <s:hidden name="selectedAction" />
+        
+            <s:textfield name="analysisForm.url" label="GenePattern Server URL" size="50" required="true" />
+            <s:textfield name="analysisForm.username" label="GenePattern Username" size="50" required="true" />
+            <s:password name="analysisForm.password" label="GenePattern Password" size="50" showPassword="true" />
+            <s:submit onclick="genePatternAnalysisForm.selectedAction.value = 'connect'; return true;" value="Connect" />
             <s:if test="%{!analysisForm.analysisMethodNames.empty}">
                 <s:select label="Analysis Method" 
-                    name="analysisForm.analysisMethodName" 
+                    name="analysisMethodName" 
                     list="analysisForm.analysisMethodNames"
-                    onchange="genePatternAnalysisForm.submit();" />
+                    onchange="selectedAction.value = 'change'; genePatternAnalysisForm.submit();" />
             </s:if>
             <s:iterator status="status" value="analysisForm.parameters">
                 <s:if test='%{displayType == "textfield"}'>
@@ -40,9 +46,10 @@
                 </s:elseif>
             </s:iterator>
             <s:if test='%{analysisForm.executable}'>
-                <s:submit value="Perform Analysis" action="executeGenePatternAnalysis" />
+                <s:submit value="Perform Analysis" onclick="selectedAction.value = 'execute'; return true;" />
             </s:if>
         </s:form>
+    </div>                                                                                                      
     </div>                                                                                                      
             
 </div>

@@ -98,13 +98,20 @@ public interface GenePatternClient {
      * @param url the URL
      */
     void setUrl(String url);
-    
+
     /**
      * Sets the username to use to access the service.
      * 
      * @param username the username.
      */
     void setUsername(String username);
+    
+    /**
+     * Sets the password to use to access the service.
+     * 
+     * @param password the password.
+     */
+    void setPassword(String password);
     
     /**
      * Returns information for all available tasks

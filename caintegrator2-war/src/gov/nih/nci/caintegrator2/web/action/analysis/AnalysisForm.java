@@ -88,11 +88,14 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ValidationAware;
 
 /**
  * Used for Struts representation of the currently configured analysis method.
@@ -103,7 +106,8 @@ public class AnalysisForm {
     private final List<String> analysisMethodNames = new ArrayList<String>();
     private AnalysisMethodInvocation invocation;
     private final List<AnalysisFormParameter> parameters = new ArrayList<AnalysisFormParameter>();
-
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
+    
     /**
      * Returns the list of all analysis method names.
      * 
@@ -189,6 +193,11 @@ public class AnalysisForm {
         for (AnalysisMethod analysisMethod : analysisMethods) {
             analysisMethodNames.add(analysisMethod.getName());
         }
+        if (!analysisMethodNames.isEmpty()) {
+            setAnalysisMethodName(analysisMethodNames.get(0));
+        } else {
+            setAnalysisMethodName(null);
+        }
     }
 
     /**
@@ -206,5 +215,58 @@ public class AnalysisForm {
     public boolean isExecutable() {
         return getInvocation() != null;
     }
-    
+
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return server.getUrl();
+    }
+
+    /**
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        server.setUrl(url);
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return server.getUsername();
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        server.setUsername(username);
+    }
+
+    ServerConnectionProfile getServer() {
+        return server;
+    }
+
+    void validate(ValidationAware action) {
+        for (int i = 0; i < getParameters().size(); i++) {
+            String fieldName = "analysisForm.parameters[" + i + "].value";
+            getParameters().get(i).validate(fieldName, action);
+        }
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return getServer().getPassword();
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        getServer().setPassword(password);
+    }
+
 }

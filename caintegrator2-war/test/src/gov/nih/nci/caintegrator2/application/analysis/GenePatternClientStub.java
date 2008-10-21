@@ -133,4 +133,11 @@ public class GenePatternClientStub implements GenePatternClient {
         // no-op
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setPassword(String password) {
+        // no-op
+    }
+
 }

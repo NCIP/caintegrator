@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * An integer value.
  */
@@ -113,7 +115,11 @@ public class IntegerParameterValue extends AbstractParameterValue {
      */
     @Override
     public void setValueFromString(String stringValue) {
-        setValue(Integer.parseInt(stringValue));
+        if (StringUtils.isBlank(stringValue)) {
+            setValue(null);
+        } else {
+            setValue(Integer.parseInt(stringValue));
+        }
     }
 
     /**
