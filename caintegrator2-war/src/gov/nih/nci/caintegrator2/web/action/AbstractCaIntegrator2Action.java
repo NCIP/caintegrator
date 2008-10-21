@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -226,6 +227,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     protected final void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
+    }
+
+    /**
+     * @return the analysisForm
+     */
+    public AnalysisForm getAnalysisForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getAnalysisForm();
+        } else {
+            return null;
+        }
     }
 
     

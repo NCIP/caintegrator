@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,8 +117,12 @@ public class AnalysisServiceStub implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public String executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) {
-        return "resultUrl";
+    public URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) {
+        try {
+            return new URL("http://localhost/resultUrl");
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

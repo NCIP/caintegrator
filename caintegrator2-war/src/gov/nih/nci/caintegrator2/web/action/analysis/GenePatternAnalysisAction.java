@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
@@ -99,9 +100,11 @@ import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
@@ -112,27 +115,50 @@ import org.apache.commons.lang.StringUtils;
 public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     
     private static final long serialVersionUID = 1L;
-    
-    private final ServerConnectionProfile server = new ServerConnectionProfile();
-    private AnalysisService analysisService;
-    private QueryManagementService queryManagementService;
-    private final AnalysisForm analysisForm = new AnalysisForm();
-    private String resultUrl;
 
     /**
-     * Configures information about the current analysis service job.
-     * 
-     * @return the struts result.
+     * Indicates action should open the analysis page.
      */
-    public String configure() {
-        try {
-            if (!StringUtils.isBlank(server.getUrl()) && analysisForm.getAnalysisMethods().isEmpty()) {
-                analysisForm.setAnalysisMethods(getAnalysisService().getGenePatternMethods(server));
-            }
+    public static final String OPEN_ACTION = "open";
+
+    /**
+     * Indicates action should connect to GenePattern.
+     */
+    public static final String CONNECT_ACTION = "connect";
+    
+    /**
+     * Indicates user has changed the analysis method.
+     */
+    public static final String CHANGE_METHOD_ACTION = "change";
+
+    /**
+     * Indicates action should execute the analysis.
+     */
+    public static final String EXECUTE_ACTION = "execute";
+    
+    private static final String RESULTS = "results";
+    
+    private AnalysisService analysisService;
+    private QueryManagementService queryManagementService;
+    private String selectedAction = OPEN_ACTION;
+    private String resultUrl;
+    private String analysisMethodName;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        if (OPEN_ACTION.equals(getSelectedAction())) {
             return SUCCESS;
-        } catch (GenePatternServiceException e) { 
-            addActionError("Couldn't retrieve GenePattern analysis method information: " + e.getMessage());
-            return ERROR;
+        } else if (CONNECT_ACTION.equals(getSelectedAction())) {
+            return connect();
+        } else if (CHANGE_METHOD_ACTION.equals(getSelectedAction())) {
+            return changeMethod();
+        } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
+            return executeAnalysis();
+        } else  {
+            throw new IllegalStateException("Invalid action: " + getSelectedAction());
         }
     }
     
@@ -140,12 +166,70 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      * {@inheritDoc}
      */
     @Override
-    public String execute() {
+    public void validate() {
+        super.validate();
+        if (CONNECT_ACTION.equals(getSelectedAction())) {
+            validateConnect();
+        } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
+            validateExecuteAnalysis();
+        }
+    }
+
+    private void validateConnect() {
+        if (StringUtils.isEmpty(getAnalysisForm().getUrl())) {
+            addFieldError("analysisForm.url", "URL is required");
+        } else {
+            validateUrl();
+        }
+        if (StringUtils.isEmpty(getAnalysisForm().getUsername())) {
+            addFieldError("analysisForm.username", "Username is required");
+        }
+    }
+
+    private void validateUrl() {
+        try {
+            new URL(getAnalysisForm().getUrl());
+        } catch (MalformedURLException e) {
+            addFieldError("analysisForm.url", "Invalid URL format");
+        }
+    }
+
+    private void validateExecuteAnalysis() {
+        getAnalysisForm().validate(this);
+    }
+
+    /**
+     * @return
+     */
+    private String changeMethod() {
+        if (!getAnalysisMethodName().equals(getAnalysisForm().getAnalysisMethodName())) {
+            getAnalysisForm().setAnalysisMethodName(getAnalysisMethodName());
+        }
+        return SUCCESS;
+    }
+
+    private String connect() {
+        try {
+            if (!StringUtils.isBlank(getAnalysisForm().getServer().getUrl())) {
+                getAnalysisForm().setAnalysisMethods(
+                        getAnalysisService().getGenePatternMethods(getAnalysisForm().getServer()));
+                setAnalysisMethodName(getAnalysisForm().getAnalysisMethodName());
+            }
+            return SUCCESS;
+        } catch (GenePatternServiceException e) { 
+            getAnalysisForm().setAnalysisMethods(new ArrayList<AnalysisMethod>());
+            addActionError("Couldn't retrieve GenePattern analysis method information: " + e.getMessage());
+            return ERROR;
+        }
+    }
+    
+    private String executeAnalysis() {
         try {
             AnalysisMethodInvocation invocation = getAnalysisForm().getInvocation();
             configureGenomicData(invocation);
-            setResultUrl(getAnalysisService().executeGenePatternJob(server, invocation));
-            return SUCCESS;
+            setResultUrl(getAnalysisService().executeGenePatternJob(
+                    getAnalysisForm().getServer(), invocation).toExternalForm());
+            return RESULTS;
         } catch (GenePatternServiceException e) {
             addActionError("Couldn't execute GenePattern analysis job: " + e.getMessage());
             return ERROR;
@@ -189,31 +273,6 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
 
     /**
-     * @return the url
-     */
-    public String getUrl() {
-        return server.getUrl();
-    }
-
-    /**
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        if (!url.equals(server.getUrl())) {
-            analysisForm.getAnalysisMethods().clear();
-            server.setUrl(url);
-            server.setUsername("etavela@5amsolutions.com");
-        }
-    }
-   
-    /**
-     * @return the analysisForm
-     */
-    public AnalysisForm getAnalysisForm() {
-        return analysisForm;
-    }
-
-    /**
      * @return the resultUrl
      */
     public String getResultUrl() {
@@ -239,6 +298,34 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
+    }
+
+    /**
+     * @return the selectedAction
+     */
+    public String getSelectedAction() {
+        return selectedAction;
+    }
+
+    /**
+     * @param selectedAction the selectedAction to set
+     */
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    /**
+     * @return the analysisMethodName
+     */
+    public String getAnalysisMethodName() {
+        return analysisMethodName;
+    }
+
+    /**
+     * @param analysisMethodName the analysisMethodName to set
+     */
+    public void setAnalysisMethodName(String analysisMethodName) {
+        this.analysisMethodName = analysisMethodName;
     }
 
 }
