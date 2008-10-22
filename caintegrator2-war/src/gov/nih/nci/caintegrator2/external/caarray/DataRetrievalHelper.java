@@ -218,26 +218,27 @@ class DataRetrievalHelper {
     throws ConnectionException, DataRetrievalException {
         PlatformHelper platformHelper = 
             new PlatformHelper(getPlatform(hybridizationData.getHybridization()));
-        Array array = createArray(hybridizationData.getHybridization(), platformHelper.getPlatform());
-        loadArrayDataValues(hybridizationData, arrayDataValues, platformHelper, array);
-        updateArrayDataMatrix(arrayDataValues.getArrayDataMatrix(), platformHelper, array);
+        ArrayData arrayData = createArrayData(hybridizationData.getHybridization(), platformHelper.getPlatform());
+        loadArrayDataValues(hybridizationData, arrayDataValues, platformHelper, arrayData);
+        updateArrayDataMatrix(arrayDataValues.getArrayDataMatrix(), platformHelper, arrayData);
     }
 
     private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues,
-            PlatformHelper platformHelper, Array array) {
+            PlatformHelper platformHelper, ArrayData arrayData) {
         QuantitationType quantitationType = hybridizationData.getDataSet().getQuantitationTypes().get(0);
         List<AbstractDesignElement> probeSets = 
             hybridizationData.getDataSet().getDesignElementList().getDesignElements();
         float[] values = ((FloatColumn) hybridizationData.getColumn(quantitationType)).getValues();
         for (int i = 0; i < probeSets.size(); i++) {
             AbstractReporter reporter = getReporter(probeSets.get(i), platformHelper);
-            setValue(arrayDataValues, array, reporter, values[i]);
+            setValue(arrayDataValues, arrayData, reporter, values[i]);
         }
     }
 
-    private void updateArrayDataMatrix(ArrayDataMatrix arrayDataMatrix, PlatformHelper platformHelper, Array array) {
-        arrayDataMatrix.getSampleDataCollection().add(array.getArrayData());
-        array.getArrayData().setMatrix(arrayDataMatrix);
+    private void updateArrayDataMatrix(ArrayDataMatrix arrayDataMatrix, PlatformHelper platformHelper, 
+            ArrayData arrayData) {
+        arrayDataMatrix.getSampleDataCollection().add(arrayData);
+        arrayData.setMatrix(arrayDataMatrix);
         ReporterSet reporterSet = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         if (arrayDataMatrix.getReporterSet() == null) {
             arrayDataMatrix.setReporterSet(reporterSet);
@@ -247,11 +248,11 @@ class DataRetrievalHelper {
     }
 
 
-    private void setValue(ArrayDataValues values, Array array, AbstractReporter reporter, float value) {
+    private void setValue(ArrayDataValues values, ArrayData arrayData, AbstractReporter reporter, float value) {
         if (reporter == null) {
             LOGGER.warn("Not including array data value due to missing reporter");
         } else {
-            values.setValue(array, reporter, value);
+            values.setValue(arrayData, reporter, value);
         }
     }
 
@@ -266,7 +267,7 @@ class DataRetrievalHelper {
         return platform;
     }
 
-    private Array createArray(Hybridization hybridization, Platform platform) {
+    private ArrayData createArrayData(Hybridization hybridization, Platform platform) {
         Array array = new Array();
         array.setPlatform(platform);
         array.setName(hybridization.getName());
@@ -275,7 +276,8 @@ class DataRetrievalHelper {
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
-        array.setArrayData(arrayData);
+        array.setArrayDataCollection(new HashSet<ArrayData>());
+        array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         arrayData.setStudy(genomicSource.getStudyConfiguration().getStudy());
         if (sample.getArrayDataCollection() == null) {
@@ -287,7 +289,7 @@ class DataRetrievalHelper {
         sample.getArrayCollection().add(array);
         sample.getArrayDataCollection().add(arrayData);
         dao.save(array);
-        return array;
+        return arrayData;
     }
 
     private Sample getAssociatedSample(Hybridization hybridization) {

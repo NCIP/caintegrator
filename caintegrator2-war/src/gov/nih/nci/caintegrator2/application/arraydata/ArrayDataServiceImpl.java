@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileReader;
 import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileWriter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -115,15 +114,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      * {@inheritDoc}
      */
     public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        return getData(arrayDataMatrix, getArrays(arrayDataMatrix), getReporters(arrayDataMatrix));
-    }
-
-    private List<Array> getArrays(ArrayDataMatrix arrayDataMatrix) {
-        List<Array> arrays = new ArrayList<Array>(arrayDataMatrix.getSampleDataCollection().size());
-        for (ArrayData arrayData : arrayDataMatrix.getSampleDataCollection()) {
-            arrays.add(arrayData.getArray());
-        }
-        return arrays;
+        return getData(arrayDataMatrix, arrayDataMatrix.getSampleDataCollection(), getReporters(arrayDataMatrix));
     }
 
     private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
@@ -135,14 +126,15 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<Array> arrays, 
+    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
             Collection<AbstractReporter> reporters) {
         NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
         ArrayDataValues values = new ArrayDataValues();
         values.setArrayDataMatrix(arrayDataMatrix);
-        for (Array array : arrays) {
+        for (ArrayData arrayData : arrayDatas) {
             for (AbstractReporter reporter : reporters) {
-                values.setValue(array, reporter, reader.getArrayData(array.getName(), reporter.getName()));
+                values.setValue(arrayData, reporter, 
+                        reader.getArrayData(arrayData.getArray().getName(), reporter.getName()));
             }
         }
         return values;

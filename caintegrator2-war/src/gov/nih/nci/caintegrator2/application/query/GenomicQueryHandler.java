@@ -97,9 +97,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -135,27 +134,24 @@ class GenomicQueryHandler {
         GenomicDataQueryResult result = createNewResult();
         createResultRows(result, values);
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
-        for (Array array : values.getAllArrays()) {
-            addToResult(values, result, reporterToRowMap, array);
+        for (ArrayData arrayData : values.getAllArrayDatas()) {
+            addToResult(values, result, reporterToRowMap, arrayData);
         }
         result.setQuery(query);
         return result;
     }
 
     private void addToResult(ArrayDataValues values, GenomicDataQueryResult result,
-            Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, Array array) {
-        for (Sample sample : array.getSampleCollection()) {
-            GenomicDataResultColumn column = new GenomicDataResultColumn();
-            column.setSampleAcquisition(sample.getSampleAcquisition());
-            result.getColumnCollection().add(column);
-            for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
-                GenomicDataResultRow row = reporterToRowMap.get(reporter);
-                GenomicDataResultValue value = new GenomicDataResultValue();
-                value.setColumn(column);
-                value.setValue(values.getValue(array, reporter));
-                row.getValueCollection().add(value);
-            }
-            
+        Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
+        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
+        result.getColumnCollection().add(column);
+        for (AbstractReporter reporter : values.getAllReporters()) {
+            GenomicDataResultRow row = reporterToRowMap.get(reporter);
+            GenomicDataResultValue value = new GenomicDataResultValue();
+            value.setColumn(column);
+            value.setValue(values.getValue(arrayData, reporter));
+            row.getValueCollection().add(value);
         }
     }
 
@@ -169,7 +165,7 @@ class GenomicQueryHandler {
 
     private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
         int index = 0;
-        for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
+        for (AbstractReporter reporter : values.getAllReporters()) {
             GenomicDataResultRow row = new GenomicDataResultRow();
             row.setValueCollection(new ArrayList<GenomicDataResultValue>());
             row.setReporter(reporter);
@@ -186,44 +182,44 @@ class GenomicQueryHandler {
     }
 
     private ArrayDataValues getDataValues() {
-        Collection<Array> arrays = getMatchingArrays();
+        Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<AbstractReporter> reporters = getMatchingReporters();
         List<ArrayDataMatrix> matrixes = getDataMatrixes();
         ArrayDataValues values = new ArrayDataValues();
         for (ArrayDataMatrix matrix : matrixes) {
-            values.addValues(arrayDataService.getData(matrix, arrays, reporters));               
+            values.addValues(arrayDataService.getData(matrix, arrayDatas, reporters));               
         }
         return values;
     }
 
-    private Collection<Array> getMatchingArrays() {
+    private Collection<ArrayData> getMatchingArrayDatas() {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (criterionHandler.hasEntityCriterion()) {
             Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
             samplesOnly.add(EntityTypeEnum.SAMPLE);
             Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
-            return getArrays(rows);
+            return getArrayDatas(rows);
         } else {
-            return getAllArrays();
+            return getAllArrayDatas();
         }
     }
 
-    private Collection<Array> getAllArrays() {
-        Collection<Array> arrays = new HashSet<Array>();
+    private Collection<ArrayData> getAllArrayDatas() {
+        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
             for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
-                arrays.addAll(acquisition.getSample().getArrayCollection());
+                arrayDatas.addAll(acquisition.getSample().getArrayDataCollection());
             }
         }
-        return arrays;
+        return arrayDatas;
     }
 
-    private Collection<Array> getArrays(Set<ResultRow> rows) {
-        Set<Array> arrays = new HashSet<Array>();
+    private Collection<ArrayData> getArrayDatas(Set<ResultRow> rows) {
+        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
-            arrays.addAll(row.getSampleAcquisition().getSample().getArrayCollection());
+            arrayDatas.addAll(row.getSampleAcquisition().getSample().getArrayDataCollection());
         }
-        return arrays;
+        return arrayDatas;
     }
 
     private List<ArrayDataMatrix> getDataMatrixes() {

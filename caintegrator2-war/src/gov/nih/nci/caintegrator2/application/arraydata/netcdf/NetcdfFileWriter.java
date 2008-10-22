@@ -4,7 +4,7 @@ import static gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfConst
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,8 +67,8 @@ public class NetcdfFileWriter {
     public void create() {
         try {
             NetcdfFileWriteable ncfile = NetcdfFileWriteable.createNew(outputFile, true);
-            int numMicroArrays = arrayDataValues.getAllArrays().size();
-            int numReporters = arrayDataValues.getReporterArrayValueMap().keySet().size();
+            int numMicroArrays = arrayDataValues.getAllArrayDatas().size();
+            int numReporters = arrayDataValues.getAllReporters().size();
 
             Dimension arrayDim = new Dimension(ARRAY_ID, numMicroArrays, true);
             ncfile.addDimension(null, arrayDim);
@@ -112,10 +112,10 @@ public class NetcdfFileWriter {
     private void writeData(NetcdfFileWriteable ncfile, int numMicroArrays, int numReporters) throws IOException,
             InvalidRangeException {
         ArrayList<String> microArrayNames = new ArrayList<String>();
-        ArrayList<Array> microArrayOrderredList = new ArrayList<Array>();
-        for (Array array : arrayDataValues.getAllArrays()) {
-            microArrayOrderredList.add(array);
-            microArrayNames.add(array.getName());
+        ArrayList<ArrayData> orderedArrayDataList = new ArrayList<ArrayData>();
+        for (ArrayData arrayData : arrayDataValues.getAllArrayDatas()) {
+            orderedArrayDataList.add(arrayData);
+            microArrayNames.add(arrayData.getArray().getName());
         }
         
         List<String> arrayList = new ArrayList<String>(microArrayNames);
@@ -131,7 +131,7 @@ public class NetcdfFileWriter {
         ArrayChar reporterCharacters = new ArrayChar.D2(numReporters, LABEL_LENGTH);
         // Create a 2D array of longs and fill it
         ArrayFloat values = new ArrayFloat.D2(numMicroArrays, numReporters);
-        List<ReporterRow> rows = retrieveRows(arrayDataValues, microArrayOrderredList);
+        List<ReporterRow> rows = retrieveRows(arrayDataValues, orderedArrayDataList);
         int curr = 0;
         for (ReporterRow r : rows) {
             int currentReporter = curr;
@@ -172,15 +172,15 @@ public class NetcdfFileWriter {
         return array;
     }
 
-    private List<ReporterRow> retrieveRows(ArrayDataValues values, List<Array> microArrayList) {
+    private List<ReporterRow> retrieveRows(ArrayDataValues values, List<ArrayData> arrayDataList) {
         List<ReporterRow> rows = new ArrayList<ReporterRow>();
 
-        for (AbstractReporter reporter : values.getReporterArrayValueMap().keySet()) {
+        for (AbstractReporter reporter : values.getAllReporters()) {
             ReporterRow row = new ReporterRow();
             row.setReporterId(reporter.getName());
             List<Float> arrayValues = new ArrayList<Float>();
-            for (Array microArray : microArrayList) {
-                arrayValues.add(values.getValue(microArray, reporter));
+            for (ArrayData arrayData : arrayDataList) {
+                arrayValues.add(values.getValue(arrayData, reporter));
             }
 
             row.setArrayValues(arrayValues.toArray(new Float[arrayValues.size()]));

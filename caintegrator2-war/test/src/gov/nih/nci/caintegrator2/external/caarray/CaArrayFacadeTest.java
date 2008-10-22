@@ -111,6 +111,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
@@ -171,10 +172,10 @@ public class CaArrayFacadeTest {
         genomicSource.getSamples().add(sample2);
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
         assertNotNull(values);
-        assertEquals(2, values.getAllArrays().size());
-        for (gov.nih.nci.caintegrator2.domain.genomic.Array array : values.getAllArrays()) {
-            assertEquals((float) 1.1, (float) values.getValue(array, reporter1), 0);
-            assertEquals((float) 2.2, (float) values.getValue(array, reporter2), 0);
+        assertEquals(2, values.getAllArrayDatas().size());
+        for (ArrayData arrayData : values.getAllArrayDatas()) {
+            assertEquals((float) 1.1, (float) values.getValue(arrayData, reporter1), 0);
+            assertEquals((float) 2.2, (float) values.getValue(arrayData, reporter2), 0);
         }
     }
 

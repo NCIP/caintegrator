@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
@@ -141,19 +140,20 @@ class GenomicDataHelper {
             new PlatformHelper(probeSetValues.getArrayDataMatrix().getReporterSet().getPlatform());
         geneValues.getArrayDataMatrix().setReporterSet(
                 platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE));
-        for (Array array : probeSetValues.getAllArrays()) {
-            loadGeneArrayDataValues(geneValues, probeSetValues, array, platformHelper);
+        for (ArrayData arrayData : probeSetValues.getAllArrayDatas()) {
+            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper);
         }
         return geneValues;
     }
 
-    private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, Array array,
+    private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, 
+            ArrayData arrayData,
             PlatformHelper platformHelper) {
-        createGeneArrayData(geneValues.getArrayDataMatrix(), array);
-        loadGeneValues(geneValues, probeSetValues, array, platformHelper);
+        createGeneArrayData(geneValues.getArrayDataMatrix(), arrayData);
+        loadGeneValues(geneValues, probeSetValues, arrayData, platformHelper);
     }
 
-    private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, Array array,
+    private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
             PlatformHelper platformHelper) {
         Collection<AbstractReporter> geneReporters = 
             platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
@@ -161,28 +161,28 @@ class GenomicDataHelper {
             Collection<AbstractReporter> probeSetReporters = 
                 platformHelper.getReportersForGene(((GeneExpressionReporter) geneReporter).getGene(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            geneValues.setValue(array, geneReporter, 
-                    computeGeneReporterValue(probeSetReporters, probeSetValues, array));
+            geneValues.setValue(arrayData, geneReporter, 
+                    computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
         }
     }
 
     private float computeGeneReporterValue(Collection<AbstractReporter> probeSetReporters, 
-            ArrayDataValues probeSetValues, Array array) {
+            ArrayDataValues probeSetValues, ArrayData arrayData) {
         // TODO The value here is computed by simply taking the mean of the values for the probe sets. This is not a 
         // valid algorithm for computing this value. Please work with Will Fitzhugh to replace this with a suitable 
         // algorithm.
         float sum = 0;
         for (AbstractReporter reporter : probeSetReporters) {
-            sum += probeSetValues.getValue(array, reporter);
+            sum += probeSetValues.getValue(arrayData, reporter);
         }
         return sum / probeSetReporters.size();
     }
 
-    private ArrayData createGeneArrayData(ArrayDataMatrix arrayDataMatrix, Array array) {
+    private ArrayData createGeneArrayData(ArrayDataMatrix arrayDataMatrix, ArrayData probeSetArrayData) {
         ArrayData arrayData = new ArrayData();
-        arrayData.setArray(array);
-        arrayData.setSample(array.getArrayData().getSample());
-        array.getArrayData().getSample().getArrayDataCollection().add(arrayData);
+        arrayData.setArray(probeSetArrayData.getArray());
+        arrayData.setSample(probeSetArrayData.getSample());
+        arrayData.getSample().getArrayDataCollection().add(arrayData);
         arrayData.setMatrix(arrayDataMatrix);
         arrayData.setStudy(arrayDataMatrix.getStudy());
         arrayData.setReporterSet(arrayDataMatrix.getReporterSet());
