@@ -15,7 +15,7 @@
             <key column="SAMPLE_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="MICROARRAY_ID" />
         </set>
-        <set name="arrayDataCollection" lazy="true" cascade="save-update" >
+        <set name="arrayDataCollection" lazy="true" cascade="save-update" inverse="true">
             <cache usage="read-write" />
             <key column="SAMPLE_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
