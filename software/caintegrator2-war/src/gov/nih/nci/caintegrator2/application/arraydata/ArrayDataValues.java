@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 
 import java.util.HashMap;
@@ -101,22 +101,22 @@ import java.util.Set;
 public class ArrayDataValues {
     
     private ArrayDataMatrix arrayDataMatrix;
-    private Set<Array> allArrays = new HashSet<Array>();
+    private final Set<ArrayData> allArrayDatas = new HashSet<ArrayData>();
     
-    private final Map<AbstractReporter, Map<Array, Float>> reporterArrayValueMap = 
-                            new HashMap<AbstractReporter, Map<Array, Float>>();
+    private final Map<AbstractReporter, Map<ArrayData, Float>> reporterArrayDataValueMap = 
+                            new HashMap<AbstractReporter, Map<ArrayData, Float>>();
     
     /**
      * Returns the array data value for a given reporter for a given array.
      * 
-     * @param array get value for this array
+     * @param arrayData get value for this array data
      * @param reporter get value for this reporter.
      * @return the array data value.
      */
-    public Float getValue(Array array, AbstractReporter reporter) {
-        if (reporterArrayValueMap.containsKey(reporter) 
-            && reporterArrayValueMap.get(reporter).containsKey(array)) { 
-            return reporterArrayValueMap.get(reporter).get(array);
+    public Float getValue(ArrayData arrayData, AbstractReporter reporter) {
+        if (reporterArrayDataValueMap.containsKey(reporter) 
+            && reporterArrayDataValueMap.get(reporter).containsKey(arrayData)) { 
+            return reporterArrayDataValueMap.get(reporter).get(arrayData);
         } else {
         // I think returning a 0 value might be wrong, maybe need to throw exception?
             return Float.valueOf("0.0");
@@ -126,20 +126,20 @@ public class ArrayDataValues {
     /**
      * Sets the array data value for a given reporter for a given array.
      * 
-     * @param array get value for this array
-     * @param reporter get value for this reporter.
+     * @param arrayData set value for this array
+     * @param reporter set value for this reporter.
      * @param value the array data value.
      */
-    public void setValue(Array array, AbstractReporter reporter, Float value) {
-        checkSetValueArguments(array, reporter, value);
-        allArrays.add(array);
-        getArrayToValueMap(reporter).put(array, value);
+    public void setValue(ArrayData arrayData, AbstractReporter reporter, Float value) {
+        checkSetValueArguments(arrayData, reporter, value);
+        allArrayDatas.add(arrayData);
+        getArrayDataToValueMap(reporter).put(arrayData, value);
         
     }
 
-    private void checkSetValueArguments(Array array, AbstractReporter reporter, Float value) {
-        if (array == null) {
-            throw new IllegalArgumentException("Argument array was null");
+    private void checkSetValueArguments(ArrayData arrayData, AbstractReporter reporter, Float value) {
+        if (arrayData == null) {
+            throw new IllegalArgumentException("Argument arrayData was null");
         }
         if (reporter == null) {
             throw new IllegalArgumentException("Argument reporter was null");
@@ -149,15 +149,15 @@ public class ArrayDataValues {
         }
     }
 
-    private Map<Array, Float> getArrayToValueMap(AbstractReporter reporter) {
-        Map<Array, Float> arrayValueMap;
-        if (reporterArrayValueMap.keySet().contains(reporter)) {
-            arrayValueMap = reporterArrayValueMap.get(reporter);
+    private Map<ArrayData, Float> getArrayDataToValueMap(AbstractReporter reporter) {
+        Map<ArrayData, Float> arrayDataValueMap;
+        if (reporterArrayDataValueMap.keySet().contains(reporter)) {
+            arrayDataValueMap = reporterArrayDataValueMap.get(reporter);
         } else {
-            arrayValueMap = new HashMap<Array, Float>();    
-            reporterArrayValueMap.put(reporter, arrayValueMap);
+            arrayDataValueMap = new HashMap<ArrayData, Float>();    
+            reporterArrayDataValueMap.put(reporter, arrayDataValueMap);
         }
-        return arrayValueMap;
+        return arrayDataValueMap;
     }
 
     /**
@@ -174,26 +174,16 @@ public class ArrayDataValues {
         this.arrayDataMatrix = arrayDataMatrix;
     }
 
-    /**
-     * @return the reporterArrayValueMap
-     */
-    public Map<AbstractReporter, Map<Array, Float>> getReporterArrayValueMap() {
-        return reporterArrayValueMap;
+    Map<AbstractReporter, Map<ArrayData, Float>> getReporterArrayDataValueMap() {
+        return reporterArrayDataValueMap;
     }
 
 
     /**
-     * @return the allArrays
+     * @return the allArrayDatas
      */
-    public Set<Array> getAllArrays() {
-        return allArrays;
-    }
-
-    /**
-     * @param allArrays the allArrays to set
-     */
-    public void setAllArrays(Set<Array> allArrays) {
-        this.allArrays = allArrays;
+    public Set<ArrayData> getAllArrayDatas() {
+        return allArrayDatas;
     }
 
     /**
@@ -202,7 +192,7 @@ public class ArrayDataValues {
      * @param values add values from this values object.
      */
     public void addValues(ArrayDataValues values) {
-        copyArrays(values.getAllArrays());
+        copyArrayDatas(values.getAllArrayDatas());
         copyDataValues(values);
         if (arrayDataMatrix == null) {
             arrayDataMatrix = values.getArrayDataMatrix();
@@ -211,16 +201,16 @@ public class ArrayDataValues {
         }
     }
 
-    private void copyArrays(Set<Array> copiedArrays) {
-        for (Array array : copiedArrays) {
-            array.getArrayData().setMatrix(getArrayDataMatrix());
+    private void copyArrayDatas(Set<ArrayData> copiedArrayDatas) {
+        for (ArrayData arrayData : copiedArrayDatas) {
+            arrayData.setMatrix(getArrayDataMatrix());
         }
     }
 
     private void copyDataValues(ArrayDataValues values) {
-        for (AbstractReporter reporter : values.reporterArrayValueMap.keySet()) {
-            for (Array array : values.allArrays) {
-                setValue(array, reporter, values.getValue(array, reporter));
+        for (AbstractReporter reporter : values.reporterArrayDataValueMap.keySet()) {
+            for (ArrayData arrayData : values.allArrayDatas) {
+                setValue(arrayData, reporter, values.getValue(arrayData, reporter));
             }
         }
     }
@@ -231,12 +221,12 @@ public class ArrayDataValues {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for (Array array : allArrays) {
-            sb.append(array != null ? array.getName() : "NULL");
+        for (ArrayData arrayData : allArrayDatas) {
+            sb.append(arrayData == null || arrayData.getArray() != null ? arrayData.getArray().getName() : "NULL");
             sb.append(' ');
         }
         sb.append('\n');
-        for (AbstractReporter reporter : reporterArrayValueMap.keySet()) {
+        for (AbstractReporter reporter : reporterArrayDataValueMap.keySet()) {
             addReporterDetails(sb, reporter);
         }
         return sb.toString();
@@ -245,11 +235,18 @@ public class ArrayDataValues {
     private void addReporterDetails(StringBuffer sb, AbstractReporter reporter) {
         sb.append(reporter != null ? reporter.getName() : "NULL");
         sb.append(' ');
-        for (Array array : allArrays) {
+        for (ArrayData arrayData : allArrayDatas) {
             sb.append(' ');
-            sb.append(reporterArrayValueMap.get(reporter).get(array));
+            sb.append(reporterArrayDataValueMap.get(reporter).get(arrayData));
         }
         sb.append('\n');
+    }
+
+    /**
+     * @return the allReporters
+     */
+    public Set<AbstractReporter> getAllReporters() {
+        return reporterArrayDataValueMap.keySet();
     }
 
 }
