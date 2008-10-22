@@ -32,7 +32,7 @@
         <property name="jdbc.use_streams_for_binary">true</property>
         <property name="cache.use_query_cache">false</property>
         <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
-        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
         
         <!-- Mapped Resources -->
         

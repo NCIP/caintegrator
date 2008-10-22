@@ -10,7 +10,7 @@
 		<property name="name" type="string" column="NAME"/>
 		<!-- Associations mapping for the Array class -->
 		<many-to-one name="platform" class="gov.nih.nci.caintegrator2.domain.genomic.Platform" column="PLATFORM_ID" lazy="proxy" cascade="save-update" />
-        <set name="arrayDataCollection" lazy="true" cascade="save-update" >
+        <set name="arrayDataCollection" lazy="true" cascade="save-update" inverse="true">
             <cache usage="read-write" />
             <key column="ARRAY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>

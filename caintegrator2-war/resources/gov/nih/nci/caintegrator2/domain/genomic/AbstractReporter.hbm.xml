@@ -12,7 +12,12 @@
 		<joined-subclass name="GeneExpressionReporter" table="GENE_EXPRESSION_REPORTER" lazy="false">
 			<key column="ID" />
 			<!-- Associations mapping for the GeneExpressionReporter class -->
-			<many-to-one name="gene" class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" lazy="proxy" cascade="save-update" />
+			<many-to-one 
+                name="gene" 
+                class="gov.nih.nci.caintegrator2.domain.genomic.Gene" 
+                column="GENE_ID" 
+                lazy="proxy" 
+                cascade="save-update" />
 		</joined-subclass>
 	</class>
 </hibernate-mapping>

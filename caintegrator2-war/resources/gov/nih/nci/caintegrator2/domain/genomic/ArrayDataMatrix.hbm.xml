@@ -10,7 +10,7 @@
 		<!-- Associations mapping for the ArrayDataMatrix class -->
 		<many-to-one name="reporterSet" class="gov.nih.nci.caintegrator2.domain.genomic.ReporterSet" column="REPORTER_SET_ID" lazy="proxy" cascade="save-update" />
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update" />
-		<set name="sampleDataCollection" lazy="true" cascade="save-update" >
+		<set name="sampleDataCollection" lazy="true" cascade="save-update" inverse="true">
 			<cache usage="read-write" />
 			<key column="ARRAY_DATA_MATRIX_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
