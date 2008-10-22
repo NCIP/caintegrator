@@ -83,65 +83,41 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashSet;
+import org.junit.Before;
+import org.junit.Test;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opensymphony.xwork2.ActionSupport;
 
-/**
- * Helper class used to map samples to subjects.
- */
-class SampleMappingHelper {
-
-    private final StudyConfiguration studyConfiguration;
-    private final File mappingFile;
-
-    SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
-        this.studyConfiguration = studyConfiguration;
-        this.mappingFile = mappingFile;
+public class SaveControlSamplesActionTest {
+    
+    private SaveControlSamplesAction action = new SaveControlSamplesAction();
+    StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    
+    @Before
+    public void setUp() {
+        action.setStudyManagementService(studyManagementServiceStub);
     }
 
-    void mapSamples() {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(mappingFile));
-            String[] values;
-            while ((values = reader.readNext()) != null) {
-                String subjectIdentifier = values[0];
-                String sampleName = values[1];
-                
-                StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
-                
-                // map is throwing an exception.  This is a temporary check for null to prevent it.
-                if (!(sja == null)) {
-                     map(sja, studyConfiguration.getSample(sampleName));
-                }
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unexpected IO error", e);
-        }
-        
+    @Test
+    public void testValidate() {
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        assertFalse(action.hasFieldErrors());
     }
 
-    private void map(StudySubjectAssignment subjectAssignment, Sample sample) {
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        sampleAcquisition.setSample(sample);
-        sample.setSampleAcquisition(sampleAcquisition);
-        if (subjectAssignment.getSampleAcquisitionCollection() == null) {
-            subjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
-        }
-        subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
-    }
-
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
-        return studyConfiguration.getSubjectAssignment(subjectIdentifier);
+    @Test
+    public void testExecute() {
+        action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
+        assertTrue(studyManagementServiceStub.addControlSamplesCalled);
     }
 
 }

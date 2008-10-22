@@ -85,156 +85,59 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.io.LineNumberReader;
+import java.util.HashSet;
 
-@SuppressWarnings("PMD")
-public class StudyManagementServiceStub implements StudyManagementService {
+/**
+ * Reads control sample files and adds samples to the control list for a study.
+ */
+class ControlSampleHelper {
 
-    public boolean deployStudyCalled;
-    public boolean saveCalled;
-    public boolean addGenomicSourceCalled;
-    public boolean addClinicalAnnotationFileCalled;
-    public boolean manageStudiesCalled;
-    public boolean getRefreshedStudyEntityCalled;
-    public boolean getMatchingDefinitionsCalled;
-    public boolean getMatchingDataElementsCalled;
-    public boolean setDataElementCalled;
-    public boolean setDefinitionCalled;
-    public boolean loadClinicalAnnotationCalled;
-    public boolean mapSamplesCalled;
-    public boolean addImageSourceCalled;
-    public boolean addImageAnnotationFileCalled;
-    public boolean loadImageAnnotationCalled;
-    public boolean mapImageSeriesCalled;
-    public boolean createDefinitionCalled;
-    public boolean addControlSamplesCalled;
+    private final File controlSampleFile;
+    private final StudyConfiguration studyConfiguration;
 
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        loadClinicalAnnotationCalled = true;
+    ControlSampleHelper(StudyConfiguration studyConfiguration, File controlSampleFile) {
+        this.studyConfiguration = studyConfiguration;
+        this.controlSampleFile = controlSampleFile;
     }
 
-    public void save(StudyConfiguration studyConfiguration) {
-        saveCalled = true;
-    }
-
-    public void deployStudy(StudyConfiguration studyConfiguration) {
-        deployStudyCalled = true;
-    }
-
-    public void clear() {
-        loadClinicalAnnotationCalled = false;
-        deployStudyCalled = false;
-        saveCalled = false;
-        addClinicalAnnotationFileCalled = false;
-        addGenomicSourceCalled = false;
-        manageStudiesCalled = false;
-        getRefreshedStudyEntityCalled = false;
-        getMatchingDefinitionsCalled = false;
-        getMatchingDataElementsCalled = false;
-        setDataElementCalled = false;
-        setDefinitionCalled = false;
-        mapSamplesCalled = false;
-        addImageAnnotationFileCalled = false;
-        addImageSourceCalled = false;
-        loadImageAnnotationCalled = false;
-        mapImageSeriesCalled = false;
-        createDefinitionCalled = false;
-        addControlSamplesCalled = false;
-    }
-
-    public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
-        addGenomicSourceCalled = true;
-        studyConfiguration.getGenomicDataSources().add(genomicSource);
-    }
-
-    public DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
-        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
-            throw new ValidationException(new ValidationResult());
-        } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
-            throw new IOException();
+    void addControlSamples() throws ValidationException {
+        try {
+            FileReader fileReader = new FileReader(controlSampleFile);
+            LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
+            String sampleName;
+            while ((sampleName = lineNumberReader.readLine()) != null) {
+                addControlSample(sampleName, lineNumberReader.getLineNumber() + 1);
+            }
+            lineNumberReader.close();
+            fileReader.close();
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException("Couldn't find file", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Couldn't read file", e);
         }
-        addClinicalAnnotationFileCalled = true;
-        return new DelimitedTextClinicalSourceConfiguration();
     }
 
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        manageStudiesCalled = true;
-        return Collections.emptyList();
-    }
-
-    public <T> T getRefreshedStudyEntity(T entity) {
-        getRefreshedStudyEntityCalled = true;
-        return entity;
-    }
-
-    public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
-        getMatchingDefinitionsCalled = true;
-        return Collections.emptyList();
-    }
-
-    public List<DataElement> getMatchingDataElements(List<String> keywords) {
-        getMatchingDataElementsCalled = true;
-        return Collections.emptyList();
-    }
-
-    public void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType) {
-        setDataElementCalled = true;
-    }
-
-    public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
-        setDefinitionCalled = true;
-    }
-
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)throws ValidationException {
-        mapSamplesCalled = true;
-    }
-    
-    public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
-            File annotationFile, String filename) throws ValidationException, IOException {
-        if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
-            throw new ValidationException(new ValidationResult());
-        } else if (TestDataFiles.INVALID_FILE_DOESNT_EXIST.equals(annotationFile)) {
-            throw new IOException();
+    private void addControlSample(String sampleName, int lineNumber) throws ValidationException {
+        Sample sample = studyConfiguration.getSample(sampleName);
+        if (sample == null) {
+            ValidationResult result = new ValidationResult();
+            result.setInvalidMessage("Invalid sample identifier on line " + lineNumber 
+                    + ", there is no sample with the identifier " + sampleName + " in the study.");
+            ValidationException e = new ValidationException(result);
+            throw e;
+        } else {
+            if (studyConfiguration.getStudy().getControlSampleCollection() == null) {
+                studyConfiguration.getStudy().setControlSampleCollection(new HashSet<Sample>());
+            }
+            studyConfiguration.getStudy().getControlSampleCollection().add(sample);
         }
-        addImageAnnotationFileCalled = true;
-        return new ImageAnnotationConfiguration();
     }
 
-    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
-            throws ConnectionException {
-        addImageSourceCalled = true;
-    }
-
-    public void loadImageAnnotation(StudyConfiguration studyConfiguration) {
-        loadImageAnnotationCalled = true;
-    }
-
-    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
-        mapImageSeriesCalled = true;
-    }
-
-
-    public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType) {
-        createDefinitionCalled = true;
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
-            throws ValidationException {
-        addControlSamplesCalled = true;
-    }
-    
 }
