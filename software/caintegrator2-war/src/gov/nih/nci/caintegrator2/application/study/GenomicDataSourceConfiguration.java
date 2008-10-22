@@ -200,6 +200,16 @@ public class GenomicDataSourceConfiguration implements PersistentObject {
     }
 
     /**
+     * @return the control samples
+     */
+    public List<Sample> getControlSamples() {
+        List<Sample> controlSamples = new ArrayList<Sample>();
+        controlSamples.addAll(getSamples());
+        controlSamples.retainAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        return controlSamples;
+    }
+
+    /**
      * @return the unmapped samples
      */
     public List<Sample> getUnmappedSamples() {

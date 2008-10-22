@@ -124,7 +124,8 @@ public class StudyConfiguration implements PersistentObject {
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
     private transient Map<String, ImageSeries> identifierToImageSeriesMap;
     private transient Map<String, Timepoint> nameToTimepointMap;
-    
+    private transient Map<String, Sample> sampleNameMap;
+
     /**
      * Creates a new <code>StudyConfiguration</code>.
      */
@@ -388,5 +389,28 @@ public class StudyConfiguration implements PersistentObject {
            identifierToImageSeriesMap.put(imageSeries.getIdentifier(), imageSeries);
         }
     }
+
+
+    Sample getSample(String sampleName) {
+        return getSampleNameMap().get(sampleName);
+    }
+
+    private Map<String, Sample> getSampleNameMap() {
+        if (sampleNameMap == null) {
+            sampleNameMap = createSampleNameMap();
+        }
+        return sampleNameMap;
+    }
+
+    private Map<String, Sample> createSampleNameMap() {
+        sampleNameMap = new HashMap<String, Sample>();
+        for (GenomicDataSourceConfiguration sourceConfiguration : getGenomicDataSources()) {
+            for (Sample sample : sourceConfiguration.getSamples()) {
+                sampleNameMap.put(sample.getName(), sample);
+            }
+        }
+        return sampleNameMap;
+    }
+
 
 }

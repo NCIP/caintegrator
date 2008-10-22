@@ -18,8 +18,10 @@
         <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" />
         <s:textfield label="caArray Password" name="genomicSource.serverProfile.password" readonly="true" />
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" />
-        <s:file name="sampleMappingFile" label="File" />
+        <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" />
         <s:submit value="Upload Mapping File" />
+        <s:file name="controlSampleFile" label="Subject to Sample Mapping File" />
+        <s:submit value="Upload Control Sample File" action="saveControlSamples" />
     </s:form>
     
     <table class="data">
@@ -39,11 +41,13 @@
             </s:else>            
             <td><s:property value="id" /></td>
             <td><s:property value="name" /></td>
+            </tr>
         </s:iterator>
+   </table>
     
     <table class="data">
         <tr>
-            <th colspan="3">Mapped Samples</th>
+            <th colspan="3">Samples Mapped to Subjects</th>
         </tr>
         <tr>
             <th>Sample ID</th>
@@ -59,8 +63,30 @@
             </s:else>            
             <td><s:property value="id" /></td>
             <td><s:property value="name" /></td>
+            </tr>
         </s:iterator>
     </table>
+               
+    <table class="data">
+        <tr>
+            <th colspan="2">Control Samples</th>
+        </tr>
+        <tr>
+            <th>Sample ID</th>
+            <th>Sample Name</th>
+        </tr>
+        <s:iterator value="genomicSource.controlSamples" status="status">
+            <s:if test="#status.odd == true">
+              <tr class="odd">
+            </s:if>
+            <s:else>
+              <tr class="even">
+            </s:else>            
+            <td><s:property value="id" /></td>
+            <td><s:property value="name" /></td>
+            </tr>
+        </s:iterator>
+   </table>
             
 </div>
 

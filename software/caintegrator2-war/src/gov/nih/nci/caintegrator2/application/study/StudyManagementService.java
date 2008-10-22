@@ -261,5 +261,15 @@ public interface StudyManagementService {
      * @return The annotation definition that was created.
      */
     AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType);
+
+    /**
+     * Adds the samples specified by identifier in the file to the set of control samples in the
+     * study.
+     * 
+     * @param studyConfiguration add controls for this study
+     * @param controlSampleFile file containing the sample identifiers, one per line
+     * @throws ValidationException if the file is invalid.
+     */
+    void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile) throws ValidationException;
     
 }
