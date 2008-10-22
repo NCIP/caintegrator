@@ -239,6 +239,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
+            throws ValidationException {
+        new ControlSampleHelper(studyConfiguration, controlSampleFile).addControlSamples();
+        save(studyConfiguration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao).loadData(studyConfiguration);
@@ -505,6 +514,5 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setWorkspaceService(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
     }
-
 
 }

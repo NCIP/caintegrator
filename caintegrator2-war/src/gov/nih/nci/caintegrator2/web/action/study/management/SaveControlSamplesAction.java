@@ -83,65 +83,89 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashSet;
 
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Helper class used to map samples to subjects.
+ * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
-class SampleMappingHelper {
+public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
 
-    private final StudyConfiguration studyConfiguration;
-    private final File mappingFile;
+    private static final long serialVersionUID = 1L;
+    
+    private File controlSampleFile;
+    private String controlSampleFileContentType;
+    private String controlSampleFileFileName;
 
-    SampleMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
-        this.studyConfiguration = studyConfiguration;
-        this.mappingFile = mappingFile;
-    }
-
-    void mapSamples() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
         try {
-            CSVReader reader = new CSVReader(new FileReader(mappingFile));
-            String[] values;
-            while ((values = reader.readNext()) != null) {
-                String subjectIdentifier = values[0];
-                String sampleName = values[1];
-                
-                StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
-                
-                // map is throwing an exception.  This is a temporary check for null to prevent it.
-                if (!(sja == null)) {
-                     map(sja, studyConfiguration.getSample(sampleName));
-                }
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unexpected IO error", e);
-        }
+            getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
+            return SUCCESS;
+        } catch (ValidationException e) {
+            addFieldError("controlSampleFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            return INPUT;
+        } 
         
     }
-
-    private void map(StudySubjectAssignment subjectAssignment, Sample sample) {
-        SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        sampleAcquisition.setSample(sample);
-        sample.setSampleAcquisition(sampleAcquisition);
-        if (subjectAssignment.getSampleAcquisitionCollection() == null) {
-            subjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (getControlSampleFile() == null) {
+            addFieldError("controlSampleFile", "File is required");
         }
-        subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
     }
 
-    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
-        return studyConfiguration.getSubjectAssignment(subjectIdentifier);
+    /**
+     * @return the controlSampleFile
+     */
+    public File getControlSampleFile() {
+        return controlSampleFile;
+    }
+
+    /**
+     * @param controlSampleFile the controlSampleFile to set
+     */
+    public void setControlSampleFile(File controlSampleFile) {
+        this.controlSampleFile = controlSampleFile;
+    }
+
+    /**
+     * @return the controlSampleFileContentType
+     */
+    public String getControlSampleFileContentType() {
+        return controlSampleFileContentType;
+    }
+
+    /**
+     * @param controlSampleFileContentType the controlSampleFileContentType to set
+     */
+    public void setControlSampleFileContentType(String controlSampleFileContentType) {
+        this.controlSampleFileContentType = controlSampleFileContentType;
+    }
+
+    /**
+     * @return the controlSampleFileFileName
+     */
+    public String getControlSampleFileFileName() {
+        return controlSampleFileFileName;
+    }
+
+    /**
+     * @param controlSampleFileFileName the controlSampleFileFileName to set
+     */
+    public void setControlSampleFileFileName(String controlSampleFileFileName) {
+        this.controlSampleFileFileName = controlSampleFileFileName;
     }
 
 }

@@ -289,6 +289,30 @@ public class StudyManagementServiceTest {
         assertEquals(1, assignment2.getSampleAcquisitionCollection().size());
         assertEquals(sample2, assignment2.getSampleAcquisitionCollection().iterator().next().getSample());
     }
+    
+    @Test
+    public void testAddControlSamples() throws ValidationException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        Sample sample1 = new Sample();
+        sample1.setId(1L);
+        sample1.setName("GeneratedSample.Normal_L_20070227_14-01-17-731_HF0088_U133P2");
+        genomicDataSourceConfiguration.getSamples().add(sample1);
+        Sample sample2 = new Sample();
+        sample2.setId(2L);
+        sample2.setName("GeneratedSample.Normal_L_20070227_14-01-17-731_HF0120_U133P2");
+        genomicDataSourceConfiguration.getSamples().add(sample2);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE);
+        assertTrue(studyConfiguration.getStudy().getControlSampleCollection().contains(sample1));
+        assertTrue(studyConfiguration.getStudy().getControlSampleCollection().contains(sample2));
+    }
+    
+    @Test(expected = ValidationException.class)
+    public void testAddControlSamplesValidation() throws ValidationException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+    }
 
     @Test
     public void testAddImageAnnotationFile() throws ValidationException, IOException {
@@ -392,4 +416,5 @@ public class StudyManagementServiceTest {
         definition = studyManagementService.createDefinition(descriptor, study, EntityTypeEnum.SAMPLE);
         assertEquals(1, study.getSampleAnnotationCollection().size());
     }
+    
 }
