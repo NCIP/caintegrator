@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -100,21 +100,21 @@ public class ArrayDataServiceStub implements ArrayDataService {
      * {@inheritDoc}
      */
     public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        Collection<Array> arrays = new HashSet<Array>();
-        arrays.add(new Array());
+        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
+        arrayDatas.add(new ArrayData());
         Collection<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         reporters.add(new GeneExpressionReporter());
-        return getData(arrayDataMatrix, arrays, reporters);
+        return getData(arrayDataMatrix, arrayDatas, reporters);
     }
 
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<Array> arrays, Collection<AbstractReporter> reporters) {
+    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
         ArrayDataValues values = new ArrayDataValues();
         for (AbstractReporter reporter : reporters) {
-            for (Array array : arrays) {
-                values.setValue(array, reporter, (float) 1.23);
+            for (ArrayData arrayData : arrayDatas) {
+                values.setValue(arrayData, reporter, (float) 1.23);
             }
         }
         return values;

@@ -10,7 +10,11 @@
 		<property name="name" type="string" column="NAME"/>
 		<!-- Associations mapping for the Array class -->
 		<many-to-one name="platform" class="gov.nih.nci.caintegrator2.domain.genomic.Platform" column="PLATFORM_ID" lazy="proxy" cascade="save-update" />
-		<one-to-one name="arrayData" class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData" property-ref="array" />
+        <set name="arrayDataCollection" lazy="true" cascade="save-update" >
+            <cache usage="read-write" />
+            <key column="ARRAY_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
+        </set>
 		<set name="sampleCollection" table="MICROARRAY_SAMPLES" lazy="true" inverse="true" cascade="save-update" >
 			<cache usage="read-write" />
 			<key column="MICROARRAY_ID" />

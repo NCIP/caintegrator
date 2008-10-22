@@ -259,13 +259,13 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             assertEquals(studyConfiguration.getStudy(), probeSetArrayDataMatrix.getStudy());
             assertEquals(getExpectedSampleCount(), probeSetArrayDataMatrix.getSampleDataCollection().size());
             ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
-            assertEquals(getExpectedSampleCount(), values.getAllArrays().size());
-            assertEquals(54675, values.getReporterArrayValueMap().size());
+            assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
+            assertEquals(54675, values.getAllReporters().size());
             assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
             assertEquals(getExpectedSampleCount(), geneMatrix.getSampleDataCollection().size());
             values = arrayDataService.getData(geneMatrix);
-            assertEquals(getExpectedSampleCount(), values.getAllArrays().size());
-            assertEquals(20887, values.getReporterArrayValueMap().size());
+            assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
+            assertEquals(20887, values.getAllReporters().size());
         }
     }
 

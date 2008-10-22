@@ -90,6 +90,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
 import java.io.IOException;
@@ -148,27 +149,30 @@ public class NetcdfFileTest {
         /**
          * Setup Arrays
          */
-        Array array1 = new Array();
-        array1.setId(Long.valueOf(1));
-        array1.setName(arrayName1);
+        ArrayData arrayData1 = new ArrayData();
+        arrayData1.setId(Long.valueOf(1));
+        arrayData1.setArray(new Array());
+        arrayData1.getArray().setName(arrayName1);
         
-        Array array2 = new Array();
-        array2.setId(Long.valueOf(2));
-        array2.setName(arrayName2);
+        ArrayData arrayData2 = new ArrayData();
+        arrayData2.setId(Long.valueOf(2));
+        arrayData2.setArray(new Array());
+        arrayData2.getArray().setName(arrayName2);
         
-        Array array3 = new Array();
-        array3.setId(Long.valueOf(3));
-        array3.setName(arrayName3);
+        ArrayData arrayData3 = new ArrayData();
+        arrayData3.setId(Long.valueOf(3));
+        arrayData3.setArray(new Array());
+        arrayData3.getArray().setName(arrayName3);
         
         // Fill row1 values (for reporter1)
-        arrayDataValues.setValue(array1, reporter1, array1Reporter1Value);
-        arrayDataValues.setValue(array2, reporter1, array2Reporter1Value);
-        arrayDataValues.setValue(array3, reporter1, array3Reporter1Value);
+        arrayDataValues.setValue(arrayData1, reporter1, array1Reporter1Value);
+        arrayDataValues.setValue(arrayData2, reporter1, array2Reporter1Value);
+        arrayDataValues.setValue(arrayData3, reporter1, array3Reporter1Value);
         
         // Fill row2 values (for reporter2)
-        arrayDataValues.setValue(array1, reporter2, array1Reporter2Value);
-        arrayDataValues.setValue(array2, reporter2, array2Reporter2Value);
-        arrayDataValues.setValue(array3, reporter2, array3Reporter2Value);
+        arrayDataValues.setValue(arrayData1, reporter2, array1Reporter2Value);
+        arrayDataValues.setValue(arrayData2, reporter2, array2Reporter2Value);
+        arrayDataValues.setValue(arrayData3, reporter2, array3Reporter2Value);
 
         NetcdfFileWriter writer = new NetcdfFileWriter(arrayDataValues, FILE_NAME);
         

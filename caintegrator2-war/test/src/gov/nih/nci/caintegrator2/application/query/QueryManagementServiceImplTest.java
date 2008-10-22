@@ -167,8 +167,13 @@ public class QueryManagementServiceImplTest {
         Sample sample = new Sample();
         sample.setSampleAcquisition(acquisition);
         sample.setArrayCollection(new HashSet<Array>());
+        sample.setArrayDataCollection(new HashSet<ArrayData>());
         Array array = new Array();
-        array.setArrayData(new ArrayData());
+        ArrayData arrayData = new ArrayData();
+        array.setArrayDataCollection(new HashSet<ArrayData>());
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
         sample.getArrayCollection().add(array);
         array.setSampleCollection(new HashSet<Sample>());
         array.getSampleCollection().add(sample);

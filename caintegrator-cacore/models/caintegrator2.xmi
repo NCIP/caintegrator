@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-10-21 18:11:08">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-10-22 15:29:03">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -28167,13 +28167,13 @@
 																						<UML:TaggedValue tag="$ea_src_xref_property" value="$XREFPROP=$XID={B4BE9E88-EDE5-4389-B5EA-88B419B804D8}$XID;$NAM=CustomProperties$NAM;$TYP=connectorSrcEnd property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerivedUnion@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=default@ENDNAME;@TYPE=String@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isReadOnly@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isComposite@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=aggregation@ENDNAME;@TYPE=AggregationKind@ENDTYPE;@VALU=none@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={44AD69BB-0AE8-457a-918F-2F6AE071A98B}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																						<UML:TaggedValue tag="$ea_dst_xref_property" value="$XREFPROP=$XID={AAECCD43-2468-4838-8CE4-13D3285999A1}$XID;$NAM=CustomProperties$NAM;$TYP=connectorDestEnd property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerivedUnion@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=default@ENDNAME;@TYPE=String@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isReadOnly@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isComposite@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=aggregation@ENDNAME;@TYPE=AggregationKind@ENDTYPE;@VALU=none@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={44AD69BB-0AE8-457a-918F-2F6AE071A98B}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																						<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																						<UML:TaggedValue tag="lb" value="1"/>
-																						<UML:TaggedValue tag="lt" value="+arrayData"/>
+																						<UML:TaggedValue tag="lb" value="0..*"/>
+																						<UML:TaggedValue tag="lt" value="+arrayDataCollection"/>
 																						<UML:TaggedValue tag="rb" value="1"/>
 																						<UML:TaggedValue tag="rt" value="+array"/>
 																					</UML:ModelElement.taggedValue>
 																					<UML:Association.connection>
-																						<UML:AssociationEnd visibility="public" multiplicity="1" name="arrayData" aggregation="none" isOrdered="false" targetScope="instance" changeable="none" isNavigable="true" type="EAID_72A3B884_DAE0_48b8_B887_FB4599B4D43E">
+																						<UML:AssociationEnd visibility="public" multiplicity="0..*" name="arrayDataCollection" aggregation="none" isOrdered="false" targetScope="instance" changeable="none" isNavigable="true" type="EAID_72A3B884_DAE0_48b8_B887_FB4599B4D43E">
 																							<UML:ModelElement.taggedValue>
 																								<UML:TaggedValue tag="containment" value="Unspecified"/>
 																								<UML:TaggedValue tag="sourcestyle" value="Owned=0;Navigable=Navigable;Union=0;Derived=0;AllowDuplicates=0;"/>
