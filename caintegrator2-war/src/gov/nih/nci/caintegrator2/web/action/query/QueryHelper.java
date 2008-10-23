@@ -109,7 +109,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.collection.PersistentSet;
 
 
 /**
@@ -285,21 +284,18 @@ public class QueryHelper {
     
     @SuppressWarnings({ "PMD", "unchecked" })
     private AnnotationDefinition getAnnotationDefinition(QueryAnnotationCriteria queryAnnotationCriteria) {
-        AnnotationDefinition annoDef = null;
-        
         AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
-        PersistentSet annoDefs = (PersistentSet) annoHelper.getAnnotationDefinitions();
-        
-        Iterator iter = annoDefs.iterator();
-        while (iter.hasNext()) {
-            annoDef = (AnnotationDefinition) iter.next();
-            if (annoDef.getDisplayName().equals(queryAnnotationCriteria.getAnnotationSelection())) {
-                break;
+        for (AnnotationDefinition definition : annoHelper.getAnnotationDefinitions()) {
+            if (definition.getDisplayName() != null 
+                 && definition.getDisplayName().equals(queryAnnotationCriteria.getAnnotationSelection())) {
+                return definition;
             }
         }
         
-        return annoDef;
+        return new AnnotationDefinition();
     }
+
+
 
     
             

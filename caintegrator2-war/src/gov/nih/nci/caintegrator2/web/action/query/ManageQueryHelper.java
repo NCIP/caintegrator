@@ -125,7 +125,7 @@ final class ManageQueryHelper {
     private AnnotationSelection imageSeriesAnnotationSelections;
     private boolean prepopulated;
     private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
-    private final Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     /**
      * Default constructor.
      */
@@ -587,11 +587,20 @@ final class ManageQueryHelper {
         this.allAnnotationDefinitionsMap = allAnnotationDefinitionsMap;
     }
 
-     /**
+    /**
      * @return the columnCollection
      */
     public Collection<ResultColumn> getColumnCollection() {
         return columnCollection;
     }
+
+    /**
+     * @param columnCollection the columnCollection to set
+     */
+    public void setColumnCollection(Collection<ResultColumn> columnCollection) {
+        this.columnCollection = columnCollection;
+    }
+
+    
     
 }

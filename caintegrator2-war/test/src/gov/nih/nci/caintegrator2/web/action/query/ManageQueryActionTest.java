@@ -90,8 +90,10 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -121,8 +123,11 @@ public class ManageQueryActionTest {
     private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
 
     // dummy string array for testing
-    private final String [] holdStringArray =  {"testString1","testString2"};
+    private final String [] selectedAnnotationsArray = {"annotation1", "annotation2"};
+    private final String [] operatorsArray =  {"equals",">"};
+    private final String [] selectedValuesArray = {"String1", "1.0"};
     private final Long [] holdLongArray = {Long.valueOf(12), Long.valueOf(4)};
+
     @Before
     @SuppressWarnings({"PMD"})
     public void setUp() {
@@ -138,16 +143,16 @@ public class ManageQueryActionTest {
         String[] emptyArray = {""};  // test the first time when the array is null
         Long[] emptyLongArray = null;
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedAnnotations());
-        manageQueryAction.setSelectedAnnotations(holdStringArray);
-        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedAnnotations());
+        manageQueryAction.setSelectedAnnotations(selectedAnnotationsArray);
+        assertArrayEquals(selectedAnnotationsArray,manageQueryAction.getSelectedAnnotations());
         
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedOperators());
-        manageQueryAction.setSelectedOperators(holdStringArray);
-        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedOperators());
+        manageQueryAction.setSelectedOperators(operatorsArray);
+        assertArrayEquals(operatorsArray,manageQueryAction.getSelectedOperators());
         
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedValues());
-        manageQueryAction.setSelectedValues(holdStringArray);
-        assertArrayEquals(holdStringArray,manageQueryAction.getSelectedValues());
+        manageQueryAction.setSelectedValues(selectedValuesArray);
+        assertArrayEquals(selectedValuesArray,manageQueryAction.getSelectedValues());
         
         assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedClinicalAnnotations());
         manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
@@ -156,6 +161,7 @@ public class ManageQueryActionTest {
         assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedImageAnnotations());
         manageQueryAction.setSelectedImageAnnotations(holdLongArray);
         assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
+        
         
         manageQueryAction.setSelectedBasicOperator("or");
         assertEquals("or",manageQueryAction.getSelectedBasicOperator());
@@ -218,6 +224,8 @@ public class ManageQueryActionTest {
         
         // test execute query
         manageQueryAction.setSelectedAction("executeQuery");
+        //manageQueryAction.getManageQueryHelper().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        //manageQueryAction.getManageQueryHelper().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         manageQueryAction.prepare();
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
