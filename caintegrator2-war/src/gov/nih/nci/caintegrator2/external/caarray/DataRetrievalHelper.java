@@ -268,6 +268,7 @@ class DataRetrievalHelper {
     }
 
     private ArrayData createArrayData(Hybridization hybridization, Platform platform) {
+        PlatformHelper platformHelper = new PlatformHelper(platform);
         Array array = new Array();
         array.setPlatform(platform);
         array.setName(hybridization.getName());
@@ -276,6 +277,7 @@ class DataRetrievalHelper {
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
+        arrayData.setReporterSet(platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
         array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);

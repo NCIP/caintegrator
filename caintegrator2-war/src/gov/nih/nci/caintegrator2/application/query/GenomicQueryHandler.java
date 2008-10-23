@@ -106,6 +106,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -198,28 +199,42 @@ class GenomicQueryHandler {
             Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
             samplesOnly.add(EntityTypeEnum.SAMPLE);
             Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
-            return getArrayDatas(rows);
+            return getArrayDatas(rows, ReporterTypeEnum.getByValue(query.getReporterType()));
         } else {
-            return getAllArrayDatas();
+            return getAllArrayDatas(ReporterTypeEnum.getByValue(query.getReporterType()));
         }
     }
 
-    private Collection<ArrayData> getAllArrayDatas() {
+    private Collection<ArrayData> getAllArrayDatas(ReporterTypeEnum reporterType) {
         Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
             for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
-                arrayDatas.addAll(acquisition.getSample().getArrayDataCollection());
+                arrayDatas.addAll(getArrayDatas(acquisition.getSample().getArrayDataCollection(), reporterType));
             }
         }
         return arrayDatas;
     }
 
-    private Collection<ArrayData> getArrayDatas(Set<ResultRow> rows) {
+    private Collection<ArrayData> getArrayDatas(Set<ResultRow> rows, ReporterTypeEnum reporterType) {
         Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
-            arrayDatas.addAll(row.getSampleAcquisition().getSample().getArrayDataCollection());
+            arrayDatas.addAll(
+                    getArrayDatas(row.getSampleAcquisition().getSample().getArrayDataCollection(), reporterType));
         }
         return arrayDatas;
+    }
+
+    private Collection<ArrayData> getArrayDatas(Collection<ArrayData> arrayDataCollection,
+            ReporterTypeEnum reporterType) {
+        Collection<ArrayData> matchingArrayDatas = new HashSet<ArrayData>();
+        Iterator<ArrayData> iterator = arrayDataCollection.iterator();
+        while (iterator.hasNext()) {
+            ArrayData arrayData = iterator.next();
+            if (reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
+                matchingArrayDatas.add(arrayData);
+            }
+        }
+        return matchingArrayDatas;
     }
 
     private List<ArrayDataMatrix> getDataMatrixes() {
