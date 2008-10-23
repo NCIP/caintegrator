@@ -30,6 +30,9 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
         Array array1 = new Array();
         sample.getArrayCollection().add(array1);
         sample.getArrayDataCollection().add(arrayData1);
+        arrayData1.setSample(sample);
+        array1.setSampleCollection(new HashSet<Sample>());
+        array1.getSampleCollection().add(sample);
     }
 
 
