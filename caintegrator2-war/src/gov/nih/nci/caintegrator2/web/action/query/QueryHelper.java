@@ -121,14 +121,16 @@ public class QueryHelper {
     
     /**
      * @param queryManagementService A QueryManagementService instance
-     * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
+     * @param rowObjList list of populated QueryAnnotationCriteria (query row criteria).
+     * @param resultColumns Columns that are to be displayed in the  Result page
      * @return QueryResult Valid results from the query execution, or null 
+     * 
      */
     public QueryResult executeQuery(QueryManagementService queryManagementService, 
-            List<QueryAnnotationCriteria> rowObjList) {
+            List<QueryAnnotationCriteria> rowObjList, Collection<ResultColumn> resultColumns) {
         QueryResult queryResult = null;
                
-        Query query = buildQuery(queryManagementService, rowObjList, null, null);
+        Query query = buildQuery(queryManagementService, rowObjList, null, null, resultColumns);
         queryResult = queryManagementService.execute(query);
         
         return queryResult;
@@ -139,16 +141,18 @@ public class QueryHelper {
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
      * @param queryName The name of the query.
      * @param queryDescription The description of the query.
+     * @param resultColumns Columns that are to be displayed in the  Result page
      * @return Query An instantiated, populated Query object.
      */
     public Query buildQuery(QueryManagementService queryManagementService,
             List<QueryAnnotationCriteria> rowObjList,
             String queryName,
-            String queryDescription) {
+            String queryDescription,
+            Collection<ResultColumn> resultColumns) {
         Query query = null;
         
         if (!advancedView) {
-            query = buildBasicQuery(queryManagementService, rowObjList, queryName, queryDescription);
+            query = buildBasicQuery(queryManagementService, rowObjList, queryName, queryDescription, resultColumns);
         }
         // TODO Advanced query
         
@@ -161,13 +165,15 @@ public class QueryHelper {
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
      * @param queryName The name of the query.
      * @param queryDescription The description of the query.
+     * @param resultColumns Columns that are to be displayed in the  Result page
      * @return Query An instantiated, populated Query object.
      */
     @SuppressWarnings({ "PMD" })
     public Query buildBasicQuery(QueryManagementService queryManagementService,
             List<QueryAnnotationCriteria> rowObjList,
             String queryName,
-            String queryDescription) {
+            String queryDescription,
+            Collection<ResultColumn> resultColumns) {
         Query query = null;
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -181,7 +187,7 @@ public class QueryHelper {
             AbstractCriterion abstractCriterion = buildCriterion(queryAnnotationCriteria);
             compoundCriterion.getCriterionCollection().add(abstractCriterion);
             // Right now, we are adding all columns for the criterion, but only once per AnnotationDefinition
-            Collection<ResultColumn> columns = getColumnCollection(queryAnnotationCriteria);
+            Collection<ResultColumn> columns = resultColumns;
             for (ResultColumn column : columns) {
                 if (!Cai2Util.columnCollectionContainsColumn(columnCollection, column)) {
                     columnCollection.add(column);
@@ -198,7 +204,7 @@ public class QueryHelper {
         query.setName(queryName);
         query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
-        
+        query.setResultType(EntityTypeEnum.SUBJECT.getValue());
         StudySubscription studySubscription = 
             SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription();
         query.setSubscription(studySubscription);
@@ -296,28 +302,7 @@ public class QueryHelper {
     }
 
     
-    @SuppressWarnings({ "PMD", "unchecked" })
-    private Collection<ResultColumn> getColumnCollection(QueryAnnotationCriteria queryAnnotationCriteria) {
-        Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
-        
-        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
-        int i = 0;
-//        // TODO Handle user-selected columns
-
-        for (AnnotationDefinition annoDef : annoHelper.getAnnotationDefinitions()) {    
-            ResultColumn column = new ResultColumn();
-            column.setAnnotationDefinition(annoDef);
-            column.setColumnIndex(i++);
-            column.setEntityType(queryAnnotationCriteria.getRowType().getValue());
             
-            columnCollection.add(column);
-        }
-     
-        // TODO Handle sorts
-        
-        return columnCollection;
-    }
-    
     private String getWildCardType(String stringOperator) {
         String wildCardType = "";
         

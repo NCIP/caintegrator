@@ -92,14 +92,18 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -120,7 +124,8 @@ final class ManageQueryHelper {
     private AnnotationSelection clinicalAnnotationSelections;
     private AnnotationSelection imageSeriesAnnotationSelections;
     private boolean prepopulated;
-    
+    private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
+    private final Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     /**
      * Default constructor.
      */
@@ -192,6 +197,7 @@ final class ManageQueryHelper {
         this.queryCriteriaRowList = queryCriteriaRowList;
     }
     
+   
     /**
      * @param queryAnnotationCriteria the QueryAnnotationCriteria to add
      */
@@ -280,10 +286,14 @@ final class ManageQueryHelper {
     
     private void populateClinicalAnnotationDefinitions(Study study) {
         Collection<AnnotationDefinition> annoDefs = study.getSubjectAnnotationCollection();
-
         if (annoDefs != null && !annoDefs.isEmpty()) {
             clinicalAnnotationDefinitions = annoDefs;
+          //Adding the annotations in the map which is used later for finding the user selected id and its value
+            for (AnnotationDefinition definition : clinicalAnnotationDefinitions) {
+                allAnnotationDefinitionsMap.put(definition.getId(), definition);
+            }  
         }
+        
     }
     
     private void populateImageSeriesAnnotationDefinitions(Study study) {
@@ -291,7 +301,12 @@ final class ManageQueryHelper {
 
         if (annoDefs != null && !annoDefs.isEmpty()) {
             imageAnnotationDefinitions = annoDefs;
+            
+            for (AnnotationDefinition definition : imageAnnotationDefinitions) {
+                allAnnotationDefinitionsMap.put(definition.getId(), definition);
+            }
         }
+        
     }
     
     private void populateSampleAnnotationDefinitions(Study study) {
@@ -300,6 +315,9 @@ final class ManageQueryHelper {
         if (annoDefs != null && !annoDefs.isEmpty()) {
             sampleAnnotationDefinitions = annoDefs;
         }
+//        for (AnnotationDefinition definition : sampleAnnotationDefinitions) {
+//            allAnnotationDefinitionsMap.put(definition.getId(), definition);
+//        }
     }
     
     private void populateClinicalAnnotationSelections() {
@@ -422,16 +440,66 @@ final class ManageQueryHelper {
         }
     }    
 
+    public Collection<ResultColumn> setResultColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
+        
+        if (selectedValues != null) {
+            // Iterate over a list of user selected annotationDefinitions Id's(which has all the Ids)
+            for (Long columnIds : selectedValues) {
+                //Checking the given Id is present in the Map(contains Id and annotationDefinition)
+                if (this.allAnnotationDefinitionsMap.containsKey(columnIds)) {
+                   AnnotationDefinition annoDef = allAnnotationDefinitionsMap.get(columnIds);  
+                        getSelectedColumnCollection(annoDef, entityType);
+                   }
+            }
+        } else {
+            getAllColumnCollection();
+        }
+        return columnCollection;
+    }
+    
+    // Creating a columnCollection for User Selected columns from CheckBox list.
+    private Collection<ResultColumn> getSelectedColumnCollection(AnnotationDefinition annoDef, 
+                                                                 EntityTypeEnum entityType) {
+        ResultColumn column = new ResultColumn();
+        int i = 0;
+        column.setAnnotationDefinition(annoDef);
+        column.setColumnIndex(i++);
+        column.setEntityType(entityType.getValue());
+        columnCollection.add(column);
+        return columnCollection;
+    }
+    
+    // Creating a columnCollection for all the columns from  CheckBox list.
+    private Collection<ResultColumn> getAllColumnCollection() {
+        QueryAnnotationCriteria queryAnnotationCriteria = null;
+        Iterator<QueryAnnotationCriteria> iter = this.queryCriteriaRowList.iterator();
+        // Iterate over the list of query annotation criteria objects
+        while (iter.hasNext()) {
+            queryAnnotationCriteria = iter.next();
+            AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
+            int i = 0;
+            for (AnnotationDefinition annoDef : annoHelper.getAnnotationDefinitions()) {    
+                ResultColumn column = new ResultColumn();
+                column.setAnnotationDefinition(annoDef);
+                column.setColumnIndex(i++);
+                column.setEntityType(queryAnnotationCriteria.getRowType().getValue());
+                columnCollection.add(column);
+            }
+        }
+        return columnCollection;
+    }
     /**
      * @param queryManagementService A QueryManagementService instance
      * @param basicQueryOperator String AND or OR
+     * @param queryCriteriaRowList list of populated QueryAnnotationCriteria (query row criteria).
      * @return QueryResult Valid results from the query execution, or null 
      */
     QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
         QueryResult queryResult = null;
 
         queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
-                this.getQueryCriteriaRowList());
+                this.getQueryCriteriaRowList(), this.getColumnCollection());
+                
         return queryResult;
     }
     
@@ -449,7 +517,7 @@ final class ManageQueryHelper {
                              String queryDescription) {
         
         Query query = createQueryHelper(basicQueryOperator).buildQuery(queryManagementService,
-                getQueryCriteriaRowList(), queryName, queryDescription);
+                getQueryCriteriaRowList(), queryName, queryDescription, getColumnCollection());
         if (query != null) {
             query.setResultType(ResultTypeEnum.CLINICAL.getValue());
             if (SessionHelper.getInstance().getDisplayableUserWorkspace() != null
@@ -505,5 +573,25 @@ final class ManageQueryHelper {
         this.imageSeriesAnnotationSelections = imageSeriesAnnotationSelections;
     }
 
+    /**
+     * @return the allAnnotationDefinitionsMap
+     */
+    public Map<Long, AnnotationDefinition> getAllAnnotationDefinitionsMap() {
+        return allAnnotationDefinitionsMap;
+    }
 
+    /**
+     * @param allAnnotationDefinitionsMap the allAnnotationDefinitionsMap to set
+     */
+    public void setAllAnnotationDefinitionsMap(Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap) {
+        this.allAnnotationDefinitionsMap = allAnnotationDefinitionsMap;
+    }
+
+     /**
+     * @return the columnCollection
+     */
+    public Collection<ResultColumn> getColumnCollection() {
+        return columnCollection;
+    }
+    
 }

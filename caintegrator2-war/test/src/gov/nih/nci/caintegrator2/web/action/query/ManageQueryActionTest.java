@@ -122,7 +122,7 @@ public class ManageQueryActionTest {
 
     // dummy string array for testing
     private final String [] holdStringArray =  {"testString1","testString2"};
-    
+    private final Long [] holdLongArray = {Long.valueOf(12), Long.valueOf(4)};
     @Before
     @SuppressWarnings({"PMD"})
     public void setUp() {
@@ -136,6 +136,7 @@ public class ManageQueryActionTest {
         // the first time the parameter is null so
         // confirm that the getter method returns an empty array
         String[] emptyArray = {""};  // test the first time when the array is null
+        Long[] emptyLongArray = null;
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedAnnotations());
         manageQueryAction.setSelectedAnnotations(holdStringArray);
         assertArrayEquals(holdStringArray,manageQueryAction.getSelectedAnnotations());
@@ -147,6 +148,14 @@ public class ManageQueryActionTest {
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedValues());
         manageQueryAction.setSelectedValues(holdStringArray);
         assertArrayEquals(holdStringArray,manageQueryAction.getSelectedValues());
+        
+        assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedClinicalAnnotations());
+        manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
+        assertArrayEquals(holdLongArray,manageQueryAction.getSelectedClinicalAnnotations());
+        
+        assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedImageAnnotations());
+        manageQueryAction.setSelectedImageAnnotations(holdLongArray);
+        assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
         
         manageQueryAction.setSelectedBasicOperator("or");
         assertEquals("or",manageQueryAction.getSelectedBasicOperator());
