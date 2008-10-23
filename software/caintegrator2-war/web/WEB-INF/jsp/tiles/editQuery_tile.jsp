@@ -149,72 +149,31 @@ pageEncoding="ISO-8859-1" %>
 
         <h3>Subject Annotations</h3>
         <ul class="checklist">
-            <li><label for="subj_1"><input id="subj_1" name="subj_1" type="checkbox" /> Patient Age</label></li>
-            <li><label for="subj_2"><input id="subj_2" name="subj_2" type="checkbox" /> Patient Height</label></li>
-            <li><label for="subj_3"><input id="subj_3" name="subj_2" type="checkbox" /> Patient ID</label></li>
-
-            <li><label for="subj_4"><input id="subj_4" name="subj_4" type="checkbox" /> Patient Weight</label></li>
-            <li><label for="subj_5"><input id="subj_5" name="subj_5" type="checkbox" /> Pulse Rate</label></li>
-            <li><label for="subj_6"><input id="subj_6" name="subj_6" type="checkbox" /> Karnofsky Score</label></li>
+            <s:checkboxlist  cssClass="checklist"name="selectedClinicalAnnotations"list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple"></s:checkboxlist>  
         </ul>
-        <div class="checklistfooter">
-            <input type="checkbox" name="all" id="all1" /><label for="all1">All</label>
-
-        </div>
+        
     </div>
-    
-    <div class="checklistwrapper">
-        <h3>Sample Annotations</h3>
-        <ul class="checklist">
-            <li><label for="samp_1"><input id="samp_1" name="samp_1" type="checkbox" /> Sample Type</label></li>
-            <li><label for="samp_2"><input id="samp_2" name="samp_2" type="checkbox" /> Collection Protocol</label></li>
-
-            <li><label for="samp_3"><input id="samp_3" name="samp_3" type="checkbox" /> Sample Name</label></li>
-            <li><label for="samp_4"><input id="samp_4" name="samp_4" type="checkbox" /> Location</label></li>
-            <li><label for="samp_5"><input id="samp_5" name="samp_5" type="checkbox" /> Owner</label></li>
-        </ul>
-        <div class="checklistfooter">
-            <input type="checkbox" name="all" id="all2" /><label for="all2">All</label>
-
-        </div>
-    </div>
-    
-    <div class="checklistwrapper">
-        <h3>Array Annotations</h3>
-        <ul class="checklist">
-            <li><label for="gene_1"><input id="gene_1" name="gene_1" type="checkbox" /> Gene Name</label></li>
-            <li><label for="gene_2"><input id="gene_2" name="gene_2" type="checkbox" /> Gene Symbol</label></li>
-
-            <li><label for="gene_3"><input id="gene_3" name="gene_3" type="checkbox" /> Functional Role</label></li>
-            <li><label for="gene_4"><input id="gene_4" name="gene_4" type="checkbox" /> Cellular Process</label></li>
-            <li><label for="gene_5"><input id="gene_5" name="gene_5" type="checkbox" /> Subcellular Location</label></li>
-        </ul>
-        <div class="checklistfooter">
-            <input type="checkbox" name="all" id="all4" /><label for="all4">All</label>
-
-        </div>
-    </div>
-    
-    <div class="checklistwrapper">
+       
+     <div class="checklistwrapper">
         <h3>Image Annotations</h3>
         <ul class="checklist">
-            <li><label for="imag_1"><input id="imag_1" name="imag_1" type="checkbox" /> Sample Type</label></li>
-            <li><label for="imag_2"><input id="imag_2" name="imag_2" type="checkbox" /> Collection Protocol</label></li>
-
-            <li><label for="imag_3"><input id="imag_3" name="imag_3" type="checkbox" /> Sample Name</label></li>
-            <li><label for="imag_4"><input id="imag_4" name="imag_4" type="checkbox" /> Location</label></li>
-            <li><label for="imag_5"><input id="imag_5" name="imag_5" type="checkbox" /> Owner</label></li>
+            <s:checkboxlist  cssClass="checklist"name="selectedImageAnnotations"list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" ></s:checkboxlist>
         </ul>
-        <div class="checklistfooter">
-            <input type="checkbox" name="all" id="all3" /><label for="all3">All</label>
-
-        </div>
-    </div>
-    
-    <div class="clear"></div>
-    
+        
+    </div>  
+    <div class="actionsrow">
+                    
+                    <del class="btnwrapper">
+                        <ul class="btnrow">
+                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                        </ul>   
+                    </del>
+   </div>
+       
+   <div class="clear"></div>
+           
 </div>
-    
+  
 <!--/Columns-->
 
 <!--Sort Order-->
