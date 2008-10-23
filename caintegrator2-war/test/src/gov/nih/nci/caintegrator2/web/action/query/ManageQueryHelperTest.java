@@ -88,10 +88,12 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+//import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -109,18 +111,18 @@ import com.opensymphony.xwork2.ActionContext;
 public class ManageQueryHelperTest {
 
     private ManageQueryHelper manageQueryHelper;
-    //private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
+   
     private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
+    
     
     // Study objects
     StudyHelper studyHelper = new StudyHelper();
     Study study = studyHelper.populateAndRetrieveStudy().getStudy();
     StudyManagementService studyManagementService = new StudyManagementServiceImpl();
     AnnotationSelection clinicalAnnotationSelections = new AnnotationSelection();
-    
-
-    
+    private final Long[] selectedValues = {12L, 4L};
+       
     @Before
     public void setUp() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
@@ -131,7 +133,7 @@ public class ManageQueryHelperTest {
         manageQueryHelper.setSampleAnnotationDefinitions(annotationDefinitionSet);
         manageQueryHelper.setImageAnnotationDefinitions(annotationDefinitionSet);
         manageQueryHelper.setClinicalAnnotationSelections(clinicalAnnotationSelections);
-        //manageQueryHelper.setCurrentAnnotationSelections(clinicalAnnotationSelections);
+        manageQueryHelper.setResultColumnCollection(selectedValues, EntityTypeEnum.SUBJECT);
     }
    
     @Test
@@ -143,7 +145,7 @@ public class ManageQueryHelperTest {
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
-        
+        assertNotNull(manageQueryHelper.getColumnCollection());
         
         manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());

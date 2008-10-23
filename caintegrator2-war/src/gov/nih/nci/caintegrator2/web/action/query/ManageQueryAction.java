@@ -112,7 +112,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private String selectedBasicOperator = "or"; // user selects AND or OR operation for a basic query
     private String searchName;
     private String searchDescription;
-
+    private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
+    private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
     
     /**
      * The 'prepare' interceptor will look for this method enabling 
@@ -226,6 +227,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
+        manageQueryHelper.setResultColumnCollection(getSelectedClinicalAnnotations(), EntityTypeEnum.SUBJECT);
+        manageQueryHelper.setResultColumnCollection(getSelectedImageAnnotations(), EntityTypeEnum.IMAGESERIES);
+        manageQueryHelper.getColumnCollection();
     }    
     
     /**
@@ -374,6 +378,47 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         holdArray = selectedValues.clone();
         this.selectedValues = holdArray;
     }
+    /**
+     * @return the selectedClinicalAnnotations
+     */
+    public Long[] getSelectedClinicalAnnotations() {
+        Long [] holdArray = null;
+        if (selectedClinicalAnnotations != null) {
+            holdArray = selectedClinicalAnnotations.clone();
+        }
+        return holdArray;
+
+    }
+
+    /**
+     * @param selectedClinicalAnnotations the selectedClinicalAnnotations to set
+     */
+    public void setSelectedClinicalAnnotations(Long[] selectedClinicalAnnotations) {
+        Long [] holdArray;
+        holdArray = selectedClinicalAnnotations.clone();
+        this.selectedClinicalAnnotations = holdArray;
+
+    }
+
+    /**
+     * @return the selectedImageAnnotations
+     */
+    public Long[] getSelectedImageAnnotations() {
+        Long [] holdArray = null;
+        if (selectedImageAnnotations != null) {
+            holdArray = selectedImageAnnotations.clone();
+        }
+        return holdArray;
+    }
+
+    /**
+     * @param selectedImageAnnotations the selectedImageAnnotations to set
+     */
+    public void setSelectedImageAnnotations(Long[] selectedImageAnnotations) {
+       Long [] holdArray;
+        holdArray = selectedImageAnnotations.clone();
+        this.selectedImageAnnotations = holdArray;
+    }
 
     /**
      * @return the queryManagementService
@@ -444,4 +489,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     public void setSearchDescription(String searchDescription) {
         this.searchDescription = searchDescription;
     }
+
+        
+    
 }
