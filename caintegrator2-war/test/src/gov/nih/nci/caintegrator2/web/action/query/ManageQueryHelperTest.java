@@ -88,13 +88,14 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceImpl;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-//import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -102,6 +103,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -111,41 +113,54 @@ import com.opensymphony.xwork2.ActionContext;
 public class ManageQueryHelperTest {
 
     private ManageQueryHelper manageQueryHelper;
-   
+    //private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
     private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
+    private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
+    private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     
-    
-    // Study objects
-    StudyHelper studyHelper = new StudyHelper();
-    Study study = studyHelper.populateAndRetrieveStudy().getStudy();
-    StudyManagementService studyManagementService = new StudyManagementServiceImpl();
-    AnnotationSelection clinicalAnnotationSelections = new AnnotationSelection();
-    private final Long[] selectedValues = {12L, 4L};
-       
     @Before
     public void setUp() {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         manageQueryHelper = ManageQueryHelper.getInstance();
         manageQueryHelper.setAdvancedView(Boolean.TRUE);
         manageQueryHelper.setQueryCriteriaRowList(rowList);
-        manageQueryHelper.setClinicalAnnotationDefinitions(annotationDefinitionSet);
-        manageQueryHelper.setSampleAnnotationDefinitions(annotationDefinitionSet);
-        manageQueryHelper.setImageAnnotationDefinitions(annotationDefinitionSet);
-        manageQueryHelper.setClinicalAnnotationSelections(clinicalAnnotationSelections);
         manageQueryHelper.setResultColumnCollection(selectedValues, EntityTypeEnum.SUBJECT);
+        manageQueryHelper.setColumnCollection(columnCollection);
+        
+        StudySubscription currentStudySubscription = new StudySubscription();
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinitionSet.add(annotationDefinition);
+        Study study = new Study();
+        currentStudySubscription.setStudy(study);
+        currentStudySubscription.setId(Long.valueOf(1));
+        study.setImageSeriesAnnotationCollection(annotationDefinitionSet);
+        study.setSubjectAnnotationCollection(annotationDefinitionSet);
+        study.setSampleAnnotationCollection(annotationDefinitionSet);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        UserWorkspace currentUserWorkspace = new UserWorkspace();
+        currentUserWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        currentUserWorkspace.getSubscriptionCollection().add(currentStudySubscription);
+        ActionContext.getContext().getValueStack().set("workspace", currentUserWorkspace);
+        SessionHelper sessionHelper = SessionHelper.getInstance();
+        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(currentStudySubscription);
     }
    
     @Test
     public void testIt() {        
         assertTrue(manageQueryHelper.isAdvancedView());
         manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteria());
+        manageQueryHelper.prepopulateAnnotationSelectLists();
         assertEquals(1, manageQueryHelper.getQueryCriteriaRowList().size());
         assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
         assertNotNull(manageQueryHelper.getColumnCollection());
+        
+        assertTrue(manageQueryHelper.configureClinicalQueryCriterionRow());
+        assertTrue(manageQueryHelper.configureImageSeriesQueryCriterionRow());
+        //assertTrue(manageQueryHelper.configureGeneExpressionCriterionRow());
         
         manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());
