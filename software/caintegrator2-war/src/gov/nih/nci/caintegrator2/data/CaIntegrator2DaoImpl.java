@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -105,7 +106,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -257,6 +260,22 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
             return studySubjectAssignmentCrit.list();
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
+    public Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study) {
+        Set <Gene> geneSet = new HashSet<Gene>();
+        geneSet.addAll(
+                (List<Gene>) getCurrentSession().createCriteria(Gene.class).
+                    add(Restrictions.like("symbol", criterion.getGeneSymbol())).
+                        createCriteria("reporterCollection").
+                        createCriteria("reporterSet").
+                        createCriteria("arrayDataCollection").
+                    add(Restrictions.eq("study", study)).list());
+        return geneSet;
     }
     
     /**

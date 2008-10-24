@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
@@ -219,6 +221,16 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             && !manageQueryHelper.configureImageSeriesQueryCriterionRow()) {
                 addActionError("There are no image series annotations defined for this study.");
         }
+        
+        if (EntityTypeEnum.GENEEXPRESSION.getValue().equals(this.selectedRowCriterion)) {
+            if (!manageQueryHelper.configureGeneExpressionCriterionRow()) {
+                addActionError("There are no gene expression annotations defined for this study.");
+            } else {
+                // Turn it into a genomic query type, by default, if they add a genomic row.
+                manageQueryHelper.setResultType(ResultTypeEnum.GENOMIC.getValue());
+            }
+        }
+            
 
         return SUCCESS;
     }
@@ -255,9 +267,15 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * @return the Struts result.
      */
     public String executeQuery() {
-                
-        QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
-        setQueryResult(new DisplayableQueryResult(result));        
+        if (ResultTypeEnum.GENOMIC.getValue().equals(manageQueryHelper.getResultType())) {
+            GenomicDataQueryResult genomicResult =  
+                manageQueryHelper.executeGenomicQuery(queryManagementService, 
+                                                      selectedBasicOperator);
+            setGenomicDataQueryResult(genomicResult);
+        } else {
+            QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
+            setQueryResult(new DisplayableQueryResult(result));
+        }
         return SUCCESS;
     }
     
@@ -488,7 +506,4 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     public void setSearchDescription(String searchDescription) {
         this.searchDescription = searchDescription;
     }
-
-        
-    
 }

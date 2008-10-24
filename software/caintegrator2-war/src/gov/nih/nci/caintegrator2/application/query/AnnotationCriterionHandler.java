@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -256,7 +257,7 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
         return Collections.emptySet();
     }
 

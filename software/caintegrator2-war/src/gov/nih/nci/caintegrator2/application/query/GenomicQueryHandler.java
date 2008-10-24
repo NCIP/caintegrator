@@ -218,8 +218,10 @@ class GenomicQueryHandler {
     private Collection<ArrayData> getArrayDatas(Set<ResultRow> rows, ReporterTypeEnum reporterType) {
         Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
-            arrayDatas.addAll(
-                    getArrayDatas(row.getSampleAcquisition().getSample().getArrayDataCollection(), reporterType));
+            if (row.getSampleAcquisition() != null) {
+                arrayDatas.addAll(
+                        getArrayDatas(row.getSampleAcquisition().getSample().getArrayDataCollection(), reporterType));
+            }
         }
         return arrayDatas;
     }
@@ -230,9 +232,10 @@ class GenomicQueryHandler {
         Iterator<ArrayData> iterator = arrayDataCollection.iterator();
         while (iterator.hasNext()) {
             ArrayData arrayData = iterator.next();
-            if (reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
-                matchingArrayDatas.add(arrayData);
-            }
+                if (arrayData.getReporterSet() != null
+                    && reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
+                    matchingArrayDatas.add(arrayData);
+                }
         }
         return matchingArrayDatas;
     }
@@ -245,7 +248,8 @@ class GenomicQueryHandler {
     private Collection<AbstractReporter> getMatchingReporters() {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (criterionHandler.hasReporterCriterion()) {
-            return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy());
+            return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
+                    ReporterTypeEnum.getByValue(query.getReporterType()));
         } else {
             return getAllReporters();
         }
