@@ -94,7 +94,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 7200)
+@Transactional(timeout = 14400)
 public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegration {
     
     private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
