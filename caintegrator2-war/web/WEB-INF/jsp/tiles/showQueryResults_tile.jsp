@@ -19,15 +19,52 @@
             <input type="button" id="resultsnum" value="Apply" />
         </div>
 
-
-        
-                 <s:property value="query.description"/><br>  
-                 <br>
+            <s:property value="query.description"/><br>  
+            <br>
             <table class="data">
-                 
-                 <s:if test='%{query.resultType.equals("genomic")}'>
-                 </s:if>
-                 <s:else>
+
+			<s:if test='%{query.resultType.equals("genomic")}'>
+			    <tr>
+			        <td/><td/>
+			        <th>
+			        Patient ID
+			        </th>
+                    <s:iterator value="genomicDataQueryResult.columnCollection">
+                        <td><b><s:property value="sampleAcquisition.assignment.identifier"/></b></td>
+                    </s:iterator>
+                </tr>
+                <tr>
+                    <td/><td/>
+                    <th>
+                    Sample ID
+                    </th>
+                    <s:iterator value="genomicDataQueryResult.columnCollection">
+                        <td><b><s:property value="sampleAcquisition.sample.name"/></b></td>
+                    </s:iterator>
+                </tr>
+                <tr/>
+                <tr>
+                    <th>Gene Name</th>
+                    <th>Probe Set</th>
+                </tr>
+				<s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+					<s:if test="#status.odd == true">
+						<tr class="odd">
+					</s:if>
+					<s:else>
+						<tr class="even">
+					</s:else>
+					<td><b><s:property value="reporter.gene.symbol"/></b></td>
+					<td><b><s:property value="reporter.name"/></b></td>
+					<td/>
+					<s:iterator value="valueCollection">
+						<td>
+							<s:property value="value" />
+						</td>
+					</s:iterator>
+				</s:iterator>
+			</s:if>
+			<s:else>
                 <tr>
                     <s:if test="queryResult.hasSubjects" >
                         <th>Subject Identifier</th>

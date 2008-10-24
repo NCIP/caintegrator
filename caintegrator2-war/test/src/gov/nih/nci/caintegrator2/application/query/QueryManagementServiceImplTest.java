@@ -127,7 +127,6 @@ public class QueryManagementServiceImplTest {
 
     private QueryManagementServiceImpl queryManagementService;
     private CaIntegrator2DaoStub dao;
-    private ArrayDataServiceStub arrayDataService;
     private Query query;
     
     @Before
@@ -135,7 +134,7 @@ public class QueryManagementServiceImplTest {
         dao = new CaIntegrator2DaoStub();
         ResultHandler resultHandler = new ResultHandlerImpl();
         dao.clear();
-        arrayDataService = new ArrayDataServiceStub();
+        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub();
         queryManagementService = new QueryManagementServiceImpl();
         queryManagementService.setDao(dao);
         queryManagementService.setArrayDataService(arrayDataService);
@@ -156,6 +155,7 @@ public class QueryManagementServiceImplTest {
     }
     
     @Test
+    @SuppressWarnings("PMD")
     public void testExecuteGenomicDataQuery() {
         GenomicDataTestDaoStub daoStub = new GenomicDataTestDaoStub();
         queryManagementService.setDao(daoStub);
@@ -189,13 +189,17 @@ public class QueryManagementServiceImplTest {
         Gene gene = new Gene();
         gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter = new GeneExpressionReporter();
+        ReporterSet reporterSet = new ReporterSet();
+        reporter.setReporterSet(reporterSet);
+        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         gene.getReporterCollection().add(reporter);
         geneCriterion.setGene(gene);
         query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
         ArrayDataMatrix matrix = new ArrayDataMatrix();
-        matrix.setReporterSet(new ReporterSet());
+        matrix.setReporterSet(reporterSet);
         matrix.getReporterSet().setReporters(new HashSet<AbstractReporter>());
         matrix.getReporterSet().getReporters().add(reporter);
+        reporter.setReporterSet(reporterSet);
         matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         arrayData.setReporterSet(matrix.getReporterSet());
         arrayData2.setReporterSet(new ReporterSet());

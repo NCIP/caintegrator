@@ -85,14 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.*;
-
-import java.util.HashSet;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneList;
 import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+
+import java.util.HashSet;
 
 import org.junit.Test;
 
@@ -104,16 +107,23 @@ public class GeneListCriterionHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD")
     public void testGetReporterMatches() {
         GeneListCriterion criterion = new GeneListCriterion();
         GeneList geneList = new GeneList();
         geneList.setGeneCollection(new HashSet<Gene>());
         Gene gene1 = new Gene();
+        ReporterSet reporterSet1 = new ReporterSet();
+        reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
+        ReporterSet reporterSet2 = new ReporterSet();
+        reporterSet2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         gene1.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
+        reporter1.setReporterSet(reporterSet1);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
         reporter2.setId(2L);
+        reporter2.setReporterSet(reporterSet2);
         gene1.getReporterCollection().add(reporter1);
         gene1.getReporterCollection().add(reporter2);
         geneList.getGeneCollection().add(gene1);
@@ -121,11 +131,19 @@ public class GeneListCriterionHandlerTest {
         gene2.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter3 = new GeneExpressionReporter();
         reporter3.setId(3L);
+        reporter3.setReporterSet(reporterSet2);
         gene2.getReporterCollection().add(reporter3);
         geneList.getGeneCollection().add(gene2);
         criterion.setGeneList(geneList);
         GeneListCriterionHandler handler = GeneListCriterionHandler.create(criterion);
-        assertEquals(3, handler.getReporterMatches(null, null).size());
+        assertEquals(1, handler.getReporterMatches(null, null, ReporterTypeEnum.GENE_EXPRESSION_GENE).size());
+        assertEquals(2, handler.getReporterMatches(null, null, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).size());
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testGetReporterMatchesNoReporterType() {
+        GeneListCriterionHandler handler = GeneListCriterionHandler.create(new GeneListCriterion());
+        handler.getReporterMatches(null, null, null);
     }
 
     @Test

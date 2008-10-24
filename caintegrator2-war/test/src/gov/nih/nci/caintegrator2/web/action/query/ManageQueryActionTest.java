@@ -90,10 +90,10 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -224,8 +224,8 @@ public class ManageQueryActionTest {
         
         // test execute query
         manageQueryAction.setSelectedAction("executeQuery");
-        //manageQueryAction.getManageQueryHelper().setResultType(ResultTypeEnum.GENOMIC.getValue());
-        //manageQueryAction.getManageQueryHelper().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        manageQueryAction.getManageQueryHelper().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        manageQueryAction.getManageQueryHelper().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         manageQueryAction.prepare();
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());

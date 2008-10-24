@@ -113,7 +113,6 @@ import com.opensymphony.xwork2.ActionContext;
 public class ManageQueryHelperTest {
 
     private ManageQueryHelper manageQueryHelper;
-    //private QueryCriteriaRow queryCriteriaRow = new QueryCriteriaRow();
     private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
     private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
@@ -160,7 +159,7 @@ public class ManageQueryHelperTest {
         
         assertTrue(manageQueryHelper.configureClinicalQueryCriterionRow());
         assertTrue(manageQueryHelper.configureImageSeriesQueryCriterionRow());
-        //assertTrue(manageQueryHelper.configureGeneExpressionCriterionRow());
+        assertTrue(manageQueryHelper.configureGeneExpressionCriterionRow());
         
         manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());

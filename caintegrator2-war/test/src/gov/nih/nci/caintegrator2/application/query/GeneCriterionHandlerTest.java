@@ -88,9 +88,11 @@ package gov.nih.nci.caintegrator2.application.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 
 import java.util.HashSet;
 
@@ -109,14 +111,27 @@ public class GeneCriterionHandlerTest {
         Gene gene = new Gene();
         gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
+        ReporterSet reporterSet1 = new ReporterSet();
+        reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         reporter1.setId(1L);
+        reporter1.setReporterSet(reporterSet1);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
+        ReporterSet reporterSet2 = new ReporterSet();
+        reporterSet2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         reporter2.setId(2L);
+        reporter2.setReporterSet(reporterSet2);
         gene.getReporterCollection().add(reporter1);
         gene.getReporterCollection().add(reporter2);
         criterion.setGene(gene);
         GeneCriterionHandler handler = GeneCriterionHandler.create(criterion);
-        assertEquals(2, handler.getReporterMatches(null, null).size());
+        assertEquals(1, handler.getReporterMatches(null, null, ReporterTypeEnum.GENE_EXPRESSION_GENE).size());
+        assertEquals(1, handler.getReporterMatches(null, null, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).size());
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testGetReporterMatchesNoReporterType() {
+        GeneCriterionHandler handler = GeneCriterionHandler.create(new GeneCriterion());
+        handler.getReporterMatches(null, null, null);
     }
 
     @Test

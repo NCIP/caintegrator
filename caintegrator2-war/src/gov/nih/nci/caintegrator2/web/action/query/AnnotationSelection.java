@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.query.GenomicAnnotationEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -102,6 +103,7 @@ import java.util.Map;
  */
 public class AnnotationSelection {
     private Collection<AnnotationDefinition> annotationDefinitions = new HashSet<AnnotationDefinition>();
+    private Collection<GenomicAnnotationEnum> genomicAnnotationDefinitions = new HashSet<GenomicAnnotationEnum>();
     private List<String> annotationSelections = new ArrayList<String>();
      private List<String> currentAnnotationOperatorSelections = new ArrayList<String>();
     private List<String> stringAnnotationDisplayOperatorList = new ArrayList<String>();
@@ -291,6 +293,20 @@ public class AnnotationSelection {
         numericAnnotationDisplayOperatorList.add(">=");
         ((ArrayList<String>) numericAnnotationDisplayOperatorList).trimToSize();
         
+    }
+
+    /**
+     * @return the genomicAnnotationDefinitions
+     */
+    public Collection<GenomicAnnotationEnum> getGenomicAnnotationDefinitions() {
+        return genomicAnnotationDefinitions;
+    }
+
+    /**
+     * @param genomicAnnotationDefinitions the genomicAnnotationDefinitions to set
+     */
+    public void setGenomicAnnotationDefinitions(Collection<GenomicAnnotationEnum> genomicAnnotationDefinitions) {
+        this.genomicAnnotationDefinitions = genomicAnnotationDefinitions;
     }
 
 }

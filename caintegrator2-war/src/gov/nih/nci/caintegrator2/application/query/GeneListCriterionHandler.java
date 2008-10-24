@@ -85,12 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collections;
@@ -100,6 +102,7 @@ import java.util.Set;
 /**
  * Handler that matches a single Gene.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See getReporterMatches()
 final class GeneListCriterionHandler extends AbstractCriterionHandler {
 
     private final GeneListCriterion criterion;
@@ -120,10 +123,18 @@ final class GeneListCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Lots of null checks.
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
+        if (reporterType == null) {
+            throw new IllegalArgumentException("ReporterType is not set.");
+        }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (Gene gene : criterion.getGeneList().getGeneCollection()) {
-            reporters.addAll(gene.getReporterCollection());
+            for (GeneExpressionReporter reporter : gene.getReporterCollection()) {
+                if (reporterType.getValue().equals(reporter.getReporterSet().getReporterType())) {
+                    reporters.add(reporter);
+                }
+            }
         }
         return reporters;
 

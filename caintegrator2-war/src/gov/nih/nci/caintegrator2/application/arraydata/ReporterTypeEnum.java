@@ -51,6 +51,20 @@ public enum ReporterTypeEnum {
     }
     
     /**
+     * Used in the JSP's to retrieve the displayable string version of the Enum values.
+     * Ex usage: 
+     * list="@gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum@getValueToDisplayableMap()" 
+     *              listKey="key" listValue="value"
+     * @return HashMap of EnumeratedValue's String to Displayable String. 
+     */
+    public static Map<String, String> getValueToDisplayableMap() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue(), "Probe Set");
+        map.put(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue(), "Gene");
+        return map;
+    }
+    
+    /**
      * Returns the <code>ReporterTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 

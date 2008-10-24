@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -112,9 +113,12 @@ abstract class AbstractCriterionHandler {
      * 
      * @param dao DAO to use
      * @param study being queried.
+     * @param reporterType reporter type to use.
      * @return the matching reporters.
      */
-    abstract Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study);
+    abstract Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, 
+                                                      Study study, 
+                                                      ReporterTypeEnum reporterType);
 
     /**
      * Determines whether this handler provides reporter matches.

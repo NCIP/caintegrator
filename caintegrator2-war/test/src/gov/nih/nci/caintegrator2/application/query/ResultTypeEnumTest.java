@@ -101,5 +101,11 @@ public class ResultTypeEnumTest {
     public void testCheckType() {
         ResultTypeEnum.checkType("not found");
     }
+    
+    @Test
+    public void testGetValueToDisplayableMap() {
+        assertEquals("Clinical", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.CLINICAL.getValue()));
+        assertEquals("Genomic", ResultTypeEnum.getValueToDisplayableMap().get(ResultTypeEnum.GENOMIC.getValue()));
+    }
 
 }
