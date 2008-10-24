@@ -204,6 +204,8 @@ public class CaArrayFacadeTest {
             reporters.setReporters(new HashSet<AbstractReporter>());
             reporters.getReporters().add(reporter1);
             reporters.getReporters().add(reporter2);
+            reporter1.setReporterSet(reporters);
+            reporter2.setReporterSet(reporters);
             return  platform;
         }
         

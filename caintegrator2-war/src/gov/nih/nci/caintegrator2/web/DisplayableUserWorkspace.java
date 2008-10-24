@@ -259,6 +259,9 @@ public class DisplayableUserWorkspace {
      */
     public void setQueryResult(DisplayableQueryResult queryResult) {
         this.queryResult = queryResult;
+        if (queryResult != null) {
+            this.setQuery(queryResult.getQuery());
+        }
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, queryResult);
     }
 
@@ -274,6 +277,9 @@ public class DisplayableUserWorkspace {
      */
     public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         this.genomicDataQueryResult = genomicDataQueryResult;
+        if (genomicDataQueryResult != null) {
+            this.setQuery(genomicDataQueryResult.getQuery());
+        }
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, genomicDataQueryResult);
     }
 

@@ -85,11 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.GenomicAnnotationEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -110,6 +113,7 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * Helper class for ManageQueryAction.
  */
+@SuppressWarnings("PMD.ExcessiveClassLength") // This needs to be refactored to use a Form object
 final class ManageQueryHelper {
     /**
      * String to use to store and retrieve this object from session.
@@ -117,12 +121,16 @@ final class ManageQueryHelper {
     static final String MANAGE_QUERY_HELPER_STRING = "manageQueryHelper";
     
     private boolean advancedView = false;
-    private List<QueryAnnotationCriteria> queryCriteriaRowList;
+    private List<QueryAnnotationCriteria> queryCriteriaRowList = new ArrayList<QueryAnnotationCriteria>();
     private Collection<AnnotationDefinition> clinicalAnnotationDefinitions;
     private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
     private Collection<AnnotationDefinition> imageAnnotationDefinitions;
+    private final Collection<GenomicAnnotationEnum> genomicAnnotationDefinitions = new HashSet<GenomicAnnotationEnum>();
     private AnnotationSelection clinicalAnnotationSelections;
     private AnnotationSelection imageSeriesAnnotationSelections;
+    private AnnotationSelection genomicAnnotationSelections;
+    private String resultType = ResultTypeEnum.CLINICAL.getValue();
+    private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     private boolean prepopulated;
     private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
     private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
@@ -183,10 +191,6 @@ final class ManageQueryHelper {
      * @return the queryCriteriaRowList
      */
     public List<QueryAnnotationCriteria> getQueryCriteriaRowList() {
-        if (this.queryCriteriaRowList == null) {
-            this.queryCriteriaRowList = new ArrayList<QueryAnnotationCriteria>(); 
-        }
-        
         return this.queryCriteriaRowList;
     }
 
@@ -197,7 +201,6 @@ final class ManageQueryHelper {
         this.queryCriteriaRowList = queryCriteriaRowList;
     }
     
-   
     /**
      * @param queryAnnotationCriteria the QueryAnnotationCriteria to add
      */
@@ -274,6 +277,7 @@ final class ManageQueryHelper {
         populateClinicalAnnotationDefinitions(study);
         populateImageSeriesAnnotationDefinitions(study);
         populateSampleAnnotationDefinitions(study);
+        populateGenomicAnnotationDefinitions();
         populateAnnotationSelections();
         setPrepopulated(true);
     }
@@ -281,7 +285,7 @@ final class ManageQueryHelper {
     private void populateAnnotationSelections() {
         populateClinicalAnnotationSelections();
         populateImageSeriesAnnotationSelections();
-
+        populateGenomicAnnotationSelections();
     }
     
     private void populateClinicalAnnotationDefinitions(Study study) {
@@ -320,6 +324,11 @@ final class ManageQueryHelper {
 //        }
     }
     
+    private void populateGenomicAnnotationDefinitions() {
+        genomicAnnotationDefinitions.add(GenomicAnnotationEnum.GENE_NAME);
+        genomicAnnotationDefinitions.add(GenomicAnnotationEnum.FOLD_CHANGE);
+    }
+    
     private void populateClinicalAnnotationSelections() {
         if (this.clinicalAnnotationSelections == null) {
             this.clinicalAnnotationSelections = new AnnotationSelection();
@@ -342,10 +351,29 @@ final class ManageQueryHelper {
         }
     }
     
+    private void populateGenomicAnnotationSelections() {
+        if (this.genomicAnnotationSelections == null) {
+            this.genomicAnnotationSelections = new AnnotationSelection();
+        }
+        if (genomicAnnotationDefinitions != null && !genomicAnnotationDefinitions.isEmpty()) {
+            List<String> annotationSelections = getGenomicDefinitionDisplayNames(genomicAnnotationDefinitions);
+            genomicAnnotationSelections.setAnnotationSelections(annotationSelections);
+            genomicAnnotationSelections.setGenomicAnnotationDefinitions(genomicAnnotationDefinitions);
+        }
+    }
+    
     private List<String> getDefinitionDisplayNames(Collection<AnnotationDefinition> annotationDefinitions) {
         List<String> annotationSelections = new ArrayList<String>();
         for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
             annotationSelections.add(annotationDefinition.getDisplayName());
+        }
+        return annotationSelections;
+    }
+    
+    private List<String> getGenomicDefinitionDisplayNames(Collection<GenomicAnnotationEnum> annotationDefinitions) {
+        List<String> annotationSelections = new ArrayList<String>();
+        for (GenomicAnnotationEnum annotationDefinition : annotationDefinitions) {
+            annotationSelections.add(annotationDefinition.getValue());
         }
         return annotationSelections;
     }
@@ -361,7 +389,7 @@ final class ManageQueryHelper {
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
         queryAnnotationCriteria.setAnnotationValue("");
-        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT); //TODO make clinical a constant
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         queryAnnotationCriteria.setRowLabel("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
         return true;
@@ -380,8 +408,27 @@ final class ManageQueryHelper {
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
         queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections());
         queryAnnotationCriteria.setAnnotationValue("");
-        queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES); //TODO make clinical a constant
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES);
         queryAnnotationCriteria.setRowLabel("Image");
+        this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
+        return true;
+    }
+    
+    /**
+     * Configures image series row.
+     * @return true/false depending on if there's anything to add (any image series data for study).
+     */
+    boolean configureGeneExpressionCriterionRow() {
+        if (getGenomicAnnotationSelections() == null 
+                || getGenomicAnnotationSelections().getGenomicAnnotationDefinitions().isEmpty()) {
+               return false;
+           }
+        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
+        //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getGenomicAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationValue("");
+        queryAnnotationCriteria.setRowType(EntityTypeEnum.GENEEXPRESSION);
+        queryAnnotationCriteria.setRowLabel("Gene");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
         return true;
     }
@@ -504,6 +551,21 @@ final class ManageQueryHelper {
     }
     
     /**
+     * @param queryManagementService A QueryManagementService instance
+     * @param basicQueryOperator String AND or OR
+     * @param reporterType this is the type of reporter to use.
+     * @return QueryResult Valid results from the query execution, or null 
+     */
+    GenomicDataQueryResult executeGenomicQuery(QueryManagementService queryManagementService, 
+                                               String basicQueryOperator) {
+        GenomicDataQueryResult queryResult = null;
+
+        queryResult = createQueryHelper(basicQueryOperator).executeGenomicQuery(queryManagementService,
+                this.getQueryCriteriaRowList(), ReporterTypeEnum.getByValue(reporterType));
+        return queryResult;
+    }
+    
+    /**
      * Saves the query based on the queryCriteriaRowList.
      * @param queryManagementService - service object to pass to the query helper.
      * @param basicQueryOperator - String AND or OR.
@@ -515,11 +577,13 @@ final class ManageQueryHelper {
                              String basicQueryOperator,
                              String queryName, 
                              String queryDescription) {
-        
-        Query query = createQueryHelper(basicQueryOperator).buildQuery(queryManagementService,
-                getQueryCriteriaRowList(), queryName, queryDescription, getColumnCollection());
+        QueryHelper queryHelper = createQueryHelper(basicQueryOperator);
+        queryHelper.setReporterType(ReporterTypeEnum.getByValue(reporterType));
+        Query query = queryHelper.buildQuery(queryManagementService,
+                getQueryCriteriaRowList(), queryName, queryDescription, ResultTypeEnum.getByValue(resultType), 
+                getColumnCollection());
         if (query != null) {
-            query.setResultType(ResultTypeEnum.CLINICAL.getValue());
+            query.setResultType(resultType);
             if (SessionHelper.getInstance().getDisplayableUserWorkspace() != null
                     && SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription() != null
                     && SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription()
@@ -587,7 +651,7 @@ final class ManageQueryHelper {
         this.allAnnotationDefinitionsMap = allAnnotationDefinitionsMap;
     }
 
-    /**
+     /**
      * @return the columnCollection
      */
     public Collection<ResultColumn> getColumnCollection() {
@@ -602,5 +666,46 @@ final class ManageQueryHelper {
     }
 
     
-    
+
+    /**
+     * @return the genomicAnnotationSelections
+     */
+    public AnnotationSelection getGenomicAnnotationSelections() {
+        return genomicAnnotationSelections;
+    }
+
+    /**
+     * @param genomicAnnotationSelections the genomicAnnotationSelections to set
+     */
+    public void setGenomicAnnotationSelections(AnnotationSelection genomicAnnotationSelections) {
+        this.genomicAnnotationSelections = genomicAnnotationSelections;
+    }
+
+    /**
+     * @return the resultType
+     */
+    public String getResultType() {
+        return resultType;
+    }
+
+    /**
+     * @param resultType the resultType to set
+     */
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    public String getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(String reporterType) {
+        this.reporterType = reporterType;
+    }
 }

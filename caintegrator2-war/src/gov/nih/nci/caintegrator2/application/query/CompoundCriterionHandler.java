@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -94,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -136,6 +138,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(GeneCriterionHandler.create((GeneCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof GeneListCriterion) {
                     handlers.add(GeneListCriterionHandler.create((GeneListCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof GeneNameCriterion) {
+                    handlers.add(GeneNameCriterionHandler.create((GeneNameCriterion) abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
@@ -224,11 +228,11 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
     }
 
     @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study) {
+    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
         Set<AbstractReporter> reporters = null;
         for (AbstractCriterionHandler handler : handlers) {
             if (handler.isReporterMatchHandler()) {
-                reporters = getCombinedReporterMatches(reporters, handler.getReporterMatches(dao, study));
+                reporters = getCombinedReporterMatches(reporters, handler.getReporterMatches(dao, study, reporterType));
             }
         }
         return reporters;

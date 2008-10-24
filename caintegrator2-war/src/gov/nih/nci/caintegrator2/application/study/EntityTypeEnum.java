@@ -27,7 +27,12 @@ public enum EntityTypeEnum {
     /**
      * Image type.
      */
-    IMAGE("image");
+    IMAGE("image"),
+    
+    /**
+     * Gene Expression Type.
+     */
+    GENEEXPRESSION("geneExpression");
     
     private static Map<String, EntityTypeEnum> valueToTypeMap = new HashMap<String, EntityTypeEnum>();
 

@@ -119,10 +119,16 @@ public final class ReporterSetGenerator extends AbstractTestDataGenerator<Report
 
     @Override
     public void setValues(ReporterSet reporterSet) {
-        
+        if (reporterSet.getReporters() != null) {
+            for (AbstractReporter reporter : reporterSet.getReporters()) {
+                reporter.setReporterSet(null);
+            }
+        }
         reporterSet.setReporters(new HashSet<AbstractReporter>());
-        reporterSet.getReporters().add(GeneExpressionReporterGenerator.INSTANCE.createPersistentObject());
-        
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.setReporterSet(reporterSet);
+        GeneExpressionReporterGenerator.INSTANCE.setValues(reporter);
+        reporterSet.getReporters().add(reporter);
         
 
     }

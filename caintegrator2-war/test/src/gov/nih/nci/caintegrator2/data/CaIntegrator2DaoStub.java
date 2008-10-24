@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
@@ -106,6 +107,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
@@ -123,6 +125,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getArrayDataMatrixesCalled;
     public boolean getWorkspaceCalled;
     public boolean removeObjectsCalled;
+    public boolean findMatchingGenesCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -151,6 +154,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         timepoint.setId(Long.valueOf(1));
         getWorkspaceCalled = false;
         removeObjectsCalled = false;
+        findMatchingGenesCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -256,6 +260,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     @SuppressWarnings({"unchecked"})
     public void removeObjects(Collection objects) {
         removeObjectsCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study) {
+        findMatchingGenesCalled = true;
+        return Collections.emptySet();
     }
 
 }

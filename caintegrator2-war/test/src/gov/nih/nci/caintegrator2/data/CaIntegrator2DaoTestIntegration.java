@@ -92,11 +92,15 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -311,6 +315,30 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         List<StudySubjectAssignment> matchingStudySubjectAssignments2 = dao.findMatchingSubjects(criterion2, study);
         
         assertEquals(0, matchingStudySubjectAssignments2.size());
+    }
+    
+    @Test
+    public void testFindMatchingGenes() {
+        Study study = new Study();
+        GeneNameCriterion criterion = new GeneNameCriterion();
+        criterion.setGeneSymbol("TEST");
+        Gene gene = new Gene();
+        gene.setSymbol("TEST");
+        Collection<GeneExpressionReporter> reporterCollection = new HashSet<GeneExpressionReporter>();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        ReporterSet reporterSet = new ReporterSet();
+        Collection<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
+        ArrayData arrayData = new ArrayData();
+        arrayData.setStudy(study);
+        arrayDataCollection.add(arrayData);
+        reporterSet.setArrayDataCollection(arrayDataCollection);
+        reporter.setReporterSet(reporterSet);
+        reporterCollection.add(reporter);
+        gene.setReporterCollection(reporterCollection);
+        reporter.setGene(gene);
+        dao.save(study);
+        dao.save(gene);
+        assertEquals(1, dao.findMatchingGenes(criterion, study).size());
     }
     
     @Test

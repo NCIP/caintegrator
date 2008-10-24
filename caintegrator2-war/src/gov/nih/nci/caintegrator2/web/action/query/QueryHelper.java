@@ -85,7 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.GenomicAnnotationEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
@@ -94,6 +97,9 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -109,28 +115,47 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
-
 /**
  * Helper class to construct queries.
  */
 public class QueryHelper {
     private boolean advancedView = false;
     private String basicQueryOperator = "";
+    private ReporterTypeEnum reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
     
     /**
      * @param queryManagementService A QueryManagementService instance
-     * @param rowObjList list of populated QueryAnnotationCriteria (query row criteria).
+     * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
      * @param resultColumns Columns that are to be displayed in the  Result page
      * @return QueryResult Valid results from the query execution, or null 
-     * 
      */
     public QueryResult executeQuery(QueryManagementService queryManagementService, 
             List<QueryAnnotationCriteria> rowObjList, Collection<ResultColumn> resultColumns) {
         QueryResult queryResult = null;
                
-        Query query = buildQuery(queryManagementService, rowObjList, null, null, resultColumns);
+        Query query = buildQuery(queryManagementService, rowObjList, null, null, ResultTypeEnum.CLINICAL, 
+                                    resultColumns);
         queryResult = queryManagementService.execute(query);
+        
+        return queryResult;
+    }
+    
+    /**
+     * @param queryManagementService A QueryManagementService instance
+     * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
+     * @param reporterTypeToUse - type of reporter for a genomic query.
+     * @return GenomicDataQueryResult Valid results from the query execution, or null 
+     */
+    public GenomicDataQueryResult executeGenomicQuery(QueryManagementService queryManagementService, 
+                                                      List<QueryAnnotationCriteria> rowObjList, 
+                                                      ReporterTypeEnum reporterTypeToUse) {
+        GenomicDataQueryResult queryResult = null;
+        if (reporterTypeToUse != null) {
+            reporterType = reporterTypeToUse;
+        }
+        Query query = buildQuery(queryManagementService, rowObjList, null, null, ResultTypeEnum.GENOMIC,
+                                new HashSet<ResultColumn>());
+        queryResult = queryManagementService.executeGenomicDataQuery(query);
         
         return queryResult;
     }
@@ -140,18 +165,22 @@ public class QueryHelper {
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
      * @param queryName The name of the query.
      * @param queryDescription The description of the query.
+     * @param resultType The result type (clinical or genomic) for the query.
      * @param resultColumns Columns that are to be displayed in the  Result page
      * @return Query An instantiated, populated Query object.
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public Query buildQuery(QueryManagementService queryManagementService,
             List<QueryAnnotationCriteria> rowObjList,
             String queryName,
             String queryDescription,
+            ResultTypeEnum resultType,
             Collection<ResultColumn> resultColumns) {
         Query query = null;
         
         if (!advancedView) {
-            query = buildBasicQuery(queryManagementService, rowObjList, queryName, queryDescription, resultColumns);
+            query = buildBasicQuery(queryManagementService, rowObjList, queryName, queryDescription, resultType, 
+                    resultColumns);
         }
         // TODO Advanced query
         
@@ -164,6 +193,7 @@ public class QueryHelper {
      * @param rowObjList A list of populated QueryAnnotationCriteria (query row criteria).
      * @param queryName The name of the query.
      * @param queryDescription The description of the query.
+     * @param resultType The result type (clinical or genomic) for the query.
      * @param resultColumns Columns that are to be displayed in the  Result page
      * @return Query An instantiated, populated Query object.
      */
@@ -172,6 +202,7 @@ public class QueryHelper {
             List<QueryAnnotationCriteria> rowObjList,
             String queryName,
             String queryDescription,
+            ResultTypeEnum resultType,
             Collection<ResultColumn> resultColumns) {
         Query query = null;
         CompoundCriterion compoundCriterion = new CompoundCriterion();
@@ -203,7 +234,11 @@ public class QueryHelper {
         query.setName(queryName);
         query.setDescription(queryDescription);
         query.setCompoundCriterion(compoundCriterion);
-        query.setResultType(EntityTypeEnum.SUBJECT.getValue());
+        query.setResultType(resultType.getValue());
+        
+        if (ResultTypeEnum.GENOMIC.equals(resultType)) {
+            query.setReporterType(reporterType.getValue());
+        }
         StudySubscription studySubscription = 
             SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription();
         query.setSubscription(studySubscription);
@@ -247,42 +282,86 @@ public class QueryHelper {
     private AbstractCriterion buildCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         // Initialize the CompoundCriterion
         AbstractCriterion abstractCriterion = null;
+        
+        if (EntityTypeEnum.GENEEXPRESSION.equals(queryAnnotationCriteria.getRowType())) {
+            abstractCriterion = buildGenomicCriterion(queryAnnotationCriteria);
+        } else {
+            abstractCriterion = buildClinicalCriterion(queryAnnotationCriteria);    
+        }
+        return abstractCriterion;
+    }
+
+    private AbstractCriterion buildClinicalCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+        AbstractCriterion abstractCriterion = new AbstractCriterion();
         String queryType = getQueryType(queryAnnotationCriteria);
         if ("string".equals(queryType)) {
-            abstractCriterion = buildStringCriterion(queryAnnotationCriteria, queryAnnotationCriteria.getRowType());
+            abstractCriterion = buildStringCriterion(queryAnnotationCriteria);
         } else if ("numeric".equals(queryType)) {
-            abstractCriterion = buildNumericCriterion(queryAnnotationCriteria, queryAnnotationCriteria.getRowType());
+            abstractCriterion = buildNumericCriterion(queryAnnotationCriteria);
         }
+        return abstractCriterion;
+    }
 
+    /**
+     * @param queryAnnotationCriteria
+     * @return
+     */
+    private AbstractCriterion buildGenomicCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+        AbstractCriterion abstractCriterion;
+        GenomicAnnotationEnum genomicAnnotationType = GenomicAnnotationEnum.
+                         getByValue(queryAnnotationCriteria.getAnnotationSelection());
+        switch(genomicAnnotationType) {
+        case GENE_NAME:
+            abstractCriterion = buildGeneNameCriterion(queryAnnotationCriteria);
+            break;
+        case FOLD_CHANGE:
+            abstractCriterion = buildFoldChangeCriterion(queryAnnotationCriteria);
+            break;
+        default:
+            throw new IllegalStateException("Unknown genomic annotation type ==> " 
+                                 + queryAnnotationCriteria.getAnnotationSelection());
+        }
+        
         return abstractCriterion;
     }
     
-    private StringComparisonCriterion buildStringCriterion(QueryAnnotationCriteria queryAnnotationCriteria, 
-                                                            EntityTypeEnum type) {
+    private StringComparisonCriterion buildStringCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         StringComparisonCriterion sCriterion = new StringComparisonCriterion();
         
         sCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
         sCriterion.setWildCardType(getWildCardType(queryAnnotationCriteria.getAnnotationOperatorSelection()));
-        sCriterion.setEntityType(type.getValue());
+        sCriterion.setEntityType(queryAnnotationCriteria.getRowType().getValue());
         sCriterion.setStringValue(queryAnnotationCriteria.getAnnotationValue());
         
         return sCriterion;
     }
     
-    private NumericComparisonCriterion buildNumericCriterion(QueryAnnotationCriteria queryAnnotationCriteria, 
-                                                             EntityTypeEnum type) {
+    private NumericComparisonCriterion buildNumericCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         NumericComparisonCriterion nCriterion = new NumericComparisonCriterion();
         
         nCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
         nCriterion.setNumericComparisonOperator((NumericComparisonOperatorEnum.getByValue(
                 queryAnnotationCriteria.getAnnotationOperatorSelection()).getValue()));
-        nCriterion.setEntityType(type.getValue());
+        nCriterion.setEntityType(queryAnnotationCriteria.getRowType().getValue());
         nCriterion.setNumericValue(Double.valueOf(queryAnnotationCriteria.getAnnotationValue()));
         
         return nCriterion;
     }
     
-    @SuppressWarnings({ "PMD", "unchecked" })
+    private GeneNameCriterion buildGeneNameCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+        GeneNameCriterion criterion = new GeneNameCriterion();
+        criterion.setGeneSymbol(queryAnnotationCriteria.getAnnotationValue());
+        
+        return criterion;
+    }
+    
+    
+    private FoldChangeCriterion buildFoldChangeCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setFolds((Float.valueOf(queryAnnotationCriteria.getAnnotationValue())));
+        return criterion;
+    }
+    
     private AnnotationDefinition getAnnotationDefinition(QueryAnnotationCriteria queryAnnotationCriteria) {
         AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
         for (AnnotationDefinition definition : annoHelper.getAnnotationDefinitions()) {
@@ -294,8 +373,6 @@ public class QueryHelper {
         
         return new AnnotationDefinition();
     }
-
-
 
     
             
@@ -368,6 +445,20 @@ public class QueryHelper {
      */
     public void setBasicQueryOperator(String basicQueryOperator) {
         this.basicQueryOperator = basicQueryOperator;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
     };
     
     

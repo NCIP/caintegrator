@@ -67,6 +67,10 @@
                 <!-- Associations mapping for the GeneCriterion class -->
                 <many-to-one name="gene" class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" lazy="proxy" cascade="save-update" />
             </joined-subclass>
+            <joined-subclass name="GeneNameCriterion" table="GENE_NAME_CRITERION" lazy="false">
+                <key column="ID" />
+                <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
+            </joined-subclass>
         </joined-subclass>
     </class>
 </hibernate-mapping>

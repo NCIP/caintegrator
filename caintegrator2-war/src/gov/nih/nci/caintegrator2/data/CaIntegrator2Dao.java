@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -100,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Main DAO interface for storage and retrieval of persistent entities.
@@ -183,6 +185,17 @@ public interface CaIntegrator2Dao {
      */
     List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study);
 
+    /**
+     * Returns the genes (via their linked <code>SampleAcquisitions</code> that match
+     * the corresponding criterion or GeneName and exist in the given study.
+     * 
+     * @param criterion finds genes that match the given criterion.
+     * @param study restrict the search to the given study.
+     * @return the list of matches.
+     */
+    Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study);
+
+    
     /**
      * Returns the definitions that matches the name given (if one exists).
      * 

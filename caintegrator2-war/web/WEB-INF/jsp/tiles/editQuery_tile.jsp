@@ -44,7 +44,7 @@ pageEncoding="ISO-8859-1" %>
                                 <option>&ndash; Select Criteria Type &ndash;</option>
 
                                 <option value="subject">Clinical</option>
-                                <option value="sample">Gene Expression</option>
+                                <option value="geneExpression">Gene Expression</option>
                                 <option value="imageSeries">Image Series</option>
                             </select>
                             
@@ -60,7 +60,13 @@ pageEncoding="ISO-8859-1" %>
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
                             <tr>
                             <td></td>
-                            <td><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                            <s:if test="!rowType.value.equals('geneExpression')">
+                                <td><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                            </s:if>
+                            <s:else>
+                                <td><s:select name="selectedAnnotations" list="annotationSelections.genomicAnnotationDefinitions" listValue="value" listKey="value" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                            </s:else>
+                            
                             <td><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
                             <td><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
                             </tr>
@@ -140,8 +146,18 @@ pageEncoding="ISO-8859-1" %>
 <!--/Search Criteria-->
 
 <!--Columns-->
+
+
     
 <div id="columns" class="box2" style="display:none;">
+        <h2>Select Results Display</h2>
+        <div>
+        <b>Select Result Type: </b>
+        <s:radio name="manageQueryHelper.resultType" list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()" listKey="key" listValue="value"></s:radio>
+        <br><br>
+        <b>Select Reporter Type: </b>
+        <s:radio name="manageQueryHelper.reporterType" list="@gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum@getValueToDisplayableMap()" listKey="key" listValue="value"></s:radio>
+        </div>
     
     <h2>Select Columns for Results</h2>
     
