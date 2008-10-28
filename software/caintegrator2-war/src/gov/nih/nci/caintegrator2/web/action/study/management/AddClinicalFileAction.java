@@ -104,9 +104,23 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isFileUpload() {
+        return true;
+    }     
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String execute()  {
         try {
+            
+            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
+            // in the prepare method of the abstract class, because prepareValueStack is breaking
+            // File Upload when prepareValueStack is called inside the prepare method.
+            prepareValueStack();
+            
             DelimitedTextClinicalSourceConfiguration clinicalSource = 
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
                         getClinicalFileFileName());
