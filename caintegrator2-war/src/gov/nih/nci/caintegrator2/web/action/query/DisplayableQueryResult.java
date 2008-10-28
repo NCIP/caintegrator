@@ -101,7 +101,7 @@ import java.util.Map;
  * Wraps access to a <code>QueryResult</code> object for easy use in display JSPs.
  */
 public final class DisplayableQueryResult {
-  
+    private static final int DEFAULT_PAGE_SIZE = 20;
     private static final Comparator<ResultColumn> COLUMN_COMPARATOR = new ColumnComparator();
     private final QueryResult result;
     private final List<String> headers = new ArrayList<String>();
@@ -110,6 +110,7 @@ public final class DisplayableQueryResult {
     private boolean hasSubjects;
     private boolean hasSamples;
     private boolean hasImageSeries;
+    private Integer pageSize;
     
     DisplayableQueryResult(QueryResult result) {
         this.result = result;
@@ -210,4 +211,21 @@ public final class DisplayableQueryResult {
 
     }
 
+
+    /**
+     * @return the pageSize
+     */
+    public int getPageSize() {
+        if (pageSize == null) {
+            return DEFAULT_PAGE_SIZE;
+        }
+        return pageSize;
+    }
+
+    /**
+     * @param pageSize the pageSize to set
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 }

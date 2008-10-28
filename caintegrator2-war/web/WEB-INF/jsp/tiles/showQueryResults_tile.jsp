@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
 
 <!--Search Results-->
 
@@ -9,14 +10,12 @@
         <h2>Search Results for: <s:property value="query.name"/></h2>
 
         <div class="tableheader">
-            <label for="numres">Results per Page:</label>
-            <select name="numres" id="numres">
-                <option>10</option>
-                <option selected="selected">20</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-            <input type="button" id="resultsnum" value="Apply" />
+            <label>Results per Page:</label>
+            <s:select name="queryResult.pageSize" list="{'10', '20', '50', '100'}" />
+            <s:a href="#"
+                onclick="document.manageQueryForm.selectedAction.value = 'updateResultsPerPage';document.manageQueryForm.submit();">
+                <span class="btn_img">Apply</span>
+            </s:a>
         </div>
 
             <s:property value="query.description"/><br>  
@@ -65,38 +64,31 @@
 				</s:iterator>
 			</s:if>
 			<s:else>
-                <tr>
-                    <s:if test="queryResult.hasSubjects" >
-                        <th>Subject Identifier</th>
+                <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}"/>
+                <display:table name="queryResult.rows" uid="queryResultRows" id="queryResultRows" 
+                               pagesize="${pageSizeVar}" sort="list" class="data" requestURI="" export="true" >
+                    <display:setProperty name="paging.banner.placement" value="both"/> 
+                	<s:if test="queryResult.hasSubjects" >
+                        <display:column title="Subject Identifier" sortable="true">
+                            <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
+                        </display:column>
                     </s:if>
                     <s:if test="queryResult.hasImageSeries" >
-                        <th>Image Series Identifier</th>
+                        <display:column title="Image Series Identifier" sortable="true">
+                            <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries != null}">
+	                            <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries.identifier}" />
+	                            <a href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>' target="_">View in NCIA</a>
+	                        </s:if>
+                        </display:column>
                     </s:if>
-                    <s:iterator value="queryResult.headers">
-                        <th><s:property /></th>
+                    
+                    <s:iterator value="queryResult.headers" status="status" id="column">
+                        <display:column title="${column}" sortable="true">
+                           <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).values.get(#status.count - 1)}"/>   
+                        </display:column>
                     </s:iterator>
-                </tr>
+                </display:table>
                 
-                <s:iterator value="queryResult.rows" status="status" >
-                    <s:if test="#status.odd == true">
-                      <tr class="odd">
-                    </s:if>
-                    <s:else>
-                      <tr class="even">
-                    </s:else>
-                        <s:if test="queryResult.hasSubjects" >
-                            <td><s:property value="subjectAssignment.identifier" /></td>
-                        </s:if>
-                        <s:if test="queryResult.hasImageSeries" >
-                            <td>
-                                <s:property value="imageSeries.identifier" />
-                                <a href='<s:property value="nciaLink" escape="false"/>' target="_">View in NCIA</a>
-                            </td>
-                        </s:if>
-                        <s:iterator value="values">
-                            <td><s:property /></td>
-                        </s:iterator>
-                </s:iterator>
                 </s:else>
             </table>
     
@@ -113,29 +105,6 @@
         </div>
         
         <!--/Buttons-->
-    
-        <!--Paging-->
-
-        <div class="pagecontrol">
-        
-            <p class="small">
-
-                Displaying 1-<s:property value="queryResult.numberOfRows"/> of <s:property value="queryResult.numberOfRows"/> Total.
-            </p>
-            
-            <div class="paging">
-
-                Page 1 
-
-
-                &nbsp;&nbsp;
-                &lt; Back <span class="bar">|</span> 
-                Next &gt;
-            </div>
-        
-        </div>
-        
-        <!--/Paging-->
 
                                                                                                             
     </div>

@@ -107,7 +107,6 @@ import org.apache.commons.lang.StringUtils;
 public class ManageQueryAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-    
     private QueryManagementService queryManagementService;
     private ManageQueryHelper manageQueryHelper;
     private String selectedAction = "";
@@ -121,7 +120,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private String searchDescription;
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
     private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
-    
         
     /**
      * The 'prepare' interceptor will look for this method enabling 
@@ -241,6 +239,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         } else if ("createNewQuery".equals(selectedAction)) {
             // call new query
             returnValue = SUCCESS;    
+        } else if ("updateResultsPerPage".equals(selectedAction)) {
+         // Does nothing right now, eventually might actually persist this value to db.
+            returnValue = SUCCESS;
         } else {
             returnValue = ERROR; 
         }     
