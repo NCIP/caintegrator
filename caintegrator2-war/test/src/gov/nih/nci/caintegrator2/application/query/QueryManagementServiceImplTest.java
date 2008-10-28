@@ -185,6 +185,7 @@ public class QueryManagementServiceImplTest {
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
+        study.setControlSampleCollection(new HashSet<Sample>());
         GeneCriterion geneCriterion = new GeneCriterion();
         Gene gene = new Gene();
         gene.setReporterCollection(new HashSet<GeneExpressionReporter>());

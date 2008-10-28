@@ -105,9 +105,13 @@ public class GenomicDataSourceConfigurationTest {
         sample1.setId(1L);
         Sample sample2 = new Sample();
         sample2.setId(2L);
+        Sample sample3 = new Sample();
+        sample3.setId(3L);
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         Study study = new Study();
         studyConfiguration.setStudy(study);
+        studyConfiguration.getStudy().setControlSampleCollection(new HashSet<Sample>());
+        study.getControlSampleCollection().add(sample3);
         studyConfiguration.getGenomicDataSources().add(configuration);
         configuration.setStudyConfiguration(studyConfiguration);
         study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
@@ -119,11 +123,14 @@ public class GenomicDataSourceConfigurationTest {
         sampleAcquisition.setSample(sample1);
         configuration.getSamples().add(sample1);
         configuration.getSamples().add(sample2);
-        assertEquals(2, configuration.getSamples().size());
+        configuration.getSamples().add(sample3);
+        assertEquals(3, configuration.getSamples().size());
         assertEquals(1, configuration.getUnmappedSamples().size());
         assertEquals(1, configuration.getMappedSamples().size());
+        assertEquals(1, configuration.getControlSamples().size());
         assertTrue(configuration.getMappedSamples().contains(sample1));
         assertTrue(configuration.getUnmappedSamples().contains(sample2));
+        assertTrue(configuration.getControlSamples().contains(sample3));
     }
 
 
