@@ -89,6 +89,7 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -102,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -121,13 +123,14 @@ public class ManageQueryActionTest {
     // Study objects
     private static final String selectedRowCriterion = "clinical";
     private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
-
+   
     // dummy string array for testing
     private final String [] selectedAnnotationsArray = {"annotation1", "annotation2"};
     private final String [] operatorsArray =  {"equals",">"};
     private final String [] selectedValuesArray = {"String1", "1.0"};
     private final Long [] holdLongArray = {Long.valueOf(12), Long.valueOf(4)};
-
+    private final Collection<AnnotationDefinition> clinicalAnnotationDefinitions = new HashSet<AnnotationDefinition>();
+    private final Collection<AnnotationDefinition> imageAnnotationDefinitions = new HashSet<AnnotationDefinition>();
     @Before
     @SuppressWarnings({"PMD"})
     public void setUp() {
@@ -136,12 +139,15 @@ public class ManageQueryActionTest {
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);
         manageQueryAction.setWorkspaceService(new WorkspaceServiceStub());
+        //manageQueryAction.getManageQueryHelper().setClinicalAnnotationDefinitions(clinicalAnnotationDefinitions);
+        //manageQueryAction.getManageQueryHelper().setImageAnnotationDefinitions(imageAnnotationDefinitions);
         setupSession();
         
         // the first time the parameter is null so
         // confirm that the getter method returns an empty array
         String[] emptyArray = {""};  // test the first time when the array is null
-        Long[] emptyLongArray = null;
+        Long[] nullLongArray = null;
+        Long[] emptyLongArray = new Long[0];
         assertArrayEquals(emptyArray,manageQueryAction.getSelectedAnnotations());
         manageQueryAction.setSelectedAnnotations(selectedAnnotationsArray);
         assertArrayEquals(selectedAnnotationsArray,manageQueryAction.getSelectedAnnotations());
@@ -178,7 +184,12 @@ public class ManageQueryActionTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SessionHelper sessionHelper = SessionHelper.getInstance();
+        manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
+        manageQueryAction.setSelectedImageAnnotations(holdLongArray);
         manageQueryAction.prepare();
+        //manageQueryAction.getManageQueryHelper().getClinicalAnnotationDefinitions();
+        //manageQueryAction.getManageQueryHelper().getImageAnnotationDefinitions();
+        
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
         studySubscription.setId(1L);

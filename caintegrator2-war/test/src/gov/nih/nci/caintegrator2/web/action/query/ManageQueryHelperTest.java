@@ -116,7 +116,7 @@ public class ManageQueryHelperTest {
     private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
     private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
-    private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private final Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     
     @Before
     public void setUp() {
