@@ -94,7 +94,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 1440)
+@Transactional(timeout = 2880)
 public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestIntegration {
     
     private final static Logger LOGGER = Logger.getLogger(DeploySmallStudyTestIntegration.class);
@@ -106,6 +106,11 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     
     @Override
     protected boolean getMapImages() {
+        return true;
+    }
+    
+    @Override
+    protected boolean getLoadImages() {
         return true;
     }
     
@@ -131,7 +136,7 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
 
     @Override
     int getExpectedSampleCount() {
-        return 4;
+        return 6;
     }
 
     @Override
@@ -165,6 +170,11 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     @Override
     protected File getSampleMappingFile() {
         return TestDataFiles.SHORT_REMBRANDT_SAMPLE_MAPPING_FILE;
+    }
+
+    @Override
+    protected File getControlSamplesFile() {
+        return TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE;
     }
 
     @Override

@@ -168,6 +168,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             loadClinicalData();
             loadSamples();
             mapSamples();
+            loadControlSamples();
             loadImages();
             mapImages();
             loadImageAnnotation();
@@ -296,13 +297,22 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     abstract protected String getCaArrayId();
+
     private void mapSamples() throws ValidationException {
         if (getLoadSamples()) {
             service.mapSamples(studyConfiguration, getSampleMappingFile());
         }
     }
 
+    private void loadControlSamples() throws ValidationException {
+        if (getLoadSamples()) {
+            service.addControlSamples(studyConfiguration, getControlSamplesFile());
+        }
+    }
+
     abstract protected File getSampleMappingFile();
+
+    abstract protected File getControlSamplesFile();
     
     private void deploy() throws ConnectionException, DataRetrievalException {
         service.deployStudy(studyConfiguration);

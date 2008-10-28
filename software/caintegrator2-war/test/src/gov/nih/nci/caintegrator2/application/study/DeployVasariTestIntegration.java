@@ -111,7 +111,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     int getExpectedSampleCount() {
-        return 68;
+        return 96;
     }
 
     @Override
@@ -142,11 +142,17 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     protected File getImageMappingFile() {
         return TestDataFiles.REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE;
     }
+
     @Override
     protected File getSampleMappingFile() {
         return TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE;
     }
 
+    @Override
+    protected File getControlSamplesFile() {
+        return TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE;
+    }
+    
     @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_CLINICAL_FILE;

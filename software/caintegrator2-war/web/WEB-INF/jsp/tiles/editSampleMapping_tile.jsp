@@ -20,8 +20,8 @@
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" />
         <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" />
         <s:submit value="Upload Mapping File" />
-        <s:file name="controlSampleFile" label="Subject to Sample Mapping File" />
-        <s:submit value="Upload Control Sample File" action="saveControlSamples" />
+        <s:file name="controlSampleFile" label="Control Samples File" />
+        <s:submit value="Upload Control Samples File" action="saveControlSamples" />
     </s:form>
     
     <table class="data">
