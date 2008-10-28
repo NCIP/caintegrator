@@ -111,9 +111,30 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      * {@inheritDoc}
      */
     public void prepare() {
-        SessionHelper.getInstance().refresh(getWorkspaceService());
+        if (!isFileUpload()) {
+            prepareValueStack();
+        }
     }
 
+    /**
+     * Override this method to return true for actions that use file upload functionality and ensure that the 
+     * <code>execute()</code> method calls <code>prepareValueStack()</code> outside of the prepare method.
+     * 
+     * @return false if no file upload is used (default), true otherwise (in overrides).
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isFileUpload() {
+        return false;
+    }
+
+    /**
+     * refresh data on the value stack.
+     */
+    protected final void prepareValueStack() {
+        SessionHelper.getInstance().refresh(getWorkspaceService());
+    }
+   
+    
     /**
      * @return the workspaceService
      */

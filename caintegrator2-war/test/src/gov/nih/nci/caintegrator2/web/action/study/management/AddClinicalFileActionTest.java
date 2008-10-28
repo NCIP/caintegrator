@@ -96,6 +96,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
 
+import javax.swing.filechooser.FileSystemView;
+
 public class AddClinicalFileActionTest {
 
     private AddClinicalFileAction action;
@@ -110,9 +112,39 @@ public class AddClinicalFileActionTest {
     }
 
     @Test
+    public void testPrepare() {
+        action.prepare();
+        assertFalse(action.hasActionErrors());
+        assertTrue(action.isFileUpload());
+        assertFalse(action.hasActionErrors());
+    }
+    
+    @Test
     public void testValidate() {
+        
+        String fileType;
+        
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
+        action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.setClinicalFile(TestDataFiles.VALID_FILE);
+        assertNull(action.getClinicalFileContentType());
+        action.validate();
+        assertTrue(action.hasFieldErrors());        
+        
+        action.setClinicalFile(TestDataFiles.VALID_FILE);
+        FileSystemView fileSystemView = FileSystemView.getFileSystemView();   
+        fileType = fileSystemView.getSystemTypeDescription(TestDataFiles.VALID_FILE);     
+        action.setClinicalFileContentType(fileType);
+        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getClinicalFileContentType());
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertFalse(action.hasFieldErrors());         
+        
         action.setClinicalFile(TestDataFiles.VALID_FILE);
         action.clearErrorsAndMessages();
         action.validate();

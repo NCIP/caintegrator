@@ -60,7 +60,7 @@
                 <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
                     <s:hidden name="studyConfiguration.id"  />
                     <s:file name="clinicalFile" label="File" />
-                    <s:submit value="Add Clinical Data File" />
+                    <s:submit value="Add Clinical Data File" action="addClinicalFile" />
                 </s:form>
             </th>
         </tr>
