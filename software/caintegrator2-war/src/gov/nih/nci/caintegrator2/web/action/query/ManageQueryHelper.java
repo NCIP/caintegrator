@@ -122,9 +122,9 @@ final class ManageQueryHelper {
     
     private boolean advancedView = false;
     private List<QueryAnnotationCriteria> queryCriteriaRowList = new ArrayList<QueryAnnotationCriteria>();
-    private Collection<AnnotationDefinition> clinicalAnnotationDefinitions;
-    private Collection<AnnotationDefinition> sampleAnnotationDefinitions;
-    private Collection<AnnotationDefinition> imageAnnotationDefinitions;
+    private Collection<AnnotationDefinition> clinicalAnnotationDefinitions = new HashSet<AnnotationDefinition>();
+    private Collection<AnnotationDefinition> sampleAnnotationDefinitions = new HashSet<AnnotationDefinition>();
+    private Collection<AnnotationDefinition> imageAnnotationDefinitions = new HashSet<AnnotationDefinition>();
     private final Collection<GenomicAnnotationEnum> genomicAnnotationDefinitions = new HashSet<GenomicAnnotationEnum>();
     private AnnotationSelection clinicalAnnotationSelections;
     private AnnotationSelection imageSeriesAnnotationSelections;
@@ -487,7 +487,7 @@ final class ManageQueryHelper {
         }
     }    
 
-    public Collection<ResultColumn> setResultColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
+    public void setResultColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
         
         if (selectedValues != null) {
             // Iterate over a list of user selected annotationDefinitions Id's(which has all the Ids)
@@ -498,14 +498,13 @@ final class ManageQueryHelper {
                         getSelectedColumnCollection(annoDef, entityType);
                    }
             }
-        } else {
-            getAllColumnCollection();
-        }
-        return columnCollection;
+        } 
+        
     }
     
+
     // Creating a columnCollection for User Selected columns from CheckBox list.
-    private Collection<ResultColumn> getSelectedColumnCollection(AnnotationDefinition annoDef, 
+    private void  getSelectedColumnCollection(AnnotationDefinition annoDef, 
                                                                  EntityTypeEnum entityType) {
         ResultColumn column = new ResultColumn();
         int i = 0;
@@ -513,28 +512,10 @@ final class ManageQueryHelper {
         column.setColumnIndex(i++);
         column.setEntityType(entityType.getValue());
         columnCollection.add(column);
-        return columnCollection;
+        
     }
     
-    // Creating a columnCollection for all the columns from  CheckBox list.
-    private Collection<ResultColumn> getAllColumnCollection() {
-        QueryAnnotationCriteria queryAnnotationCriteria = null;
-        Iterator<QueryAnnotationCriteria> iter = this.queryCriteriaRowList.iterator();
-        // Iterate over the list of query annotation criteria objects
-        while (iter.hasNext()) {
-            queryAnnotationCriteria = iter.next();
-            AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
-            int i = 0;
-            for (AnnotationDefinition annoDef : annoHelper.getAnnotationDefinitions()) {    
-                ResultColumn column = new ResultColumn();
-                column.setAnnotationDefinition(annoDef);
-                column.setColumnIndex(i++);
-                column.setEntityType(queryAnnotationCriteria.getRowType().getValue());
-                columnCollection.add(column);
-            }
-        }
-        return columnCollection;
-    }
+
     /**
      * @param queryManagementService A QueryManagementService instance
      * @param basicQueryOperator String AND or OR
@@ -708,4 +689,6 @@ final class ManageQueryHelper {
     public void setReporterType(String reporterType) {
         this.reporterType = reporterType;
     }
+
+    
 }
