@@ -158,11 +158,12 @@ class DataRetrievalHelper {
     }
 
     private void addHybridizations(DataRetrievalRequest request) {
-        List<Sample> samplesToRetrieve;
+        Set<Sample> samplesToRetrieve = new HashSet<Sample>();
         if (!genomicSource.getMappedSamples().isEmpty()) {
-            samplesToRetrieve = genomicSource.getMappedSamples();
+            samplesToRetrieve.addAll(genomicSource.getMappedSamples());
+            samplesToRetrieve.addAll(genomicSource.getControlSamples());
         } else {
-            samplesToRetrieve = genomicSource.getSamples();
+            samplesToRetrieve.addAll(genomicSource.getSamples());
         }
         for (Sample sample : samplesToRetrieve) {
             gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 

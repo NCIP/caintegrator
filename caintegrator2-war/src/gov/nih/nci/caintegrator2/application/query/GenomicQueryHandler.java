@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -106,7 +107,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -205,39 +205,46 @@ class GenomicQueryHandler {
         }
     }
 
-    private Collection<ArrayData> getAllArrayDatas(ReporterTypeEnum reporterType) {
-        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
+    private Set<ArrayData> getAllArrayDatas(ReporterTypeEnum reporterType) {
+        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (StudySubjectAssignment assignment : query.getSubscription().getStudy().getAssignmentCollection()) {
             for (SampleAcquisition acquisition : assignment.getSampleAcquisitionCollection()) {
-                arrayDatas.addAll(getArrayDatas(acquisition.getSample().getArrayDataCollection(), reporterType));
+                addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection(), reporterType);
             }
         }
+        addMatchesFromSamples(arrayDatas, query.getSubscription().getStudy().getControlSampleCollection(), 
+                reporterType);
         return arrayDatas;
     }
 
-    private Collection<ArrayData> getArrayDatas(Set<ResultRow> rows, ReporterTypeEnum reporterType) {
-        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
+    private void addMatchesFromSamples(Set<ArrayData> arrayDatas, Collection<Sample> samples, ReporterTypeEnum 
+            reporterType) {
+        for (Sample sample : samples) {
+            addMatchesFromArrayDatas(arrayDatas, sample.getArrayDataCollection(), reporterType);
+        }
+    }
+
+    private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas, 
+            Collection<ArrayData> candidateArrayDatas,
+            ReporterTypeEnum reporterType) {
+        for (ArrayData arrayData : candidateArrayDatas) {
+            if (arrayData.getReporterSet() != null 
+                    && reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
+                matchingArrayDatas.add(arrayData);
+            }
+        }
+    }
+
+    private Set<ArrayData> getArrayDatas(Set<ResultRow> rows, ReporterTypeEnum reporterType) {
+        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (ResultRow row : rows) {
             if (row.getSampleAcquisition() != null) {
-                arrayDatas.addAll(
-                        getArrayDatas(row.getSampleAcquisition().getSample().getArrayDataCollection(), reporterType));
+                Collection<ArrayData> candidateArrayDatas = 
+                    row.getSampleAcquisition().getSample().getArrayDataCollection();
+                addMatchesFromArrayDatas(arrayDatas, candidateArrayDatas, reporterType);
             }
         }
         return arrayDatas;
-    }
-
-    private Collection<ArrayData> getArrayDatas(Collection<ArrayData> arrayDataCollection,
-            ReporterTypeEnum reporterType) {
-        Collection<ArrayData> matchingArrayDatas = new HashSet<ArrayData>();
-        Iterator<ArrayData> iterator = arrayDataCollection.iterator();
-        while (iterator.hasNext()) {
-            ArrayData arrayData = iterator.next();
-                if (arrayData.getReporterSet() != null
-                    && reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
-                    matchingArrayDatas.add(arrayData);
-                }
-        }
-        return matchingArrayDatas;
     }
 
     private List<ArrayDataMatrix> getDataMatrixes() {
