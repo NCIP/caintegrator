@@ -1,15 +1,50 @@
 <%@ page language="java" 
 import="java.util.*, 
     com.opensymphony.xwork2.ActionContext,
-    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria,
-    gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
+     gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
     gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria" 
 pageEncoding="ISO-8859-1" %>
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script language="javascript">
+        
+    function uncheckClinicalAnnotatations(){
+    if(document.manageQueryForm.all1.checked == false) {
+    var size='<s:property value="getClinicalDefinitionsSize()"/>';
+        for(i=1;i<=size;i++){
+            var temp = 'selectedClinicalAnnotations-' + i;
+            document.manageQueryForm[temp].checked = false;
+        }
+        }
+        else{
+        var size='<s:property value="getClinicalDefinitionsSize()"/>';
+        for(i=1;i<=size;i++){
+            var temp = 'selectedClinicalAnnotations-' + i;
+            document.manageQueryForm[temp].checked = true;
+        }
+        }
+    }
+    function uncheckImageAnnotatations(){
+    if(document.manageQueryForm.all2.checked == false) {
+    var size='<s:property value="getImageDefinitionsSize()"/>';
+        for(i=1;i<=size;i++){
+            var temp = 'selectedImageAnnotations-' + i;
+            document.manageQueryForm[temp].checked = false;
+        }
+      }
+      else{
+        var size='<s:property value="getImageDefinitionsSize()"/>';
+        for(i=1;i<=size;i++){
+            var temp = 'selectedImageAnnotations-' + i;
+            document.manageQueryForm[temp].checked = true;
+        }
+      }
+    }
+</script>
 <!--Search Criteria-->
-    
+   
+
 <div id="criteria" class="box2">
     
     <h2>Define Search Criteria</h2>                                                                                                             
@@ -93,7 +128,7 @@ pageEncoding="ISO-8859-1" %>
 	                
 	                <del class="btnwrapper">
 	                    <ul class="btnrow">
-                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li><li><span class="btn_img"><span class="search"><br></span></span></li>
 	                    </ul>   
 	                </del>
 	            </div>
@@ -165,17 +200,22 @@ pageEncoding="ISO-8859-1" %>
 
         <h3>Subject Annotations</h3>
         <ul class="checklist">
-            <s:checkboxlist  cssClass="checklist"name="selectedClinicalAnnotations"list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple"></s:checkboxlist>  
+            <s:checkboxlist  cssClass="checklist"name="selectedClinicalAnnotations"list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" value="getSelectedClinicalAnnotations()"  ></s:checkboxlist>  
         </ul>
-        
+        <ul>
+        <s:checkbox name="all1" value="true" onclick="uncheckClinicalAnnotatations()"/><b>All</b>
+        </ul>
     </div>
-       
+           
      <div class="checklistwrapper">
         <h3>Image Annotations</h3>
         <ul class="checklist">
-            <s:checkboxlist  cssClass="checklist"name="selectedImageAnnotations"list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" ></s:checkboxlist>
+            <s:checkboxlist  cssClass="checklist"name="selectedImageAnnotations"list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" value="getSelectedImageAnnotations()"></s:checkboxlist>
         </ul>
         
+        <ul>
+        <s:checkbox name="all2" value="true" onclick="uncheckImageAnnotatations()"/><b>All</b>
+        </ul>
     </div>  
     <div class="actionsrow">
                     
@@ -201,15 +241,15 @@ pageEncoding="ISO-8859-1" %>
         
         <table class="data">
             <tr>
-                <th>Column</th>
-                <th>Order (L-R)</th>
-                <th>Vertical Sorting (1st)</th>
+                <th>Column<br><br><br><br><br><br><br></th>
+                <th>Order (L-R)<br><br><br><br><br><br><br></th>
+                <th>Vertical Sorting (1st)<br><br><br><br><br><br><br></th>
 
-                <th>Vertical Sorting (2nd)</th>
-                <th>Action</th>
+                <th>Vertical Sorting (2nd)<br><br><br><br><br><br><br></th>
+                <th>Action<br><br><br><br><br><br><br></th>
             </tr>
             <tr class="odd">
-                <td class="title">Patient ID</td>
+                <td class="title">Patient ID<br><br><br><br><br><br><br></td>
                 <td>
                     <select name="order1">
 
@@ -220,20 +260,20 @@ pageEncoding="ISO-8859-1" %>
                         <option>5</option>
                     </select>
 
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_1" checked="checked" value="ascending" id="sort1_1_ascending" /><label for="sort1_1_ascending">Ascending</label>
                     <input type="radio" name="sort_1" value="descending" id="sort1_1_descending" /><label for="sort1_1_descending">Descending</label>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_2" value="ascending" id="sort1_2_ascending" /><label for="sort1_2_ascending">Ascending</label>
 
                     <input type="radio" name="sort_2" value="descending" id="sort1_2_descending" /><label for="sort1_2_descending">Descending</label>
-                </td>
-                <td><a href="#" class="remove">Remove Column</a></td>
+                <br><br><br><br><br><br><br></td>
+                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
             </tr>
             <tr>
-                <td class="title">Patient Age</td>
+                <td class="title">Patient Age<br><br><br><br><br><br><br></td>
                 <td>
 
                     <select name="order1">
@@ -244,20 +284,20 @@ pageEncoding="ISO-8859-1" %>
                         <option>5</option>
 
                     </select>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_1" value="ascending" id="sort2_1_ascending" /><label for="sort2_1_ascending">Ascending</label>
                     <input type="radio" name="sort_1" value="descending" id="sort2_1_descending" /><label for="sort2_1_descending">Descending</label>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_2" value="ascending" id="sort2_2_ascending" /><label for="sort2_2_ascending">Ascending</label>
 
                     <input type="radio" name="sort_2" value="descending" id="sort2_2_descending" /><label for="sort2_2_descending">Descending</label>
-                </td>
-                <td><a href="#" class="remove">Remove Column</a></td>
+                <br><br><br><br><br><br><br></td>
+                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
             </tr>
             <tr class="odd">
-                <td class="title">Tumor Size</td>
+                <td class="title">Tumor Size<br><br><br><br><br><br><br></td>
                 <td>
 
                     <select name="order1">
@@ -268,20 +308,20 @@ pageEncoding="ISO-8859-1" %>
                         <option>5</option>
 
                     </select>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_1" value="ascending" id="sort3_1_ascending" /><label for="sort3_1_ascending">Ascending</label>
                     <input type="radio" name="sort_1" value="descending" id="sort3_1_descending" /><label for="sort3_1_descending">Descending</label>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_2" value="ascending" id="sort3_2_ascending" /><label for="sort3_2_ascending">Ascending</label>
 
                     <input type="radio" name="sort_2" value="descending" id="sort3_2_descending" /><label for="sort3_2_descending">Descending</label>
-                </td>
-                <td><a href="#" class="remove">Remove Column</a></td>
+                <br><br><br><br><br><br><br></td>
+                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
             </tr>
             <tr>
-                <td class="title">Gene Symbol</td>
+                <td class="title">Gene Symbol<br><br><br><br><br><br><br></td>
                 <td>
 
                     <select name="order1">
@@ -292,20 +332,20 @@ pageEncoding="ISO-8859-1" %>
                         <option>5</option>
 
                     </select>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_1" value="ascending" id="sort4_1_ascending" /><label for="sort4_1_ascending">Ascending</label>
                     <input type="radio" name="sort_1" value="descending" id="sort4_1_descending" /><label for="sort4_1_descending">Descending</label>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_2" value="ascending" id="sort4_2_ascending" /><label for="sort4_2_ascending">Ascending</label>
 
                     <input type="radio" name="sort_2" value="descending" id="sort4_2_descending" /><label for="sort4_2_descending">Descending</label>
-                </td>
-                <td><a href="#" class="remove">Remove Column</a></td>
+                <br><br><br><br><br><br><br></td>
+                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
             </tr>
             <tr class="odd">
-                <td class="title">Expression</td>
+                <td class="title">Expression<br><br><br><br><br><br><br></td>
                 <td>
 
                     <select name="order1">
@@ -316,17 +356,17 @@ pageEncoding="ISO-8859-1" %>
                         <option selected="selected">5</option>
 
                     </select>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_1" value="ascending" id="sort5_1_ascending" /><label for="sort5_1_ascending">Ascending</label>
                     <input type="radio" name="sort_1" value="descending" id="sort5_1_descending" /><label for="sort5_1_descending">Descending</label>
-                </td>
+                <br><br><br><br><br><br><br></td>
                 <td>
                     <input type="radio" name="sort_2" value="ascending" id="sort5_2_ascending" /><label for="sort5_2_ascending">Ascending</label>
 
                     <input type="radio" name="sort_2" value="descending" id="sort5_2_descending" /><label for="sort5_2_descending">Descending</label>
-                </td>
-                <td><a href="#" class="remove">Remove Column</a></td>
+                <br><br><br><br><br><br><br></td>
+                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
             </tr>
             
         </table>
@@ -336,7 +376,7 @@ pageEncoding="ISO-8859-1" %>
             <del class="btnwrapper">
 
                 <ul class="btnrow">         
-                    <li><a href="javascript://" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Reset Sorting</span></span></a></li>
+                    <li>'&lt;&gt;()<a href="javascript://" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Reset Sorting</span></span></a><br><br><br><br><br><br><br><br><br></li>
                 </ul>   
             </del>
         </div>

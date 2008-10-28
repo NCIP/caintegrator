@@ -85,9 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -117,6 +122,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
     private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
     
+        
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
@@ -131,8 +137,44 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         if (!manageQueryHelper.isPrepopulated()) {
             manageQueryHelper.prepopulateAnnotationSelectLists();
         }
+        checkClinicalAnnotationDefinitions();     
+        checkImageAnnotationDefinitions();   
+    }
+    /**
+     * Setting all the Clinical definitions checked in JSP as a default action.
+     */
+    public void checkClinicalAnnotationDefinitions() {
+        if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
+            Collection<AnnotationDefinition> temp = manageQueryHelper.getClinicalAnnotationDefinitions();
+            if (manageQueryHelper.getClinicalAnnotationDefinitions() != null) {
+            Iterator<AnnotationDefinition> itr = temp.iterator();
+            this.selectedClinicalAnnotations = new Long[temp.size()];
+            int i = 0;
+            while (itr.hasNext()) {
+                this.selectedClinicalAnnotations[i] = itr.next().getId();
+                i++;
+            }
+          }
+        }
     }
     
+    /**
+     * Setting all the Image definitions checked in JSP as a default action.
+     */
+    public void checkImageAnnotationDefinitions() {
+        if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
+            Collection<AnnotationDefinition> temp = manageQueryHelper.getImageAnnotationDefinitions();
+            if (manageQueryHelper.getImageAnnotationDefinitions() != null) {
+            Iterator<AnnotationDefinition> itr = temp.iterator();
+            this.selectedImageAnnotations = new Long[temp.size()];
+            int i = 0;
+            while (itr.hasNext()) {
+                this.selectedImageAnnotations[i] = itr.next().getId();
+                i++;
+            }
+            }
+        }
+    }
     /**
      * {@inheritDoc}
      */
@@ -239,8 +281,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
+        manageQueryHelper.getColumnCollection().clear();
         manageQueryHelper.setResultColumnCollection(getSelectedClinicalAnnotations(), EntityTypeEnum.SUBJECT);
         manageQueryHelper.setResultColumnCollection(getSelectedImageAnnotations(), EntityTypeEnum.IMAGESERIES);
+       
     }    
     
     /**
@@ -267,6 +311,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * @return the Struts result.
      */
     public String executeQuery() {
+        
         if (ResultTypeEnum.GENOMIC.getValue().equals(manageQueryHelper.getResultType())) {
             GenomicDataQueryResult genomicResult =  
                 manageQueryHelper.executeGenomicQuery(queryManagementService, 
@@ -505,5 +550,22 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public void setSearchDescription(String searchDescription) {
         this.searchDescription = searchDescription;
+    }
+
+    /**
+     * @return the clinicalDefinitionsSize
+     */
+    public int getClinicalDefinitionsSize() {
+        return manageQueryHelper.getClinicalAnnotationDefinitions().size();
+        
+    }
+
+    
+    /**
+     * @return the imageDefinitionsSize
+     */
+    public int getImageDefinitionsSize() {
+        return manageQueryHelper.getImageAnnotationDefinitions().size();
+        
     }
 }
