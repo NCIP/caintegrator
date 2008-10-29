@@ -305,7 +305,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     private void loadControlSamples() throws ValidationException {
-        if (getLoadSamples()) {
+        if (false) {
             service.addControlSamples(studyConfiguration, getControlSamplesFile());
         }
     }
