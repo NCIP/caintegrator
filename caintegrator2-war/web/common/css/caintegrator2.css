@@ -653,9 +653,9 @@ A.btn SPAN.upload
 /* Check List - Columns Tabs */
 
 .checklistwrapper
-{ width:25%; white-space:nowrap; float:left; margin:0; background:#fff }
+{ width:50%; white-space:nowrap; float:left; margin:0; background:#fff }
 * html .checklistwrapper, *:first-child+html .checklistwrapper
-{ width:24.9% }
+{ width:50% }
 .checklistwrapper H3
 { padding:4px 5px 2px 5px; border:0; border-top:1px solid #dcdcdc; border-bottom:1px solid #a8b8ce; border-right:1px solid #a8b8ce; background:#d6dce6 url("../../images/bg_th.gif") repeat-x top; color:#333; }
 #content UL.checklist
