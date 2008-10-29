@@ -126,6 +126,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getWorkspaceCalled;
     public boolean removeObjectsCalled;
     public boolean findMatchingGenesCalled;
+    public boolean isDuplicateStudyNameCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -155,6 +156,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getWorkspaceCalled = false;
         removeObjectsCalled = false;
         findMatchingGenesCalled = false;
+        isDuplicateStudyNameCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -268,6 +270,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study) {
         findMatchingGenesCalled = true;
         return Collections.emptySet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDuplicateStudyName(Study study) {
+        isDuplicateStudyNameCalled =true;
+        return false;
     }
 
 }

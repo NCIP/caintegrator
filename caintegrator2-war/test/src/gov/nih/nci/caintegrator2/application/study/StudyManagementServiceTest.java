@@ -417,4 +417,11 @@ public class StudyManagementServiceTest {
         assertEquals(1, study.getSampleAnnotationCollection().size());
     }
     
+    @Test
+    public void testIsDuplicateStudyName() {
+        Study study = new Study();
+        study.setShortTitleText("studyName");
+        assertFalse(studyManagementService.isDuplicateStudyName(study));
+        assertTrue(daoStub.isDuplicateStudyNameCalled);
+    }
 }

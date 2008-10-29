@@ -271,5 +271,14 @@ public interface StudyManagementService {
      * @throws ValidationException if the file is invalid.
      */
     void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile) throws ValidationException;
-    
+
+    /**
+     * Check for duplicate study name in the database.
+     * 
+     * @param study
+     *            the study object
+     * @return true or false
+     */
+    boolean isDuplicateStudyName(Study study);
+
 }

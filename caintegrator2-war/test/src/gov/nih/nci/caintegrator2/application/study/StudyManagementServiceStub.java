@@ -117,6 +117,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean mapImageSeriesCalled;
     public boolean createDefinitionCalled;
     public boolean addControlSamplesCalled;
+    public boolean isDuplicateStudyNameCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -149,6 +150,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         mapImageSeriesCalled = false;
         createDefinitionCalled = false;
         addControlSamplesCalled = false;
+        isDuplicateStudyNameCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -235,6 +237,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
             throws ValidationException {
         addControlSamplesCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDuplicateStudyName(Study study) {
+        isDuplicateStudyNameCalled = true;
+        return false;
     }
     
 }

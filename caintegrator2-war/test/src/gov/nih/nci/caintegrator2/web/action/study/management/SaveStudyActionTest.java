@@ -138,12 +138,16 @@ public class SaveStudyActionTest {
         action.getStudyConfiguration().getStudy().setShortTitleText("name");
         action.validate();
         assertFalse(action.hasFieldErrors());
+        assertTrue(studyManagementServiceStub.isDuplicateStudyNameCalled);
+        studyManagementServiceStub.clear();
         action.getStudyConfiguration().getStudy().setShortTitleText(null);
         action.validate();
+        assertFalse(studyManagementServiceStub.isDuplicateStudyNameCalled);
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.getStudyConfiguration().getStudy().setShortTitleText("");
         action.validate();
+        assertFalse(studyManagementServiceStub.isDuplicateStudyNameCalled);
         assertTrue(action.hasFieldErrors());
     }
 
