@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import gov.nih.nci.caintegrator2.common.PersistentObject;
@@ -203,12 +204,14 @@ public class GenomicDataSourceConfiguration implements PersistentObject {
      * @return the control samples
      */
     public List<Sample> getControlSamples() {
-        List<Sample> controlSamples = new ArrayList<Sample>();
-        controlSamples.addAll(getSamples());
         if (getStudyConfiguration().getStudy().getControlSampleCollection() != null) {
-            controlSamples.retainAll(getStudyConfiguration().getStudy().getControlSampleCollection());
-        }
-        return controlSamples;
+            List<Sample> controlSamples = new ArrayList<Sample>();
+            controlSamples.addAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+            controlSamples.retainAll(getSamples());
+            return controlSamples;
+        } else {
+            return Collections.emptyList();
+        }    
     }
 
     /**

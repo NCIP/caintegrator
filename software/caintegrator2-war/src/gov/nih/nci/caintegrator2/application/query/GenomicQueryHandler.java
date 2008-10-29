@@ -212,8 +212,10 @@ class GenomicQueryHandler {
                 addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection(), reporterType);
             }
         }
-        addMatchesFromSamples(arrayDatas, query.getSubscription().getStudy().getControlSampleCollection(), 
-                reporterType);
+        if (query.getSubscription().getStudy().getControlSampleCollection() != null) {
+            addMatchesFromSamples(arrayDatas, query.getSubscription().getStudy().getControlSampleCollection(), 
+                    reporterType);
+        }
         return arrayDatas;
     }
 
