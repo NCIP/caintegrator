@@ -85,61 +85,47 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import org.apache.commons.math.stat.descriptive.rank.Median;
+
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
-import java.util.Collection;
-import java.util.HashSet;
+/**
+ * Computes fold change values for a set of arrays based on data from a set of control arrays.
+ */
+class FoldChangeCalculator {
 
-public class ArrayDataServiceStub implements ArrayDataService {
+    private final ArrayDataValues values;
+    private final ArrayDataValues controlValues;
+    private final ArrayDataValues foldChangeValues = new ArrayDataValues();
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        arrayDatas.add(new ArrayData());
-        Collection<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.add(new GeneExpressionReporter());
-        return getData(arrayDataMatrix, arrayDatas, reporters);
+    FoldChangeCalculator(ArrayDataValues values, ArrayDataValues controlValues) {
+        this.values = values;
+        this.controlValues = controlValues;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
-        ArrayDataValues values = new ArrayDataValues();
-        for (AbstractReporter reporter : reporters) {
-            for (ArrayData arrayData : arrayDatas) {
-                values.setValue(arrayData, reporter, (float) 1.23);
-            }
+    ArrayDataValues calculate() {
+        for (AbstractReporter reporter : values.getAllReporters()) {
+            calculate(reporter);
         }
-        return values;
+        return foldChangeValues;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
-        return null;
+    private void calculate(AbstractReporter reporter) {
+        float medianOfControls = getMedianOfControls(reporter);
+        for (ArrayData arrayData : values.getAllArrayDatas()) {
+            float foldChange = values.getValue(arrayData, reporter) / medianOfControls;
+            foldChangeValues.setValue(arrayData, reporter, foldChange);
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void save(ArrayDataValues values) {
-        // no-op
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
-        return getData(arrayDataMatrix, arrayDatas, reporters);
+    private float getMedianOfControls(AbstractReporter reporter) {
+        double[] controlValuesForReporter = new double[controlValues.getAllArrayDatas().size()];
+        int index = 0;
+        for (ArrayData arrayData : controlValues.getAllArrayDatas()) {
+            controlValuesForReporter[index++] = controlValues.getValue(arrayData, reporter);
+        }
+        return (float) new Median().evaluate(controlValuesForReporter);
     }
 
 }
