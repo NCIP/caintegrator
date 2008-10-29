@@ -205,7 +205,9 @@ public class GenomicDataSourceConfiguration implements PersistentObject {
     public List<Sample> getControlSamples() {
         List<Sample> controlSamples = new ArrayList<Sample>();
         controlSamples.addAll(getSamples());
-        controlSamples.retainAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        if (getStudyConfiguration().getStudy().getControlSampleCollection() != null) {
+            controlSamples.retainAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        }
         return controlSamples;
     }
 
@@ -215,7 +217,9 @@ public class GenomicDataSourceConfiguration implements PersistentObject {
     public List<Sample> getUnmappedSamples() {
         List<Sample> unmappedSamples = new ArrayList<Sample>();
         unmappedSamples.addAll(getSamples());
-        unmappedSamples.removeAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        if (getStudyConfiguration().getStudy().getControlSampleCollection() != null) {
+            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        }
         unmappedSamples.removeAll(getStudyConfiguration().getSamples());
         return unmappedSamples;
     }

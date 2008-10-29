@@ -191,4 +191,14 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         this.fileManager = fileManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
+            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
+        ArrayDataValues values = getData(arrayDataMatrix, arrayDatas, reporters);
+        ArrayDataValues controlValues = getData(arrayDataMatrix, controlArrayDatas, reporters);
+        return new FoldChangeCalculator(values, controlValues).calculate();
+    }
+
 }

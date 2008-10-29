@@ -124,6 +124,18 @@ public interface ArrayDataService {
             Collection<AbstractReporter> reporters);
     
     /**
+     * Retrieves the fold change values from the given arrays for the given reporters.
+     * 
+     * @param arrayDataMatrix compute fold change values from this data matrix.
+     * @param arrayDatas compute fold change values from these arrays
+     * @param reporters compute the values for these reporters only
+     * @param controlArrayDatas compute fold change values compared to these arrays
+     * @return the fold change values.
+     */
+    ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
+            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas);
+    
+    /**
      * Loads the given array design into the system.
      * 
      * @param platformSource contains the files or information necessary to load the design
