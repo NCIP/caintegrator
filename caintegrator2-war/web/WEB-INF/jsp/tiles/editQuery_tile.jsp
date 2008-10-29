@@ -94,16 +94,18 @@ pageEncoding="ISO-8859-1" %>
                     <s:if test="!manageQueryHelper.queryCriteriaRowList.isEmpty()">
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
                             <tr>
-                            <td></td>
+                            <td class="label_inline">
+                            <s:property value="#currentRow.rowLabel"/>
+                            </td>
                             <s:if test="!rowType.value.equals('geneExpression')">
-                                <td><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                                <td class="value_inline"><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
                             </s:if>
                             <s:else>
-                                <td><s:select name="selectedAnnotations" list="annotationSelections.genomicAnnotationDefinitions" listValue="value" listKey="value" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                                <td class="value_inline"><s:select name="selectedAnnotations" list="annotationSelections.genomicAnnotationDefinitions" listValue="value" listKey="value" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
                             </s:else>
                             
-                            <td><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
-                            <td><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
+                            <td class="value_inline"><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
+                            <td class="value_inline"><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
                             </tr>
                         </s:iterator>
                      </s:if>

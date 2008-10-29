@@ -409,7 +409,7 @@ final class ManageQueryHelper {
         queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections());
         queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES);
-        queryAnnotationCriteria.setRowLabel("Image");
+        queryAnnotationCriteria.setRowLabel("Image Series");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
         return true;
     }
@@ -428,7 +428,7 @@ final class ManageQueryHelper {
         queryAnnotationCriteria.setAnnotationSelections(this.getGenomicAnnotationSelections());
         queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.GENEEXPRESSION);
-        queryAnnotationCriteria.setRowLabel("Gene");
+        queryAnnotationCriteria.setRowLabel("Gene Expression");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
         return true;
     }
