@@ -136,7 +136,7 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
 
     @Override
     int getExpectedSampleCount() {
-        return 6;
+        return 4;
     }
 
     @Override
