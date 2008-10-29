@@ -95,12 +95,12 @@ import org.apache.commons.lang.StringUtils;
 public class SaveStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public String execute()  {
+    public String execute() {
         if (SessionHelper.getInstance().isAuthenticated()) {
             getStudyManagementService().save(getStudyConfiguration());
             return SUCCESS;
@@ -109,14 +109,18 @@ public class SaveStudyAction extends AbstractStudyAction {
             return ERROR;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate() {
-        if (StringUtils.isEmpty(getStudyConfiguration().getStudy().getShortTitleText())) {
+        String studyName = getStudyConfiguration().getStudy().getShortTitleText();
+        if (StringUtils.isEmpty(studyName)) {
             addFieldError("study.shortTitleText", "Study Name is required");
+        } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy())) {
+            addFieldError("study.shortTitleText", "There is already a study named " + studyName
+                    + ", use a different name.");
         }
     }
 

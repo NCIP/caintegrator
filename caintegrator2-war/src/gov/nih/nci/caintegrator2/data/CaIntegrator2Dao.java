@@ -229,5 +229,13 @@ public interface CaIntegrator2Dao {
      * @return the matching matrixes.
      */
     List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType);
-    
+
+    /**
+     * Check for duplicate study name.
+     * 
+     * @param study
+     *            the study object
+     * @return true or false.
+     */
+    boolean isDuplicateStudyName(Study study);
 }
