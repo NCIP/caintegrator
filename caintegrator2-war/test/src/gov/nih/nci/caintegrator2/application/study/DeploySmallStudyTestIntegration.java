@@ -131,12 +131,22 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     
     @Override
     protected String getCaArrayId() {
-        return "rembr-00037";
+        return "jagla-00034";
     }
 
     @Override
     int getExpectedSampleCount() {
-        return 4;
+        return 3;
+    }
+
+    @Override
+    int getExpectedMappedSampleCount() {
+        return 2;
+    }
+
+    @Override
+    int getExpectedControlSampleCount() {
+        return 1;
     }
 
     @Override
@@ -146,12 +156,12 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
 
     @Override
     protected String getNCIATrialId() {
-        return "ISPY";
+        return "Biochange08";
     }
 
     @Override
     protected String getStudyName() {
-        return "ISPY";
+        return "Small Study";
     }
 
     @Override
@@ -160,21 +170,21 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     }
 
     File getImageAnnotationFile() {
-        return TestDataFiles.ISPY_IMAGE_ANNOTATION_FILE;
+        return TestDataFiles.SMALL_STUDY_IMAGE_ANNOTATION_FILE;
     }
 
     @Override
     protected File getImageMappingFile() {
-        return TestDataFiles.ISPY_IMAGE_SERIES_TO_SUBJECT_FILE;
+        return TestDataFiles.SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE;
     }
     @Override
     protected File getSampleMappingFile() {
-        return TestDataFiles.SHORT_REMBRANDT_SAMPLE_MAPPING_FILE;
+        return TestDataFiles.SMALL_STUDY_SAMPLE_MAPPING_FILE;
     }
 
     @Override
     protected File getControlSamplesFile() {
-        return TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE;
+        return TestDataFiles.SMALL_STUDY_CONTROL_SAMPLES_FILE;
     }
 
     @Override

@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -127,10 +128,24 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
 
     private List<gov.nih.nci.caarray.domain.sample.Sample> getCaArraySamples(String experimentIdentifier, 
             CaArraySearchService searchService) {
-        gov.nih.nci.caarray.domain.sample.Sample searchSample = new gov.nih.nci.caarray.domain.sample.Sample();
-        searchSample.setExperiment(new Experiment());
-        searchSample.getExperiment().setPublicIdentifier(experimentIdentifier);
-        return searchService.search(searchSample);
+        Experiment searchExperiment = new Experiment();
+        searchExperiment.setPublicIdentifier(experimentIdentifier);
+        List<Experiment> experiments = searchService.search(searchExperiment);
+        if (experiments.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return getSamples(experiments.get(0), searchService);
+        }
+    }
+
+    private List<gov.nih.nci.caarray.domain.sample.Sample> getSamples(Experiment experiment,
+            CaArraySearchService searchService) {
+        List<gov.nih.nci.caarray.domain.sample.Sample> samples = 
+            new ArrayList<gov.nih.nci.caarray.domain.sample.Sample>(experiment.getSampleCount());
+        for (gov.nih.nci.caarray.domain.sample.Sample sample : experiment.getSamples()) {
+            samples.add(searchService.search(sample).get(0));
+        }
+        return samples;
     }
 
     private Sample translateSample(gov.nih.nci.caarray.domain.sample.Sample loadedSample) {
