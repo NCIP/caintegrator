@@ -653,7 +653,7 @@ A.btn SPAN.upload
 /* Check List - Columns Tabs */
 
 .checklistwrapper
-{ width:25%; float:left; margin:0; background:#fff }
+{ width:25%; white-space:nowrap; float:left; margin:0; background:#fff }
 * html .checklistwrapper, *:first-child+html .checklistwrapper
 { width:24.9% }
 .checklistwrapper H3

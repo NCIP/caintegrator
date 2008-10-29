@@ -200,7 +200,7 @@ pageEncoding="ISO-8859-1" %>
 
         <h3>Subject Annotations</h3>
         <ul class="checklist">
-            <s:checkboxlist  cssClass="checklist"name="selectedClinicalAnnotations"list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" value="getSelectedClinicalAnnotations()"  ></s:checkboxlist>  
+            <s:checkboxlist  cssClass="checklist"name="selectedClinicalAnnotations"list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName" theme="cai2simple" value="getSelectedClinicalAnnotations()"  ></s:checkboxlist>  
         </ul>
         <ul>
         <s:checkbox name="all1" value="true" onclick="uncheckClinicalAnnotatations()"/><b>All</b>
@@ -210,7 +210,7 @@ pageEncoding="ISO-8859-1" %>
      <div class="checklistwrapper">
         <h3>Image Annotations</h3>
         <ul class="checklist">
-            <s:checkboxlist  cssClass="checklist"name="selectedImageAnnotations"list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName" theme="simple" value="getSelectedImageAnnotations()"></s:checkboxlist>
+            <s:checkboxlist  cssClass="checklist"name="selectedImageAnnotations"list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName" theme="cai2simple" value="getSelectedImageAnnotations()"></s:checkboxlist>
         </ul>
         
         <ul>
