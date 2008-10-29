@@ -515,4 +515,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         this.workspaceService = workspaceService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public boolean isDuplicateStudyName(Study study) {
+        return dao.isDuplicateStudyName(study);
+    }
+
 }

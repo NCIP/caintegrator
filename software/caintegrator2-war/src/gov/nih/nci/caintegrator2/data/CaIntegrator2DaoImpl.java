@@ -353,5 +353,22 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         query.setString("reporterType", reporterType.getValue());
         return query.list();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public boolean isDuplicateStudyName(Study study) {
+        long id;
+        if (study.getId() == null) {
+            id = 0;
+        } else {
+            id = study.getId().longValue();
+        }
+
+        List<Study> result = getHibernateTemplate().find("from Study where shortTitleText = ? and id != ?",
+                new Object[] {study.getShortTitleText(), id });
+
+        return !result.isEmpty();
+    }
 }
