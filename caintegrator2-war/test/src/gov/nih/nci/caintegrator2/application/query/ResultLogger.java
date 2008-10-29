@@ -108,9 +108,13 @@ public final class ResultLogger {
                 sb.append("]: ");
             }
             for (GenomicDataResultValue value : row.getValueCollection()) {
-                sb.append(value.getColumn().getSampleAcquisition().getSample().getName());
+                if (value.getColumn().getSampleAcquisition() != null) {
+                    sb.append(value.getColumn().getSampleAcquisition().getSample().getName());
+                } else {
+                    sb.append("unmapped");
+                }
                 sb.append("=");
-                sb.append(value.getValue());
+                sb.append(value.getValue());                    
             }
             logger.info(sb.toString());
         }

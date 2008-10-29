@@ -131,6 +131,9 @@ import au.com.bytecode.opencsv.CSVReader;
 
 abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
     
+    private final Logger logger = Logger.getLogger(getClass());
+    private long startTime;
+    
     private StudyManagementService service;
     private QueryManagementService queryManagementService;
     private StudyConfiguration studyConfiguration;
@@ -189,14 +192,32 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void loadDesign() throws PlatformLoadingException {
         if (getLoadDesign()) {
+            logStart();
             design = getExistingDesign();
             if (design == null) {
                 AffymetrixPlatformSource designSource = new AffymetrixPlatformSource(getPlatformName(), getPlatformAnnotationFile());
                 design = arrayDataService.loadArrayDesign(designSource);
             }
+            logEnd();
         }
     }
-    
+
+    private void logStart() {
+        startTime = System.currentTimeMillis();
+        logger.info("start " + getMethodName() + "()");
+    }
+
+    private void logEnd() {
+        long duration = System.currentTimeMillis() - startTime;
+        logger.info("end " + getMethodName() + "(), duration: " + duration + " ms");
+    }
+
+    private String getMethodName() {
+        Exception e = new Exception();
+        e.fillInStackTrace();
+        return e.getStackTrace()[2].getMethodName();
+    }
+
     private Platform getExistingDesign() {
         return dao.getPlatform(getPlatformName());
     }
@@ -211,10 +232,12 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void loadImages() throws ConnectionException {
         if (getLoadImages()) {
+            logStart();
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
             imageSource.getServerProfile().setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
             imageSource.setTrialDataProvenance(getNCIATrialId());
             service.addImageSource(studyConfiguration, imageSource);
+            logEnd();
         }
     }
 
@@ -226,11 +249,13 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void loadImageAnnotation() throws ValidationException, IOException {
         if (getLoadImageAnnotation()) {
+            logStart();
             ImageAnnotationConfiguration imageAnnotationConfiguration = 
                 service.addImageAnnotationFile(studyConfiguration, getImageAnnotationFile(), 
                         getImageAnnotationFile().getName());
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
             service.loadImageAnnotation(studyConfiguration);
+            logEnd();
         }
     }
 
@@ -242,7 +267,9 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void mapImages() {
         if (getMapImages()) {
+            logStart();
             service.mapImageSeriesAcquisitions(studyConfiguration, getImageMappingFile());
+            logEnd();
         }
     }
 
@@ -254,6 +281,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void checkArrayData() {
         if (getLoadSamples()) {
+            logStart();
             Collection<ArrayData> arrayDatas = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection();
             ArrayDataMatrix probeSetArrayDataMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             ArrayDataMatrix geneMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_GENE);
@@ -267,6 +295,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             values = arrayDataService.getData(geneMatrix);
             assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
             assertEquals(20887, values.getAllReporters().size());
+            logEnd();
         }
     }
 
@@ -275,6 +304,10 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     abstract int getExpectedSampleCount();
+
+    abstract int getExpectedMappedSampleCount();
+
+    abstract int getExpectedControlSampleCount();
 
     private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
         for (ArrayData arrayData : arrayDatas) {
@@ -287,12 +320,14 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void loadSamples() throws ConnectionException {
         if (getLoadSamples()) {
+            logStart();
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
             genomicSource.getServerProfile().setPort(8080);
             genomicSource.setExperimentIdentifier(getCaArrayId());
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
+            logEnd();
         }
     }
 
@@ -300,13 +335,19 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     private void mapSamples() throws ValidationException {
         if (getLoadSamples()) {
+            logStart();
             service.mapSamples(studyConfiguration, getSampleMappingFile());
+            assertEquals(getExpectedMappedSampleCount(), studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().size());
+            logEnd();
         }
     }
 
     private void loadControlSamples() throws ValidationException {
-        if (false) {
+        if (getLoadSamples()) {
+            logStart();
             service.addControlSamples(studyConfiguration, getControlSamplesFile());
+            assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().getControlSampleCollection().size());
+            logEnd();
         }
     }
 
@@ -315,7 +356,9 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     abstract protected File getControlSamplesFile();
     
     private void deploy() throws ConnectionException, DataRetrievalException {
+        logStart();
         service.deployStudy(studyConfiguration);
+        logEnd();
     }
 
     private void cleanup() {
@@ -325,12 +368,14 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     private void loadClinicalData() throws IOException, ValidationException {
+        logStart();
         sourceConfiguration = 
             service.addClinicalAnnotationFile(studyConfiguration, getSubjectAnnotationFile(), 
                     getSubjectAnnotationFile().getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         assertTrue(sourceConfiguration.isLoadable());
         service.loadClinicalAnnotation(studyConfiguration);
+        logEnd();
     }
 
     abstract protected File getSubjectAnnotationFile();
@@ -388,12 +433,15 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     private void checkClinicalQuery() {
+        logStart();
         Query query = createQuery();
         query.setResultType(ResultTypeEnum.CLINICAL.getValue());
+        logEnd();
     }
 
     private void checkGenomicQuery() {
         if (getLoadSamples() && getLoadDesign()) {
+            logStart();
             Query query = createQuery();
             query.setResultType(ResultTypeEnum.GENOMIC.getValue());
             query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
@@ -403,6 +451,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
             ResultLogger.log(result, getLogger());
+            logEnd();
         }
     }
 

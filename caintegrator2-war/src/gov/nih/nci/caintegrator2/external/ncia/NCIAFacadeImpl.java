@@ -122,13 +122,12 @@ public class NCIAFacadeImpl implements NCIAFacade {
      */
     public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException {
+        LOGGER.info("Retrieving ImageSeriesAcquisitions for " + trialDataProvenanceProject);
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
         List<Patient> patientCollection = 
             client.retrievePatientCollectionFromDataProvenanceProject(trialDataProvenanceProject);
-        int patientCounter = 0;
         for (Patient patient : patientCollection) {
-            LOGGER.info(++patientCounter + " PATIENT - " + patient.getPatientName());
             imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
         }
         return imageSeriesAcquisitions;
@@ -139,8 +138,6 @@ public class NCIAFacadeImpl implements NCIAFacade {
         List<Study> studies = client.retrieveStudyCollectionFromPatient(patient.getPatientId());
         List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>(studies.size());
         for (Study study : studies) {
-            LOGGER.info("  STUDY - " + study.getStudyInstanceUID() + " - " + study.getStudyDescription() + " - "
-                    + study.getStudyDate());
             acquisitions.add(convertToImageSeriesAcquisition(study, client));
         }
         return acquisitions;
@@ -153,7 +150,6 @@ public class NCIAFacadeImpl implements NCIAFacade {
         acquisition.setSeriesCollection(new HashSet<ImageSeries>());
         List<Series> seriesList = client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
         for (Series series : seriesList) {
-            LOGGER.info("   IMAGE SERIES - " + series.getSeriesInstanceUID());
             ImageSeries imageSeries = convertToImageSeries(series, client);
             acquisition.getSeriesCollection().add(imageSeries);
             imageSeries.setImageStudy(acquisition);
@@ -167,7 +163,6 @@ public class NCIAFacadeImpl implements NCIAFacade {
         imageSeries.setImageCollection(new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>());
         List<Image> nciaImageList = client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
         for (Image nciaImage : nciaImageList) {
-            LOGGER.info("      IMAGE - " + nciaImage.getSopInstanceUID());
             gov.nih.nci.caintegrator2.domain.imaging.Image image = convertToImage(nciaImage);
             imageSeries.getImageCollection().add(image);
             image.setSeries(imageSeries);
