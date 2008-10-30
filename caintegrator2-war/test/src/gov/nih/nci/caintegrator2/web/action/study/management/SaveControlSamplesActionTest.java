@@ -86,12 +86,19 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SaveControlSamplesActionTest {
@@ -101,7 +108,10 @@ public class SaveControlSamplesActionTest {
     
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
         action.setStudyManagementService(studyManagementServiceStub);
+        action.setWorkspaceService(new WorkspaceServiceStub());
     }
 
     @Test
