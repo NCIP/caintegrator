@@ -17,7 +17,7 @@
 
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
-        <li class="stdnav"><div><s:property value="study.shortTitleText"/></a></div>
+        <li class="stdnav"><div><s:property value="study.shortTitleText"/></div>
             <ul>
                 <li><s:url id="homePageUrl" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
                 <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
@@ -117,7 +117,7 @@
                 <ul>
                     <li><s:url id="manageStudiesUrl" action="manageStudies" />
                     <a href="${manageStudiesUrl}">Manage Studies</a></li>
-                    <li><s:url id="createStudyUrl" action="createStudy" />
+                    <li><s:url id="createStudyUrl" includeParams="none" action="createStudy" />
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
