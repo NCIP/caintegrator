@@ -109,6 +109,14 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     private String username;
     private String password;
     private String protocolId;
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isFileUpload() {
+        return true;
+    }
     
     /**
      * @return String.
@@ -116,9 +124,13 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     @Override
     public String execute() {
         try {
+            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
+            // in the prepare method of the abstract class, because prepareValueStack is breaking
+            // File Upload when prepareValueStack is called inside the prepare method.
+            prepareValueStack();
+            
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
             imageSource.getServerProfile().setUrl(getHostname());
-            // setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
             imageSource.setTrialDataProvenance(getProtocolId());
             imageSource.setStudyConfiguration(this.getStudyConfiguration());
             setImageSource(imageSource);
