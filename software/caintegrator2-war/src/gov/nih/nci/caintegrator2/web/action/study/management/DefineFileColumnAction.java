@@ -117,6 +117,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private int dataElementIndex;
     private int definitionIndex;
     private String keywordsForSearch;
+    private String columnType;
     
     /**
      * Refreshes the current clinical source configuration.
@@ -148,6 +149,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     public String saveColumnType() {
         definitions.clear();
         dataElements.clear();
+        updateColumnType();
         if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
             getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
             getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
@@ -243,13 +245,23 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the columnType
      */
     public String getColumnType() {
-        if (getFileColumn().isIdentifierColumn()) {
-            return IDENTIFIER_TYPE;
-        } else if (getFileColumn().isTimepointColumn()) {
-            return TIMEPOINT_TYPE;
-        } else {
-            return ANNOTATION_TYPE;
+        if (this.columnType == null) {
+            if (getFileColumn().isIdentifierColumn()) {
+                columnType = IDENTIFIER_TYPE;
+            } else if (getFileColumn().isTimepointColumn()) {
+                columnType = TIMEPOINT_TYPE;
+            } else {
+                columnType = ANNOTATION_TYPE;
+            }
         }
+        return columnType;
+    }
+    
+    /**
+     * @param columnType the columnType to set
+     */
+    public void setColumnType(String columnType) {
+        this.columnType = columnType;
     }
 
     /**
@@ -263,10 +275,8 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         return false;
     }
 
-    /**
-     * @param columnType the columnType to set
-     */
-    public void setColumnType(String columnType) {
+
+    private void updateColumnType() {
         if (IDENTIFIER_TYPE.equals(columnType)) {
             getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
         } else if (TIMEPOINT_TYPE.equals(columnType)) {

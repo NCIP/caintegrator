@@ -77,10 +77,12 @@ public class DefineFileColumnActionTest {
         AnnotationFile annotationFile = new AnnotationFile();
         action.getFileColumn().setAnnotationFile(annotationFile);
         assertEquals("Annotation", action.getColumnType());
-        action.setColumnType("Identifier");
+        action.setColumnType(null);
+        annotationFile.setIdentifierColumn(action.getFileColumn());
         assertEquals(annotationFile.getIdentifierColumn(), action.getFileColumn());
         assertEquals("Identifier", action.getColumnType());
-        action.setColumnType("Timepoint");
+        action.setColumnType(null);
+        annotationFile.setTimepointColumn(action.getFileColumn());
         assertEquals(annotationFile.getTimepointColumn(), action.getFileColumn());
         assertEquals("Timepoint", action.getColumnType());
         action.setColumnType("Annotation");
@@ -88,7 +90,15 @@ public class DefineFileColumnActionTest {
     }
     
     @Test
+    @SuppressWarnings("deprecation")
     public void testSaveColumnType() {
+        action.setColumnType("Identifier");
+        AnnotationFile annotationFile = new AnnotationFile();
+        action.getFileColumn().setAnnotationFile(annotationFile);
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+        action.setColumnType("Timepoint");
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+        action.setColumnType("Annotation");
         assertEquals(Action.SUCCESS, action.saveColumnType());
     }
 
