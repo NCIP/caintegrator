@@ -105,8 +105,17 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
      * {@inheritDoc}
      */
     @Override
+    protected boolean isFileUpload() {
+        return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String execute() {
         try {
+            prepareValueStack();
             File holdFile = getSampleMappingFile();
             getStudyManagementService().mapSamples(getStudyConfiguration(), holdFile);
             return SUCCESS;
@@ -121,7 +130,7 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
      * {@inheritDoc}
      */
     @Override
-public void validate() {
+    public void validate() {
         if (sampleMappingFile == null) {
             addFieldError("sampleMappingFile", " File is required");
         }

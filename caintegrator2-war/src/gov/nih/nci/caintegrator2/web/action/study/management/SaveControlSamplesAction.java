@@ -100,6 +100,14 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     private File controlSampleFile;
     private String controlSampleFileContentType;
     private String controlSampleFileFileName;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isFileUpload() {
+        return true;
+    }
 
     /**
      * {@inheritDoc}
@@ -107,6 +115,7 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     @Override
     public String execute() {
         try {
+            prepareValueStack();
             getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
             return SUCCESS;
         } catch (ValidationException e) {
