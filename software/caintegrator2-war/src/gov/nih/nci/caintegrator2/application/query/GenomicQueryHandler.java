@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -212,18 +211,7 @@ class GenomicQueryHandler {
                 addMatchesFromArrayDatas(arrayDatas, acquisition.getSample().getArrayDataCollection(), reporterType);
             }
         }
-        if (query.getSubscription().getStudy().getControlSampleCollection() != null) {
-            addMatchesFromSamples(arrayDatas, query.getSubscription().getStudy().getControlSampleCollection(), 
-                    reporterType);
-        }
         return arrayDatas;
-    }
-
-    private void addMatchesFromSamples(Set<ArrayData> arrayDatas, Collection<Sample> samples, ReporterTypeEnum 
-            reporterType) {
-        for (Sample sample : samples) {
-            addMatchesFromArrayDatas(arrayDatas, sample.getArrayDataCollection(), reporterType);
-        }
     }
 
     private void addMatchesFromArrayDatas(Set<ArrayData> matchingArrayDatas, 
