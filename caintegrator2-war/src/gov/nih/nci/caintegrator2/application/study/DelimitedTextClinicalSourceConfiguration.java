@@ -171,5 +171,13 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     public boolean isLoadable() {
         return getAnnotationFile().isLoadable();
     }
+    
+    /**
+     * Indicates if the source has been already loaded or not.
+     * @return whether source is already loaded.
+     */
+    public boolean isCurrentlyLoaded() {
+        return Boolean.valueOf(getAnnotationFile().getCurrentlyLoaded());
+    }
 
 }

@@ -45,12 +45,19 @@
                     <s:param name="clinicalSource.id" value="id" />
                 </s:url> 
                 <s:a href="%{editClinicalSource}">Edit</s:a> 
-                <s:if test="%{loadable}" >
+                <s:if test="%{loadable}" > |
                     <s:url id="loadClinicalSource" action="loadClinicalSource">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="clinicalSourceConfiguration.id" value="id" />
                     </s:url> 
-                    <s:a href="%{loadClinicalSource}">Load</s:a> 
+                    <s:a href="%{loadClinicalSource}">
+                        <s:if test="%{!currentlyLoaded}">
+                            Load All Clinical
+                        </s:if>
+                        <s:else>
+                            Reload All Clinical
+                        </s:else>
+                    </s:a> 
                 </s:if>
             </td>
         </tr>
@@ -132,12 +139,21 @@
                     <s:param name="imagingSource.id" value="id" />
                 </s:url> 
                 <s:a href="%{editImagingSource}">Edit</s:a> 
-                <s:if test="%{loadable}" >
+                <s:if test="%{loadable}" > |
                     <s:url id="loadImagingSource" action="loadImagingSource">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="imagingSourceConfiguration.id" value="id" />
                     </s:url> 
-                    <s:a href="%{loadImagingSource}">Load</s:a> 
+                    <s:a href="%{loadImagingSource}">
+                    
+                        <s:if test="%{!currentlyLoaded}">
+                            Load All Imaging
+                        </s:if>
+                        <s:else>
+                            Reload All Imaging
+                        </s:else>
+                    
+                    </s:a> 
                 </s:if>
             </td>
         </tr>

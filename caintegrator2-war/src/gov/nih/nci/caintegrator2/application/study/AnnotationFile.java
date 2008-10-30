@@ -124,6 +124,7 @@ public class AnnotationFile implements PersistentObject {
     private List<FileColumn> columns = new ArrayList<FileColumn>();
     private FileColumn identifierColumn;
     private FileColumn timepointColumn;
+    private String currentlyLoaded;
     private transient File file;
     private transient CSVReader reader;
     private transient String[] currentLineValues;
@@ -411,6 +412,7 @@ public class AnnotationFile implements PersistentObject {
             handler.handleIdentifier(identifier);
             loadAnnotationLine(handler);
         }
+        setCurrentlyLoaded(String.valueOf(true));
     }
 
     private Set<AnnotationDefinition> getAnnotationDefinitions() {
@@ -531,5 +533,23 @@ public class AnnotationFile implements PersistentObject {
         }
         return true;
     }
+
+    /**
+     * @return the currentlyLoaded
+     */
+    public String getCurrentlyLoaded() {
+        if (currentlyLoaded == null) {
+            currentlyLoaded = String.valueOf(false);
+        }
+        return currentlyLoaded;
+    }
+
+    /**
+     * @param currentlyLoaded the currentlyLoaded to set
+     */
+    public void setCurrentlyLoaded(String currentlyLoaded) {
+        this.currentlyLoaded = currentlyLoaded;
+    }
+
 
 }
