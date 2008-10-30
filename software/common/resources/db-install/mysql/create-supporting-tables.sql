@@ -17,6 +17,7 @@ create table ANNOTATION_FIELD_DESCRIPTOR (
 create table ANNOTATION_FILE (
     ID bigint not null auto_increment, 
     PATH varchar(255), 
+    CURRENTLY_LOADED varchar(20),
     IDENTIFIER_COLUMN_ID bigint, 
     TIMEPOINT_COLUMN_ID bigint, 
     primary key (ID)
