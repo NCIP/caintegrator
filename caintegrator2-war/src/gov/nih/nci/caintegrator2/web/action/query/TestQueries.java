@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -215,9 +216,12 @@ public final class TestQueries {
         query.setResultType(ResultTypeEnum.GENOMIC.getValue());
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         query.setName("Gene Expression Values");
-        query.setDescription("A demonstration query that lists expression values for all samples.");
+        query.setDescription("A demonstration query that lists expression values for EGFR reporters.");
         Study study = getStudy();
         query.getSubscription().setStudy(study);
+        GeneNameCriterion egfrCriterion = new GeneNameCriterion();
+        egfrCriterion.setGeneSymbol("EGFR");
+        query.getCompoundCriterion().getCriterionCollection().add(egfrCriterion);
         return query;
     }
         
