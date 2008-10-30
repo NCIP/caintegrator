@@ -88,8 +88,12 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -159,14 +163,48 @@ public class DefineImagingFileColumnActionTest {
         AnnotationFile annotationFile = new AnnotationFile();
         action.getFileColumn().setAnnotationFile(annotationFile);
         assertEquals("Annotation", action.getColumnType());
-        action.setColumnType("Identifier");
+        action.setColumnType(null);
+        annotationFile.setIdentifierColumn(action.getFileColumn());
         assertEquals(annotationFile.getIdentifierColumn(), action.getFileColumn());
         assertEquals("Identifier", action.getColumnType());
-        action.setColumnType("Timepoint");
+        action.setColumnType(null);
+        annotationFile.setTimepointColumn(action.getFileColumn());
         assertEquals(annotationFile.getTimepointColumn(), action.getFileColumn());
         assertEquals("Timepoint", action.getColumnType());
         action.setColumnType("Annotation");
         assertEquals("Annotation", action.getColumnType());
+    }
+    
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testSaveColumnType() {
+        action.setColumnType("Identifier");
+        AnnotationFile annotationFile = new AnnotationFile();
+        action.getFileColumn().setAnnotationFile(annotationFile);
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+        action.setColumnType("Timepoint");
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+        action.setColumnType("Annotation");
+        assertEquals(Action.SUCCESS, action.saveColumnType());
+    }
+
+    @Test
+    public void testAnnotationDataTypeFunctions() {
+        action.setFileColumn(new FileColumn());
+        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
+        action.getFileColumn().getFieldDescriptor().setDefinition(new AnnotationDefinition());
+        action.setAnnotationDataType(AnnotationTypeEnum.DATE.getValue());
+        assertEquals(AnnotationTypeEnum.DATE.getValue(), action.getAnnotationDataType());
+        // Assuming we will always have date, string, numeric, and possibly more later.
+        assertTrue(action.getAnnotationDataTypes().length >= 3);
+    }
+    
+    @Test
+    public void testCreateDefinition() {
+        assertEquals(Action.SUCCESS, action.createNewDefinition());
+        assertTrue(studyManagementServiceStub.createDefinitionCalled);
+        assertFalse(action.isReadOnly());
+        
     }
 
 }
