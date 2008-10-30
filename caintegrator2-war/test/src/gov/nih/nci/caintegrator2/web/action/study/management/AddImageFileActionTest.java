@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
@@ -115,11 +117,42 @@ public class AddImageFileActionTest {
     }
 
     @Test
+    public void testPrepare() {
+        action.prepare();
+        assertFalse(action.hasActionErrors());
+        assertTrue(action.isFileUpload());
+        assertFalse(action.hasActionErrors());
+    }
+    
+    @Test
     public void testValidate() {
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
+        action.setImagingFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+
         action.setImagingFile(TestDataFiles.VALID_FILE);
+        assertNull(action.getImagingFileContentType());
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.hasFieldErrors());         
+
+        // test with INvalid input files
+        action.setImagingFile(TestDataFiles.VALID_FILE);
+        action.setImagingFileContentType("Microsoft Office Excel Comma Separated Values File");
+        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImagingFileContentType());
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.hasFieldErrors());         
+
+        // test with valid input files
+        action.setImagingFile(TestDataFiles.VALID_FILE);
+        action.setImagingFileContentType("Microsoft Office Excel Comma Separated Values File");
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImagingFileContentType());
         action.clearErrorsAndMessages();
         action.validate();
         assertFalse(action.hasFieldErrors());
