@@ -255,6 +255,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
         reporter.setGene(gene);
+        gene.getReporterCollection().add(reporter);
         reporter.setReporterSet(probeSetReporters);
         probeSetReporters.getReporters().add(reporter);
     }
