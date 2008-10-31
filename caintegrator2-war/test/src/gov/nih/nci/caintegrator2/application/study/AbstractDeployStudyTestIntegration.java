@@ -450,7 +450,6 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
             
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
-            ResultLogger.log(result, logger);
             assertFalse(result.getColumnCollection().isEmpty());
             assertFalse(result.getRowCollection().isEmpty());
             logEnd();
