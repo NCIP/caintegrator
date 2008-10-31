@@ -23,11 +23,12 @@
     
     <table class="data">
         <tr>
-            <th colspan="3">Clinical Data Sources</th>
+            <th colspan="4">Clinical Data Sources</th>
         </tr>
         <tr>
             <th>Type</th>
             <th>Description</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
         <s:iterator value="studyConfiguration.clinicalConfigurationCollection" status="status">
@@ -39,6 +40,14 @@
             </s:else>            
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
+            <td>
+                <s:if test="%{!currentlyLoaded}">
+                            Not Loaded
+                </s:if>
+                <s:else>
+                            Loaded
+                </s:else>  
+            </td>
             <td>
                 <s:url id="editClinicalSource" action="editClinicalSource">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
@@ -63,7 +72,7 @@
         </tr>
         </s:iterator>
         <tr>
-            <th colspan="3">
+            <th colspan="4">
                 <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
                     <s:hidden name="studyConfiguration.id"  />
                     <s:file name="clinicalFile" label="File" />
@@ -117,11 +126,12 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="3">Imaging Data Sources</th>
+            <th colspan="4">Imaging Data Sources</th>
         </tr>
         <tr>
             <th>Type</th>
             <th>Description</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
         <s:iterator value="studyConfiguration.imageAnnotationConfigurations" status="status">
@@ -133,6 +143,14 @@
             </s:else>            
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
+            <td>
+                <s:if test="%{!currentlyLoaded}">
+                            Not Loaded
+                </s:if>
+                <s:else>
+                            Loaded
+                </s:else>  
+            </td>
             <td>
                 <s:url id="editImagingSource" action="editImagingSource">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
@@ -159,7 +177,7 @@
         </tr>
         </s:iterator>
         <tr>
-            <th colspan="3"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
+            <th colspan="4"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
         </tr>
     </table>
     </s:form>
