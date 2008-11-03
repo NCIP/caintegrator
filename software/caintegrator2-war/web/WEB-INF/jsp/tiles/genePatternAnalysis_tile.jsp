@@ -22,12 +22,12 @@
             <s:textfield name="analysisForm.url" label="GenePattern Server URL" size="50" required="true" />
             <s:textfield name="analysisForm.username" label="GenePattern Username" size="50" required="true" />
             <s:password name="analysisForm.password" label="GenePattern Password" size="50" showPassword="true" />
-            <s:submit onclick="genePatternAnalysisForm.selectedAction.value = 'connect'; return true;" value="Connect" />
+            <s:submit onclick="this.form.selectedAction.value = 'connect'; return true;" value="Connect" />
             <s:if test="%{!analysisForm.analysisMethodNames.empty}">
                 <s:select label="Analysis Method" 
                     name="analysisMethodName" 
                     list="analysisForm.analysisMethodNames"
-                    onchange="selectedAction.value = 'change'; genePatternAnalysisForm.submit();" />
+                    onchange="this.form.selectedAction.value = 'change'; this.form.submit();" />
             </s:if>
             <s:iterator status="status" value="analysisForm.parameters">
                 <s:if test='%{displayType == "textfield"}'>
@@ -46,7 +46,7 @@
                 </s:elseif>
             </s:iterator>
             <s:if test='%{analysisForm.executable}'>
-                <s:submit value="Perform Analysis" onclick="selectedAction.value = 'execute'; return true;" />
+                <s:submit value="Perform Analysis" onclick="this.form.selectedAction.value = 'execute'; return true;" />
             </s:if>
         </s:form>
     </div>                                                                                                      
