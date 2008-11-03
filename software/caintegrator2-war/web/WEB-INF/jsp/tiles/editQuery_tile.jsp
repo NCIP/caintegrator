@@ -41,6 +41,7 @@ pageEncoding="ISO-8859-1" %>
         }
       }
     }
+    
 </script>
 <!--Search Criteria-->
    
@@ -130,7 +131,7 @@ pageEncoding="ISO-8859-1" %>
 	                
 	                <del class="btnwrapper">
 	                    <ul class="btnrow">
-                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li><li><span class="btn_img"><span class="search"><br></span></span></li>
+                           <li><s:a href="#" cssClass="btn" onclick="prepareFormForSubmit(document.manageQueryForm,'executeQuery','searchresults'); document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li><li><span class="btn_img"><span class="search"><br></span></span></li>
 	                    </ul>   
 	                </del>
 	            </div>
@@ -223,7 +224,7 @@ pageEncoding="ISO-8859-1" %>
                     
                     <del class="btnwrapper">
                         <ul class="btnrow">
-                           <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                           <li><s:a href="#" cssClass="btn" onclick="prepareFormForSubmit(document.manageQueryForm,'executeQuery','searchresults'); document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
                         </ul>   
                     </del>
    </div>
