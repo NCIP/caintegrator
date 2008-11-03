@@ -44,16 +44,16 @@
                     <ul>
                         <li><a href="#">Global Queries</a>
                             <ul>
-                                <li><a href='<s:property value="#executeQueryUrl" />'>Sample Global Query A</a></li>
-                                <li><a href="#" class="queries">Sample Global Query B</a></li>
-                                <li><a href="#" class="queries">Sample Global Query C</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Query A</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Query B</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Query C</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Shared Queries</a>
                             <ul>
-                                <li><a href="#" class="queries">Sample Shared Query A</a></li>
-                                <li><a href="#" class="queries">Sample Shared Query B</a></li>
-                                <li><a href="#" class="queries">Sample Shared Query C</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query A</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query B</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query C</a></li>
                             </ul>
                         </li>
                         <li><a href="#">My Queries</a>
@@ -78,23 +78,23 @@
                     <ul>
                         <li><a href="#">Global Data Lists</a>
                             <ul>
-                                <li><a href="#" class="lists">Sample Global Data List A</a></li>
-                                <li><a href="#" class="lists">Sample Global Data List B</a></li>
-                                <li><a href="#" class="lists">Sample Global Data List C</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List A</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List B</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List C</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Shared Data Lists</a>
                             <ul>
-                                <li><a href="#" class="lists">Sample Shared Data List A</a></li>
-                                <li><a href="#" class="lists">Sample Shared Data List B</a></li>
-                                <li><a href="#" class="lists">Sample Shared Data List C</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List A</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List B</a></li>
+                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List C</a></li>
                             </ul>
                         </li>
                         <li><a href="#">My Data Lists</a>
                             <ul>
-                                <li><a href="#" class="lists">My Sample Data List A</a></li>
-                                <li><a href="#" class="lists">My Sample Data List B</a></li>
-                                <li><a href="#" class="lists">My Sample Data List C</a></li>
+                                <li><a href="${ notYetImplementedUrl }">My Sample Data List A</a></li>
+                                <li><a href="${ notYetImplementedUrl }">My Sample Data List B</a></li>
+                                <li><a href="${ notYetImplementedUrl }">My Sample Data List C</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -107,7 +107,6 @@
         <li class="stdnav"><div>Analysis Tools</div>
             <ul>
                 <li><a href="${ notYetImplementedUrl }">Generate KM Plot</a></li>
-                <li><a href="${ notYetImplementedUrl }">Generate Heat Map</a></li>
                 <li>
                     <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />
                     <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
@@ -126,10 +125,7 @@
         </s:if>
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
-                
-                <li><s:url id="workspaceUrl" includeParams="none" action="workspace" />
-                <a href="${workspaceUrl}">Workspace</a></li>
-                <li class="stdnav"><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
+                <li><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
                 <li><a href="${ notYetImplementedUrl }">Support</a></li>
                 <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
                 <li><a href="${ notYetImplementedUrl }">User Guide</a></li>
