@@ -16,6 +16,7 @@
         <script type="text/javascript" src="common/js/control.tabs.js"></script>
         <script type="text/javascript" src="common/js/scriptaculous.js"></script>
         <script type="text/javascript" src="common/js/checklist.js"></script>
+        <script type="text/javascript" src="common/js/caintegrator2.js"></script>
         <s:head />
 	</head>
 	
