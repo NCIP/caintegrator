@@ -12,6 +12,10 @@
         <default-interceptor-ref name="paramsPrepareParamsStack" />
         
         <!--  Navigation Actions -->
+        <action name="notYetImplemented" class="emptyAction">
+            <result type="tiles">notYetImplemented</result>
+        </action>
+        
         <action name="home" class="homepageAction">
             <result type="tiles">homepage</result>
         </action>
