@@ -17,6 +17,14 @@
 
     <!-- Navigation -->
 
+    <bean id="emptyAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.EmptyAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+
     <bean id="homepageAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.HomepageAction">

@@ -14,12 +14,14 @@
     <s:url id="manageQueryUrl" action="manageQuery" includeParams="all" escapeAmp ="false">
         <s:param name="selectedAction">createNewQuery</s:param>
     </s:url>
-
+    
+    <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
+    
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
         <li class="stdnav"><div><s:property value="study.shortTitleText"/></div>
             <ul>
-                <li><s:url id="homePageUrl" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
+                <li><s:url id="homePageUrl" includeParams="none" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
                 <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
             </ul>
         </li>
@@ -27,10 +29,10 @@
         <s:if test="#sessionHelper.studyManager">
              <li class="stdnav"><div>Study Elements</div>
                 <ul>
-                    <li><a href="study_elements/subjects.html">Subjects</a></li>
-                    <li><a href="study_elements/samples.html">Samples</a></li>
-                    <li><a href="study_elements/array_data.html">Array Data</a></li>
-                    <li><a href="study_elements/images.html">Images</a></li>
+                    <li><a href="${ notYetImplementedUrl }">Subjects</a></li>
+                    <li><a href="${ notYetImplementedUrl }">Samples</a></li>
+                    <li><a href="${ notYetImplementedUrl }">Array Data</a></li>
+                    <li><a href="${ notYetImplementedUrl }">Images</a></li>
                 </ul>
             </li>
         </s:if>
@@ -104,10 +106,10 @@
         
         <li class="stdnav"><div>Analysis Tools</div>
             <ul>
-                <li><a href="analysis_tools/generate_km_plot.html">Generate KM Plot</a></li>
-                <li><a href="analysis_tools/generate_heat_map.html">Generate Heat Map</a></li>
+                <li><a href="${ notYetImplementedUrl }">Generate KM Plot</a></li>
+                <li><a href="${ notYetImplementedUrl }">Generate Heat Map</a></li>
                 <li>
-                    <s:url id="genePatternAnalysisUrl" action="genePatternAnalysis" />
+                    <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />
                     <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
                 </li>
             </ul>
@@ -115,7 +117,7 @@
         <s:if test="#sessionHelper.studyManager">
             <li class="stdnav"><div>Study Management</div>
                 <ul>
-                    <li><s:url id="manageStudiesUrl" action="manageStudies" />
+                    <li><s:url id="manageStudiesUrl" includeParams="none" action="manageStudies" />
                     <a href="${manageStudiesUrl}">Manage Studies</a></li>
                     <li><s:url id="createStudyUrl" includeParams="none" action="createStudy" />
                     <a href="${createStudyUrl}">Create New Study</a></li>
@@ -125,12 +127,12 @@
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
                 
-                <li><s:url id="workspaceUrl" action="workspace" />
+                <li><s:url id="workspaceUrl" includeParams="none" action="workspace" />
                 <a href="${workspaceUrl}">Workspace</a></li>
-                <li class="stdnav"><a href="search.html">Advanced Search</a></li>                
-                <li><a href="#">Support</a></li>
-                <li><a href="#">Tutorials</a></li>
-                <li><a href="#">User Guide</a></li>
+                <li class="stdnav"><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
+                <li><a href="${ notYetImplementedUrl }">Support</a></li>
+                <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
+                <li><a href="${ notYetImplementedUrl }">User Guide</a></li>
             </ul>
         </li>
     </ul>
