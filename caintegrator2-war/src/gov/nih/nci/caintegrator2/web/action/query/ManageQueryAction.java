@@ -282,10 +282,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
-        manageQueryHelper.getColumnCollection().clear();
         manageQueryHelper.setResultColumnCollection(getSelectedClinicalAnnotations(), EntityTypeEnum.SUBJECT);
         manageQueryHelper.setResultColumnCollection(getSelectedImageAnnotations(), EntityTypeEnum.IMAGESERIES);
-       
+        manageQueryHelper.getColumnIndexOptions().clear();
+        manageQueryHelper.indexOption();
     }    
     
     /**
