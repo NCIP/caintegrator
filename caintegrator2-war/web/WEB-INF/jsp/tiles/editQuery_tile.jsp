@@ -188,6 +188,7 @@ pageEncoding="ISO-8859-1" %>
 
     
 <div id="columns" class="box2" style="display:none;">
+        <s:if test="!manageQueryHelper.clinicalAnnotationDefinitions.isEmpty()">
         <h2>Select Results Display</h2>
         <div>
         <b>Select Result Type: </b>
@@ -230,7 +231,10 @@ pageEncoding="ISO-8859-1" %>
    </div>
        
    <div class="clear"></div>
-           
+   </s:if>   
+   <s:else>
+         <p >These options are fixed when viewing a saved query.  Click the Criteria tab to edit a new query.</p>
+   </s:else>     
 </div>
   
 <!--/Columns-->
@@ -244,151 +248,49 @@ pageEncoding="ISO-8859-1" %>
         
         <table class="data">
             <tr>
-                <th>Column<br><br><br><br><br><br><br></th>
-                <th>Order (L-R)<br><br><br><br><br><br><br></th>
-                <th>Vertical Sorting (1st)<br><br><br><br><br><br><br></th>
-
-                <th>Vertical Sorting (2nd)<br><br><br><br><br><br><br></th>
-                <th>Action<br><br><br><br><br><br><br></th>
+                <th>Column<br></th>
+                <th>Order (L-R)<br></th>
+                <th>Vertical Sorting (1st)<br></th>
+                <th>Vertical Sorting (2nd)<br></th>
+                <th>Action<br></th>
             </tr>
-            <tr class="odd">
-                <td class="title">Patient ID<br><br><br><br><br><br><br></td>
-                <td>
-                    <select name="order1">
-
-                        <option selected="selected">1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_1" checked="checked" value="ascending" id="sort1_1_ascending" /><label for="sort1_1_ascending">Ascending</label>
-                    <input type="radio" name="sort_1" value="descending" id="sort1_1_descending" /><label for="sort1_1_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_2" value="ascending" id="sort1_2_ascending" /><label for="sort1_2_ascending">Ascending</label>
-
-                    <input type="radio" name="sort_2" value="descending" id="sort1_2_descending" /><label for="sort1_2_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
-            </tr>
-            <tr>
-                <td class="title">Patient Age<br><br><br><br><br><br><br></td>
-                <td>
-
-                    <select name="order1">
-                        <option>1</option>
-                        <option selected="selected">2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-
-                    </select>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_1" value="ascending" id="sort2_1_ascending" /><label for="sort2_1_ascending">Ascending</label>
-                    <input type="radio" name="sort_1" value="descending" id="sort2_1_descending" /><label for="sort2_1_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_2" value="ascending" id="sort2_2_ascending" /><label for="sort2_2_ascending">Ascending</label>
-
-                    <input type="radio" name="sort_2" value="descending" id="sort2_2_descending" /><label for="sort2_2_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
-            </tr>
-            <tr class="odd">
-                <td class="title">Tumor Size<br><br><br><br><br><br><br></td>
-                <td>
-
-                    <select name="order1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option selected="selected">3</option>
-                        <option>4</option>
-                        <option>5</option>
-
-                    </select>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_1" value="ascending" id="sort3_1_ascending" /><label for="sort3_1_ascending">Ascending</label>
-                    <input type="radio" name="sort_1" value="descending" id="sort3_1_descending" /><label for="sort3_1_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_2" value="ascending" id="sort3_2_ascending" /><label for="sort3_2_ascending">Ascending</label>
-
-                    <input type="radio" name="sort_2" value="descending" id="sort3_2_descending" /><label for="sort3_2_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
-            </tr>
-            <tr>
-                <td class="title">Gene Symbol<br><br><br><br><br><br><br></td>
-                <td>
-
-                    <select name="order1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option selected="selected">4</option>
-                        <option>5</option>
-
-                    </select>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_1" value="ascending" id="sort4_1_ascending" /><label for="sort4_1_ascending">Ascending</label>
-                    <input type="radio" name="sort_1" value="descending" id="sort4_1_descending" /><label for="sort4_1_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_2" value="ascending" id="sort4_2_ascending" /><label for="sort4_2_ascending">Ascending</label>
-
-                    <input type="radio" name="sort_2" value="descending" id="sort4_2_descending" /><label for="sort4_2_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
-            </tr>
-            <tr class="odd">
-                <td class="title">Expression<br><br><br><br><br><br><br></td>
-                <td>
-
-                    <select name="order1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option selected="selected">5</option>
-
-                    </select>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_1" value="ascending" id="sort5_1_ascending" /><label for="sort5_1_ascending">Ascending</label>
-                    <input type="radio" name="sort_1" value="descending" id="sort5_1_descending" /><label for="sort5_1_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td>
-                    <input type="radio" name="sort_2" value="ascending" id="sort5_2_ascending" /><label for="sort5_2_ascending">Ascending</label>
-
-                    <input type="radio" name="sort_2" value="descending" id="sort5_2_descending" /><label for="sort5_2_descending">Descending</label>
-                <br><br><br><br><br><br><br></td>
-                <td><a href="#" class="remove">Remove Column</a><br><br><br><br><br><br><br></td>
-            </tr>
+            <s:if test="!manageQueryHelper.columnList.isEmpty()">
+            
+                <s:iterator value="manageQueryHelper.columnList" status="columnStatus" id="currentColumn">
+                <tr>
+                    <td><s:property value="annotationDefinition.displayName"/></td>
+                         
+                    <td><s:select name="manageQueryHelper.columnList[%{#columnStatus.index}].columnIndex" 
+                    list="manageQueryHelper.columnIndexOptions"
+                    value="%{columnIndex}"/></td>
+                                              
+                </tr>
+                </s:iterator>
+            </s:if>
+            <s:else>
+            <p >These options are fixed when viewing a saved query.  Click the Criteria tab to edit a new query.</p>
+           </s:else> 
             
         </table>
         <!--Buttons-->
         
         <div class="actionsrow">
             <del class="btnwrapper">
-
-                <ul class="btnrow">         
+                <ul class="btnrow">
+                    <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
                     <li>'&lt;&gt;()<a href="javascript://" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Reset Sorting</span></span></a><br><br><br><br><br><br><br><br><br></li>
                 </ul>   
             </del>
+            
         </div>
         
         <!--Buttons-->
-                                                                
+   
+                                                               
     </div>
     
 <!--/Sort Order-->
+
 
 
     
