@@ -133,7 +133,8 @@ final class ManageQueryHelper {
     private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     private boolean prepopulated;
     private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
-    private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private List<ResultColumn> columnList = new ArrayList<ResultColumn>();
+    private List<Integer> columnIndexOptions = new ArrayList<Integer>();
     /**
      * Default constructor.
      */
@@ -173,6 +174,7 @@ final class ManageQueryHelper {
         }
     }
     
+       
     /**
      * @return the advancedView
      */
@@ -498,10 +500,12 @@ final class ManageQueryHelper {
                         getSelectedColumnCollection(annoDef, entityType);
                    }
             }
-        } 
-        
+        } else {
+            removeColumn(entityType);
+        }
+        checkColumnCollection(selectedValues, entityType); 
     }
-    
+      
 
     // Creating a columnCollection for User Selected columns from CheckBox list.
     private void  getSelectedColumnCollection(AnnotationDefinition annoDef, 
@@ -511,11 +515,68 @@ final class ManageQueryHelper {
         column.setAnnotationDefinition(annoDef);
         column.setColumnIndex(i++);
         column.setEntityType(entityType.getValue());
-        columnCollection.add(column);
-        
+        if (columnList.isEmpty()) {
+            columnList.add(column);
+        } else {
+            boolean found = false;
+            for (ResultColumn checkColumn : columnList) {
+                String checkColumnDisplayName = checkColumn.getAnnotationDefinition().getDisplayName();
+                String annoDefDisplayName = annoDef.getDisplayName();
+                if (checkColumnDisplayName.equalsIgnoreCase(annoDefDisplayName)) { 
+                    found = true;
+                    break;
+                   
+                }
+            }
+            if (!found) {
+                columnList.add(column);
+            }
+        }
     }
     
-
+     
+    private void removeColumn(EntityTypeEnum entityType) {
+        for (Iterator<ResultColumn> iter = columnList.iterator(); iter.hasNext();) {
+            ResultColumn singleColumn = iter.next();
+                if (singleColumn.getEntityType().equals(entityType.getValue())) {
+                    iter.remove();
+                }
+        }
+    }
+    
+ // Check and see the columnCollection has extra columns other than user selected , 
+    // then extra columns has to be removed.
+    private void checkColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
+        if (selectedValues != null) { 
+            List<ResultColumn> colCollection = new ArrayList<ResultColumn>(); 
+                for (Long columnId : selectedValues) {
+                        createUserSelectedList(columnId, colCollection, entityType);
+                }
+        removeDuplicateColumn(colCollection, entityType);
+      }
+    }
+    
+    private void createUserSelectedList(Long columnId, List<ResultColumn> colCollection, EntityTypeEnum entityType) {
+        for (ResultColumn column : columnList) {
+            if (column.getEntityType().equals(entityType.getValue())) {
+                Long columnCollectionId = column.getAnnotationDefinition().getId();
+                if (columnId.equals(columnCollectionId)) {
+                    colCollection.add(column);
+                }
+            }
+        }
+    }
+    private void removeDuplicateColumn(List<ResultColumn> colCollection, EntityTypeEnum entityType) {
+        for (Iterator<ResultColumn> iter = columnList.iterator(); iter.hasNext();) {
+            ResultColumn singleColumn = iter.next();
+            if (singleColumn.getEntityType().equals(entityType.getValue())) {
+               iter.remove();
+            }
+        }
+        for (ResultColumn eachColumn : colCollection) {
+            columnList.add(eachColumn);
+        }
+    }
     /**
      * @param queryManagementService A QueryManagementService instance
      * @param basicQueryOperator String AND or OR
@@ -526,7 +587,7 @@ final class ManageQueryHelper {
         QueryResult queryResult = null;
 
         queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
-                this.getQueryCriteriaRowList(), this.getColumnCollection());
+                this.getQueryCriteriaRowList(), this.getColumnList());
                 
         return queryResult;
     }
@@ -562,7 +623,7 @@ final class ManageQueryHelper {
         queryHelper.setReporterType(ReporterTypeEnum.getByValue(reporterType));
         Query query = queryHelper.buildQuery(queryManagementService,
                 getQueryCriteriaRowList(), queryName, queryDescription, ResultTypeEnum.getByValue(resultType), 
-                getColumnCollection());
+                getColumnList());
         if (query != null) {
             query.setResultType(resultType);
             if (SessionHelper.getInstance().getDisplayableUserWorkspace() != null
@@ -635,15 +696,15 @@ final class ManageQueryHelper {
      /**
      * @return the columnCollection
      */
-    public Collection<ResultColumn> getColumnCollection() {
-        return columnCollection;
+    public List<ResultColumn> getColumnList() {
+        return columnList;
     }
 
     /**
      * @param columnCollection the columnCollection to set
      */
-    public void setColumnCollection(Collection<ResultColumn> columnCollection) {
-        this.columnCollection = columnCollection;
+    public void setColumnList(List<ResultColumn> columnList) {
+        this.columnList = columnList;
     }
 
     
@@ -690,5 +751,25 @@ final class ManageQueryHelper {
         this.reporterType = reporterType;
     }
 
+    /**
+     * @return the columnIndexOption
+     */
+    public List<Integer> getColumnIndexOptions() {
+        return columnIndexOptions;
+    }
+
+    /**
+     * @param columnIndexOption the columnIndexOption to set
+     */
+    public void setColumnIndexOptions(List<Integer> columnIndexOptions) {
+        this.columnIndexOptions = columnIndexOptions;
+    }
+
+    protected void indexOption() {
     
+        int i;
+        for (i = 0; i < getColumnList().size(); i++) {
+            columnIndexOptions.add(i);
+        }
+    }
 }

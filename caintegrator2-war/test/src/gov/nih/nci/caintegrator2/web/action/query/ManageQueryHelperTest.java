@@ -116,7 +116,7 @@ public class ManageQueryHelperTest {
     private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
     private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
-    private final Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
+    private final List<ResultColumn> columnList = new ArrayList<ResultColumn>();
     
     @Before
     public void setUp() {
@@ -125,7 +125,7 @@ public class ManageQueryHelperTest {
         manageQueryHelper.setAdvancedView(Boolean.TRUE);
         manageQueryHelper.setQueryCriteriaRowList(rowList);
         manageQueryHelper.setResultColumnCollection(selectedValues, EntityTypeEnum.SUBJECT);
-        manageQueryHelper.setColumnCollection(columnCollection);
+        manageQueryHelper.setColumnList(columnList);
         
         StudySubscription currentStudySubscription = new StudySubscription();
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
@@ -155,7 +155,7 @@ public class ManageQueryHelperTest {
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
-        assertNotNull(manageQueryHelper.getColumnCollection());
+        assertNotNull(manageQueryHelper.getColumnList());
         
         assertTrue(manageQueryHelper.configureClinicalQueryCriterionRow());
         assertTrue(manageQueryHelper.configureImageSeriesQueryCriterionRow());
