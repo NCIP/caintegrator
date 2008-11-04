@@ -541,11 +541,15 @@ TABLE.data TD.label_inline
 { width:100px; color:#808080; padding-top:18px; padding-left:7px; padding-right:5px; font-weight:bold; text-align:left; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
 TABLE.data TD.value_inline
 {  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; }
+TABLE.data TD.value_inline2
+{  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; }
 TABLE.data TD.action_inline
 { width:60px; color:#808080; padding:18px 8px 10px 5px; text-align:left; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
 TABLE.data TD.thin_inline
 { padding-top:15px; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
 .value_inline SELECT
+{ margin-bottom:3px; width:250px }
+.value_inline2 SELECT
 { margin-bottom:3px; width:130px }
 .value_inline INPUT.keyword
 { margin-bottom:3px; width:123 px; padding:1px; }
