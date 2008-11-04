@@ -105,7 +105,7 @@ pageEncoding="ISO-8859-1" %>
                                 <td class="value_inline"><s:select name="selectedAnnotations" list="annotationSelections.genomicAnnotationDefinitions" listValue="value" listKey="value" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
                             </s:else>
                             
-                            <td class="value_inline"><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
+                            <td class="value_inline2"><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
                             <td class="value_inline"><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
                             </tr>
                         </s:iterator>
