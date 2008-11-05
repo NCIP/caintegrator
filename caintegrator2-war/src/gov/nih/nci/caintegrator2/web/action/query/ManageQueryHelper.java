@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -269,13 +268,7 @@ final class ManageQueryHelper {
     /**
      * Fetch and store the annotation select lists.
      */
-    void prepopulateAnnotationSelectLists() {
-        StudySubscription studySubscription = 
-            SessionHelper.getInstance().getDisplayableUserWorkspace().getCurrentStudySubscription();
-        if (studySubscription == null) {
-           throw new IllegalStateException("No current StudySubscription is selected on the Session."); 
-        }
-        Study study = studySubscription.getStudy();
+    void prepopulateAnnotationSelectLists(Study study) {
         populateClinicalAnnotationDefinitions(study);
         populateImageSeriesAnnotationDefinitions(study);
         populateSampleAnnotationDefinitions(study);
