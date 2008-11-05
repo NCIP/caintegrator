@@ -86,9 +86,6 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
@@ -97,6 +94,8 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -132,27 +131,29 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         if ("createNewQuery".equals(selectedAction)) {
             manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         }
-        if (!manageQueryHelper.isPrepopulated()) {
-            manageQueryHelper.prepopulateAnnotationSelectLists();
+
+        if (getStudySubscription() != null) {
+            if (!manageQueryHelper.isPrepopulated()) {
+                manageQueryHelper.prepopulateAnnotationSelectLists(getStudy());
+            }
+            if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
+                checkClinicalAnnotationDefinitions();     
+                checkImageAnnotationDefinitions();
+            }
         }
-        checkClinicalAnnotationDefinitions();     
-        checkImageAnnotationDefinitions();   
     }
     /**
      * Setting all the Clinical definitions checked in JSP as a default action.
      */
     public void checkClinicalAnnotationDefinitions() {
-        if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
-            Collection<AnnotationDefinition> temp = manageQueryHelper.getClinicalAnnotationDefinitions();
-            if (manageQueryHelper.getClinicalAnnotationDefinitions() != null) {
-            Iterator<AnnotationDefinition> itr = temp.iterator();
-            this.selectedClinicalAnnotations = new Long[temp.size()];
+        Collection<AnnotationDefinition> annotationDefinitions = manageQueryHelper.getClinicalAnnotationDefinitions();
+        if (annotationDefinitions != null) {
+            this.selectedClinicalAnnotations = new Long[annotationDefinitions.size()];
             int i = 0;
-            while (itr.hasNext()) {
-                this.selectedClinicalAnnotations[i] = itr.next().getId();
+            for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+                this.selectedClinicalAnnotations[i] = annotationDefinition.getId();
                 i++;
             }
-          }
         }
     }
     
@@ -160,24 +161,28 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * Setting all the Image definitions checked in JSP as a default action.
      */
     public void checkImageAnnotationDefinitions() {
-        if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
-            Collection<AnnotationDefinition> temp = manageQueryHelper.getImageAnnotationDefinitions();
-            if (manageQueryHelper.getImageAnnotationDefinitions() != null) {
-            Iterator<AnnotationDefinition> itr = temp.iterator();
-            this.selectedImageAnnotations = new Long[temp.size()];
+        Collection<AnnotationDefinition> annotationDefinitions = manageQueryHelper.getImageAnnotationDefinitions();
+        if (annotationDefinitions != null) {
+            this.selectedImageAnnotations = new Long[annotationDefinitions.size()];
             int i = 0;
-            while (itr.hasNext()) {
-                this.selectedImageAnnotations[i] = itr.next().getId();
+            for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+                this.selectedImageAnnotations[i] = annotationDefinition.getId();
                 i++;
-            }
             }
         }
     }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate() {
+
+        if (getStudySubscription() == null) {
+            addActionError("Please select a study under \"My Studies\".");
+            return;
+        }
+        
         saveFormData();
         if ("executeQuery".equals(selectedAction)) {
             validateExecuteQuery(); 
