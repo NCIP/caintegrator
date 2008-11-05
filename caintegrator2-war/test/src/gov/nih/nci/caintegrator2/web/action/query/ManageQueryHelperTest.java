@@ -93,9 +93,7 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,6 +115,7 @@ public class ManageQueryHelperTest {
     private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
     private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
     private final List<ResultColumn> columnList = new ArrayList<ResultColumn>();
+    private StudySubscription studySubscription;
     
     @Before
     public void setUp() {
@@ -127,29 +126,23 @@ public class ManageQueryHelperTest {
         manageQueryHelper.setResultColumnCollection(selectedValues, EntityTypeEnum.SUBJECT);
         manageQueryHelper.setColumnList(columnList);
         
-        StudySubscription currentStudySubscription = new StudySubscription();
+        studySubscription = new StudySubscription();
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinitionSet.add(annotationDefinition);
         Study study = new Study();
-        currentStudySubscription.setStudy(study);
-        currentStudySubscription.setId(Long.valueOf(1));
+        studySubscription.setStudy(study);
+        studySubscription.setId(Long.valueOf(1));
         study.setImageSeriesAnnotationCollection(annotationDefinitionSet);
         study.setSubjectAnnotationCollection(annotationDefinitionSet);
         study.setSampleAnnotationCollection(annotationDefinitionSet);
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        UserWorkspace currentUserWorkspace = new UserWorkspace();
-        currentUserWorkspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-        currentUserWorkspace.getSubscriptionCollection().add(currentStudySubscription);
-        ActionContext.getContext().getValueStack().set("workspace", currentUserWorkspace);
-        SessionHelper sessionHelper = SessionHelper.getInstance();
-        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(currentStudySubscription);
     }
    
     @Test
     public void testIt() {        
         assertTrue(manageQueryHelper.isAdvancedView());
         manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteria());
-        manageQueryHelper.prepopulateAnnotationSelectLists();
+        manageQueryHelper.prepopulateAnnotationSelectLists(studySubscription.getStudy());
         assertEquals(1, manageQueryHelper.getQueryCriteriaRowList().size());
         assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
         assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
