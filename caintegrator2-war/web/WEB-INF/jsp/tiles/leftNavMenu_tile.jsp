@@ -51,8 +51,9 @@
                                 <s:iterator value="studySubscription.queryCollection">
                                     <s:url id="queryURL" action="executeQuery">
                                         <s:param name="queryId" value="id" />
+                                        
                                     </s:url>
-                                    <li><s:a href="%{queryURL}" cssClass="queries"><s:property value="name"/></s:a></li>
+                                    <li><s:a href="%{queryURL}#searchresults" cssClass="queries"><s:property value="name"/></s:a></li>
                                 </s:iterator>
                                 
                                 <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->

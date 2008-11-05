@@ -277,7 +277,7 @@ pageEncoding="ISO-8859-1" %>
         <div class="actionsrow">
             <del class="btnwrapper">
                 <ul class="btnrow">
-                    <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
+                    <li><s:a href="#" cssClass="btn" onclick="prepareFormForSubmit(document.manageQueryForm,'executeQuery','searchresults');document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
                 </ul>   
             </del>
             
