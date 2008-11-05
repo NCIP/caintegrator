@@ -42,20 +42,6 @@
             <ul class="pde">
                 <li><a href="#">Queries</a>
                     <ul>
-                        <li><a href="#">Global Queries</a>
-                            <ul>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Query A</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Query B</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Query C</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Shared Queries</a>
-                            <ul>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query A</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query B</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Query C</a></li>
-                            </ul>
-                        </li>
                         <li><a href="#">My Queries</a>
                             <ul>
                                 <li><a href='/caintegrator2/executeQuery.action?queryName=simple#searchresults' class="queries">Disease = Astrocytoma</a></li>
@@ -74,32 +60,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">Data Lists</a>
-                    <ul>
-                        <li><a href="#">Global Data Lists</a>
-                            <ul>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List A</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List B</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Global Data List C</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Shared Data Lists</a>
-                            <ul>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List A</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List B</a></li>
-                                <li><a href="${ notYetImplementedUrl }">Sample Shared Data List C</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">My Data Lists</a>
-                            <ul>
-                                <li><a href="${ notYetImplementedUrl }">My Sample Data List A</a></li>
-                                <li><a href="${ notYetImplementedUrl }">My Sample Data List B</a></li>
-                                <li><a href="${ notYetImplementedUrl }">My Sample Data List C</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+           </ul>
         </li>
         
         <!--/Tree Control-->
