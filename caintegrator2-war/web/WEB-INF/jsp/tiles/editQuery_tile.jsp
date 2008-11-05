@@ -278,7 +278,6 @@ pageEncoding="ISO-8859-1" %>
             <del class="btnwrapper">
                 <ul class="btnrow">
                     <li><s:a href="#" cssClass="btn" onclick="document.manageQueryForm.selectedAction.value = 'executeQuery';document.manageQueryForm.submit();"><span class="btn_img"><span class="search">Run Search</span></span></s:a></li>
-                    <li>'&lt;&gt;()<a href="javascript://" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Reset Sorting</span></span></a><br><br><br><br><br><br><br><br><br></li>
                 </ul>   
             </del>
             
