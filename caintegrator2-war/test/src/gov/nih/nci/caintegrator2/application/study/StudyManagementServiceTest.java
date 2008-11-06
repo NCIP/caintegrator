@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -121,6 +122,7 @@ public class StudyManagementServiceTest {
     private StudyManagementService studyManagementService;
     private CaIntegrator2DaoStub daoStub;
     private CaDSRFacadeStub caDSRFacadeStub;
+    private FileManagerStub fileManagerStub;
 
     @Before
     public void setUp() throws Exception {
@@ -130,6 +132,8 @@ public class StudyManagementServiceTest {
         daoStub.clear();                
         caDSRFacadeStub = (CaDSRFacadeStub) context.getBean("caDSRFacadeStub");
         caDSRFacadeStub.clear();
+        fileManagerStub = (FileManagerStub) context.getBean("fileManagerStub");
+        fileManagerStub.clear();
     }
 
     @Test
@@ -159,6 +163,15 @@ public class StudyManagementServiceTest {
         assertEquals(1, studyConfiguration.getClinicalConfigurationCollection().size());
         assertTrue(studyConfiguration.getClinicalConfigurationCollection().contains(sourceConfiguration));
         assertEquals(4, sourceConfiguration.getAnnotationFile().getColumns().size());
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    @Test
+    public void testAddStudyLogo() throws IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyManagementService.save(studyConfiguration);
+        studyManagementService.addStudyLogo(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName(), "image/jpeg");
+        assertTrue(fileManagerStub.storeStudyFileCalled);
         assertTrue(daoStub.saveCalled);
     }
     

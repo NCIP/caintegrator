@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,66 +83,83 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.web;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.application.study.ImageContentTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyLogo;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
-import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.springframework.transaction.annotation.Transactional;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@Transactional
-public class StudyManagementServiceTestIntegration extends AbstractTransactionalSpringContextTests{
+import org.apache.commons.io.IOUtils;
+import org.springframework.web.HttpRequestHandler;
+
+/**
+ * Servlet to render Study Logo's based on Study input parameters.
+ */
+public class LogoRenderingServlet implements HttpRequestHandler {
     
     private StudyManagementService studyManagementService;
     
-    public StudyManagementServiceTestIntegration() {
-        // Set this to false if you want to see the change occur in the database and not be rolled back.
-        this.setDefaultRollback(true);
-    }
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
-    
+    // Not sure what the actual default logo will be, but it will probably be in the images dir.
+    private static final String DEFAULT_LOGO = File.separator + "images" + File.separator + "logo_sample_vasari.gif";
+    private static final ImageContentTypeEnum DEFAULT_CONTENT_TYPE = ImageContentTypeEnum.GIF; 
     /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     * {@inheritDoc}
+     */
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+
+        String studyId = request.getParameter("studyId");
+        String studyName = request.getParameter("studyName");
+        StudyLogo studyLogo = null;
+        String imagePath = "";
+        if (studyId != null && studyName != null) {
+            studyLogo = studyManagementService.retrieveStudyLogo(Long.valueOf(studyId), studyName);
+        }
+        imagePath = retrieveImagePath(request, response, studyLogo);
+        OutputStream outputStream = response.getOutputStream();
+        File imageFile = new File(imagePath);
+        FileInputStream inputStream = new FileInputStream(imageFile);
+        IOUtils.copy(inputStream, outputStream);
+        outputStream.close();
+    }
+
+    private String retrieveImagePath(HttpServletRequest request, HttpServletResponse response, StudyLogo studyLogo) {
+        String imagePath;
+        if (studyLogo != null && studyLogo.getPath() != null) { // Use study logo.
+            String contentType = studyLogo.getFileType();
+            if (!ImageContentTypeEnum.checkType(contentType)) {
+                contentType = ImageContentTypeEnum.JPEG.getValue();
+            }
+            response.setContentType(contentType);
+            imagePath = studyLogo.getPath();
+        } else { // Use default logo, if the studyLogo doesn't have a path.
+            imagePath = request.getSession().getServletContext().getRealPath("/") + DEFAULT_LOGO;
+            response.setContentType(DEFAULT_CONTENT_TYPE.getValue());
+        }
+        return imagePath;
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
      */
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
-    }
-    
-    @Test
-    public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
-        
-        // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
-        assertNotNull(sourceConfiguration);
-        
-        // Clean up the test file
-        sourceConfiguration.getAnnotationFile().getFile().delete();
-    }
-    
-    @Test
-    public void testRetrieveStudyLogo() {
-        Long id = Long.valueOf(1);
-        String name = "Test";
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setStudy(new Study());
-        studyConfiguration.getStudy().setId(id);
-        studyConfiguration.getStudy().setShortTitleText(name);
-        studyConfiguration.setStudyLogo(new StudyLogo());
-        studyConfiguration.getStudyLogo().setId(Long.valueOf(2));
-        
-        studyManagementService.save(studyConfiguration);
-        
-        assertNotNull(studyManagementService.retrieveStudyLogo(id, name));
-        
     }
 
 }

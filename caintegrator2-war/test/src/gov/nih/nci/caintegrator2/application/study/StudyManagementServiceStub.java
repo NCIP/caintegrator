@@ -118,7 +118,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean createDefinitionCalled;
     public boolean addControlSamplesCalled;
     public boolean isDuplicateStudyNameCalled;
-
+    public boolean addStudyLogoCalled;
+    public boolean retrieveStudyLogoCalled;
+    
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
     }
@@ -151,6 +153,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         createDefinitionCalled = false;
         addControlSamplesCalled = false;
         isDuplicateStudyNameCalled = false;
+        addStudyLogoCalled = false;
+        retrieveStudyLogoCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -246,5 +250,17 @@ public class StudyManagementServiceStub implements StudyManagementService {
         isDuplicateStudyNameCalled = true;
         return false;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addStudyLogo(StudyConfiguration studyConfiguration, File imageFile, String fileName, String fileType) throws IOException {
+        addStudyLogoCalled = true;
+        
+    }
     
+    public StudyLogo retrieveStudyLogo(Long id, String name) {
+        retrieveStudyLogoCalled = true;
+        return new StudyLogo();
+    }
 }

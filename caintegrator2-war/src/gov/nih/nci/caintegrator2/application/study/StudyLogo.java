@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,64 +85,65 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.common.PersistentObject;
 
-import java.io.IOException;
+/**
+ * Represents a gif/jpg logo image.
+ */
+public class StudyLogo implements PersistentObject {
 
-import org.junit.Test;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional
-public class StudyManagementServiceTestIntegration extends AbstractTransactionalSpringContextTests{
-    
-    private StudyManagementService studyManagementService;
-    
-    public StudyManagementServiceTestIntegration() {
-        // Set this to false if you want to see the change occur in the database and not be rolled back.
-        this.setDefaultRollback(true);
-    }
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/service-test-integration-config.xml"};
-    }
+    private Long id;
+    private String fileName;
+    private String path;
+    private String fileType;
     
     /**
-     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     * @return the id
      */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
+    public Long getId() {
+        return id;
     }
-    
-    @Test
-    public void testSetClinicalAnnotationAndLoadData() throws ValidationException, IOException {
-        
-        // Set Clinical Annotations
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyManagementService.save(studyConfiguration);
-        DelimitedTextClinicalSourceConfiguration sourceConfiguration = 
-            studyManagementService.addClinicalAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
-        assertNotNull(sourceConfiguration);
-        
-        // Clean up the test file
-        sourceConfiguration.getAnnotationFile().getFile().delete();
-    }
-    
-    @Test
-    public void testRetrieveStudyLogo() {
-        Long id = Long.valueOf(1);
-        String name = "Test";
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setStudy(new Study());
-        studyConfiguration.getStudy().setId(id);
-        studyConfiguration.getStudy().setShortTitleText(name);
-        studyConfiguration.setStudyLogo(new StudyLogo());
-        studyConfiguration.getStudyLogo().setId(Long.valueOf(2));
-        
-        studyManagementService.save(studyConfiguration);
-        
-        assertNotNull(studyManagementService.retrieveStudyLogo(id, name));
-        
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
+    }
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName.replaceAll(" ", "_");
+    }
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+    /**
+     * @return the fileType
+     */
+    public String getFileType() {
+        return fileType;
+    }
+    /**
+     * @param fileType the fileType to set
+     */
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
 }
