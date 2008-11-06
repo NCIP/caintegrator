@@ -167,7 +167,8 @@ public final class Cai2Util {
     public static boolean columnCollectionContainsColumn(Collection<ResultColumn> columns, ResultColumn column) {
         if (columns != null && !columns.isEmpty()) {
             for (ResultColumn currentColumn : columns) {
-                if (currentColumn.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
+                if (currentColumn.getAnnotationDefinition() != null 
+                        && currentColumn.getAnnotationDefinition().equals(column.getAnnotationDefinition())) {
                     return true;
                 }
             }
