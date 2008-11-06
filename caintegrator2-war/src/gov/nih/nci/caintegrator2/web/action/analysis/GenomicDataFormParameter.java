@@ -85,127 +85,118 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+/**
+ * Parameter that selects the source of genomic data.
+ */
+public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
 
-public class AnalysisFormParameterTest {
+    /**
+     * String value used to indicate that all genomic data should be used.
+     */
+    public static final String ALL_DATA = "All Genomic Data";
     
-    private StringParameterValue parameterValue1;
-    private IntegerParameterValue parameterValue2;
-    private GenomicDataParameterValue parameterValue3;
-    private TextFieldFormParameter formParameter1;
-    private SelectListFormParameter formParameter2;
-    private GenomicDataFormParameter formParameter3;
-    private StudySubscription studySubscription = new StudySubscription();
-    private Query query = new Query();
+    private Query selectedQuery;
 
-    @Before
-    public void setUp() {
-        AnalysisForm form = new AnalysisForm();
-        
-        parameterValue1 = new StringParameterValue();
-        AnalysisParameter parameter1 = new AnalysisParameter();
-        parameterValue1.setParameter(parameter1);
-        parameter1.setName("parameter1");
-        parameter1.setDescription("description1");
-        parameter1.setRequired(false);
-        parameter1.setType(AnalysisParameterType.STRING);
-        parameterValue1.setValue("value1");
-        
-        parameterValue2 = new IntegerParameterValue();
-        AnalysisParameter parameter2 = new AnalysisParameter();
-        parameterValue2.setParameter(parameter2);
-        parameter2.setName("parameter2");
-        parameter2.setDescription("description2");
-        parameter2.setRequired(false);
-        parameter2.setType(AnalysisParameterType.INTEGER);
-        parameterValue2.setValue(2);
-        
-        Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
-        choices.put("2", parameterValue2);
-        parameter2.setChoices(choices);
-        IntegerParameterValue choice2 = new IntegerParameterValue();
-        choice2.setValue(3);
-        choice2.setParameter(parameter2);
-        choices.put("3", choice2);
-        
-        parameterValue3 = new GenomicDataParameterValue();
-        AnalysisParameter parameter3 = new AnalysisParameter();
-        parameter3.setType(AnalysisParameterType.GENOMIC_DATA);
-        parameter3.setName("parameter3");
-        parameterValue3.setParameter(parameter3);
-        
-        formParameter1 = (TextFieldFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue1);
-        formParameter2 = (SelectListFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue2);
-        formParameter3 = (GenomicDataFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue3);
+    GenomicDataFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+        super(form, parameterValue);
+    }
 
-        List<Query> queries = new ArrayList<Query>();
-        query.setId(1L);
-        query.setName("Test");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDisplayType() {
+        return "select";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getValue() {
+        if (selectedQuery == null) {
+            return ALL_DATA;
+        } else {
+            return selectedQuery.getName();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setValue(String value) {
+        setSelectedQuery(getForm().getGenomicQuery(value));
+    }
+
+    /**
+     * @return the available choices
+     */
+    public Collection<String> getChoices() {
+        List<String> choices = new ArrayList<String>();
+        choices.add(ALL_DATA);
+        choices.addAll(getForm().getGenomicQueryNames());
+        return choices;
+    }
+
+    Query getSelectedQuery() {
+        return selectedQuery;
+    }
+
+    private void setSelectedQuery(Query selectedQuery) {
+        this.selectedQuery = selectedQuery;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
+        if (getSelectedQuery() == null) {
+            setSelectedQuery(createAllDataQuery(studySubscription));
+        } else {
+            refreshSelectedQuery(studySubscription);
+        }
+        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(getSelectedQuery());
+        ((GenomicDataParameterValue) getParameterValue()).setGenomicData(genomicData);
+    }
+
+    private void refreshSelectedQuery(StudySubscription studySubscription) {
+        for (Query nextQuery : studySubscription.getQueryCollection()) {
+            if (nextQuery.equals(getSelectedQuery())) {
+                setSelectedQuery(nextQuery);
+            }
+        }
+    }
+
+    private Query createAllDataQuery(StudySubscription studySubscription) {
+        Query query = new Query();
         query.setResultType(ResultTypeEnum.GENOMIC.getValue());
-        queries.add(query);
-        formParameter3.getForm().setGenomicQueries(queries);
-        studySubscription.setQueryCollection(new HashSet<Query>());
-        studySubscription.getQueryCollection().add(query);
-    }
-
-    @Test
-    public void testGetters() {
-        assertEquals("description1", formParameter1.getDescription());
-        assertEquals("textfield", formParameter1.getDisplayType());
-        assertEquals("select", formParameter2.getDisplayType());
-        assertEquals("parameter1", formParameter1.getName());
-        assertEquals("value1", formParameter1.getValue());
-        assertEquals("2", formParameter2.getValue());
-        assertEquals(2, formParameter2.getChoices().size());
-        assertTrue(formParameter2.getChoices().contains("2"));
-        assertEquals(2, formParameter3.getChoices().size());
-        assertTrue(formParameter3.getChoices().contains("All Genomic Data"));
-    }
-    
-    @Test
-    public void testSetValue() {
-        formParameter1.setValue("new value");
-        assertEquals("new value", formParameter1.getParameterValue().getValueAsString());
-        formParameter2.setValue("3");
-        assertEquals("3", formParameter2.getParameterValue().getValueAsString());
-        assertEquals("All Genomic Data", formParameter3.getValue());
-        formParameter3.setValue("Test");
-        assertEquals("Test", formParameter3.getValue());
-        assertEquals(query, formParameter3.getSelectedQuery());
-    }
-    
-    @Test
-    public void testConfigure() {
-        QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
-        formParameter3.configureForInvocation(studySubscription, queryManagementService);
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
-        assertNotNull(((GenomicDataParameterValue) formParameter3.getParameterValue()).getGenomicData());
-        queryManagementService.clear();
-        formParameter3.setValue("Test");
-        formParameter3.configureForInvocation(studySubscription, queryManagementService);
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
-        assertNotNull(((GenomicDataParameterValue) formParameter3.getParameterValue()).getGenomicData());
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(studySubscription);
+        return query;
     }
 
 }

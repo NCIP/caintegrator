@@ -63,6 +63,7 @@
             </s:else>            
             <td><s:property value="id" /></td>
             <td><s:property value="name" /></td>
+            <td><s:property value="sampleAcquisition.assignment.identifier" /></td>
             </tr>
         </s:iterator>
     </table>

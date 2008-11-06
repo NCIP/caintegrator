@@ -97,7 +97,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean saveCalled;
     public boolean executeCalled;
     public QueryResult QR;
-    public boolean executeGenomicDataQuery;
+    public boolean executeGenomicDataQueryCalled;
 
     public void save(Query query) {
         saveCalled = true;
@@ -116,8 +116,14 @@ public class QueryManagementServiceStub implements QueryManagementService {
      * {@inheritDoc}
      */
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQuery = true;
-        return null;
+        executeGenomicDataQueryCalled = true;
+        return new GenomicDataQueryResult();
+    }
+
+    public void clear() {
+        saveCalled = false;
+        executeCalled = false;
+        executeGenomicDataQueryCalled = false;
     }
     
 }
