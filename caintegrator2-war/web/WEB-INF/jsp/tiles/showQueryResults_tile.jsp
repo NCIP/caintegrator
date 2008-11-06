@@ -65,11 +65,14 @@
 		<s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}"/>
             <display:table name="queryResult.rows" uid="queryResultRows" id="queryResultRows" 
-                           pagesize="${pageSizeVar}" sort="list" class="data" requestURI="" export="true" >
+                           pagesize="${pageSizeVar}" sort="list" class="data" requestURI="" export="true">
                 <display:setProperty name="paging.banner.placement" value="both"/> 
+                <display:setProperty name="export.excel" value="false"/>
+                <display:setProperty name="export.xml" value="false"/>
+                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
             	<s:if test="queryResult.hasSubjects" >
                     <display:column title="Subject Identifier" sortable="true">
-                        <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}" />
+                        <s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).subjectAssignment.identifier}"/>
                     </display:column>
                 </s:if>
                 <s:if test="queryResult.hasImageSeries" >
