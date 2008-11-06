@@ -86,158 +86,38 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
-
-import java.util.Collection;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.ValidationAware;
 
 /**
- * Represents a single parameter and value on an <code>AnalysisForm</code>.
+ * A parameter that is used to divide samples into two or more classes.
  */
-public class AnalysisFormParameter {
+public class SampleClassificationFormParameter extends AbstractAnalysisFormParameter {
 
-    private AbstractParameterValue parameterValue;
-    private String stringValue;
-
-    AnalysisFormParameter(AbstractParameterValue parameterValue) {
-        if (parameterValue == null) {
-            throw new IllegalArgumentException("Null value for parameterValue");
-        }
-        setParameterValue(parameterValue);
-        stringValue = parameterValue.getValueAsString();
+    SampleClassificationFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+        super(form, parameterValue);
     }
 
     /**
-     * @return the name
+     * {@inheritDoc}
      */
-    public String getName() {
-        return getParameter().getName();
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return getParameter().getDescription();
-    }
-
-    /**
-     * @return the required
-     */
-    public boolean isRequired() {
-        return getParameter().isRequired();
-    }
-    
-    /**
-     * @return the type of display element to use.
-     */
+    @Override
     public String getDisplayType() {
-        if (isSelect()) {
-            return "select";
-        } else {
-            return "textfield";
-        }
+        return "classification";
     }
 
     /**
-     * Indicates whether parameter is a select list.
-     * 
-     * @return true if is a select list.
+     * {@inheritDoc}
      */
-    public boolean isSelect() {
-        return !getParameter().getChoices().isEmpty();
-    }
-    
-    /**
-     * @return the available choices
-     */
-    public Collection<String> getChoices() {
-        return getParameter().getChoices().keySet();
-    }
-
-    /**
-     * @return the value
-     */
+    @Override
     public String getValue() {
-        return stringValue;
+        return null;
     }
 
     /**
-     * @param value the value to set
+     * {@inheritDoc}
      */
+    @Override
     public void setValue(String value) {
-        stringValue = value;
-        if (isSelect()) {
-            setParameterValue(getParameter().getChoices().get(value));
-        } else {
-            getParameterValue().setValueFromString(value);
-        }
+        // no-op
     }
-
-    static boolean isDisplayableParameter(AbstractParameterValue parameterValue) {
-        switch (parameterValue.getParameter().getType()) {
-            case GENOMIC_DATA:
-                return false;
-            case SAMPLE_CLASSIFICATION:
-                return false;
-            default:
-                return true;
-        }
-    }
-
-    AbstractParameterValue getParameterValue() {
-        return parameterValue;
-    }
-
-    private void setParameterValue(AbstractParameterValue parameterValue) {
-        this.parameterValue = parameterValue;
-    }
-
-    void validate(String fieldName, ValidationAware action) {
-        if (StringUtils.isBlank(stringValue)) {
-            validateEmptyField(fieldName, action);
-            return;
-        }
-        switch (getParameter().getType()) {
-        case FLOAT:
-            validateFloat(fieldName, action);
-            break;
-        case INTEGER:
-            validateInteger(fieldName, action);
-            break;
-        default:
-            // no-op
-        }
-    }
-
-    private void validateEmptyField(String fieldName, ValidationAware action) {
-        if (getParameter().isRequired()) {
-            action.addFieldError(fieldName, getParameter().getName() + " is required.");
-        }
-    }
-
-    private void validateFloat(String fieldName, ValidationAware action) {
-        try {
-            Float.parseFloat(stringValue);
-        } catch (NumberFormatException e) {
-            action.addFieldError(fieldName, getParameter().getName() + " requires a floating point numeric value");
-        }
-    }
-
-    private void validateInteger(String fieldName, ValidationAware action) {
-        try {
-            Integer.parseInt(stringValue);
-        } catch (NumberFormatException e) {
-            action.addFieldError(fieldName, getParameter().getName() + " requires an integer value");
-        }
-    }
-
-    private AnalysisParameter getParameter() {
-        return getParameterValue().getParameter();
-    }
-    
 
 }

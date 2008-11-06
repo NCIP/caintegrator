@@ -86,26 +86,18 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
-import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
-import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -150,7 +142,7 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     @Override
     public String execute() {
         if (OPEN_ACTION.equals(getSelectedAction())) {
-            return SUCCESS;
+            return open();
         } else if (CONNECT_ACTION.equals(getSelectedAction())) {
             return connect();
         } else if (CHANGE_METHOD_ACTION.equals(getSelectedAction())) {
@@ -162,6 +154,27 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
         }
     }
     
+    /**
+     * @return
+     */
+    private String open() {
+        getAnalysisForm().setGenomicQueries(getGenomicQueries());
+        return SUCCESS;
+    }
+
+    /**
+     * @return
+     */
+    private List<Query> getGenomicQueries() {
+        List<Query> queries = new ArrayList<Query>();
+        for (Query query : getStudySubscription().getQueryCollection()) {
+            if (ResultTypeEnum.GENOMIC.equals(ResultTypeEnum.getByValue(query.getResultType()))) {
+                queries.add(query);
+            }
+        }
+        return queries;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -226,7 +239,7 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     private String executeAnalysis() {
         try {
             AnalysisMethodInvocation invocation = getAnalysisForm().getInvocation();
-            configureGenomicData(invocation);
+            configureInvocationParameters();
             setResultUrl(getAnalysisService().executeGenePatternJob(
                     getAnalysisForm().getServer(), invocation).toExternalForm());
             return RESULTS;
@@ -236,26 +249,10 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
         }
     }
 
-    private void configureGenomicData(AnalysisMethodInvocation invocation) {
-        Query query = new Query();
-        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
-        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
-        query.setSubscription(getStudySubscription());
-        GenomicDataQueryResult result = getQueryManagementService().executeGenomicDataQuery(query);
-        getGenomicDataParameterValue(invocation).setGenomicData(result);
-    }
-
-    private GenomicDataParameterValue getGenomicDataParameterValue(AnalysisMethodInvocation invocation) {
-        for (AbstractParameterValue value : invocation.getParameterValues()) {
-            if (value instanceof GenomicDataParameterValue) {
-                return (GenomicDataParameterValue) value;
-            }
+    private void configureInvocationParameters() {
+        for (AbstractAnalysisFormParameter formParameter : getAnalysisForm().getParameters()) {
+            formParameter.configureForInvocation(getStudySubscription(), getQueryManagementService());
         }
-        return null;
     }
 
     /**

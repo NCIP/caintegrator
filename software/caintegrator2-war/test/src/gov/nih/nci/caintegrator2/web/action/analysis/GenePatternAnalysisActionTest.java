@@ -95,8 +95,13 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
@@ -114,9 +119,20 @@ public class GenePatternAnalysisActionTest {
     public void setUp() {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(new Study());
+        subscription.setQueryCollection(new HashSet<Query>());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(new QueryManagementServiceStub());
+    }
+    
+    @Test
+    public void testOpen() {
+        action.setSelectedAction(GenePatternAnalysisAction.OPEN_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
     }
     
     @Test
@@ -144,7 +160,7 @@ public class GenePatternAnalysisActionTest {
         assertNotNull(action.getAnalysisForm().getInvocation());
         assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
         assertEquals(1, action.getAnalysisForm().getParameters().size());
-        AnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
+        AbstractAnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
         assertEquals("parameter", parameter.getName());
         assertTrue(parameter.isRequired());
         assertTrue(action.getAnalysisForm().isExecutable());

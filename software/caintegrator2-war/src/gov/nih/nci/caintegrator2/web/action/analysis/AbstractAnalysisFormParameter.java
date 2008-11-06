@@ -85,127 +85,126 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
-import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
-import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.opensymphony.xwork2.ValidationAware;
 
-public class AnalysisFormParameterTest {
-    
-    private StringParameterValue parameterValue1;
-    private IntegerParameterValue parameterValue2;
-    private GenomicDataParameterValue parameterValue3;
-    private TextFieldFormParameter formParameter1;
-    private SelectListFormParameter formParameter2;
-    private GenomicDataFormParameter formParameter3;
-    private StudySubscription studySubscription = new StudySubscription();
-    private Query query = new Query();
+/**
+ * Represents a single parameter and value on an <code>AnalysisForm</code>.
+ */
+public abstract class AbstractAnalysisFormParameter {
 
-    @Before
-    public void setUp() {
-        AnalysisForm form = new AnalysisForm();
-        
-        parameterValue1 = new StringParameterValue();
-        AnalysisParameter parameter1 = new AnalysisParameter();
-        parameterValue1.setParameter(parameter1);
-        parameter1.setName("parameter1");
-        parameter1.setDescription("description1");
-        parameter1.setRequired(false);
-        parameter1.setType(AnalysisParameterType.STRING);
-        parameterValue1.setValue("value1");
-        
-        parameterValue2 = new IntegerParameterValue();
-        AnalysisParameter parameter2 = new AnalysisParameter();
-        parameterValue2.setParameter(parameter2);
-        parameter2.setName("parameter2");
-        parameter2.setDescription("description2");
-        parameter2.setRequired(false);
-        parameter2.setType(AnalysisParameterType.INTEGER);
-        parameterValue2.setValue(2);
-        
-        Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
-        choices.put("2", parameterValue2);
-        parameter2.setChoices(choices);
-        IntegerParameterValue choice2 = new IntegerParameterValue();
-        choice2.setValue(3);
-        choice2.setParameter(parameter2);
-        choices.put("3", choice2);
-        
-        parameterValue3 = new GenomicDataParameterValue();
-        AnalysisParameter parameter3 = new AnalysisParameter();
-        parameter3.setType(AnalysisParameterType.GENOMIC_DATA);
-        parameter3.setName("parameter3");
-        parameterValue3.setParameter(parameter3);
-        
-        formParameter1 = (TextFieldFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue1);
-        formParameter2 = (SelectListFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue2);
-        formParameter3 = (GenomicDataFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue3);
+    private final AnalysisForm form;
+    private AbstractParameterValue parameterValue;
 
-        List<Query> queries = new ArrayList<Query>();
-        query.setId(1L);
-        query.setName("Test");
-        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
-        queries.add(query);
-        formParameter3.getForm().setGenomicQueries(queries);
-        studySubscription.setQueryCollection(new HashSet<Query>());
-        studySubscription.getQueryCollection().add(query);
+    AbstractAnalysisFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+        if (parameterValue == null) {
+            throw new IllegalArgumentException("Null value for parameterValue");
+        }
+        this.form = form;
+        setParameterValue(parameterValue);
     }
 
-    @Test
-    public void testGetters() {
-        assertEquals("description1", formParameter1.getDescription());
-        assertEquals("textfield", formParameter1.getDisplayType());
-        assertEquals("select", formParameter2.getDisplayType());
-        assertEquals("parameter1", formParameter1.getName());
-        assertEquals("value1", formParameter1.getValue());
-        assertEquals("2", formParameter2.getValue());
-        assertEquals(2, formParameter2.getChoices().size());
-        assertTrue(formParameter2.getChoices().contains("2"));
-        assertEquals(2, formParameter3.getChoices().size());
-        assertTrue(formParameter3.getChoices().contains("All Genomic Data"));
+    /**
+     * @return the name
+     */
+    public final String getName() {
+        return getParameter().getName();
+    }
+
+    /**
+     * @return the description
+     */
+    public final String getDescription() {
+        return getParameter().getDescription();
+    }
+
+    /**
+     * @return the required
+     */
+    public final boolean isRequired() {
+        return getParameter().isRequired();
     }
     
-    @Test
-    public void testSetValue() {
-        formParameter1.setValue("new value");
-        assertEquals("new value", formParameter1.getParameterValue().getValueAsString());
-        formParameter2.setValue("3");
-        assertEquals("3", formParameter2.getParameterValue().getValueAsString());
-        assertEquals("All Genomic Data", formParameter3.getValue());
-        formParameter3.setValue("Test");
-        assertEquals("Test", formParameter3.getValue());
-        assertEquals(query, formParameter3.getSelectedQuery());
+    /**
+     * @return the type of display element to use.
+     */
+    public abstract String getDisplayType();
+    
+    /**
+     * @return the value
+     */
+    public abstract String getValue();
+
+    /**
+     * @param value the value to set
+     */
+    public abstract void setValue(String value);
+
+    AbstractParameterValue getParameterValue() {
+        return parameterValue;
+    }
+
+    final void setParameterValue(AbstractParameterValue parameterValue) {
+        this.parameterValue = parameterValue;
+    }
+
+    final void validate(String fieldName, ValidationAware action) {
+        if (StringUtils.isBlank(getValue())) {
+            validateEmptyField(fieldName, action);
+        } else {
+            validateValue(fieldName, action);
+        }
+    }
+
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
+    void validateValue(String fieldName, ValidationAware action) {
+        // default implementation is no-op; override if appropriate
+    }
+
+    private void validateEmptyField(String fieldName, ValidationAware action) {
+        if (getParameter().isRequired()) {
+            action.addFieldError(fieldName, getParameter().getName() + " is required.");
+        }   
+    }
+
+    AnalysisParameter getParameter() {
+        return getParameterValue().getParameter();
+    }
+
+    static AbstractAnalysisFormParameter create(AnalysisForm form, AbstractParameterValue parameterValue) {
+        if (!parameterValue.getParameter().getChoices().isEmpty()) {
+            return new SelectListFormParameter(form, parameterValue);
+        } else if (parameterValue.getParameter().getType().equals(AnalysisParameterType.GENOMIC_DATA)) {
+            return new GenomicDataFormParameter(form, parameterValue);
+        } else if (parameterValue.getParameter().getType().equals(AnalysisParameterType.SAMPLE_CLASSIFICATION)) {
+            return new SampleClassificationFormParameter(form, parameterValue);
+        } else {
+            return new TextFieldFormParameter(form, parameterValue);
+        }
+    }
+
+    AnalysisForm getForm() {
+        return form;
+    }
+
+    /**
+     * Configures the underlying parameter value to prepare it to be used in an analysis method
+     * invocation.
+     * 
+     * @param studySubscription current study subscription
+     * @param queryManagementService used to retrieve any necessary data.
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
+    void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
+        // default implementation is no-op; override as necessary
     }
     
-    @Test
-    public void testConfigure() {
-        QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
-        formParameter3.configureForInvocation(studySubscription, queryManagementService);
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
-        assertNotNull(((GenomicDataParameterValue) formParameter3.getParameterValue()).getGenomicData());
-        queryManagementService.clear();
-        formParameter3.setValue("Test");
-        formParameter3.configureForInvocation(studySubscription, queryManagementService);
-        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
-        assertNotNull(((GenomicDataParameterValue) formParameter3.getParameterValue()).getGenomicData());
-    }
 
 }
