@@ -52,7 +52,7 @@ pageEncoding="ISO-8859-1" %>
     
     <ul id="sectabs" class="tabs">
         <li><a href="#basic" class="active">Basic Criteria Definition</a></li>
-        <li><a href="#advanced">Advanced Criteria Definition</a></li>
+       
     </ul>
 
     
@@ -143,40 +143,6 @@ pageEncoding="ISO-8859-1" %>
             
             <!--/Basic Criteria Definition-->
                                                                      
-
-            
-            <!--Advanced Criteria Definition-->
-            
-            <div id="advanced" style="display:none">
-                                                                        
-                <table class="data">
-                    <tr>
-                        <td colspan="3" class="tableheader">
-                            <select name="selectcriteria_adv" id="searchcriteria_adv" style="margin-left:5px; width:200px">
-                                <option>&ndash; Select Criteria Type &ndash;</option>
-
-                                <option>Clinical</option>
-                                <option>Gene Expression</option>
-                                <option>Image</option>
-                            </select>
-                            <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
-                                <li><a href="default2.html#advanced" style="margin:0 5px;" class="btn" onclick="javascript://"><span class="btn_img"><span class="add">Add</span></span></a></li>
-                            </ul>
-
-                        </td>
-                    </tr>
-                    <tr class="odd">
-                        <td colspan="3" class="value_inline">
-                            <p ><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
-            
-            <!--/Advanced Criteria Definition-->
- 
-            
     </div>
     
 </div>
