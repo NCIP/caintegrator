@@ -88,10 +88,13 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -105,7 +108,9 @@ public class AnalysisForm {
     private List<AnalysisMethod> analysisMethods = new ArrayList<AnalysisMethod>();
     private final List<String> analysisMethodNames = new ArrayList<String>();
     private AnalysisMethodInvocation invocation;
-    private final List<AnalysisFormParameter> parameters = new ArrayList<AnalysisFormParameter>();
+    private final List<AbstractAnalysisFormParameter> parameters = new ArrayList<AbstractAnalysisFormParameter>();
+    private final List<String> genomicQueryNames = new ArrayList<String>();
+    private final Map<String, Query> nameToGenomicQueryMap = new HashMap<String, Query>();
     private final ServerConnectionProfile server = new ServerConnectionProfile();
     
     /**
@@ -174,9 +179,7 @@ public class AnalysisForm {
 
     private void loadParameters() {
         for (AbstractParameterValue parameterValue : invocation.getParameterValues()) {
-            if (AnalysisFormParameter.isDisplayableParameter(parameterValue)) {
-                parameters.add(new AnalysisFormParameter(parameterValue));
-            }
+            parameters.add(AbstractAnalysisFormParameter.create(this, parameterValue));
         }
     }
 
@@ -203,7 +206,7 @@ public class AnalysisForm {
     /**
      * @return the parameters
      */
-    public List<AnalysisFormParameter> getParameters() {
+    public List<AbstractAnalysisFormParameter> getParameters() {
         return parameters;
     }
     
@@ -267,6 +270,23 @@ public class AnalysisForm {
      */
     public void setPassword(String password) {
         getServer().setPassword(password);
+    }
+
+    void setGenomicQueries(List<Query> genomicQueries) {
+        nameToGenomicQueryMap.clear();
+        genomicQueryNames.clear();
+        for (Query query : genomicQueries) {
+            genomicQueryNames.add(query.getName());
+            nameToGenomicQueryMap.put(query.getName(), query);
+        }
+    }
+
+    List<String> getGenomicQueryNames() {
+        return genomicQueryNames;
+    }
+    
+    Query getGenomicQuery(String name) {
+        return nameToGenomicQueryMap.get(name);
     }
 
 }
