@@ -550,19 +550,20 @@ final class ManageQueryHelper {
     }
     
     private void createUserSelectedList(Long columnId, List<ResultColumn> colCollection, EntityTypeEnum entityType) {
-        for (ResultColumn column : columnList) {
-            if (column.getEntityType().equals(entityType.getValue())) {
-                Long columnCollectionId = column.getAnnotationDefinition().getId();
-                if (columnId.equals(columnCollectionId)) {
-                    colCollection.add(column);
+       for (ResultColumn column : columnList) {
+                if (column.getAnnotationDefinition() != null && column.getEntityType().equals(entityType.getValue())) {
+                        Long columnCollectionId = column.getAnnotationDefinition().getId();
+                        if (columnId.equals(columnCollectionId)) {
+                            colCollection.add(column);
+                        }
                 }
-            }
-        }
+       }
     }
     private void removeDuplicateColumn(List<ResultColumn> colCollection, EntityTypeEnum entityType) {
         for (Iterator<ResultColumn> iter = columnList.iterator(); iter.hasNext();) {
             ResultColumn singleColumn = iter.next();
-            if (singleColumn.getEntityType().equals(entityType.getValue())) {
+            if (singleColumn.getAnnotationDefinition() != null 
+                    && singleColumn.getEntityType().equals(entityType.getValue())) {
                iter.remove();
             }
         }
