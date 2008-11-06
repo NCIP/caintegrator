@@ -98,6 +98,16 @@
         <servlet-name>GetHTML</servlet-name>
         <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>logoRenderingServlet</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>logoRenderingServlet</servlet-name>
+        <url-pattern>/logo</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>httpinvoker</servlet-name>

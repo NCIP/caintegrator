@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -127,6 +128,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean removeObjectsCalled;
     public boolean findMatchingGenesCalled;
     public boolean isDuplicateStudyNameCalled;
+    public boolean retrieveStudyLogoCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -157,6 +159,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         removeObjectsCalled = false;
         findMatchingGenesCalled = false;
         isDuplicateStudyNameCalled = false;
+        retrieveStudyLogoCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -278,6 +281,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean isDuplicateStudyName(Study study) {
         isDuplicateStudyNameCalled =true;
         return false;
+    }
+    
+    public StudyLogo retrieveStudyLogo(Long id, String fileName) {
+        retrieveStudyLogoCalled = true;
+        return new StudyLogo();
     }
 
 }

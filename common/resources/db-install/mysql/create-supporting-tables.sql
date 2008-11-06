@@ -109,8 +109,18 @@ create table STUDY_CONFIGURATION (
     VISIBILITY varchar(255), 
     STATUS varchar(255), 
     STUDY_ID bigint, 
+    STUDY_LOGO_ID bigint,
     primary key (ID)
 ) ENGINE=InnoDB;
+
+create table STUDY_LOGO (
+    ID bigint not null auto_increment, 
+    FILENAME varchar(155),
+    FILETYPE varchar(100),
+    PATH varchar(255),
+    primary key (ID)
+) ENGINE=InnoDB;
+
 
 
 alter table ABSTRACT_CLINICAL_SOURCE_CONFIGURATION 
@@ -186,5 +196,9 @@ alter table SAMPLE_IDENTIFIER
 alter table STUDY_CONFIGURATION 
     add index FK_STUDY_CONFIGURATION_STUDY_ID (STUDY_ID), 
     add constraint FK_STUDY_CONFIGURATION_STUDY_ID foreign key (STUDY_ID) references STUDY (ID);
+
+alter table STUDY_CONFIGURATION 
+    add index FK_STUDY_CONFIGURATION_STUDY_LOGO_ID (STUDY_LOGO_ID), 
+    add constraint FK_STUDY_CONFIGURATION_STUDY_LOGO_ID foreign key (STUDY_LOGO_ID) references STUDY_LOGO (ID);
 
     

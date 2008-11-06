@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -370,5 +371,22 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 new Object[] {study.getShortTitleText(), id });
 
         return !result.isEmpty();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
+        List<StudyConfiguration> studyConfigurationList = 
+                (List<StudyConfiguration>) getCurrentSession().
+                    createCriteria(StudyConfiguration.class).
+                    createCriteria(STUDY_ASSOCIATION).
+                        add(Restrictions.eq("id", studyId)).
+                        add(Restrictions.like("shortTitleText", studyShortTitleText)).list();
+        if (studyConfigurationList != null && !studyConfigurationList.isEmpty()) {
+            return studyConfigurationList.get(0).getStudyLogo();
+        }
+        return null;
     }
 }

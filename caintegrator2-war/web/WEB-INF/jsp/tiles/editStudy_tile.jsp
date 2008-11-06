@@ -20,7 +20,20 @@
         <s:submit action="saveStudy" value="Save" />
         <s:submit action="deployStudy" value="Deploy" />
     </s:form>
-    
+    <br>
+    <s:form action="addStudyLogo" method="post" enctype="multipart/form-data">
+        <s:hidden name="studyConfiguration.id"  />
+        <s:file name="studyLogoFile" label="Logo File (JPEG or GIF)" accept="image/pjpeg,image/jpeg,image/gif" />
+        
+        <s:if test="studyConfiguration.studyLogo != null">
+            <s:submit value="Change Study Logo" action="addStudyLogo" />    
+        </s:if>
+        
+        <s:else>
+            <s:submit value="Add Study Logo" action="addStudyLogo" />
+        </s:else>
+    </s:form>
+
     <table class="data">
         <tr>
             <th colspan="4">Clinical Data Sources</th>

@@ -113,6 +113,7 @@ public class DisplayableUserWorkspace {
     private static final String CURRENT_QUERY_VALUE_STACK_KEY = "query";
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
+    private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
     private Query query;
@@ -222,6 +223,8 @@ public class DisplayableUserWorkspace {
                 currentStudy = subscription.getStudy();
             }
         }
+        
+        
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
         getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
     }
@@ -295,6 +298,20 @@ public class DisplayableUserWorkspace {
      */
     public void setAnalysisForm(AnalysisForm analysisForm) {
         this.analysisForm = analysisForm;
+    }
+    
+    /**
+     * Retrieves the Logo URL for the leftNavMenu.
+     * @return - URL for the logo servlet.
+     */
+    public String getLogoUrl() {
+        if (getCurrentStudySubscription() != null) {
+            return LOGO_SERVLET_URL + "studyId=" + getCurrentStudySubscription().getStudy().getId() 
+                + "&studyName=" + getCurrentStudySubscription().getStudy().getShortTitleText();
+        } else {
+            return LOGO_SERVLET_URL;
+        }
+                            
     }
 
 }

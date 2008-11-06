@@ -112,6 +112,17 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
+    
+    <bean id="addStudyLogoAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.AddStudyLogoAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <bean id="addImagingFileAction"
         scope="prototype"
@@ -428,6 +439,13 @@
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
         <property name="configurationHelper">
             <ref local="configurationHelper" />
+        </property>
+    </bean>
+    
+    <bean id="logoRenderingServlet" 
+        class="gov.nih.nci.caintegrator2.web.LogoRenderingServlet">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
         </property>
     </bean>
         

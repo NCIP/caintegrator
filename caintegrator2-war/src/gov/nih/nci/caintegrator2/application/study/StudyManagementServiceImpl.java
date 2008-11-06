@@ -192,6 +192,30 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         dao.save(studyConfiguration);
         return clinicalSourceConfig;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addStudyLogo(StudyConfiguration studyConfiguration,
+                             File imageFile,
+                             String fileName, 
+                             String fileType) throws IOException {
+        if (studyConfiguration.getStudyLogo() == null) {
+            studyConfiguration.setStudyLogo(new StudyLogo());
+        }
+        studyConfiguration.getStudyLogo().setFileName(fileName);
+        studyConfiguration.getStudyLogo().setFileType(fileType);
+        File studyLogoFile = getFileManager().storeStudyFile(imageFile, fileName, studyConfiguration);
+        studyConfiguration.getStudyLogo().setPath(studyLogoFile.getPath());
+        dao.save(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText) {
+        return dao.retrieveStudyLogo(studyId, studyShortTitleText);
+    }
 
     /**
      * {@inheritDoc}
