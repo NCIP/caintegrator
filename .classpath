@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.1.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/servlet-2.3.1.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>

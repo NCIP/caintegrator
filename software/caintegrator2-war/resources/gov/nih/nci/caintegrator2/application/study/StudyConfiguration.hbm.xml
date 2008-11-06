@@ -52,5 +52,8 @@
         
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
 		    lazy="proxy" cascade="save-update" />
+		    
+        <many-to-one name="studyLogo" class="gov.nih.nci.caintegrator2.application.study.StudyLogo" column="STUDY_LOGO_ID"
+            lazy="proxy" cascade="save-update" />
 	</class>
 </hibernate-mapping>

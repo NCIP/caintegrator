@@ -121,7 +121,28 @@ public interface StudyManagementService {
      */
     DelimitedTextClinicalSourceConfiguration addClinicalAnnotationFile(StudyConfiguration studyConfiguration, 
             File annotationFile, String filename) throws ValidationException, IOException;
+    
+    /**
+     * Adds a logo to the study.
+     * @param studyConfiguration add the logo to this study.
+     * @param imageFile object to add.
+     * @param fileName name of the file for the logo.
+     * @param fileType - type of file (such as image\jpeg).
+     * @throws IOException if the image file couldn't be loaded.
+     */
+    void addStudyLogo(StudyConfiguration studyConfiguration, 
+                        File imageFile, 
+                        String fileName, 
+                        String fileType) throws IOException;
 
+    /**
+     * Retrieves study logo from the database given a study id and name.
+     * @param studyId - ID of the Study object.
+     * @param studyShortTitleText - Short Title Text of Study Object.
+     * @return Object retrieved from database.
+     */
+    StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
+    
     /**
      * Loads clinical annotations given a study configuration.
      * 

@@ -120,6 +120,7 @@ public class StudyConfiguration implements PersistentObject {
     private List<ImageAnnotationConfiguration> imageAnnotationConfigurations = 
         new ArrayList<ImageAnnotationConfiguration>();
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
+    private StudyLogo studyLogo;
 
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
     private transient Map<String, ImageSeries> identifierToImageSeriesMap;
@@ -410,6 +411,20 @@ public class StudyConfiguration implements PersistentObject {
             }
         }
         return sampleNameMap;
+    }
+
+    /**
+     * @return the studyLogo
+     */
+    public StudyLogo getStudyLogo() {
+        return studyLogo;
+    }
+
+    /**
+     * @param studyLogo the studyLogo to set
+     */
+    public void setStudyLogo(StudyLogo studyLogo) {
+        this.studyLogo = studyLogo;
     }
 
 

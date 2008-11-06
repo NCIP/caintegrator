@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -238,4 +239,13 @@ public interface CaIntegrator2Dao {
      * @return true or false.
      */
     boolean isDuplicateStudyName(Study study);
+    
+    /**
+     * To retrieve studyLogo based on ID and Name.
+     * @param studyId - id for study.
+     * @param studyShortTitleText - title of study (to make it more difficult to retrieve logo by guessing ID).
+     * @return - StudyLogo object.
+     */
+    StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
+    
 }

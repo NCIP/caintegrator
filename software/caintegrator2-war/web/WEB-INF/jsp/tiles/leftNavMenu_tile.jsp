@@ -6,7 +6,10 @@
     
     <!--Study Logo-->
     
-    <div id="study_logo"><img src="images/logo_sample_vasari.gif" alt="Study Logo" /></div>
+    <div id="study_logo">
+        <s:set name="logo" id="logo" value="%{displayableWorkspace.logoUrl}"/>
+        <img src="${logo}" alt="Study Logo" height="72" width="200"/>
+    </div>
     
     <!--/Study Logo-->
     
@@ -22,7 +25,7 @@
         <li class="stdnav"><div><s:property value="study.shortTitleText"/></div>
             <ul>
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
-                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="#sessionHelper.displayableStudySubscription.currentStudySubscription.study.shortTitleText"/></a></li>
+                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="studySubscription.study.shortTitleText"/></a></li>
             </ul>
         </li>
         
@@ -51,7 +54,6 @@
                                 <s:iterator value="studySubscription.queryCollection">
                                     <s:url id="queryURL" action="executeQuery">
                                         <s:param name="queryId" value="id" />
-                                        
                                     </s:url>
                                     <li><s:a href="%{queryURL}#searchresults" cssClass="queries"><s:property value="name"/></s:a></li>
                                 </s:iterator>
@@ -61,7 +63,7 @@
                         </li>
                     </ul>
                 </li>
-           </ul>
+            </ul>
         </li>
         
         <!--/Tree Control-->

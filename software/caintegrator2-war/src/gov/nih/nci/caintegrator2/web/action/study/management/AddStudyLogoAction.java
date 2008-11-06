@@ -83,28 +83,88 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.file;
-
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import java.io.File;
+import java.io.IOException;
 
-public class FileManagerStub implements FileManager {
+/**
+ * Adds a new new clinical data source file to a study.
+ */
+public class AddStudyLogoAction extends AbstractStudyAction {
+
+    private static final long serialVersionUID = 1L;
+    private File studyLogoFile;
+    private String studyLogoFileContentType;
+    private String studyLogoFileFileName;
     
-    public boolean storeStudyFileCalled;
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isFileUpload() {
+        return true;
+    }     
     
-    public void clear() {
-        storeStudyFileCalled = false;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute()  {
+        try {
+            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
+            // in the prepare method of the abstract class, because prepareValueStack is breaking
+            // File Upload when prepareValueStack is called inside the prepare method.
+            prepareValueStack();
+            getStudyManagementService().addStudyLogo(getStudyConfiguration(), getStudyLogoFile(),
+                    getStudyLogoFileFileName(), getStudyLogoFileContentType());
+            return SUCCESS;
+        } catch (IOException e) {
+            return ERROR;
+        }
     }
 
-    public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
-        storeStudyFileCalled = true;
-        return sourceFile;
-    }
-    
-    public File getStudyDirectory(Study study) {
-        return new File("/");
+    /**
+     * @return the studyLogoFile
+     */
+    public File getStudyLogoFile() {
+        return studyLogoFile;
     }
 
+    /**
+     * @param studyLogoFile the studyLogoFile to set
+     */
+    public void setStudyLogoFile(File studyLogoFile) {
+        this.studyLogoFile = studyLogoFile;
+    }
+
+    /**
+     * @return the studyLogoFileContentType
+     */
+    public String getStudyLogoFileContentType() {
+        return studyLogoFileContentType;
+    }
+
+    /**
+     * @param studyLogoFileContentType the studyLogoFileContentType to set
+     */
+    public void setStudyLogoFileContentType(String studyLogoFileContentType) {
+        this.studyLogoFileContentType = studyLogoFileContentType;
+    }
+
+    /**
+     * @return the studyLogoFileFileName
+     */
+    public String getStudyLogoFileFileName() {
+        return studyLogoFileFileName;
+    }
+
+    /**
+     * @param studyLogoFileFileName the studyLogoFileFileName to set
+     */
+    public void setStudyLogoFileFileName(String studyLogoFileFileName) {
+        this.studyLogoFileFileName = studyLogoFileFileName;
+    }
+
+   
 }
