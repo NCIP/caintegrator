@@ -11,16 +11,25 @@
     
     <!--ADD CONTENT HERE-->
     
-    <h1>Edit Study</h1>
+    <s:if test="%{studyConfiguration.id != null}">
+        <h1>Edit Study</h1>
+    </s:if>
+    <s:else>
+        <h1>Create New Study</h1>
+    </s:else>
     
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="study.shortTitleText" />
         <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
+        
         <s:submit action="saveStudy" value="Save" />
-        <s:submit action="deployStudy" value="Deploy" />
+        <s:if test="%{studyConfiguration.id != null}">
+            <s:submit action="deployStudy" value="Deploy" />
+        </s:if>
     </s:form>
     <br>
+    <s:if test="%{studyConfiguration.id != null}">
     <s:form action="addStudyLogo" method="post" enctype="multipart/form-data">
         <s:hidden name="studyConfiguration.id"  />
         <s:file name="studyLogoFile" label="Logo File (JPEG or GIF)" accept="image/pjpeg,image/jpeg,image/gif" />
@@ -194,7 +203,7 @@
         </tr>
     </table>
     </s:form>
-            
+    </s:if>
 </div>
 
 <div class="clear"><br /></div>
