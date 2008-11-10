@@ -94,7 +94,7 @@ import org.junit.Test;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional 
 public class StudyManagementServiceTestIntegration extends AbstractTransactionalSpringContextTests{
     
     private StudyManagementService studyManagementService;
@@ -130,18 +130,15 @@ public class StudyManagementServiceTestIntegration extends AbstractTransactional
     
     @Test
     public void testRetrieveStudyLogo() {
-        Long id = Long.valueOf(1);
-        String name = "Test";
+        String name = "StudyName";
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStudy(new Study());
-        studyConfiguration.getStudy().setId(id);
         studyConfiguration.getStudy().setShortTitleText(name);
         studyConfiguration.setStudyLogo(new StudyLogo());
-        studyConfiguration.getStudyLogo().setId(Long.valueOf(2));
         
         studyManagementService.save(studyConfiguration);
         
-        assertNotNull(studyManagementService.retrieveStudyLogo(id, name));
+        assertNotNull(studyManagementService.retrieveStudyLogo(studyConfiguration.getStudy().getId(), name));
         
     }
 
