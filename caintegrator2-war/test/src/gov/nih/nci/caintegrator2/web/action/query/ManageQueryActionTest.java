@@ -254,6 +254,25 @@ public class ManageQueryActionTest {
         manageQueryAction.prepare();
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test removal of row
+        manageQueryAction.setSelectedAction("remove");
+        manageQueryAction.setRowNumber("0");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test removal of invalid row still returns success (adds error message though)
+        manageQueryAction.setRowNumber("10");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
+        // test invalid removal string still returns success (adds error message though)
+        manageQueryAction.setRowNumber("INVALID INT");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
 
         // test for invalid action
         manageQueryAction.setSelectedAction(null);

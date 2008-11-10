@@ -109,6 +109,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private QueryManagementService queryManagementService;
     private ManageQueryHelper manageQueryHelper;
     private String selectedAction = "";
+    private String rowNumber = "";
     private String selectedRowCriterion = "uninitializedselectedRowCriterion";
     //Struts should automatically populate these arrays from the form element.
     private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
@@ -231,8 +232,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         String returnValue = ERROR;
         
         // Check which user action is submitted
-
-        if ("addCriterionRow".equals(selectedAction)) {
+        if ("remove".equals(selectedAction)) {
+            returnValue = removeRow();
+        } else if ("addCriterionRow".equals(selectedAction)) {
             returnValue = addCriterionRow();
         } else if ("executeQuery".equals(selectedAction)) {
             returnValue = executeQuery();
@@ -280,6 +282,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         }
             
 
+        return SUCCESS;
+    }
+    
+    private String removeRow() {
+        try {
+            if (!manageQueryHelper.removeQueryAnnotationCriteria(Integer.valueOf(rowNumber))) {
+                addActionError("Invalid row to remove");
+            }
+        } catch (NumberFormatException e) {
+            addActionError("rowNumber is not a valid number.");
+        }
         return SUCCESS;
     }
 
@@ -573,5 +586,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     public int getImageDefinitionsSize() {
         return manageQueryHelper.getImageAnnotationDefinitions().size();
         
+    }
+    /**
+     * @return the rowNumber
+     */
+    public String getRowNumber() {
+        return rowNumber;
+    }
+    /**
+     * @param rowNumber the rowNumber to set
+     */
+    public void setRowNumber(String rowNumber) {
+        this.rowNumber = rowNumber;
     }
 }
