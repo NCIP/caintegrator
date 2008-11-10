@@ -112,16 +112,23 @@ public class AddStudyLogoAction extends AbstractStudyAction {
     @Override
     public String execute()  {
         try {
-            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
-            // in the prepare method of the abstract class, because prepareValueStack is breaking
-            // File Upload when prepareValueStack is called inside the prepare method.
-            prepareValueStack();
             getStudyManagementService().addStudyLogo(getStudyConfiguration(), getStudyLogoFile(),
                     getStudyLogoFileFileName(), getStudyLogoFileContentType());
             return SUCCESS;
         } catch (IOException e) {
             return ERROR;
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (getStudyLogoFile() == null) {
+            addFieldError("studyLogoFile", "File is required");
+        }
+        prepareValueStack();
     }
 
     /**

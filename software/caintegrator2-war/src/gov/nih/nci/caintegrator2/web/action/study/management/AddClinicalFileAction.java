@@ -115,12 +115,6 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     @Override
     public String execute()  {
         try {
-            
-            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
-            // in the prepare method of the abstract class, because prepareValueStack is breaking
-            // File Upload when prepareValueStack is called inside the prepare method.
-            prepareValueStack();
-            
             DelimitedTextClinicalSourceConfiguration clinicalSource = 
                 getStudyManagementService().addClinicalAnnotationFile(getStudyConfiguration(), getClinicalFile(), 
                         getClinicalFileFileName());
@@ -142,6 +136,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
         if (clinicalFile == null) {
             addFieldError("clinicalFile", "Clinical File is required");
         }
+        prepareValueStack();
     }
 
     /**
