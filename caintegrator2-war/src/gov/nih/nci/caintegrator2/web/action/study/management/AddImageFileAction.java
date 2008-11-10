@@ -124,11 +124,6 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     @Override
     public String execute() {
         try {
-            // Updating the ValueStack here using prepareValueStack.  This is done here, instead of 
-            // in the prepare method of the abstract class, because prepareValueStack is breaking
-            // File Upload when prepareValueStack is called inside the prepare method.
-            prepareValueStack();
-            
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
             imageSource.getServerProfile().setUrl(getHostname());
             imageSource.setTrialDataProvenance(getProtocolId());
@@ -164,6 +159,7 @@ public void validate() {
         if (imageClinicalMappingFile == null) {
             addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
         }
+        prepareValueStack();
     }
 
     

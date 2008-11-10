@@ -115,7 +115,7 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     @Override
     public String execute() {
         try {
-            prepareValueStack();
+            
             getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
             return SUCCESS;
         } catch (ValidationException e) {
@@ -133,6 +133,7 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
         if (getControlSampleFile() == null) {
             addFieldError("controlSampleFile", "File is required");
         }
+        prepareValueStack();
     }
 
     /**
