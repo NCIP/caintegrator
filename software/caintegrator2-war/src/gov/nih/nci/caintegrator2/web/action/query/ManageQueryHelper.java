@@ -208,6 +208,20 @@ final class ManageQueryHelper {
     void addQueryAnnotationCriteriaToList(QueryAnnotationCriteria queryAnnotationCriteria) {
         this.getQueryCriteriaRowList().add(queryAnnotationCriteria);
     }
+    
+    /**
+     * Removes the query annotation criteria object from the list at the given index.
+     * @param indexToRemove - Index of the criteria object to remove. 
+     * @return T/F if the object was removed or not.
+     */
+    public boolean removeQueryAnnotationCriteria(int indexToRemove) {
+        try {
+            getQueryCriteriaRowList().remove(indexToRemove);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+        return true;
+    }
       
     /**
      * @return the clinicalAnnotationDefinitions

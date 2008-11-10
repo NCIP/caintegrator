@@ -68,6 +68,7 @@ pageEncoding="ISO-8859-1" %>
                 
                 <s:hidden name="manageQueryHelper.advancedView" value="false" />
                 <s:hidden name="selectedAction" value="" />
+                <s:hidden name="rowNumber" value="" />
                 
                 <!-- Add query criterion row selection -->
                 <table class="data">
@@ -75,7 +76,7 @@ pageEncoding="ISO-8859-1" %>
 	                <s:actionerror/>
 	                </tr>
                     <tr>
-                        <td colspan="4" class="tableheader">
+                        <td colspan="5" class="tableheader">
                             <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
                                 <option>&ndash; Select Criteria Type &ndash;</option>
 
@@ -94,6 +95,7 @@ pageEncoding="ISO-8859-1" %>
  
                     <s:if test="!manageQueryHelper.queryCriteriaRowList.isEmpty()">
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
+                            <s:set name="rowToDelete" id="rowToDelete" value="#itStatus.count - 1"/>
                             <tr>
                             <td class="label_inline">
                             <s:property value="#currentRow.rowLabel"/>
@@ -107,12 +109,15 @@ pageEncoding="ISO-8859-1" %>
                             
                             <td class="value_inline2"><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
                             <td class="value_inline"><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
+                            <td class="action_inline">
+                            <a href="#" class="remove" onclick="document.manageQueryForm.selectedAction.value = 'remove'; document.manageQueryForm.rowNumber.value = ${rowToDelete};document.manageQueryForm.submit();"><span class="remove">Remove</span></a>
+                            </td>
                             </tr>
                         </s:iterator>
                      </s:if>
                      <s:else>   
                         <tr class="odd">
-                            <td colspan="4" class="value_inline">
+                            <td colspan="5" class="value_inline">
                                 <p style="margin:0; padding:2px 0 3px 0; text-align:center;"><strong>No criteria added</strong>. Please select criteria from the pulldown box.</p>
                             </td>
                         </tr>
