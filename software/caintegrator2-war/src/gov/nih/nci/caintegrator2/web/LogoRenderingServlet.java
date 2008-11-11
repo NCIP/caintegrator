@@ -109,7 +109,7 @@ public class LogoRenderingServlet implements HttpRequestHandler {
     private StudyManagementService studyManagementService;
     
     // Not sure what the actual default logo will be, but it will probably be in the images dir.
-    private static final String DEFAULT_LOGO = File.separator + "images" + File.separator + "logo_sample_vasari.gif";
+    private static final String DEFAULT_LOGO = File.separator + "images" + File.separator + "logo_sample_study.gif";
     private static final ImageContentTypeEnum DEFAULT_CONTENT_TYPE = ImageContentTypeEnum.GIF; 
     /**
      * {@inheritDoc}
