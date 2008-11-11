@@ -14,7 +14,7 @@
     <!--/Study Logo-->
     
     <!--Menu-->
-    <s:url id="manageQueryUrl" action="manageQuery" includeParams="all" escapeAmp ="false">
+    <s:url id="manageQueryUrl" action="manageQuery" includeParams="get" escapeAmp ="false">
         <s:param name="selectedAction">createNewQuery</s:param>
     </s:url>
     
