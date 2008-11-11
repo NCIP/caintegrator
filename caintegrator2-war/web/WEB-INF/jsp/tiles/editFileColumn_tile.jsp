@@ -62,7 +62,7 @@
            </td>
     </s:form>
         <br> <br>
-    </s:if>
+    
     <s:if test="%{!definitions.isEmpty}">
     <hr>
 	    <table class="data">
@@ -173,6 +173,7 @@
             </td>
         </table>    
     </s:else>
+</s:if>    
 </div>
 
 <div class="clear"><br /></div>
