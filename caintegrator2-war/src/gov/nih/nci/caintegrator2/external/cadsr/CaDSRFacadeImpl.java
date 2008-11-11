@@ -127,6 +127,9 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
         search.setDataDescription(dataDescription);
         // Restrict results to only Data Elements
         search.restrictResultsByType(SearchAC.DE);
+        search.excludeWorkflowStatusRetired(true);
+        search.excludeTest(true);
+        search.excludeTraining(true);
         return convertSearchResultsToDataElements(search.findReturningSearchResults(keywordsString));
     }
 
@@ -182,6 +185,12 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             de.setDefinition(sr.getPreferredDefinition());
             de.setLongName(sr.getLongName());
             de.setPublicId(Long.valueOf(sr.getPublicID()));
+            de.setContextName(sr.getContextName());
+            de.setPreferredName(sr.getPreferredName());
+            de.setRegistrationStatus(sr.getRegistrationStatus());
+            de.setType(sr.getType().getName());
+            de.setVersion(sr.getVersion());
+            de.setWorkflowStatus(sr.getWorkflowStatus());
             dataElements.add(de);
         }
         return dataElements;
