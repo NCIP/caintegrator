@@ -119,10 +119,12 @@
 	            <th colspan="3">Matches from caDSR</th>
 	        </tr>
 	        <tr>
-	            <th>Name</th>
-	            <th>Actions</th>
-	            <th>Public ID</th>
-	            <th>Definition</th>
+                <th>Name</th>
+                <th>Actions</th>
+                <th>Public ID</th>
+                <th>Context</th>
+                <th>Status</th>
+                <th>Definition</th>
 	        </tr>
 	        <s:iterator value="dataElements" status="status">
 	            <s:if test="#status.odd == true">
@@ -140,15 +142,17 @@
                         <s:param name="fileColumn.id" value="fileColumn.id" />
                         <s:param name="dataElementIndex" value="#status.index" />
                     </s:url> 
-                    <s:url id="viewDataElement" value="http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser" escapeAmp="false">
+                    <s:url id="viewDataElement" value="%{cdeUrl}" escapeAmp="false">
 	                    <s:param name="publicId" value="publicId"/>
-	                    <s:param name="version" value="1"/>
+	                    <s:param name="version" value="version"/>
                     </s:url>
                     <s:a href="%{selectDataElement}">Select</s:a> | 
                     <a href="<s:property value='%{viewDataElement}'/>" target="_blank">View</a>
                 </td>
-	            <td><s:property value="publicId" /></td>
-	            <td><s:property value="definition" /></td>
+                <td><s:property value="publicId" /></td>
+                <td><s:property value="contextName" /></td>
+                <td><s:property value="workflowStatus" /></td>
+                <td><s:property value="definition" /></td>
 	        </tr>
 	        </s:iterator>
 	    </table>

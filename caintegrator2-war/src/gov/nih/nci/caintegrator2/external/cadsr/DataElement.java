@@ -90,9 +90,17 @@ package gov.nih.nci.caintegrator2.external.cadsr;
  */
 public class DataElement {
 
+    private static final String CDE_URL = "http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser";
+    
     private Long publicId;
     private String longName;
     private String definition;
+    private String type;
+    private String preferredName;
+    private String version;
+    private String contextName;
+    private String registrationStatus;
+    private String workflowStatus;
     private ValueDomain valueDomain;
     /**
      * @return the publicId
@@ -141,6 +149,85 @@ public class DataElement {
      */
     public void setValueDomain(ValueDomain valueDomain) {
         this.valueDomain = valueDomain;
+    }
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+    /**
+     * @return the preferredName
+     */
+    public String getPreferredName() {
+        return preferredName;
+    }
+    /**
+     * @param preferredName the preferredName to set
+     */
+    public void setPreferredName(String preferredName) {
+        this.preferredName = preferredName;
+    }
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+        return version;
+    }
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    /**
+     * @return the contextName
+     */
+    public String getContextName() {
+        return contextName;
+    }
+    /**
+     * @param contextName the contextName to set
+     */
+    public void setContextName(String contextName) {
+        this.contextName = contextName;
+    }
+    /**
+     * @return the registrationStatus
+     */
+    public String getRegistrationStatus() {
+        return registrationStatus;
+    }
+    /**
+     * @param registrationStatus the registrationStatus to set
+     */
+    public void setRegistrationStatus(String registrationStatus) {
+        this.registrationStatus = registrationStatus;
+    }
+    /**
+     * @return the workflowStatus
+     */
+    public String getWorkflowStatus() {
+        return workflowStatus;
+    }
+    /**
+     * @param workflowStatus the workflowStatus to set
+     */
+    public void setWorkflowStatus(String workflowStatus) {
+        this.workflowStatus = workflowStatus;
+    }
+    
+    /** 
+     * @return the cdeUrl.
+     */
+    public String getCdeUrl() {
+        return CDE_URL;
     }
     
 }
