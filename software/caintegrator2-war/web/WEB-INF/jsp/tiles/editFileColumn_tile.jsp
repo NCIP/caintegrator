@@ -30,7 +30,7 @@
 	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
 	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
 	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
-	            <s:select label="Data Type" name="annotationDataType" list="annotationDataTypes" required="true" />
+	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes" />
 	        </s:if>
 	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
 	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 

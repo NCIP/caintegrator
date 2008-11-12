@@ -378,6 +378,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
         CommonDataElement cde = translate(dataElement);
         annotationDefinition.setCde(cde);
+        // TODO Until CaDSR data element provides a type definition, we'll hard code the type to be a string
+        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         dao.save(cde);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
