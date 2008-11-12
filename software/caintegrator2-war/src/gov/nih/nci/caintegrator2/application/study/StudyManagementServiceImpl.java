@@ -388,6 +388,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CommonDataElement translate(DataElement dataElement) {
         CommonDataElement cde = new CommonDataElement();
         cde.setPublicID(dataElement.getPublicId().toString());
+        cde.setVersion(dataElement.getVersion());
         return cde;
     }
 
