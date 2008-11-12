@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -107,8 +106,6 @@ public class DefineFileColumnActionTest {
         action.setFileColumn(new FileColumn());
         action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
         action.getFileColumn().getFieldDescriptor().setDefinition(new AnnotationDefinition());
-        action.setAnnotationDataType(AnnotationTypeEnum.DATE.getValue());
-        assertEquals(AnnotationTypeEnum.DATE.getValue(), action.getAnnotationDataType());
         // Assuming we will always have date, string, numeric, and possibly more later.
         assertTrue(action.getAnnotationDataTypes().length >= 3);
     }

@@ -295,29 +295,6 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     }
 
     /**
-     * 
-     * @return the annotationType.
-     */
-    public String getAnnotationDataType() {
-        String type = AnnotationTypeEnum.STRING.getValue();
-        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
-        if (annotationDefinition != null && annotationDefinition.getType() != null) {
-            type = annotationDefinition.getType();
-        }
-        return type;
-    }
-    
-    /**
-     * @param annotationDataType the annotationType to set.
-     */
-    public void setAnnotationDataType(String annotationDataType) {
-        AnnotationDefinition annotationDefinition = getFileColumn().getFieldDescriptor().getDefinition();
-        if (annotationDefinition != null) {
-            annotationDefinition.setType(annotationDataType);
-        }
-    }
-    
-    /**
      * Converts the enum to the string list.
      * @return the annotationTypes
      */
