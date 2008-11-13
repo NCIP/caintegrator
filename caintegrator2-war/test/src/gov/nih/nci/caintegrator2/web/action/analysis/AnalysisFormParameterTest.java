@@ -93,13 +93,19 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -113,16 +119,17 @@ public class AnalysisFormParameterTest {
     private StringParameterValue parameterValue1;
     private IntegerParameterValue parameterValue2;
     private GenomicDataParameterValue parameterValue3;
+    private SampleClassificationParameterValue parameterValue4;
     private TextFieldFormParameter formParameter1;
     private SelectListFormParameter formParameter2;
     private GenomicDataFormParameter formParameter3;
+    private SampleClassificationFormParameter formParameter4;
     private StudySubscription studySubscription = new StudySubscription();
     private Query query = new Query();
+    private AnalysisForm form = new AnalysisForm();
 
     @Before
-    public void setUp() {
-        AnalysisForm form = new AnalysisForm();
-        
+    public void setUp() {        
         parameterValue1 = new StringParameterValue();
         AnalysisParameter parameter1 = new AnalysisParameter();
         parameterValue1.setParameter(parameter1);
@@ -155,9 +162,20 @@ public class AnalysisFormParameterTest {
         parameter3.setName("parameter3");
         parameterValue3.setParameter(parameter3);
         
+        parameterValue4 = new SampleClassificationParameterValue();
+        AnalysisParameter parameter4 = new AnalysisParameter();
+        parameter4.setType(AnalysisParameterType.SAMPLE_CLASSIFICATION);
+        parameter4.setName("parameter4");
+        parameterValue4.setParameter(parameter4);
+        
         formParameter1 = (TextFieldFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue1);
         formParameter2 = (SelectListFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue2);
         formParameter3 = (GenomicDataFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue3);
+        formParameter4 = (SampleClassificationFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue4);
+        form.getParameters().add(formParameter1);
+        form.getParameters().add(formParameter2);
+        form.getParameters().add(formParameter3);
+        form.getParameters().add(formParameter4);
 
         List<Query> queries = new ArrayList<Query>();
         query.setId(1L);
@@ -167,6 +185,12 @@ public class AnalysisFormParameterTest {
         formParameter3.getForm().setGenomicQueries(queries);
         studySubscription.setQueryCollection(new HashSet<Query>());
         studySubscription.getQueryCollection().add(query);
+        
+        Collection<AnnotationDefinition> annotations = new ArrayList<AnnotationDefinition>();
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setDisplayName("Test");
+        annotations.add(definition);
+        form.addClassificationAnnotations(annotations, EntityTypeEnum.SUBJECT);
     }
 
     @Test
@@ -193,6 +217,11 @@ public class AnalysisFormParameterTest {
         formParameter3.setValue("Test");
         assertEquals("Test", formParameter3.getValue());
         assertEquals(query, formParameter3.getSelectedQuery());
+        assertEquals("", formParameter4.getValue());
+        formParameter4.setValue("Test");
+        assertEquals("Test", formParameter4.getValue());
+        formParameter4.setValue("");
+        assertEquals("", formParameter4.getValue());
     }
     
     @Test
@@ -206,6 +235,13 @@ public class AnalysisFormParameterTest {
         formParameter3.configureForInvocation(studySubscription, queryManagementService);
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
         assertNotNull(((GenomicDataParameterValue) formParameter3.getParameterValue()).getGenomicData());
+ 
+        queryManagementService.clear();
+        parameterValue3.setGenomicData(new GenomicDataQueryResult());
+        parameterValue3.getGenomicData().setColumnCollection(new ArrayList<GenomicDataResultColumn>());
+        formParameter4.setValue("Test");
+        formParameter4.configureForInvocation(studySubscription, queryManagementService);
+        assertTrue(queryManagementService.executeCalled);
     }
 
 }

@@ -85,103 +85,73 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue.SampleClassification;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
- * Sample classification.
+ * Utility class that writes out a GenePattern .cls format file based on a 
+ * <code>SampleClassificationParameterValue</code>.
  */
-public class SampleClassificationParameterValue extends AbstractParameterValue {
-
-    private static final long serialVersionUID = 1L;
-    private final List<SampleClassification> classifications = new ArrayList<SampleClassification>();
-    private final List<Sample> classifiedSamples = new ArrayList<Sample>();
-    private final Map<String, SampleClassification> classificationNameMap =
-        new HashMap<String, SampleClassification>();
-    private final Map<Sample, SampleClassification> sampleClassificationMap = 
-        new HashMap<Sample, SampleClassification>();
-    @SuppressWarnings("PMD.ImmutableField") // value is altered in inner class
-    private int nextIndex = 0;
+final class ClassificationsToClsConverter {
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getValueAsString() {
-        return null;
+    private ClassificationsToClsConverter() {
+        super();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setValueFromString(String stringValue) {
-        throw new IllegalStateException("Can't set value from String");
-    }
-    
-    /**
-     * Classify the given sample.
-     * 
-     * @param sample the sample to classify
-     * @param classificationName the class name
-     */
-    public void classify(Sample sample, String classificationName) {
-        classifiedSamples.add(sample);
-        SampleClassification classification = getClassification(classificationName);
-        sampleClassificationMap.put(sample, classification);
-    }
-    
-    /**
-     * @param classificationName
-     * @return
-     */
-    private SampleClassification getClassification(String classificationName) {
-        SampleClassification classification = classificationNameMap.get(classificationName);
-        if (classification == null) {
-            classification = new SampleClassification(classificationName);
-            classifications.add(classification);
-            classificationNameMap.put(classificationName, classification);
+    static void writeAsCls(SampleClassificationParameterValue parameterValue, String clsFilePath) {
+        File clsFile = new File(clsFilePath);
+        try {
+            FileWriter writer = new FileWriter(clsFile);
+            writeCountHeader(writer, parameterValue); 
+            writeClassificationNameHeader(writer, parameterValue); 
+            writeClassifications(writer, parameterValue);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't write file at the path " + clsFile, e);
         }
-        return classification;
     }
 
-    List<Sample> getClassifiedSamples() {
-        return classifiedSamples;
+    private static void writeCountHeader(FileWriter writer, SampleClassificationParameterValue parameterValue) 
+    throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(parameterValue.getClassifiedSamples().size());
+        stringBuffer.append(' ');
+        stringBuffer.append(parameterValue.getClassifications().size());
+        stringBuffer.append(" 1\n");
+        writer.write(stringBuffer.toString());
     }
 
-    List<SampleClassification> getClassifications() {
-        return classifications;
-    }
-    
-    SampleClassification getClassification(Sample sample) {
-        return sampleClassificationMap.get(sample);
-    }
-
-    /**
-     * A single category in the classifications.
-     */
-    final class SampleClassification {
-        
-        private final String name;
-        private final int index;
-        
-        SampleClassification(String name) {
-            this.name = name;
-            index = nextIndex++;
+    private static void writeClassificationNameHeader(FileWriter writer,
+            SampleClassificationParameterValue parameterValue) throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append('#');
+        for (SampleClassification classification : parameterValue.getClassifications()) {
+            stringBuffer.append(' ');
+            stringBuffer.append(classification.getName());
         }
+        stringBuffer.append('\n');
+        writer.write(stringBuffer.toString());
+    }
 
-        String getName() {
-            return name;
+    private static void writeClassifications(FileWriter writer, SampleClassificationParameterValue parameterValue) 
+    throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        boolean first = true;
+        for (Sample sample : parameterValue.getClassifiedSamples()) {
+            if (!first) {
+                stringBuffer.append(' ');
+            } else {
+                first = false;
+            }
+            stringBuffer.append(parameterValue.getClassification(sample).getIndex());
         }
-
-        int getIndex() {
-            return index;
-        }
-        
+        stringBuffer.append('\n');
+        writer.write(stringBuffer.toString());
     }
 
 }

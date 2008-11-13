@@ -274,18 +274,29 @@ class GenePatternHelper {
         ParameterInfo genePatternParameter = new ParameterInfo();
         genePatternParameter.setName(parameterValue.getParameter().getName());
         if (AnalysisParameterType.GENOMIC_DATA.equals(parameterValue.getParameter().getType())) {
-            handleGenomicData(parameterValue, genePatternParameter);
+            handleGenomicData((GenomicDataParameterValue) parameterValue, genePatternParameter);
+        } else if (AnalysisParameterType.SAMPLE_CLASSIFICATION.equals(parameterValue.getParameter().getType())) {
+            handleSampleClassification((SampleClassificationParameterValue) parameterValue, genePatternParameter);
         } else {            
             genePatternParameter.setValue(parameterValue.getValueAsString());
         }
         return genePatternParameter;
     }
 
-    private void handleGenomicData(AbstractParameterValue parameterValue, ParameterInfo genePatternParameter) {
-        GenomicDataParameterValue genomicDataParameterValue = (GenomicDataParameterValue) parameterValue;
+    private void handleSampleClassification(SampleClassificationParameterValue parameterValue, 
+            ParameterInfo genePatternParameter) {
+        File clsFile = 
+            new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".cls");
+        clsFile.deleteOnExit();
+        ClassificationsToClsConverter.writeAsCls(parameterValue, clsFile.getAbsolutePath());
+        genePatternParameter.setValue(clsFile.getAbsolutePath());
+    }
+
+    private void handleGenomicData(GenomicDataParameterValue parameterValue, ParameterInfo genePatternParameter) {
         File gctFile = 
             new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".gct");
-        ResultSetToGctConverter.writeAsGct(genomicDataParameterValue.getGenomicData(), gctFile.getAbsolutePath());
+        gctFile.deleteOnExit();
+        ResultSetToGctConverter.writeAsGct(parameterValue.getGenomicData(), gctFile.getAbsolutePath());
         genePatternParameter.setValue(gctFile.getAbsolutePath());
     }
 

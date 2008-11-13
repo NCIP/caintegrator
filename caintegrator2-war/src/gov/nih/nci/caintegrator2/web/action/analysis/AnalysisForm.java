@@ -88,10 +88,14 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +116,11 @@ public class AnalysisForm {
     private final List<String> genomicQueryNames = new ArrayList<String>();
     private final Map<String, Query> nameToGenomicQueryMap = new HashMap<String, Query>();
     private final ServerConnectionProfile server = new ServerConnectionProfile();
+    private final List<String> classificationAnnotationNames = new ArrayList<String>();
+    private final Map<String, AnnotationDefinition> nameToClassificationAnnotationMap = 
+        new HashMap<String, AnnotationDefinition>();
+    private final Map<String, EntityTypeEnum> nameToEntityTypeMap = 
+        new HashMap<String, EntityTypeEnum>();
     
     /**
      * Returns the list of all analysis method names.
@@ -287,6 +296,37 @@ public class AnalysisForm {
     
     Query getGenomicQuery(String name) {
         return nameToGenomicQueryMap.get(name);
+    }
+
+    void clearClassificationAnnotations() {
+        classificationAnnotationNames.clear();
+        nameToClassificationAnnotationMap.clear();
+        nameToEntityTypeMap.clear();
+    }
+
+    void addClassificationAnnotations(Collection<AnnotationDefinition> classificationAnnotations, 
+            EntityTypeEnum entityType) {
+        for (AnnotationDefinition definition : classificationAnnotations) {
+            classificationAnnotationNames.add(definition.getDisplayName());
+            nameToClassificationAnnotationMap.put(definition.getDisplayName(), definition);
+            nameToEntityTypeMap.put(definition.getDisplayName(), entityType);
+        }
+        Collections.sort(classificationAnnotationNames);
+    }
+
+    /**
+     * @return the classificationAnnotationNames
+     */
+    public List<String> getClassificationAnnotationNames() {
+        return classificationAnnotationNames;
+    }
+
+    AnnotationDefinition getClassificationAnnotation(String name) {
+        return nameToClassificationAnnotationMap.get(name);
+    }
+
+    EntityTypeEnum getEntityType(String name) {
+        return nameToEntityTypeMap.get(name);
     }
 
 }
