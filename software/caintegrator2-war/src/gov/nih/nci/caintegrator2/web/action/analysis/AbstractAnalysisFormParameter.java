@@ -100,6 +100,7 @@ import com.opensymphony.xwork2.ValidationAware;
  */
 public abstract class AbstractAnalysisFormParameter {
 
+    private static final String FILE_PARAMETER_SUFFIX_REGEX = "\\.filename";
     private final AnalysisForm form;
     private AbstractParameterValue parameterValue;
 
@@ -115,7 +116,7 @@ public abstract class AbstractAnalysisFormParameter {
      * @return the name
      */
     public final String getName() {
-        return getParameter().getName();
+        return getParameter().getName().replaceAll(FILE_PARAMETER_SUFFIX_REGEX, "");
     }
 
     /**
