@@ -91,13 +91,18 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -159,7 +164,29 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     private String open() {
         getAnalysisForm().setGenomicQueries(getGenomicQueries());
+        Collection<AnnotationDefinition> subjectClassifications = 
+            getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
+        Collection<AnnotationDefinition> imageSeriesClassifications = 
+            getClassificationAnnotations(getStudy().getImageSeriesAnnotationCollection());
+        Collection<AnnotationDefinition> sampleClassifications = 
+            getClassificationAnnotations(getStudy().getSampleAnnotationCollection());
+        getAnalysisForm().clearClassificationAnnotations();
+        getAnalysisForm().addClassificationAnnotations(subjectClassifications, EntityTypeEnum.SUBJECT);
+        getAnalysisForm().addClassificationAnnotations(imageSeriesClassifications, EntityTypeEnum.IMAGESERIES);
+        getAnalysisForm().addClassificationAnnotations(sampleClassifications, EntityTypeEnum.SAMPLE);
         return SUCCESS;
+    }
+
+    private Collection<AnnotationDefinition> getClassificationAnnotations(
+            Collection<AnnotationDefinition> annotationCollection) {
+        Set<AnnotationDefinition> classificationAnnotations = new HashSet<AnnotationDefinition>();
+        for (AnnotationDefinition annotation : annotationCollection) {
+            if (annotation.getAnnotationValueCollection() != null 
+                    && !annotation.getAnnotationValueCollection().isEmpty()) {
+                classificationAnnotations.add(annotation);
+            }
+        }
+        return classificationAnnotations;
     }
 
     /**
