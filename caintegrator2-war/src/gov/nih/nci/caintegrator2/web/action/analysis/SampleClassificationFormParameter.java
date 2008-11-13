@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -102,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
@@ -206,7 +208,12 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         for (ResultRow row : result.getRowCollection()) {
             ResultValue resultValue = row.getValueCollection().iterator().next();
             String classificationName = ((StringAnnotationValue) resultValue.getValue()).getStringValue();
-            classificationMap.put(row.getSampleAcquisition().getSample(), classificationName);
+            if (StringUtils.isBlank(classificationName)) {
+                classificationName = "none";
+            }
+            if (row.getSampleAcquisition() != null) {
+                classificationMap.put(row.getSampleAcquisition().getSample(), classificationName);
+            }
         }
         return classificationMap;
     }
@@ -228,6 +235,12 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         sampleColumn.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         sampleColumn.setColumnIndex(1);
         query.getColumnCollection().add(sampleColumn);
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setAnnotationDefinition(classificationAnnotation);
+        criterion.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
+        criterion.setStringValue("");
+        criterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        query.getCompoundCriterion().getCriterionCollection().add(criterion);
         query.setSubscription(studySubscription);
         return query;
     }
