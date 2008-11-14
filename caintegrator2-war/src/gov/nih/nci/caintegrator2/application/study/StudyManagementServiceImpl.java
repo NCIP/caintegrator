@@ -88,6 +88,8 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -395,11 +397,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
+    public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
+                                EntityTypeEnum entityType) {
         if (fileColumn.getFieldDescriptor().getDefinition() == null 
             || !fileColumn.getFieldDescriptor().getDefinition().equals(annotationDefinition)) {
-            fileColumn.getFieldDescriptor().setDefinition(annotationDefinition);
+            addDefinitionToStudy(fileColumn.getFieldDescriptor(), study, entityType, annotationDefinition);
+            dao.save(annotationDefinition);
             dao.save(fileColumn);
+            dao.save(study);
         }
     }
 
@@ -492,40 +497,102 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ "PMD.ExcessiveMethodLength" })
     public AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, 
                                                  Study study, 
                                                  EntityTypeEnum entityType) {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        descriptor.setDefinition(annotationDefinition);
+        annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        annotationDefinition.setPermissableValueCollection(new HashSet<AbstractPermissableValue>());
         annotationDefinition.setDisplayName(descriptor.getName());
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
+        addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);
+        dao.save(annotationDefinition);
+        dao.save(descriptor);
+        dao.save(study);
+        return annotationDefinition;
+    }
+    
+    @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Switch Statement and null checks
+    private void addDefinitionToStudy(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType,
+            AnnotationDefinition annotationDefinition) {
+        AnnotationDefinition annotationDefinitionToRemove = null;
+        if (descriptor.getDefinition() != null) {
+            annotationDefinitionToRemove = descriptor.getDefinition();
+        }
+        descriptor.setDefinition(annotationDefinition);
         switch(entityType) {
             case SUBJECT:
                 if (study.getSubjectAnnotationCollection() == null) {
                     study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
                 }
                 study.getSubjectAnnotationCollection().add(annotationDefinition);
+                if (annotationDefinitionToRemove != null) {
+                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
+                    study.getSubjectAnnotationCollection().remove(annotationDefinitionToRemove);
+                }
                 break;
             case IMAGESERIES:
                 if (study.getImageSeriesAnnotationCollection() == null) {
                     study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
                 }
                 study.getImageSeriesAnnotationCollection().add(annotationDefinition);
+                if (annotationDefinitionToRemove != null) {
+                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
+                    study.getImageSeriesAnnotationCollection().remove(annotationDefinitionToRemove);
+                }
                 break;
             case SAMPLE:
                 if (study.getSampleAnnotationCollection() == null) {
                     study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
                 }
                 study.getSampleAnnotationCollection().add(annotationDefinition);
+                if (annotationDefinitionToRemove != null) {
+                    moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
+                    study.getSampleAnnotationCollection().remove(annotationDefinitionToRemove);
+                }
                 break;
             default:
                 throw new IllegalStateException("Unknown EntityTypeEnum");
         }
-        dao.save(annotationDefinition);
-        dao.save(descriptor);
-        dao.save(study);
-        return annotationDefinition;
+    }
+
+    /**
+     * Moves AbstractAnnotationValues from one AnnotationDefinition to another.
+     * @param study - Study that the values belong to.
+     * @param annotationDefinition - new AnnotationDefinition where the Values will belong.
+     * @param annotationDefinitionToRemove - Old AnnotationDefinition.
+     */
+    private void moveValuesToNewDefinition(Study study, AnnotationDefinition annotationDefinition,
+            AnnotationDefinition annotationDefinitionToRemove) {
+        if (annotationDefinition.getAnnotationValueCollection() == null) {
+            annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        }
+        if (annotationDefinitionToRemove.getAnnotationValueCollection() != null 
+            && !annotationDefinitionToRemove.getAnnotationValueCollection().isEmpty()) {
+            for (AbstractAnnotationValue value : annotationDefinitionToRemove.getAnnotationValueCollection()) {
+                if (studyContainsAnnotationValue(value, study)) {
+                    value.setAnnotationDefinition(annotationDefinition);
+                    annotationDefinition.getAnnotationValueCollection().add(value);
+                }
+            }
+        }
+    }
+    
+    private boolean studyContainsAnnotationValue(AbstractAnnotationValue value, Study study) {
+        if (value.getSubjectAnnotation() != null 
+                && study.equals(value.getSubjectAnnotation().getStudySubjectAssignment().getStudy())) {
+            return true;
+        } else if (value.getImageSeries() != null 
+                && study.equals(value.getImageSeries().getImageStudy().getAssignment().getStudy())) {
+            return true;
+        } else if (value.getSampleAcquisition() != null
+                && study.equals(value.getSampleAcquisition().getAssignment().getStudy())) { 
+            return true;
+        } else if (value.getImage() != null 
+                && study.equals(value.getImage().getSeries().getImageStudy().getAssignment().getStudy())) {
+            return true;
+        }
+        return false;
     }
 
     /**

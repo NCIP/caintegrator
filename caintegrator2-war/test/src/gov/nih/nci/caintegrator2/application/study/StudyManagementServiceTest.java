@@ -91,7 +91,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -246,30 +248,79 @@ public class StudyManagementServiceTest {
     
     @Test
     public void testSetDefinition() {
+        Study study = new Study();
+        study.setId(Long.valueOf(1L));
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setId(1L);
-        studyManagementService.setDefinition(fileColumn, annotationDefinition);
+        SampleAcquisition sampleAcquisition = new SampleAcquisition();
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        sampleAcquisition.setAssignment(assignment);
+        assignment.setStudy(study);
+        ImageSeries imageSeries = new ImageSeries();
+        ImageSeriesAcquisition imageStudy = new ImageSeriesAcquisition();
+        imageSeries.setImageStudy(imageStudy);
+        imageStudy.setAssignment(assignment);
+        SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
+        subjectAnnotation.setStudySubjectAssignment(assignment);
+        
+        AbstractAnnotationValue value1 = new StringAnnotationValue();
+        AbstractAnnotationValue value2 = new StringAnnotationValue();
+        AbstractAnnotationValue value3 = new StringAnnotationValue();
+        value1.setSampleAcquisition(sampleAcquisition);
+        value2.setImageSeries(imageSeries);
+        value3.setSubjectAnnotation(subjectAnnotation);
+        AnnotationDefinition firstDefinition = new AnnotationDefinition();
+        firstDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        firstDefinition.getAnnotationValueCollection().add(value1);
+        firstDefinition.getAnnotationValueCollection().add(value2);
+        firstDefinition.getAnnotationValueCollection().add(value3);
+        firstDefinition.setId(1L);
+        studyManagementService.setDefinition(study, fileColumn, firstDefinition, EntityTypeEnum.IMAGESERIES);
         assertTrue(daoStub.saveCalled);
-        assertEquals(annotationDefinition, fileColumn.getFieldDescriptor().getDefinition());
+        assertEquals(firstDefinition, fileColumn.getFieldDescriptor().getDefinition());
+        assertTrue(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
+        assertTrue(firstDefinition.getAnnotationValueCollection().contains(value1));
+        
+        // Now create a new Definition and set it and verify the first definition is removed.
+        AnnotationDefinition newDefinition = new AnnotationDefinition();
+        newDefinition.setId(2L);
+        studyManagementService.setDefinition(study, fileColumn, newDefinition, EntityTypeEnum.IMAGESERIES);
+        assertFalse(study.getImageSeriesAnnotationCollection().contains(firstDefinition));
+        assertTrue(study.getImageSeriesAnnotationCollection().contains(newDefinition));
+        assertTrue(newDefinition.getAnnotationValueCollection().contains(value1));
+        assertTrue(newDefinition.getAnnotationValueCollection().contains(value2));
+        assertTrue(newDefinition.getAnnotationValueCollection().contains(value3));
     }
     
     @Test
     public void testSetDataElement() {
+        Study study = new Study();
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
         DataElement dataElement = new DataElement();
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
         dataElement.setPublicId(1234L);
-        studyManagementService.setDataElement(fileColumn, dataElement, new Study(), EntityTypeEnum.SUBJECT);
+        studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT);
         assertTrue(daoStub.saveCalled);
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCde());
         assertEquals("longName", fileColumn.getFieldDescriptor().getDefinition().getDisplayName());
         assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
         assertEquals("1234", fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
+        AnnotationDefinition firstDefinition = fileColumn.getFieldDescriptor().getDefinition();
+        assertTrue(study.getSubjectAnnotationCollection().contains(firstDefinition));
+        
+        // Now set a different data element and verify the first one is no longer in the study's collection
+        DataElement dataElement2 = new DataElement();
+        dataElement2.setLongName("longName2");
+        dataElement2.setDefinition("definition2");
+        dataElement2.setPublicId(123L);
+        studyManagementService.setDataElement(fileColumn, dataElement2, study, EntityTypeEnum.SUBJECT);
+        AnnotationDefinition newDefinition = fileColumn.getFieldDescriptor().getDefinition();
+        assertFalse(study.getSubjectAnnotationCollection().contains(firstDefinition));
+        assertTrue(study.getSubjectAnnotationCollection().contains(newDefinition));
+        
     }
     
     @Test
