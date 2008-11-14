@@ -87,7 +87,10 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contains the configuration for invoking an analysis job.
@@ -97,7 +100,8 @@ public class AnalysisMethodInvocation implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private AnalysisMethod method;
-    private final List<AbstractParameterValue> parameterValues = new ArrayList<AbstractParameterValue>();
+    private final Map<AnalysisParameter, AbstractParameterValue> parameterValues = 
+        new HashMap<AnalysisParameter, AbstractParameterValue>();
 
     /**
      * @return the method
@@ -112,12 +116,38 @@ public class AnalysisMethodInvocation implements Serializable {
     public void setMethod(AnalysisMethod method) {
         this.method = method;
     }
-    
+
     /**
+     * Gets the value for a given parameter.
+     * 
+     * @param parameter the parameter to retrieve
+     * @return the value
+     */
+    public AbstractParameterValue getParameterValue(AnalysisParameter parameter) {
+        return parameterValues.get(parameter);
+    }
+
+    /**
+     * Sets the value for a given parameter.
+     * 
+     * @param parameter the parameter to set
+     * @param value the value
+     */
+    public void setParameterValue(AnalysisParameter parameter, AbstractParameterValue value) {
+        parameterValues.put(parameter, value);
+    }
+
+    /**
+     * Returns an unmodifiable list of the parameter values.
+     * 
      * @return the parameterValues
      */
     public List<AbstractParameterValue> getParameterValues() {
-        return parameterValues;
+        List<AbstractParameterValue> values = new ArrayList<AbstractParameterValue>(parameterValues.size());
+        for (AnalysisParameter parameter : method.getParameters()) {
+            values.add(parameterValues.get(parameter));
+        }
+        return Collections.unmodifiableList(values);
     }
     
 }

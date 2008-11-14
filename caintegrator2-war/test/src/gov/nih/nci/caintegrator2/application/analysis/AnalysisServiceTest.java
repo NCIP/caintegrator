@@ -146,8 +146,9 @@ public class AnalysisServiceTest {
         AnalysisParameter parameter = new AnalysisParameter();
         parameter.setType(AnalysisParameterType.STRING);
         parameter.setName("parameter");
+        method.getParameters().add(parameter);
         parameterValue.setParameter(parameter);
-        invocation.getParameterValues().add(parameterValue);
+        invocation.setParameterValue(parameter, parameterValue);
         service.executeGenePatternJob(server, invocation);
         assertEquals("method", genePatternClientStub.taskName);
         assertEquals(1, genePatternClientStub.parameters.size());

@@ -145,6 +145,8 @@ public class SelectListFormParameter extends AbstractAnalysisFormParameter {
      */
     @Override
     public void setValue(String value) {
-        setParameterValue(getParameter().getChoices().get(value));
+        AbstractParameterValue parameterValue = getParameter().getChoices().get(value);
+        setParameterValue(parameterValue);
+        getForm().getInvocation().setParameterValue(getParameter(), parameterValue);
     }
 }
