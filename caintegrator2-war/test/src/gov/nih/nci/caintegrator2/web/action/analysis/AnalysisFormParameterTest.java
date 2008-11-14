@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
@@ -130,43 +131,53 @@ public class AnalysisFormParameterTest {
 
     @Before
     public void setUp() {        
-        parameterValue1 = new StringParameterValue();
         AnalysisParameter parameter1 = new AnalysisParameter();
-        parameterValue1.setParameter(parameter1);
         parameter1.setName("parameter1");
         parameter1.setDescription("description1");
         parameter1.setRequired(false);
         parameter1.setType(AnalysisParameterType.STRING);
-        parameterValue1.setValue("value1");
         
-        parameterValue2 = new IntegerParameterValue();
         AnalysisParameter parameter2 = new AnalysisParameter();
-        parameterValue2.setParameter(parameter2);
         parameter2.setName("parameter2");
         parameter2.setDescription("description2");
         parameter2.setRequired(false);
         parameter2.setType(AnalysisParameterType.INTEGER);
-        parameterValue2.setValue(2);
         
         Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
-        choices.put("2", parameterValue2);
+        IntegerParameterValue choice1 = new IntegerParameterValue();
+        choice1.setValue(1);
+        choice1.setParameter(parameter2);
+        choices.put("1", choice1);
         parameter2.setChoices(choices);
         IntegerParameterValue choice2 = new IntegerParameterValue();
-        choice2.setValue(3);
+        choice2.setValue(2);
         choice2.setParameter(parameter2);
-        choices.put("3", choice2);
+        choices.put("2", choice2);
         
-        parameterValue3 = new GenomicDataParameterValue();
         AnalysisParameter parameter3 = new AnalysisParameter();
         parameter3.setType(AnalysisParameterType.GENOMIC_DATA);
         parameter3.setName("parameter3");
-        parameterValue3.setParameter(parameter3);
         
-        parameterValue4 = new SampleClassificationParameterValue();
         AnalysisParameter parameter4 = new AnalysisParameter();
         parameter4.setType(AnalysisParameterType.SAMPLE_CLASSIFICATION);
         parameter4.setName("parameter4");
-        parameterValue4.setParameter(parameter4);
+
+        AnalysisMethod method = new AnalysisMethod();
+        method.setName("method");
+        method.getParameters().add(parameter1);
+        method.getParameters().add(parameter2);
+        method.getParameters().add(parameter3);
+        method.getParameters().add(parameter4);
+        List<AnalysisMethod> methods = new ArrayList<AnalysisMethod>();
+        methods.add(method);
+        form.setAnalysisMethods(methods);
+        form.setAnalysisMethodName("method");
+        parameterValue1 = (StringParameterValue) form.getInvocation().getParameterValue(parameter1);
+        parameterValue2 = (IntegerParameterValue) form.getInvocation().getParameterValue(parameter2);
+        parameterValue3 = (GenomicDataParameterValue) form.getInvocation().getParameterValue(parameter3);
+        parameterValue4 = (SampleClassificationParameterValue) form.getInvocation().getParameterValue(parameter4);
+        
+        parameterValue1.setValue("value1");
         
         formParameter1 = (TextFieldFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue1);
         formParameter2 = (SelectListFormParameter) AbstractAnalysisFormParameter.create(form, parameterValue2);
@@ -200,7 +211,6 @@ public class AnalysisFormParameterTest {
         assertEquals("select", formParameter2.getDisplayType());
         assertEquals("parameter1", formParameter1.getName());
         assertEquals("value1", formParameter1.getValue());
-        assertEquals("2", formParameter2.getValue());
         assertEquals(2, formParameter2.getChoices().size());
         assertTrue(formParameter2.getChoices().contains("2"));
         assertEquals(2, formParameter3.getChoices().size());
@@ -211,8 +221,12 @@ public class AnalysisFormParameterTest {
     public void testSetValue() {
         formParameter1.setValue("new value");
         assertEquals("new value", formParameter1.getParameterValue().getValueAsString());
-        formParameter2.setValue("3");
-        assertEquals("3", formParameter2.getParameterValue().getValueAsString());
+        formParameter2.setValue("2");
+        assertEquals("2", formParameter2.getParameterValue().getValueAsString());
+        assertEquals("2", form.getInvocation().getParameterValue(parameterValue2.getParameter()).getValueAsString());
+        formParameter2.setValue("1");
+        assertEquals("1", formParameter2.getParameterValue().getValueAsString());
+        assertEquals("1", form.getInvocation().getParameterValue(parameterValue2.getParameter()).getValueAsString());
         assertEquals("All Genomic Data", formParameter3.getValue());
         formParameter3.setValue("Test");
         assertEquals("Test", formParameter3.getValue());
