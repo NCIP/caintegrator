@@ -251,10 +251,13 @@ public interface StudyManagementService {
     /**
      * Selects an existing annotation definition for a column.
      * 
+     * @param study is the study that the definition is getting set for.
      * @param fileColumn column receiving definition.
      * @param annotationDefinition the selected definition.
+     * @param entityType entity type for the annotation definition.
      */
-    void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition);
+    void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
+            EntityTypeEnum entityType);
 
     /**
      * Create the associations between subjects in the study and samples.

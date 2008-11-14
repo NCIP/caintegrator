@@ -180,7 +180,12 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String selectDefinition() {
-        getStudyManagementService().setDefinition(getFileColumn(), getDefinitions().get(getDefinitionIndex()));
+        AnnotationDefinition definitionToUse = getStudyManagementService().
+                        getRefreshedStudyEntity(getDefinitions().get(getDefinitionIndex()));
+        getStudyManagementService().setDefinition(getStudyConfiguration().getStudy(), 
+                                                  getFileColumn(), 
+                                                  definitionToUse,
+                                                  EntityTypeEnum.SUBJECT);
         return SUCCESS;
     }
     

@@ -197,7 +197,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDataElementCalled = true;
     }
 
-    public void setDefinition(FileColumn fileColumn, AnnotationDefinition annotationDefinition) {
+    public void setDefinition(Study study, FileColumn fileColumn, AnnotationDefinition annotationDefinition, 
+                                EntityTypeEnum entityType) {
         setDefinitionCalled = true;
     }
 
