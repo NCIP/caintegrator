@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
 
@@ -101,7 +102,7 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     private final static Logger LOGGER = Logger.getLogger(DeploySmallStudyTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException {
+    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
         deployStudy();
     }
     

@@ -107,9 +107,10 @@ public interface CaArrayFacade {
      * @return the samples in the experiment.
      * @throws ConnectionException if the subsystem can't connect to the caArray server.
      * @throws ExperimentNotFoundException if the experiment cannot be found.
+     * @throws NoSamplesForExperimentException if there are no samples for a valid experiment.
      */
     List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException, ExperimentNotFoundException;
+    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException;
     
     /**
      * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
 import java.io.IOException;
@@ -168,9 +169,10 @@ public interface StudyManagementService {
      * @param genomicSource genomic source to add
      * @throws ConnectionException if the configured server couldn't be reached.
      * @throws ExperimentNotFoundException if the experiment cannot be found.
+     * @throws NoSamplesForExperimentException if there are no samples for a valid experiment.
      */
     void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException, ExperimentNotFoundException;
+    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException;
 
     /**
      * Adds a new, initialized image data source to the study. The <code>ImageSeriesAcquisition</code> related to this 

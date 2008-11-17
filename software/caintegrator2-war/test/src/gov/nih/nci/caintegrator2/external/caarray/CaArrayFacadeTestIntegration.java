@@ -109,7 +109,7 @@ public class CaArrayFacadeTestIntegration {
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
+    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("array.nci.nih.gov");
         profile.setPort(8080);
@@ -118,7 +118,7 @@ public class CaArrayFacadeTestIntegration {
     }
     
     @Test (expected=ExperimentNotFoundException.class)
-    public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
+    public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("array.nci.nih.gov");
         profile.setPort(8080);
