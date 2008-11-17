@@ -89,7 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -101,7 +101,6 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
@@ -351,7 +350,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public List<DataElement> getMatchingDataElements(List<String> keywords) {
+    public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
         return caDSRFacade.retreiveCandidateDataElements(keywords);
     }
 
@@ -372,26 +371,21 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType) {
+    public void setDataElement(FileColumn fileColumn, 
+                                CommonDataElement dataElement, 
+                                Study study, 
+                                EntityTypeEnum entityType) {
         AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
                                                                      study, 
                                                                      entityType);
         annotationDefinition.setDisplayName(dataElement.getLongName());
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
-        CommonDataElement cde = translate(dataElement);
-        annotationDefinition.setCde(cde);
+        annotationDefinition.setCde(dataElement);
         // TODO Until CaDSR data element provides a type definition, we'll hard code the type to be a string
         annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
-        dao.save(cde);
+        dao.save(dataElement);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
-    }
-
-    private CommonDataElement translate(DataElement dataElement) {
-        CommonDataElement cde = new CommonDataElement();
-        cde.setPublicID(dataElement.getPublicId().toString());
-        cde.setVersion(dataElement.getVersion());
-        return cde;
     }
 
     /**
@@ -502,7 +496,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                                  EntityTypeEnum entityType) {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
-        annotationDefinition.setPermissableValueCollection(new HashSet<AbstractPermissableValue>());
+        annotationDefinition.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         annotationDefinition.setDisplayName(descriptor.getName());
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);

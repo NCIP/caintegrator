@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,7 +113,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     private FileColumn fileColumn = new FileColumn();
     private boolean readOnly;
     private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<CommonDataElement> dataElements = new ArrayList<CommonDataElement>();
     private int dataElementIndex;
     private int definitionIndex;
     private String keywordsForSearch;
@@ -345,7 +345,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     /**
      * @return the dataElements
      */
-    public List<DataElement> getDataElements() {
+    public List<CommonDataElement> getDataElements() {
         return dataElements;
     }
 

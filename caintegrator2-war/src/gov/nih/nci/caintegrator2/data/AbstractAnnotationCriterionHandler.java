@@ -110,9 +110,9 @@ public abstract class AbstractAnnotationCriterionHandler {
      */
     public static final String DATE_VALUE_COLUMN = "dateValue";
     /**
-     * Permissable Value.
+     * Permissible Value.
      */
-    public static final String PERMISSABLE_VALUE_COLUMN = "boundedValue";
+    public static final String PERMISSIBLE_VALUE_COLUMN = "boundedValue";
     
     /**
      * Creates the appropriate Annotation Criterion Handler based on the criterion object.

@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 
 import org.apache.log4j.Logger;
 
@@ -105,8 +105,8 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     public void compareFields(NumericAnnotationValue original, NumericAnnotationValue retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         assertEquals(original.getNumericValue(), retrieved.getNumericValue());
-        if(retrieved.getBoundedValue() instanceof NumericPermissableValue) {
-            NumericPermissableValueGenerator.INSTANCE.compare((NumericPermissableValue)original.getBoundedValue(), (NumericPermissableValue)retrieved.getBoundedValue());
+        if(retrieved.getBoundedValue() instanceof NumericPermissibleValue) {
+            NumericPermissibleValueGenerator.INSTANCE.compare((NumericPermissibleValue)original.getBoundedValue(), (NumericPermissibleValue)retrieved.getBoundedValue());
         }  else {
             LOGGER.error("**** getValue() should have cast to a NumericAnnotationValue object");
         }
@@ -122,7 +122,7 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
         
         numericAnnotationValue.setNumericValue(Double.valueOf(getUniqueInt()));
         numericAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());
-        numericAnnotationValue.setBoundedValue(NumericPermissableValueGenerator.INSTANCE.createPersistentObject());
+        numericAnnotationValue.setBoundedValue(NumericPermissibleValueGenerator.INSTANCE.createPersistentObject());
         
     }
 

@@ -88,8 +88,8 @@ package gov.nih.nci.caintegrator2.data;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.Collection;
@@ -105,16 +105,16 @@ public class SelectedValueCriterionHandlerTest {
     @Test
     public void testTranslate() {
         SelectedValueCriterion svCriterion = new SelectedValueCriterion();
-        Collection <AbstractPermissableValue> valueCollection = new HashSet<AbstractPermissableValue>();
-        NumericPermissableValue val1 = new NumericPermissableValue();
+        Collection <AbstractPermissibleValue> valueCollection = new HashSet<AbstractPermissibleValue>();
+        NumericPermissibleValue val1 = new NumericPermissibleValue();
         val1.setNumericValue(Double.valueOf(123));
         valueCollection.add(val1);
         svCriterion.setValueCollection(valueCollection);
         
         Criterion crit = AbstractAnnotationCriterionHandler.create(svCriterion).translate();
         assertNotNull(crit);
-        // This needs to be "boundedValue in Collection(PermissableValue)"
-        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.PERMISSABLE_VALUE_COLUMN+" in").
+        // This needs to be "boundedValue in Collection(PermissibleValue)"
+        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.PERMISSIBLE_VALUE_COLUMN+" in").
                                     matcher(crit.toString()).find());
     }
 

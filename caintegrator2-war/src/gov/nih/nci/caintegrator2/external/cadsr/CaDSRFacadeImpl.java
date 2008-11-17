@@ -85,12 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
+import gov.nih.nci.cadsr.domain.AdministeredComponent;
 import gov.nih.nci.cadsr.domain.EnumeratedValueDomain;
 import gov.nih.nci.cadsr.domain.NonenumeratedValueDomain;
 import gov.nih.nci.cadsr.freestylesearch.util.Search;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchAC;
 import gov.nih.nci.cadsr.freestylesearch.util.SearchResults;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 
@@ -113,7 +116,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     /**
      * {@inheritDoc}
      */
-    public List<DataElement> retreiveCandidateDataElements(List<String> keywords) {
+    public List<CommonDataElement> retreiveCandidateDataElements(List<String> keywords) {
         
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < keywords.size(); ++i) {
@@ -161,14 +164,14 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
                 if (cadsrDataType.matches("NUMBER")) {
                     annotationType = AnnotationTypeEnum.NUMERIC;
                 }
-                valueDomain.setDatatype(annotationType.getValue());
+                valueDomain.setDataType(annotationType.getValue());
                 valueDomain.setLongName(cadsrValueDomain.getLongName());
                 valueDomain.setPublicID(cadsrValueDomain.getPublicID());
                 if (cadsrValueDomain instanceof EnumeratedValueDomain) {
-                    valueDomain.setValueDomainType(ValueDomainType.ENUMERATED);
+                    valueDomain.setValueDomainType(ValueDomainType.ENUMERATED.getValue());
                 }
                 if (cadsrValueDomain instanceof NonenumeratedValueDomain) {
-                    valueDomain.setValueDomainType(ValueDomainType.NON_ENUMERATED);
+                    valueDomain.setValueDomainType(ValueDomainType.NON_ENUMERATED.getValue());
                 }
             }
             return valueDomain;
@@ -177,20 +180,39 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     }
     }
     
-    private List<DataElement> convertSearchResultsToDataElements(List<SearchResults> searchResults) {
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-        DataElement de;
+    private List<CommonDataElement> convertSearchResultsToDataElements(List<SearchResults> searchResults) {
+        List<CommonDataElement> dataElements = new ArrayList<CommonDataElement>();
+        CommonDataElement de;
         for (SearchResults sr : searchResults) {
-            de = new DataElement();
+            de = new CommonDataElement();
             de.setDefinition(sr.getPreferredDefinition());
             de.setLongName(sr.getLongName());
-            de.setPublicId(Long.valueOf(sr.getPublicID()));
+            de.setPublicID(Long.valueOf(sr.getPublicID()));
             de.setContextName(sr.getContextName());
             de.setPreferredName(sr.getPreferredName());
             de.setRegistrationStatus(sr.getRegistrationStatus());
             de.setType(sr.getType().getName());
             de.setVersion(sr.getVersion());
             de.setWorkflowStatus(sr.getWorkflowStatus());
+            dataElements.add(de);
+        }
+        return dataElements;
+    }
+    
+    @SuppressWarnings({"PMD.UnusedPrivateMethod", "unused" }) // This might be used later, but might not.
+    private List<CommonDataElement> convertAdministeredComponentsToDataElements(List<AdministeredComponent> acs) {
+        List<CommonDataElement> dataElements = new ArrayList<CommonDataElement>();
+        CommonDataElement de;
+        for (AdministeredComponent ac : acs) {
+            de = new CommonDataElement();
+            de.setDefinition(ac.getPreferredDefinition());
+            de.setLongName(ac.getLongName());
+            de.setPublicID(Long.valueOf(ac.getPublicID()));
+            de.setContextName(ac.getContext().getName());
+            de.setPreferredName(ac.getPreferredName());
+            de.setRegistrationStatus(ac.getRegistrationStatus());
+            de.setVersion(String.valueOf(ac.getVersion()));
+            de.setWorkflowStatus(ac.getWorkflowStatusName());
             dataElements.add(de);
         }
         return dataElements;

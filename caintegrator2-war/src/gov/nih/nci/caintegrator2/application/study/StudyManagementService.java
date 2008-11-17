@@ -86,10 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -236,7 +236,7 @@ public interface StudyManagementService {
      * @param keywords match data elements for these keywords.
      * @return the list of matching candidate data elements.
      */
-    List<DataElement> getMatchingDataElements(List<String> keywords);
+    List<CommonDataElement> getMatchingDataElements(List<String> keywords);
 
     /**
      * Selects an existing CaDSR data element as the definition for a column.
@@ -246,7 +246,7 @@ public interface StudyManagementService {
      * @param study the study that the FileColumn belongs to.
      * @param entityType the entityType for the data element.
      */
-    void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType);
+    void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType);
 
     /**
      * Selects an existing annotation definition for a column.

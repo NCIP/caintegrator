@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -104,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
@@ -297,25 +297,25 @@ public class StudyManagementServiceTest {
         Study study = new Study();
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
-        DataElement dataElement = new DataElement();
+        CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
-        dataElement.setPublicId(1234L);
+        dataElement.setPublicID(1234L);
         studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT);
         assertTrue(daoStub.saveCalled);
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition().getCde());
         assertEquals("longName", fileColumn.getFieldDescriptor().getDefinition().getDisplayName());
         assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
-        assertEquals("1234", fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
+        assertEquals(Long.valueOf(1234), fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
         AnnotationDefinition firstDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertTrue(study.getSubjectAnnotationCollection().contains(firstDefinition));
         
         // Now set a different data element and verify the first one is no longer in the study's collection
-        DataElement dataElement2 = new DataElement();
+        CommonDataElement dataElement2 = new CommonDataElement();
         dataElement2.setLongName("longName2");
         dataElement2.setDefinition("definition2");
-        dataElement2.setPublicId(123L);
+        dataElement2.setPublicID(123L);
         studyManagementService.setDataElement(fileColumn, dataElement2, study, EntityTypeEnum.SUBJECT);
         AnnotationDefinition newDefinition = fileColumn.getFieldDescriptor().getDefinition();
         assertFalse(study.getSubjectAnnotationCollection().contains(firstDefinition));
