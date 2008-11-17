@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
@@ -225,20 +225,20 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         // Try a selectedValueCriterion now (should be size 3)
         SelectedValueCriterion criterion3 = new SelectedValueCriterion();
-        Collection<AbstractPermissableValue> permissableValues1 = new HashSet<AbstractPermissableValue>();
-        permissableValues1.add(studyHelper.getPermval1());
-        criterion3.setValueCollection(permissableValues1);
+        Collection<AbstractPermissibleValue> permissibleValues1 = new HashSet<AbstractPermissibleValue>();
+        permissibleValues1.add(studyHelper.getPermval1());
+        criterion3.setValueCollection(permissibleValues1);
         criterion3.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples3 = dao.findMatchingSamples(criterion3, study);
         
         assertEquals(3, matchingSamples3.size());
         
-        // Try the other permissable values (should be size 2)
+        // Try the other permissible values (should be size 2)
         SelectedValueCriterion criterion4 = new SelectedValueCriterion();
-        Collection<AbstractPermissableValue> permissableValues2 = new HashSet<AbstractPermissableValue>();
-        permissableValues2.add(studyHelper.getPermval2());
-        criterion4.setValueCollection(permissableValues2);
+        Collection<AbstractPermissibleValue> permissibleValues2 = new HashSet<AbstractPermissibleValue>();
+        permissibleValues2.add(studyHelper.getPermval2());
+        criterion4.setValueCollection(permissibleValues2);
         criterion4.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         criterion4.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples4 = dao.findMatchingSamples(criterion4, study);

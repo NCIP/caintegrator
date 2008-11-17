@@ -90,10 +90,10 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -125,8 +125,8 @@ public class StudyHelper {
     private AnnotationDefinition sampleAnnotationDefinition;
     private AnnotationDefinition imageSeriesAnnotationDefinition;
     private AnnotationDefinition subjectAnnotationDefinition;
-    private NumericPermissableValue permval1;
-    private NumericPermissableValue permval2;
+    private NumericPermissibleValue permval1;
+    private NumericPermissibleValue permval2;
     private Timepoint defaultTimepoint;
     
     @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
@@ -208,12 +208,12 @@ public class StudyHelper {
         NumericAnnotationValue subjnumval4 = new NumericAnnotationValue();
         NumericAnnotationValue subjnumval5 = new NumericAnnotationValue();
         
-        permval1 = new NumericPermissableValue();
-        permval2 = new NumericPermissableValue();
+        permval1 = new NumericPermissibleValue();
+        permval2 = new NumericPermissibleValue();
         
-        Collection<AbstractPermissableValue> permissableValueCollection = new HashSet<AbstractPermissableValue>();
-        permissableValueCollection.add(permval1);
-        permissableValueCollection.add(permval2);
+        Collection<AbstractPermissibleValue> permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
+        permissibleValueCollection.add(permval1);
+        permissibleValueCollection.add(permval2);
 
 
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
@@ -306,8 +306,8 @@ public class StudyHelper {
         /**
          * Add the 5 SampleAcquisitions
          */
-        // Add permissable values.
-        sampleAnnotationDefinition.setPermissableValueCollection(permissableValueCollection);
+        // Add permissible values.
+        sampleAnnotationDefinition.setPermissibleValueCollection(permissibleValueCollection);
         permval1.setLowValue(10.0);
         permval1.setHighValue(12.0);
         
@@ -547,7 +547,7 @@ public class StudyHelper {
     public CompoundCriterion createCompoundCriterion3() {
         // Sample criterion (will return 3 Subjects: #1, #2, #3)
         SelectedValueCriterion criterion = new SelectedValueCriterion();
-        criterion.setValueCollection(new HashSet<AbstractPermissableValue>());
+        criterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
         criterion.getValueCollection().add(permval1);
         
         criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
@@ -602,16 +602,16 @@ public class StudyHelper {
     public void setSubjectAnnotationDefinition(AnnotationDefinition subjectAnnotationDefinition) {
         this.subjectAnnotationDefinition = subjectAnnotationDefinition;
     }
-    public NumericPermissableValue getPermval1() {
+    public NumericPermissibleValue getPermval1() {
         return permval1;
     }
-    public void setPermval1(NumericPermissableValue permval1) {
+    public void setPermval1(NumericPermissibleValue permval1) {
         this.permval1 = permval1;
     }
-    public NumericPermissableValue getPermval2() {
+    public NumericPermissibleValue getPermval2() {
         return permval2;
     }
-    public void setPermval2(NumericPermissableValue permval2) {
+    public void setPermval2(NumericPermissibleValue permval2) {
         this.permval2 = permval2;
     }
 

@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Collections;
@@ -100,7 +102,7 @@ public class CaDSRFacadeStub implements CaDSRFacade {
         retrieveValueDomainForDataElementCalled = false;
     }
 
-    public List<DataElement> retreiveCandidateDataElements(List<String> keywords) {
+    public List<CommonDataElement> retreiveCandidateDataElements(List<String> keywords) {
         retreiveCandidateDataElementsCalled = true;
         return Collections.emptyList();
     }

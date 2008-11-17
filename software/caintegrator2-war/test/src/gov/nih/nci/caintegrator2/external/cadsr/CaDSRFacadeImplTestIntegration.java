@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Arrays;
@@ -114,10 +115,10 @@ public class CaDSRFacadeImplTestIntegration {
 
     @Test
     public void testRetreiveCandidateDataElements() throws ConnectionException {
-        List<DataElement> dataElements = 
+        List<CommonDataElement> dataElements = 
             caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
         assertNotNull(dataElements);        
-//        validDataElementPublicId = dataElements.get(0).getPublicId();
+//        validDataElementPublicId = dataElements.get(0).getPublicID();
     }
     
 //    @Test

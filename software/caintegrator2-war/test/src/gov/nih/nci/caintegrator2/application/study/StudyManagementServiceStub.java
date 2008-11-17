@@ -87,9 +87,9 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.cadsr.DataElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -188,12 +188,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
-    public List<DataElement> getMatchingDataElements(List<String> keywords) {
+    public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
         getMatchingDataElementsCalled = true;
         return Collections.emptyList();
     }
 
-    public void setDataElement(FileColumn fileColumn, DataElement dataElement, Study study, EntityTypeEnum entityType) {
+    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType) {
         setDataElementCalled = true;
     }
 
