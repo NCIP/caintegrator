@@ -87,10 +87,12 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See execute() method.
 public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
@@ -99,6 +101,7 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Exception catching from caArrayFacade
     public String execute() {
         if (getGenomicSource().getId() == null) {
             try {
@@ -107,6 +110,9 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
                 addActionError("The configured server couldn't reached. Please check the configuration settings.");
                 return INPUT;
             } catch (ExperimentNotFoundException e) {
+                addActionError(e.getMessage());
+                return INPUT;
+            } catch (NoSamplesForExperimentException e) {
                 addActionError(e.getMessage());
                 return INPUT;
             }
