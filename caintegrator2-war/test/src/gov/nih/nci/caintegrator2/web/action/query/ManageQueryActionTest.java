@@ -262,6 +262,13 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
+        //test - updating operator 
+        manageQueryAction.setSelectedAction("updateOperators");
+        manageQueryAction.setRowNumber("0");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        
         // test removal of invalid row still returns success (adds error message though)
         manageQueryAction.setRowNumber("10");
         manageQueryAction.prepare();

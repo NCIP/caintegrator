@@ -95,22 +95,67 @@ pageEncoding="ISO-8859-1" %>
  
                     <s:if test="!manageQueryHelper.queryCriteriaRowList.isEmpty()">
                         <s:iterator value="manageQueryHelper.queryCriteriaRowList" status="itStatus" id="currentRow">
-                            <s:set name="rowToDelete" id="rowToDelete" value="#itStatus.count - 1"/>
+                            <s:set name="listRow" id="listRow" value="#itStatus.count - 1"/>
                             <tr>
                             <td class="label_inline">
                             <s:property value="#currentRow.rowLabel"/>
                             </td>
                             <s:if test="!rowType.value.equals('geneExpression')">
-                                <td class="value_inline"><s:select name="selectedAnnotations" list="annotationSelections.annotationDefinitions" listValue="displayName" listKey="displayName" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                                <td class="value_inline">
+                                    <s:select 
+                                        name="selectedAnnotations" 
+                                        headerKey ="1"
+                                        headerValue = "-- Please Select --"
+                                        list="annotationSelections.annotationDefinitions" 
+                                        listValue="displayName" 
+                                        listKey="displayName" 
+                                        value="#currentRow.annotationSelection" 
+                                        label="Criterion"
+                                        onchange="document.manageQueryForm.selectedAction.value = 'updateOperators';document.manageQueryForm.rowNumber.value = %{listRow};document.manageQueryForm.submit();" 
+                                        theme="simple"/>
+                                </td>
+                                <td class="value_inline2">
+                                    <s:select 
+                                        name="selectedOperators"
+                                        headerKey ="1"
+                                        headerValue = "First select Annotation" 
+                                        list="annotationSelections.currentAnnotationOperatorSelections" 
+                                        value="#currentRow.annotationOperatorSelection" 
+                                        theme="simple"/>
+                                </td>
                             </s:if>
                             <s:else>
-                                <td class="value_inline"><s:select name="selectedAnnotations" list="annotationSelections.genomicAnnotationDefinitions" listValue="value" listKey="value" value="#currentRow.annotationSelection" label="Criterion" theme="simple"/></td>
+                                <td class="value_inline">
+                                    <s:select 
+                                        name="selectedAnnotations" 
+                                        headerKey ="1"
+                                        headerValue = "-- Please Select --"
+                                        list="annotationSelections.genomicAnnotationDefinitions" 
+                                        listValue="value" 
+                                        listKey="value" 
+                                        value="#currentRow.annotationSelection" 
+                                        label="Criterion" 
+                                        theme="simple"/>
+                                </td>
+                                <td class="value_inline2">
+                                    <s:select 
+                                        name="selectedOperators"
+                                        headerKey ="1"
+                                        headerValue = "-- Please Select --" 
+                                        list="{'equals'}" 
+                                        value="#currentRow.annotationOperatorSelection" 
+                                        theme="simple"/>
+                                </td>
                             </s:else>
-                            
-                            <td class="value_inline2"><s:select name="selectedOperators" list="annotationSelections.currentAnnotationOperatorSelections" value="#currentRow.annotationOperatorSelection" theme="simple"/></td>
-                            <td class="value_inline"><s:textfield name="selectedValues" value="%{annotationValue}" size="30" theme="simple"/></td>
+                                                        
+                            <td class="value_inline">
+                                <s:textfield name="selectedValues" 
+                                    value="%{annotationValue}" 
+                                    size="30" 
+                                    theme="simple"/>
+                            </td>
                             <td class="action_inline">
-                            <a href="#" class="remove" onclick="document.manageQueryForm.selectedAction.value = 'remove'; document.manageQueryForm.rowNumber.value = ${rowToDelete};document.manageQueryForm.submit();"><span class="remove">Remove</span></a>
+                            <a href="#" class="remove" onclick="document.manageQueryForm.selectedAction.value = 'remove'; document.manageQueryForm.rowNumber.value = ${listRow};document.manageQueryForm.submit();"><span class="remove">Remove</span></a>
                             </td>
                             </tr>
                         </s:iterator>
