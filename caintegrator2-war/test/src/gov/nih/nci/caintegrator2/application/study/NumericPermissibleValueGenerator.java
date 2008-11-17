@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,151 +83,40 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.cadsr;
+package gov.nih.nci.caintegrator2.application.study;
 
-/**
- * Data Element object that is converted from caDSR objects.
- */
-public class DataElement {
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 
-    private static final String CDE_URL = "http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser";
+
+public final class NumericPermissibleValueGenerator extends AbstractTestDataGenerator<NumericPermissibleValue> {
+
+    public static final NumericPermissibleValueGenerator INSTANCE = new NumericPermissibleValueGenerator();
     
-    private Long publicId;
-    private String longName;
-    private String definition;
-    private String type;
-    private String preferredName;
-    private String version;
-    private String contextName;
-    private String registrationStatus;
-    private String workflowStatus;
-    private ValueDomain valueDomain;
-    /**
-     * @return the publicId
-     */
-    public Long getPublicId() {
-        return publicId;
+    private NumericPermissibleValueGenerator() { 
+        super();
     }
-    /**
-     * @param publicId the publicId to set
-     */
-    public void setPublicId(Long publicId) {
-        this.publicId = publicId;
+    @Override
+    public void compareFields(NumericPermissibleValue original, NumericPermissibleValue retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getHighValue(), retrieved.getHighValue());
+        assertEquals(original.getIsRangeValue(), retrieved.getIsRangeValue());
+        assertEquals(original.getLowValue(), retrieved.getLowValue());
+        assertEquals(original.getNumericValue(), retrieved.getNumericValue());
     }
-    /**
-     * @return the longName
-     */
-    public String getLongName() {
-        return longName;
+
+    @Override
+    public NumericPermissibleValue createPersistentObject() {
+        return new NumericPermissibleValue();
     }
-    /**
-     * @param longName the longName to set
-     */
-    public void setLongName(String longName) {
-        this.longName = longName;
+
+    @Override
+    public void setValues(NumericPermissibleValue numericPermissibleValue) {
+        numericPermissibleValue.setHighValue(Double.valueOf(getUniqueInt()));
+        numericPermissibleValue.setIsRangeValue(getUniqueInt());
+        numericPermissibleValue.setLowValue(Double.valueOf(getUniqueInt()));
+        numericPermissibleValue.setNumericValue(Double.valueOf(getUniqueInt()));
+        
     }
-    /**
-     * @return the definition
-     */
-    public String getDefinition() {
-        return definition;
-    }
-    /**
-     * @param definition the definition to set
-     */
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-    /**
-     * @return the valueDomain
-     */
-    public ValueDomain getValueDomain() {
-        return valueDomain;
-    }
-    /**
-     * @param valueDomain the valueDomain to set
-     */
-    public void setValueDomain(ValueDomain valueDomain) {
-        this.valueDomain = valueDomain;
-    }
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-    /**
-     * @return the preferredName
-     */
-    public String getPreferredName() {
-        return preferredName;
-    }
-    /**
-     * @param preferredName the preferredName to set
-     */
-    public void setPreferredName(String preferredName) {
-        this.preferredName = preferredName;
-    }
-    /**
-     * @return the version
-     */
-    public String getVersion() {
-        return version;
-    }
-    /**
-     * @param version the version to set
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
-    /**
-     * @return the contextName
-     */
-    public String getContextName() {
-        return contextName;
-    }
-    /**
-     * @param contextName the contextName to set
-     */
-    public void setContextName(String contextName) {
-        this.contextName = contextName;
-    }
-    /**
-     * @return the registrationStatus
-     */
-    public String getRegistrationStatus() {
-        return registrationStatus;
-    }
-    /**
-     * @param registrationStatus the registrationStatus to set
-     */
-    public void setRegistrationStatus(String registrationStatus) {
-        this.registrationStatus = registrationStatus;
-    }
-    /**
-     * @return the workflowStatus
-     */
-    public String getWorkflowStatus() {
-        return workflowStatus;
-    }
-    /**
-     * @param workflowStatus the workflowStatus to set
-     */
-    public void setWorkflowStatus(String workflowStatus) {
-        this.workflowStatus = workflowStatus;
-    }
-    
-    /** 
-     * @return the cdeUrl.
-     */
-    public String getCdeUrl() {
-        return CDE_URL;
-    }
-    
+
 }

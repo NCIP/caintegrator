@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.List;
@@ -93,13 +95,18 @@ import java.util.List;
  * This is the facade that interfaces with caDSR to access Common Data Elements.
  */
 public interface CaDSRFacade {
+    
+    /**
+     * URL for caDSR CDE from freestyle. 
+     */
+    String CDE_URL = "http://freestyle-qa.nci.nih.gov/freestyle/do/cdebrowser";
 
     /**
      * To retrieve all candidate Data Elements given keywords.
      * @param keywords List of keywords to search caDSR for.
      * @return - DataElements that freestyle search found.
      */
-    List<DataElement> retreiveCandidateDataElements(List<String> keywords);
+    List<CommonDataElement> retreiveCandidateDataElements(List<String> keywords);
     
     /**
      * Retrieves the ValueDomain object from a data element ID.  Currently this function is disabled and

@@ -87,14 +87,14 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.application.study.DatePermissableValueGenerator;
-import gov.nih.nci.caintegrator2.application.study.NumericPermissableValueGenerator;
-import gov.nih.nci.caintegrator2.application.study.StringPermissableValueGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.application.study.DatePermissibleValueGenerator;
+import gov.nih.nci.caintegrator2.application.study.NumericPermissibleValueGenerator;
+import gov.nih.nci.caintegrator2.application.study.StringPermissibleValueGenerator;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissableValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.HashSet;
@@ -125,14 +125,14 @@ public final class SelectedValueCriterionGenerator extends AbstractTestDataGener
     public void setValues(SelectedValueCriterion selectedValueCriterion) {
         selectedValueCriterion.setEntityType("Subject");
         selectedValueCriterion.setAnnotationDefinition(new AnnotationDefinition());
-        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissableValue>());
+        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
 
-        NumericPermissableValue numVal = NumericPermissableValueGenerator.INSTANCE.createPersistentObject();
-        NumericPermissableValueGenerator.INSTANCE.setValues(numVal);
-        StringPermissableValue stringVal = StringPermissableValueGenerator.INSTANCE.createPersistentObject();
-        StringPermissableValueGenerator.INSTANCE.setValues(stringVal);
-        DatePermissableValue dateVal = DatePermissableValueGenerator.INSTANCE.createPersistentObject();
-        DatePermissableValueGenerator.INSTANCE.setValues(dateVal);
+        NumericPermissibleValue numVal = NumericPermissibleValueGenerator.INSTANCE.createPersistentObject();
+        NumericPermissibleValueGenerator.INSTANCE.setValues(numVal);
+        StringPermissibleValue stringVal = StringPermissibleValueGenerator.INSTANCE.createPersistentObject();
+        StringPermissibleValueGenerator.INSTANCE.setValues(stringVal);
+        DatePermissibleValue dateVal = DatePermissibleValueGenerator.INSTANCE.createPersistentObject();
+        DatePermissibleValueGenerator.INSTANCE.setValues(dateVal);
         
         selectedValueCriterion.getValueCollection().add(numVal);
         selectedValueCriterion.getValueCollection().add(stringVal);

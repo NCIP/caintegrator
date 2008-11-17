@@ -29,10 +29,10 @@
             <joined-subclass name="SelectedValueCriterion" table="SELECTED_VALUE_CRITERION" lazy="false">
                 <key column="ID" />
                 <!-- Associations mapping for the SelectedValueCriterion class -->
-                <set name="valueCollection" table="SELECTED_VALUE_CRITERIA_PERMISSABLE_VALUES" lazy="true" cascade="save-update" >
+                <set name="valueCollection" table="SELECTED_VALUE_CRITERIA_PERMISSIBLE_VALUES" lazy="true" cascade="save-update" >
                     <cache usage="read-write" />
                     <key column="SELECTED_VALUE_CRITERION_ID" />
-                    <many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue" column="ABSTRACT_PERMISSABLE_VALUE_ID" />
+                    <many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue" column="ABSTRACT_PERMISSIBLE_VALUE_ID" />
                 </set>
             </joined-subclass>
         </joined-subclass>

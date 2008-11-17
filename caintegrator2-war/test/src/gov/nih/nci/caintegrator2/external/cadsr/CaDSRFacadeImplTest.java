@@ -89,6 +89,8 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Arrays;
@@ -114,57 +116,19 @@ public class CaDSRFacadeImplTest {
 
     @Test
     public void testRetreiveCandidateDataElements() {
-        List<DataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
-        DataElement de = dataElements.get(0);
+        List<CommonDataElement> dataElements = caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
+        CommonDataElement de = dataElements.get(0);
         assertNotNull(de);
         assertEquals("test", de.getLongName());
         assertEquals("congestive heart failure", de.getDefinition());
-        assertEquals(Long.valueOf(2), de.getPublicId());
+        assertEquals(Long.valueOf(2), de.getPublicID());
     }
     
     @Test
     public void testRetrieveValueDomainForDataElement() throws ConnectionException {
         ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1));
-        assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDatatype());
+        assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDataType());
         assertEquals(Long.valueOf(2),valueDomain.getPublicID());
-    }
-    
-    @Test
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
-    public void testGetAndSet() {
-        DataElement dataElement = new DataElement();
-        PermissableValue permissableValue = new PermissableValue();
-        ValueDomain valueDomain = new ValueDomain();
-        String testString = "test";
-        permissableValue.setConceptCode(testString);
-        assertEquals(testString, permissableValue.getConceptCode());
-
-        permissableValue.setDescription(testString);
-        assertEquals(testString, permissableValue.getDescription());
-        
-        permissableValue.setValue(testString);
-        assertEquals(testString, permissableValue.getValue());
-        
-        permissableValue.setValueMeaning(testString);
-        assertEquals(testString, permissableValue.getValueMeaning());
-        
-        valueDomain.setDatatype(testString);
-        assertEquals(testString, valueDomain.getDatatype());
-        
-        valueDomain.setLongName(testString);
-        assertEquals(testString, valueDomain.getLongName());
-        
-        valueDomain.setPermissableValues(permissableValue);
-        assertEquals(permissableValue, valueDomain.getPermissableValues());
-        
-        valueDomain.setPublicID(Long.valueOf(123));
-        assertEquals(Long.valueOf(123), valueDomain.getPublicID());
-        
-        valueDomain.setValueDomainType(ValueDomainType.ENUMERATED);
-        assertEquals(ValueDomainType.ENUMERATED, valueDomain.getValueDomainType());
-        
-        dataElement.setValueDomain(valueDomain);
-        assertEquals(valueDomain, dataElement.getValueDomain());       
     }
 
 }

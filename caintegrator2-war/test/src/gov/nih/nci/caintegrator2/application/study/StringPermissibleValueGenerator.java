@@ -86,32 +86,31 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissableValue;
-
-import java.util.Date;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 
 
-public final class DatePermissableValueGenerator extends AbstractTestDataGenerator<DatePermissableValue> {
+public final class StringPermissibleValueGenerator extends AbstractTestDataGenerator<StringPermissibleValue> {
 
-    public static final DatePermissableValueGenerator INSTANCE = new DatePermissableValueGenerator();
+    public static final StringPermissibleValueGenerator INSTANCE = new StringPermissibleValueGenerator();
     
-    private DatePermissableValueGenerator() { 
+    private StringPermissibleValueGenerator() { 
         super();
     }
     @Override
-    public void compareFields(DatePermissableValue original, DatePermissableValue retrieved) {
-       assertEquals(original.getId(), retrieved.getId());
-       assertEquals(original.getDateValue(), retrieved.getDateValue());
+    public void compareFields(StringPermissibleValue original, StringPermissibleValue retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getStringValue(), retrieved.getStringValue());
     }
 
     @Override
-    public DatePermissableValue createPersistentObject() {
-        return new DatePermissableValue();
+    public StringPermissibleValue createPersistentObject() {
+        return new StringPermissibleValue();
     }
 
     @Override
-    public void setValues(DatePermissableValue datePermissableValue) {
-        datePermissableValue.setDateValue(new Date());
+    public void setValues(StringPermissibleValue stringPermissibleValue) {
+        
+        stringPermissibleValue.setStringValue(getUniqueString());
         
     }
 

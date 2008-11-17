@@ -18,10 +18,10 @@
 			<key column="ANNOTATION_DEFINITION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>
 		</set>
-		<set name="permissableValueCollection" lazy="true" cascade="save-update" >
+		<set name="permissibleValueCollection" lazy="true" cascade="save-update" >
 			<cache usage="read-write" />
 			<key column="ANNOTATION_DEFINITION_ID" />
-			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue"/>
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue"/>
 		</set>
 		<many-to-one name="cde" class="gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement" column="COMMON_DATA_ELEMENT_ID" unique="true" lazy="proxy" cascade="save-update"/>
 	</class>

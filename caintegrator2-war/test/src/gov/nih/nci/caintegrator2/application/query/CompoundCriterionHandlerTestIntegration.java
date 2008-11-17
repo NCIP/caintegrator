@@ -161,7 +161,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         Set<ResultRow> mostComplexRows = compoundCriterionHandler3.getMatches(dao, study, entityTypesInQuery);
         assertEquals(14, mostComplexRows.size());
         
-        // Test out the selected value criterion on the permissable value's for Samples.
+        // Test out the selected value criterion on the permissible value's for Samples.
         entityTypesInQuery = new HashSet<EntityTypeEnum>();
         entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
         CompoundCriterion compoundCriterion4 = studyHelper.createCompoundCriterion3();

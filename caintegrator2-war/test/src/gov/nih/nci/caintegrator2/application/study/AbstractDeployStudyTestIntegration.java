@@ -95,9 +95,9 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissableValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
@@ -388,15 +388,15 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             definition.setKeywords(definition.getDisplayName());
             definition.setType(AnnotationTypeEnum.getByValue(fields[1]).getValue());
             if (!StringUtils.isBlank(fields[2])) {
-                Collection<AbstractPermissableValue> permissableValues = new HashSet<AbstractPermissableValue>();
+                Collection<AbstractPermissibleValue> permissibleValues = new HashSet<AbstractPermissibleValue>();
                 String[] values = fields[2].split(";");
                 for (String value : values) {
-                    StringPermissableValue permissableValue = new StringPermissableValue();
-                    permissableValue.setStringValue(value);
-                    permissableValues.add(permissableValue);
-                    dao.save(permissableValue);
+                    StringPermissibleValue permissibleValue = new StringPermissibleValue();
+                    permissibleValue.setStringValue(value);
+                    permissibleValues.add(permissibleValue);
+                    dao.save(permissibleValue);
                 }
-                definition.setPermissableValueCollection(permissableValues);
+                definition.setPermissibleValueCollection(permissibleValues);
             }
             dao.save(definition);
         }
