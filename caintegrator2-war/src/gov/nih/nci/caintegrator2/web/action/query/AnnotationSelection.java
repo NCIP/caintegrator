@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 import gov.nih.nci.caintegrator2.application.query.GenomicAnnotationEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -113,7 +114,8 @@ public class AnnotationSelection {
     // Maps numeric operator display to corresponding NumericComparisonOperatorEnum
     private Map<String, NumericComparisonOperatorEnum> numericOptionToEnumMap 
                     = new HashMap<String, NumericComparisonOperatorEnum>();
-
+    
+    
     /**
      * Default constructor. 
      */
@@ -135,37 +137,12 @@ public class AnnotationSelection {
         this.annotationSelections = annotationSelections;
     }
     
+ 
     /**
-     * @return List of currently-selected annotation type-based operator selections
-     */
-    public List<String> getCurrentAnnotationOperatorSelections() {
-        if (currentAnnotationOperatorSelections == null || currentAnnotationOperatorSelections.isEmpty()) {
-            // Default to combined string and numeric operators
-            currentAnnotationOperatorSelections = stringAnnotationDisplayOperatorList;
-            currentAnnotationOperatorSelections.addAll(numericAnnotationDisplayOperatorList);
-        }
-        
-        return this.currentAnnotationOperatorSelections;
-    }
-    
-    /**
-     * @param currentAnnotationOperatorSelections the List to set
-     */
-    public void setCurrentAnnotationOperatorSelections(List<String> currentAnnotationOperatorSelections) {
-        this.currentAnnotationOperatorSelections = currentAnnotationOperatorSelections;
-    }
-    
-    /**
-     * @param dataType Sets and returns currentAnnotationOperatorSelections based on the type of data.
+     * 
      * @return List the set of operators based on dataType
      */
-    public List<String> getCurrentAnnotationOperatorSelections(String dataType) {
-        if ("string".equals(dataType)) {
-            this.currentAnnotationOperatorSelections = this.getStringAnnotationDisplayOperatorList();
-        } else if ("numeric".equals(dataType)) {
-            this.currentAnnotationOperatorSelections = this.getNumericAnnotationDisplayOperatorList();
-        }
-        
+    public List<String> getCurrentAnnotationOperatorSelections() {
         return this.currentAnnotationOperatorSelections;
     }
     
@@ -173,11 +150,12 @@ public class AnnotationSelection {
      * @param dataType Sets currentAnnotationOperatorSelections based on the type of data.
      */
     public void setCurrentAnnotationOperatorSelections(String dataType) {
-        if ("string".equals(dataType)) {
+        if (AnnotationTypeEnum.STRING.getValue().equalsIgnoreCase(dataType)) {
             this.currentAnnotationOperatorSelections = this.getStringAnnotationDisplayOperatorList();
-        } else if ("numeric".equals(dataType)) {
+        } else if (AnnotationTypeEnum.NUMERIC.getValue().equalsIgnoreCase(dataType)) {
             this.currentAnnotationOperatorSelections = this.getNumericAnnotationDisplayOperatorList();
         }
+       
     }
     
     /**
@@ -248,6 +226,7 @@ public class AnnotationSelection {
      */
     public void setAnnotationDefinitions(Collection<AnnotationDefinition> annotationDefinitions) {
         this.annotationDefinitions = annotationDefinitions;
+       
     }
 
     @SuppressWarnings({ "PMD.ExcessiveMethodLength" }) // Long initializer function
@@ -282,6 +261,7 @@ public class AnnotationSelection {
         stringAnnotationDisplayOperatorList.add("ends with");
         stringAnnotationDisplayOperatorList.add("contains");
         ((ArrayList<String>) stringAnnotationDisplayOperatorList).trimToSize();
+       
         
         // Populate the numeric display operators
         numericAnnotationDisplayOperatorList = new ArrayList<String>(10);
@@ -292,6 +272,7 @@ public class AnnotationSelection {
         numericAnnotationDisplayOperatorList.add("<=");
         numericAnnotationDisplayOperatorList.add(">=");
         ((ArrayList<String>) numericAnnotationDisplayOperatorList).trimToSize();
+       
         
     }
 
@@ -309,4 +290,5 @@ public class AnnotationSelection {
         this.genomicAnnotationDefinitions = genomicAnnotationDefinitions;
     }
 
+           
 }

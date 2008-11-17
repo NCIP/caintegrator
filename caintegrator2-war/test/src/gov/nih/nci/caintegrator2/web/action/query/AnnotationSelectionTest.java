@@ -115,7 +115,6 @@ public class AnnotationSelectionTest {
     public void setUp() {
         
         clinicalAnnotationSelections.setAnnotationSelections(dummyStringList);
-        clinicalAnnotationSelections.setCurrentAnnotationOperatorSelections(dummyStringList);
         clinicalAnnotationSelections.setCurrentAnnotationOperatorSelections("string");
         clinicalAnnotationSelections.setNumericAnnotationDisplayOperatorList(dummyStringList);
         clinicalAnnotationSelections.setNumericOptionToEnumMap(dummyNumericMap);
@@ -130,7 +129,6 @@ public class AnnotationSelectionTest {
         
         assertNotNull(clinicalAnnotationSelections.getAnnotationSelections());
         assertNotNull(clinicalAnnotationSelections.getCurrentAnnotationOperatorSelections());
-        assertNotNull(clinicalAnnotationSelections.getCurrentAnnotationOperatorSelections("string"));
         assertNotNull(clinicalAnnotationSelections.getNumericAnnotationDisplayOperatorList());
         assertNotNull(clinicalAnnotationSelections.getNumericOptionToEnumMap());
         assertNotNull(clinicalAnnotationSelections.getStringAnnotationDisplayOperatorList());

@@ -102,7 +102,8 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
-@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // see execute method
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // see execute method
+
 public class ManageQueryAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
@@ -225,7 +226,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking action type.
+    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // Checking action type.
     public String execute()  {
         
         // declarations
@@ -249,6 +250,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         } else if ("updateResultsPerPage".equals(selectedAction)) {
          // Does nothing right now, eventually might actually persist this value to db.
             returnValue = SUCCESS;
+        } else if ("updateOperators".equals(selectedAction)) {
+            returnValue = updateOperatorsForAnnotationSelection();
         } else {
             returnValue = ERROR; 
         }     
@@ -292,6 +295,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             }
         } catch (NumberFormatException e) {
             addActionError("rowNumber is not a valid number.");
+        }
+        return SUCCESS;
+    }
+    
+    private String updateOperatorsForAnnotationSelection() {
+        try {
+             if (this.selectedAnnotations != null) {
+                  manageQueryHelper.updateAnnotationDefinition(selectedAnnotations, Integer.valueOf(rowNumber));
+                }
+        } catch (NumberFormatException e) {
+            addActionError("rowNumber is not a valid number.");  
         }
         return SUCCESS;
     }
