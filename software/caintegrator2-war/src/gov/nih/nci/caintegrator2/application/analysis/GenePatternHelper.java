@@ -137,23 +137,33 @@ class GenePatternHelper {
         return methods;
     }
 
+    /**
+     * Checks a task to ensure that all input file parameters are either GCT files or CLS files preceded by
+     * an associated GCT file.
+     * 
+     * @param task the task to check
+     * @return true if supported, false otherwise.
+     */
     private boolean isSupportedTask(TaskInfo task) {
-        int gctParameterCount = 0;
-        int clsParameterCount = 0;
+        boolean precededByGct = false;
+        boolean hasGct = false;
         for (ParameterInfo parameterInfo : task.getParameterInfoArray()) {
             if (isInputFileParameter(parameterInfo)) {
                 if (getFileFormats(parameterInfo).contains(GENE_CLUSTER_TEXT_EXTENSION)) {
-                    gctParameterCount++;
+                    precededByGct = true;
+                    hasGct = true;
                     continue;
-                } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION)) {
-                    clsParameterCount++;
+                } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION) && !precededByGct) {
+                    return false;
+                } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION) && precededByGct) {
+                    precededByGct = false;
                     continue;
                 } else {
                     return false;
                 }
             }
         }
-        return gctParameterCount == 1 && clsParameterCount <= 1;
+        return hasGct;
     }
     
     private Set<String> getFileFormats(ParameterInfo parameterInfo) {
