@@ -176,6 +176,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         Map<Sample, String> sampleToClassificationNameMap = getSampleToClassificationNameMap(result);
         List<Sample> samples = getSamplesToClassify();
         SampleClassificationParameterValue parameterValue = (SampleClassificationParameterValue) getParameterValue();
+        parameterValue.clear();
         for (Sample sample : samples) {
             parameterValue.classify(sample, sampleToClassificationNameMap.get(sample));
         }

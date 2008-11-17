@@ -162,6 +162,18 @@ public class SampleClassificationParameterValue extends AbstractParameterValue {
     }
 
     /**
+     * Clear all existing classifications, in case the parameter value is being
+     * reused.
+     */
+    public void clear() {
+        classifiedSamples.clear();
+        classificationNameMap.clear();
+        classifications.clear();
+        sampleClassificationMap.clear();
+        nextIndex = 0;
+    }
+
+    /**
      * A single category in the classifications.
      */
     final class SampleClassification {
