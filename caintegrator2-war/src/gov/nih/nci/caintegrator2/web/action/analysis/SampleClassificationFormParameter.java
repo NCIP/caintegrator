@@ -92,8 +92,10 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -103,15 +105,16 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -208,7 +211,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         Map<Sample, String> classificationMap = new HashMap<Sample, String>();
         for (ResultRow row : result.getRowCollection()) {
             ResultValue resultValue = row.getValueCollection().iterator().next();
-            String classificationName = ((StringAnnotationValue) resultValue.getValue()).getStringValue();
+            String classificationName = getStringValue(resultValue.getValue());
             if (StringUtils.isBlank(classificationName)) {
                 classificationName = "none";
             }
@@ -217,6 +220,19 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
             }
         }
         return classificationMap;
+    }
+
+    private String getStringValue(AbstractAnnotationValue value) {
+        if (value instanceof DateAnnotationValue) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+            return format.format(((DateAnnotationValue) value).getDateValue());
+        } else if (value instanceof NumericAnnotationValue) {
+            return ((NumericAnnotationValue) value).getNumericValue().toString();
+        } else if (value instanceof StringAnnotationValue) {
+            return ((StringAnnotationValue) value).getStringValue();
+        } else {
+            return "";
+        }
     }
 
     private Query createClassificationQuery(StudySubscription studySubscription) {
@@ -236,12 +252,6 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         sampleColumn.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         sampleColumn.setColumnIndex(1);
         query.getColumnCollection().add(sampleColumn);
-        StringComparisonCriterion criterion = new StringComparisonCriterion();
-        criterion.setAnnotationDefinition(classificationAnnotation);
-        criterion.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
-        criterion.setStringValue("");
-        criterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        query.getCompoundCriterion().getCriterionCollection().add(criterion);
         query.setSubscription(studySubscription);
         return query;
     }
