@@ -174,6 +174,7 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
         getAnalysisForm().addClassificationAnnotations(subjectClassifications, EntityTypeEnum.SUBJECT);
         getAnalysisForm().addClassificationAnnotations(imageSeriesClassifications, EntityTypeEnum.IMAGESERIES);
         getAnalysisForm().addClassificationAnnotations(sampleClassifications, EntityTypeEnum.SAMPLE);
+        setAnalysisMethodName(getAnalysisForm().getAnalysisMethodName());
         return SUCCESS;
     }
 
