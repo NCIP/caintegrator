@@ -112,7 +112,8 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * Helper class for ManageQueryAction.
  */
-@SuppressWarnings("PMD.ExcessiveClassLength") // This needs to be refactored to use a Form object
+@SuppressWarnings({ "PMD.TooManyFields", "PMD.ExcessiveClassLength" }) 
+// This needs to be refactored to use a Form object
 final class ManageQueryHelper {
     /**
      * String to use to store and retrieve this object from session.
@@ -134,6 +135,8 @@ final class ManageQueryHelper {
     private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
     private List<ResultColumn> columnList = new ArrayList<ResultColumn>();
     private List<Integer> columnIndexOptions = new ArrayList<Integer>();
+    
+    private final Map<String, String> annotationDefinitionToDataTypeMap = new HashMap<String, String>();
     /**
      * Default constructor.
      */
@@ -217,12 +220,25 @@ final class ManageQueryHelper {
     public boolean removeQueryAnnotationCriteria(int indexToRemove) {
         try {
             getQueryCriteriaRowList().remove(indexToRemove);
+            
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
         return true;
     }
-      
+     
+    public void updateAnnotationDefinition(String[] selectedAnnotations, int rowNumber) {
+        for (String selectedAnnotation : selectedAnnotations) {
+            if (this.annotationDefinitionToDataTypeMap.containsKey(selectedAnnotation)) {
+                String dataType = annotationDefinitionToDataTypeMap.get(selectedAnnotation);
+                
+                    getQueryCriteriaRowList().get(rowNumber).getAnnotationSelections()
+                                        .setCurrentAnnotationOperatorSelections(dataType);
+                                          
+            }
+           
+        } 
+    }
     /**
      * @return the clinicalAnnotationDefinitions
      */
@@ -304,6 +320,7 @@ final class ManageQueryHelper {
           //Adding the annotations in the map which is used later for finding the user selected id and its value
             for (AnnotationDefinition definition : clinicalAnnotationDefinitions) {
                 allAnnotationDefinitionsMap.put(definition.getId(), definition);
+                annotationDefinitionToDataTypeMap.put(definition.getDisplayName(), definition.getType());
             }  
         }
         
@@ -317,6 +334,7 @@ final class ManageQueryHelper {
             
             for (AnnotationDefinition definition : imageAnnotationDefinitions) {
                 allAnnotationDefinitionsMap.put(definition.getId(), definition);
+                annotationDefinitionToDataTypeMap.put(definition.getDisplayName(), definition.getType());
             }
         }
         
