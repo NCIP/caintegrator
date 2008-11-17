@@ -198,12 +198,18 @@ public class AnalysisServiceTest {
             tasks[1] = new TaskInfo();
             tasks[1].setName("task2");
             tasks[1].setDescription("description2");
-            tasks[1].setParameterInfoArray(new ParameterInfo[1]);
+            tasks[1].setParameterInfoArray(new ParameterInfo[2]);
             tasks[1].getParameterInfoArray()[0] = new ParameterInfo();
             tasks[1].getParameterInfoArray()[0].setName("parameter1");
             tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
             tasks[1].getParameterInfoArray()[0].getAttributes().put("type", "java.lang.String");
             tasks[1].getParameterInfoArray()[0].setChoices(new HashMap());
+            tasks[1].getParameterInfoArray()[1] = new ParameterInfo();
+            tasks[1].getParameterInfoArray()[1].setName("parameter2");
+            tasks[1].getParameterInfoArray()[1].setAttributes(new HashMap<String, String>());
+            tasks[1].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
+            tasks[1].getParameterInfoArray()[1].getAttributes().put("fileFormat", "cls");
+            tasks[1].getParameterInfoArray()[1].setChoices(new HashMap());
             
             tasks[2] = new TaskInfo();
             tasks[2].setName("task3");
