@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -294,7 +295,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void addGenomicSource(StudyConfiguration studyConfiguration,
-            GenomicDataSourceConfiguration genomicSource) throws ConnectionException, ExperimentNotFoundException {
+            GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
         studyConfiguration.getGenomicDataSources().add(genomicSource);

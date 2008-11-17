@@ -85,116 +85,30 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.domain.project.Experiment;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Implementation of the CaArrayFacade subsystem.
+ * Indicates a problem finding samples for a given experiment for caArray.
  */
-public class CaArrayFacadeImpl implements CaArrayFacade {
-    
-    private CaArrayServiceFactory serviceFactory;
-    private CaIntegrator2Dao dao;
+public class NoSamplesForExperimentException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * {@inheritDoc}
+     * Creates a new instance based on an underlying exception.
+     * 
+     * @param message describes the connection problem
+     * @param cause the source exception
      */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
-        CaArraySearchService searchService = getServiceFactory().createSearchService(profile);
-        return getSamples(searchService, experimentIdentifier);
-    }
-
-    private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) 
-    throws ExperimentNotFoundException, NoSamplesForExperimentException {
-        List<Sample> samples = new ArrayList<Sample>();
-        for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
-                : getCaArraySamples(experimentIdentifier, searchService)) {
-            samples.add(translateSample(experimentSample));
-        }
-        if (samples == null || samples.isEmpty()) {
-            throw new NoSamplesForExperimentException("There were no samples found for experiment '" 
-                    + experimentIdentifier + "'");
-        }
-        return samples;
-    }
-
-    private List<gov.nih.nci.caarray.domain.sample.Sample> getCaArraySamples(String experimentIdentifier, 
-            CaArraySearchService searchService) throws ExperimentNotFoundException {
-        Experiment searchExperiment = new Experiment();
-        searchExperiment.setPublicIdentifier(experimentIdentifier);
-        List<Experiment> experiments = searchService.search(searchExperiment);
-        if (experiments.isEmpty()) {
-            throw new ExperimentNotFoundException("Experiment '" + experimentIdentifier + "' could not be found");
-        } else {
-            return getSamples(experiments.get(0), searchService);
-        }
-    }
-
-    private List<gov.nih.nci.caarray.domain.sample.Sample> getSamples(Experiment experiment,
-            CaArraySearchService searchService) {
-        List<gov.nih.nci.caarray.domain.sample.Sample> samples = 
-            new ArrayList<gov.nih.nci.caarray.domain.sample.Sample>(experiment.getSampleCount());
-        for (gov.nih.nci.caarray.domain.sample.Sample sample : experiment.getSamples()) {
-            samples.add(searchService.search(sample).get(0));
-        }
-        return samples;
-    }
-
-    private Sample translateSample(gov.nih.nci.caarray.domain.sample.Sample loadedSample) {
-        Sample sample = new Sample();
-        sample.setName(loadedSample.getName());
-        return sample;
-    }
-
-    /**
-     * @return the serviceFactory
-     */
-    public CaArrayServiceFactory getServiceFactory() {
-        return serviceFactory;
-    }
-
-    /**
-     * @param serviceFactory the serviceFactory to set
-     */
-    public void setServiceFactory(CaArrayServiceFactory serviceFactory) {
-        this.serviceFactory = serviceFactory;
+    public NoSamplesForExperimentException(String message, Throwable cause) {
+        super(message, cause);
     }
     
     /**
-     * {@inheritDoc}
+     * Creates a new instance.
+     * 
+     * @param message describes the problem.
      */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException, DataRetrievalException {
-        CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        DataRetrievalService dataRetrievalService = 
-            getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
-        return new DataRetrievalHelper(genomicSource, dataRetrievalService, searchService, dao).retrieveData();
-    }
-
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+    public NoSamplesForExperimentException(String message) {
+        super(message);
     }
 
 }
