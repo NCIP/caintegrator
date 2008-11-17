@@ -10,6 +10,7 @@
     <!--/Page Help-->           
     
     <h1>Edit Genomic Data Source</h1>
+    <s:actionerror/>
     <s:form action="saveGenomicSource">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="genomicSource.id" />

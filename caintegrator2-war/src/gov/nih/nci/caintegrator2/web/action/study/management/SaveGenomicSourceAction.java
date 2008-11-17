@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
@@ -104,6 +105,9 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
                 getStudyManagementService().addGenomicSource(getStudyConfiguration(), getGenomicSource());
             } catch (ConnectionException e) {
                 addActionError("The configured server couldn't reached. Please check the configuration settings.");
+                return INPUT;
+            } catch (ExperimentNotFoundException e) {
+                addActionError(e.getMessage());
                 return INPUT;
             }
         } else {

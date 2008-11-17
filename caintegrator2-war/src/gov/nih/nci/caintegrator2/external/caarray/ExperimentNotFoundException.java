@@ -85,42 +85,30 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.util.List;
-
 /**
- * Interface to the CaArrayFacade subsystem used to interface with an external caArray 2 server.
+ * Indicates a problem finding the experiment for caArray.
  */
-public interface CaArrayFacade {
+public class ExperimentNotFoundException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Returns all the samples in the experiment indicated by identifier.
+     * Creates a new instance based on an underlying exception.
      * 
-     * @param experimentIdentifier identifies the experiment
-     * @param profile contains connection information for the caArray server
-     * @return the samples in the experiment.
-     * @throws ConnectionException if the subsystem can't connect to the caArray server.
-     * @throws ExperimentNotFoundException if the experiment cannot be found.
+     * @param message describes the connection problem
+     * @param cause the source exception
      */
-    List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException, ExperimentNotFoundException;
+    public ExperimentNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
     
     /**
-     * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
+     * Creates a new instance.
      * 
-     * @param genomicSource retrieve data from this source.
-     * @throws ConnectionException if the connection to the caArray server fails.
-     * @return the data values.
-     * @throws ConnectionException if the subsystem can't connect to the caArray server.
-     * @throws DataRetrievalException if the data couldn't be retrieved from caArray.
+     * @param message describes the problem.
      */
-    ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException, DataRetrievalException;
+    public ExperimentNotFoundException(String message) {
+        super(message);
+    }
 
 }

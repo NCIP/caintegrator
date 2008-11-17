@@ -109,12 +109,21 @@ public class CaArrayFacadeTestIntegration {
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException {
+    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("array.nci.nih.gov");
         profile.setPort(8080);
         List<Sample> samples = caArrayFacade.getSamples("bakal-00023", profile);
         assertFalse(samples.isEmpty());
+    }
+    
+    @Test (expected=ExperimentNotFoundException.class)
+    public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
+        ServerConnectionProfile profile = new ServerConnectionProfile();
+        profile.setHostname("array.nci.nih.gov");
+        profile.setPort(8080);
+        caArrayFacade.getSamples("INVALID EXPERIMENT ID", profile);
+        
     }
 
 }
