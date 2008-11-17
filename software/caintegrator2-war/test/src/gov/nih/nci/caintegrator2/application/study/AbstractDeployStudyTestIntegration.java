@@ -114,6 +114,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -156,7 +157,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         this.service = studyManagementService;
     }
     
-    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException {
+    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException {
         try {
             AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
             authentication.setUsername("manager");
@@ -317,7 +318,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         return null;
     }
 
-    private void loadSamples() throws ConnectionException {
+    private void loadSamples() throws ConnectionException, ExperimentNotFoundException {
         if (getLoadSamples()) {
             logStart();
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();

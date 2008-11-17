@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -110,14 +109,16 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
 
     /**
      * {@inheritDoc}
+     * @throws ExperimentNotFoundException 
      */
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException {
+    throws ConnectionException, ExperimentNotFoundException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(profile);
         return getSamples(searchService, experimentIdentifier);
     }
 
-    private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) {
+    private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) 
+    throws ExperimentNotFoundException {
         List<Sample> samples = new ArrayList<Sample>();
         for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
                 : getCaArraySamples(experimentIdentifier, searchService)) {
@@ -127,12 +128,12 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     }
 
     private List<gov.nih.nci.caarray.domain.sample.Sample> getCaArraySamples(String experimentIdentifier, 
-            CaArraySearchService searchService) {
+            CaArraySearchService searchService) throws ExperimentNotFoundException {
         Experiment searchExperiment = new Experiment();
         searchExperiment.setPublicIdentifier(experimentIdentifier);
         List<Experiment> experiments = searchService.search(searchExperiment);
         if (experiments.isEmpty()) {
-            return Collections.emptyList();
+            throw new ExperimentNotFoundException("Experiment '" + experimentIdentifier + "' could not be found");
         } else {
             return getSamples(experiments.get(0), searchService);
         }

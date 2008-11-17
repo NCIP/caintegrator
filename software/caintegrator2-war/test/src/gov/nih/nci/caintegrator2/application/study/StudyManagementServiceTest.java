@@ -104,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
@@ -146,7 +147,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() throws ConnectionException, DataRetrievalException {
+    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
@@ -197,7 +198,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test 
-    public void testAddGenomicSource() throws ConnectionException {
+    public void testAddGenomicSource() throws ConnectionException, ExperimentNotFoundException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
