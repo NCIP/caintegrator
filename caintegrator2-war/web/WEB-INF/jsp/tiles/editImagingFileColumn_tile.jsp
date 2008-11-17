@@ -62,7 +62,7 @@
            </td>
     </s:form>
         <br> <br>
-    </s:if>
+    
     <s:if test="%{!definitions.isEmpty}">
     <hr>
         <table class="data">
@@ -97,7 +97,22 @@
             </s:iterator>
         </table>
     </s:if>
-    
+    <s:else>
+        <table class="data">
+            <tr>
+                <th colspan="2">Matching Annotation Definitions</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <th>CDE Public ID</th>
+                <th>Data Type</th>
+                <th>Definition</th>
+            </tr>
+            <td>
+                No matches found for your Search.
+            </td>
+        </table>    
+    </s:else>
     <s:if test="%{!dataElements.isEmpty}">
         <table class="data">
             <tr>
@@ -142,6 +157,25 @@
             </s:iterator>
         </table>
     </s:if>
+    <s:else>
+        <table class="data">
+            <tr>
+                <th colspan="3">Matches from caDSR</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+                <th>Public ID</th>
+                <th>Context</th>
+                <th>Status</th>
+                <th>Definition</th>
+            </tr>
+            <td>
+                No matches found in caDSR for your Search.
+            </td>
+        </table>    
+    </s:else>
+</s:if>    
 </div>
 
 <div class="clear"><br /></div>

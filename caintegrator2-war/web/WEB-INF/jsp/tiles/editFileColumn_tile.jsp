@@ -166,6 +166,8 @@
                 <th>Name</th>
                 <th>Actions</th>
                 <th>Public ID</th>
+                <th>Context</th>
+                <th>Status</th>
                 <th>Definition</th>
             </tr>
             <td>
