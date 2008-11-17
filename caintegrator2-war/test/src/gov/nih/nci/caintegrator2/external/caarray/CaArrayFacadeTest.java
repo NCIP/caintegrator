@@ -144,15 +144,21 @@ public class CaArrayFacadeTest {
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException {
+    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
         List<Sample> samples = caArrayFacade.getSamples("samples", null);
         assertFalse(samples.isEmpty());
         assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));
         assertTrue(samples.get(1).getName().equals("sample1") || samples.get(1).getName().equals("sample2"));
         samples = caArrayFacade.getSamples("no-samples", null);
         assertTrue(samples.isEmpty());
-        samples = caArrayFacade.getSamples("no-experiment", null);
-        assertTrue(samples.isEmpty()); 
+        boolean experimentNotFound = false;
+        try {
+            samples = caArrayFacade.getSamples("no-experiment", null);   
+        } catch (ExperimentNotFoundException e) {
+            experimentNotFound = true;
+        }
+        assertTrue(samples.isEmpty());
+        assertTrue(experimentNotFound);
     }
     
     @Test

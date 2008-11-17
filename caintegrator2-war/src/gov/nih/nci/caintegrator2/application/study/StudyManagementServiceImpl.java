@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -100,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -292,11 +294,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void addGenomicSource(StudyConfiguration studyConfiguration,
-            GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+            GenomicDataSourceConfiguration genomicSource) throws ConnectionException, ExperimentNotFoundException {
+        List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
+                genomicSource.getServerProfile());
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
-        genomicSource.setSamples(getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
-                genomicSource.getServerProfile()));
+        genomicSource.setSamples(samples);
         dao.save(studyConfiguration);
     }
 
