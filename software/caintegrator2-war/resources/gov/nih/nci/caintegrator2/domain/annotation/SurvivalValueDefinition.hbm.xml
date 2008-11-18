@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.caintegrator2.domain.annotation">
+	<class name="SurvivalValueDefinition" table="SURVIVAL_VALUE_DEFINITION" lazy="false" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<!-- Attributes mapping for the AbstractAnnotationValue class -->
+		<property name="name" type="string" column="NAME"/>
+        <property name="survivalValueType" type="string" column="SURVIVAL_VALUE_TYPE"/>
+		
+		<!-- Associations mapping for the AbstractAnnotationValue class -->
+		<many-to-one name="survivalStartDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_START_DATE_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="deathDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="DEATH_DATE_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="lastFollowupDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="LAST_FOLLOWUP_DATE_ID" lazy="proxy" cascade="save-update" />
+
+	</class>
+</hibernate-mapping>
