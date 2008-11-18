@@ -290,5 +290,21 @@ public class AnnotationSelection {
         this.genomicAnnotationDefinitions = genomicAnnotationDefinitions;
     }
 
+
+    /**
+     * Clones the object.
+     * @return - Cloned object.
+     */
+    public AnnotationSelection cloneObject() {
+        AnnotationSelection newAnnotationSelection = new AnnotationSelection();
+        newAnnotationSelection.setAnnotationDefinitions(this.getAnnotationDefinitions());
+        newAnnotationSelection.setAnnotationSelections(this.getAnnotationSelections());
+        newAnnotationSelection.setGenomicAnnotationDefinitions(this.getGenomicAnnotationDefinitions());
+        newAnnotationSelection.setNumericAnnotationDisplayOperatorList(this.getNumericAnnotationDisplayOperatorList());
+        newAnnotationSelection.setNumericOptionToEnumMap(this.getNumericOptionToEnumMap());
+        newAnnotationSelection.setStringAnnotationDisplayOperatorList(this.getStringAnnotationDisplayOperatorList());
+        newAnnotationSelection.setStringOptionToEnumMap(this.getStringOptionToEnumMap());
+        return newAnnotationSelection;
+    }
            
 }
