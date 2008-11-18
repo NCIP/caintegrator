@@ -126,6 +126,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(StudyManagementServiceImpl.class);
+    private static final int DEFINITION_LENGTH = 1000;
     private CaIntegrator2Dao dao;
     private FileManager fileManager;
     private CaDSRFacade caDSRFacade;
@@ -384,6 +385,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                                                      study, 
                                                                      entityType);
         annotationDefinition.setDisplayName(dataElement.getLongName());
+        if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
+            dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
+        }
+        
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
         annotationDefinition.setCde(dataElement);
         // TODO Until CaDSR data element provides a type definition, we'll hard code the type to be a string
