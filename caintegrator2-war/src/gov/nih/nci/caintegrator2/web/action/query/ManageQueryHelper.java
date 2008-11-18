@@ -227,17 +227,15 @@ final class ManageQueryHelper {
         return true;
     }
      
-    public void updateAnnotationDefinition(String[] selectedAnnotations, int rowNumber) {
-        for (String selectedAnnotation : selectedAnnotations) {
-            if (this.annotationDefinitionToDataTypeMap.containsKey(selectedAnnotation)) {
-                String dataType = annotationDefinitionToDataTypeMap.get(selectedAnnotation);
-                
-                    getQueryCriteriaRowList().get(rowNumber).getAnnotationSelections()
-                                        .setCurrentAnnotationOperatorSelections(dataType);
-                                          
-            }
-           
-        } 
+    public boolean updateAnnotationDefinition(String[] selectedAnnotations, int rowNumber) {
+        try {
+            getQueryCriteriaRowList().get(rowNumber).getAnnotationSelections()
+            .setCurrentAnnotationOperatorSelections(annotationDefinitionToDataTypeMap
+                    .get(selectedAnnotations[rowNumber]));
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+        return true;
     }
     /**
      * @return the clinicalAnnotationDefinitions
@@ -414,13 +412,14 @@ final class ManageQueryHelper {
             return false;
         }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
-        queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections().cloneObject());
         queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         queryAnnotationCriteria.setRowLabel("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
         return true;
     }
+
     
     /**
      * Configures image series row.
@@ -433,7 +432,7 @@ final class ManageQueryHelper {
            }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
-        queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections().cloneObject());
         queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES);
         queryAnnotationCriteria.setRowLabel("Image Series");
@@ -451,8 +450,7 @@ final class ManageQueryHelper {
                return false;
            }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
-        //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
-        queryAnnotationCriteria.setAnnotationSelections(this.getGenomicAnnotationSelections());
+        queryAnnotationCriteria.setAnnotationSelections(this.getGenomicAnnotationSelections().cloneObject());
         queryAnnotationCriteria.setAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.GENEEXPRESSION);
         queryAnnotationCriteria.setRowLabel("Gene Expression");
