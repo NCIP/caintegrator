@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -327,6 +329,24 @@ public class AnalysisForm {
 
     EntityTypeEnum getEntityType(String name) {
         return nameToEntityTypeMap.get(name);
+    }
+    
+    /**
+     * Returns the URL where information on the currently selected analysis method may be found.
+     * 
+     * @return the method information URL.
+     */
+    public String getAnalysisMethodInformationUrl() {
+        try {
+            URL serviceUrl = new URL(server.getUrl());
+            URL infoUrl = new URL(serviceUrl.getProtocol(), 
+                    serviceUrl.getHost(), 
+                    serviceUrl.getPort(), 
+                    "/gp/getTaskDoc.jsp");
+            return infoUrl.toExternalForm();
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("Server URL should already have been validated.", e);
+        }
     }
 
 }

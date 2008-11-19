@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
@@ -129,8 +130,8 @@ public class AnalysisServiceTest {
         assertEquals(methods.get(0).getParameters().get(2), value.getParameter());
         assertEquals(Integer.valueOf(2), value.getValue());
         assertEquals("parameter3", parameterWithChoices.getName());
-        assertEquals(2, parameterWithChoices.getChoices().size());
-        assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoices().get("choice1")).getValue());
+        assertEquals(2, parameterWithChoices.getChoiceKeys().size());
+        assertEquals(Integer.valueOf(1), ((IntegerParameterValue) parameterWithChoices.getChoice("choice1")).getValue());
     }
     
     @Test
@@ -164,10 +165,11 @@ public class AnalysisServiceTest {
 
         @SuppressWarnings("unchecked")
         public TaskInfo[] getTasks() throws GenePatternServiceException {
-            TaskInfo[] tasks = new TaskInfo[3];
+            TaskInfo[] tasks = new TaskInfo[4];
             tasks[0] = new TaskInfo();
             tasks[0].setName("task1");
             tasks[0].setDescription("description1");
+            tasks[0].setTaskInfoAttributes(new HashMap<String, String>());
             tasks[0].setParameterInfoArray(new ParameterInfo[3]);
             tasks[0].getParameterInfoArray()[0] = new ParameterInfo();
             tasks[0].getParameterInfoArray()[0].setName("parameter1");
@@ -184,21 +186,19 @@ public class AnalysisServiceTest {
             tasks[0].getParameterInfoArray()[1].getAttributes().put("type", "java.io.File");
             tasks[0].getParameterInfoArray()[1].getAttributes().put("fileFormat", "gct;res");
             tasks[0].getParameterInfoArray()[1].getAttributes().put("optional", "on");
-            tasks[0].getParameterInfoArray()[1].setChoices(new HashMap());
-
+            
             tasks[0].getParameterInfoArray()[2] = new ParameterInfo();
             tasks[0].getParameterInfoArray()[2].setName("parameter3");
             tasks[0].getParameterInfoArray()[2].setDefaultValue("2");
             tasks[0].getParameterInfoArray()[2].setAttributes(new HashMap<String, String>());
             tasks[0].getParameterInfoArray()[2].getAttributes().put("type", "java.lang.Integer");
-            tasks[0].getParameterInfoArray()[2].setChoices(new HashMap());
-            tasks[0].getParameterInfoArray()[2].getChoices().put("choice1", "1");
-            tasks[0].getParameterInfoArray()[2].getChoices().put("choice2", "2");
-
+            tasks[0].getParameterInfoArray()[2].setValue("1=choice1;2=choice2");
+            
             tasks[1] = new TaskInfo();
             tasks[1].setName("task2");
             tasks[1].setDescription("description2");
             tasks[1].setParameterInfoArray(new ParameterInfo[2]);
+            tasks[1].setTaskInfoAttributes(new HashMap<String, String>());
             tasks[1].getParameterInfoArray()[0] = new ParameterInfo();
             tasks[1].getParameterInfoArray()[0].setName("parameter1");
             tasks[1].getParameterInfoArray()[0].setAttributes(new HashMap<String, String>());
@@ -214,6 +214,7 @@ public class AnalysisServiceTest {
             tasks[2] = new TaskInfo();
             tasks[2].setName("task3");
             tasks[2].setDescription("description3");
+            tasks[2].setTaskInfoAttributes(new HashMap<String, String>());
             tasks[2].setParameterInfoArray(new ParameterInfo[3]);
             tasks[2].getParameterInfoArray()[0] = new ParameterInfo();
             tasks[2].getParameterInfoArray()[0].setName("parameter1");
@@ -234,7 +235,14 @@ public class AnalysisServiceTest {
             tasks[2].getParameterInfoArray()[2].getAttributes().put("type", "java.io.File");
             tasks[2].getParameterInfoArray()[2].getAttributes().put("fileFormat", "cls");
             tasks[2].getParameterInfoArray()[2].setChoices(new HashMap());
-
+            
+            tasks[3] = new TaskInfo();
+            tasks[3].setName("task3");
+            tasks[3].setDescription("description3");
+            Map<String, String> task4Attributes = new HashMap<String, String>();
+            task4Attributes.put("taskType", "Visualizer");
+            tasks[3].setTaskInfoAttributes(task4Attributes);
+            tasks[3].setParameterInfoArray(new ParameterInfo[3]);
             return tasks;
         }
         
