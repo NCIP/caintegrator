@@ -247,7 +247,7 @@ public class AnnotationSelection {
         // Implemented: equals, not equals, less than, greater than, less than or equal to, greater than or equal to
         // Not implemented: [linear correlation greater than 0.8, linear correlation greater than 0.9, 
         //   spearman correlation greater than 0.8, spearman correlation greater than 0.9]
-        numericOptionToEnumMap.put("=", NumericComparisonOperatorEnum.EQUAL);
+        numericOptionToEnumMap.put("==", NumericComparisonOperatorEnum.EQUAL);
         numericOptionToEnumMap.put("!=", NumericComparisonOperatorEnum.NOTEQUAL);
         numericOptionToEnumMap.put("<", NumericComparisonOperatorEnum.LESS);
         numericOptionToEnumMap.put(">", NumericComparisonOperatorEnum.GREATER);
@@ -265,7 +265,7 @@ public class AnnotationSelection {
         
         // Populate the numeric display operators
         numericAnnotationDisplayOperatorList = new ArrayList<String>(10);
-        numericAnnotationDisplayOperatorList.add("=");
+        numericAnnotationDisplayOperatorList.add("==");
         numericAnnotationDisplayOperatorList.add("!=");
         numericAnnotationDisplayOperatorList.add("<");
         numericAnnotationDisplayOperatorList.add(">");
