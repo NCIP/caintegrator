@@ -193,15 +193,27 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
         }
+        
+        if ("addCriterionRow".equals(selectedAction)) {
+            validateAddCriterionRow();
+        }
             
+    }
+    
+    private void validateAddCriterionRow() {
+        if (selectedRowCriterion.equalsIgnoreCase("Select Criteria Type")) {
+            addActionError(" Please select a Criteria type");
+        }
     }
     
     private void validateExecuteQuery() {
         validateHasCriterion();
+        validateHasUserSelectedValues();
     }
     
     private void validateSaveQuery() {
         validateHasCriterion();
+        validateHasUserSelectedValues();
         // Need to see if there's non-space characters in the saved name.
         if (StringUtils.isEmpty(searchName)) {
             addActionError("Must have a name for your query");
@@ -222,6 +234,24 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         }
     }
 
+   
+    private void validateHasUserSelectedValues() {
+        for (String selectedAnnotation : selectedAnnotations) {
+            if (selectedAnnotation.equalsIgnoreCase("1")) {
+                addActionError(" Please select an Annotation ");
+            }
+        }
+        for (String selectedOperator : selectedOperators) {
+            if (selectedOperator.equalsIgnoreCase("1")) {
+                addActionError(" Please select an Operator ");
+            }
+        }
+        for (String selectedValue : selectedValues) {
+            if (selectedValue.equalsIgnoreCase("")) {
+                addActionError(" Please type a value to run a query ");
+            }
+        }
+    }
     /**
      * {@inheritDoc}
      */
