@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,7 +104,8 @@ public class AnalysisParameter implements Serializable {
     private boolean required;
     private AnalysisParameterType type;
     private AbstractParameterValue defaultValue;
-    private Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
+    private final List<String> choiceKeys = new ArrayList<String>();
+    private final Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
     
     /**
      * @return the name
@@ -206,25 +209,41 @@ public class AnalysisParameter implements Serializable {
     }
 
     /**
-     * @return the choices
+     * Return the choice matching the key given.
+     * 
+     * @param key the choice key
+     * @return the matching choice
      */
-    public Map<String, AbstractParameterValue> getChoices() {
-        return choices;
+    public AbstractParameterValue getChoice(String key) {
+        return choices.get(key);
     }
-
+    
     /**
-     * @param choices the choices to set
+     * Adds a new choice to the choice list for this parameter.
+     * 
+     * @param key the key for the choice
+     * @param stringValue the value as a String
      */
-    public void setChoices(Map<String, AbstractParameterValue> choices) {
-        this.choices = choices;
+    public void addChoice(String key, String stringValue) {
+        choiceKeys.add(key);
+        AbstractParameterValue value = createValue();
+        value.setValueFromString(stringValue);
+        choices.put(key, value);
     }
 
     AbstractParameterValue getDefaultValueCopy() {
-        if (getChoices().isEmpty()) {
+        if (choiceKeys.isEmpty()) {
             return (AbstractParameterValue) getDefaultValue().clone();
         } else {
             return getDefaultValue();
         }
+    }
+
+    /**
+     * @return the choiceKeys
+     */
+    public List<String> getChoiceKeys() {
+        return choiceKeys;
     }
 
 }

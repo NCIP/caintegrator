@@ -28,6 +28,11 @@
                     name="analysisMethodName" 
                     list="analysisForm.analysisMethodNames"
                     onchange="this.form.selectedAction.value = 'change'; this.form.submit();" />
+                <s:url id="infoUrl" value="%{analysisForm.analysisMethodInformationUrl}" />
+                <tr>
+                <td></td>
+                <td><a href="${infoUrl}" target="_">Analysis Method Documentation</a></td>
+                </tr>
             </s:if>
             <s:iterator status="status" value="analysisForm.parameters">
                 <s:if test='%{displayType == "textfield"}'>

@@ -85,12 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 
 /**
  * Represents a parameter rendered as a free-form text field in the UI.
@@ -115,7 +114,7 @@ public class SelectListFormParameter extends AbstractAnalysisFormParameter {
      * @return the available choices
      */
     public Collection<String> getChoices() {
-        return getParameter().getChoices().keySet();
+        return getParameter().getChoiceKeys();
     }
 
     /**
@@ -133,8 +132,8 @@ public class SelectListFormParameter extends AbstractAnalysisFormParameter {
     private Map<AbstractParameterValue, String> getDisplayValueMap() {
         if (displayValueMap == null) {
             displayValueMap = new HashMap<AbstractParameterValue, String>();
-            for (Entry<String, AbstractParameterValue> entry : getParameter().getChoices().entrySet()) {
-                displayValueMap.put(entry.getValue(), entry.getKey());
+            for (String key : getParameter().getChoiceKeys()) {
+                displayValueMap.put(getParameter().getChoice(key), key);
             }
         }
         return displayValueMap;
@@ -145,7 +144,7 @@ public class SelectListFormParameter extends AbstractAnalysisFormParameter {
      */
     @Override
     public void setValue(String value) {
-        AbstractParameterValue parameterValue = getParameter().getChoices().get(value);
+        AbstractParameterValue parameterValue = getParameter().getChoice(value);
         setParameterValue(parameterValue);
         getForm().getInvocation().setParameterValue(getParameter(), parameterValue);
     }

@@ -117,6 +117,8 @@ class GenePatternHelper {
     private static final String FILE_FORMAT_ATTRIBUTE = "fileFormat";
     private static final String OPTIONAL_ON = "on";
     private static final String OPTIONAL_ATTRIBUTE = "optional";
+    private static final String TASK_TYPE_ATTRIBUTE = "taskType";
+    private static final String VISUALIZER_TASK_TYPE = "Visualizer";
     
     private final GenePatternClient client;
     private static int tempFileCounter = 0;
@@ -145,6 +147,16 @@ class GenePatternHelper {
      * @return true if supported, false otherwise.
      */
     private boolean isSupportedTask(TaskInfo task) {
+        return !isVisualizerTask(task) && areFileParametersSupported(task);
+    }
+
+    @SuppressWarnings("unchecked")  // Need to downcast getTaskInfoAttributes() from Object
+    private boolean isVisualizerTask(TaskInfo task) {
+        Map<String, String> taskAttributes = (Map<String, String>) task.getTaskInfoAttributes();
+        return VISUALIZER_TASK_TYPE.equals(taskAttributes.get(TASK_TYPE_ATTRIBUTE));
+    }
+
+    private boolean areFileParametersSupported(TaskInfo task) {
         boolean precededByGct = false;
         boolean hasGct = false;
         for (ParameterInfo parameterInfo : task.getParameterInfoArray()) {
@@ -170,7 +182,7 @@ class GenePatternHelper {
         String fileFormatValue = getAttributeValue(parameterInfo, FILE_FORMAT_ATTRIBUTE);
         Set<String> formats = new HashSet<String>();
         if (fileFormatValue != null) {
-            formats.addAll(Arrays.asList(fileFormatValue.split(";")));
+            formats.addAll(Arrays.asList(fileFormatValue.split("[;,]")));
         }
         return formats;
     }
@@ -196,7 +208,7 @@ class GenePatternHelper {
         parameter.setDescription(parameterInfo.getDescription());
         parameter.setType(getType(parameterInfo));
         parameter.setRequired(!OPTIONAL_ON.equalsIgnoreCase(getAttributeValue(parameterInfo, OPTIONAL_ATTRIBUTE)));
-        if (!parameterInfo.getChoices().isEmpty()) {
+        if (!StringUtils.isBlank(parameterInfo.getValue())) {
             loadChoices(parameter, parameterInfo);
         }
         if (!StringUtils.isBlank(parameterInfo.getDefaultValue())) {
@@ -205,39 +217,43 @@ class GenePatternHelper {
         return parameter;
     }
 
-    @SuppressWarnings("unchecked")  // HashMap in ParameterInfo is untyped
     private void loadChoices(AnalysisParameter parameter, ParameterInfo parameterInfo) {
-        Map<String, String> sourceChoices = parameterInfo.getChoices();
-        boolean useKeyForValue = sourceChoices.containsValue("");
-        for (String name : sourceChoices.keySet()) {
-            String stringValue;
-            if (useKeyForValue) {
-                stringValue = name;
+        String[] choiceEntries = parameterInfo.getValue().split(";");
+        for (String choiceEntry : choiceEntries) {
+            String[] parts = choiceEntry.split("=", 2);
+            String value;
+            String key;
+            if (parts.length == 0) {
+                key = "";
+                value = "";
+            } else if (parts.length == 1) {
+                value = parts[0];
+                key = value;
             } else {
-                stringValue = sourceChoices.get(name);
+                value = parts[0];
+                key = parts[1];
             }
-            AbstractParameterValue value = parameter.createValue();
-            value.setValueFromString(stringValue);
-            parameter.getChoices().put(name, value);
+            parameter.addChoice(key, value);
         }
     }
 
     private void setDefaultValue(ParameterInfo parameterInfo, AnalysisParameter parameter) {
-        if (parameter.getChoices().isEmpty()) {
+        if (parameter.getChoiceKeys().isEmpty()) {
             parameter.setDefaultValue(parameter.createValue());
             parameter.getDefaultValue().setValueFromString(parameterInfo.getDefaultValue());
         } else {
-            parameter.setDefaultValue(getValue(parameterInfo.getDefaultValue(), parameter.getChoices()));
+            parameter.setDefaultValue(getMatchFromChoices(parameterInfo.getDefaultValue(), parameter));
         }
     }
 
-    private AbstractParameterValue getValue(String stringValue, Map<String, AbstractParameterValue> choices) {
-        for (AbstractParameterValue value : choices.values()) {
+    private AbstractParameterValue getMatchFromChoices(String stringValue, AnalysisParameter parameter) {
+        for (String key : parameter.getChoiceKeys()) {
+            AbstractParameterValue value = parameter.getChoice(key);
             if (stringValue.equals(value.getValueAsString())) {
                 return value;
             }
         }
-        return choices.get(stringValue);
+        return parameter.getChoice(stringValue);
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch-like statement
