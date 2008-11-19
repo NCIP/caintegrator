@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
@@ -107,15 +106,13 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class AnalysisFormParameterTest {
+public class AnalysisFormTest {
     
     private StringParameterValue parameterValue1;
     private IntegerParameterValue parameterValue2;
@@ -143,16 +140,8 @@ public class AnalysisFormParameterTest {
         parameter2.setRequired(false);
         parameter2.setType(AnalysisParameterType.INTEGER);
         
-        Map<String, AbstractParameterValue> choices = new HashMap<String, AbstractParameterValue>();
-        IntegerParameterValue choice1 = new IntegerParameterValue();
-        choice1.setValue(1);
-        choice1.setParameter(parameter2);
-        choices.put("1", choice1);
-        parameter2.setChoices(choices);
-        IntegerParameterValue choice2 = new IntegerParameterValue();
-        choice2.setValue(2);
-        choice2.setParameter(parameter2);
-        choices.put("2", choice2);
+        parameter2.addChoice("1", "1");
+        parameter2.addChoice("2", "2");
         
         AnalysisParameter parameter3 = new AnalysisParameter();
         parameter3.setType(AnalysisParameterType.GENOMIC_DATA);
@@ -256,6 +245,12 @@ public class AnalysisFormParameterTest {
         formParameter4.setValue("Test");
         formParameter4.configureForInvocation(studySubscription, queryManagementService);
         assertTrue(queryManagementService.executeCalled);
+    }
+    
+    @Test
+    public void testGetAnalysisMethodInformationUrl() {
+        form.setUrl("http://genepattern.broad.mit.edu/gp/services/Analysis");
+        assertEquals("http://genepattern.broad.mit.edu/gp/getTaskDoc.jsp", form.getAnalysisMethodInformationUrl());
     }
 
 }

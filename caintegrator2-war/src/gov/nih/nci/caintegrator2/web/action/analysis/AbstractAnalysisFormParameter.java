@@ -180,7 +180,7 @@ public abstract class AbstractAnalysisFormParameter {
     }
 
     static AbstractAnalysisFormParameter create(AnalysisForm form, AbstractParameterValue parameterValue) {
-        if (!parameterValue.getParameter().getChoices().isEmpty()) {
+        if (!parameterValue.getParameter().getChoiceKeys().isEmpty()) {
             return new SelectListFormParameter(form, parameterValue);
         } else if (parameterValue.getParameter().getType().equals(AnalysisParameterType.GENOMIC_DATA)) {
             return new GenomicDataFormParameter(form, parameterValue);
