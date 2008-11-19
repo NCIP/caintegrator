@@ -78,13 +78,12 @@ pageEncoding="ISO-8859-1" %>
                     <tr>
                         <td colspan="5" class="tableheader">
                             <select name="selectedRowCriterion" id="searchcriteriaadd1" style="margin-left:5px; width:200px">
-                                <option>&ndash; Select Criteria Type &ndash;</option>
+                                <option>Select Criteria Type</option>
 
                                 <option value="subject">Clinical</option>
                                 <option value="geneExpression">Gene Expression</option>
                                 <option value="imageSeries">Image Series</option>
                             </select>
-                            
                              <ul class="btnrow" style="margin:-22px 0 0 200px; height:32px">         
                                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.manageQueryForm.selectedAction.value = 'addCriterionRow';document.manageQueryForm.submit();"><span class="btn_img"><span class="add">Add</span></span></s:a></li>
                             </ul>
