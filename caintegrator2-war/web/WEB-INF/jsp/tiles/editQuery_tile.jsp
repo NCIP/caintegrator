@@ -117,7 +117,7 @@ pageEncoding="ISO-8859-1" %>
                                     <s:select 
                                         name="selectedOperators"
                                         headerKey ="1"
-                                        headerValue = "First select Annotation" 
+                                        headerValue = "Select Operators" 
                                         list="annotationSelections.currentAnnotationOperatorSelections" 
                                         value="#currentRow.annotationOperatorSelection" 
                                         theme="simple"/>
