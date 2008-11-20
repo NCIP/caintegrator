@@ -32,8 +32,7 @@
         <s:if test="!#sessionHelper.authenticated">
             <s:action name="workspace"/>
         </s:if>
-        <div id="user">Welcome, <a href="account.html"><s:property value="#sessionHelper.username"/> </a> | <a
-           href="logout.jsp">Logout</a></div>
+        <div id="user">Welcome, <s:property value="#sessionHelper.username"/> | <a href="logout.jsp">Logout</a></div>
         <div id="mystudies">
                <s:form action="workspace" theme="simple">
 
