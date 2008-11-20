@@ -89,12 +89,19 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -114,10 +121,27 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private boolean readOnly;
     private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
     private List<CommonDataElement> dataElements = new ArrayList<CommonDataElement>();
+    private List<String> availableUpdateList = new ArrayList<String>();
+    private List<String> permissibleUpdateList = new ArrayList<String>();
     private int dataElementIndex;
     private int definitionIndex;
     private String keywordsForSearch;
     private String columnType;
+    
+    private void clearCacheMemory() {
+        definitions.clear();
+        dataElements.clear();
+        availableUpdateList.clear();
+        permissibleUpdateList.clear();
+    }
+    
+    private Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
+        return fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection();
+    }
+    
+    private String getType() {
+        return fileColumn.getFieldDescriptor().getDefinition().getType();
+    }
     
     /**
      * Refreshes the current clinical source configuration.
@@ -125,20 +149,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     @Override
     public void prepare() {
         super.prepare();
-        if (getFileColumn().getId() != null) {
+        clearErrorsAndMessages();
+        if (fileColumn.getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
         }
         setReadOnly(true);
     }
-    
+
     /**
      * Edit a clinical data source file column.
      * 
      * @return the Struts result.
      */
     public String editFileColumn() {
-        definitions.clear();
-        dataElements.clear();
+        clearCacheMemory();
         return SUCCESS;
     }
     
@@ -147,8 +171,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String saveColumnType() {
-        definitions.clear();
-        dataElements.clear();
+        clearCacheMemory();
         updateColumnType();
         if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
             getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
@@ -198,8 +221,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
                                                      getStudyConfiguration().getStudy(),
                                                      EntityTypeEnum.SUBJECT);
         setReadOnly(false);
-        definitions.clear();
-        dataElements.clear();
+        clearCacheMemory();
         return SUCCESS;
     }
     
@@ -228,7 +250,14 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
-        getStudyManagementService().save(getStudyConfiguration());
+        try {
+            updatePermissible();
+            getStudyManagementService().save(getStudyConfiguration());
+        } catch (ParseException e) {
+            addActionError("Error parsing the data field!!!");
+            clearCacheMemory();
+            return ERROR;
+        }
         return SUCCESS;
     }
 
@@ -279,7 +308,6 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         } 
         return false;
     }
-
 
     private void updateColumnType() {
         if (IDENTIFIER_TYPE.equals(columnType)) {
@@ -380,6 +408,76 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     public void setKeywordsForSearch(String keywordsForSearch) {
         this.keywordsForSearch = keywordsForSearch;
     }
+    
+    
+    
+    
+    
 
 
+    /**
+     * 
+     * @return if the Permissible is available.
+     */
+    public boolean isPermissibleOn() {
+        if (fileColumn.getFieldDescriptor().getDefinition() != null && isColumnTypeAnnotation()) {
+            return true;
+        } 
+        return false;
+    }
+    
+    /**
+    * @return the availableValue
+    */
+   public Set<String> getAvailableValues() {
+       return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
+               getPermissibleValues());
+   }
+    
+    /**
+     * @return the permissibleValues
+     */
+    public Set<String> getPermissibleValues() {
+        return PermissibleValueUtil.getDisplayPermissibleValue(getPermissibleCollection());
+    }
+    
+    /**
+     * @return the Struts result.
+     * @throws ParseException 
+     */
+    private void updatePermissible() throws ParseException {
+        PermissibleValueUtil.update(getType(), getPermissibleCollection(), getPermissibleUpdateList());
+    }
+
+    private Collection<AbstractPermissibleValue> getPermissibleCollection() {
+        return fileColumn.getFieldDescriptor().getDefinition().getPermissibleValueCollection();
+    }
+
+    /**
+     * @return the permissibleReturnList
+     */
+    public List<String> getPermissibleUpdateList() {
+        return permissibleUpdateList;
+    }
+
+    /**
+     * @param permissibleUpdateList the new list of permissible display string
+     */
+    public void setPermissibleUpdateList(List<String> permissibleUpdateList) {
+        this.permissibleUpdateList = permissibleUpdateList;
+    }
+
+    /**
+     * @return the availableUpdateList
+     */
+    public List<String> getAvailableUpdateList() {
+        return availableUpdateList;
+    }
+
+    /**
+     * @param availableUpdateList the availableUpdateList to set
+     */
+    public void setAvailableUpdateList(List<String> availableUpdateList) {
+        this.availableUpdateList = availableUpdateList;
+    }
 }
