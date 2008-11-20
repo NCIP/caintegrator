@@ -250,14 +250,16 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
-        try {
-            updatePermissible();
-            getStudyManagementService().save(getStudyConfiguration());
-        } catch (ParseException e) {
-            addActionError("Error parsing the data field!!!");
-            clearCacheMemory();
-            return ERROR;
+        if (isPermissibleOn()) {
+            try {
+                updatePermissible();
+            } catch (ParseException e) {
+                addActionError("Error parsing the data field!!!");
+                clearCacheMemory();
+                return ERROR;
+            }
         }
+        getStudyManagementService().save(getStudyConfiguration());
         return SUCCESS;
     }
 
@@ -420,7 +422,8 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return if the Permissible is available.
      */
     public boolean isPermissibleOn() {
-        if (fileColumn.getFieldDescriptor().getDefinition() != null && isColumnTypeAnnotation()) {
+        if (isColumnTypeAnnotation()
+                && fileColumn.getFieldDescriptor().getDefinition() != null) {
             return true;
         } 
         return false;
