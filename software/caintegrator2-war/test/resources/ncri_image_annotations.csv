@@ -1,16 +1,16 @@
-Image Series ID,Exam Number,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex
-1.2.840.113619.2.25.1.1762525322.19309.674.1039106996.3,2,dxf113,,Temporal,Left,Language
-1.2.840.113619.2.5.1762525322.1690.1038396261.116,1,dxf113,,Insular,Right,None
-1.2.840.113619.2.25.1.1762897327.3028.559.1038992236.1,3,dxf113,,Temporal,Right,None
-1.2.840.113619.2.5.1762525322.1691.1040990031.970,4,dxf113,,Frontal,Right,None
-1.2.840.113619.2.5.1762388187.289456.1043320209.136,5,dxf113,,Frontal,Left,Motor
-1.2.840.113619.2.5.1762525322.1695.1044011791.885,1,rjg143,,"Frontal, Insular",Right,None
-1.2.840.113619.2.5.1762525322.1697.1044616304.446,2,rjg143, ADC is mixed,Temporal,Left,None
-1.2.840.113619.2.25.1.1762388187.31261.299.1045773600.1,3,rjg143,no adc map,Temporal,Right,None
-1.2.840.113619.2.25.1.1762388187.31245.288.1045577307.1,4,rjg143,no adc,Frontal,Right,None
-1.2.840.113619.2.25.1.1762525322.19963.816.1046363436.1,5,rjg143,"no adc, but majority is dark on dwi",Parietal,Left,Speech
-1.2.840.113619.2.5.1762388187.2336.1046171329.16,1,aflanders,nice example of a well defined tumor matrix,"Frontal, Temporal, Insular",Right,None
-1.2.840.113619.2.5.1762525322.1698.1047035773.411,2,aflanders,"all three components - edema, nCET and CET",Temporal,Left,None
-1.2.840.113619.2.5.1762897327.1928.1046947039.674,3,aflanders,"characteristics are mixed, halo of nCET",Temporal,Right,None
-1.2.840.113619.2.5.1762388187.736229.1048158390.323,4,aflanders,single nodule of enhancement,Frontal,Right,Motor
-1.2.840.113619.2.5.1762525322.1716.1048158635.921,5,aflanders,classic central necrosis with peritumoral envelope,Parietal,Center,None
+ImageSeriesID,Exam Number,Radiologist,Comments,Tumor Location,Side of Tumor Epicenter,Eloquent Cortex
+2.16.124.113543.6003.2020661366.54191.17414.1699120039,2,dxf113,,Temporal,Left,Language
+2.16.124.113543.6003.2654413169.37925.18948.1574390207,1,dxf113,,Insular,Right,None
+2.16.124.113543.6003.3342685917.53028.19438.979964858,3,dxf113,,Temporal,Right,None
+2.16.124.113543.6003.1.857.80829.1220.8601093.787.2,4,dxf113,,Frontal,Right,None
+2.16.124.113543.6003.121591217.13842.19801.1684612788,5,dxf113,,Frontal,Left,Motor
+2.16.124.113543.6003.2196517477.43516.17675.1465211023,1,rjg143,,"Frontal, Insular",Right,None
+2.16.124.113543.6003.2078165501.6604.19481.2863819935,2,rjg143, ADC is mixed,Temporal,Left,None
+2.16.124.113543.6003.2217126532.43970.18621.365638561,3,rjg143,no adc map,Temporal,Right,None
+2.16.124.113543.6003.2255697655.34510.18599.2966603150,4,rjg143,no adc,Frontal,Right,None
+2.16.124.113543.6003.1827394213.12869.19979.4139973298,5,rjg143,"no adc, but majority is dark on dwi",Parietal,Left,Speech
+2.16.124.113543.6003.2126393834.45410.19528.4053056899,1,aflanders,nice example of a well defined tumor matrix,"Frontal, Temporal, Insular",Right,None
+2.16.124.113543.6003.2236278985.55113.19524.1685906565,2,aflanders,"all three components - edema, nCET and CET",Temporal,Left,None
+2.16.124.113543.6003.1555045061.6180.16506.1862359955,3,aflanders,"characteristics are mixed, halo of nCET",Temporal,Right,None
+2.16.124.113543.6003.2241039616.45708.20383.2016653450,4,aflanders,single nodule of enhancement,Frontal,Right,Motor
+2.16.124.113543.6003.2283744091.2812.16533.4131474305,5,aflanders,classic central necrosis with peritumoral envelope,Parietal,Center,None
