@@ -30,18 +30,39 @@
 	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
 	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
 	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
-	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes" />
+	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes"  required="true"/>
 	        </s:if>
 	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
 	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 
 	            readonly="%{readOnly}"/> 
 	        </s:if>
-	        <br>
+            <s:if test="%{permissibleOn}">
+                <tr><td><br/></td></tr>
+                <tr><td><s:actionerror/></td></tr>
+                <s:optiontransferselect
+                    name="availableUpdateList"
+                    list="availableValues"
+                    doubleName="permissibleUpdateList"
+                    doubleList="permissibleValues"
+                    allowAddAllToLeft="false"
+                    allowAddAllToRight="false"
+                    allowUpDownOnLeft="false"
+                    allowUpDownOnRight="false"
+                    leftTitle="Available Values"
+                    rightTitle="Permissible Values"
+                    addToLeftLabel="< Remove"
+                    addToRightLabel="Add >"
+                    allowSelectAll="false"
+                    size="8"
+                    doubleSize="8"
+                    multiple="true"
+                    doubleMultiple="true"
+                    />
+            </s:if>
 	        <s:submit value="New" action="createNewDefinition" />
         </s:if>
         <s:submit value="Save" action="updateFileColumn" />
     </s:form>
-    
     
     <s:if test="%{columnTypeAnnotation}">
     <hr>
@@ -60,6 +81,7 @@
            <td>
                <em>Search existing studies and caDSR for definitions.</em>
            </td>
+        </tr>
     </s:form>
         <br> <br>
     
