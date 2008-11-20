@@ -2,7 +2,7 @@ ImageSeriesID,Exam Number,Radiologist,Comments,Tumor Location,Side of Tumor Epic
 2.16.124.113543.6003.2020661366.54191.17414.1699120039,2,dxf113,,Temporal,Left,Language
 2.16.124.113543.6003.2654413169.37925.18948.1574390207,1,dxf113,,Insular,Right,None
 2.16.124.113543.6003.3342685917.53028.19438.979964858,3,dxf113,,Temporal,Right,None
-2.16.124.113543.6003.1.857.80829.1220.8601093.787.2,4,dxf113,,Frontal,Right,None
+2.16.124.113543.6003.2317586685.40219.20287.3012655789,4,dxf113,,Frontal,Right,None
 2.16.124.113543.6003.121591217.13842.19801.1684612788,5,dxf113,,Frontal,Left,Motor
 2.16.124.113543.6003.2196517477.43516.17675.1465211023,1,rjg143,,"Frontal, Insular",Right,None
 2.16.124.113543.6003.2078165501.6604.19481.2863819935,2,rjg143, ADC is mixed,Temporal,Left,None
@@ -14,3 +14,13 @@ ImageSeriesID,Exam Number,Radiologist,Comments,Tumor Location,Side of Tumor Epic
 2.16.124.113543.6003.1555045061.6180.16506.1862359955,3,aflanders,"characteristics are mixed, halo of nCET",Temporal,Right,None
 2.16.124.113543.6003.2241039616.45708.20383.2016653450,4,aflanders,single nodule of enhancement,Frontal,Right,Motor
 2.16.124.113543.6003.2283744091.2812.16533.4131474305,5,aflanders,classic central necrosis with peritumoral envelope,Parietal,Center,None
+2.16.124.113543.6003.1.857.80828.1120.9007609.95.2,1,aflanders,nice example of a well defined tumor matrix,"Frontal, Temporal, Insular",Right,None
+2.16.124.113543.6003.142735396.50677.17789.2452761776,2,aflanders,"all three components - edema, nCET and CET",Temporal,Left,None
+2.16.124.113543.6003.1429204610.31501.17398.2283995795,3,aflanders,"characteristics are mixed, halo of nCET",Temporal,Right,None
+2.16.124.113543.6003.2205896078.6864.16978.1740991361,4,aflanders,single nodule of enhancement,Frontal,Right,Motor
+2.16.124.113543.6003.2294076858.39423.19622.770830759,5,aflanders,classic central necrosis with peritumoral envelope,Parietal,Center,None
+2.16.124.113543.6003.2863250257.22914.17370.3417077645,1,rjg143,,"Frontal, Insular",Right,None
+2.16.124.113543.6003.2910622502.53958.18793.1954268837,2,rjg143, ADC is mixed,Temporal,Left,None
+2.16.124.113543.6003.3906185123.7481.18546.2062635705,3,rjg143,no adc map,Temporal,Right,None
+2.16.124.113543.6003.549598832.64081.17387.2785982861,4,rjg143,no adc,Frontal,Right,None
+2.16.124.113543.6003.673037887.51329.17804.2399551376,5,rjg143,"no adc, but majority is dark on dwi",Parietal,Left,Speech
