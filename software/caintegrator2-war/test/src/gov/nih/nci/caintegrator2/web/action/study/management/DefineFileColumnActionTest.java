@@ -111,7 +111,7 @@ public class DefineFileColumnActionTest {
     }
     
     @Test
-    public void testCreateDefinition() {
+    public void testCreateNewDefinition() {
         assertEquals(Action.SUCCESS, action.createNewDefinition());
         assertTrue(studyManagementServiceStub.createDefinitionCalled);
         assertFalse(action.isReadOnly());
