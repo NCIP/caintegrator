@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -489,5 +490,18 @@ public class StudyManagementServiceTest {
         study.setShortTitleText("studyName");
         assertFalse(studyManagementService.isDuplicateStudyName(study));
         assertTrue(daoStub.isDuplicateStudyNameCalled);
+    }
+    
+    @Test
+    public void testCreateNewSurvivalValueDefinition() {
+        Study study = StudyConfigurationFactory.createNewStudyConfiguration().getStudy();
+        SurvivalValueDefinition definition = studyManagementService.createNewSurvivalValueDefinition(study);
+        assertTrue(study.getSurvivalValueDefinitionCollection().contains(definition));
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    @Test
+    public void testRemoveSurvivalValueDefinition() {
+        
     }
 }

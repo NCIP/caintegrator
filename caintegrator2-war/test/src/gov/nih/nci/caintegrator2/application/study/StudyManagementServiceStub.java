@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -120,6 +121,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean isDuplicateStudyNameCalled;
     public boolean addStudyLogoCalled;
     public boolean retrieveStudyLogoCalled;
+    public boolean createNewSurvivalValueDefinitionCalled;
+    public boolean removeSurvivalValueDefinitionCalled;
     
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -155,6 +158,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         isDuplicateStudyNameCalled = false;
         addStudyLogoCalled = false;
         retrieveStudyLogoCalled = false;
+        createNewSurvivalValueDefinitionCalled = false;
+        removeSurvivalValueDefinitionCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -263,5 +268,20 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public StudyLogo retrieveStudyLogo(Long id, String name) {
         retrieveStudyLogoCalled = true;
         return new StudyLogo();
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#createNewSurvivalValueDefinition(gov.nih.nci.caintegrator2.domain.translational.Study)
+     */
+    public SurvivalValueDefinition createNewSurvivalValueDefinition(Study study) {
+        createNewSurvivalValueDefinitionCalled = true;
+        return new SurvivalValueDefinition();
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#removeSurvivalValueDefinition(gov.nih.nci.caintegrator2.domain.translational.Study, gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition)
+     */
+    public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
+        removeSurvivalValueDefinitionCalled = true;
     }
 }
