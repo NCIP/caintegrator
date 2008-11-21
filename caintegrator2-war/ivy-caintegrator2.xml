@@ -99,6 +99,9 @@
     <dependency org="org.jdom" name="jdom" rev="1.0" conf="runtime->master"/>
     <dependency org="oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime"/>
     <dependency org="displaytag" name="displaytag" rev="1.1.1" conf="runtime"/>
+    <dependency org="jfree" name="jfreechart" rev="1.0.9" conf="runtime"/>
+    <dependency org="jfree" name="jcommons" rev="1.0.12" conf="runtime"/>
+    <dependency org="weka" name="weka" rev="3.4.13" conf="runtime"/>
     
     <!-- caGrid 1.2 stuff -->
     <dependency org="caGrid" name="data" rev="1.2" conf="runtime->stubs,utils" />

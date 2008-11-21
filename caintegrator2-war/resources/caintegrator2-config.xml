@@ -432,6 +432,17 @@
         </property>
     </bean>
     
+    <bean id="kmPlotService" 
+         class="gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl">
+         <property name="caIntegratorPlotService">
+            <ref local="caIntegratorPlotService"/>
+        </property>
+    </bean>
+    
+    <bean id="caIntegratorPlotService" 
+         class="gov.nih.nci.caintegrator.plots.services.KMPlotService">
+    </bean>
+    
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
         
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
