@@ -129,4 +129,12 @@ public class SubjectGroup {
         return survivalData;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getName();
+    }
+    
 }
