@@ -102,6 +102,28 @@
                 </s:form>
             </th>
         </tr>
+        
+        
+        <tr>
+            <th colspan="4">
+            <table class="wwFormTable">
+            <tbody>
+            <tr>
+                <td>Survival Values</td>
+                <td style='font-weight: normal;'>
+		            <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions">
+		                <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+		            </s:url>
+                    <div align="right">
+                    <s:a href="%{editSurvivalValueDefinitions}"> Edit Survival Values</s:a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            </table>
+            </th>
+        </tr>
+        
     </table>
     
     <s:form>

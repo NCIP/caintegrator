@@ -216,6 +216,16 @@
             <ref local="studyManagementService"/>
         </property>
     </bean>
+    
+    <bean id="defineSurvivalDefinitionAction"  
+        class="gov.nih.nci.caintegrator2.web.action.study.management.DefineSurvivalDefinitionAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <bean id="studyManagementService" 
         class="gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub" 

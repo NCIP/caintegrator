@@ -8,6 +8,7 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
         </result-types>
+        
        
         <default-interceptor-ref name="paramsPrepareParamsStack" />
         
@@ -78,7 +79,7 @@
         <action name="editClinicalSource" class="editClinicalSourceAction">
             <result type="tiles">editClinicalFile</result>
         </action>
-            
+       
        <action name="editImagingSource" class="editImagingSourceAction">
             <result type="tiles">editImagingFile</result>
         </action>
@@ -101,6 +102,31 @@
             <result type="tiles">editImagingFileColumn</result>
             <result name="input" type="tiles">editImagingFileColumn</result>
             <result name="error" type="tiles">editImagingFileColumn</result>
+        </action>
+        
+        <action name="editSurvivalValueDefinitions" method="editSurvivalValueDefinitions" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="editSurvivalValueDefinition" method="editSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="newSurvivalValueDefinition" method="newSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="deleteSurvivalValueDefinition" method="deleteSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="tiles">editSurvivalValueDefinitions</result>
+            <result name="input" type="tiles">editSurvivalValueDefinitions</result>
+        </action>
+        
+        <action name="saveSurvivalValueDefinition" method="saveSurvivalValueDefinition" class="defineSurvivalDefinitionAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
         </action>
         
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
@@ -188,6 +214,7 @@
             <result name="input" type="tiles">editFileColumn</result>
             <result name="error" type="tiles">editFileColumn</result>
         </action>
+
         
         <action name="updateImagingFileColumn" method="updateFileColumn" class="defineImagingFileColumnAction">
             <result type="redirectAction">
