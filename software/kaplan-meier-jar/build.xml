@@ -1,0 +1,108 @@
+<!-- *********************************************************************** -->
+<!-- ** PROJECT:   caIntegrator 2                                         ** -->
+<!-- *********************************************************************** -->
+
+<project name="kaplan-meier-jar" default="build" basedir="." 
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	xmlns="antlib:org.apache.tools.ant"
+	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
+	>
+
+    <!-- ******************************************************************* -->
+    <!-- ** PROPERTIES / PATHS                                            ** -->
+    <!-- ******************************************************************* -->
+
+    <!-- Main -->
+    <property name="software.dir" location=".." />
+    <property name="build.dir" location="${basedir}" />
+    <property name="lib.dir" location="${basedir}/lib" />
+    <property name="build.lib.dir" location="${software.dir}/lib" />
+    <property name="common.dir" value="${software.dir}/common"/>
+
+    <!-- ******************************************************************* -->
+    <!-- ** IVY TARGETS AND DEPENDENCY PATHS                              ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="ivy.jar" location="${build.lib.dir}/ivy-2.0.0-beta2.jar" />
+
+    <property name="ivy.settings.file" location="${common.dir}/ivysettings.xml" />
+    <property name="ivy.def.file" location="ivy-kaplan-meier.xml" />
+    <property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar}" />
+
+    <property name="kaplan-meier.jar.compile.lib.dir" location="${lib.dir}/compile"/>
+
+    <target name="ivy:init">
+        <property name="ivy.dep.file" value="${ivy.def.file}"/>
+        <ivy:settings file="${ivy.settings.file}" override="true" />
+    </target>
+    
+    <target name="ivy:clean" depends="clean:dependencies" description="Clean">
+        <ivy:settings file="${ivy.settings.file}" />
+        <ivy:cleancache />
+    </target>
+    
+    <target name="clean:dependencies">
+        <delete dir="${kaplan-meier.jar.compile.lib.dir}" />
+    </target>
+
+    <target name="ivy:setup" depends="ivy:setup-compile" 
+        description="Updates the local ivy repository for all build and test dependencies."/>
+
+    <target name="ivy:setup-compile" depends="ivy:init">
+        <ivy:resolve refresh="true" conf="compile" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" conf="compile" />
+    </target>
+            
+
+    <!-- ******************************************************************* -->
+    <!-- ** MAIN TARGETS                                                  ** -->
+    <!-- ******************************************************************* -->
+
+    <target name="clean" 
+        depends="clean:kaplan-meier.jar"
+        description="Removes all generated artifacts from the working directory." />
+
+    <target name="build" 
+        depends="kaplan-meier.jar"
+        description="Compiles all production source code and assembles artifacts." />
+
+    <!-- ******************************************************************* -->
+    <!-- ** CAINTEGRATOR2.WAR                                             ** -->
+    <!-- ******************************************************************* -->
+
+    <property name="kaplan-meier.jar.dir" location="${software.dir}/kaplan-meier-jar" />
+    <property name="kaplan-meier.jar.java.src.dir" location="${kaplan-meier.jar.dir}/src" />
+    <property name="kaplan-meier.jar.resources.src.dir" location="${kaplan-meier.jar.dir}/resources" />
+    <property name="kaplan-meier.jar.target.dir" location="${kaplan-meier.jar.dir}/target" />
+    <property name="kaplan-meier.jar.java.classes.dir" location="${kaplan-meier.jar.target.dir}/classes" />
+    <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
+
+    <target name="path:kaplan-meier.jar.dependencies" depends="ivy:setup-compile">
+        <path id="kaplan-meier.jar.dependencies.path">
+            <pathelement location="${kaplan-meier.jar.java.classes.dir}" />
+            <fileset dir="${kaplan-meier.jar.compile.lib.dir}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+    </target>
+    
+    <target name="clean:kaplan-meier.jar">
+        <delete dir="${kaplan-meier.jar.target.dir}" />
+    </target>
+
+    <target name="kaplan-meier.jar" depends="compile:kaplan-meier.jar">
+        <jar destfile="${kaplan-meier.jar}" basedir="${kaplan-meier.jar.java.classes.dir}" />
+    </target>
+
+    <target name="compile:kaplan-meier.jar" depends="path:kaplan-meier.jar.dependencies">
+        <mkdir dir="${kaplan-meier.jar.java.classes.dir}" />
+        <javac srcdir="${kaplan-meier.jar.java.src.dir}" 
+            destdir="${kaplan-meier.jar.java.classes.dir}" 
+                classpathref="kaplan-meier.jar.dependencies.path" 
+                    debug="true" />
+    </target>
+
+
+</project>

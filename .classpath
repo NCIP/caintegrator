@@ -8,6 +8,7 @@
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/resources"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
+	<classpathentry kind="src" output="software/kaplan-meier-jar/target/classes" path="software/kaplan-meier-jar/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/activation-1.0.2.jar"/>
@@ -122,5 +123,8 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/AffxFusion-1.0.10b.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/axis-1.2RC2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-runtime/commons-math-1.2.jar" sourcepath="software/lib/src/commons-math-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="software/kaplan-meier-jar/lib/compile/jcommon-1.0.12.jar"/>
+	<classpathentry kind="lib" path="software/kaplan-meier-jar/lib/compile/jfreechart-1.0.9.jar"/>
+	<classpathentry kind="lib" path="software/kaplan-meier-jar/lib/compile/weka-3.4.13.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
