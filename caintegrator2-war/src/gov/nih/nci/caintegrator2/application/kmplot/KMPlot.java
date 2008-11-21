@@ -98,5 +98,14 @@ public interface KMPlot {
      * @param out write image to this stream
      */
     void writePlotImage(OutputStream out);
+    
+    /**
+     * Returns the log rank p-value between two groups.
+     * 
+     * @param group1 first group in the comparison
+     * @param group2 second group in the comparison
+     * @return the p-value.
+     */
+    Double getPValue(SubjectGroup group1, SubjectGroup group2);
 
 }

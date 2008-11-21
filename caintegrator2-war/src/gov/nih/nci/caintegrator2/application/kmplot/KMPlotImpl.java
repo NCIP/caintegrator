@@ -88,6 +88,8 @@ package gov.nih.nci.caintegrator2.application.kmplot;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
@@ -106,6 +108,9 @@ class KMPlotImpl implements KMPlot {
     private JFreeChart plotChart;
     private int width = DEFAULT_WIDTH;
     private int height = DEFAULT_HEIGHT;
+    
+    private final Map<SubjectGroup, Map<SubjectGroup, Double>> groupToGroupPValueMap = 
+        new HashMap<SubjectGroup, Map<SubjectGroup, Double>>();
 
     /**
      * {@inheritDoc}
@@ -141,6 +146,29 @@ class KMPlotImpl implements KMPlot {
 
     void setPlotChart(JFreeChart plotChart) {
         this.plotChart = plotChart;
+    }
+    
+    void setPValue(SubjectGroup group1, SubjectGroup group2, Double pValue) {
+        getGroupPValueMap(group1).put(group2, pValue);
+    }
+
+    private Map<SubjectGroup, Double> getGroupPValueMap(SubjectGroup group) {
+        Map<SubjectGroup, Double> groupPValueMap = groupToGroupPValueMap.get(group); 
+        if (groupPValueMap == null) {
+            groupPValueMap = new HashMap<SubjectGroup, Double>();
+            groupToGroupPValueMap.put(group, groupPValueMap);
+        }
+        return groupPValueMap;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Double getPValue(SubjectGroup group1, SubjectGroup group2) {
+        if (group1.equals(group2)) {
+            throw new IllegalArgumentException("Groups must be different");
+        }
+        return getGroupPValueMap(group1).get(group2);
     }
 
 }

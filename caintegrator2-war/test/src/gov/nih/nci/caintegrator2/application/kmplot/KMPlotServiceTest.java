@@ -113,18 +113,16 @@ public class KMPlotServiceTest {
         configuration.setTitle("title");
         configuration.setDurationLabel("duration");
         configuration.setProbabilityLabel("probability");
-        SubjectGroup group = new SubjectGroup();
-        group.setColor(Color.BLACK);
-        group.setName("group");
-        SubjectSurvivalData survivalData = new SubjectSurvivalData(1, false);
-        group.getSurvivalData().add(survivalData);
-        configuration.getGroups().add(group);
-        plotService.generatePlot(configuration);
+        SubjectGroup group1 = createGroup();
+        configuration.getGroups().add(group1);
+        SubjectGroup group2 = createGroup();
+        configuration.getGroups().add(group2);
+        KMPlot plot = plotService.generatePlot(configuration);
         KMCriteriaDTO criteriaDTO = caIntegratorPlotStub.kmCriteriaDTO;
         assertEquals("title", criteriaDTO.getPlotTitle());
         assertEquals("duration", criteriaDTO.getDurationAxisLabel());
         assertEquals("probability", criteriaDTO.getProbablityAxisLabel());
-        assertEquals(1, criteriaDTO.getSampleGroupCriteriaDTOCollection().size());
+        assertEquals(2, criteriaDTO.getSampleGroupCriteriaDTOCollection().size());
         KMSampleGroupCriteriaDTO groupDTO = criteriaDTO.getSampleGroupCriteriaDTOCollection().iterator().next();
         assertEquals(Color.BLACK, groupDTO.getColor());
         assertEquals("group", groupDTO.getSampleGroupName());
@@ -132,6 +130,17 @@ public class KMPlotServiceTest {
         KMSampleDTO sampleDTO = groupDTO.getKmSampleDTOCollection().iterator().next();
         assertEquals(1, sampleDTO.getSurvivalLength());
         assertEquals(false, sampleDTO.getCensor());
+        assertEquals(1.1, (double) plot.getPValue(group1, group2), 0.0);
+        assertTrue(caIntegratorPlotStub.computeLogRankPValueBetweenCalled);
+    }
+
+    private SubjectGroup createGroup() {
+        SubjectGroup group = new SubjectGroup();
+        group.setColor(Color.BLACK);
+        group.setName("group");
+        SubjectSurvivalData survivalData = new SubjectSurvivalData(1, false);
+        group.getSurvivalData().add(survivalData);
+        return group;
     }
 
 }
