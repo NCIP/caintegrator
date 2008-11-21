@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -308,5 +309,19 @@ public interface StudyManagementService {
      * @return true or false
      */
     boolean isDuplicateStudyName(Study study);
+
+    /**
+     * Creates a new SurvivalValueDefinition for the study and returns.
+     * @param study - Study to create SurvivalValueDefinition for.
+     * @return newly created object.
+     */
+    SurvivalValueDefinition createNewSurvivalValueDefinition(Study study);
+
+    /**
+     * Removes a survivalValueDefinition from a study and deletes the object.
+     * @param study - Study to remove from.
+     * @param survivalValueDefinition - Object to remove from study.
+     */
+    void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition);
 
 }

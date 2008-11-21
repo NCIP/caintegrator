@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -121,7 +122,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Entry point to the StudyManagementService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED)
-@SuppressWarnings("PMD.CyclomaticComplexity")   // see configure study
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" })   // see configure study
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     @SuppressWarnings("unused")
@@ -154,7 +155,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         configureNew(studyConfiguration.getStudy());
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")   // multiple simple null checks
+    @SuppressWarnings({"PMD.CyclomaticComplexity", 
+                        "PMD.ExcessiveMethodLength", 
+                        "PMD.NPathComplexity" })   // multiple simple null checks
     private void configureNew(Study study) {
         if (study.getAssignmentCollection() == null) {
             study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
@@ -182,6 +185,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             defaultTimepoint.setDescription("Default Timepoint For Study '" + studyTitle + "'");
             defaultTimepoint.setName("Default");
             study.setDefaultTimepoint(defaultTimepoint);
+        }
+        if (study.getSurvivalValueDefinitionCollection() == null) {
+            study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         }
     }
 
@@ -619,6 +625,28 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     @Transactional(readOnly = true)
     public boolean isDuplicateStudyName(Study study) {
         return dao.isDuplicateStudyName(study);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SurvivalValueDefinition createNewSurvivalValueDefinition(Study study) {
+        SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
+        study.getSurvivalValueDefinitionCollection().add(survivalValueDefinition);
+        survivalValueDefinition.setName("[New Name]");
+        dao.save(study);
+        return survivalValueDefinition;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
+       study.getSurvivalValueDefinitionCollection().remove(survivalValueDefinition);
+       Collection <SurvivalValueDefinition> objectsToRemove = new HashSet<SurvivalValueDefinition>();
+       objectsToRemove.add(survivalValueDefinition);
+       dao.removeObjects(objectsToRemove);
+       dao.save(study);
     }
 
 }
