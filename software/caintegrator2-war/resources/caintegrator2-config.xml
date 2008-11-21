@@ -440,7 +440,7 @@
     </bean>
     
     <bean id="caIntegratorPlotService" 
-         class="gov.nih.nci.caintegrator.plots.services.KMPlotService">
+         class="gov.nih.nci.caintegrator.plots.services.KMPlotServiceImpl">
     </bean>
     
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
