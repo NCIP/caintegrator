@@ -117,7 +117,7 @@ public class CaIntegratorKMPlotServiceStub implements KMPlotService {
      */
     public Double computeLogRankPValueBetween(KMSampleGroupCriteriaDTO group1, KMSampleGroupCriteriaDTO group2) {
         computeLogRankPValueBetweenCalled = true;
-        return null;
+        return 1.1;
     }
 
     /**

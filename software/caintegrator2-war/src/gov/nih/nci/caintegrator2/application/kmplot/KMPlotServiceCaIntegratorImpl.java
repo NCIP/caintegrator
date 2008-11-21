@@ -89,7 +89,9 @@ import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMCriteriaDTO;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleDTO;
 import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.jfree.chart.JFreeChart;
 
@@ -105,19 +107,37 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
      */
     public KMPlot generatePlot(KMPlotConfiguration configuration) {
         KMPlotImpl plot = new KMPlotImpl();
-        KMCriteriaDTO kmCriteriaDTO = createCriteriaDTO(configuration);
+        Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap = 
+            new HashMap<SubjectGroup, KMSampleGroupCriteriaDTO>();
+        KMCriteriaDTO kmCriteriaDTO = createCriteriaDTO(configuration, groupToDTOMap);
         plot.setPlotChart((JFreeChart) caIntegratorPlotService.getChart(kmCriteriaDTO));
+        setPValues(plot, groupToDTOMap);
         return plot;
     }
 
-    private KMCriteriaDTO createCriteriaDTO(KMPlotConfiguration configuration) {
+    private void setPValues(KMPlotImpl plot, Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap) {
+        for (SubjectGroup group1 : groupToDTOMap.keySet()) {
+            for (SubjectGroup group2 : groupToDTOMap.keySet()) {
+                if (!group1.equals(group2)) {
+                    Double pValue = caIntegratorPlotService.computeLogRankPValueBetween(groupToDTOMap.get(group1), 
+                            groupToDTOMap.get(group2));
+                    plot.setPValue(group1, group2, pValue);
+                }
+            }
+        }
+    }
+
+    private KMCriteriaDTO createCriteriaDTO(KMPlotConfiguration configuration, 
+            Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap) {
         KMCriteriaDTO criteriaDTO = new KMCriteriaDTO();
         criteriaDTO.setDurationAxisLabel(configuration.getDurationLabel());
         criteriaDTO.setProbablityAxisLabel(configuration.getProbabilityLabel());
         criteriaDTO.setPlotTitle(configuration.getTitle());
         criteriaDTO.setSampleGroupCriteriaDTOCollection(new HashSet<KMSampleGroupCriteriaDTO>());
         for (SubjectGroup group : configuration.getGroups()) {
-            criteriaDTO.getSampleGroupCriteriaDTOCollection().add(createSampleGroupCriteriaDTO(group));
+            KMSampleGroupCriteriaDTO sampleGroupCriteriaDTO = createSampleGroupCriteriaDTO(group);
+            criteriaDTO.getSampleGroupCriteriaDTOCollection().add(sampleGroupCriteriaDTO);
+            groupToDTOMap.put(group, sampleGroupCriteriaDTO);
         }
         return criteriaDTO;
     }
