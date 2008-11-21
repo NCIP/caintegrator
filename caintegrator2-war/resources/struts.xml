@@ -99,6 +99,8 @@
         
         <action name="createNewImagingDefinition" method="createNewDefinition" class="defineImagingFileColumnAction">
             <result type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="editFileColumn" method="editFileColumn" class="defineFileColumnAction">
@@ -109,6 +111,8 @@
    
          <action name="editImagingFileColumn" method="editFileColumn" class="defineImagingFileColumnAction">
             <result type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="searchDefinitions" method="searchDefinitions" class="defineFileColumnAction">
@@ -125,10 +129,14 @@
         
         <action name="saveImagingColumnType" method="saveColumnType" class="defineImagingFileColumnAction">
             <result type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="searchImagingDefinitions" method="searchDefinitions" class="defineImagingFileColumnAction">
             <result type="tiles">editImagingFileColumn</result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
    
         <action name="selectDataElement" method="selectDataElement" class="defineFileColumnAction">
@@ -147,6 +155,8 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imagingSource.id">${imagingSource.id}</param>
             </result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="selectDefinition" method="selectDefinition" class="defineFileColumnAction">
@@ -165,6 +175,8 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imagingSource.id">${imagingSource.id}</param>
             </result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="updateFileColumn" method="updateFileColumn" class="defineFileColumnAction">
@@ -183,6 +195,8 @@
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imagingSource.id">${imagingSource.id}</param>
             </result>
+            <result name="input" type="tiles">editImagingFileColumn</result>
+            <result name="error" type="tiles">editImagingFileColumn</result>
         </action>
         
         <action name="homepage.getStudyDetails" method="getStudyDetails" class="homepageAction">
