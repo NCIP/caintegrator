@@ -95,6 +95,8 @@ import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -113,7 +115,7 @@ public class AnalysisServiceTest {
     // KMPlot Items
     private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
     private CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
-
+    private QueryManagementServiceForKMPlotStub queryManagementServiceStub = new QueryManagementServiceForKMPlotStub();
     
     @Before
     public void setUp() {
@@ -124,6 +126,7 @@ public class AnalysisServiceTest {
         serviceImpl.setGenePatternClient(genePatternClientStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
+        serviceImpl.setQueryManagementService(queryManagementServiceStub);
         service = serviceImpl;
     }
 
@@ -178,6 +181,7 @@ public class AnalysisServiceTest {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         KMPlot kmPlot = service.createKMPlot(study,
+                EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 
                 studyCreator.getSurvivalValueDefinition());
@@ -189,6 +193,7 @@ public class AnalysisServiceTest {
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
             kmPlot = service.createKMPlot(study, 
+                EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 
                 null);
@@ -201,6 +206,7 @@ public class AnalysisServiceTest {
         studyCreator.getSurvivalValueDefinition().setLastFollowupDate(null);
         try { // Try giving survivalValueDefinition without a followup date
             kmPlot = service.createKMPlot(study, 
+                EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 
                 studyCreator.getSurvivalValueDefinition());

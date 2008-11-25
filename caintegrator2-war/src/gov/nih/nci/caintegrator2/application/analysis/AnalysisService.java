@@ -91,6 +91,7 @@ import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -125,12 +126,14 @@ public interface AnalysisService {
     /**
      * Creates a KMPlot object based on all clinical subjects for the given parameters.
      * @param study the study that the user wants to create the plot for.
+     * @param groupFieldType the entity type for the grouping field (subject, sample, etc.)
      * @param groupAnnotationField the annotation definition for the grouping.
-     * @param plotGroupValues the permissable values allowed for the plot groups.
+     * @param plotGroupValues the permissible values allowed for the plot groups.
      * @param survivalValueDefinition the SurvivalValueDefinition to use for this plot.
      * @return the plot object.
      */
     KMPlot createKMPlot(Study study,
+                        EntityTypeEnum groupFieldType,
                         AnnotationDefinition groupAnnotationField,
                         Collection <AbstractPermissibleValue> plotGroupValues,
                         SurvivalValueDefinition survivalValueDefinition);

@@ -89,6 +89,8 @@ import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -109,6 +111,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private GenePatternClient genePatternClient;
     private CaIntegrator2Dao dao;
     private KMPlotService kmPlotService;
+    private QueryManagementService queryManagementService;
     
     /**
      * {@inheritDoc}
@@ -163,12 +166,17 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      */
     public KMPlot createKMPlot(Study study,
+                               EntityTypeEnum groupFieldType,
                                AnnotationDefinition groupAnnotationField,
                                Collection <AbstractPermissibleValue> plotGroupValues,
                                SurvivalValueDefinition survivalValueDefinition) {
-        KMPlotHelper kmPlotHelper = new KMPlotHelper(kmPlotService, dao, survivalValueDefinition);
+        KMPlotHelper kmPlotHelper = new KMPlotHelper(kmPlotService, 
+                                                     dao, 
+                                                     survivalValueDefinition, 
+                                                     queryManagementService);
         return kmPlotHelper.createPlot(groupAnnotationField, 
-                                plotGroupValues, study.getAssignmentCollection());
+                                       groupFieldType,
+                                       plotGroupValues);
     }
 
 
@@ -198,6 +206,20 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public void setKmPlotService(KMPlotService kmPlotService) {
         this.kmPlotService = kmPlotService;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
+    /**
+     * @param queryManagementService the queryManagementService to set
+     */
+    public void setQueryManagementService(QueryManagementService queryManagementService) {
+        this.queryManagementService = queryManagementService;
     }
 
 }
