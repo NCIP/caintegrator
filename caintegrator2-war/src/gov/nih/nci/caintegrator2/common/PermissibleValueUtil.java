@@ -104,6 +104,7 @@ import java.util.Set;
 /**
  * This is a static utility class used by the UI to update the permissibleValue collection. 
  */
+@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking for type and null.
 public final class PermissibleValueUtil {
 
     private PermissibleValueUtil() {
@@ -114,19 +115,21 @@ public final class PermissibleValueUtil {
      * @param abstractPermissibleValue the abstractPermissibleValue
      * @return String the value display string
      */
-    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking type.
     public static String getDisplayString(
             AbstractPermissibleValue abstractPermissibleValue) {
         if (abstractPermissibleValue instanceof StringPermissibleValue) {
             return ((StringPermissibleValue) abstractPermissibleValue).getStringValue();
         }
-        if (abstractPermissibleValue instanceof NumericPermissibleValue) {
+        if (abstractPermissibleValue instanceof NumericPermissibleValue
+                && ((NumericPermissibleValue) abstractPermissibleValue).getNumericValue() != null) {
+            //TODO Need to decide how to display null value
             return ((NumericPermissibleValue) abstractPermissibleValue).getNumericValue().toString();
         }
-        if (abstractPermissibleValue instanceof DatePermissibleValue) {
+        if (abstractPermissibleValue instanceof DatePermissibleValue
+                && ((DatePermissibleValue) abstractPermissibleValue).getDateValue() != null) {
+            //TODO Need to decide how to display null value
             final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            DatePermissibleValue datePermissibleValue = (DatePermissibleValue) abstractPermissibleValue;
-            return formatter.format(datePermissibleValue.getDateValue());
+            return formatter.format(((DatePermissibleValue) abstractPermissibleValue).getDateValue());
         }
         return null;
         
@@ -140,7 +143,11 @@ public final class PermissibleValueUtil {
             Collection<AbstractPermissibleValue> abstractPermissibleValues) {
         Set<String> results = new HashSet<String>();
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
-            results.add(getDisplayString(abstractPermissibleValue));
+            String displayString = getDisplayString(abstractPermissibleValue);
+            //TODO Need to decide how to display null value, for now we just skip it
+            if (displayString != null) {
+                results.add(displayString);
+            }
         }
         return results;
     }
@@ -186,10 +193,11 @@ public final class PermissibleValueUtil {
      */
     public static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
             List<String> addList) throws ParseException {
-        if (addList != null) {
-            for (String displayString : addList) {
-                addNewValue(type, abstractPermissibleValues, displayString);
-            }
+        if (addList == null) {
+            return;
+        }
+        for (String displayString : addList) {
+            addNewValue(type, abstractPermissibleValues, displayString);
         }
     }
 
@@ -201,10 +209,11 @@ public final class PermissibleValueUtil {
      */
     public static void removeValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
             List<String> removePermissibleDisplayValues) {
-        if (removePermissibleDisplayValues != null) {
-            for (String displayString : removePermissibleDisplayValues) {
-                removeValue(abstractPermissibleValues, displayString);
-            }
+        if (removePermissibleDisplayValues == null) {
+            return;
+        }
+        for (String displayString : removePermissibleDisplayValues) {
+            removeValue(abstractPermissibleValues, displayString);
         }
     }
     
@@ -212,9 +221,10 @@ public final class PermissibleValueUtil {
             String removePermissibleDisplayValue) {
         AbstractPermissibleValue abstractPermissibleValue = getObject(abstractPermissibleValues,
                 removePermissibleDisplayValue);
-        if (abstractPermissibleValue != null) {
-            abstractPermissibleValues.remove(abstractPermissibleValue);
+        if (abstractPermissibleValue == null) {
+            return;
         }
+        abstractPermissibleValues.remove(abstractPermissibleValue);
     }
 
     /**
@@ -234,17 +244,19 @@ public final class PermissibleValueUtil {
         return null;
     }
 
-    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking type.
     private static void addNewValue(String type, Collection<AbstractPermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
-        if (!containsDisplayString(abstractPermissibleValues, displayString)) {
-            if (type.equals(AnnotationTypeEnum.STRING.getValue())) {
-                addStringValue(abstractPermissibleValues, displayString);
-            } else if (type.equals(AnnotationTypeEnum.NUMERIC.getValue())) {
-                addNumericValue(abstractPermissibleValues, displayString);
-            } else if (type.equals(AnnotationTypeEnum.DATE.getValue())) {
-                addDateValue(abstractPermissibleValues, displayString);
-            }
+        if (containsDisplayString(abstractPermissibleValues, displayString)) {
+            return;
+        }
+        if (type.equals(AnnotationTypeEnum.STRING.getValue())) {
+            addStringValue(abstractPermissibleValues, displayString);
+        }
+        if (type.equals(AnnotationTypeEnum.NUMERIC.getValue())) {
+            addNumericValue(abstractPermissibleValues, displayString);
+        }
+        if (type.equals(AnnotationTypeEnum.DATE.getValue())) {
+            addDateValue(abstractPermissibleValues, displayString);
         }
     }
     

@@ -309,7 +309,7 @@ public class QueryHelper {
     private AbstractCriterion buildGenomicCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         AbstractCriterion abstractCriterion;
         GenomicAnnotationEnum genomicAnnotationType = GenomicAnnotationEnum.
-                         getByValue(queryAnnotationCriteria.getAnnotationSelection());
+                         getByValue(queryAnnotationCriteria.getSelectedAnnotationDefinition());
         switch(genomicAnnotationType) {
         case GENE_NAME:
             abstractCriterion = buildGeneNameCriterion(queryAnnotationCriteria);
@@ -319,7 +319,7 @@ public class QueryHelper {
             break;
         default:
             throw new IllegalStateException("Unknown genomic annotation type ==> " 
-                                 + queryAnnotationCriteria.getAnnotationSelection());
+                                 + queryAnnotationCriteria.getSelectedAnnotationDefinition());
         }
         
         return abstractCriterion;
@@ -329,9 +329,9 @@ public class QueryHelper {
         StringComparisonCriterion sCriterion = new StringComparisonCriterion();
         
         sCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
-        sCriterion.setWildCardType(getWildCardType(queryAnnotationCriteria.getAnnotationOperatorSelection()));
+        sCriterion.setWildCardType(getWildCardType(queryAnnotationCriteria.getSelectedOperator()));
         sCriterion.setEntityType(queryAnnotationCriteria.getRowType().getValue());
-        sCriterion.setStringValue(queryAnnotationCriteria.getAnnotationValue());
+        sCriterion.setStringValue(queryAnnotationCriteria.getSelectedAnnotationValue());
         
         return sCriterion;
     }
@@ -341,16 +341,16 @@ public class QueryHelper {
         
         nCriterion.setAnnotationDefinition(getAnnotationDefinition(queryAnnotationCriteria));
         nCriterion.setNumericComparisonOperator((NumericComparisonOperatorEnum.getByValue(
-                queryAnnotationCriteria.getAnnotationOperatorSelection()).getValue()));
+                queryAnnotationCriteria.getSelectedOperator()).getValue()));
         nCriterion.setEntityType(queryAnnotationCriteria.getRowType().getValue());
-        nCriterion.setNumericValue(Double.valueOf(queryAnnotationCriteria.getAnnotationValue()));
+        nCriterion.setNumericValue(Double.valueOf(queryAnnotationCriteria.getSelectedAnnotationValue()));
         
         return nCriterion;
     }
     
     private GeneNameCriterion buildGeneNameCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         GeneNameCriterion criterion = new GeneNameCriterion();
-        criterion.setGeneSymbol(queryAnnotationCriteria.getAnnotationValue());
+        criterion.setGeneSymbol(queryAnnotationCriteria.getSelectedAnnotationValue());
         
         return criterion;
     }
@@ -358,15 +358,15 @@ public class QueryHelper {
     
     private FoldChangeCriterion buildFoldChangeCriterion(QueryAnnotationCriteria queryAnnotationCriteria) {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setFolds((Float.valueOf(queryAnnotationCriteria.getAnnotationValue())));
+        criterion.setFolds((Float.valueOf(queryAnnotationCriteria.getSelectedAnnotationValue())));
         return criterion;
     }
     
     private AnnotationDefinition getAnnotationDefinition(QueryAnnotationCriteria queryAnnotationCriteria) {
-        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
+        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelection();
         for (AnnotationDefinition definition : annoHelper.getAnnotationDefinitions()) {
             if (definition.getDisplayName() != null 
-                 && definition.getDisplayName().equals(queryAnnotationCriteria.getAnnotationSelection())) {
+                 && definition.getDisplayName().equals(queryAnnotationCriteria.getSelectedAnnotationDefinition())) {
                 return definition;
             }
         }
@@ -398,8 +398,8 @@ public class QueryHelper {
     private String getQueryType(QueryAnnotationCriteria queryAnnotationCriteria) {
         String queryType = "";
         
-        String annotationOperator = queryAnnotationCriteria.getAnnotationOperatorSelection();
-        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelections();
+        String annotationOperator = queryAnnotationCriteria.getSelectedOperator();
+        AnnotationSelection annoHelper = queryAnnotationCriteria.getAnnotationSelection();
         if (annoHelper.getStringOptionToEnumMap().containsKey(annotationOperator)) {
             queryType = "string";
         } else if (annoHelper.getNumericOptionToEnumMap().containsKey(annotationOperator)) {

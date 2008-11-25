@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.query.GenomicAnnotationEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Helper class to store and retrieve annotation definitions, and 
@@ -106,7 +108,8 @@ public class AnnotationSelection {
     private Collection<AnnotationDefinition> annotationDefinitions = new HashSet<AnnotationDefinition>();
     private Collection<GenomicAnnotationEnum> genomicAnnotationDefinitions = new HashSet<GenomicAnnotationEnum>();
     private List<String> annotationSelections = new ArrayList<String>();
-     private List<String> currentAnnotationOperatorSelections = new ArrayList<String>();
+    private List<String> currentAnnotationOperatorSelections = new ArrayList<String>();
+    private Set<String> currentAnnotationPermissibleSelections = new HashSet<String>();
     private List<String> stringAnnotationDisplayOperatorList = new ArrayList<String>();
     private List<String> numericAnnotationDisplayOperatorList = new ArrayList<String>();
     // Maps string operator display to corresponding WildCardTypeEnum
@@ -136,7 +139,16 @@ public class AnnotationSelection {
     public void setAnnotationSelections(List<String> annotationSelections) {
         this.annotationSelections = annotationSelections;
     }
-    
+
+    /**
+     * Sets operators based on the type of data and the permissible values.
+     * 
+     * @param definition AnnotationDefinition object
+     */
+    public void setCurrentAnnotationOptions(AnnotationDefinition definition) {
+        setCurrentAnnotationOperatorSelections(definition);
+        setCurrentAnnotationPermissibleSelections(definition);
+    }
  
     /**
      * 
@@ -147,15 +159,30 @@ public class AnnotationSelection {
     }
     
     /**
-     * @param dataType Sets currentAnnotationOperatorSelections based on the type of data.
+     * @param definition Sets currentAnnotationOperatorSelections based on the type of data.
      */
-    public void setCurrentAnnotationOperatorSelections(String dataType) {
-        if (AnnotationTypeEnum.STRING.getValue().equalsIgnoreCase(dataType)) {
+    private void setCurrentAnnotationOperatorSelections(AnnotationDefinition definition) {
+        if (AnnotationTypeEnum.STRING.getValue().equalsIgnoreCase(definition.getType())) {
             this.currentAnnotationOperatorSelections = this.getStringAnnotationDisplayOperatorList();
-        } else if (AnnotationTypeEnum.NUMERIC.getValue().equalsIgnoreCase(dataType)) {
+        } else if (AnnotationTypeEnum.NUMERIC.getValue().equalsIgnoreCase(definition.getType())) {
             this.currentAnnotationOperatorSelections = this.getNumericAnnotationDisplayOperatorList();
         }
-       
+    }
+
+    /**
+     * @return the permissible values
+     */
+    public Set<String> getCurrentAnnotationPermissibleSelections() {
+        return currentAnnotationPermissibleSelections;
+    }
+    
+    /**
+     * @param definition AnnotationDefinition
+     */
+    @SuppressWarnings("unchecked")
+    private void setCurrentAnnotationPermissibleSelections(AnnotationDefinition definition) {
+        currentAnnotationPermissibleSelections =
+            PermissibleValueUtil.getDisplayPermissibleValue(definition.getPermissibleValueCollection());
     }
     
     /**
@@ -302,6 +329,7 @@ public class AnnotationSelection {
         newAnnotationSelection.setGenomicAnnotationDefinitions(this.getGenomicAnnotationDefinitions());
         newAnnotationSelection.setNumericAnnotationDisplayOperatorList(this.getNumericAnnotationDisplayOperatorList());
         newAnnotationSelection.setNumericOptionToEnumMap(this.getNumericOptionToEnumMap());
+        newAnnotationSelection.setStringAnnotationDisplayOperatorList(this.getStringAnnotationDisplayOperatorList());
         newAnnotationSelection.setStringAnnotationDisplayOperatorList(this.getStringAnnotationDisplayOperatorList());
         newAnnotationSelection.setStringOptionToEnumMap(this.getStringOptionToEnumMap());
         return newAnnotationSelection;

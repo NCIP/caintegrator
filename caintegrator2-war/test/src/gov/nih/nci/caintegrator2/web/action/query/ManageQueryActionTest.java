@@ -96,12 +96,14 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -198,7 +200,7 @@ public class ManageQueryActionTest {
         AnnotationSelection annotationSelection = new AnnotationSelection();
         annotationSelection.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection.getAnnotationDefinitions().add(new AnnotationDefinition());
-        queryAnnotationCriteria.setAnnotationSelections(annotationSelection);
+        queryAnnotationCriteria.setAnnotationSelection(annotationSelection);
         queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria);
 
@@ -206,15 +208,15 @@ public class ManageQueryActionTest {
         AnnotationSelection annotationSelection2 = new AnnotationSelection();
         annotationSelection2.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
         annotationSelection2.getAnnotationDefinitions().add(new AnnotationDefinition());
-        queryAnnotationCriteria2.setAnnotationSelections(annotationSelection2);
+        queryAnnotationCriteria2.setAnnotationSelection(annotationSelection2);
         queryAnnotationCriteria2.setRowType(EntityTypeEnum.SUBJECT);
         manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria2);
     }
 
-
     @Test
     @SuppressWarnings({"PMD"})
-    public void testExecute() {      
+    public void testExecute() {
+        
         // test create new query
         manageQueryAction.setSelectedAction("createNewQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
@@ -255,15 +257,48 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
-        // test removal of row
-        manageQueryAction.setSelectedAction("remove");
+        //test - update Annotation Definition
+        
+        Collection<AnnotationDefinition> subjectAnnotationCollection = new ArrayList<AnnotationDefinition>();
+        AnnotationDefinition definition = new AnnotationDefinition();
+        definition.setId(1L);
+        definition.setDisplayName("annotation1");
+        definition.setType("string");
+        definition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
+        subjectAnnotationCollection.add(definition);
+        definition = new AnnotationDefinition();
+        definition.setId(2L);
+        definition.setDisplayName("annotation2");
+        definition.setType("string");
+        definition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
+        subjectAnnotationCollection.add(definition);
+        
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(new Study());
+        studySubscription.getStudy().setSubjectAnnotationCollection(subjectAnnotationCollection);
+        studySubscription.setId(1L);
+        
+        StudySubscription studySubscription2 = new StudySubscription();
+        studySubscription2.setStudy(new Study());
+        studySubscription2.getStudy().setSubjectAnnotationCollection(subjectAnnotationCollection);
+        studySubscription2.setId(2L);
+
+        SessionHelper sessionHelper = SessionHelper.getInstance();
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription2);
+        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
+
+        manageQueryAction.getManageQueryHelper().prepopulateAnnotationSelectLists(studySubscription.getStudy());
+
+        manageQueryAction.setSelectedAction("updateAnnotationDefinition");
         manageQueryAction.setRowNumber("0");
         manageQueryAction.prepare();
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
-        //test - updating operator 
-        manageQueryAction.setSelectedAction("updateOperators");
+        // test removal of row
+        manageQueryAction.setSelectedAction("remove");
         manageQueryAction.setRowNumber("0");
         manageQueryAction.prepare();
         manageQueryAction.validate();

@@ -103,10 +103,10 @@ public class QueryAnnotationCriteriaTest {
     
     @Before
     public void setUp() {
-        queryAnnotationCriteria.setAnnotationSelections(annotationSelections);
-        queryAnnotationCriteria.setAnnotationSelection(str);
-        queryAnnotationCriteria.setAnnotationOperatorSelection(str);
-        queryAnnotationCriteria.setAnnotationValue(str);
+        queryAnnotationCriteria.setAnnotationSelection(annotationSelections);
+        queryAnnotationCriteria.setSelectedAnnotationDefinition(str);
+        queryAnnotationCriteria.setSelectedOperator(str);
+        queryAnnotationCriteria.setSelectedAnnotationValue(str);
         queryAnnotationCriteria.setAndOp(true);
         queryAnnotationCriteria.setBeginParen(false);
         queryAnnotationCriteria.setEndParen(false);
@@ -117,10 +117,10 @@ public class QueryAnnotationCriteriaTest {
    
     @Test
     public void testGetAnnotationSelection() {        
-        assertNotNull(queryAnnotationCriteria.getAnnotationSelections());
         assertNotNull(queryAnnotationCriteria.getAnnotationSelection());
-        assertEquals(str,queryAnnotationCriteria.getAnnotationOperatorSelection());
-        assertEquals(str,queryAnnotationCriteria.getAnnotationValue());        
+        assertNotNull(queryAnnotationCriteria.getSelectedAnnotationDefinition());
+        assertEquals(str,queryAnnotationCriteria.getSelectedOperator());
+        assertEquals(str,queryAnnotationCriteria.getSelectedAnnotationValue());        
         assertEquals(true,queryAnnotationCriteria.isAndOp());
         assertEquals(false,queryAnnotationCriteria.isBeginParen());
         assertEquals(false,queryAnnotationCriteria.isEndParen());
