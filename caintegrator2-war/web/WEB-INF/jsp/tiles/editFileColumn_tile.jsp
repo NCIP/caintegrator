@@ -19,7 +19,7 @@
         <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
     </s:form>
         
-    <s:form>
+    <s:form cssClass="currentAnnotationDefinition">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="clinicalSource.id" />
         <s:hidden name="fileColumn.id" />
@@ -57,6 +57,9 @@
                     doubleSize="8"
                     multiple="true"
                     doubleMultiple="true"
+                    cssStyle="min-width:100px; vertical-align=middle;"
+                    buttonCssStyle="min-width:100px;"
+                    label="Permissable Values"
                     />
             </s:if>
 	        <s:submit value="New" action="createNewDefinition" />
