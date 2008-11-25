@@ -276,9 +276,11 @@
     <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
             <property name="revision" value="HEAD"/>
     
+            <echo>${root.dir}</echo>
+    
             <!-- find out revision number of HEAD, need svn.exe installed on local machine -->
             <exec executable="svn" outputproperty="svnlog.out">
-                <arg line="log ${homedir}/.. -r ${revision} -q"/>
+                <arg line="log ${root.dir}/software -r ${revision} -q"/>
             </exec>
     
             <echo>${svnlog.out}</echo>
