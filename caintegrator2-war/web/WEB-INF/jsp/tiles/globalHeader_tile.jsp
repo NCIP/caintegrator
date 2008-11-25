@@ -22,10 +22,15 @@
 
 <div id="appheader">
 
-    <div id="mainlogo"><a href="index.jsp"><img
-        src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
-    </div>
-
+    <div id="mainlogo">
+        <div>
+            <a href="index.jsp"><img src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
+        </div>
+        <div id="versioninfo">
+            version: <s:property value="#application['caintegrator2Version']"/>,
+            revision: <s:property value="#application['svnRevision']"/>            
+        </div>
+    </div> 
 
     <div id="userarea_wrapper">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
