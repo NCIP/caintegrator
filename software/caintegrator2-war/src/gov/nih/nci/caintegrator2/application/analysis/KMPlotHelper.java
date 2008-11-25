@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -100,12 +102,19 @@ import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Helper method for AnalysisService to generate a KMPlot object.
@@ -117,16 +126,21 @@ class KMPlotHelper {
     private final KMPlotService kmPlotService;
     private final CaIntegrator2Dao dao;
     private final SurvivalValueDefinition survivalValueDefinition;
+    private final QueryManagementService queryManagementService;
+    private final Map<SubjectGroup, AbstractPermissibleValue> subjectGroupPermissibleValue = 
+                                        new HashMap<SubjectGroup, AbstractPermissibleValue>();
     
-    KMPlotHelper(KMPlotService kmPlotService, CaIntegrator2Dao dao, SurvivalValueDefinition survivalValueDefinition) {
+    KMPlotHelper(KMPlotService kmPlotService, CaIntegrator2Dao dao, SurvivalValueDefinition survivalValueDefinition, 
+                 QueryManagementService queryManagementService) {
         this.kmPlotService = kmPlotService;
         this.dao = dao;
         this.survivalValueDefinition = survivalValueDefinition;
+        this.queryManagementService = queryManagementService;
     }
     
     KMPlot createPlot(AnnotationDefinition groupAnnotationField,
-                      Collection<AbstractPermissibleValue> plotGroupValues,
-                      Collection<StudySubjectAssignment> subjects) {
+                      EntityTypeEnum groupFieldType,
+                      Collection<AbstractPermissibleValue> plotGroupValues) {
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         if (survivalValueDefinition == null) {
             throw new IllegalArgumentException("SurvivalValueDefinition cannot be null");
@@ -139,18 +153,25 @@ class KMPlotHelper {
         }
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         retrieveSubjectGroups(plotGroupValues, subjectGroupCollection);
-        retrieveSubjectSurvivalData(groupAnnotationField, subjects, subjectGroupCollection);
+        Collection <ResultRow> subjectRows = retrieveSubjectRowsFromDatabase(groupFieldType, groupAnnotationField);
+        retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         configuration.getGroups().addAll(subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
     }
 
     private void retrieveSubjectSurvivalData(AnnotationDefinition groupAnnotationField,
-                                            Collection<StudySubjectAssignment> subjects, 
+                                            Collection <ResultRow> rows, 
                                             Collection<SubjectGroup> subjectGroupCollection) {
-        for (StudySubjectAssignment subjectAssignment : subjects) {
+        for (ResultRow row : rows) {
+            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
             SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-            AbstractAnnotationValue subjectPlotGroupValue = dao.retrieveValueForAnnotationSubject(
-                                                            subjectAssignment, groupAnnotationField);
+            AbstractAnnotationValue subjectPlotGroupValue = null;
+            for (ResultValue value : row.getValueCollection()) {
+                if (value.getColumn().getAnnotationDefinition().equals(groupAnnotationField)) {
+                    subjectPlotGroupValue = value.getValue();
+                    break;
+                }
+            }
             assignSubjectToGroup(subjectGroupCollection, subjectSurvivalData, subjectPlotGroupValue);
         }
     }
@@ -201,7 +222,7 @@ class KMPlotHelper {
             SubjectSurvivalData subjectSurvivalData, AbstractAnnotationValue subjectPlotGroupValue) {
         for (SubjectGroup subjectGroup : subjectGroupCollection) {
             if (Cai2Util.annotationValueBelongToPermissibleValue(
-                        subjectPlotGroupValue, subjectGroup.getPlotGroupValue())) {
+                        subjectPlotGroupValue, subjectGroupPermissibleValue.get(subjectGroup))) {
                 subjectGroup.getSurvivalData().add(subjectSurvivalData);
                 break;
             }
@@ -213,7 +234,7 @@ class KMPlotHelper {
         for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
             SubjectGroup subjectGroup = new SubjectGroup();
             subjectGroup.setName(retrieveGroupName(plotGroupValue));
-            subjectGroup.setPlotGroupValue(plotGroupValue);
+            subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
             subjectGroupCollection.add(subjectGroup);
             subjectGroup.setColor(getColor(subjectGroupCollection.size()));
         }
@@ -255,5 +276,17 @@ class KMPlotHelper {
         int yearsBetween = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
         int monthsBetween = endDate.get(Calendar.MONTH) - startDate.get(Calendar.MONTH);
         return ((yearsBetween * MONTHS_IN_YEAR) + monthsBetween);
+    }
+    
+    private Collection<ResultRow> retrieveSubjectRowsFromDatabase(EntityTypeEnum groupFieldType, 
+                                                 AnnotationDefinition groupAnnotationField) {
+        Query query = new Query();
+        ResultColumn column = new ResultColumn();
+        column.setAnnotationDefinition(groupAnnotationField);
+        column.setEntityType(groupFieldType.getValue());
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.getColumnCollection().add(column);
+        QueryResult queryResult = queryManagementService.execute(query);
+        return queryResult.getRowCollection();
     }
 }

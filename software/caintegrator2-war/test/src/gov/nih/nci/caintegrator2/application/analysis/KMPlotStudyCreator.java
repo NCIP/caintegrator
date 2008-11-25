@@ -93,6 +93,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -309,6 +314,36 @@ public class KMPlotStudyCreator {
         lastFollowupDateAnnotation.getAnnotationValueCollection().add(female1LastFollowupDateValue);
         
         return kmPlotStudy;
+    }
+    
+    public QueryResult retrieveQueryResultFromThisStudy(Query query) {
+        Study study = createKMPlotStudy();
+        QueryResult result = new QueryResult();
+        result.setRowCollection(new HashSet<ResultRow>());
+        AnnotationDefinition groupAnnotationField = new AnnotationDefinition();
+        // Assuming the query has only one column we're interested in.
+        for (ResultColumn column : query.getColumnCollection()) {
+            groupAnnotationField = column.getAnnotationDefinition();
+        }
+        for (StudySubjectAssignment assignment : study.getAssignmentCollection()) {
+            ResultRow row = new ResultRow();
+            row.setSubjectAssignment(assignment);
+            row.setValueCollection(new HashSet<ResultValue>());
+            result.getRowCollection().add(row);
+            for(SubjectAnnotation annotation : assignment.getSubjectAnnotationCollection()) {
+                if (groupAnnotationField.equals(annotation.getAnnotationValue().getAnnotationDefinition())) {
+                    ResultValue value = new ResultValue();
+                    value.setValue(annotation.getAnnotationValue());
+                    ResultColumn column = new ResultColumn();
+                    column.setAnnotationDefinition(groupAnnotationField);
+                    value.setColumn(column);
+                    row.getValueCollection().add(value);
+                    break;
+                }
+            }
+        }
+        return result;
+        
     }
 
     /**

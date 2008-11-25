@@ -397,6 +397,9 @@
         <property name="kmPlotService">
             <ref local="kmPlotService"/>
         </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
     </bean>
 
     <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
