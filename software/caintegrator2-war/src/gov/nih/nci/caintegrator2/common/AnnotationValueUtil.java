@@ -99,6 +99,7 @@ import java.util.Set;
 /**
  * This is a static utility class used by the UI to display the annotation value. 
  */
+@SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking for type and null.
 public final class AnnotationValueUtil {
 
     private AnnotationValueUtil() {
@@ -114,14 +115,14 @@ public final class AnnotationValueUtil {
             StringAnnotationValue stringAnnotation = (StringAnnotationValue) abstractAnnotationValue;
             return stringAnnotation.getStringValue();
         }
-        if (abstractAnnotationValue instanceof NumericAnnotationValue) {
-            NumericAnnotationValue numericAnnotationValue = (NumericAnnotationValue) abstractAnnotationValue;
-            return numericAnnotationValue.getNumericValue().toString();
+        if (abstractAnnotationValue instanceof NumericAnnotationValue
+                && ((NumericAnnotationValue) abstractAnnotationValue).getNumericValue() != null) {
+            return ((NumericAnnotationValue) abstractAnnotationValue).getNumericValue().toString();
         }
-        if (abstractAnnotationValue instanceof DateAnnotationValue) {
+        if (abstractAnnotationValue instanceof DateAnnotationValue
+                && ((DateAnnotationValue) abstractAnnotationValue).getDateValue() != null) {
             final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            DateAnnotationValue dateAnnotationValue = (DateAnnotationValue) abstractAnnotationValue;
-            return formatter.format(dateAnnotationValue.getDateValue());
+            return formatter.format(((DateAnnotationValue) abstractAnnotationValue).getDateValue());
         }
         return null;
         
@@ -136,8 +137,9 @@ public final class AnnotationValueUtil {
             Set<String> filterList) {
         Set<String> results = new HashSet<String>();
         for (AbstractAnnotationValue abstractAnnotationValue : abstractAnnotationValues) {
-            if (!filterList.contains(getDisplayString(abstractAnnotationValue))) {
-                results.add(getDisplayString(abstractAnnotationValue));
+            String displayString = getDisplayString(abstractAnnotationValue);
+            if (displayString != null && !filterList.contains(displayString)) {
+                results.add(displayString);
             }
         }
         return results;

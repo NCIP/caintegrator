@@ -279,11 +279,19 @@
                 
         <!--  Query Actions -->
         
+        <action name="newQuery" class="newQueryAction">
+            <result type="redirectAction">
+                <param name="actionName">manageQuery</param>
+                <param name="selectedAction">createNewQuery</param>
+            </result>
+            <result name="input" type="tiles">homepage</result>
+        </action>
+        
         <action name="manageQuery" class="manageQueryAction">
             <result type="tiles">manageQuery</result>
             <result name="input" type="tiles">manageQuery</result>
             <result name="error" type="tiles">manageQuery</result>
-        </action>           
+        </action>
                 
         <action name="executeQuery" class="executeQueryAction">
             <result type="tiles">viewResults</result>

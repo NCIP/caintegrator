@@ -90,6 +90,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -128,6 +129,7 @@ public class ManageQueryHelperTest {
         
         studySubscription = new StudySubscription();
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
         annotationDefinitionSet.add(annotationDefinition);
         Study study = new Study();
         studySubscription.setStudy(study);

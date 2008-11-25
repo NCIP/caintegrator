@@ -291,6 +291,14 @@
 
     <!-- Query Management actions -->
     
+    <bean id="newQueryAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.query.NewQueryAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>   
+    
     <bean id="manageQueryAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.ManageQueryAction">

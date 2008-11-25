@@ -93,11 +93,11 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
  */
 public class QueryAnnotationCriteria {
 
-    private AnnotationSelection annotationSelections = null;
+    private AnnotationSelection annotationSelection = null;
     private boolean beginParen;
-    private String annotationSelection = null;  //This is the selected annotation.
-    private String annotationOperatorSelection = null;  //This is the selected operator.
-    private String annotationValue = null; //This is the value input by user for this criterion.
+    private String selectedAnnotationDefinition = null;  //This is the selected annotation definition.
+    private String selectedOperator = null;  //This is the selected operator.
+    private String selectedAnnotationValue = null; //This is the value input by user for this criterion.
     private EntityTypeEnum rowType = null; // This is the entity type for the row
     private String rowLabel = null; // This is the label for the entity annotation for this row.
     private boolean endParen;
@@ -109,22 +109,22 @@ public class QueryAnnotationCriteria {
     /**
      * @return String the user's selected annotation operator
      */
-    public String getAnnotationOperatorSelection() {
-        return this.annotationOperatorSelection;
+    public String getSelectedOperator() {
+        return this.selectedOperator;
     }
 
     /**
      * @return String the user's selected annotation entity
      */
-    public String getAnnotationSelection() {
-        return this.annotationSelection;
+    public String getSelectedAnnotationDefinition() {
+        return this.selectedAnnotationDefinition;
     }
 
     /**
      * @return String the value criteria
      */
-    public String getAnnotationValue() {
-        return this.annotationValue;
+    public String getSelectedAnnotationValue() {
+        return this.selectedAnnotationValue;
     }
 
     /** 
@@ -177,24 +177,24 @@ public class QueryAnnotationCriteria {
     }
 
     /**
-     * @param annotationOperatorSelection Set the user's annotation operator selection
+     * @param selectedOperator Set the user's annotation operator selection
      */
-    public void setAnnotationOperatorSelection(String annotationOperatorSelection) {
-        this.annotationOperatorSelection = annotationOperatorSelection;
+    public void setSelectedOperator(String selectedOperator) {
+        this.selectedOperator = selectedOperator;
     }
 
     /**
-     * @param annotationSelection Set the user's annotation entity selection
+     * @param selectedAnnotationDefinition Set the user's annotation entity selection
      */
-    public void setAnnotationSelection(String annotationSelection) {
-        this.annotationSelection = annotationSelection;
+    public void setSelectedAnnotationDefinition(String selectedAnnotationDefinition) {
+        this.selectedAnnotationDefinition = selectedAnnotationDefinition;
     }
 
     /**
-     * @param annotationValue Set the value criteria
+     * @param selectedAnnotationValue Set the value criteria
      */
-    public void setAnnotationValue(String annotationValue) {
-        this.annotationValue = annotationValue;
+    public void setSelectedAnnotationValue(String selectedAnnotationValue) {
+        this.selectedAnnotationValue = selectedAnnotationValue;
     }
 
     /**
@@ -233,17 +233,17 @@ public class QueryAnnotationCriteria {
     }
 
     /**
-     * @return the annotationSelections
+     * @return the annotationSelection
      */
-    public AnnotationSelection getAnnotationSelections() {
-        return annotationSelections;
+    public AnnotationSelection getAnnotationSelection() {
+        return annotationSelection;
     }
 
     /**
-     * @param annotationSelections the annotationSelections to set
+     * @param annotationSelection the annotationSelection to set
      */
-    public void setAnnotationSelections(AnnotationSelection annotationSelections) {
-        this.annotationSelections = annotationSelections;
+    public void setAnnotationSelection(AnnotationSelection annotationSelection) {
+        this.annotationSelection = annotationSelection;
     }
 
     /**

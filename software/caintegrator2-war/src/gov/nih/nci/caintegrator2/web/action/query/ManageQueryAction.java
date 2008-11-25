@@ -280,8 +280,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         } else if ("updateResultsPerPage".equals(selectedAction)) {
          // Does nothing right now, eventually might actually persist this value to db.
             returnValue = SUCCESS;
-        } else if ("updateOperators".equals(selectedAction)) {
-            returnValue = updateOperatorsForAnnotationSelection();
+        } else if ("updateAnnotationDefinition".equals(selectedAction)) {
+            returnValue = updateAnnotationDefinition();
         } else {
             returnValue = ERROR; 
         }     
@@ -329,7 +329,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         return SUCCESS;
     }
     
-    private String updateOperatorsForAnnotationSelection() {
+    private String updateAnnotationDefinition() {
         try {
              if (this.selectedAnnotations != null) {
                   manageQueryHelper.updateAnnotationDefinition(selectedAnnotations, Integer.valueOf(rowNumber));
