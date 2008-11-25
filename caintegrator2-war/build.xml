@@ -286,7 +286,6 @@
             <echo>${svnlog.out}</echo>
     
             <!-- need ant-contrib.jar for this in lib dir of ant install -->
-            <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
             <propertyregex property="svn.revision" input="${svnlog.out}" select="\1">
                 <regexp pattern="r([0-9]*)"/>
             </propertyregex>
