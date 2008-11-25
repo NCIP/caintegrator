@@ -14,7 +14,21 @@
             /WEB-INF/classes/caintegrator2-config.xml
         </param-value>
     </context-param>
-
+    
+    <!-- Application version information being stored as an application context param -->
+    <context-param>
+        <param-name>caintegrator2Version</param-name>
+        <param-value>@caintegrator2.version@</param-value>
+    </context-param>
+    <context-param>
+        <param-name>svnUrl</param-name>
+        <param-value>@svn.url@</param-value>
+    </context-param>
+    <context-param>
+        <param-name>svnRevision</param-name>
+        <param-value>@svn.revision@</param-value>
+    </context-param>
+    
     <!-- Export Filter (for exporting data results) -->
     <filter>
 		<filter-name>ResponseOverrideFilter</filter-name>

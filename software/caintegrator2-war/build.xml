@@ -272,6 +272,26 @@
     </target>
 
     
+
+    <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
+               <path id="macrodef.classpath">
+                    <fileset dir="${bda-utils.dir}">
+                        <include name="**/*.jar" />
+                    </fileset>
+                </path>
+            <taskdef resource="svntask.properties" classpathref ="macrodef.classpath" />
+            <svn javahl="false">
+                <status path="${root.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
+            </svn>
+            <!--
+              Note that if you explicitly define caintergrator2.version it will take
+              precedence over the one obtained from SVN
+              -->
+            <propertyregex property="caintegrator2.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+            <echo message="found svn info: ${svn.url} ${svn.revision} ${caintegrator2.version}" />
+    </target>
+
+    
     <!-- ******************************************************************* -->
     <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
     <!-- ******************************************************************* -->
@@ -280,11 +300,11 @@
     <property name="genepattern-service.jar.target.dir" location="${genepattern-service.jar.dir}/target" />
     <property name="genepattern-service.jar" location="${genepattern-service.jar.target.dir}/genepattern-service.jar" />
     <property name="genepattern-service.jar.compile.lib.dir" location="${genepattern-service.jar.dir}/lib/compile"/>
-    
+
     <property name="kaplan-meier.jar.dir" location="${software.dir}/kaplan-meier-jar" />
     <property name="kaplan-meier.jar.target.dir" location="${kaplan-meier.jar.dir}/target" />
     <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
-    <property name="kaplan-meier.jar.compile.lib.dir" location="${kaplan-meier.jar.dir}/lib/compile"/>
+    <property name="kaplan-meier.jar.compile.lib.dir" location="${kaplan-meier.jar.dir}/lib/compile"/>    
     
     
     <!-- ******************************************************************* -->
@@ -361,9 +381,23 @@
     <target name="clean:caintegrator2.war">
         <delete dir="${caintegrator2.war.target.dir}" />
     </target>
-
-    <target name="caintegrator2.war" depends="ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war,caintegrator2.csm.xml.deploy">
-        <war destfile="${caintegrator2.war}" webxml="${caintegrator2.war.web.src.dir}/WEB-INF/web.xml">
+    
+    <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
+    
+    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war,caintegrator2.csm.xml.deploy">
+        
+        <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
+            <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
+                <include name="web.xml"/>
+            </fileset>    
+            <filterset>
+                <filter token="caintegrator2.version" value="${caintegrator2.version}" />
+                <filter token="svn.url" value="${svn.url}"/>
+                <filter token="svn.revision" value="${svn.revision}"/>
+            </filterset>
+        </copy>
+        
+        <war destfile="${caintegrator2.war}" webxml="${web-inf.working.dir}/web.xml">
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
             </fileset>
