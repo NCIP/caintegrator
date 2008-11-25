@@ -146,7 +146,7 @@
 	        <tr>
                 <th>Name</th>
                 <th>Actions</th>
-                <th>Public ID</th>
+                <th nowrap>CDE Public ID</th>
                 <th>Context</th>
                 <th>Status</th>
                 <th>Definition</th>
@@ -174,7 +174,7 @@
                     <s:a href="%{selectDataElement}">Select</s:a> | 
                     <a href="<s:property value='%{viewDataElement}'/>" target="_blank">View</a>
                 </td>
-                <td><s:property value="publicID" /></td>
+                <td nowrap><s:property value="publicID" /></td>
                 <td><s:property value="contextName" /></td>
                 <td><s:property value="workflowStatus" /></td>
                 <td><s:property value="definition" /></td>
@@ -190,7 +190,7 @@
             <tr>
                 <th>Name</th>
                 <th>Actions</th>
-                <th>Public ID</th>
+                <th>CDE Public ID</th>
                 <th>Context</th>
                 <th>Status</th>
                 <th>Definition</th>
