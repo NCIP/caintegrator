@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.kmplot;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +96,6 @@ public class SubjectGroup {
 
     private String name;
     private Color color;
-    private AbstractPermissibleValue plotGroupValue;
     private final List<SubjectSurvivalData> survivalData = new ArrayList<SubjectSurvivalData>();
     
     /**
@@ -130,18 +127,6 @@ public class SubjectGroup {
      */
     public List<SubjectSurvivalData> getSurvivalData() {
         return survivalData;
-    }
-    /**
-     * @return the plotGroupValue
-     */
-    public AbstractPermissibleValue getPlotGroupValue() {
-        return plotGroupValue;
-    }
-    /**
-     * @param plotGroupValue the plotGroupValue to set
-     */
-    public void setPlotGroupValue(AbstractPermissibleValue plotGroupValue) {
-        this.plotGroupValue = plotGroupValue;
     }
     
     /**
