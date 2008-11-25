@@ -86,9 +86,15 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 /**
@@ -115,5 +121,18 @@ public interface AnalysisService {
      */
     URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
     throws GenePatternServiceException;
+    
+    /**
+     * Creates a KMPlot object based on all clinical subjects for the given parameters.
+     * @param study the study that the user wants to create the plot for.
+     * @param groupAnnotationField the annotation definition for the grouping.
+     * @param plotGroupValues the permissable values allowed for the plot groups.
+     * @param survivalValueDefinition the SurvivalValueDefinition to use for this plot.
+     * @return the plot object.
+     */
+    KMPlot createKMPlot(Study study,
+                        AnnotationDefinition groupAnnotationField,
+                        Collection <AbstractPermissibleValue> plotGroupValues,
+                        SurvivalValueDefinition survivalValueDefinition);
     
 }

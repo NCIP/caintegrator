@@ -85,11 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AnalysisServiceStub implements AnalysisService {
@@ -123,6 +131,15 @@ public class AnalysisServiceStub implements AnalysisService {
         } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public KMPlot createKMPlot(Study study, AnnotationDefinition groupAnnotationField,
+            Collection<AbstractPermissibleValue> plotGroupValues, SurvivalValueDefinition survivalValueDefinition) {
+        KMPlotServiceStub kmPlotService = new KMPlotServiceStub();
+        return kmPlotService.generatePlot(new KMPlotConfiguration());
     }
 
 }

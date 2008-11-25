@@ -86,16 +86,22 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
+import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -104,11 +110,20 @@ public class AnalysisServiceTest {
 
     private AnalysisService service;
     private TestGenePatternClientStub genePatternClientStub = new TestGenePatternClientStub();
+    // KMPlot Items
+    private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
+    private CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
+
     
     @Before
     public void setUp() {
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
+        KMPlotServiceCaIntegratorImpl kmPlotService = new KMPlotServiceCaIntegratorImpl();
+        kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
+        caIntegratorPlotServiceStub.clear();
         serviceImpl.setGenePatternClient(genePatternClientStub); 
+        serviceImpl.setDao(daoStub);
+        serviceImpl.setKmPlotService(kmPlotService);
         service = serviceImpl;
     }
 
@@ -157,6 +172,45 @@ public class AnalysisServiceTest {
         assertEquals("parameter", genePatternParameter.getName());
         assertEquals("value", genePatternParameter.getValue());
     }
+    
+    @Test
+    public void testCreateKMPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        KMPlot kmPlot = service.createKMPlot(study,
+                studyCreator.getGroupAnnotationField(), 
+                studyCreator.getPlotGroupValues(), 
+                studyCreator.getSurvivalValueDefinition());
+        
+        assertNotNull(kmPlot);
+        assertTrue(caIntegratorPlotServiceStub.computeLogRankPValueBetweenCalled);
+        assertTrue(caIntegratorPlotServiceStub.getChartCalled);
+        assertTrue(daoStub.retrieveValueForAnnotationSubjectCalled);
+        boolean exceptionCaught = false;
+        try { // Try giving no survival value definition.
+            kmPlot = service.createKMPlot(study, 
+                studyCreator.getGroupAnnotationField(), 
+                studyCreator.getPlotGroupValues(), 
+                null);
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
+        
+        exceptionCaught = false;
+        studyCreator.getSurvivalValueDefinition().setLastFollowupDate(null);
+        try { // Try giving survivalValueDefinition without a followup date
+            kmPlot = service.createKMPlot(study, 
+                studyCreator.getGroupAnnotationField(), 
+                studyCreator.getPlotGroupValues(), 
+                studyCreator.getSurvivalValueDefinition());
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
+    }
+    
+    
 
     private final class TestGenePatternClientStub extends GenePatternClientStub {
 
