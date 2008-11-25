@@ -133,6 +133,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         dataElements.clear();
         availableUpdateList.clear();
         permissibleUpdateList.clear();
+        keywordsForSearch = "";
     }
     
     private Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
