@@ -87,10 +87,18 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -99,7 +107,9 @@ import java.util.List;
 public class AnalysisServiceImpl implements AnalysisService {
     
     private GenePatternClient genePatternClient;
-
+    private CaIntegrator2Dao dao;
+    private KMPlotService kmPlotService;
+    
     /**
      * {@inheritDoc}
      */
@@ -147,6 +157,47 @@ public class AnalysisServiceImpl implements AnalysisService {
             throw new IllegalArgumentException("Invalid URL provided for server " + server.getUrl(), e);
         }
         return resultUrl;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KMPlot createKMPlot(Study study,
+                               AnnotationDefinition groupAnnotationField,
+                               Collection <AbstractPermissibleValue> plotGroupValues,
+                               SurvivalValueDefinition survivalValueDefinition) {
+        KMPlotHelper kmPlotHelper = new KMPlotHelper(kmPlotService, dao, survivalValueDefinition);
+        return kmPlotHelper.createPlot(groupAnnotationField, 
+                                plotGroupValues, study.getAssignmentCollection());
+    }
+
+
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
+    }
+
+    /**
+     * @return the kmPlotService
+     */
+    public KMPlotService getKmPlotService() {
+        return kmPlotService;
+    }
+
+    /**
+     * @param kmPlotService the kmPlotService to set
+     */
+    public void setKmPlotService(KMPlotService kmPlotService) {
+        this.kmPlotService = kmPlotService;
     }
 
 }
