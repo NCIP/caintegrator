@@ -48,7 +48,7 @@
                     allowAddAllToRight="false"
                     allowUpDownOnLeft="false"
                     allowUpDownOnRight="false"
-                    leftTitle="Additional Values"
+                    leftTitle="Available Values"
                     rightTitle="Permissible Values"
                     addToLeftLabel="< Remove"
                     addToRightLabel="Add >"
@@ -66,7 +66,7 @@
     
     <s:if test="%{columnTypeAnnotation}">
     <hr>
-    <h1>Search For an ImagingAnnotation Definition: </h1>
+    <h1>Search For an Imaging Annotation Definition: </h1>
     <s:form theme="simple" action="searchImagingDefinitions">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imagingSource.id" />

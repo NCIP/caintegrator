@@ -85,61 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import static org.junit.Assert.assertNotNull;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 /**
  * 
  */
-public class AnnotationSelectionTest {
-    private final AnnotationSelection clinicalAnnotationSelection = new AnnotationSelection();
-    private final List<String> dummyStringList = new ArrayList<String>(10);
-    private final Map<String, WildCardTypeEnum> dummyWildCardMap = new HashMap<String, WildCardTypeEnum>();
-    private final Map<String, NumericComparisonOperatorEnum> dummyNumericMap = new HashMap<String, NumericComparisonOperatorEnum>();
-    private final Collection<AnnotationDefinition> clinicalAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
-    private final AnnotationDefinition definition = new AnnotationDefinition();
-    
-    @Before
-    public void setUp() {
-        
-        definition.setType("string");
-        definition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
-        
-        clinicalAnnotationSelection.setAnnotationSelections(dummyStringList);
-        clinicalAnnotationSelection.setCurrentAnnotationOptions(definition);
-        clinicalAnnotationSelection.setNumericAnnotationDisplayOperatorList(dummyStringList);
-        clinicalAnnotationSelection.setNumericOptionToEnumMap(dummyNumericMap);
-        clinicalAnnotationSelection.setStringAnnotationDisplayOperatorList(dummyStringList);
-        clinicalAnnotationSelection.setStringOptionToEnumMap(dummyWildCardMap);
-        clinicalAnnotationSelection.setAnnotationDefinitions(clinicalAnnotationDefinitions);
-        
+public class NewQueryAction extends AbstractCaIntegrator2Action {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (getStudySubscription() == null) {
+            addActionError("Please select a study under \"My Studies\".");
+            return;
+        }
     }
-   
-    @Test
-    public void testIt() {
-        
-        assertNotNull(clinicalAnnotationSelection.getAnnotationSelections());
-        assertNotNull(clinicalAnnotationSelection.getCurrentAnnotationOperatorSelections());
-        assertNotNull(clinicalAnnotationSelection.getNumericAnnotationDisplayOperatorList());
-        assertNotNull(clinicalAnnotationSelection.getCurrentAnnotationPermissibleSelections());
-        assertNotNull(clinicalAnnotationSelection.getNumericOptionToEnumMap());
-        assertNotNull(clinicalAnnotationSelection.getStringAnnotationDisplayOperatorList());
-        assertNotNull(clinicalAnnotationSelection.getStringOptionToEnumMap());
-        assertNotNull(clinicalAnnotationSelection.getAnnotationDefinitions());
-        
-    }  
 }

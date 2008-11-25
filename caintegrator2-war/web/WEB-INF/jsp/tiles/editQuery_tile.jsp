@@ -99,27 +99,32 @@ pageEncoding="ISO-8859-1" %>
                             <td class="label_inline">
                             <s:property value="#currentRow.rowLabel"/>
                             </td>
-                            <s:if test="!rowType.value.equals('geneExpression')">
+                            <s:if test="rowType.value.equals('geneExpression')">
                                 <td class="value_inline">
                                     <s:select 
                                         name="selectedAnnotations" 
                                         headerKey ="1"
                                         headerValue = "-- Please Select --"
-                                        list="annotationSelections.annotationDefinitions" 
-                                        listValue="displayName" 
-                                        listKey="displayName" 
-                                        value="#currentRow.annotationSelection" 
-                                        label="Criterion"
-                                        onchange="document.manageQueryForm.selectedAction.value = 'updateOperators';document.manageQueryForm.rowNumber.value = %{listRow};document.manageQueryForm.submit();" 
+                                        list="annotationSelection.genomicAnnotationDefinitions" 
+                                        listValue="value" 
+                                        listKey="value" 
+                                        value="#currentRow.selectedAnnotationDefinition" 
+                                        label="Criterion" 
                                         theme="simple"/>
                                 </td>
                                 <td class="value_inline2">
                                     <s:select 
                                         name="selectedOperators"
                                         headerKey ="1"
-                                        headerValue = "Select Operators" 
-                                        list="annotationSelections.currentAnnotationOperatorSelections" 
-                                        value="#currentRow.annotationOperatorSelection" 
+                                        headerValue = "Select Operator" 
+                                        list="{'equals'}" 
+                                        value="#currentRow.selectedOperator" 
+                                        theme="simple"/>
+                                </td>
+                                <td class="value_inline">
+                                    <s:textfield name="selectedValues" 
+                                        value="%{selectedAnnotationValue}" 
+                                        size="30" 
                                         theme="simple"/>
                                 </td>
                             </s:if>
@@ -129,30 +134,42 @@ pageEncoding="ISO-8859-1" %>
                                         name="selectedAnnotations" 
                                         headerKey ="1"
                                         headerValue = "-- Please Select --"
-                                        list="annotationSelections.genomicAnnotationDefinitions" 
-                                        listValue="value" 
-                                        listKey="value" 
-                                        value="#currentRow.annotationSelection" 
-                                        label="Criterion" 
+                                        list="annotationSelection.annotationDefinitions" 
+                                        listValue="displayName" 
+                                        listKey="displayName" 
+                                        value="#currentRow.selectedAnnotationDefinition" 
+                                        label="Criterion"
+                                        onchange="document.manageQueryForm.selectedAction.value = 'updateAnnotationDefinition';document.manageQueryForm.rowNumber.value = %{listRow};document.manageQueryForm.submit();" 
                                         theme="simple"/>
                                 </td>
                                 <td class="value_inline2">
                                     <s:select 
                                         name="selectedOperators"
                                         headerKey ="1"
-                                        headerValue = "-- Please Select --" 
-                                        list="{'equals'}" 
-                                        value="#currentRow.annotationOperatorSelection" 
+                                        headerValue = "Select Operator" 
+                                        list="annotationSelection.currentAnnotationOperatorSelections" 
+                                        value="#currentRow.selectedOperator" 
                                         theme="simple"/>
                                 </td>
+                                <s:if test="annotationSelection.currentAnnotationPermissibleSelections.isEmpty()">
+                                    <td class="value_inline">
+                                        <s:textfield name="selectedValues" 
+                                            value="%{selectedAnnotationValue}" 
+                                            size="30" 
+                                            theme="simple"/>
+                                    </td>
+                                </s:if>
+                                <s:else>
+                                    <td class="value_inline">
+                                        <s:select name="selectedValues"
+                                            headerKey ="1"
+                                            headerValue = "Select Value" 
+                                            list="annotationSelection.currentAnnotationPermissibleSelections"
+                                            value="#currentRow.selectedAnnotationValue" 
+                                            theme="simple"/>
+                                    </td>
+                                </s:else>
                             </s:else>
-                                                        
-                            <td class="value_inline">
-                                <s:textfield name="selectedValues" 
-                                    value="%{annotationValue}" 
-                                    size="30" 
-                                    theme="simple"/>
-                            </td>
                             <td class="action_inline">
                             <a href="#" class="remove" onclick="document.manageQueryForm.selectedAction.value = 'remove'; document.manageQueryForm.rowNumber.value = ${listRow};document.manageQueryForm.submit();"><span class="remove">Remove</span></a>
                             </td>

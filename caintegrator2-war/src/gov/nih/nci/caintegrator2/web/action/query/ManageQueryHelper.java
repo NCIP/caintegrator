@@ -136,7 +136,8 @@ final class ManageQueryHelper {
     private List<ResultColumn> columnList = new ArrayList<ResultColumn>();
     private List<Integer> columnIndexOptions = new ArrayList<Integer>();
     
-    private final Map<String, String> annotationDefinitionToDataTypeMap = new HashMap<String, String>();
+    private final Map<String, AnnotationDefinition> annotationDefinitionToObject
+        = new HashMap<String, AnnotationDefinition>();
     /**
      * Default constructor.
      */
@@ -229,8 +230,8 @@ final class ManageQueryHelper {
      
     public boolean updateAnnotationDefinition(String[] selectedAnnotations, int rowNumber) {
         try {
-            getQueryCriteriaRowList().get(rowNumber).getAnnotationSelections()
-            .setCurrentAnnotationOperatorSelections(annotationDefinitionToDataTypeMap
+            getQueryCriteriaRowList().get(rowNumber).getAnnotationSelection()
+            .setCurrentAnnotationOptions(annotationDefinitionToObject
                     .get(selectedAnnotations[rowNumber]));
         } catch (IndexOutOfBoundsException e) {
             return false;
@@ -318,7 +319,8 @@ final class ManageQueryHelper {
           //Adding the annotations in the map which is used later for finding the user selected id and its value
             for (AnnotationDefinition definition : clinicalAnnotationDefinitions) {
                 allAnnotationDefinitionsMap.put(definition.getId(), definition);
-                annotationDefinitionToDataTypeMap.put(definition.getDisplayName(), definition.getType());
+                annotationDefinitionToObject.put(definition.getDisplayName(), definition);
+                definition.getPermissibleValueCollection().isEmpty();  // To make sure that it is loaded
             }  
         }
         
@@ -332,7 +334,8 @@ final class ManageQueryHelper {
             
             for (AnnotationDefinition definition : imageAnnotationDefinitions) {
                 allAnnotationDefinitionsMap.put(definition.getId(), definition);
-                annotationDefinitionToDataTypeMap.put(definition.getDisplayName(), definition.getType());
+                annotationDefinitionToObject.put(definition.getDisplayName(), definition);
+                definition.getPermissibleValueCollection().isEmpty();  // To make sure that it is loaded
             }
         }
         
@@ -412,8 +415,8 @@ final class ManageQueryHelper {
             return false;
         }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
-        queryAnnotationCriteria.setAnnotationSelections(this.getClinicalAnnotationSelections().cloneObject());
-        queryAnnotationCriteria.setAnnotationValue("");
+        queryAnnotationCriteria.setAnnotationSelection(this.getClinicalAnnotationSelections().cloneObject());
+        queryAnnotationCriteria.setSelectedAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
         queryAnnotationCriteria.setRowLabel("Clinical");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
@@ -432,8 +435,8 @@ final class ManageQueryHelper {
            }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
-        queryAnnotationCriteria.setAnnotationSelections(this.getImageSeriesAnnotationSelections().cloneObject());
-        queryAnnotationCriteria.setAnnotationValue("");
+        queryAnnotationCriteria.setAnnotationSelection(this.getImageSeriesAnnotationSelections().cloneObject());
+        queryAnnotationCriteria.setSelectedAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.IMAGESERIES);
         queryAnnotationCriteria.setRowLabel("Image Series");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
@@ -450,8 +453,8 @@ final class ManageQueryHelper {
                return false;
            }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
-        queryAnnotationCriteria.setAnnotationSelections(this.getGenomicAnnotationSelections().cloneObject());
-        queryAnnotationCriteria.setAnnotationValue("");
+        queryAnnotationCriteria.setAnnotationSelection(this.getGenomicAnnotationSelections().cloneObject());
+        queryAnnotationCriteria.setSelectedAnnotationValue("");
         queryAnnotationCriteria.setRowType(EntityTypeEnum.GENEEXPRESSION);
         queryAnnotationCriteria.setRowLabel("Gene Expression");
         this.addQueryAnnotationCriteriaToList(queryAnnotationCriteria);
@@ -469,7 +472,7 @@ final class ManageQueryHelper {
         while (rowIter.hasNext()) {
             tempAnnotationCriteria = rowIter.next();
             if (selectedValues[i] != null) {
-                tempAnnotationCriteria.setAnnotationSelection(selectedValues[i]);
+                tempAnnotationCriteria.setSelectedAnnotationDefinition(selectedValues[i]);
                 this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
             }
             i++;
@@ -487,7 +490,7 @@ final class ManageQueryHelper {
         while (rowIter.hasNext()) {
             tempAnnotationCriteria = rowIter.next();
             if (selectedValues[i] != null) {
-                tempAnnotationCriteria.setAnnotationOperatorSelection(selectedValues[i]);
+                tempAnnotationCriteria.setSelectedOperator(selectedValues[i]);
                 this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
             }
             i++;
@@ -505,7 +508,7 @@ final class ManageQueryHelper {
         while (rowIter.hasNext()) {
             tempAnnotationCriteria = rowIter.next();
             if (selectedValues[i] != null) {
-                tempAnnotationCriteria.setAnnotationValue(selectedValues[i]);
+                tempAnnotationCriteria.setSelectedAnnotationValue(selectedValues[i]);
                 this.queryCriteriaRowList.set(i, tempAnnotationCriteria);
             }
             i++;

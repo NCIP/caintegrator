@@ -14,9 +14,7 @@
     <!--/Study Logo-->
     
     <!--Menu-->
-    <s:url id="manageQueryUrl" action="manageQuery" includeParams="get" escapeAmp ="false">
-        <s:param name="selectedAction">createNewQuery</s:param>
-    </s:url>
+    <s:url id="newQueryUrl" includeParams="none" action="newQuery" />
     
     <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
     
@@ -25,7 +23,7 @@
         <li class="stdnav"><div><s:property value="study.shortTitleText"/></div>
             <ul>
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
-                <li class="stdnav"><a href='<s:property value="#manageQueryUrl" />'>Search <s:property value="studySubscription.study.shortTitleText"/></a></li>
+                <li class="stdnav"><a href='<s:property value="#newQueryUrl" />'>Search <s:property value="studySubscription.study.shortTitleText"/></a></li>
             </ul>
         </li>
         
