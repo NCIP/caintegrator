@@ -92,6 +92,9 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
@@ -371,6 +374,40 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         retrieved = dao.getArrayDataMatrixes(study1, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         assertEquals(1, retrieved.size());
         assertEquals(matrix2, retrieved.get(0));
+    }
+    
+    @Test
+    public void testRetrieveValueForAnnotationSubject() {
+        StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+        studySubjectAssignment.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
+        
+        SubjectAnnotation genderSubjectAnnotation = new SubjectAnnotation();
+        SubjectAnnotation weightSubjectAnnotation = new SubjectAnnotation();
+        studySubjectAssignment.getSubjectAnnotationCollection().add(genderSubjectAnnotation);
+        studySubjectAssignment.getSubjectAnnotationCollection().add(weightSubjectAnnotation);
+        
+        AnnotationDefinition genderAnnotationDefinition = new AnnotationDefinition();
+        AnnotationDefinition weightAnnotationDefinition = new AnnotationDefinition();
+        
+        StringAnnotationValue genderStringValue = new StringAnnotationValue();
+        genderStringValue.setStringValue("M");
+        genderStringValue.setSubjectAnnotation(genderSubjectAnnotation);
+        genderSubjectAnnotation.setAnnotationValue(genderStringValue);
+        genderStringValue.setAnnotationDefinition(genderAnnotationDefinition);
+        
+        NumericAnnotationValue weightAnnotationValue = new NumericAnnotationValue();
+        weightAnnotationValue.setNumericValue(180.0);
+        weightAnnotationValue.setSubjectAnnotation(weightSubjectAnnotation);
+        weightSubjectAnnotation.setAnnotationValue(weightAnnotationValue);
+        weightAnnotationValue.setAnnotationDefinition(weightAnnotationDefinition);
+        
+        dao.save(studySubjectAssignment);
+        
+        assertEquals(genderStringValue, 
+                dao.retrieveValueForAnnotationSubject(studySubjectAssignment, genderAnnotationDefinition));
+        
+        assertEquals(weightAnnotationValue, 
+                dao.retrieveValueForAnnotationSubject(studySubjectAssignment, weightAnnotationDefinition));
     }
     
     

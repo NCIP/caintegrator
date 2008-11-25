@@ -90,11 +90,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -162,5 +169,57 @@ public class Cai2UtilTest {
         assertFalse(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
         columnCollection.add(column);
         assertTrue(Cai2Util.columnCollectionContainsColumn(columnCollection, column));
+    }
+    
+    @Test
+    public void testAnnotationValueBelongToPermissibleValue() {
+        StringAnnotationValue stringValue = new StringAnnotationValue();
+        stringValue.setStringValue("TeSt");
+        StringPermissibleValue stringPermissibleValue = new StringPermissibleValue();
+        stringPermissibleValue.setStringValue("tEsT");
+        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
+        stringPermissibleValue.setStringValue("Not Equals");
+        assertFalse(Cai2Util.annotationValueBelongToPermissibleValue(stringValue, stringPermissibleValue));
+        
+        NumericAnnotationValue numericValue = new NumericAnnotationValue();
+        numericValue.setNumericValue(50.0);
+        NumericPermissibleValue numericPermissibleValue = new NumericPermissibleValue();
+        numericPermissibleValue.setNumericValue(50.0);
+        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
+        numericPermissibleValue = new NumericPermissibleValue();
+        numericPermissibleValue.setLowValue(40.0);
+        numericPermissibleValue.setHighValue(50.0);
+        numericPermissibleValue.setIsRangeValue(1);
+        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
+        numericPermissibleValue.setLowValue(51.0);
+        numericPermissibleValue.setHighValue(60.0);
+        assertFalse(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
+        numericPermissibleValue.setLowValue(50.0);
+        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(numericValue, numericPermissibleValue));
+        
+        
+        DateAnnotationValue dateValue = new DateAnnotationValue();
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(Calendar.YEAR, 2005);
+        calendar1.set(Calendar.MONTH, 6);
+        calendar1.set(Calendar.DATE, 1);
+        dateValue.setDateValue(calendar1.getTime());
+        
+        DatePermissibleValue datePermissibleValue = new DatePermissibleValue();
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(Calendar.YEAR, 2005);
+        calendar2.set(Calendar.MONTH, 6);
+        calendar2.set(Calendar.DATE, 1);
+        datePermissibleValue.setDateValue(calendar2.getTime());
+        
+        assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(dateValue, datePermissibleValue));
+        
+        boolean exceptionThrown = false;
+        try {
+            Cai2Util.annotationValueBelongToPermissibleValue(dateValue, numericPermissibleValue);
+        } catch (IllegalArgumentException e) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
     }
 }

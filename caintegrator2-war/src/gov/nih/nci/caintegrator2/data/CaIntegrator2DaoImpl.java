@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -388,5 +389,24 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             return studyConfigurationList.get(0).getStudyLogo();
         }
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
+                                                                    AnnotationDefinition annotationDefinition) {
+        Criteria abstractAnnotationValueCriteria = getCurrentSession().
+                                        createCriteria(AbstractAnnotationValue.class);
+        abstractAnnotationValueCriteria.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, annotationDefinition));
+        abstractAnnotationValueCriteria.createCriteria("subjectAnnotation").
+                add(Restrictions.eq("studySubjectAssignment", subject));
+        List<AbstractAnnotationValue> valueList = abstractAnnotationValueCriteria.list();
+        AbstractAnnotationValue value = null;
+        if (valueList != null && valueList.size() == 1) {
+            value = valueList.get(0);
+        }                
+        return value;
     }
 }

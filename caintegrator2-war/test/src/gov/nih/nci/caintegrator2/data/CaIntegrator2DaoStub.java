@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -129,6 +131,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findMatchingGenesCalled;
     public boolean isDuplicateStudyNameCalled;
     public boolean retrieveStudyLogoCalled;
+    public boolean retrieveValueForAnnotationSubjectCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -160,6 +163,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findMatchingGenesCalled = false;
         isDuplicateStudyNameCalled = false;
         retrieveStudyLogoCalled = false;
+        retrieveValueForAnnotationSubjectCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -286,6 +290,19 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public StudyLogo retrieveStudyLogo(Long id, String fileName) {
         retrieveStudyLogoCalled = true;
         return new StudyLogo();
+    }
+
+    public AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
+            AnnotationDefinition annotationDefinition) {
+        retrieveValueForAnnotationSubjectCalled = true;
+        if (subject != null && annotationDefinition != null) {
+            for (SubjectAnnotation subjectAnnotation : subject.getSubjectAnnotationCollection()) {
+                if (subjectAnnotation.getAnnotationValue().getAnnotationDefinition().equals(annotationDefinition)) {
+                    return subjectAnnotation.getAnnotationValue();
+                }
+            }
+        }
+        return null;
     }
 
 }
