@@ -107,7 +107,7 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
             try {
                 getStudyManagementService().addGenomicSource(getStudyConfiguration(), getGenomicSource());
             } catch (ConnectionException e) {
-                addActionError("The configured server couldn't reached. Please check the configuration settings.");
+                addActionError("The configured server couldn't be reached. Please check the configuration settings.");
                 return INPUT;
             } catch (ExperimentNotFoundException e) {
                 addActionError(e.getMessage());
