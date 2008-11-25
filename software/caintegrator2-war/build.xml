@@ -274,22 +274,25 @@
     
 
     <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
-               <path id="macrodef.classpath">
-                    <fileset dir="${bda-utils.dir}">
-                        <include name="**/*.jar" />
-                    </fileset>
-                </path>
-            <taskdef resource="svntask.properties" classpathref ="macrodef.classpath" />
-            <svn javahl="false">
-                <status path="${root.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
-            </svn>
-            <!--
-              Note that if you explicitly define caintergrator2.version it will take
-              precedence over the one obtained from SVN
-              -->
+            <property name="revision" value="HEAD"/>
+    
+            <!-- find out revision number of HEAD, need svn.exe installed on local machine -->
+            <exec executable="svn" outputproperty="svnlog.out">
+                <arg line="log ${homedir}/.. -r ${revision} -q"/>
+            </exec>
+    
+            <echo>${svnlog.out}</echo>
+    
+            <!-- need ant-contrib.jar for this in lib dir of ant install -->
+            <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+            <propertyregex property="svn.revision" input="${svnlog.out}" select="\1">
+                <regexp pattern="r([0-9]*)"/>
+            </propertyregex>
+               
             <propertyregex property="caintegrator2.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-            <echo message="found svn info: ${svn.url} ${svn.revision} ${caintegrator2.version}" />
+            <echo message="revision info: ${svn.revision} ${caintegrator2.version}" />
     </target>
+     
 
     
     <!-- ******************************************************************* -->
