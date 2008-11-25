@@ -19,7 +19,7 @@
         <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
     </s:form>
         
-    <s:form>
+    <s:form cssClass="currentAnnotationDefinition">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imagingSource.id" />
         <s:hidden name="fileColumn.id" />
@@ -57,6 +57,9 @@
                     doubleSize="8"
                     multiple="true"
                     doubleMultiple="true"
+                    cssStyle="min-width:100px; vertical-align=middle;"
+                    buttonCssStyle="min-width:100px;"
+                    label="Permissable Values"
                     />
             </s:if>
             <s:submit value="New" action="createNewImagingDefinition" />
@@ -142,7 +145,7 @@
             <tr>
                 <th>Name</th>
                 <th>Actions</th>
-                <th>Public ID</th>
+                <th nowrap>CDE Public ID</th>
                 <th>Context</th>
                 <th>Status</th>
                 <th>Definition</th>
@@ -170,7 +173,7 @@
                     <s:a href="%{selectImagingDataElement}">Select</s:a> | 
                     <a href="<s:property value='%{viewDataElement}'/>" target="_blank">View</a>
                 </td>
-                <td><s:property value="publicID" /></td>
+                <td nowrap><s:property value="publicID" /></td>
                 <td><s:property value="contextName" /></td>
                 <td><s:property value="workflowStatus" /></td>
                 <td><s:property value="definition" /></td>
@@ -186,7 +189,7 @@
             <tr>
                 <th>Name</th>
                 <th>Actions</th>
-                <th>Public ID</th>
+                <th>CDE Public ID</th>
                 <th>Context</th>
                 <th>Status</th>
                 <th>Definition</th>
