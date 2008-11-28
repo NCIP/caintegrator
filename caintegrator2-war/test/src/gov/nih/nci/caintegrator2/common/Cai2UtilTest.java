@@ -101,8 +101,8 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -199,18 +199,11 @@ public class Cai2UtilTest {
         
         
         DateAnnotationValue dateValue = new DateAnnotationValue();
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.set(Calendar.YEAR, 2005);
-        calendar1.set(Calendar.MONTH, 6);
-        calendar1.set(Calendar.DATE, 1);
-        dateValue.setDateValue(calendar1.getTime());
+        long currentTime = System.currentTimeMillis();
+        dateValue.setDateValue(new Date(currentTime));
         
         DatePermissibleValue datePermissibleValue = new DatePermissibleValue();
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.set(Calendar.YEAR, 2005);
-        calendar2.set(Calendar.MONTH, 6);
-        calendar2.set(Calendar.DATE, 1);
-        datePermissibleValue.setDateValue(calendar2.getTime());
+        datePermissibleValue.setDateValue(new Date(currentTime));
         
         assertTrue(Cai2Util.annotationValueBelongToPermissibleValue(dateValue, datePermissibleValue));
         
