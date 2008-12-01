@@ -13,7 +13,12 @@
     <h2>Enter a NCIA Data Source</h2>
     <h2>Enter Image Annotation Data From file</h2>  
     <table>
-    <tr></tr>
+    <tr>
+        <td>
+            <s:actionerror />
+            <s:fielderror />
+         </td>
+    </tr>
     <tr>
     <s:form action="addImagingFile" method="post" enctype="multipart/form-data" >  <!-- action="saveImagingSource" -->
         <s:hidden name="studyConfiguration.id" />
