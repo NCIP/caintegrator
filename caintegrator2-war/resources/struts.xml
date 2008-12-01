@@ -307,7 +307,26 @@
             <result name="error" type="tiles">genePatternAnalysis</result>
             <result name="input" type="tiles">genePatternAnalysis</result>
         </action>
-                
+        
+        <action name="kmPlotInput" method="input" class="kaplanMeierAction">
+            <result type="tiles">kaplanMeier</result>
+            <result name="input" type="tiles">kaplanMeier</result>
+        </action>
+        
+        <action name="kmPlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="kaplanMeierAction">
+            <result type="tiles">kaplanMeier</result>
+            <result name="input" type="tiles">kaplanMeier</result>
+        </action>
+        
+         <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kaplanMeierAction">
+            <result type="tiles">kaplanMeier</result>
+            <result name="input" type="tiles">kaplanMeier</result>
+        </action>
+        
+         <action name="createKMPlot" method="createPlot" class="kaplanMeierAction">
+            <result type="tiles">kaplanMeier</result>
+            <result name="input" type="tiles">kaplanMeier</result>
+        </action>
     </package>
     
 </struts>

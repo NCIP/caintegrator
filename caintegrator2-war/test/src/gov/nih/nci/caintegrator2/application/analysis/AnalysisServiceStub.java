@@ -92,7 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.net.MalformedURLException;
@@ -102,6 +102,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class AnalysisServiceStub implements AnalysisService {
+    
+    public boolean createKMPlotCalled;
+    
+    public void clear() {
+        createKMPlotCalled = false;
+    }
 
     /**
      * {@inheritDoc}
@@ -137,8 +143,9 @@ public class AnalysisServiceStub implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public KMPlot createKMPlot(Study study, EntityTypeEnum entityType, AnnotationDefinition groupAnnotationField,
+    public KMPlot createKMPlot(StudySubscription studySubscription, EntityTypeEnum entityType, AnnotationDefinition groupAnnotationField,
             Collection<AbstractPermissibleValue> plotGroupValues, SurvivalValueDefinition survivalValueDefinition) {
+        createKMPlotCalled = true;
         KMPlotServiceStub kmPlotService = new KMPlotServiceStub();
         return kmPlotService.generatePlot(new KMPlotConfiguration());
     }
