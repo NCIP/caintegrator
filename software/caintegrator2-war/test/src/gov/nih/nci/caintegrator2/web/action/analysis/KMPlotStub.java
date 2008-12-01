@@ -83,153 +83,34 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.Map;
+import java.io.OutputStream;
 
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.security.SecurityHelper;
-
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 
 /**
- * Stores helper variables to our session.
+ * 
  */
-public final class SessionHelper {
-    private static final String UNCHECKED = "unchecked";
-    private static final String SESSION_HELPER_SESSION_KEY = "sessionHelper"; 
-    private static final String MODIFY_STUDY_ROLE = "MODIFY_STUDY_UPDATE";
-    private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
-    private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
-    private static final String KM_PLOT_SESSION_KEY = "kmPlot";
-    private boolean studyManager = false;
+public class KMPlotStub implements KMPlot {
+
+    public boolean getPValueCalled;
+    public boolean writePlotImageCalled;
     
-    private SessionHelper() {
-        
+    public void clear() {
+        getPValueCalled = false;
+        writePlotImageCalled = false;
     }
     
-    /**
-     * Singleton method to get the instance off of the sessionMap object or create a new one.
-     * @return - CSMUserHelper object.
-     */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
-    public static SessionHelper getInstance() {
-        SessionHelper instance = 
-            (SessionHelper) getSession().get(SESSION_HELPER_SESSION_KEY);
-        if (instance == null) {
-            instance = new SessionHelper();
-            getSession().put(SESSION_HELPER_SESSION_KEY, instance);
-        }
-        return instance;
+    public Double getPValue(SubjectGroup group1, SubjectGroup group2) {
+        getPValueCalled = true;
+        return null;
     }
+
     
-    /**
-     * Refreshes the objects held by this object so that that are up to date and attached
-     * to the current Hibernate session. After calling this method, clients can expect the
-     * following objects on the object stack.
-     * <ul>
-     *  <li><b>displayableWorkspace</b> - The current <code>DisplayableUserWorkspace</code></li>
-     *  <li><b>workspace</b> - The current <code>UserWorkspace</code></li>
-     *  <li><b>studySubscription</b> - The current <code>StudySubscription</code> if one has been selected</li>
-     *  <li><b>study</b> - The current <code>Study</code> if one has been selected</li>
-     *  <li><b>query</b> - The current <code>Query</code> if one has been selected or is being defined</li>
-     *  <li><b>queryResult</b> - The current <code>QueryResult</code> from the last clinical query executed</li>
-     *  <li><b>genomicDataQueryResult</b> - The current <code>GenomicDataQueryResult</code> from the last 
-     *  genomic data query executed</li>
-     * </ul>
-     * 
-     * @param workspaceService session used to retrieve workspace.
-     */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
-    public void refresh(WorkspaceService workspaceService) {
-        if (SecurityContextHolder.getContext() != null 
-            && SecurityContextHolder.getContext().getAuthentication() != null) {
-            setStudyManager(
-                    hasManagerPriveleges(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
-        }
-        if (isAuthenticated()) {
-            getDisplayableUserWorkspace().refresh(workspaceService);
-            getValueStack().set(DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY, getDisplayableUserWorkspace());
-        }
+    public void writePlotImage(OutputStream out) {
+        writePlotImageCalled = true;
     }
-
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return SecurityHelper.getCurrentUsername();
-    }
-
-    /**
-     * @return the authenticated
-     */
-    public boolean isAuthenticated() {
-        return getUsername() != null;
-    }
-
-    /**
-     * @return the displayableUserWorkspace
-     */
-    public DisplayableUserWorkspace getDisplayableUserWorkspace() {
-        DisplayableUserWorkspace displayableUserWorkspace =
-            (DisplayableUserWorkspace) getSession().get(DISPLAYABLE_USER_WORKSPACE_SESSION_KEY);
-        if (displayableUserWorkspace == null && isAuthenticated()) {
-            displayableUserWorkspace = new DisplayableUserWorkspace();
-            getSession().put(DISPLAYABLE_USER_WORKSPACE_SESSION_KEY, displayableUserWorkspace);
-        }
-        return displayableUserWorkspace;
-    }
-
-    @SuppressWarnings(UNCHECKED)  // Session attribute map is untyped
-    private static Map<String, Object> getSession() {
-        return ActionContext.getContext().getSession();
-    }
-
-    private ValueStack getValueStack() {
-        return ActionContext.getContext().getValueStack();
-    }
-
-    private boolean hasManagerPriveleges(GrantedAuthority[] authorities) {
-        for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equalsIgnoreCase(MODIFY_STUDY_ROLE)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return the studyManager
-     */
-    public boolean isStudyManager() {
-        return studyManager;
-    }
-
-    private void setStudyManager(boolean studyManager) {
-        this.studyManager = studyManager;
-    }
-    
-    
-    /**
-     * @param kmPlot the kmPlot to set on the ValueStack.
-     */
-    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
-    public static void setKmPlot(KMPlot kmPlot) {
-        getSession().put(KM_PLOT_SESSION_KEY, kmPlot);
-    }
-    
-    /**
-     * 
-     * @return the kmPlot on the ValueStack.
-     */
-    public static KMPlot getKmPlot() {
-        return (KMPlot) getSession().get(KM_PLOT_SESSION_KEY);
-    }
-
 
 }

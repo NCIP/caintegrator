@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <td class="value_inline">
-                    Patient Groups:
+                    1.) Patient Groups:
                 </td>
 		        <td class="value_inline">
                     <s:select name="kaplanMeierFormValues.annotationTypeSelection" 
@@ -55,7 +55,7 @@
             </tr>
             <tr>
                 <td class="value_inline">
-                    Select Survival Measure:
+                    2.) Select Survival Measure:
                 </td>
                 <td class="value_inline">
 	            <s:select name="kaplanMeierFormValues.survivalValueDefinitionId" 
@@ -64,11 +64,18 @@
 	            </td>
             </tr>
         </table>
-        <br>
-        <center>
-        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierInputForm.action = 'createKMPlot.action';document.kaplanMeierInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
-        </center>
+        <s:if test="creatable">
+	        <br>
+	        <center>
+	        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierInputForm.action = 'createKMPlot.action';document.kaplanMeierInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
+	        </center>
+        </s:if>
     </s:form>
+    
+    <s:if test="#session['kmPlot'] != null">
+        <br>
+        <center><img src="retrieveKMPlot.action"/></center>
+    </s:if>
 </div>
 
 <div class="clear"><br /></div>

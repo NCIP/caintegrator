@@ -106,13 +106,9 @@ public class WorkspaceServiceStub implements WorkspaceService {
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
-        subscription = new StudySubscription();
-        subscription.setId(Long.valueOf(1));
-        workspace.setDefaultSubscription(subscription);
+        workspace.setDefaultSubscription(getSubscription());
         workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
-        workspace.getDefaultSubscription().setStudy(new Study());
-        workspace.getDefaultSubscription().getStudy().setShortTitleText("Study Name");
         return workspace;
     }
 
@@ -126,5 +122,19 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void subscribe(UserWorkspace workspace, Study study) {
         subscribeCalled = true;
+    }
+    
+    public void setSubscription(StudySubscription subscription) {
+        this.subscription = subscription;
+    }
+    
+    public StudySubscription getSubscription() {
+        if (subscription == null) {
+            subscription = new StudySubscription();
+            subscription.setId(Long.valueOf(1));
+            subscription.setStudy(new Study());
+            subscription.getStudy().setShortTitleText("Study Name");
+        }
+        return subscription;
     }
 }
