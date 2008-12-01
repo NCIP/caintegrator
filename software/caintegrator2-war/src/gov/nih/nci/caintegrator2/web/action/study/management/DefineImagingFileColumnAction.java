@@ -133,6 +133,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         dataElements.clear();
         availableUpdateList.clear();
         permissibleUpdateList.clear();
+        keywordsForSearch = "";
     }
     
     private Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
@@ -250,6 +251,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
+        updateColumnType();
         if (isPermissibleOn()) {
             try {
                 updatePermissible();

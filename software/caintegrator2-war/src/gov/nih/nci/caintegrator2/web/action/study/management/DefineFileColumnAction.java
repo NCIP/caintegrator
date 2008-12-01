@@ -251,6 +251,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String updateFileColumn() {
+        updateColumnType();
         if (isPermissibleOn()) {
             try {
                 updatePermissible();
