@@ -130,7 +130,7 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     }
 
     @Test
-    public void testLoadAnnontation() {
+    public void testLoadAnnontation() throws ValidationException {
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
         clinicalSourceConfiguration.getAnnotationFile().getColumns().get(1).getFieldDescriptor().setDefinition(definition);
