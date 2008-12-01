@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+
 /**
  * Action called to load an imaging data source.
  */
@@ -97,7 +99,12 @@ private static final long serialVersionUID = 1L;
      */
     @Override
     public String execute() {
-        getStudyManagementService().loadImageAnnotation(getStudyConfiguration());
+        try {
+            getStudyManagementService().loadImageAnnotation(getStudyConfiguration());
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            return ERROR;
+        }
         return SUCCESS;
     }
 

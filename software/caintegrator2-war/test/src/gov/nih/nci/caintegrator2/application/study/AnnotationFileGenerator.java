@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 /**

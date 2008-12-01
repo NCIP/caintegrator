@@ -213,15 +213,16 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
      * Returns the list of values in this column.
      * 
      * @return the values.
+     * @throws ValidationException fail to load
      */
-    public List<String> getDataValues() {
+    public List<String> getDataValues() throws ValidationException {
         if (dataValues == null) {
             loadDataValues();
         }
         return dataValues;
     }
 
-    private void loadDataValues() {
+    private void loadDataValues() throws ValidationException {
         dataValues = new ArrayList<String>();
         getAnnotationFile().positionAtData();
         while (getAnnotationFile().hasNextDataLine()) {

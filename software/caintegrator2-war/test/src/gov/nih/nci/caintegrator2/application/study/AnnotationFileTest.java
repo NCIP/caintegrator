@@ -90,6 +90,8 @@ import static org.junit.Assert.*;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -107,16 +109,18 @@ public class AnnotationFileTest {
         setupTestAnnotations();
     }
     
-    private AnnotationFile createAnnotationFile(File file) throws ValidationException {
+    private AnnotationFile createAnnotationFile(File file)
+        throws ValidationException, IOException {
         return AnnotationFile.load(file, new CaIntegrator2DaoStub());
     }
 
     /**
      * Test method for {@link gov.nih.nci.caintegrator2.application.study.DelimitedTextannotationFile#validateFile()}.
      * @throws ValidationException 
+     * @throws FileNotFoundException 
      */
     @Test
-    public void testLoad() throws ValidationException {
+    public void testLoad() throws ValidationException, IOException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
         assertNotNull(annotationFile);
         assertEquals(4, annotationFile.getColumns().size());
@@ -136,11 +140,13 @@ public class AnnotationFileTest {
             fail("ValidationException expected");
         } catch (ValidationException e) {
             assertEquals(expectedMessage, e.getResult().getInvalidMessage());
+        } catch (IOException e) {
+            assertEquals(expectedMessage, e.getMessage());
         }
     }
 
     @Test
-    public void testGetDescriptors() throws ValidationException {
+    public void testGetDescriptors() throws ValidationException, IOException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE_TIMEPOINT);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
         annotationFile.setTimepointColumn(annotationFile.getColumns().get(1));
@@ -150,7 +156,7 @@ public class AnnotationFileTest {
     }
 
     @Test
-    public void testPositionAtData() throws ValidationException {
+    public void testPositionAtData() throws ValidationException, IOException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
         annotationFile.setId(Long.valueOf(1));
         assertTrue(annotationFile.hasNextDataLine());
@@ -164,7 +170,7 @@ public class AnnotationFileTest {
     }
 
     @Test
-    public void testDataValue() throws ValidationException {
+    public void testDataValue() throws ValidationException, IOException {
         AnnotationFile annotationFile = createAnnotationFile(VALID_FILE);
         annotationFile.setIdentifierColumn(annotationFile.getColumns().get(0));
         annotationFile.positionAtData();

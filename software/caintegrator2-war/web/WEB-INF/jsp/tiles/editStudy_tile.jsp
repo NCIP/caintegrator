@@ -17,7 +17,6 @@
     <s:else>
         <h1>Create New Study</h1>
     </s:else>
-    
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="study.shortTitleText" />
@@ -43,6 +42,8 @@
         </s:else>
     </s:form>
 
+    <s:actionerror/>
+    
     <table class="data">
         <tr>
             <th colspan="4">Clinical Data Sources</th>

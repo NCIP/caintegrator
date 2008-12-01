@@ -90,6 +90,7 @@
                       
         <action name="loadClinicalSource" class="loadClinicalSourceAction">
             <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
         </action>
         
         <action name="createNewDefinition" method="createNewDefinition" class="defineFileColumnAction">
@@ -271,6 +272,7 @@
         
         <action name="loadImagingSource" class="loadImagingSourceAction">
             <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
         </action>
         
         <action name="saveImagingSource" class="saveImagingSourceAction">
