@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
@@ -126,6 +127,7 @@ public class KaplanMeierActionTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         StudySubscription subscription = new StudySubscription();
+        subscription.setId(Long.valueOf(1));
         Study study = createFakeStudy();
         subscription.setStudy(study);
         subscription.setQueryCollection(new HashSet<Query>());
@@ -133,7 +135,10 @@ public class KaplanMeierActionTest {
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
         action = new KaplanMeierAction();
         action.setAnalysisService(analysisServiceStub);
-        action.setWorkspaceService(new WorkspaceServiceStub());
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        workspaceService.setSubscription(subscription);
+        action.setWorkspaceService(workspaceService);
+        
         action.setStudyManagementService(studyManagementServiceStub);
         studyManagementServiceStub.clear();
         analysisServiceStub.clear();
@@ -159,6 +164,10 @@ public class KaplanMeierActionTest {
         subjectDef2.setId(Long.valueOf(2));
         study.getSubjectAnnotationCollection().add(subjectDef1);
         study.getSubjectAnnotationCollection().add(subjectDef2);
+        study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
+        SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
+        survivalValue.setId(Long.valueOf(1));
+        study.getSurvivalValueDefinitionCollection().add(survivalValue);
         return study;
     }
     
@@ -170,6 +179,7 @@ public class KaplanMeierActionTest {
         setupActionVariables();
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+        assertTrue(!action.getSurvivalValueDefinitions().isEmpty());
         
     }
     
@@ -221,6 +231,12 @@ public class KaplanMeierActionTest {
         action.getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         assertTrue(analysisServiceStub.createKMPlotCalled);
+        assertFalse(action.isCreatable());
+        
+        action.getKaplanMeierFormValues().setSelectedAnnotationId("1");
+        action.getKaplanMeierFormValues().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        action.getKaplanMeierFormValues().setSurvivalValueDefinitionId("1");
+        assertTrue(action.isCreatable());
     }
 
     private void setupActionVariables() {

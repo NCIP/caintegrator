@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -168,14 +169,16 @@ class KMPlotHelper {
         for (ResultRow row : rows) {
             StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
             SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-            AbstractAnnotationValue subjectPlotGroupValue = null;
-            for (ResultValue value : row.getValueCollection()) {
-                if (value.getColumn().getAnnotationDefinition().equals(groupAnnotationField)) {
-                    subjectPlotGroupValue = value.getValue();
-                    break;
+            if (subjectSurvivalData != null) {
+                AbstractAnnotationValue subjectPlotGroupValue = null;
+                for (ResultValue value : row.getValueCollection()) {
+                    if (value.getColumn().getAnnotationDefinition().equals(groupAnnotationField)) {
+                        subjectPlotGroupValue = value.getValue();
+                        break;
+                    }
                 }
+                assignSubjectToGroup(subjectGroupCollection, subjectSurvivalData, subjectPlotGroupValue);
             }
-            assignSubjectToGroup(subjectGroupCollection, subjectSurvivalData, subjectPlotGroupValue);
         }
     }
 
@@ -195,10 +198,12 @@ class KMPlotHelper {
         if (subjectSurvivalStartDate != null && subjectSurvivalStartDate.getDateValue() != null) {
             calSubjectStartDate.setTime(subjectSurvivalStartDate.getDateValue());
         } else {
-            // Not sure if I should just return 0 or throw exception.
-            throw new IllegalStateException("Start date does not exist for subject");
+            return null;
         }
         Boolean censor = calculateEndDate(subjectDeathDate, subjectLastFollowupDate, calSubjectEndDate);
+        if (censor == null) {
+            return null;
+        }
         survivalLength = monthsBetween(calSubjectStartDate, calSubjectEndDate);
         return new SubjectSurvivalData(survivalLength, censor);
     }
@@ -216,7 +221,7 @@ class KMPlotHelper {
             calSubjectEndDate.setTime(subjectDeathDate.getDateValue());
             censor = false;
         } else {
-            throw new IllegalStateException("Subject doesn't have a last followup date or death date");
+            return null;
         }
         return censor;
     }
@@ -236,7 +241,7 @@ class KMPlotHelper {
             Collection<SubjectGroup> subjectGroupCollection) {
         for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
             SubjectGroup subjectGroup = new SubjectGroup();
-            subjectGroup.setName(Cai2Util.retrieveAbstractPermissibleValueString(plotGroupValue));
+            subjectGroup.setName(PermissibleValueUtil.getDisplayString(plotGroupValue));
             subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
             subjectGroupCollection.add(subjectGroup);
             subjectGroup.setColor(getColor(subjectGroupCollection.size()));
@@ -251,6 +256,20 @@ class KMPlotHelper {
                 return Color.BLUE;
             case 3:
                 return Color.RED;
+            case 4:
+                return Color.CYAN;
+            case 5:
+                return Color.DARK_GRAY;
+            case 6:
+                return Color.YELLOW;
+            case 7:
+                return Color.LIGHT_GRAY;
+            case 8:
+                return Color.MAGENTA;
+            case 9:
+                return Color.ORANGE;
+            case 10:
+                return Color.PINK;
             default:
                 return Color.BLACK;
         }

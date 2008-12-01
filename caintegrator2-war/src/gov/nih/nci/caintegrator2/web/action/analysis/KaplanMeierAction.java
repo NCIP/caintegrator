@@ -91,13 +91,14 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.Collection;
@@ -245,6 +246,7 @@ public class KaplanMeierAction extends AbstractCaIntegrator2Action {
         clearPermissibleValues();
     }
     private void clearPermissibleValues() {
+        SessionHelper.setKmPlot(null);
         permissibleValues = new HashMap<String, String>();
         selectedValues = new HashSet<AbstractPermissibleValue>();
         kaplanMeierFormValues.getSelectedValuesIds().clear();
@@ -349,7 +351,7 @@ public class KaplanMeierAction extends AbstractCaIntegrator2Action {
     private void loadPermissibleValues() {
         for (AbstractPermissibleValue value : selectedAnnotation.getPermissibleValueCollection()) {
             permissibleValues.put(value.getId().toString(), 
-                    Cai2Util.retrieveAbstractPermissibleValueString(value));
+                    PermissibleValueUtil.getDisplayString(value));
         }
     }
     
@@ -369,8 +371,16 @@ public class KaplanMeierAction extends AbstractCaIntegrator2Action {
                                      selectedAnnotation, 
                                      selectedValues, 
                                      survivalValueDefinition);
-        plot.toString(); // Placeholder until I actually do something with this plot, such as store it on session.
+        SessionHelper.setKmPlot(plot);
         return SUCCESS;
+    }
+    
+    /**
+     * Returns the KMPlotResult image to the JSP.
+     * @return Struts return value.
+     */
+    public String retrievePlot() {
+        return "kmPlotResult";
     }
     
     private boolean validatePlotParameters() {
@@ -404,6 +414,20 @@ public class KaplanMeierAction extends AbstractCaIntegrator2Action {
             }
         }
         return isValid;
+    }
+    
+    /**
+     * Determines if the "Create Plot" button should be displayed.
+     * @return T/F value.
+     */
+    public boolean isCreatable() {
+        if (kaplanMeierFormValues.getSelectedAnnotationId() != null 
+            && !"-1".equals(kaplanMeierFormValues.getSelectedAnnotationId())
+            && kaplanMeierFormValues.getAnnotationTypeSelection() != null 
+            && kaplanMeierFormValues.getSurvivalValueDefinitionId() != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
