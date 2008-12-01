@@ -215,25 +215,4 @@ public class Cai2UtilTest {
         }
         assertTrue(exceptionThrown);
     }
-    
-    @Test
-    public void testRetrieveAbstractPermissibleValueString() {
-        StringPermissibleValue stringVal = new StringPermissibleValue();
-        stringVal.setStringValue("StringValue");
-        assertEquals("StringValue", Cai2Util.retrieveAbstractPermissibleValueString(stringVal));
-        
-        NumericPermissibleValue numericVal = new NumericPermissibleValue();
-        numericVal.setLowValue(1.0);
-        numericVal.setHighValue(10.0);
-        numericVal.setNumericValue(15.0);
-        numericVal.setIsRangeValue(1);
-        assertEquals("1.0 - 10.0", Cai2Util.retrieveAbstractPermissibleValueString(numericVal));
-        numericVal.setIsRangeValue(0);
-        assertEquals("15.0", Cai2Util.retrieveAbstractPermissibleValueString(numericVal));
-        
-        DatePermissibleValue dateVal = new DatePermissibleValue();
-        long currentTime = System.currentTimeMillis();
-        dateVal.setDateValue(new Date(currentTime));
-        assertEquals(new Date(currentTime).toString(), Cai2Util.retrieveAbstractPermissibleValueString(dateVal));
-    }
 }

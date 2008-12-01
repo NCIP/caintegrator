@@ -209,6 +209,31 @@ public class KMPlotStudyCreator {
         femalePermissibleValue.setStringValue("F");
         plotGroupValues.add(malePermissibleValue);
         plotGroupValues.add(femalePermissibleValue);
+        StringPermissibleValue invalidPermissibleValue1 = new StringPermissibleValue();
+        invalidPermissibleValue1.setStringValue("INVALID1");
+        StringPermissibleValue invalidPermissibleValue2 = new StringPermissibleValue();
+        invalidPermissibleValue2.setStringValue("INVALID2");
+        StringPermissibleValue invalidPermissibleValue3 = new StringPermissibleValue();
+        invalidPermissibleValue3.setStringValue("INVALID3");
+        StringPermissibleValue invalidPermissibleValue4 = new StringPermissibleValue();
+        invalidPermissibleValue4.setStringValue("INVALID4");
+        StringPermissibleValue invalidPermissibleValue5 = new StringPermissibleValue();
+        invalidPermissibleValue5.setStringValue("INVALID5");
+        StringPermissibleValue invalidPermissibleValue6 = new StringPermissibleValue();
+        invalidPermissibleValue6.setStringValue("INVALID6");
+        StringPermissibleValue invalidPermissibleValue7 = new StringPermissibleValue();
+        invalidPermissibleValue7.setStringValue("INVALID7");
+        StringPermissibleValue invalidPermissibleValue8 = new StringPermissibleValue();
+        invalidPermissibleValue8.setStringValue("INVALID8");
+        plotGroupValues.add(invalidPermissibleValue1);
+        plotGroupValues.add(invalidPermissibleValue2);
+        plotGroupValues.add(invalidPermissibleValue3);
+        plotGroupValues.add(invalidPermissibleValue4);
+        plotGroupValues.add(invalidPermissibleValue5);
+        plotGroupValues.add(invalidPermissibleValue6);
+        plotGroupValues.add(invalidPermissibleValue7);
+        plotGroupValues.add(invalidPermissibleValue8);
+
         
         // Add survival items
         survivalValueDefinition = new SurvivalValueDefinition();
