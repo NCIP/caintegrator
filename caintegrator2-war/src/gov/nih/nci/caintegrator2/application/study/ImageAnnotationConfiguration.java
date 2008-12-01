@@ -183,7 +183,7 @@ public class ImageAnnotationConfiguration implements PersistentObject {
         this.studyConfiguration = studyConfiguration;
     }
 
-    void loadAnnontation() {
+    void loadAnnontation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new ImageAnnotationHandler(this));
     }
 
