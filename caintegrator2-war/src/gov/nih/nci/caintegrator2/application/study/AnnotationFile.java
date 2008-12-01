@@ -163,7 +163,7 @@ public class AnnotationFile implements PersistentObject {
         return annotationFile;
     }
 
-    private void loadColumns(CaIntegrator2Dao dao) {
+    private void loadColumns(CaIntegrator2Dao dao) throws ValidationException {
         resetReader();
         loadNextLine();
         for (int index = 0; index < currentLineValues.length; index++) {
@@ -284,44 +284,45 @@ public class AnnotationFile implements PersistentObject {
         }
     }
     
-    private String[] readNext() {
+    private String[] readNext() throws ValidationException {
         try {
             return reader.readNext();
         } catch (IOException e) {
-            throw new IllegalStateException("Unexpected failure: unable to read validated file", e);
+            throwValidationException("Error reading file.");
+            return null;
         }
     }
 
-    void positionAtData() {
+    void positionAtData() throws ValidationException {
         resetReader();
         loadNextLine();
     }
     
-    private void loadNextLine() {
+    private void loadNextLine() throws ValidationException {
          currentLineValues = readNext();            
     }
 
-    boolean hasNextDataLine() {
+    boolean hasNextDataLine() throws ValidationException {
         loadNextLine();
         return currentLineValues != null;
     }
 
-    String getDataValue(AnnotationFieldDescriptor descriptor) {
+    String getDataValue(AnnotationFieldDescriptor descriptor) throws ValidationException {
         return getDataValue(getDescriptorToColumnMap().get(descriptor));
     }
 
-    String getDataValue(FileColumn fileColumn) {
+    String getDataValue(FileColumn fileColumn) throws ValidationException {
         if (currentLineValues == null) {
-            throw new IllegalStateException("Caller must first call hasNextDataLine() before retrieving data.");
+            throwValidationException("Caller must first call hasNextDataLine() before retrieving data.");
         }
         return currentLineValues[fileColumn.getPosition()];
     }
 
-    private void resetReader() {
+    private void resetReader() throws ValidationException {
         try {
             reader = new CSVReader(new FileReader(getFile()));
         } catch (FileNotFoundException e) {
-            throw new IllegalStateException("Unexpected failure: unable to reset file", e);
+            throwValidationException("Can't reset file: " + getFile().getAbsolutePath());
         }
     }
 
@@ -404,7 +405,7 @@ public class AnnotationFile implements PersistentObject {
         this.id = id;
     }
 
-    void loadAnnontation(AbstractAnnotationHandler handler) {
+    void loadAnnontation(AbstractAnnotationHandler handler) throws ValidationException {
         handler.addDefinitionsToStudy(getAnnotationDefinitions());
         positionAtData();
         while (hasNextDataLine()) {
@@ -425,7 +426,7 @@ public class AnnotationFile implements PersistentObject {
         return definitions;
     }
 
-    private void loadAnnotationLine(AbstractAnnotationHandler handler) {
+    private void loadAnnotationLine(AbstractAnnotationHandler handler) throws ValidationException {
         for (AnnotationFieldDescriptor annotationDescriptor : getDescriptors()) {
             String value = getDataValue(annotationDescriptor);
             AbstractAnnotationValue annotationValue = createAnnotationValue(annotationDescriptor, value);
@@ -440,9 +441,9 @@ public class AnnotationFile implements PersistentObject {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
     private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
-            String value) {
+            String value) throws ValidationException {
         if (annotationDescriptor.getDefinition() == null || annotationDescriptor.getDefinition().getType() == null) {
-            throw new IllegalArgumentException("Type for field " + annotationDescriptor.getName() + " was not set.");
+            throwValidationException("Type for field " + annotationDescriptor.getName() + " was not set.");
         }
         AnnotationTypeEnum type = AnnotationTypeEnum.getByValue(annotationDescriptor.getDefinition().getType());
         switch (type) {
@@ -453,7 +454,8 @@ public class AnnotationFile implements PersistentObject {
         case NUMERIC:
             return createNumericAnnotationValue(annotationDescriptor, value);
         default:
-            throw new IllegalStateException("Unknown AnnotationDefinitionType: " + type);
+            throwValidationException("Unknown AnnotationDefinitionType: " + type);
+            return null;
         }
     }
 
@@ -466,45 +468,53 @@ public class AnnotationFile implements PersistentObject {
     }
 
     private DateAnnotationValue createDateAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
-            String value) {
+            String value) throws ValidationException {
         DateAnnotationValue annotationValue = new DateAnnotationValue();
-        annotationValue.setDateValue(getDateValue(value));
+        try {
+            annotationValue.setDateValue(getDateValue(value));
+        } catch (ParseException e) {
+            throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
+        }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
     }
-
-    private Date getDateValue(String value) {
+    
+    private Date getDateValue(String value) throws ParseException {
         final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-        try {
-            if (StringUtils.isBlank(value)) {
-                return null;
-            } else {
-                return format.parse(value);
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Invalid date format found after validation: " + value, e);
+        if (StringUtils.isBlank(value)) {
+            return null;
+        } else {
+            return format.parse(value);
         }
     }
 
     private NumericAnnotationValue createNumericAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
-            String value) {
+            String value) throws ValidationException {
         NumericAnnotationValue annotationValue = new NumericAnnotationValue();
-        annotationValue.setNumericValue(getNumericValue(value));
+        try {
+            annotationValue.setNumericValue(getNumericValue(value));
+        } catch (NumberFormatException e) {
+            throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
+        }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
         return annotationValue;
     }
 
     private Double getNumericValue(String value) {
-        try {
-            if (StringUtils.isBlank(value)) {
-                return null;
-            } else {
-                return Double.parseDouble(value);
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid number format found after validation: " + value, e);
+        if (StringUtils.isBlank(value)) {
+            return null;
+        } else {
+            return Double.parseDouble(value);
         }
     }
+
+    private String createFormatErrorMsg(AnnotationFieldDescriptor descriptor, String value) {
+        return "Invalid format for data type '" + descriptor.getDefinition().getType()
+            + "' on field '" + descriptor.getName()
+            + "' of descriptor '" + descriptor.getDefinition().getDisplayName()
+            + "' with value = '" + value + "'";
+    }
+    
     /**
      * {@inheritDoc}
      */

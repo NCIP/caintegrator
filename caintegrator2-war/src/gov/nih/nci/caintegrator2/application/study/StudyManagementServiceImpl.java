@@ -231,7 +231,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
+    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.loadAnnontation();
@@ -488,7 +488,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void loadImageAnnotation(StudyConfiguration studyConfiguration) {
+    public void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
         for (ImageAnnotationConfiguration configuration 
                 : studyConfiguration.getImageAnnotationConfigurations()) {
             configuration.loadAnnontation();

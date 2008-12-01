@@ -122,7 +122,7 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
      * {@inheritDoc}
      */
     @Override
-    void loadAnnontation() {
+    void loadAnnontation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
     }
 

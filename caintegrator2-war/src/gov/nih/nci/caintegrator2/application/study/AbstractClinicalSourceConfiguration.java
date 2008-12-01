@@ -114,7 +114,7 @@ public abstract class AbstractClinicalSourceConfiguration implements PersistentO
 
     abstract ClinicalSourceType getType();
 
-    abstract void loadAnnontation();
+    abstract void loadAnnontation() throws ValidationException;
     
     /**
      * Returns a brief description of this clinical source.

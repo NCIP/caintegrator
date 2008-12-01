@@ -150,8 +150,9 @@ public interface StudyManagementService {
      * Loads clinical annotations given a study configuration.
      * 
      * @param studyConfiguration study configuration to load
+     * @throws ValidationException fail to load
      */
-    void loadClinicalAnnotation(StudyConfiguration studyConfiguration);
+    void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
 
     /**
      * Deploys or redeploys a study.
@@ -205,8 +206,9 @@ public interface StudyManagementService {
      * Loads image annotations given a study configuration.
      * 
      * @param studyConfiguration study configuration to load
+     * @throws ValidationException fail to load
      */
-    void loadImageAnnotation(StudyConfiguration studyConfiguration);
+    void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
 
     /**
      * Returns the studies managed by the Study Manager indicated by username.

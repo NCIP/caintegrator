@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+
 /**
  * Action called to edit an existing clinical data source.
  */
@@ -97,7 +99,12 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     @Override
     public String execute() {
-        getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration());
+        try {
+            getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration());
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            return INPUT;
+        }
         return SUCCESS;
     }
     
