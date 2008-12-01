@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -180,7 +181,9 @@ public class AnalysisServiceTest {
     public void testCreateKMPlot() {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
-        KMPlot kmPlot = service.createKMPlot(study,
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        KMPlot kmPlot = service.createKMPlot(subscription,
                 EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 
@@ -192,7 +195,7 @@ public class AnalysisServiceTest {
         assertTrue(daoStub.retrieveValueForAnnotationSubjectCalled);
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
-            kmPlot = service.createKMPlot(study, 
+            kmPlot = service.createKMPlot(subscription, 
                 EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 
@@ -205,7 +208,7 @@ public class AnalysisServiceTest {
         exceptionCaught = false;
         studyCreator.getSurvivalValueDefinition().setLastFollowupDate(null);
         try { // Try giving survivalValueDefinition without a followup date
-            kmPlot = service.createKMPlot(study, 
+            kmPlot = service.createKMPlot(subscription, 
                 EntityTypeEnum.SUBJECT,
                 studyCreator.getGroupAnnotationField(), 
                 studyCreator.getPlotGroupValues(), 

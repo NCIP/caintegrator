@@ -115,5 +115,9 @@
     <definition name="genePatternAnalysisResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisResults_tile.jsp" />
     </definition>
+    
+    <definition name="kaplanMeier" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot_tile.jsp" />
+    </definition>
 
 </tiles-definitions>

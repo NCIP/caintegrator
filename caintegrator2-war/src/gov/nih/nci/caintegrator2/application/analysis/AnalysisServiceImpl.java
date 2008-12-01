@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.net.MalformedURLException;
@@ -165,7 +165,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public KMPlot createKMPlot(Study study,
+    public KMPlot createKMPlot(StudySubscription subscription,
                                EntityTypeEnum groupFieldType,
                                AnnotationDefinition groupAnnotationField,
                                Collection <AbstractPermissibleValue> plotGroupValues,
@@ -174,7 +174,8 @@ public class AnalysisServiceImpl implements AnalysisService {
                                                      dao, 
                                                      survivalValueDefinition, 
                                                      queryManagementService);
-        return kmPlotHelper.createPlot(groupAnnotationField, 
+        return kmPlotHelper.createPlot(subscription,
+                                       groupAnnotationField, 
                                        groupFieldType,
                                        plotGroupValues);
     }

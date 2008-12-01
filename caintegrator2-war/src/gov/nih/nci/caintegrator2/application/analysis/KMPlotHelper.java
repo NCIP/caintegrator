@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -98,15 +99,15 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
@@ -138,7 +139,8 @@ class KMPlotHelper {
         this.queryManagementService = queryManagementService;
     }
     
-    KMPlot createPlot(AnnotationDefinition groupAnnotationField,
+    KMPlot createPlot(StudySubscription subscription, 
+                      AnnotationDefinition groupAnnotationField,
                       EntityTypeEnum groupFieldType,
                       Collection<AbstractPermissibleValue> plotGroupValues) {
         KMPlotConfiguration configuration = new KMPlotConfiguration();
@@ -153,7 +155,8 @@ class KMPlotHelper {
         }
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
         retrieveSubjectGroups(plotGroupValues, subjectGroupCollection);
-        Collection <ResultRow> subjectRows = retrieveSubjectRowsFromDatabase(groupFieldType, groupAnnotationField);
+        Collection <ResultRow> subjectRows = 
+                retrieveSubjectRowsFromDatabase(groupFieldType, groupAnnotationField, subscription);
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         configuration.getGroups().addAll(subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
@@ -233,29 +236,10 @@ class KMPlotHelper {
             Collection<SubjectGroup> subjectGroupCollection) {
         for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
             SubjectGroup subjectGroup = new SubjectGroup();
-            subjectGroup.setName(retrieveGroupName(plotGroupValue));
+            subjectGroup.setName(Cai2Util.retrieveAbstractPermissibleValueString(plotGroupValue));
             subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
             subjectGroupCollection.add(subjectGroup);
             subjectGroup.setColor(getColor(subjectGroupCollection.size()));
-        }
-    }
-
-    private String retrieveGroupName(AbstractPermissibleValue plotGroupValue) {
-        if (plotGroupValue instanceof StringPermissibleValue) {
-            StringPermissibleValue val = (StringPermissibleValue) plotGroupValue;
-            return val.getStringValue();
-        } else if (plotGroupValue instanceof NumericPermissibleValue) {
-            NumericPermissibleValue val = (NumericPermissibleValue) plotGroupValue;
-            if (val.getIsRangeValue() != 0) {
-                return (val.getLowValue() + " - " + val.getHighValue());
-            } else {
-                return val.getNumericValue().toString();
-            }
-        } else if (plotGroupValue instanceof DatePermissibleValue) {
-            DatePermissibleValue val = (DatePermissibleValue) plotGroupValue;
-            return val.getDateValue().toString();
-        } else {
-            return "Unknown Group Name";
         }
     }
 
@@ -279,13 +263,19 @@ class KMPlotHelper {
     }
     
     private Collection<ResultRow> retrieveSubjectRowsFromDatabase(EntityTypeEnum groupFieldType, 
-                                                 AnnotationDefinition groupAnnotationField) {
+                                                 AnnotationDefinition groupAnnotationField,
+                                                 StudySubscription subscription) {
         Query query = new Query();
         ResultColumn column = new ResultColumn();
         column.setAnnotationDefinition(groupAnnotationField);
         column.setEntityType(groupFieldType.getValue());
+        column.setColumnIndex(0);
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.getColumnCollection().add(column);
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(subscription);
         QueryResult queryResult = queryManagementService.execute(query);
         return queryResult.getRowCollection();
     }

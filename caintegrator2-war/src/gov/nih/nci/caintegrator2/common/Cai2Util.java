@@ -252,4 +252,28 @@ public final class Cai2Util {
         }
         return false;
     }
+    
+    /**
+     * Given an AbstractPermissibleValue it returns a display string for the user to see.
+     * @param value - PermissibleValue we wish to turn into a String.
+     * @return Displayable string value.
+     */
+    public static String retrieveAbstractPermissibleValueString(AbstractPermissibleValue value) {
+        if (value instanceof StringPermissibleValue) {
+            StringPermissibleValue val = (StringPermissibleValue) value;
+            return val.getStringValue();
+        } else if (value instanceof NumericPermissibleValue) {
+            NumericPermissibleValue val = (NumericPermissibleValue) value;
+            if (val.getIsRangeValue() != 0) {
+                return (val.getLowValue() + " - " + val.getHighValue());
+            } else {
+                return val.getNumericValue().toString();
+            }
+        } else if (value instanceof DatePermissibleValue) {
+            DatePermissibleValue val = (DatePermissibleValue) value;
+            return val.getDateValue().toString();
+        } else {
+            return "Unknown Group Name";
+        }
+    }
 }

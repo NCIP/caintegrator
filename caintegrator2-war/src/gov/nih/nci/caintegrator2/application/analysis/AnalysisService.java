@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 /**
@@ -125,14 +125,14 @@ public interface AnalysisService {
     
     /**
      * Creates a KMPlot object based on all clinical subjects for the given parameters.
-     * @param study the study that the user wants to create the plot for.
+     * @param subscription the study subscription that the user wants to create the plot for.
      * @param groupFieldType the entity type for the grouping field (subject, sample, etc.)
      * @param groupAnnotationField the annotation definition for the grouping.
      * @param plotGroupValues the permissible values allowed for the plot groups.
      * @param survivalValueDefinition the SurvivalValueDefinition to use for this plot.
      * @return the plot object.
      */
-    KMPlot createKMPlot(Study study,
+    KMPlot createKMPlot(StudySubscription subscription,
                         EntityTypeEnum groupFieldType,
                         AnnotationDefinition groupAnnotationField,
                         Collection <AbstractPermissibleValue> plotGroupValues,
