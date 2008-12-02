@@ -154,7 +154,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
     }
 
     private KMSampleDTO createSampleDTO(SubjectSurvivalData survivalData) {
-        return new KMSampleDTO(survivalData.getSurvivalLength(), survivalData.isCensor());
+        return new KMSampleDTO(survivalData.getSurvivalLength(), !survivalData.isCensor());
     }
 
     /**
