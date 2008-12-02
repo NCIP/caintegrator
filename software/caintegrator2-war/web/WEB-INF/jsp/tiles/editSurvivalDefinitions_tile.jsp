@@ -24,7 +24,6 @@
 	    <br> <br>
 	    <s:url id="newSurvivalValueDefinition" action="newSurvivalValueDefinition">
             <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-            <s:param name="actionType" value="new" />
         </s:url>
 	    <s:a href="%{newSurvivalValueDefinition}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="add">New</span></span></s:a>
 	    <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.survivalDefinitionForm.action = 'deleteSurvivalValueDefinition.action';document.survivalDefinitionForm.actionType.value = 'modify';document.survivalDefinitionForm.submit();"><span class="btn_img"><span class="cancel">Remove</span></span></s:a>
