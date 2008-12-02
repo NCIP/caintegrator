@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
@@ -170,6 +171,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             service.save(studyConfiguration);
             loadAnnotationDefinitions();
             loadClinicalData();
+            loadSurvivalValueDefinition();
             loadSamples();
             mapSamples();
             loadControlSamples();
@@ -403,6 +405,19 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             dao.save(definition);
         }
     }
+    
+    private void loadSurvivalValueDefinition() {
+        SurvivalValueDefinition definition = service.createNewSurvivalValueDefinition(studyConfiguration.getStudy());
+        definition.setSurvivalStartDate(dao.getAnnotationDefinition(getSurvivalStartDateName()));
+        definition.setDeathDate(dao.getAnnotationDefinition(getDeathDateName()));
+        definition.setLastFollowupDate(dao.getAnnotationDefinition(getLastFollowupDateName()));
+        definition.setName("Survival From Start Date");
+        dao.save(definition);
+    }
+    
+    abstract protected String getSurvivalStartDateName();
+    abstract protected String getDeathDateName();
+    abstract protected String getLastFollowupDateName();
 
     abstract protected File getAnnotationDefinitionsFile();
     

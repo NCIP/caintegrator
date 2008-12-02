@@ -203,5 +203,20 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     String getPlatformName() {
         return "HG-U133_Plus_2";
     }
+    
+    @Override
+    protected String getDeathDateName() {
+        return "Death Date";
+    }
+
+    @Override
+    protected String getLastFollowupDateName() {
+        return "Last Followup Date";
+    }
+
+    @Override
+    protected String getSurvivalStartDateName() {
+        return "Survival Start Date";
+    }
 
 }
