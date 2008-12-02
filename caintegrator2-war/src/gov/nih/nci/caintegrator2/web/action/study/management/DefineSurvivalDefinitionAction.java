@@ -122,6 +122,7 @@ public class DefineSurvivalDefinitionAction extends AbstractStudyAction {
         if ("modify".equals(actionType) && survivalValueDefinition.getId() == null) {
             addActionError("Must select a Survival Value Definition before edit / delete.");
         }
+        actionType = "";
     }
     
     /**
