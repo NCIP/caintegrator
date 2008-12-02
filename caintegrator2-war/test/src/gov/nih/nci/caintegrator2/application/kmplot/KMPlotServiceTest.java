@@ -129,7 +129,7 @@ public class KMPlotServiceTest {
         assertEquals(1, groupDTO.getKmSampleDTOCollection().size());
         KMSampleDTO sampleDTO = groupDTO.getKmSampleDTOCollection().iterator().next();
         assertEquals(1, sampleDTO.getSurvivalLength());
-        assertEquals(false, sampleDTO.getCensor());
+        assertEquals(true, sampleDTO.getCensor());
         assertEquals(1.1, (double) plot.getPValue(group1, group2), 0.0);
         assertTrue(caIntegratorPlotStub.computeLogRankPValueBetweenCalled);
     }
