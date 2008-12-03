@@ -90,8 +90,8 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
  */
 public class StringOperand extends AbstractCriterionOperand {
 
-    StringOperand(String label, AbstractCriterionHolder criterionHolder) {
-        super(label, criterionHolder);
+    StringOperand(String label, AbstractCriterionRow criterionRow) {
+        super(label, criterionRow);
     }
 
     /**

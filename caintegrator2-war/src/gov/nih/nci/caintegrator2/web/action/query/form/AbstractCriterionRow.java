@@ -97,7 +97,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Contains information for a single <code>AbstractCriterion</code>.
  */
-public abstract class AbstractCriterionHolder {
+public abstract class AbstractCriterionRow {
     
     private static Map<CriterionOperatorEnum[], String[]> operatorNamesMap = 
         new HashMap<CriterionOperatorEnum[], String[]>();
@@ -106,7 +106,7 @@ public abstract class AbstractCriterionHolder {
     private CriterionOperatorEnum operator;
     private List<AbstractCriterionOperand> operands = new ArrayList<AbstractCriterionOperand>();
 
-    AbstractCriterionHolder(CriteriaGroup group) {
+    AbstractCriterionRow(CriteriaGroup group) {
         this.group = group;
     }
     
@@ -128,7 +128,7 @@ public abstract class AbstractCriterionHolder {
     public abstract void setFieldName(String fieldName);
     
     /**
-     * Returns the operators available for this holder.
+     * Returns the operators available for this row.
      * 
      * @return the operator names.
      */
