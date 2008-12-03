@@ -99,7 +99,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Contains and manages a gene expression criterion.
  */
-public class GeneExpressionCriterionHolder extends AbstractCriterionHolder {
+public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     
     private static final String FOLDS_LABEL = "Folds";
     private static final String REGULATION_TYPE_LABEL = "Regulation Type";
@@ -109,7 +109,7 @@ public class GeneExpressionCriterionHolder extends AbstractCriterionHolder {
     
     private AbstractGenomicCriterion genomicCriterion;
 
-    GeneExpressionCriterionHolder(CriteriaGroup criteriaGroup) {
+    GeneExpressionCriterionRow(CriteriaGroup criteriaGroup) {
         super(criteriaGroup);
     }
 

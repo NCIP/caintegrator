@@ -104,11 +104,11 @@ public abstract class AbstractCriterionOperand {
     
     private String value;
     private final String label;
-    private final AbstractCriterionHolder criterionHolder;
+    private final AbstractCriterionRow criterionRow;
 
-    AbstractCriterionOperand(String label, AbstractCriterionHolder criterionHolder) {
+    AbstractCriterionOperand(String label, AbstractCriterionRow criterionRow) {
         this.label = label;
-        this.criterionHolder = criterionHolder;
+        this.criterionRow = criterionRow;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractCriterionOperand {
         if (!StringUtils.equals(this.value, value)) {
             String oldValue = this.value;
             this.value = value;
-            criterionHolder.handleOperandChange(this, oldValue, value);
+            criterionRow.handleOperandChange(this, oldValue, value);
         }
     }
 
@@ -136,8 +136,8 @@ public abstract class AbstractCriterionOperand {
         return label;
     }
 
-    AbstractCriterionHolder getCriterionHolder() {
-        return criterionHolder;
+    AbstractCriterionRow getCriterionRow() {
+        return criterionRow;
     }
     
     /**
