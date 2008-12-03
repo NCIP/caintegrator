@@ -103,7 +103,7 @@ public class CriteriaGroup {
     private final CompoundCriterion compoundCriterion;
     private final QueryForm form;
     private CriterionTypeEnum criterionType;
-    private final List<AbstractCriterionHolder> criteria = new ArrayList<AbstractCriterionHolder>();
+    private final List<AbstractCriterionRow> criteria = new ArrayList<AbstractCriterionRow>();
 
     CriteriaGroup(QueryForm form) {
         if (form.getQuery() == null || form.getQuery().getCompoundCriterion() == null) {
@@ -116,12 +116,12 @@ public class CriteriaGroup {
 
     private void initializeCriteria(Collection<AbstractCriterion> criterionCollection) {
         for (AbstractCriterion criterion : criterionCollection) {
-            criteria.add(createCriterionHolder(criterion));
+            criteria.add(createCriterionRow(criterion));
         }
     }
 
     @SuppressWarnings("unused")
-    private AbstractCriterionHolder createCriterionHolder(AbstractCriterion criterion) {
+    private AbstractCriterionRow createCriterionRow(AbstractCriterion criterion) {
         return null;
     }
 
@@ -143,24 +143,24 @@ public class CriteriaGroup {
      * Adds a new criterion of the currently selected type.
      */
     public void addCriterion() {
-        AbstractCriterionHolder criterionHolder;
+        AbstractCriterionRow criterionRow;
         if (criterionType == null) {
             throw new IllegalStateException("Invalid criterionType " + criterionType);
         }
         switch (criterionType) {
         case CLINICAL:
-            criterionHolder = new ClinicalCriterionHolder(this);
+            criterionRow = new ClinicalCriterionRow(this);
             break;
         case IMAGE_SERIES:
-            criterionHolder = new ImageSeriesCriterionHolder(this);
+            criterionRow = new ImageSeriesCriterionRow(this);
             break;
         case GENE_EXPRESSION:
-            criterionHolder = new GeneExpressionCriterionHolder(this);
+            criterionRow = new GeneExpressionCriterionRow(this);
             break;
         default:
             throw new IllegalStateException("Invalid criterionType " + criterionType);
         }
-        criteria.add(criterionHolder);
+        criteria.add(criterionRow);
     }
 
     /**
@@ -192,7 +192,7 @@ public class CriteriaGroup {
     /**
      * @return the criteria
      */
-    public List<AbstractCriterionHolder> getCriteria() {
+    public List<AbstractCriterionRow> getCriteria() {
         return criteria;
     }
 

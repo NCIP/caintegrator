@@ -95,8 +95,8 @@ public class SelectListOperand extends AbstractCriterionOperand {
     
     private List<String> options = new ArrayList<String>();
 
-    SelectListOperand(String label, AbstractCriterionHolder criterionHolder) {
-        super(label, criterionHolder);
+    SelectListOperand(String label, AbstractCriterionRow criterionRow) {
+        super(label, criterionRow);
     }
 
     /**

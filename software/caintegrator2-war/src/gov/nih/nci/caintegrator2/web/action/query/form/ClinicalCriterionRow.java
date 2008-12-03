@@ -91,9 +91,9 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 /**
  * Holds information for a single clinical criterion.
  */
-public class ImageSeriesCriterionHolder extends AbstractAnnotationCriterionHolder {
+public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
 
-    ImageSeriesCriterionHolder(CriteriaGroup group) {
+    ClinicalCriterionRow(CriteriaGroup group) {
         super(group);
     }
 
@@ -102,7 +102,7 @@ public class ImageSeriesCriterionHolder extends AbstractAnnotationCriterionHolde
      */
     @Override
     AnnotationDefinitionList getAnnotationDefinitionList() {
-        return getGroup().getForm().getImageSeriesAnnotations();
+        return getGroup().getForm().getClinicalAnnotations();
     }
 
     /**
@@ -110,7 +110,7 @@ public class ImageSeriesCriterionHolder extends AbstractAnnotationCriterionHolde
      */
     @Override
     EntityTypeEnum getEntityType() {
-        return EntityTypeEnum.IMAGESERIES;
+        return EntityTypeEnum.SUBJECT;
     }
 
 }

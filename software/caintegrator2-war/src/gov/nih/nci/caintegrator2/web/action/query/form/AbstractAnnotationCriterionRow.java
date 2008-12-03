@@ -109,12 +109,12 @@ import org.apache.commons.lang.StringUtils;
  * Holds information for a single clinical criterion.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // see createNewCriterion
-public abstract class AbstractAnnotationCriterionHolder extends AbstractCriterionHolder {
+public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRow {
     
     private AbstractAnnotationCriterion annotationCriterion;
     private AnnotationDefinition selectedField;
 
-    AbstractAnnotationCriterionHolder(CriteriaGroup group) {
+    AbstractAnnotationCriterionRow(CriteriaGroup group) {
         super(group);
     }
 
