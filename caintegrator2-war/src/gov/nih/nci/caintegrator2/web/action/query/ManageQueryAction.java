@@ -121,13 +121,15 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private String searchDescription;
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
     private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
-        
+    private String displayTab;
+    
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
      */
     public void prepare() {
         super.prepare();
+        displayTab = "criteria";
         // Instantiate/prepopulate manageQueryHelper if necessary
         manageQueryHelper = ManageQueryHelper.getInstance();
         if ("createNewQuery".equals(selectedAction)) {
@@ -248,7 +250,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         }
         for (String selectedValue : selectedValues) {
             if (selectedValue.equalsIgnoreCase("")) {
-                addActionError(" Please type a value to run a query ");
+                addActionError(" Please select or type a value to run the query ");
             }
         }
     }
@@ -276,13 +278,16 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             returnValue = SUCCESS;
         } else if ("createNewQuery".equals(selectedAction)) {
             // call new query
+            setQueryResult(null);
             returnValue = SUCCESS;    
         } else if ("updateResultsPerPage".equals(selectedAction)) {
          // Does nothing right now, eventually might actually persist this value to db.
+            displayTab = "searchresults";
             returnValue = SUCCESS;
         } else if ("updateAnnotationDefinition".equals(selectedAction)) {
             returnValue = updateAnnotationDefinition();
         } else {
+            addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
         }     
         
@@ -384,6 +389,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
             setQueryResult(new DisplayableQueryResult(result));
         }
+        displayTab = "searchresults";
         return SUCCESS;
     }
     
@@ -642,5 +648,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public void setRowNumber(String rowNumber) {
         this.rowNumber = rowNumber;
+    }
+        
+    /**
+     * @return the displayTab
+     */
+    public String getDisplayTab() {
+        return displayTab;
     }
 }

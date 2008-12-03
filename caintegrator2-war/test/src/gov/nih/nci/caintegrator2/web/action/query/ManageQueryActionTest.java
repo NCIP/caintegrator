@@ -183,6 +183,7 @@ public class ManageQueryActionTest {
         manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
         manageQueryAction.setSelectedImageAnnotations(holdLongArray);
         manageQueryAction.prepare();
+        assertEquals("criteria", manageQueryAction.getDisplayTab());
         
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
