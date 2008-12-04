@@ -1,0 +1,14 @@
+KM plot - (a) Add p value 
+          (b) Sensor data - will to follow-up ( Dead vs. Out of Study)
+
+Permissible Values - 2 times on the screen
+
+export CSV - exception 
+Image with No annotations 
+Basket feature in NCIA
+Gene based search 
+time point 
+SNP Id's
+Tissue 
+
+Yuri
