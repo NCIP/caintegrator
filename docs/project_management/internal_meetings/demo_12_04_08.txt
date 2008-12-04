@@ -1,14 +1,17 @@
-KM plot - (a) Add p value 
-          (b) Sensor data - will to follow-up ( Dead vs. Out of Study)
+Demo feedbacks 
 
-Permissible Values - 2 times on the screen
+1.	Add p-value for km-plot
+2.	Sensor data - patients who dropped out of study vs. Dead  (Will to follow-up)
+3.	‘Permissible values’ – twice on the screen 
+4.	Exception when downloading CSV file 
+5.	Handling image/NCIA integration when there are no image annotations 
 
-export CSV - exception 
-Image with No annotations 
-Basket feature in NCIA
-Gene based search 
-time point 
-SNP Id's
-Tissue 
+Future plans
 
-Yuri
+1.	Stabilize current application for a Jan 16th stage release
+2.	Discuss basket/shopping cart feature with NCIA team 
+3.	Add more criteria’s for Genomic queries (RefSeq Id’s, EST’s etc) 
+4.	Continue working on time-point support 
+5.	Support for SNP id’s, CopyNumber and caTissue 
+6.	Plan for a Production release for April 2008
+7.	User community involvement (GeorgeTown, JC/Yuri, Dana Faber, Univ. of Indiana, University of Pittsburg) 
