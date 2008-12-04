@@ -113,7 +113,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See retrieveFormSelectedValues()
 public class KaplanMeierAction extends AbstractCaIntegrator2Action {
-    
+
+    private static final long serialVersionUID = 1L;
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
 
