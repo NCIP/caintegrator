@@ -102,6 +102,8 @@ import com.opensymphony.xwork2.Result;
  */
 public class KMPlotResult implements Result {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * {@inheritDoc}
      */
