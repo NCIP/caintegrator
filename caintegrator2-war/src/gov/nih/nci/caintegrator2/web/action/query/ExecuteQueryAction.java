@@ -103,6 +103,7 @@ public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
     private QueryManagementService queryManagementService;
     private String queryName;
     private Long queryId;
+    private Long openMenuTreeId;
     
     /**
      * {@inheritDoc}
@@ -186,5 +187,21 @@ public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
     public void setQueryId(Long queryId) {
         this.queryId = queryId;
     }
+
+    /**
+     * @return the openMenuTreeId
+     */
+    public Long getOpenMenuTreeId() {
+        return openMenuTreeId;
+    }
+
+    /**
+     * @param openMenuTreeId the openMenuTreeId to set
+     */
+    public void setOpenMenuTreeId(Long openMenuTreeId) {
+        this.openMenuTreeId = openMenuTreeId;
+    }
+
+    
 
 }
