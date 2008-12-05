@@ -52,8 +52,20 @@
                                 <s:iterator value="studySubscription.queryCollection">
                                     <s:url id="queryURL" action="executeQuery">
                                         <s:param name="queryId" value="id" />
+                                        <s:param name="openMenuTreeId" value="id" />
                                     </s:url>
-                                    <li><s:a href="%{queryURL}#searchresults" cssClass="queries"><s:property value="name"/></s:a></li>
+
+                                    <s:set name="temp" value="%{openMenuTreeId[0]}"/>
+                                                                        
+                                    <li><s:a href="%{queryURL}#searchresults" cssClass="queries">
+                                         <s:if test="#temp==id">
+                                            <strong> <s:property value="name"/> </strong>
+                                          </s:if>
+                                          <s:else>
+                                            <s:property value="name"/>
+                                          </s:else>
+                                        </s:a>
+                                    </li>
                                 </s:iterator>
                                 
                                 <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->
