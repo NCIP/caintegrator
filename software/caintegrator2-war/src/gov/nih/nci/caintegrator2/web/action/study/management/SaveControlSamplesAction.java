@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -111,15 +112,18 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
 
     /**
      * {@inheritDoc}
+     * @throws IOException 
      */
     @Override
     public String execute() {
         try {
-            
             getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
             return SUCCESS;
         } catch (ValidationException e) {
-            addFieldError("controlSampleFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
+            return INPUT;
+        } catch (IOException e) {
+            setFieldError("Unexpected IO exception: " + e.getMessage());
             return INPUT;
         } 
         
@@ -131,9 +135,15 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     @Override
     public void validate() {
         if (getControlSampleFile() == null) {
-            addFieldError("controlSampleFile", "File is required");
+            setFieldError("File is required");
+        } else if (getControlSampleFile().length() == 0) {
+            setFieldError("File is empty");
         }
         prepareValueStack();
+    }
+    
+    private void setFieldError(String errorMessage) {
+        addFieldError("controlSampleFile", errorMessage);
     }
 
     /**

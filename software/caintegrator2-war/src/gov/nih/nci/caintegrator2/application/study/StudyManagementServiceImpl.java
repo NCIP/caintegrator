@@ -265,17 +265,21 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     
     /**
      * {@inheritDoc}
+     * @throws ValidationException 
+     * @throws IOException 
      */
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) {
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)
+        throws ValidationException, IOException {
         new SampleMappingHelper(studyConfiguration, mappingFile).mapSamples();
         save(studyConfiguration);
     }
 
     /**
      * {@inheritDoc}
+     * @throws IOException 
      */
     public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
-            throws ValidationException {
+            throws ValidationException, IOException {
         new ControlSampleHelper(studyConfiguration, controlSampleFile).addControlSamples();
         save(studyConfiguration);
     }
@@ -498,8 +502,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     /**
      * {@inheritDoc}
+     * @throws IOException 
+     * @throws ValidationException 
      */
-    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile)
+        throws ValidationException, IOException {
         new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile).mapImageSeries();
         save(studyConfiguration);
     }

@@ -272,17 +272,22 @@ public interface StudyManagementService {
      * @param studyConfiguration study containing the subjects and samples
      * @param mappingFile comma-separated value file that maps subject identifiers to sample names
      * @throws ValidationException if the file was not a valid mapping file.
+     * @throws IOException unexpected IO exception
      * 
      */
-    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile) throws ValidationException;
+    void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)
+        throws ValidationException, IOException;
 
     /**
      * Create the associations between subjects in the study and image series.
      * 
      * @param studyConfiguration study containing the subjects and image series
      * @param mappingFile comma-separated value file that maps subject identifiers to image series identifiers
+     * @throws IOException unexpected IO exception
+     * @throws ValidationException validation exception
      */
-    void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile);
+    void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile)
+        throws ValidationException, IOException;
     
     /**
      * Creates a new AnnotationDefinition based on an AnnotationFieldDescriptor.
@@ -300,8 +305,10 @@ public interface StudyManagementService {
      * @param studyConfiguration add controls for this study
      * @param controlSampleFile file containing the sample identifiers, one per line
      * @throws ValidationException if the file is invalid.
+     * @throws IOException unexpected IO exception
      */
-    void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile) throws ValidationException;
+    void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
+        throws ValidationException, IOException;
 
     /**
      * Check for duplicate study name in the database.

@@ -115,19 +115,17 @@ class ImageSeriesAcquisitionMappingHelper {
         this.mappingFile = mappingFile;
     }
 
-    void mapImageSeries() {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(mappingFile));
-            String[] values;
-            while ((values = reader.readNext()) != null) {
-                String subjectIdentifier = values[0];
-                String acquisitionIdentifier = values[1];
-                map(getSubjectAssignment(subjectIdentifier), getImageSeriesAcquisition(acquisitionIdentifier));
+    void mapImageSeries() throws ValidationException, IOException {
+        CSVReader reader = new CSVReader(new FileReader(mappingFile));
+        String[] values;
+        while ((values = reader.readNext()) != null) {
+            if (values.length != 2) {
+                throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
             }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unexpected IO error", e);
+            String subjectIdentifier = values[0].trim();
+            String acquisitionIdentifier = values[1].trim();
+            map(getSubjectAssignment(subjectIdentifier), getImageSeriesAcquisition(acquisitionIdentifier));
         }
-        
     }
 
     private void map(StudySubjectAssignment subjectAssignment, ImageSeriesAcquisition acquisition) {

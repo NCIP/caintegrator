@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -107,31 +106,22 @@ class ControlSampleHelper {
         this.controlSampleFile = controlSampleFile;
     }
 
-    void addControlSamples() throws ValidationException {
-        try {
-            FileReader fileReader = new FileReader(controlSampleFile);
-            LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
-            String sampleName;
-            while ((sampleName = lineNumberReader.readLine()) != null) {
-                addControlSample(sampleName, lineNumberReader.getLineNumber() + 1);
-            }
-            lineNumberReader.close();
-            fileReader.close();
-        } catch (FileNotFoundException e) {
-            throw new IllegalStateException("Couldn't find file", e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Couldn't read file", e);
+    void addControlSamples() throws ValidationException, IOException {
+        FileReader fileReader = new FileReader(controlSampleFile);
+        LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
+        String sampleName;
+        while ((sampleName = lineNumberReader.readLine()) != null) {
+            addControlSample(sampleName, lineNumberReader.getLineNumber());
         }
+        lineNumberReader.close();
+        fileReader.close();
     }
 
     private void addControlSample(String sampleName, int lineNumber) throws ValidationException {
         Sample sample = studyConfiguration.getSample(sampleName);
         if (sample == null) {
-            ValidationResult result = new ValidationResult();
-            result.setInvalidMessage("Invalid sample identifier on line " + lineNumber 
+            throw new ValidationException("Invalid sample identifier on line " + lineNumber 
                     + ", there is no sample with the identifier " + sampleName + " in the study.");
-            ValidationException e = new ValidationException(result);
-            throw e;
         } else {
             if (studyConfiguration.getStudy().getControlSampleCollection() == null) {
                 studyConfiguration.getStudy().setControlSampleCollection(new HashSet<Sample>());

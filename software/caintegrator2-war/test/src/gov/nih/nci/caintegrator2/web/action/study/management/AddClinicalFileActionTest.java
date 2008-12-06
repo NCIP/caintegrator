@@ -162,7 +162,7 @@ public class AddClinicalFileActionTest {
         action.setClinicalFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
         assertEquals(Action.INPUT, action.execute());
         action.setClinicalFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
-        assertEquals(Action.ERROR, action.execute());
+        assertEquals(Action.INPUT, action.execute());
     }
 
 }

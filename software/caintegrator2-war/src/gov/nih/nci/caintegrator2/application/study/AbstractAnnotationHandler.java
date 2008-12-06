@@ -95,7 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
  */
 abstract class AbstractAnnotationHandler {
 
-    abstract void handleIdentifier(String identifier);
+    abstract void handleIdentifier(String identifier) throws ValidationException;
 
     abstract void handleAnnotationValue(AbstractAnnotationValue annotationValue);
 

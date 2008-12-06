@@ -99,6 +99,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Helper class used to map samples to subjects.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 class SampleMappingHelper {
 
     private final StudyConfiguration studyConfiguration;
@@ -109,25 +110,30 @@ class SampleMappingHelper {
         this.mappingFile = mappingFile;
     }
 
-    void mapSamples() {
-        try {
-            CSVReader reader = new CSVReader(new FileReader(mappingFile));
-            String[] values;
-            while ((values = reader.readNext()) != null) {
-                String subjectIdentifier = values[0];
-                String sampleName = values[1];
-                
-                StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
-                
-                // map is throwing an exception.  This is a temporary check for null to prevent it.
-                if (!(sja == null)) {
-                     map(sja, studyConfiguration.getSample(sampleName));
-                }
+    void mapSamples() throws ValidationException, IOException {
+        CSVReader reader = new CSVReader(new FileReader(mappingFile));
+        String[] values;
+        while ((values = reader.readNext()) != null) {
+            if (values.length != 2) {
+                throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
             }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unexpected IO error", e);
+            String subjectIdentifier = values[0].trim();
+            String sampleName = values[1].trim();
+               
+            StudySubjectAssignment sja = getSubjectAssignment(subjectIdentifier);
+                
+            // map is throwing an exception.  This is a temporary check for null to prevent it.
+            if (sja == null) {
+                throw new ValidationException("Subject Identifier not found '" + subjectIdentifier + "'");
+            }
+            if (sampleName == null) {
+                throw new ValidationException("No sample name for subject '" + subjectIdentifier + "'");
+            }
+            if (studyConfiguration.getSample(sampleName) == null) {
+                throw new ValidationException("Sample not found '" + sampleName + "'");
+            }
+            map(sja, studyConfiguration.getSample(sampleName));
         }
-        
     }
 
     private void map(StudySubjectAssignment subjectAssignment, Sample sample) {
