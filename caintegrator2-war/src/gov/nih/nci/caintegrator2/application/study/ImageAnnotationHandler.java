@@ -108,12 +108,13 @@ public class ImageAnnotationHandler extends AbstractAnnotationHandler {
 
     /**
      * {@inheritDoc}
+     * @throws ValidationException 
      */
     @Override
-    void handleIdentifier(String identifier) {
+    void handleIdentifier(String identifier) throws ValidationException {
         currentImageSeries = imageAnnotationConfiguration.getImageSeries(identifier);
         if (currentImageSeries == null) {
-            throw new IllegalArgumentException("There is no ImageSeries with the identifier " 
+            throw new ValidationException("There is no ImageSeries with the identifier " 
                     + identifier + " in the Study.");
         }
     }

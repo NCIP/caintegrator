@@ -268,7 +268,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     abstract File getImageAnnotationFile();
 
-    private void mapImages() {
+    private void mapImages() throws ValidationException, IOException {
         if (getMapImages()) {
             logStart();
             service.mapImageSeriesAcquisitions(studyConfiguration, getImageMappingFile());
@@ -336,7 +336,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
 
     abstract protected String getCaArrayId();
 
-    private void mapSamples() throws ValidationException {
+    private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
             service.mapSamples(studyConfiguration, getSampleMappingFile());
@@ -345,7 +345,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         }
     }
 
-    private void loadControlSamples() throws ValidationException {
+    private void loadControlSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
             service.addControlSamples(studyConfiguration, getControlSamplesFile());
