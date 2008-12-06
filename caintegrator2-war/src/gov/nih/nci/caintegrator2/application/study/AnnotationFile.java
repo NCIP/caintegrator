@@ -440,7 +440,7 @@ public class AnnotationFile implements PersistentObject {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
-    private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
+     private AbstractAnnotationValue createAnnotationValue(AnnotationFieldDescriptor annotationDescriptor, 
             String value) throws ValidationException {
         if (annotationDescriptor.getDefinition() == null || annotationDescriptor.getDefinition().getType() == null) {
             throwValidationException("Type for field " + annotationDescriptor.getName() + " was not set.");

@@ -100,7 +100,7 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     private File clinicalFile;
     private String clinicalFileContentType;
     private String clinicalFileFileName;
-
+   
     /**
      * {@inheritDoc}
      */
@@ -121,10 +121,11 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
             setClinicalSource(clinicalSource);
             return SUCCESS;
         } catch (ValidationException e) {
-            addFieldError("clinicalFile", "Invalid file: " + e.getResult().getInvalidMessage());
+            setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
             return INPUT;
         } catch (IOException e) {
-            return ERROR;
+            setFieldError("Unexpected IO exception: " + e.getMessage());
+            return INPUT;
         }
     }
     
@@ -134,9 +135,15 @@ public class AddClinicalFileAction extends AbstractClinicalSourceAction {
     @Override
     public void validate() {
         if (clinicalFile == null) {
-            addFieldError("clinicalFile", "Clinical File is required");
+            setFieldError("Clinical File is required");
+        } else if (clinicalFile.length() == 0) {
+            setFieldError("Clinical File is empty");
         }
         prepareValueStack();
+    }
+    
+    private void setFieldError(String errorMessage) {
+        addFieldError("clinicalFile", errorMessage);
     }
 
     /**

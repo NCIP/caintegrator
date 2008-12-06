@@ -98,6 +98,11 @@ public class ValidationException extends Exception {
         this.result = result;
     }
 
+    ValidationException(String invalidMessage) {
+        this.result = new ValidationResult();
+        this.result.setInvalidMessage(invalidMessage);
+    }
+
     /**
      * @return the result
      */

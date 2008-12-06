@@ -327,7 +327,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testMapSamples() throws ValidationException {
+    public void testMapSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
@@ -358,7 +358,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testAddControlSamples() throws ValidationException {
+    public void testAddControlSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         Sample sample1 = new Sample();
@@ -376,7 +376,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test(expected = ValidationException.class)
-    public void testAddControlSamplesValidation() throws ValidationException {
+    public void testAddControlSamplesValidation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
     }
@@ -439,7 +439,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testMapImageSeriesAcquisitions() {
+    public void testMapImageSeriesAcquisitions() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
