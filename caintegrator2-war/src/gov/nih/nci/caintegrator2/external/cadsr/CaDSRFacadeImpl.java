@@ -107,6 +107,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
+
 
 /**
  * Implements the CaDSRFacade interface.
@@ -150,9 +153,13 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
         ValueDomain valueDomain = new ValueDomain();
         try {
+            // Satish Patel informed me that the cadsrApi clears out the SecurityContext after they're done with it,
+            // they are working on a fix but as a workaround I need to store the context and set it again after
+            // I am done with all of the caDSR domain objects.  --TJ
+            SecurityContext originalContext = SecurityContextHolder.getContext();
             // Won't have to provide a URL when it goes from stage to production.
             ApplicationService cadsrApi = caDsrApplicationServiceFactory.retrieveCaDsrApplicationService(caDsrUrl);
-
+            
             gov.nih.nci.cadsr.domain.DataElement cadsrDataElement = new gov.nih.nci.cadsr.domain.DataElement();
             cadsrDataElement.setPublicID(dataElementId);
             List<Object> cadsrDataElements = cadsrApi.search(
@@ -181,6 +188,8 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
                     retrievePermissibleValues(valueDomain, cadsrValueDomain);
                 }
             }
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
             return valueDomain;
         } catch (Exception e) {
             throw new ConnectionException("Couldn't connect to the caDSR server", e);
