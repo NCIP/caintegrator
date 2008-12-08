@@ -86,10 +86,14 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -292,4 +296,101 @@ public final class PermissibleValueUtil {
         }
         return false;
     }
+    
+    
+    /**
+     * Retrieves all current Values for an AnnotationDefinition that don't belong to a PermissibleValue.
+     * @param study is the Study the values belong to.
+     * @param entityType the entity type of the Annotation definition.
+     * @param annotationDefinition the annotation to validate values are permissible.
+     * @param dao used to query on.
+     * @return a set of string values that are not permissible for this study.
+     */
+    public static Set<String> retrieveValuesNotPermissible(Study study, 
+                                                           EntityTypeEnum entityType,
+                                                           AnnotationDefinition annotationDefinition, 
+                                                           CaIntegrator2Dao dao) {
+        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(annotationDefinition.getType());
+        if (annotationType == null) {
+            throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
+        }
+        switch (annotationType) {
+        case STRING:
+            return retrieveStringValuesNotInPermissibleValues(
+                    annotationDefinition.getPermissibleValueCollection(), 
+                    dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, entityType, String.class));
+        case NUMERIC:
+            return retrieveNumericValuesNotInPermissibleValues(
+                    annotationDefinition.getPermissibleValueCollection(), 
+                    dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, entityType, Double.class));
+        case DATE:
+            return retrieveDateValuesNotInPermissibleValues(
+                    annotationDefinition.getPermissibleValueCollection(),
+                    dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, entityType, Date.class));
+        default:
+            throw new IllegalArgumentException("Unkown annotationType");
+        }
+    }
+    
+    private static Set<String> retrieveStringValuesNotInPermissibleValues(
+                    Collection<AbstractPermissibleValue> permissibleValues,
+                    List<String> uniqueStringValues) {
+        Set<String> valuesNotInPemissibleList = new HashSet<String>();
+        Set<String> uniqueStringPermissibleValues = new HashSet<String>();
+        if (uniqueStringValues != null 
+            && !uniqueStringValues.isEmpty()) {
+            for (AbstractPermissibleValue permissibleValue : permissibleValues) {
+                StringPermissibleValue stringPermissibleValue = (StringPermissibleValue) permissibleValue;
+                uniqueStringPermissibleValues.add(stringPermissibleValue.getStringValue());
+            }
+            for (String uniqueValue : uniqueStringValues) {
+                if (!uniqueStringPermissibleValues.contains(uniqueValue)) {
+                    valuesNotInPemissibleList.add(uniqueValue);
+                }
+            }
+        }
+        return valuesNotInPemissibleList;
+    }
+    
+
+    private static Set<String> retrieveNumericValuesNotInPermissibleValues(
+                    Collection<AbstractPermissibleValue> permissibleValues,
+                    List<Double> uniqueNumericValues) {
+        Set<String> valuesNotInPemissibleList = new HashSet<String>();
+        Set<Double> uniqueNumericPermissibleValues = new HashSet<Double>();
+        if (uniqueNumericValues != null 
+            && !uniqueNumericValues.isEmpty()) {
+            for (AbstractPermissibleValue permissibleValue : permissibleValues) {
+                NumericPermissibleValue numericPermissibleValue = (NumericPermissibleValue) permissibleValue;
+                uniqueNumericPermissibleValues.add(numericPermissibleValue.getNumericValue());
+            }
+            for (Double uniqueValue : uniqueNumericValues) {
+                if (!uniqueNumericPermissibleValues.contains(uniqueValue)) {
+                    valuesNotInPemissibleList.add(uniqueValue.toString());
+                }
+            }
+        }
+        return valuesNotInPemissibleList;
+    }
+    
+    private static Set<String> retrieveDateValuesNotInPermissibleValues(
+                    Collection<AbstractPermissibleValue> permissibleValues, 
+                    List<Date> uniqueDateValues) {
+        Set<String> valuesNotInPemissibleList = new HashSet<String>();
+        Set<Date> uniqueDatePermissibleValues = new HashSet<Date>();
+        if (uniqueDateValues != null 
+                && !uniqueDateValues.isEmpty()) {
+            for (AbstractPermissibleValue permissibleValue : permissibleValues) {
+                DatePermissibleValue datePermissibleValue = (DatePermissibleValue) permissibleValue;
+                uniqueDatePermissibleValues.add(datePermissibleValue.getDateValue());
+            }
+            for (Date uniqueValue : uniqueDateValues) {
+                if (!uniqueDatePermissibleValues.contains(uniqueValue)) {
+                    valuesNotInPemissibleList.add(uniqueValue.toString());
+                }
+            }
+        }
+        return valuesNotInPemissibleList;
+    }
+
 }

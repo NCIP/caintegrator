@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -251,11 +252,27 @@ public interface CaIntegrator2Dao {
     
     /**
      * Retrieves an AbstractAnnotationValue for an AnnotationDefinition given a SubjectAssignment.
+     * NOTE:  This currently only works if the AnnotationDefinition is a SubjectAnnotation type.  Eventually
+     * might want to add support for ImageSeries, Image, and SampleAcquisition types.
      * @param subject is the Subject which the value belongs to.
      * @param annotationDefinition is the AnnotationDefinition which the value belongs to.
      * @return the Value which correlates to the given subject / annotation.
      */
     AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
             AnnotationDefinition annotationDefinition);
+    
+    /**
+     * Retrieves the unique values for a study's annotation definition.
+     * @param <T> class type, which is based on the definition.getType() (String, Double, Date).
+     * @param study object of interest that the values and annotation definition belong to.
+     * @param definition is the annotation whose unique values are returned based on the study given.
+     * @param entityType is the type of annotation the definition is.
+     * @param objectClass is the object type being returned.
+     * @return List of unique values.
+     */
+    <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, 
+            AnnotationDefinition definition,
+            EntityTypeEnum entityType,
+            Class<T> objectClass);
     
 }

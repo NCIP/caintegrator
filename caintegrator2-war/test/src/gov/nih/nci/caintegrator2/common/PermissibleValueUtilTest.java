@@ -87,10 +87,17 @@ package gov.nih.nci.caintegrator2.common;
 
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -277,6 +284,58 @@ public class PermissibleValueUtilTest {
         PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
+    }
+    
+    @Test
+    public void testRetrieveValuesNotPermissible() throws ParseException {
+        Study study = new Study();
+        AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
+        annotationDefinition1.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        annotationDefinition1.setPermissibleValueCollection(createNumericPermissible());
+        annotationDefinition1.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        CaIntegrator2DaoStub dao = new CaIntegrator2DaoStub();
+        
+        NumericAnnotationValue validValue = new NumericAnnotationValue();
+        validValue.setNumericValue(123.0);
+        validValue.setAnnotationDefinition(annotationDefinition1);
+        annotationDefinition1.getAnnotationValueCollection().add(validValue);
+        
+        Set<String> invalidValues = 
+            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+        assertTrue(invalidValues.isEmpty());
+        
+        NumericAnnotationValue invalidValue = new NumericAnnotationValue();
+        invalidValue.setNumericValue(1234.0);
+        invalidValue.setAnnotationDefinition(annotationDefinition1);
+        annotationDefinition1.getAnnotationValueCollection().add(invalidValue);
+        invalidValues = 
+            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition1, dao);
+        assertTrue(invalidValues.size() == 1);
+        assertTrue(invalidValues.iterator().next().equals("1234.0"));
+        
+        AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
+        annotationDefinition2.setType(AnnotationTypeEnum.STRING.getValue());
+        annotationDefinition2.setPermissibleValueCollection(createStringPermissible());
+        annotationDefinition2.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        
+        StringAnnotationValue validValue2 = new StringAnnotationValue();
+        validValue2.setStringValue("ABC");
+        validValue2.setAnnotationDefinition(annotationDefinition2);
+        annotationDefinition2.getAnnotationValueCollection().add(validValue2);
+        invalidValues = 
+            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
+        assertTrue(invalidValues.isEmpty());
+        
+        StringAnnotationValue invalidValue2 = new StringAnnotationValue();
+        invalidValue2.setStringValue("ABCDEF");
+        invalidValue2.setAnnotationDefinition(annotationDefinition2);
+        annotationDefinition2.getAnnotationValueCollection().add(invalidValue2);
+        invalidValues = 
+            PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition2, dao);
+        assertTrue(invalidValues.size() == 1);
+        assertTrue(invalidValues.iterator().next().equals("ABCDEF"));
+        
+        
     }
     
     private Collection<AbstractPermissibleValue> createStringPermissible() throws ParseException {

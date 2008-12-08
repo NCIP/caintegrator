@@ -87,7 +87,10 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.util.Arrays;
@@ -104,7 +107,9 @@ public class CaDSRFacadeImplTestIntegration {
 
     private CaDSRFacadeImpl caDSRFacade;
     private static final Logger LOGGER = Logger.getLogger(CaDSRFacadeImplTestIntegration.class);
-//    private Long validDataElementPublicId;
+    private static final Long VALID_ENUMERATED_STRING_CDE_ID = Long.valueOf(62); // ID for "Gender" in caDSR.
+    private static final Long VALID_ENUMERATED_NUMERIC_CDE_ID = Long.valueOf(2183066); // ID for "Month Date" in caDSR.
+    private static final Long VALID_NON_ENUMERATED_DATE_CDE_ID = Long.valueOf(2193134); // ID for "Date" in caDSR.
     
     @Before
     public void setUp() {
@@ -118,11 +123,19 @@ public class CaDSRFacadeImplTestIntegration {
         List<CommonDataElement> dataElements = 
             caDSRFacade.retreiveCandidateDataElements(Arrays.asList(new String[]{"congestive", "heart", "failure"}));
         assertNotNull(dataElements);        
-//        validDataElementPublicId = dataElements.get(0).getPublicID();
     }
     
-//    @Test
-//    public void testRetrieveValueDomainForDataElement() throws ConnectionException {
-//        assertNotNull(caDSRFacade.retrieveValueDomainForDataElement(validDataElementPublicId).getPublicID());
-//    }
+    @Test
+    public void testRetrieveValueDomainForDataElement() throws ConnectionException {
+        ValueDomain enumeratedStringValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_STRING_CDE_ID);
+        assertTrue(enumeratedStringValueDomain.getPermissibleValueCollection().size() > 1);
+        
+        ValueDomain enumeratedNumericValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_NUMERIC_CDE_ID);
+        assertTrue(enumeratedNumericValueDomain.getPermissibleValueCollection().size() > 1);
+        
+        ValueDomain nonEnumeratedDateValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_NON_ENUMERATED_DATE_CDE_ID);
+        assertNotNull(nonEnumeratedDateValueDomain);
+        assertNull(nonEnumeratedDateValueDomain.getPermissibleValueCollection());
+        
+    }
 }

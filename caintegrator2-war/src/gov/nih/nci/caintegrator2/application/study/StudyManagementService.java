@@ -252,8 +252,11 @@ public interface StudyManagementService {
      * @param dataElement the selected data element.
      * @param study the study that the FileColumn belongs to.
      * @param entityType the entityType for the data element.
+     * @throws ConnectionException if underlying data sources couldn't be reached.
+     * @throws ValidationException if the data element selected is invalid for this definition.
      */
-    void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType);
+    void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType)
+    throws ConnectionException, ValidationException;
 
     /**
      * Selects an existing annotation definition for a column.

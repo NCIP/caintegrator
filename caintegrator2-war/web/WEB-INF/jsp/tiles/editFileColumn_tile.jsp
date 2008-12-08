@@ -30,7 +30,7 @@
 	            <s:textfield label="Name" name="fileColumn.fieldDescriptor.definition.displayName" readonly="%{readOnly}" />
 	            <s:textarea label="Definition" name="fileColumn.fieldDescriptor.definition.preferredDefinition" cols="40" rows="4" readonly="%{readOnly}"/>
 	            <s:textfield label="Keywords" name="fileColumn.fieldDescriptor.definition.keywords"  />
-	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes"  required="true"/>
+	            <s:select label="Data Type" name="fileColumn.fieldDescriptor.definition.type" list="annotationDataTypes" disabled="%{readOnly}" />
 	        </s:if>
 	        <s:if test="%{fileColumn.fieldDescriptor.definition.cde != null}">
 	            <s:textfield label="CDE Public ID" value="%{fileColumn.fieldDescriptor.definition.cde.publicID}" 
@@ -60,6 +60,8 @@
                     cssStyle="min-width:100px; vertical-align=middle;"
                     buttonCssStyle="min-width:100px;"
                     label="Permissable Values"
+                    disabled="%{fromCadsr}" 
+                    doubleDisabled="%{fromCadsr}"
                     />
             </s:if>
 	        <s:submit value="New" action="createNewDefinition" />

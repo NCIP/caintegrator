@@ -86,10 +86,13 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -303,6 +306,22 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
             }
         }
         return null;
+    }
+
+    @SuppressWarnings({"PMD", "unchecked"})
+    public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, AnnotationDefinition definition,
+            EntityTypeEnum entityType, Class<T> objectClass) {
+        List values = new ArrayList();
+       for (AbstractAnnotationValue value : definition.getAnnotationValueCollection()) {
+           if (value instanceof StringAnnotationValue) {
+               StringAnnotationValue stringVal = (StringAnnotationValue) value;
+               values.add(stringVal.getStringValue());
+           } else if (value instanceof NumericAnnotationValue) {
+               NumericAnnotationValue numericVal = (NumericAnnotationValue) value;
+               values.add(numericVal.getNumericValue());
+           }
+       }
+        return values;
     }
 
 }
