@@ -85,12 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.external.cadsr;
 
+import gov.nih.nci.cadsr.domain.PermissibleValue;
+import gov.nih.nci.cadsr.domain.ValueDomainPermissibleValue;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -161,6 +164,12 @@ public class CaDSRApplicationServiceFactoryStub implements CaDSRApplicationServi
             vd.setDatatypeName("NUMBER");
             vd.setLongName("Some Value Domain");
             vd.setPublicID(Long.valueOf(2));
+            vd.setValueDomainPermissibleValueCollection(new HashSet<ValueDomainPermissibleValue>());
+            ValueDomainPermissibleValue vdpv = new ValueDomainPermissibleValue();
+            PermissibleValue permissibleValue = new PermissibleValue();
+            permissibleValue.setValue("1.0");
+            vdpv.setPermissibleValue(permissibleValue);
+            vd.getValueDomainPermissibleValueCollection().add(vdpv);
             List<Object> objects = new ArrayList<Object>();
             objects.add(de);
             return objects;

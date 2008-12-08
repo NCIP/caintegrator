@@ -88,8 +88,10 @@ package gov.nih.nci.caintegrator2.external.cadsr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
@@ -129,6 +131,9 @@ public class CaDSRFacadeImplTest {
         ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1));
         assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDataType());
         assertEquals(Long.valueOf(2),valueDomain.getPublicID());
+        assertTrue(!valueDomain.getPermissibleValueCollection().isEmpty());
+        NumericPermissibleValue numericPermissibleValue = (NumericPermissibleValue) valueDomain.getPermissibleValueCollection().iterator().next();
+        assertTrue(numericPermissibleValue.getNumericValue().equals(1.0));
     }
 
 }

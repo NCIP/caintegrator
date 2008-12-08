@@ -92,11 +92,14 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -296,14 +299,39 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testSetDataElement() {
+    public void testSetDataElement() throws ConnectionException, ValidationException {
         Study study = new Study();
+        study.setId(Long.valueOf(1));
         FileColumn fileColumn = new FileColumn();
         fileColumn.setFieldDescriptor(new AnnotationFieldDescriptor());
+        // Make an original definition with values already set.
+        AnnotationDefinition originalDefinition = new AnnotationDefinition();
+        originalDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        fileColumn.getFieldDescriptor().setDefinition(originalDefinition);
+        originalDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        
+        StringAnnotationValue validValue = new StringAnnotationValue();
+        SubjectAnnotation subjectAnnotation = new SubjectAnnotation();
+        StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
+        studySubjectAssignment.setStudy(study);
+        subjectAnnotation.setStudySubjectAssignment(studySubjectAssignment);
+        validValue.setStringValue("Valid");
+        validValue.setSubjectAnnotation(subjectAnnotation);
+        originalDefinition.getAnnotationValueCollection().add(validValue);
+        
         CommonDataElement dataElement = new CommonDataElement();
         dataElement.setLongName("longName");
         dataElement.setDefinition("definition");
         dataElement.setPublicID(1234L);
+        ValueDomain valueDomain = new ValueDomain();
+        valueDomain.setDataType(AnnotationTypeEnum.STRING.getValue());
+        dataElement.setValueDomain(valueDomain);
+        valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        StringPermissibleValue permissibleValue = new StringPermissibleValue();
+        permissibleValue.setId(Long.valueOf(1));
+        permissibleValue.setStringValue("Valid");
+        valueDomain.getPermissibleValueCollection().add(permissibleValue);
+        
         studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT);
         assertTrue(daoStub.saveCalled);
         assertNotNull(fileColumn.getFieldDescriptor().getDefinition());
@@ -312,7 +340,25 @@ public class StudyManagementServiceTest {
         assertEquals("definition", fileColumn.getFieldDescriptor().getDefinition().getPreferredDefinition());
         assertEquals(Long.valueOf(1234), fileColumn.getFieldDescriptor().getDefinition().getCde().getPublicID());
         AnnotationDefinition firstDefinition = fileColumn.getFieldDescriptor().getDefinition();
+        assertTrue(firstDefinition.getPermissibleValueCollection().iterator().next().equals(permissibleValue));
+        assertTrue(firstDefinition.getAnnotationValueCollection().size() == 1);
         assertTrue(study.getSubjectAnnotationCollection().contains(firstDefinition));
+        
+        // Add a value that isn't permissible and catch the exception.
+        StringAnnotationValue invalidValue = new StringAnnotationValue();
+        SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
+        studySubjectAssignment.setStudy(study);
+        subjectAnnotation2.setStudySubjectAssignment(studySubjectAssignment);
+        invalidValue.setStringValue("INVALID");
+        invalidValue.setSubjectAnnotation(subjectAnnotation2);
+        fileColumn.getFieldDescriptor().getDefinition().getAnnotationValueCollection().add(invalidValue);
+        boolean exceptionCaught = false;
+        try {
+            studyManagementService.setDataElement(fileColumn, dataElement, study, EntityTypeEnum.SUBJECT);
+        } catch (ValidationException e) {
+            exceptionCaught = true;
+        }
+        assertTrue(exceptionCaught);
         
         // Now set a different data element and verify the first one is no longer in the study's collection
         CommonDataElement dataElement2 = new CommonDataElement();

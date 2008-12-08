@@ -89,12 +89,14 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -108,6 +110,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Action used to edit the type and annotation of a file column by a Study Manager.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See selectDataElement()
 public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     
     private static final long serialVersionUID = 1L;
@@ -231,11 +234,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * 
      * @return the Struts result.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and Try/Catch
     public String selectDataElement() {
-        getStudyManagementService().setDataElement(getFileColumn(), 
-                                                   getDataElements().get(getDataElementIndex()),
-                                                   getStudyConfiguration().getStudy(),
-                                                   EntityTypeEnum.SUBJECT);
+        try {
+            getStudyManagementService().setDataElement(getFileColumn(), 
+                                                       getDataElements().get(getDataElementIndex()),
+                                                       getStudyConfiguration().getStudy(),
+                                                       EntityTypeEnum.SUBJECT);
+        } catch (ConnectionException e) {
+            addActionError(e.getMessage());
+            return INPUT;
+        } catch (ValidationException e) {
+            addActionError(e.getMessage());
+            return INPUT;
+        }
         if (getFileColumn() != null 
             && getFileColumn().getFieldDescriptor() != null 
             && getFileColumn().getFieldDescriptor().getDefinition() != null 
@@ -252,7 +264,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public String updateFileColumn() {
         updateColumnType();
-        if (isPermissibleOn()) {
+        if (isPermissibleOn() && !isFromCadsr()) {
             try {
                 updatePermissible();
             } catch (ParseException e) {
@@ -484,5 +496,20 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public void setAvailableUpdateList(List<String> availableUpdateList) {
         this.availableUpdateList = availableUpdateList;
+    }
+    
+    /**
+     * Determines if the AnnotationDefinition came from a CDE.
+     * 
+     * @return T/F value.
+     */
+    public boolean isFromCadsr() {
+        if (getFileColumn() != null 
+            && getFileColumn().getFieldDescriptor() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition() != null 
+            && getFileColumn().getFieldDescriptor().getDefinition().getCde() != null) {
+            return true;
+        }
+        return false;
     }
 }
