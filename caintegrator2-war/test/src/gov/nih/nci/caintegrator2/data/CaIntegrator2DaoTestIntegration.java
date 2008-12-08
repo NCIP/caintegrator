@@ -86,10 +86,12 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -408,6 +410,136 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         assertEquals(weightAnnotationValue, 
                 dao.retrieveValueForAnnotationSubject(studySubjectAssignment, weightAnnotationDefinition));
+    }
+    
+    @Test
+    public void testRetrieveUniqueValuesForStudyAnnotation() {
+        Study study = new Study();
+        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
+        
+        StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
+        studySubjectAssignment1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
+        studySubjectAssignment1.setStudy(study);
+        StudySubjectAssignment studySubjectAssignment2 = new StudySubjectAssignment();
+        studySubjectAssignment2.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
+        studySubjectAssignment2.setStudy(study);
+        StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
+        studySubjectAssignment3.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
+        studySubjectAssignment3.setStudy(study);
+        
+        study.getAssignmentCollection().add(studySubjectAssignment1);
+        study.getAssignmentCollection().add(studySubjectAssignment3);
+        study.getAssignmentCollection().add(studySubjectAssignment3);
+        
+        SubjectAnnotation subjectAnnotation1 = new SubjectAnnotation();
+        SubjectAnnotation subjectAnnotation2 = new SubjectAnnotation();
+        SubjectAnnotation subjectAnnotation3 = new SubjectAnnotation();
+        SubjectAnnotation subjectAnnotation4 = new SubjectAnnotation();
+        SubjectAnnotation subjectAnnotation5 = new SubjectAnnotation();
+        SubjectAnnotation subjectAnnotation6 = new SubjectAnnotation();
+        
+        
+        studySubjectAssignment1.getSubjectAnnotationCollection().add(subjectAnnotation1);
+        studySubjectAssignment2.getSubjectAnnotationCollection().add(subjectAnnotation2);
+        studySubjectAssignment3.getSubjectAnnotationCollection().add(subjectAnnotation3);
+        studySubjectAssignment1.getSubjectAnnotationCollection().add(subjectAnnotation4);
+        studySubjectAssignment2.getSubjectAnnotationCollection().add(subjectAnnotation5);
+        studySubjectAssignment3.getSubjectAnnotationCollection().add(subjectAnnotation6);
+        
+        // First test is for Strings
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
+        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        
+        StringAnnotationValue genderStringValue1 = new StringAnnotationValue();
+        genderStringValue1.setStringValue("M");
+        genderStringValue1.setSubjectAnnotation(subjectAnnotation1);
+        subjectAnnotation1.setAnnotationValue(genderStringValue1);
+        genderStringValue1.setAnnotationDefinition(annotationDefinition);
+        
+        StringAnnotationValue genderStringValue2 = new StringAnnotationValue();
+        genderStringValue2.setStringValue("M");
+        genderStringValue2.setSubjectAnnotation(subjectAnnotation2);
+        subjectAnnotation2.setAnnotationValue(genderStringValue2);
+        genderStringValue2.setAnnotationDefinition(annotationDefinition);
+        
+        StringAnnotationValue genderStringValue3 = new StringAnnotationValue();
+        genderStringValue3.setStringValue("F");
+        genderStringValue3.setSubjectAnnotation(subjectAnnotation3);
+        subjectAnnotation3.setAnnotationValue(genderStringValue3);
+        genderStringValue3.setAnnotationDefinition(annotationDefinition);
+        
+        annotationDefinition.getAnnotationValueCollection().add(genderStringValue1);
+        annotationDefinition.getAnnotationValueCollection().add(genderStringValue2);
+        annotationDefinition.getAnnotationValueCollection().add(genderStringValue3);
+        
+        // Next test is for numerics.
+        AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
+        annotationDefinition2.setType(AnnotationTypeEnum.NUMERIC.getValue());
+        annotationDefinition2.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
+        
+        NumericAnnotationValue numericValue1 = new NumericAnnotationValue();
+        numericValue1.setNumericValue(1.0);
+        numericValue1.setSubjectAnnotation(subjectAnnotation4);
+        subjectAnnotation4.setAnnotationValue(numericValue1);
+        numericValue1.setAnnotationDefinition(annotationDefinition2);
+        
+        NumericAnnotationValue numericValue2 = new NumericAnnotationValue();
+        numericValue2.setNumericValue(1.0);
+        numericValue2.setSubjectAnnotation(subjectAnnotation5);
+        subjectAnnotation5.setAnnotationValue(numericValue2);
+        numericValue2.setAnnotationDefinition(annotationDefinition2);
+        
+        NumericAnnotationValue numericValue3 = new NumericAnnotationValue();
+        numericValue3.setNumericValue(2.0);
+        numericValue3.setSubjectAnnotation(subjectAnnotation6);
+        subjectAnnotation6.setAnnotationValue(numericValue3);
+        numericValue3.setAnnotationDefinition(annotationDefinition2);
+        
+        annotationDefinition2.getAnnotationValueCollection().add(numericValue1);
+        annotationDefinition2.getAnnotationValueCollection().add(numericValue2);
+        annotationDefinition2.getAnnotationValueCollection().add(numericValue3);
+        
+        dao.save(study);
+        // First test is 3 strings, M, M, and F, and we want just M / F to come out of it.
+        List<String> values = dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition, EntityTypeEnum.SUBJECT, String.class);
+        int numberM = 0;
+        int numberF = 0;
+        
+        for(String value : values) {
+            
+            if (value.equals("M")) {
+                numberM++;
+            }
+            if (value.equals("F")) {
+                numberF++;
+            }
+        }
+        assertEquals(1, numberM);
+        assertEquals(1, numberF);
+        assertEquals(2, values.size());
+        assertEquals(3, annotationDefinition.getAnnotationValueCollection().size());
+
+        // Next test is 3 numbers, 1.0, 1.0, and 2.0, and we want just 1.0 / 2.0 to come out of it.
+        List<Double> numericValues = dao.retrieveUniqueValuesForStudyAnnotation(study, annotationDefinition2, EntityTypeEnum.SUBJECT, Double.class);
+        int number1 = 0;
+        int number2 = 0;
+        
+        for(Double value : numericValues) {
+            
+            if (value.equals(1.0)) {
+                number1++;
+            }
+            if (value.equals(2.0)) {
+                number2++;
+            }
+        }
+        assertEquals(1, number1);
+        assertEquals(1, number2);
+        assertEquals(2, numericValues.size());
+        assertEquals(3, annotationDefinition2.getAnnotationValueCollection().size());
+        
+        
     }
     
     

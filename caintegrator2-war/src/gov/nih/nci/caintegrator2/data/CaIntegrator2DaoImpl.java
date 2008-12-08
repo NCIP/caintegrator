@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -116,6 +117,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -408,5 +410,77 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             value = valueList.get(0);
         }                
         return value;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public <T> List<T> retrieveUniqueValuesForStudyAnnotation(Study study, 
+                                                               AnnotationDefinition definition,
+                                                               EntityTypeEnum entityType,
+                                                               Class<T> objectClass) {
+        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(definition.getType());
+        if (annotationType == null) {
+            throw new IllegalArgumentException("Data Type for the Annotation Definition is unknown.");
+        }
+        Criteria abstractAnnotationValueCriteria = getCurrentSession().createCriteria(AbstractAnnotationValue.class);
+        abstractAnnotationValueCriteria.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, definition));
+        addValuesToStudyCriteria(study, entityType, abstractAnnotationValueCriteria);
+        
+        String uniqueAttribute = "stringValue";
+        switch (annotationType) {
+        case STRING:
+            uniqueAttribute = "stringValue";
+            break;
+        case NUMERIC:
+            uniqueAttribute = "numericValue";
+            break;
+        case DATE:
+            uniqueAttribute = "dateValue";
+            break;
+        default:
+            throw new IllegalStateException("Unknown Annotation Type Type.");
+        }
+        abstractAnnotationValueCriteria.setProjection(Projections.distinct(Projections.property(uniqueAttribute)));
+        return (List<T>) abstractAnnotationValueCriteria.list();
+        
+    }
+
+    /**
+     * Adds the criteria to the AnnotationValue object which will associate it to the given Study.
+     * @param study
+     * @param entityType
+     * @param abstractAnnotationValueCriteria
+     */
+    private void addValuesToStudyCriteria(Study study, EntityTypeEnum entityType,
+            Criteria abstractAnnotationValueCriteria) {
+        switch (entityType) {
+        case SUBJECT:
+            abstractAnnotationValueCriteria.createCriteria("subjectAnnotation")
+                                            .createCriteria("studySubjectAssignment")
+                                            .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+            break;
+        case IMAGESERIES:
+            abstractAnnotationValueCriteria.createCriteria("imageSeries")
+                                           .createCriteria("imageStudy")
+                                           .createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION)
+                                           .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+            break;
+        case IMAGE:
+            abstractAnnotationValueCriteria.createCriteria("image")
+                                            .createCriteria("series")
+                                            .createCriteria("imageStudy")
+                                            .createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION)
+                                            .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+            break;
+        case SAMPLE:
+            abstractAnnotationValueCriteria.createCriteria("sampleAcquisition")
+                                           .createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION)
+                                           .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+            break;
+        default:
+            throw new IllegalStateException("Unknown Entity Type.");
+        }
     }
 }

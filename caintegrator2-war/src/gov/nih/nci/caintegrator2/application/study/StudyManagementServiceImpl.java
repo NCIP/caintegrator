@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -94,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -113,6 +115,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
@@ -387,10 +390,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void setDataElement(FileColumn fileColumn, 
                                 CommonDataElement dataElement, 
                                 Study study, 
-                                EntityTypeEnum entityType) {
+                                EntityTypeEnum entityType) 
+    throws ConnectionException, ValidationException {
         AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
                                                                      study, 
                                                                      entityType);
@@ -398,14 +403,64 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         if (dataElement.getDefinition().length() > DEFINITION_LENGTH) {
             dataElement.setDefinition(dataElement.getDefinition().substring(0, DEFINITION_LENGTH - 7) + "...");
         }
-        
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
         annotationDefinition.setCde(dataElement);
-        // TODO Until CaDSR data element provides a type definition, we'll hard code the type to be a string
-        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
+        ValueDomain valueDomain = dataElement.getValueDomain();
+        if (valueDomain == null) {
+            valueDomain = retrieveValueDomain(dataElement);
+            dataElement.setValueDomain(valueDomain);
+        }
+        annotationDefinition.setType(valueDomain.getDataType());
+        addPermissibleValuesFromValueDomain(annotationDefinition, valueDomain);
+        ValidationResult validationResult = 
+            validateCurrentValuesWithPermissibleValues(study, entityType, annotationDefinition);
+        if (!validationResult.isValid()) {
+            throw new ValidationException(validationResult);
+        }
         dao.save(dataElement);
         dao.save(annotationDefinition);
         dao.save(fileColumn);
+    }
+
+    private ValidationResult validateCurrentValuesWithPermissibleValues(Study study, EntityTypeEnum entityType,
+            AnnotationDefinition annotationDefinition) {
+        ValidationResult validationResult = new ValidationResult();
+        validationResult.setValid(true);
+        if (!annotationDefinition.getPermissibleValueCollection().isEmpty() 
+            && !annotationDefinition.getAnnotationValueCollection().isEmpty()) {
+            Set<String> invalidValues = 
+                PermissibleValueUtil.retrieveValuesNotPermissible(study, entityType, annotationDefinition, dao);
+            if (!invalidValues.isEmpty()) {
+                StringBuffer message = new StringBuffer();
+                message.append("Values currently exist that aren't in the Data Element's permissible value list: ");
+                for (String invalidValue : invalidValues) {
+                    message.append("'" + invalidValue + "' ");
+                }
+                message.append(".  Select a different Data Element.");
+                validationResult.setValid(false);
+                validationResult.setInvalidMessage(message.toString());
+            }
+        }
+        return validationResult;
+    }
+
+    private ValueDomain retrieveValueDomain(CommonDataElement dataElement)
+            throws ConnectionException {
+        ValueDomain valueDomain;
+        valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID());
+        dao.save(valueDomain);
+        return valueDomain;
+    }
+
+    private void addPermissibleValuesFromValueDomain(AnnotationDefinition annotationDefinition, 
+                                                     ValueDomain valueDomain) {
+        if (valueDomain.getPermissibleValueCollection() != null 
+            && !valueDomain.getPermissibleValueCollection().isEmpty()) {
+            for (AbstractPermissibleValue permissibleValue 
+                : valueDomain.getPermissibleValueCollection()) {
+                annotationDefinition.getPermissibleValueCollection().add(permissibleValue);
+            }
+        }
     }
 
     /**
