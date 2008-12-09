@@ -1,0 +1,21 @@
+
+Reference the wireframes for the following notes about Survival Value in interation c2.
+
+The "By Date" section will be included.
+
+The "By Time" section will not be included.
+
+
+"Survival Value" will be optionally configurable for each study.
+
+User will be required to input dates in this format:  MMDDYYY,  in the clinical spreadsheet.
+
+In "By Date" section, the USBAT see every "date" type annotation definition, for that study, in the pull down select menus.
+
+
+Survival time = "Death Time" - "Survival Start Time" .
+
+
+If user does note select a value for "Death Time", then censored time is used.
+
+If user selects values for "Death Time" AND "Last Followup Time" then Survival Time is  calculated.
