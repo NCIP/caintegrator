@@ -8,7 +8,7 @@ The "By Time" section will not be included.
 
 "Survival Value" will be optionally configurable for each study.
 
-User will be required to input dates in this format:  MMDDYYY,  in the clinical spreadsheet.
+User will be required to input dates in this format:  MM-DD-YYYY,  in the clinical spreadsheet.
 
 In "By Date" section, the USBAT see every "date" type annotation definition, for that study, in the pull down select menus.
 
