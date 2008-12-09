@@ -233,11 +233,13 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         return true;
     }
 
+    abstract protected String getNCIAServerUrl();
+    
     private void loadImages() throws ConnectionException {
         if (getLoadImages()) {
             logStart();
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
-            imageSource.getServerProfile().setUrl("http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
+            imageSource.getServerProfile().setUrl(getNCIAServerUrl());
             imageSource.setTrialDataProvenance(getNCIATrialId());
             service.addImageSource(studyConfiguration, imageSource);
             logEnd();

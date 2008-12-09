@@ -157,6 +157,11 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     }
 
     @Override
+    protected String getNCIAServerUrl() {
+        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
+    }
+    
+    @Override
     protected String getNCIATrialId() {
         return "Biochange08";
     }
