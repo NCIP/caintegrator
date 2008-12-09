@@ -912,6 +912,24 @@
              </batchtest>
          </junit>
     </target>
+    
+    <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator2.war.test.classes,
+        caintegrator2.war,
+        hibernate.cfg.xml.test,
+        database:reinitialize">
+        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+             <classpath>
+                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
+             </classpath>
+             <formatter type="xml" />
+             <batchtest todir="${caintegrator2.war.target.dir}/junit">
+                 <fileset dir="${caintegrator2.war.test.src.dir}">
+                     <include name="**/DeployStudyRembrandtNcriTestIntegration.java" />
+                 </fileset>
+             </batchtest>
+         </junit>
+    </target>
+    
 
     <!-- ******************************************************************* -->
     <!-- ** DOCUMENTATION TARGETS                                         ** -->

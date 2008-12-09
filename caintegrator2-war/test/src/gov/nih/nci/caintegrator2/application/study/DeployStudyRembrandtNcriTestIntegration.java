@@ -96,10 +96,10 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(timeout = 14400)
-public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegration {
+@Transactional(timeout = 2880)
+public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudyTestIntegration {
     
-    private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
+    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
@@ -113,12 +113,12 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     
     @Override
     protected boolean getLoadImages() {
-        return false;
+        return true;
     }
     
     @Override
     protected boolean getLoadImageAnnotation() {
-        return false;
+        return true;
     }
 
     @Override
@@ -128,27 +128,27 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     
     @Override
     protected boolean getLoadSamples() {
-        return true;
+        return false;
     }
     
     @Override
     protected String getCaArrayId() {
-        return "rembr-00037";
+        return "jagla-00034";
     }
 
     @Override
     int getExpectedSampleCount() {
-        return 96;
+        return 3;
     }
 
     @Override
     int getExpectedMappedSampleCount() {
-        return 68;
+        return 0;
     }
 
     @Override
     int getExpectedControlSampleCount() {
-        return 28;
+        return 1;
     }
 
     @Override
@@ -158,17 +158,17 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     protected String getNCIAServerUrl() {
-        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
+        return "http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
     }
     
     @Override
     protected String getNCIATrialId() {
-        return "GBM Rembrandt";
+        return "NCRI";
     }
 
     @Override
     protected String getStudyName() {
-        return "Rembrandt/VASARI";
+        return "Rembrandt with NCRI Study";
     }
 
     @Override
@@ -177,27 +177,26 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     File getImageAnnotationFile() {
-        return TestDataFiles.VASARI_IMAGE_ANNOTATION_FILE;
+        return TestDataFiles.REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE;
     }
 
     @Override
     protected File getImageMappingFile() {
-        return TestDataFiles.REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE;
+        return TestDataFiles.REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE;
     }
-
     @Override
     protected File getSampleMappingFile() {
-        return TestDataFiles.REMBRANDT_SAMPLE_MAPPING_FILE;
+        return TestDataFiles.SMALL_STUDY_SAMPLE_MAPPING_FILE;
     }
 
     @Override
     protected File getControlSamplesFile() {
-        return TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE;
+        return TestDataFiles.SMALL_STUDY_CONTROL_SAMPLES_FILE;
     }
-    
+
     @Override
     protected File getSubjectAnnotationFile() {
-        return TestDataFiles.REMBRANDT_CLINICAL_FILE;
+        return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
     }
 
     @Override
@@ -209,7 +208,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     String getPlatformName() {
         return "HG-U133_Plus_2";
     }
-
+    
     @Override
     protected String getDeathDateName() {
         return "Death Date";
