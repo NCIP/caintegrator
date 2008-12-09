@@ -94,6 +94,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 
+import org.apache.commons.lang.StringUtils;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -126,7 +128,7 @@ class SampleMappingHelper {
             if (sja == null) {
                 throw new ValidationException("Subject Identifier not found '" + subjectIdentifier + "'");
             }
-            if (sampleName == null) {
+            if (StringUtils.isBlank(sampleName)) {
                 throw new ValidationException("No sample name for subject '" + subjectIdentifier + "'");
             }
             if (studyConfiguration.getSample(sampleName) == null) {
