@@ -276,12 +276,12 @@
     <target name="svn:getinfo" description="obtain subversion revision info" unless="nosvn">
 
             <echo message="svn:info" />
-            <var name="revision" value="HEAD"/>
+            <var name="revision" value="BASE"/>
             <echo>Local root directory: ${root.dir}</echo>
     
-            <!-- find out revision number of HEAD, need svn.exe installed on local machine -->
+            <!-- find out revision number of BASE, need svn.exe installed on local machine -->
             <exec executable="svn" outputproperty="svnlog.out">
-                <arg line="log ${root.dir} -r ${revision} -q"/>
+                <arg line="log ${root.dir}/software -r ${revision} -q"/>
             </exec>
     
             <!-- need ant-contrib.jar for this in lib dir of ant install -->
