@@ -87,28 +87,26 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import org.apache.commons.lang.StringUtils;
 
+
 /**
- * A single operand for a single criterion.
+ * Represents a single text operand field.
  */
-public abstract class AbstractCriterionOperand {
-    
-    /**
-     * Display the operand as a free text field.
-     */
-    public static final String TEXT_FIELD = "text";
-    
-    /**
-     * Display the operand as a select list.
-     */
-    public static final String SELECT_LIST = "select";
+public class TextFieldParameter extends AbstractCriterionParameter {
     
     private String value;
-    private final String label;
-    private final AbstractCriterionRow criterionRow;
+    private ValueChangeHandler valueChangeHandler;
 
-    AbstractCriterionOperand(String label, AbstractCriterionRow criterionRow) {
-        this.label = label;
-        this.criterionRow = criterionRow;
+    TextFieldParameter(String initialValue) {
+        super();
+        this.value = initialValue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getFieldType() {
+        return TEXT_FIELD;
     }
 
     /**
@@ -122,29 +120,18 @@ public abstract class AbstractCriterionOperand {
      * @param value the value to set
      */
     public void setValue(String value) {
-        if (!StringUtils.equals(this.value, value)) {
-            String oldValue = this.value;
+        if (!StringUtils.equals(getValue(), value)) {
             this.value = value;
-            criterionRow.handleOperandChange(this, oldValue, value);
+            valueChangeHandler.valueChanged(value);
         }
     }
 
-    /**
-     * @return the label
-     */
-    public String getLabel() {
-        return label;
+    ValueChangeHandler getValueChangeHandler() {
+        return valueChangeHandler;
     }
 
-    AbstractCriterionRow getCriterionRow() {
-        return criterionRow;
+    void setValueChangeHandler(ValueChangeHandler valueChangeHandler) {
+        this.valueChangeHandler = valueChangeHandler;
     }
-    
-    /**
-     * Returns a string that indicates how to display the operand.
-     * 
-     * @return the display type indicator string.
-     */
-    public abstract String getFieldType();
 
 }

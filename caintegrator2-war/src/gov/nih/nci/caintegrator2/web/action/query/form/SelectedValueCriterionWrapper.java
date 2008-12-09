@@ -85,15 +85,128 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+
+import java.util.List;
+
 /**
- * Criterion type.
+ * Wraps access to a <code>SelectedValueCriterion</code>.
  */
-enum CriterionTypeEnum {
+final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWrapper {
+
+    private final SelectedValueCriterion criterion;
+    private CriterionOperatorEnum selectOperator;
+
+    SelectedValueCriterionWrapper(SelectedValueCriterion criterion, AbstractAnnotationCriterionRow row) {
+        super(row);
+        this.criterion = criterion;
+        if (criterion.getValueCollection().size() <= 1) {
+            selectOperator = CriterionOperatorEnum.EQUALS;
+        } else {
+            selectOperator = CriterionOperatorEnum.IN;
+        }
+        getParameters().add(createParameter());
+    }
+
+    /**
+     * @return
+     */
+    private AbstractCriterionParameter createParameter() {
+        switch (selectOperator) {
+        case EQUALS:
+            return createSelectListParameter();
+        case IN:
+            return createMultiSelectParameter();
+        default: 
+            throw new IllegalStateException("Unsupported operator: " + selectOperator);
+        }
+    }
+
+    private AbstractCriterionParameter createMultiSelectParameter() {
+        ValuesSelectedHandler<AbstractPermissibleValue> handler = 
+            new ValuesSelectedHandler<AbstractPermissibleValue>() {
+
+                public void valuesSelected(List<AbstractPermissibleValue> values) {
+                    criterion.getValueCollection().clear();
+                    criterion.getValueCollection().addAll(values);
+                }
+            
+        };
+        MultiSelectParameter<AbstractPermissibleValue> parameter = 
+            new MultiSelectParameter<AbstractPermissibleValue>(getOptions(), handler, criterion.getValueCollection());
+        parameter.setOperatorHandler(this);
+        return parameter;
+    }
+
+    private AbstractCriterionParameter createSelectListParameter() {
+        ValueSelectedHandler<AbstractPermissibleValue> handler = new ValueSelectedHandler<AbstractPermissibleValue>() {
+            public void valueSelected(AbstractPermissibleValue value) {
+                criterion.getValueCollection().clear();
+                if (value != null) {
+                    criterion.getValueCollection().add(value);
+                }
+            }
+        };
+        AbstractPermissibleValue value;
+        if (criterion.getValueCollection().isEmpty()) {
+            value = null;
+        } else {
+            value = criterion.getValueCollection().iterator().next();
+        }
+        SelectListParameter<AbstractPermissibleValue> parameter = 
+            new SelectListParameter<AbstractPermissibleValue>(getOptions(), handler, value);
+        parameter.setOperatorHandler(this);
+        return parameter;
+    }
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    private SelectOptionList<AbstractPermissibleValue> getOptions() {
+        SelectOptionList<AbstractPermissibleValue> options = new SelectOptionList<AbstractPermissibleValue>();
+        for (AbstractPermissibleValue value : criterion.getAnnotationDefinition().getPermissibleValueCollection()) {
+            options.addOption(PermissibleValueUtil.getDisplayString(value), value);
+        }
+        return options;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractAnnotationCriterion getAbstractAnnotationCriterion() {
+        return criterion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CriterionOperatorEnum[] getAvailableOperators() {
+        return CriterionOperatorEnum.SELECT_LIST_OPERATORS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CriterionOperatorEnum getOperator() {
+        return selectOperator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator) {
+        selectOperator = operator;
+        getParameters().clear();
+        getParameters().add(createParameter());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.SELECTED_VALUE;
+    }
 
 }

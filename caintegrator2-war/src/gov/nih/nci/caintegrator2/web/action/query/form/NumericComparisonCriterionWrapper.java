@@ -85,40 +85,115 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Represents a single text operand field.
+ * Wraps access to a <code>NumericComparisonCriterion</code>.
  */
-public class SelectListOperand extends AbstractCriterionOperand {
-    
-    private List<String> options = new ArrayList<String>();
+final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterionWrapper {
 
-    SelectListOperand(String label, AbstractCriterionRow criterionRow) {
-        super(label, criterionRow);
+    private static final Map<CriterionOperatorEnum, NumericComparisonOperatorEnum> OPERATOR_TO_NUMERIC_COMPARISON_MAP = 
+        new HashMap<CriterionOperatorEnum, NumericComparisonOperatorEnum>();
+    private static final Map<NumericComparisonOperatorEnum, CriterionOperatorEnum> NUMERIC_COMPARISON_TO_OPERATOR_MAP = 
+        new HashMap<NumericComparisonOperatorEnum, CriterionOperatorEnum>();
+    
+    static {
+        OPERATOR_TO_NUMERIC_COMPARISON_MAP.put(CriterionOperatorEnum.EQUALS, NumericComparisonOperatorEnum.EQUAL);
+        OPERATOR_TO_NUMERIC_COMPARISON_MAP.put(CriterionOperatorEnum.GREATER_THAN, 
+                NumericComparisonOperatorEnum.GREATER);
+        OPERATOR_TO_NUMERIC_COMPARISON_MAP.put(CriterionOperatorEnum.GREATER_THAN_OR_EQUAL_TO, 
+                NumericComparisonOperatorEnum.GREATEROREQUAL);
+        OPERATOR_TO_NUMERIC_COMPARISON_MAP.put(CriterionOperatorEnum.LESS_THAN, NumericComparisonOperatorEnum.LESS);
+        OPERATOR_TO_NUMERIC_COMPARISON_MAP.put(CriterionOperatorEnum.LESS_THAN_OR_EQUAL_TO, 
+                NumericComparisonOperatorEnum.LESSOREQUAL);
+
+        NUMERIC_COMPARISON_TO_OPERATOR_MAP.put(NumericComparisonOperatorEnum.EQUAL, CriterionOperatorEnum.EQUALS);
+        NUMERIC_COMPARISON_TO_OPERATOR_MAP.put(NumericComparisonOperatorEnum.GREATER, 
+                CriterionOperatorEnum.GREATER_THAN);
+        NUMERIC_COMPARISON_TO_OPERATOR_MAP.put(NumericComparisonOperatorEnum.GREATEROREQUAL, 
+                CriterionOperatorEnum.GREATER_THAN_OR_EQUAL_TO);
+        NUMERIC_COMPARISON_TO_OPERATOR_MAP.put(NumericComparisonOperatorEnum.LESS, CriterionOperatorEnum.LESS_THAN);
+        NUMERIC_COMPARISON_TO_OPERATOR_MAP.put(NumericComparisonOperatorEnum.LESSOREQUAL, 
+                CriterionOperatorEnum.LESS_THAN_OR_EQUAL_TO);
+}
+
+    private final NumericComparisonCriterion criterion;
+
+    NumericComparisonCriterionWrapper(final NumericComparisonCriterion criterion, AbstractAnnotationCriterionRow row) {
+        super(row);
+        this.criterion = criterion;
+        if (criterion.getNumericValue() == null) {
+            criterion.setNumericValue(0.0);
+        }
+        getParameters().add(createValueParameter());
+    }
+
+    private TextFieldParameter createValueParameter() {
+        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getNumericValue().toString());
+        valueParameter.setOperatorHandler(this);
+        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
+            /**
+             * {@inheritDoc}
+             */
+            public void valueChanged(String value) {
+                criterion.setNumericValue(Double.valueOf(value));
+            }
+        };
+        valueParameter.setValueChangeHandler(valueChangeHandler);
+        return valueParameter;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getFieldType() {
-        return SELECT_LIST;
+    AbstractAnnotationCriterion getAbstractAnnotationCriterion() {
+        return criterion;
     }
 
     /**
-     * @return the options
+     * {@inheritDoc}
      */
-    public List<String> getOptions() {
-        return options;
+    public CriterionOperatorEnum[] getAvailableOperators() {
+        return CriterionOperatorEnum.NUMERIC_OPERATORS;
     }
 
     /**
-     * @param options the options to set
+     * {@inheritDoc}
      */
-    public void setOptions(List<String> options) {
-        this.options = options;
+    public CriterionOperatorEnum getOperator() {
+        if (StringUtils.isEmpty(criterion.getNumericComparisonOperator())) {
+            return null;
+        } else {
+            return NUMERIC_COMPARISON_TO_OPERATOR_MAP.get(
+                    NumericComparisonOperatorEnum.getByValue(criterion.getNumericComparisonOperator()));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator) {
+        if (operator == null) {
+            criterion.setNumericComparisonOperator(null);
+        } else {
+            criterion.setNumericComparisonOperator(OPERATOR_TO_NUMERIC_COMPARISON_MAP.get(operator).getValue());
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.NUMERIC_COMPARISON;
     }
 
 }

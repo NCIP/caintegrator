@@ -95,12 +95,14 @@ import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -118,7 +120,11 @@ public class QueryFormTest {
     private AnnotationDefinition stringClinicalAnnotation1;
     private AnnotationDefinition stringClinicalAnnotation2;
     private AnnotationDefinition numericClinicalAnnotation;
+    private AnnotationDefinition selectClinicalAnnotation;
     private AnnotationDefinition testImageSeriesAnnotation;
+    private StringPermissibleValue value1 = new StringPermissibleValue();
+    private StringPermissibleValue value2 = new StringPermissibleValue();
+    private StringPermissibleValue value3 = new StringPermissibleValue();
 
     @Before
     public void setUp() {
@@ -131,9 +137,18 @@ public class QueryFormTest {
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
         numericClinicalAnnotation = createDefinition("numericClinicalAnnotation", AnnotationTypeEnum.NUMERIC);
+        selectClinicalAnnotation = createDefinition("selectClinicalAnnotation", AnnotationTypeEnum.STRING);
+        selectClinicalAnnotation.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        value1.setStringValue("value1");
+        value2.setStringValue("value2");
+        value3.setStringValue("value3");
+        selectClinicalAnnotation.getPermissibleValueCollection().add(value1);
+        selectClinicalAnnotation.getPermissibleValueCollection().add(value2);
+        selectClinicalAnnotation.getPermissibleValueCollection().add(value3);
         study.getSubjectAnnotationCollection().add(stringClinicalAnnotation1);
         study.getSubjectAnnotationCollection().add(stringClinicalAnnotation2);
         study.getSubjectAnnotationCollection().add(numericClinicalAnnotation);
+        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation);
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
         study.getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
     }
@@ -153,7 +168,7 @@ public class QueryFormTest {
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
-        assertEquals(3, queryForm.getClinicalAnnotations().getNames().size());
+        assertEquals(4, queryForm.getClinicalAnnotations().getNames().size());
         assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(0));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
     }
@@ -167,8 +182,8 @@ public class QueryFormTest {
         assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperatorName());
         group.setCriterionTypeName("");
         assertEquals("", group.getCriterionTypeName());
-        group.setCriterionTypeName(CriterionTypeEnum.CLINICAL.getValue());
-        assertEquals(CriterionTypeEnum.CLINICAL.getValue(), group.getCriterionTypeName());
+        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
+        assertEquals(CriterionRowTypeEnum.CLINICAL.getValue(), group.getCriterionTypeName());
         assertEquals(0, group.getCriteria().size());
         group.addCriterion();
         assertEquals(1, group.getCriteria().size());
@@ -178,7 +193,7 @@ public class QueryFormTest {
     public void testCriterionRow() {
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        group.setCriterionTypeName(CriterionTypeEnum.CLINICAL.getValue());
+        group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
         group.addCriterion();
         ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getCriteria().get(0);
         checkNewCriterionRow(group, criterionRow);
@@ -188,29 +203,69 @@ public class QueryFormTest {
         checkSetStringOperandValue(criterionRow);
         checkChangeStringFieldOperator(criterionRow);
         checkChangeToDifferentStringField(criterionRow);
+        checkChangeToSelectField(criterionRow);
         checkChangeToNumericField(criterionRow);
         checkChangeNumericOperator(criterionRow);
         checkAddImageSeriesCriterion(group);
         checkAddGeneExpressionCriterion(group);
     }
 
+    @SuppressWarnings("unchecked")
+    private void checkChangeToSelectField(ClinicalCriterionRow criterionRow) {
+        criterionRow.setFieldName("selectClinicalAnnotation");
+        SelectedValueCriterion criterion = (SelectedValueCriterion) criterionRow.getCriterion();
+        assertEquals(selectClinicalAnnotation, criterion.getAnnotationDefinition());
+        assertEquals(EntityTypeEnum.SUBJECT.getValue(), criterion.getEntityType());
+        assertTrue(criterion.getValueCollection().isEmpty());
+        assertEquals(1, criterionRow.getParameters().size());
+        SelectListParameter<AbstractPermissibleValue> parameter = (SelectListParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), parameter.getOperator());
+        assertTrue(parameter.getAvailableOperators().contains(CriterionOperatorEnum.EQUALS.getValue()));
+        assertTrue(parameter.getAvailableOperators().contains(CriterionOperatorEnum.IN.getValue()));
+        assertTrue(parameter.getValues().contains("value1"));
+        assertTrue(parameter.getValues().contains("value2"));
+        assertTrue(parameter.getValues().contains("value3"));
+        parameter.setValue("value2");
+        assertEquals(1, criterion.getValueCollection().size());
+        assertTrue(criterion.getValueCollection().contains(value2));
+        parameter.setOperator(CriterionOperatorEnum.IN.getValue());
+        assertEquals(1, criterionRow.getParameters().size());
+        MultiSelectParameter<AbstractPermissibleValue> multiSelect = (MultiSelectParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        assertEquals(CriterionOperatorEnum.IN.getValue(), multiSelect.getOperator());
+        assertTrue(multiSelect.getAvailableOperators().contains(CriterionOperatorEnum.EQUALS.getValue()));
+        assertTrue(multiSelect.getAvailableOperators().contains(CriterionOperatorEnum.IN.getValue()));
+        assertTrue(multiSelect.getValues().contains("value1"));
+        assertTrue(multiSelect.getValues().contains("value2"));
+        assertTrue(multiSelect.getValues().contains("value3"));
+        assertTrue(multiSelect.getValue().length == 1);
+        assertTrue(multiSelect.getValue()[0] == "value2");
+        multiSelect.setValue(new String[] {"value1", "value3"});
+        assertTrue(multiSelect.getValue().length == 2);
+        assertTrue(multiSelect.getValue()[0] == "value1");
+        assertTrue(multiSelect.getValue()[1] == "value3");
+        assertEquals(2, criterion.getValueCollection().size());
+        assertTrue(criterion.getValueCollection().contains(value1));
+        assertTrue(criterion.getValueCollection().contains(value3));
+    }
 
     private void checkChangeNumericOperator(ClinicalCriterionRow criterionRow) {
-        NumericComparisonCriterion criterion = (NumericComparisonCriterion) criterionRow.getAnnotationCriterion();
-        criterionRow.setOperatorName(CriterionOperatorEnum.GREATER_THAN.getValue());
+        NumericComparisonCriterion criterion = (NumericComparisonCriterion) criterionRow.getCriterion();
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        parameter.setOperator(CriterionOperatorEnum.GREATER_THAN.getValue());
         assertEquals(NumericComparisonOperatorEnum.GREATER.getValue(), criterion.getNumericComparisonOperator());
-        criterionRow.setOperatorName(CriterionOperatorEnum.GREATER_THAN_OR_EQUAL_TO.getValue());
+        parameter.setOperator(CriterionOperatorEnum.GREATER_THAN_OR_EQUAL_TO.getValue());
         assertEquals(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue(), criterion.getNumericComparisonOperator());
-        criterionRow.setOperatorName(CriterionOperatorEnum.LESS_THAN.getValue());
+        parameter.setOperator(CriterionOperatorEnum.LESS_THAN.getValue());
         assertEquals(NumericComparisonOperatorEnum.LESS.getValue(), criterion.getNumericComparisonOperator());
-        criterionRow.setOperatorName(CriterionOperatorEnum.LESS_THAN_OR_EQUAL_TO.getValue());
+        parameter.setOperator(CriterionOperatorEnum.LESS_THAN_OR_EQUAL_TO.getValue());
         assertEquals(NumericComparisonOperatorEnum.LESSOREQUAL.getValue(), criterion.getNumericComparisonOperator());
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
+        parameter.setOperator(CriterionOperatorEnum.EQUALS.getValue());
         assertEquals(NumericComparisonOperatorEnum.EQUAL.getValue(), criterion.getNumericComparisonOperator());
     }
 
+    @SuppressWarnings("unchecked")
     private void checkAddGeneExpressionCriterion(CriteriaGroup group) {
-        group.setCriterionTypeName(CriterionTypeEnum.GENE_EXPRESSION.getValue());
+        group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
         group.addCriterion();
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getCriteria().get(2);
         assertEquals(2, criterionRow.getAvailableFieldNames().size());
@@ -219,27 +274,23 @@ public class QueryFormTest {
         assertEquals(group, criterionRow.getGroup());
         criterionRow.setFieldName("Gene Name");
         assertEquals("Gene Name", criterionRow.getFieldName());
-        assertEquals(1, criterionRow.getAvailableOperatorNames().length);
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
-        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), criterionRow.getOperatorName());
         assertTrue(criterionRow.getCriterion() instanceof GeneNameCriterion);
-        criterionRow.getOperands().get(0).setValue("EGFR");
+        ((TextFieldParameter) criterionRow.getParameters().get(0)).setValue("EGFR");
         assertEquals("EGFR", ((GeneNameCriterion) criterionRow.getCriterion()).getGeneSymbol());
 
         criterionRow.setFieldName("Fold Change");
-        assertEquals(1, criterionRow.getAvailableOperatorNames().length);
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
+        assertEquals(0, criterionRow.getParameters().get(0).getAvailableOperators().size());
         assertTrue(criterionRow.getCriterion() instanceof FoldChangeCriterion);
-        assertEquals(2, criterionRow.getOperands().size());
-        criterionRow.getOperands().get(0).setValue("Up");
-        criterionRow.getOperands().get(1).setValue("2.0");
+        assertEquals(2, criterionRow.getParameters().size());
+        ((SelectListParameter<String>) criterionRow.getParameters().get(0)).setValue("Up");
+        ((TextFieldParameter) criterionRow.getParameters().get(1)).setValue("2.0");
         FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterionRow.getCriterion();
         assertEquals("Up", foldChangeCriterion.getRegulationType());
         assertEquals(2.0, foldChangeCriterion.getFolds(), 0.0);
     }
 
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
-        group.setCriterionTypeName(CriterionTypeEnum.IMAGE_SERIES.getValue());
+        group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
         group.addCriterion();
         ImageSeriesCriterionRow imageSeriesCriterionRow = (ImageSeriesCriterionRow) group.getCriteria().get(1);
         assertEquals(1, imageSeriesCriterionRow.getAvailableFieldNames().size());
@@ -249,10 +300,11 @@ public class QueryFormTest {
 
     private void checkChangeToNumericField(ClinicalCriterionRow criterionRow) {
         criterionRow.setFieldName("numericClinicalAnnotation");
-        assertEquals(5 , criterionRow.getAvailableOperatorNames().length);
-        assertEquals("", criterionRow.getOperatorName());
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
-        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), criterionRow.getOperatorName());
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        assertEquals(5 , parameter.getAvailableOperators().size());
+        assertEquals("", parameter.getOperator());
+        parameter.setOperator(CriterionOperatorEnum.EQUALS.getValue());
+        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), parameter.getOperator());
         assertTrue(criterionRow.getCriterion() instanceof NumericComparisonCriterion);
         assertEquals(1, criterionRow.getGroup().getCompoundCriterion().getCriterionCollection().size());
         assertTrue(criterionRow.getGroup().getCompoundCriterion().getCriterionCollection().iterator().next() instanceof NumericComparisonCriterion);
@@ -262,60 +314,61 @@ public class QueryFormTest {
     private void checkChangeToDifferentStringField(ClinicalCriterionRow criterionRow) {
         criterionRow.setFieldName("stringClinicalAnnotation2");
         assertEquals("stringClinicalAnnotation2", criterionRow.getFieldName());
-        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getAnnotationCriterion();
+        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING.getValue(), criterion.getWildCardType());
-        assertEquals("value", criterionRow.getOperands().get(0).getValue());
+        assertEquals("value", ((TextFieldParameter) criterionRow.getParameters().get(0)).getValue());
         assertEquals("value", criterion.getStringValue());
         assertEquals(stringClinicalAnnotation2, criterion.getAnnotationDefinition());
     }
 
     private void checkChangeStringFieldOperator(ClinicalCriterionRow criterionRow) {
-        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getAnnotationCriterion();
-        criterionRow.setOperatorName(CriterionOperatorEnum.BEGINS_WITH.getValue());
+        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        parameter.setOperator(CriterionOperatorEnum.BEGINS_WITH.getValue());
         assertEquals(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue(), criterion.getWildCardType());
-        criterionRow.setOperatorName(CriterionOperatorEnum.ENDS_WITH.getValue());
+        parameter.setOperator(CriterionOperatorEnum.ENDS_WITH.getValue());
         assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_STRING.getValue(), criterion.getWildCardType());
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
+        parameter.setOperator(CriterionOperatorEnum.EQUALS.getValue());
         assertEquals(WildCardTypeEnum.WILDCARD_OFF.getValue(), criterion.getWildCardType());
-        criterionRow.setOperatorName(CriterionOperatorEnum.CONTAINS.getValue());
+        parameter.setOperator(CriterionOperatorEnum.CONTAINS.getValue());
         assertEquals(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING.getValue(), criterion.getWildCardType());
-        assertEquals("value", criterionRow.getOperands().get(0).getValue());
+        assertEquals("value", ((TextFieldParameter) criterionRow.getParameters().get(0)).getValue());
         assertEquals("value", criterion.getStringValue());
     }
 
     private void checkSetStringOperandValue(ClinicalCriterionRow criterionRow) {
-        criterionRow.getOperands().get(0).setValue("value");
-        assertEquals("value", criterionRow.getOperands().get(0).getValue());
-        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getAnnotationCriterion();
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        parameter.setValue("value");
+        assertEquals("value", parameter.getValue());
+        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         assertEquals("value", criterion.getStringValue());
     }
 
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(3, criterionRow.getAvailableFieldNames().size());
+        assertEquals(4, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
-        assertEquals(0 , criterionRow.getAvailableOperatorNames().length);
+        assertEquals(0 , criterionRow.getParameters().size());
         assertEquals("", criterionRow.getFieldName());
-        assertEquals("", criterionRow.getOperatorName());
     }
 
     private void checkSetToEqualsOperator(ClinicalCriterionRow criterionRow) {
-        criterionRow.setOperatorName(CriterionOperatorEnum.EQUALS.getValue());
-        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), criterionRow.getOperatorName());
-        assertEquals(CriterionOperatorEnum.EQUALS, criterionRow.getOperator());
-        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getAnnotationCriterion();
+        assertEquals(1, criterionRow.getParameters().size());
+        assertTrue(criterionRow.getParameters().get(0) instanceof TextFieldParameter);
+        TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
+        parameter.setOperator(CriterionOperatorEnum.EQUALS.getValue());
+        assertEquals(CriterionOperatorEnum.EQUALS.getValue(), parameter.getOperator());
+        StringComparisonCriterion criterion = (StringComparisonCriterion) criterionRow.getCriterion();
         assertNotNull(criterion);
         assertEquals(WildCardTypeEnum.WILDCARD_OFF.getValue(), criterion.getWildCardType());
         assertEquals(stringClinicalAnnotation1, criterion.getAnnotationDefinition());
         assertEquals(EntityTypeEnum.SUBJECT.getValue(), criterion.getEntityType());
-        assertEquals(1, criterionRow.getOperands().size());
-        assertTrue(criterionRow.getOperands().get(0) instanceof StringOperand);
     }
 
     private void checkSetNewRowToStringField(ClinicalCriterionRow criterionRow) {
         criterionRow.setFieldName("stringClinicalAnnotation1");
         assertEquals("stringClinicalAnnotation1", criterionRow.getFieldName());
-        assertEquals(4 , criterionRow.getAvailableOperatorNames().length);
+        assertEquals(4 , criterionRow.getParameters().get(0).getAvailableOperators().size());
     }
 
     @Test

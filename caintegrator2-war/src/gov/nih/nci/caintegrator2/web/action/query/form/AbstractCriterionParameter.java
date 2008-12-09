@@ -85,15 +85,95 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
- * Criterion type.
+ * A single operand for a single criterion.
  */
-enum CriterionTypeEnum {
+public abstract class AbstractCriterionParameter {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    /**
+     * Display the operand as a free text field.
+     */
+    public static final String TEXT_FIELD = "text";
+    
+    /**
+     * Display the operand as a select list (single option).
+     */
+    public static final String SELECT_LIST = "select";
+    
+    /**
+     * Display the operand as a select list allowing for multi-select.
+     */
+    public static final String MULTI_SELECT = "multiselect";
+    
+    private String label = "";
+    private List<String> availableOperators = new ArrayList<String>();
+    private OperatorHandler operatorHandler;
+
+    AbstractCriterionParameter() {
+        super();
+    }
+
+    void setOperatorHandler(OperatorHandler operatorHandler) {
+        this.operatorHandler = operatorHandler;
+        availableOperators = getOperatorNames(operatorHandler.getAvailableOperators());
+    }
+
+    private List<String> getOperatorNames(CriterionOperatorEnum[] availableOperatorEnums) {
+        List<String> operatorNames = new ArrayList<String>(availableOperatorEnums.length);
+        for (CriterionOperatorEnum operatorEnum : availableOperatorEnums) {
+            operatorNames.add(operatorEnum.getValue());
+        }
+        return operatorNames;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    void setLabel(String label) {
+        this.label = label;
+    }
+
+    /**
+     * Returns a string that indicates how to display the operand.
+     * 
+     * @return the display type indicator string.
+     */
+    public abstract String getFieldType();
+
+
+    String getOperator() {
+        if (operatorHandler.getOperator() == null) {
+            return "";
+        } else {
+            return operatorHandler.getOperator().getValue();
+        }
+    }
+
+    void setOperator(String operator) {
+        if (!StringUtils.equals(getOperator(), operator)) {
+            if (StringUtils.isBlank(operator)) {
+                operatorHandler.operatorChanged(this, null);
+            } else {
+                operatorHandler.operatorChanged(this, CriterionOperatorEnum.getByValue(operator));
+            }
+            availableOperators = getOperatorNames(operatorHandler.getAvailableOperators());
+        }
+    }
+
+    /**
+     * @return the availableOperators
+     */
+    public List<String> getAvailableOperators() {
+        return availableOperators;
+    }
 
 }

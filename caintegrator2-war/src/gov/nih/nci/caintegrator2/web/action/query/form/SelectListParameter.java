@@ -85,15 +85,65 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
- * Criterion type.
+ * Represents a single text operand field.
+ * 
+ * @param <E> object type returned by the parameter.
  */
-enum CriterionTypeEnum {
+public class SelectListParameter<E> extends AbstractCriterionParameter {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    private final SelectOptionList<E> options;
+    private String selectedKey;
+    private final ValueSelectedHandler<E> valueSelectedHandler;
+
+    SelectListParameter(SelectOptionList<E> options, ValueSelectedHandler<E> valueSelectedHandler, E initialValue) {
+        super();
+        this.options = options;
+        this.valueSelectedHandler = valueSelectedHandler;
+        this.selectedKey = options.getKey(initialValue);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getFieldType() {
+        return SELECT_LIST;
+    }
+
+    /**
+     * @return the option keys
+     */
+    public List<String> getKeys() {
+        return options.getKeys();
+    }
+
+    /**
+     * @return the option keys
+     */
+    public List<String> getValues() {
+        return options.getDisplayedValues();
+    }
+
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return selectedKey;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        if (!StringUtils.equals(getValue(), value)) {
+            this.selectedKey = value;
+            valueSelectedHandler.valueSelected(options.getActualValue(value));
+        }
+    }
 
 }
