@@ -85,15 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.List;
+
 /**
- * Criterion type.
+ * Handles changes to a multiple-valued select field.
+ * 
+ * @param <E> type of object selected.
  */
-enum CriterionTypeEnum {
+interface ValuesSelectedHandler<E> {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    void valuesSelected(List<E> values);
 
 }

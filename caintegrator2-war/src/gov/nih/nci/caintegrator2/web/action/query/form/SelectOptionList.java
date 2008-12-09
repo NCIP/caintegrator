@@ -85,15 +85,67 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-/**
- * Criterion type.
- */
-enum CriterionTypeEnum {
-    
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * Used to hold and manage options in Struts 2 select lists.
+ *
+ * @param <E> type of objects maintained in the list.
+ */
+class SelectOptionList<E> {
+    
+    private final List<String> keys = new ArrayList<String>();
+    private final List<String> displayedValues = new ArrayList<String>();
+    private final Map<String, E> keyToActualValueMap = new HashMap<String, E>();
+    private final Map<E, String> actualValueToKeyMap = new HashMap<E, String>();
+    
+    void addOption(String displayedValue, E actualValue) {
+        addOption(displayedValue, displayedValue, actualValue);
+    }
+    
+    void addOption(String key, String displayedValue, E actualValue) {
+        keys.add(key);
+        displayedValues.add(displayedValue);
+        keyToActualValueMap.put(key, actualValue);
+        actualValueToKeyMap.put(actualValue, key);
+    }
+    
+    String getKey(E actualValue) {
+        return actualValueToKeyMap.get(actualValue);
+    }
+
+    List<String> getKeys() {
+        return keys;
+    }
+
+    List<String> getDisplayedValues() {
+        return displayedValues;
+    }
+    
+    E getActualValue(String key) {
+        return keyToActualValueMap.get(key);
+    }
+
+    List<E> getActualValues(String[] selectedKeys) {
+        List<E> actualValues = new ArrayList<E>(selectedKeys.length);
+        for (String key : selectedKeys) {
+            actualValues.add(keyToActualValueMap.get(key));
+        }
+        return actualValues;
+    }
+    
+    String[] getKeys(Collection<E> actualValues) {
+        List<String> selectedKeys = new ArrayList<String>();
+        for (String key : keys) {
+            if (actualValues.contains(getActualValue(key))) {
+                selectedKeys.add(key);
+            }
+        }
+        return selectedKeys.toArray(new String[selectedKeys.size()]);
+    }
+    
 }

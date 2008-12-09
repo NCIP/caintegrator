@@ -85,15 +85,29 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
+
 /**
- * Criterion type.
+ * Wraps access to an <code>AbstractGenomicCriterion</code> subclass instance.
  */
-enum CriterionTypeEnum {
-    
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+abstract class AbstractGenomicCriterionWrapper extends AbstractCriterionWrapper {
+
+    private final GeneExpressionCriterionRow row;
+
+    AbstractGenomicCriterionWrapper(GeneExpressionCriterionRow row) {
+        this.row = row;
+    }
+
+    @Override
+    final AbstractCriterion getCriterion() {
+        return getAbstractGenomicCriterion();
+    }
+
+    abstract AbstractGenomicCriterion getAbstractGenomicCriterion();
+
+    GeneExpressionCriterionRow getRow() {
+        return row;
+    }
 
 }

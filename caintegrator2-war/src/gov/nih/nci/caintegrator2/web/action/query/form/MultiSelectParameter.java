@@ -85,15 +85,66 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 /**
- * Criterion type.
+ * Represents a single text operand field.
+ * 
+ * @param <E> object type returned by the parameter.
  */
-enum CriterionTypeEnum {
+@SuppressWarnings({ "PMD.ArrayIsStoredDirectly", "PMD.MethodReturnsInternalArray" })    // array handling necessary
+public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    private final SelectOptionList<E> options;
+    private String[] selectedKeys;
+    private final ValuesSelectedHandler<E> valuesSelectedHandler;
+
+    MultiSelectParameter(SelectOptionList<E> options, ValuesSelectedHandler<E> valuesSelectedHandler,
+            Collection<E> initialSelections) {
+        this.options = options;
+        this.valuesSelectedHandler = valuesSelectedHandler;
+        this.selectedKeys = options.getKeys(initialSelections);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getFieldType() {
+        return MULTI_SELECT;
+    }
+
+    /**
+     * @return the option keys
+     */
+    public List<String> getKeys() {
+        return options.getKeys();
+    }
+
+    /**
+     * @return the option keys
+     */
+    public List<String> getValues() {
+        return options.getDisplayedValues();
+    }
+
+    /**
+     * @return the value
+     */
+    public String[] getValue() {
+        return selectedKeys;
+    }
+
+    /**
+     * @param values the values to set
+     */
+    public void setValue(String[] values) {
+        if (!Arrays.equals(selectedKeys, values)) {
+            this.selectedKeys = values;
+            valuesSelectedHandler.valuesSelected(options.getActualValues(values));
+        }
+    }
 
 }

@@ -87,22 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -111,8 +104,7 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("PMD.CyclomaticComplexity") // see createNewCriterion
 public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRow {
     
-    private AbstractAnnotationCriterion annotationCriterion;
-    private AnnotationDefinition selectedField;
+    private AbstractAnnotationCriterionWrapper annotationCriterionWrapper;
 
     AbstractAnnotationCriterionRow(CriteriaGroup group) {
         super(group);
@@ -123,10 +115,10 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
      */
     @Override
     public String getFieldName() {
-        if (selectedField == null) {
+        if (getAnnotationCriterionWrapper() == null) {
             return "";
         } else {
-            return selectedField.getDisplayName();
+            return getAnnotationCriterionWrapper().getFieldName();
         }
     }
     
@@ -136,38 +128,76 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     @Override
     public void setFieldName(String fieldName) {
         if (!StringUtils.equals(getFieldName(), fieldName)) {
-            AnnotationDefinition oldSelectedField = selectedField;
-            selectedField = getAnnotationDefinition(fieldName);
-            handleFieldChange(oldSelectedField, selectedField);
-        }
-    }
-    
-    private void handleFieldChange(AnnotationDefinition oldSelectedField, AnnotationDefinition newSelectedField) {
-        if (isFieldTypeChange(oldSelectedField, newSelectedField)) {
-            handleFieldTypeChange();
-        } else if (getAnnotationCriterion() != null) {
-            getAnnotationCriterion().setAnnotationDefinition(newSelectedField);
+            handleFieldNameChange(fieldName);
         }
     }
 
-    private boolean isFieldTypeChange(AnnotationDefinition oldSelectedField, AnnotationDefinition newSelectedField) {
-        return oldSelectedField == null 
-        || newSelectedField == null 
-        || !oldSelectedField.getType().equals(newSelectedField.getType());
-    }
-
-    private void handleFieldTypeChange() {
-        getOperands().clear();
-        setOperatorName("");
-        setAnnotationCriterion(null);
-    }
-
-    private AnnotationDefinition getAnnotationDefinition(String fieldName) {
-        if (StringUtils.isBlank(fieldName)) {
-            return null;
+    private void handleFieldNameChange(String fieldName) {
+        if (StringUtils.isEmpty(fieldName)) {
+            setAnnotationCriterionWrapper(null);
+        } else if (getAnnotationCriterionWrapper() == null) {
+            createAnnotationCriterionWrapper(fieldName);
         } else {
-            return getAnnotationDefinitionList().getDefinition(fieldName);
+            AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
+            CriterionTypeEnum criterionType = getCriterionType(field);
+            if (criterionType.equals(getAnnotationCriterionWrapper().getCriterionType())) {
+                getAnnotationCriterionWrapper().setField(field);
+            } else {
+                createAnnotationCriterionWrapper(fieldName);
+            }
         }
+    }
+
+    private CriterionTypeEnum getCriterionType(AnnotationDefinition field) {
+        if (!field.getPermissibleValueCollection().isEmpty()) {
+            return CriterionTypeEnum.SELECTED_VALUE;
+        } else if (AnnotationTypeEnum.STRING.getValue().equals(field.getType())) {
+            return CriterionTypeEnum.STRING_COMPARISON;
+        } else if (AnnotationTypeEnum.NUMERIC.getValue().equals(field.getType())) {
+            return CriterionTypeEnum.NUMERIC_COMPARISON;
+        } else {
+            throw new IllegalArgumentException("Unsupported type " + field.getType());
+        }
+    }
+
+    void createAnnotationCriterionWrapper(String fieldName) {
+        AnnotationDefinition field = getAnnotationDefinitionList().getDefinition(fieldName);
+        CriterionTypeEnum type = getCriterionType(field);
+        switch (type) {
+        case NUMERIC_COMPARISON:
+            setAnnotationCriterionWrapper(createNumericCriterionWrapper(field));
+            break;
+        case STRING_COMPARISON:
+            setAnnotationCriterionWrapper(createStringComparisonCriterionWrapper(field));
+            break;
+        case SELECTED_VALUE:
+            setAnnotationCriterionWrapper(createSelectedValueCriterionWrapper(field));
+            break;
+        default:
+            throw new IllegalStateException("Unsupported AnnotationType " + type);
+        }
+    }
+
+    private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationDefinition field) {
+        SelectedValueCriterion criterion = new SelectedValueCriterion();
+        criterion.setAnnotationDefinition(field);
+        criterion.setEntityType(getEntityType().getValue());
+        criterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
+        return new SelectedValueCriterionWrapper(criterion, this);
+    }
+
+    private StringComparisonCriterionWrapper createStringComparisonCriterionWrapper(AnnotationDefinition field) {
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setAnnotationDefinition(field);
+        criterion.setEntityType(getEntityType().getValue());
+        return new StringComparisonCriterionWrapper(criterion, this);
+    }
+
+    private NumericComparisonCriterionWrapper createNumericCriterionWrapper(AnnotationDefinition field) {
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setAnnotationDefinition(field);
+        criterion.setEntityType(getEntityType().getValue());
+        return new NumericComparisonCriterionWrapper(criterion, this);
     }
 
     abstract AnnotationDefinitionList getAnnotationDefinitionList();
@@ -176,207 +206,35 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
      * {@inheritDoc}
      */
     @Override
-    public final List<String> getAvailableFieldNames() {
-        return getAnnotationDefinitionList().getNames();
+    AbstractCriterionWrapper getCriterionWrapper() {
+        return getAnnotationCriterionWrapper();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    CriterionOperatorEnum[] getAvailableOperators() {
-        if (selectedField == null) {
-            return CriterionOperatorEnum.EMPTY;
+    private AbstractAnnotationCriterionWrapper getAnnotationCriterionWrapper() {
+        return annotationCriterionWrapper;
+    }
+
+    private void setAnnotationCriterionWrapper(AbstractAnnotationCriterionWrapper annotationCriterionWrapper) {
+        if (this.annotationCriterionWrapper != null) {
+            removeCriterionFromQuery();
         }
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(selectedField.getType());
-        switch (annotationType) {
-        case DATE:
-            return CriterionOperatorEnum.DATE_OPERATORS;
-        case NUMERIC:
-            return CriterionOperatorEnum.NUMERIC_OPERATORS;
-        case STRING:
-            return CriterionOperatorEnum.STRING_OPERATORS;
-        default:
-            throw new IllegalStateException("Unsupported type " + annotationType);
-        }
-    }
-
-    AbstractAnnotationCriterion getAnnotationCriterion() {
-        return annotationCriterion;
-    }
-
-    void setAnnotationCriterion(AbstractAnnotationCriterion annotationCriterion) {
-        if (!ObjectUtils.equals(this.annotationCriterion, annotationCriterion)) {
-            AbstractAnnotationCriterion oldCriterion = this.annotationCriterion;
-            this.annotationCriterion = annotationCriterion;
-            handleCriterionChange(oldCriterion, annotationCriterion);
+        this.annotationCriterionWrapper = annotationCriterionWrapper;
+        if (annotationCriterionWrapper != null) {
+            addCriterionToQuery();
         }
     }
 
     /**
-     * {@inheritDoc}
+     * @return
      */
-    @Override
-    AbstractCriterion getCriterion() {
-        return getAnnotationCriterion();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void handleOperatorChange(CriterionOperatorEnum oldOperator, CriterionOperatorEnum newOperator) {
-        if (isCriterionChange(oldOperator, newOperator)) {
-            setAnnotationCriterion(createCriterion(newOperator));
-        } else if (getAnnotationCriterion() instanceof StringComparisonCriterion) {
-            handleWildcardTypeChange((StringComparisonCriterion) getAnnotationCriterion(), newOperator);
-        } else if (getAnnotationCriterion() instanceof NumericComparisonCriterion) {
-            handleNumericOperatorChange((NumericComparisonCriterion) getAnnotationCriterion(), newOperator);
-        }
-    }
-
-    private void handleWildcardTypeChange(StringComparisonCriterion criterion,
-            CriterionOperatorEnum newOperator) {
-        switch (newOperator) {
-        case BEGINS_WITH:
-            criterion.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
-            break;
-        case CONTAINS:
-            criterion.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING.getValue());
-            break;
-        case ENDS_WITH:
-            criterion.setWildCardType(WildCardTypeEnum.WILDCARD_BEFORE_STRING.getValue());
-            break;
-        case EQUALS:
-            criterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF.getValue());
-            break;
-        default:
-            throw new IllegalArgumentException("Unsuported StringComparisonCriterion operator " + newOperator);
-        }
-    }
-
-    private void handleNumericOperatorChange(NumericComparisonCriterion criterion,
-            CriterionOperatorEnum newOperator) {
-        switch (newOperator) {
-        case EQUALS:
-            criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL.getValue());
-            break;
-        case GREATER_THAN:
-            criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
-            break;
-        case GREATER_THAN_OR_EQUAL_TO:
-            criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
-            break;
-        case LESS_THAN:
-            criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS.getValue());
-            break;
-        case LESS_THAN_OR_EQUAL_TO:
-            criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL.getValue());
-            break;
-        default:
-            throw new IllegalArgumentException("Unsuported NumericComparisonCriterion operator " + newOperator);
-        }
-        
-    }
-
-    private boolean isCriterionChange(CriterionOperatorEnum oldOperator, CriterionOperatorEnum newOperator) {
-        if (oldOperator == null || newOperator == null) {
-            return true;
-        } else if (getAnnotationCriterion() instanceof StringComparisonCriterion) {
-            return !Arrays.asList(CriterionOperatorEnum.STRING_OPERATORS).contains(newOperator);
-        } else if (getAnnotationCriterion() instanceof NumericComparisonCriterion) {
-            return !Arrays.asList(CriterionOperatorEnum.NUMERIC_OPERATORS).contains(newOperator);
-        } else {
-            throw new IllegalStateException("Unsupported criterion " + getAnnotationCriterion().getClass());
-        }
-    }
-
-    @SuppressWarnings("PMD.CyclomaticComplexity") // switch statement based on operator types
-    private AbstractAnnotationCriterion createCriterion(CriterionOperatorEnum operator) {
-        if (operator == null) {
-            return null;
-        }
-        switch (operator) {
-        case BEGINS_WITH:
-            return createStringComparisonCriterion(WildCardTypeEnum.WILDCARD_AFTER_STRING);
-        case CONTAINS:
-            return createStringComparisonCriterion(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
-        case ENDS_WITH:
-            return createStringComparisonCriterion(WildCardTypeEnum.WILDCARD_AFTER_STRING);
-        case EQUALS:
-            return createEqualsCriterion();
-        case GREATER_THAN:
-            return createNumericComparisonCriterion(NumericComparisonOperatorEnum.GREATER);
-        case GREATER_THAN_OR_EQUAL_TO:
-            return createNumericComparisonCriterion(NumericComparisonOperatorEnum.GREATEROREQUAL);
-        case LESS_THAN:
-            return createNumericComparisonCriterion(NumericComparisonOperatorEnum.LESS);
-        case LESS_THAN_OR_EQUAL_TO:
-            return createNumericComparisonCriterion(NumericComparisonOperatorEnum.LESSOREQUAL);
-        default:
-            throw new IllegalStateException("Unsupported operator for annotation criterion " + getOperatorName());
-        }
-    }
-
-    private AbstractAnnotationCriterion createEqualsCriterion() {
-        AnnotationTypeEnum annotationType = AnnotationTypeEnum.getByValue(selectedField.getType());
-        if (AnnotationTypeEnum.STRING.equals(annotationType)) {
-            return createStringComparisonCriterion(WildCardTypeEnum.WILDCARD_OFF);
-        } else if (AnnotationTypeEnum.NUMERIC.equals(annotationType)) {
-            return createNumericComparisonCriterion(NumericComparisonOperatorEnum.EQUAL);
-        } else {
-            throw new IllegalStateException("Unsupported AnnotationTypeEnum " + annotationType);
-        }
-    }
-
-    private AbstractAnnotationCriterion createNumericComparisonCriterion(NumericComparisonOperatorEnum operatorType) {
-        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
-        criterion.setNumericComparisonOperator(operatorType.getValue());
-        criterion.setAnnotationDefinition(selectedField);
-        criterion.setEntityType(getEntityType().getValue());
-        return criterion;
-    }
-
-    private AbstractAnnotationCriterion createStringComparisonCriterion(WildCardTypeEnum wildcardType) {
-        StringComparisonCriterion criterion = new StringComparisonCriterion();
-        criterion.setWildCardType(wildcardType.getValue());
-        criterion.setAnnotationDefinition(selectedField);
-        criterion.setEntityType(getEntityType().getValue());
-        return criterion;
-    }
-
     abstract EntityTypeEnum getEntityType();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    List<AbstractCriterionOperand> createOperands(AbstractCriterion criterion) {
-        AbstractAnnotationCriterion abstractAnnotationCriterion = (AbstractAnnotationCriterion) criterion;
-        ArrayList<AbstractCriterionOperand> operands = new ArrayList<AbstractCriterionOperand>();
-        if (abstractAnnotationCriterion.getAnnotationDefinition().getPermissibleValueCollection().isEmpty()) {
-            operands.add(new StringOperand("", this));
-        } else {
-            operands.add(createSelectListOperand(abstractAnnotationCriterion));
-        }
-        return operands;
-    }
-
-    private SelectListOperand createSelectListOperand(AbstractAnnotationCriterion criterion) {
-        SelectListOperand operand = new SelectListOperand("", this);
-        for (AbstractPermissibleValue value : criterion.getAnnotationDefinition().getPermissibleValueCollection()) {
-            operand.getOptions().add(PermissibleValueUtil.getDisplayString(value));
-        }
-        Collections.sort(operand.getOptions());
-        return operand;
-    }
-
-    @Override
-    void handleOperandChange(AbstractCriterionOperand operand, String oldValue, String value) {
-        if (getAnnotationCriterion() instanceof StringComparisonCriterion) {
-            ((StringComparisonCriterion) getAnnotationCriterion()).setStringValue(value);
-        } else if (getAnnotationCriterion() instanceof NumericComparisonCriterion) {
-            ((NumericComparisonCriterion) getAnnotationCriterion()).setNumericValue(Double.parseDouble(value));
-        } else {
-            throw new IllegalStateException("Unsupported criterion type " + getAnnotationCriterion().getClass());
-        }
+    public List<String> getAvailableFieldNames() {
+        return getAnnotationDefinitionList().getNames();
     }
 
 }

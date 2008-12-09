@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 
-
 /**
  * Holds information for a single clinical criterion.
  */

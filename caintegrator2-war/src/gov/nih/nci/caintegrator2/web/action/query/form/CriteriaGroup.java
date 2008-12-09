@@ -102,7 +102,7 @@ public class CriteriaGroup {
 
     private final CompoundCriterion compoundCriterion;
     private final QueryForm form;
-    private CriterionTypeEnum criterionType;
+    private CriterionRowTypeEnum criterionType;
     private final List<AbstractCriterionRow> criteria = new ArrayList<AbstractCriterionRow>();
 
     CriteriaGroup(QueryForm form) {
@@ -181,7 +181,7 @@ public class CriteriaGroup {
         if (StringUtils.isBlank(criterionTypeName)) {
             criterionType = null;
         } else {
-            criterionType = CriterionTypeEnum.getByValue(criterionTypeName);
+            criterionType = CriterionRowTypeEnum.getByValue(criterionTypeName);
         }
     }
 

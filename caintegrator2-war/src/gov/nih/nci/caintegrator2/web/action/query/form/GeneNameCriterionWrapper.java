@@ -85,15 +85,61 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+
 /**
- * Criterion type.
+ * Wraps access to a single <code>GeneNameCriterion</code>.
  */
-enum CriterionTypeEnum {
+class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
+
+    static final String FIELD_NAME = "Gene Name";
+
+    private final GeneNameCriterion criterion;
+
+    GeneNameCriterionWrapper(GeneExpressionCriterionRow row) {
+        super(row);
+        this.criterion = new GeneNameCriterion();
+        getParameters().add(createGeneNameParameter());
+    }
+
+    private TextFieldParameter createGeneNameParameter() {
+        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getGeneSymbol());
+        valueParameter.setLabel("equals");
+        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
+            /**
+             * {@inheritDoc}
+             */
+            public void valueChanged(String value) {
+                criterion.setGeneSymbol(value);
+            }
+        };
+        valueParameter.setValueChangeHandler(valueChangeHandler);
+        return valueParameter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractGenomicCriterion getAbstractGenomicCriterion() {
+        return criterion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getFieldName() {
+        return FIELD_NAME;
+    }
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.GENE_NAME;
+    }
 
 }

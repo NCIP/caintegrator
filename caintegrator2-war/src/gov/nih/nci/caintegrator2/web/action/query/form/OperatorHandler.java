@@ -86,14 +86,14 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 /**
- * Criterion type.
+ * Invoked when an operator in a <code>AbstractCriterionParameter</code> is changed or to access the value.
  */
-enum CriterionTypeEnum {
+interface OperatorHandler {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    CriterionOperatorEnum[] getAvailableOperators();
+    
+    CriterionOperatorEnum getOperator();
 
+    void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator);
+    
 }

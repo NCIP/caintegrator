@@ -86,14 +86,12 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 /**
- * Criterion type.
+ * Handles changes to a singly-valued select field.
+ * 
+ * @param <E> type of object selected.
  */
-enum CriterionTypeEnum {
+interface ValueSelectedHandler<E> {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    void valueSelected(E value);
 
 }

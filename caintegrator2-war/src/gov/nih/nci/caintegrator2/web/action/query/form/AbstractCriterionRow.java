@@ -87,24 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Contains information for a single <code>AbstractCriterion</code>.
  */
 public abstract class AbstractCriterionRow {
-    
-    private static Map<CriterionOperatorEnum[], String[]> operatorNamesMap = 
-        new HashMap<CriterionOperatorEnum[], String[]>();
 
     private final CriteriaGroup group;
-    private CriterionOperatorEnum operator;
-    private List<AbstractCriterionOperand> operands = new ArrayList<AbstractCriterionOperand>();
 
     AbstractCriterionRow(CriteriaGroup group) {
         this.group = group;
@@ -126,97 +117,40 @@ public abstract class AbstractCriterionRow {
      * @param fieldName the fieldName to set
      */
     public abstract void setFieldName(String fieldName);
-    
-    /**
-     * Returns the operators available for this row.
-     * 
-     * @return the operator names.
-     */
-    public String[] getAvailableOperatorNames() {
-        return getOperatorNames(getAvailableOperators());
-    }
 
-    private static String[] getOperatorNames(CriterionOperatorEnum[] operators) {
-        if (operatorNamesMap.containsKey(operators)) {
-            return operatorNamesMap.get(operators);
-        } else {
-            String[] operatorNames = new String[operators.length];
-            for (int i = 0; i < operators.length; i++) {
-                operatorNames[i] = operators[i].getValue();
-            }
-            operatorNamesMap.put(operators, operatorNames);
-            return operatorNames;
-        }
-    }
-
-    abstract CriterionOperatorEnum[] getAvailableOperators();
+    abstract AbstractCriterionWrapper getCriterionWrapper();
 
     CriteriaGroup getGroup() {
         return group;
     }
-
-    CriterionOperatorEnum getOperator() {
-        return operator;
-    }
-
-    /**
-     * @return the operatorName
-     */
-    public String getOperatorName() {
-        if (operator == null) {
-            return "";
+    
+    AbstractCriterion getCriterion() {
+        if (getCriterionWrapper() == null) {
+            return null;
         } else {
-            return operator.getValue();
+            return getCriterionWrapper().getCriterion();
         }
     }
 
+    void removeCriterionFromQuery() {
+        getGroup().getCompoundCriterion().getCriterionCollection().remove(getCriterion());
+    }
+    
+    void addCriterionToQuery() {
+        getGroup().getCompoundCriterion().getCriterionCollection().add(getCriterion());
+    }
+    
     /**
-     * @param operatorName the operatorName to set
+     * Returns the parameters for this row.
+     * 
+     * @return the parameters.
      */
-    public void setOperatorName(String operatorName) {
-        CriterionOperatorEnum oldOperator = getOperator();
-        boolean operatorChanged;
-        if (StringUtils.isEmpty(operatorName)) {
-            operatorChanged = (getOperator() != null);
-            operator = null;
+    public List<AbstractCriterionParameter> getParameters() {
+        if (getCriterionWrapper() == null) {
+            return Collections.emptyList();
         } else {
-            operatorChanged = !CriterionOperatorEnum.getByValue(operatorName).equals(getOperator());
-            operator = CriterionOperatorEnum.getByValue(operatorName);
-        }
-        if (operatorChanged) {
-            handleOperatorChange(oldOperator, operator);
+            return getCriterionWrapper().getParameters();
         }
     }
-
-    abstract void handleOperatorChange(CriterionOperatorEnum oldOperator, CriterionOperatorEnum newOperator);
-
-    void handleCriterionChange(AbstractCriterion oldCriterion, AbstractCriterion newCriterion) {
-        if (oldCriterion != null) {
-            getGroup().getCompoundCriterion().getCriterionCollection().remove(oldCriterion);
-        }
-        if (newCriterion != null) {
-            getGroup().getCompoundCriterion().getCriterionCollection().add(newCriterion);
-            setOperands(createOperands(newCriterion));
-        } else {
-            operands.clear();
-        }
-    }
-
-    abstract List<AbstractCriterionOperand> createOperands(AbstractCriterion criterion);
-
-    abstract AbstractCriterion getCriterion();
-
-    /**
-     * @return the operands
-     */
-    public List<AbstractCriterionOperand> getOperands() {
-        return operands;
-    }
-
-    private void setOperands(List<AbstractCriterionOperand> operands) {
-        this.operands = operands;
-    }
-
-    abstract void handleOperandChange(AbstractCriterionOperand operand, String oldValue, String value);
 
 }
