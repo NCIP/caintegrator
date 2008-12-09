@@ -86,14 +86,10 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 /**
- * Criterion type.
+ * Handles changes to a singly-valued field.
  */
-enum CriterionTypeEnum {
+interface ValueChangeHandler {
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    void valueChanged(String value);
 
 }

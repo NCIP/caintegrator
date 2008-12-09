@@ -47,7 +47,12 @@ public enum CriterionOperatorEnum {
     /**
      * Less than or equal to.
      */
-    LESS_THAN_OR_EQUAL_TO("less than or equal to");
+    LESS_THAN_OR_EQUAL_TO("less than or equal to"),
+
+    /**
+     * In.
+     */
+    IN("in");
     
     static final CriterionOperatorEnum[] EMPTY = new CriterionOperatorEnum[0];
     static final CriterionOperatorEnum[] STRING_OPERATORS = new CriterionOperatorEnum[] {
@@ -58,6 +63,12 @@ public enum CriterionOperatorEnum {
     };
     static final CriterionOperatorEnum[] DATE_OPERATORS = new CriterionOperatorEnum[] {
         EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LESS_THAN, LESS_THAN_OR_EQUAL_TO
+    };
+    static final CriterionOperatorEnum[] SELECT_LIST_OPERATORS = new CriterionOperatorEnum[] {
+        EQUALS, IN
+    };
+    static final CriterionOperatorEnum[] GENOMIC_OPERATORS = new CriterionOperatorEnum[] {
+        EQUALS
     };
     
     private static Map<String, CriterionOperatorEnum> valueToTypeMap = new HashMap<String, CriterionOperatorEnum>();
@@ -85,7 +96,7 @@ public enum CriterionOperatorEnum {
     }
     
     /**
-     * Returns the <code>CriterionTypeEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>CriterionRowTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match

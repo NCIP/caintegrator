@@ -85,21 +85,85 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-/**
- * Represents a single text operand field.
- */
-public class StringOperand extends AbstractCriterionOperand {
+import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 
-    StringOperand(String label, AbstractCriterionRow criterionRow) {
-        super(label, criterionRow);
+/**
+ * Wraps access to a single <code>FoldChangeCriterion</code>.
+ */
+class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
+    
+    private static final String FOLDS_LABEL = "Folds";
+    private static final String REGULATION_TYPE_LABEL = "Regulation Type";
+    static final String FOLD_CHANGE = "Fold Change";
+
+    private final FoldChangeCriterion criterion;
+
+    FoldChangeCriterionWrapper(GeneExpressionCriterionRow row) {
+        super(row);
+        this.criterion = new FoldChangeCriterion();
+        if (criterion.getFolds() == null) {
+            criterion.setFolds((float) 2.0);
+        }
+        getParameters().add(createRegulationTypeParameter());
+        getParameters().add(createFoldsParameter());
+    }
+
+    private SelectListParameter<String> createRegulationTypeParameter() {
+        SelectOptionList<String> options = new SelectOptionList<String>();
+        options.addOption("Up", "Up");
+        options.addOption("Down", "Down");
+        ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
+            /**
+             * {@inheritDoc}
+             */
+            public void valueSelected(String value) {
+                criterion.setRegulationType(value);
+            }
+        };
+        SelectListParameter<String> regulationTypeParameter = 
+            new SelectListParameter<String>(options, handler, criterion.getRegulationType());
+        regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
+        return regulationTypeParameter;
+    }
+
+    private TextFieldParameter createFoldsParameter() {
+        TextFieldParameter foldsParameter = new TextFieldParameter(criterion.getFolds().toString());
+        foldsParameter.setLabel(FOLDS_LABEL);
+        ValueChangeHandler foldsChangeHandler = new ValueChangeHandler() {
+            /**
+             * {@inheritDoc}
+             */
+            public void valueChanged(String value) {
+                criterion.setFolds(Float.valueOf(value));
+            }
+        };
+        foldsParameter.setValueChangeHandler(foldsChangeHandler);
+        return foldsParameter;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractGenomicCriterion getAbstractGenomicCriterion() {
+        return criterion;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getFieldType() {
-        return TEXT_FIELD;
+    String getFieldName() {
+        return FOLD_CHANGE;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.FOLD_CHANGE;
     }
 
 }

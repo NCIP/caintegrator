@@ -85,15 +85,104 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+
 /**
- * Criterion type.
+ * Wraps access to a <code>StringComparisonCriterion</code>.
  */
-enum CriterionTypeEnum {
+final class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrapper {
+
+    private static final Map<CriterionOperatorEnum, WildCardTypeEnum> OPERATOR_TO_WILDCARD_MAP = 
+        new HashMap<CriterionOperatorEnum, WildCardTypeEnum>();
+    private static final Map<WildCardTypeEnum, CriterionOperatorEnum> WILDCARD_TO_OPERATOR_MAP = 
+        new HashMap<WildCardTypeEnum, CriterionOperatorEnum>();
     
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+    static {
+        OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.BEGINS_WITH, WildCardTypeEnum.WILDCARD_AFTER_STRING);
+        OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.CONTAINS, WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
+        OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.ENDS_WITH, WildCardTypeEnum.WILDCARD_BEFORE_STRING);
+        OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.EQUALS, WildCardTypeEnum.WILDCARD_OFF);
+
+        WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_AFTER_STRING, CriterionOperatorEnum.BEGINS_WITH);
+        WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING, CriterionOperatorEnum.CONTAINS);
+        WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_BEFORE_STRING, CriterionOperatorEnum.ENDS_WITH);
+        WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_OFF, CriterionOperatorEnum.EQUALS);
+    }
+    
+    private final StringComparisonCriterion criterion;
+
+    StringComparisonCriterionWrapper(final StringComparisonCriterion criterion, AbstractAnnotationCriterionRow row) {
+        super(row);
+        this.criterion = criterion;
+        getParameters().add(createValueParameter());
+    }
+
+    private TextFieldParameter createValueParameter() {
+        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getStringValue());
+        valueParameter.setOperatorHandler(this);
+        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
+            /**
+             * {@inheritDoc}
+             */
+            public void valueChanged(String value) {
+                criterion.setStringValue(value);
+            }
+        };
+        valueParameter.setValueChangeHandler(valueChangeHandler);
+        return valueParameter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractAnnotationCriterion getAbstractAnnotationCriterion() {
+        return criterion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CriterionOperatorEnum[] getAvailableOperators() {
+        return CriterionOperatorEnum.STRING_OPERATORS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CriterionOperatorEnum getOperator() {
+        if (StringUtils.isEmpty(criterion.getWildCardType())) {
+            return null;
+        } else {
+            return WILDCARD_TO_OPERATOR_MAP.get(WildCardTypeEnum.getByValue(criterion.getWildCardType()));
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator) {
+        if (operator == null) {
+            criterion.setWildCardType(null);
+        } else {
+            criterion.setWildCardType(OPERATOR_TO_WILDCARD_MAP.get(operator).getValue());
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    CriterionTypeEnum getCriterionType() {
+        return CriterionTypeEnum.STRING_COMPARISON;
+    }
 
 }

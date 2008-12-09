@@ -85,15 +85,43 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+
 /**
- * Criterion type.
+ * Wraps access to an <code>AbstractAnnotationCriterion</code> subclass instance.
  */
-enum CriterionTypeEnum {
-    
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+abstract class AbstractAnnotationCriterionWrapper extends AbstractCriterionWrapper implements OperatorHandler {
+
+    private final AbstractAnnotationCriterionRow row;
+
+    AbstractAnnotationCriterionWrapper(AbstractAnnotationCriterionRow row) {
+        this.row = row;
+    }
+
+    @Override
+    final AbstractCriterion getCriterion() {
+        return getAbstractAnnotationCriterion();
+    }
+
+    abstract AbstractAnnotationCriterion getAbstractAnnotationCriterion();
+
+    @Override
+    String getFieldName() {
+        if (getAbstractAnnotationCriterion().getAnnotationDefinition() == null) {
+            return "";
+        } else {
+            return getAbstractAnnotationCriterion().getAnnotationDefinition().getDisplayName();
+        }
+    }
+
+    void setField(AnnotationDefinition field) {
+        getAbstractAnnotationCriterion().setAnnotationDefinition(field);
+    }
+
+    AbstractAnnotationCriterionRow getRow() {
+        return row;
+    }
 
 }

@@ -86,11 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -101,34 +97,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     
-    private static final String FOLDS_LABEL = "Folds";
-    private static final String REGULATION_TYPE_LABEL = "Regulation Type";
-    private static final String GENE_NAME = "Gene Name";
-    private static final String FOLD_CHANGE = "Fold Change";
-    private static final List<String> FIELD_NAMES = Arrays.asList(new String[] {GENE_NAME, FOLD_CHANGE});
+    private static final List<String> FIELD_NAMES = Arrays.asList(new String[] {
+            GeneNameCriterionWrapper.FIELD_NAME, 
+            FoldChangeCriterionWrapper.FOLD_CHANGE
+    });
     
-    private AbstractGenomicCriterion genomicCriterion;
+    private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
 
     GeneExpressionCriterionRow(CriteriaGroup criteriaGroup) {
         super(criteriaGroup);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    List<AbstractCriterionOperand> createOperands(AbstractCriterion criterion) {
-        List<AbstractCriterionOperand> operands = new ArrayList<AbstractCriterionOperand>();
-        if (criterion instanceof GeneNameCriterion) {
-            operands.add(new StringOperand("", this));
-        } else if (criterion instanceof FoldChangeCriterion) {
-            SelectListOperand regulationType = new SelectListOperand(REGULATION_TYPE_LABEL, this);
-            regulationType.getOptions().add("Up");
-            regulationType.getOptions().add("Down");
-            operands.add(regulationType);
-            operands.add(new StringOperand(FOLDS_LABEL, this));
-        }
-        return operands;
     }
 
     /**
@@ -143,16 +120,12 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
      * {@inheritDoc}
      */
     @Override
-    CriterionOperatorEnum[] getAvailableOperators() {
-        return new CriterionOperatorEnum[] {CriterionOperatorEnum.EQUALS};
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     AbstractCriterion getCriterion() {
-        return genomicCriterion;
+        if (getGenomicCriterionWrapper() != null) {
+            return getGenomicCriterionWrapper().getCriterion();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -160,66 +133,48 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
      */
     @Override
     public String getFieldName() {
-        if (getCriterion() instanceof GeneNameCriterion) {
-            return GENE_NAME;
-        } else if (getCriterion() instanceof FoldChangeCriterion) {
-            return FOLD_CHANGE;
+        if (getGenomicCriterionWrapper() != null) {
+            return getGenomicCriterionWrapper().getFieldName();
         } else {
-            return "";
+            return null;
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void handleOperandChange(AbstractCriterionOperand operand, String oldValue, String value) {
-        if (genomicCriterion instanceof GeneNameCriterion) {
-            ((GeneNameCriterion) genomicCriterion).setGeneSymbol(value);
-        } else if (genomicCriterion instanceof FoldChangeCriterion) {
-            handleFoldChangeOperand((FoldChangeCriterion) genomicCriterion, operand, value);
-        }
-    }
-
-    private void handleFoldChangeOperand(FoldChangeCriterion foldChangeCriterion, AbstractCriterionOperand operand,
-            String value) {
-        if (REGULATION_TYPE_LABEL.equals(operand.getLabel())) {
-            foldChangeCriterion.setRegulationType(value);
-        } else if (FOLDS_LABEL.equals(operand.getLabel())) {
-            foldChangeCriterion.setFolds(Float.parseFloat(value));
-        } 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void handleOperatorChange(CriterionOperatorEnum oldOperator, CriterionOperatorEnum newOperator) {
-        // no-op
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public void setFieldName(String fieldName) {
         if (!StringUtils.equals(getFieldName(), fieldName)) {
-            AbstractGenomicCriterion oldGenomicCriterion = genomicCriterion;
-            genomicCriterion = createGenomicCriterion(fieldName);
-            handleCriterionChange(oldGenomicCriterion, genomicCriterion);
+            handleFieldNameChange(fieldName);
         }
     }
 
-    private AbstractGenomicCriterion createGenomicCriterion(String fieldName) {
-        if (StringUtils.isEmpty(fieldName)) {
-            return null;
-        } else if (GENE_NAME.equals(fieldName)) {
-            return new GeneNameCriterion();
-        } else if (FOLD_CHANGE.equals(fieldName)) {
-            return new FoldChangeCriterion();
+    private void handleFieldNameChange(String fieldName) {
+        if (StringUtils.isBlank(fieldName)) {
+            setGenomicCriterionWrapper(null);
+        } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
+            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this));
+        } else if (fieldName.equals(FoldChangeCriterionWrapper.FOLD_CHANGE)) {
+            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(this));
         } else {
-            throw new IllegalArgumentException("Unsupported type " + fieldName);
+            throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
         }
+    }
+
+    private AbstractGenomicCriterionWrapper getGenomicCriterionWrapper() {
+        return genomicCriterionWrapper;
+    }
+
+    private void setGenomicCriterionWrapper(AbstractGenomicCriterionWrapper genomicCriterionWrapper) {
+        this.genomicCriterionWrapper = genomicCriterionWrapper;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    AbstractCriterionWrapper getCriterionWrapper() {
+        return getGenomicCriterionWrapper();
     }
 
 }
