@@ -185,7 +185,7 @@ public class DisplayableResultRow {
     public String getNciaLink() {
         if (getImageSeries() != null) {
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("https://imaging-dev.nci.nih.gov/ncia/faces/" 
+            stringBuffer.append("https://imaging.nci.nih.gov/ncia/faces/" 
             + "referencedImages.tiles?source=ISPY&image1TrialId=");
             stringBuffer.append(getImageSeries().getImageStudy().getNciaTrialIdentifier());
             stringBuffer.append("&image1PatientId=");

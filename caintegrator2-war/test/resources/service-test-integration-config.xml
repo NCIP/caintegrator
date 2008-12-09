@@ -120,7 +120,7 @@
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
        <!--  Note, the dev url below can only be used when behind NCI's VPN  -->
-       <property name="url" value="http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
+       <property name="url" value="http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService" />
        
     </bean>
     

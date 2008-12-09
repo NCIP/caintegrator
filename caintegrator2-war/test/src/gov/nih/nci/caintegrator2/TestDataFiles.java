@@ -113,6 +113,10 @@ public class TestDataFiles {
     public static final String ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ispy_clinical_image_mapping.csv";
     public static final String SMALL_STUDY_IMAGE_ANNOTATION_FILE_PATH = "/small_study_image_annotations.csv";
     public static final String SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/small_study_clinical_image_mapping.csv";
+    public static final String REMBRANDT_NCRI_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv";
+    public static final String REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH = "/ncri_image_annotations.csv";
+    public static final String REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ncri_image_mapping.csv";
+    
 
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
@@ -139,6 +143,10 @@ public class TestDataFiles {
     // Trial Biochange08 from NCIA DEV
     public static final File SMALL_STUDY_IMAGE_ANNOTATION_FILE = getFile(SMALL_STUDY_IMAGE_ANNOTATION_FILE_PATH);
     public static final File SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
+    // Trial NCRI from NCIA
+    public static final File REMBRANDT_NCRI_CLINICAL_FILE = getFile(REMBRANDT_NCRI_CLINICAL_FILE_PATH);
+    public static final File REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE = getFile(REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH);
+    public static final File REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
 
     public static File getFile(String resourcePath) {
         return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());
