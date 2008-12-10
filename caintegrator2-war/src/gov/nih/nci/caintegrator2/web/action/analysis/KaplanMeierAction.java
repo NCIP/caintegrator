@@ -86,8 +86,10 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 
+import gov.nih.nci.caintegrator.plots.kaplanmeier.KMAlgorithm;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -101,10 +103,12 @@ import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -115,6 +119,8 @@ import org.apache.commons.lang.StringUtils;
 public class KaplanMeierAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+    private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
+    private static final String KMPLOT_RESULT = "kmPlotResult";
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
 
@@ -381,7 +387,57 @@ public class KaplanMeierAction extends AbstractCaIntegrator2Action {
      * @return Struts return value.
      */
     public String retrievePlot() {
-        return "kmPlotResult";
+        return KMPLOT_RESULT;
+    }
+    
+    /**
+     * Gets all the string pvalues from the KMPlot on the session.
+     * @return map of all string PValues.
+     */
+    public Map<String, Map<String, String>> getAllStringPValues() {
+        if (SessionHelper.getKmPlot() != null) {
+            return retrieveAllStringPValues(SessionHelper.getKmPlot());
+        }
+        return new HashMap<String, Map<String, String>>();
+    }
+    
+    private Map<String, Map<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
+        
+        Map<String, Map<String, String>> allPValues = new HashMap<String, Map<String, String>>();
+        Set<SubjectGroup> currentlyCalculatedGroups = new HashSet<SubjectGroup>();
+
+        for (SubjectGroup group1 : kmPlot.getConfiguration().getGroups()) {
+            addStringPValuesToGroup(kmPlot, allPValues, currentlyCalculatedGroups, group1);
+        }
+        return allPValues;
+    }
+
+    private void addStringPValuesToGroup(KMPlot kmPlot,
+            Map<String, Map<String, String>> allPValues,
+            Set<SubjectGroup> currentlyCalculatedGroups, SubjectGroup group1) {
+        String group1Name = group1.getName();
+        if (!allPValues.containsKey(group1Name)) {
+            allPValues.put(group1Name, new HashMap<String, String>());
+        }
+        for (SubjectGroup group2 : kmPlot.getConfiguration().getGroups()) {
+            if (group1 != group2 && !currentlyCalculatedGroups.contains(group2)) {
+                allPValues.get(group1Name).put(group2.getName(), 
+                                               formatDoubleValue(kmPlot.getPValue(group1, group2)));
+            }
+        }
+        currentlyCalculatedGroups.add(group1);
+    }
+    
+    private String formatDoubleValue(Double number) {
+        if (number == null || KMAlgorithm.UNKNOWN_PVALUE.equals(number)) {
+            return "N/A";
+        }
+        String pattern = "0.00";
+        if (number < SMALLEST_TWO_DIGIT_DECIMAL && number > 0) {
+            pattern = "0.00E0";
+        }
+        DecimalFormat df = new DecimalFormat(pattern);
+        return df.format(number);
     }
     
     private boolean validatePlotParameters() {

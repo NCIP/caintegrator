@@ -111,6 +111,9 @@ class KMPlotImpl implements KMPlot {
     
     private final Map<SubjectGroup, Map<SubjectGroup, Double>> groupToGroupPValueMap = 
         new HashMap<SubjectGroup, Map<SubjectGroup, Double>>();
+    
+    private KMPlotConfiguration configuration;
+
 
     /**
      * {@inheritDoc}
@@ -170,5 +173,21 @@ class KMPlotImpl implements KMPlot {
         }
         return getGroupPValueMap(group1).get(group2);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KMPlotConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    /**
+     * @param configuration the configuration to set
+     */
+    public void setConfiguration(KMPlotConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+
 
 }

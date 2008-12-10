@@ -12,4 +12,5 @@ import java.util.Collection;
 public interface KMAlgorithm {
     public Collection<XYCoordinate> getPlottingCoordinates(Collection<KMSampleDTO> sampleColleciton);
     public Double getLogRankPValue(Collection<KMSampleDTO> group1, Collection<KMSampleDTO> group2);
+    public static final Double UNKNOWN_PVALUE = -100.0;
 }

@@ -129,7 +129,7 @@ public class DefaultKMAlgorithmImpl implements KMAlgorithm {
         if (v > 0) {
             return new Double(Statistics.chiSquaredProbability(Math.pow(u, 2.0) / v, 1.0));
         } else {
-            return new Double(-100.0);
+            return new Double(UNKNOWN_PVALUE);
         }
     }
 

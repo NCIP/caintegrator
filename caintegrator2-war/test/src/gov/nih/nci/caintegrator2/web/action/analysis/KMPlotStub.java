@@ -85,10 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.io.OutputStream;
-
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
+
+import java.io.OutputStream;
 
 /**
  * 
@@ -97,6 +98,7 @@ public class KMPlotStub implements KMPlot {
 
     public boolean getPValueCalled;
     public boolean writePlotImageCalled;
+
     
     public void clear() {
         getPValueCalled = false;
@@ -113,4 +115,9 @@ public class KMPlotStub implements KMPlot {
         writePlotImageCalled = true;
     }
 
+
+    public KMPlotConfiguration getConfiguration() {
+
+        return null;
+    }
 }
