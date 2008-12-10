@@ -107,6 +107,7 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
      */
     public KMPlot generatePlot(KMPlotConfiguration configuration) {
         KMPlotImpl plot = new KMPlotImpl();
+        plot.setConfiguration(configuration);
         Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap = 
             new HashMap<SubjectGroup, KMSampleGroupCriteriaDTO>();
         KMCriteriaDTO kmCriteriaDTO = createCriteriaDTO(configuration, groupToDTOMap);

@@ -107,5 +107,11 @@ public interface KMPlot {
      * @return the p-value.
      */
     Double getPValue(SubjectGroup group1, SubjectGroup group2);
+    
+    /**
+     * 
+     * @return configuration for kmPlot.
+     */
+    KMPlotConfiguration getConfiguration();
 
 }

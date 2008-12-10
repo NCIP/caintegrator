@@ -159,8 +159,19 @@ class KMPlotHelper {
         Collection <ResultRow> subjectRows = 
                 retrieveSubjectRowsFromDatabase(groupFieldType, groupAnnotationField, subscription);
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
-        configuration.getGroups().addAll(subjectGroupCollection);
+        filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);
+    }
+
+    private void filterGroupsWithoutSurvivalData(KMPlotConfiguration configuration,
+            Collection<SubjectGroup> subjectGroupCollection) {
+        for (SubjectGroup group : subjectGroupCollection) {
+            if (group.getSurvivalData().isEmpty()) {
+                configuration.getFilteredGroups().add(group);
+            } else {
+                configuration.getGroups().add(group);
+            }
+        }
     }
 
     private void retrieveSubjectSurvivalData(AnnotationDefinition groupAnnotationField,
@@ -298,4 +309,7 @@ class KMPlotHelper {
         QueryResult queryResult = queryManagementService.execute(query);
         return queryResult.getRowCollection();
     }
+    
+    
+    
 }

@@ -71,10 +71,42 @@
 	        </center>
         </s:if>
     </s:form>
-    
-    <s:if test="#session['kmPlot'] != null">
+    <s:set name="kmPlot" value="#session['kmPlot']" />
+    <s:if test="#kmPlot != null">
         <br>
-        <center><img src="retrieveKMPlot.action"/></center>
+        <center>
+            <img src="retrieveKMPlot.action"/>
+            <br>
+            
+            <strong>Log-rank P-value for significance of difference in survival between groups</strong>
+            <br>
+            <s:if test="!#kmPlot.configuration.filteredGroups.empty">
+                <s:iterator value="#kmPlot.configuration.filteredGroups">
+                    <font color="red">
+                    <s:property value="name"/> has 0 patients. 
+                    </font>
+                    <br> 
+                </s:iterator>
+            </s:if>
+            <table cellspacing="10">
+            
+            <!-- Outter Map -->
+            <s:iterator value="allStringPValues">
+                <s:set name="group1Name" value="key"/>
+                <!-- Innter Map -->
+                <s:iterator value="value">
+	                <s:set name="group2Name" value="key"/>
+	                <tr>
+	                    <td align="right"><s:property value="#group1Name"/></td>
+	                    <td> vs. </td>
+	                    <td align="left"> <s:property value="#group2Name"/> </td>
+	                    <td> = </td> 
+	                    <td> <s:property value="value"/> </td>
+	                </tr>
+                </s:iterator> <!-- End Innter Map -->
+            </s:iterator> <!-- End Outter Map -->
+            </table>
+        </center>
     </s:if>
 </div>
 
