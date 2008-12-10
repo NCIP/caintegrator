@@ -99,7 +99,7 @@ public interface CaDSRFacade {
     /**
      * URL for caDSR CDE from freestyle. 
      */
-    String CDE_URL = "http://freestyle-stage.nci.nih.gov/freestyle/do/cdebrowser";
+    String CDE_URL = "http://freestyle.nci.nih.gov/freestyle/do/cdebrowser";
 
     /**
      * To retrieve all candidate Data Elements given keywords.

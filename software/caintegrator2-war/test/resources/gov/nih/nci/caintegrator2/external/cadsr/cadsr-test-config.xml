@@ -12,10 +12,8 @@
     default-autowire="no">
     
     <bean id="caDSRFacade" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeImpl">
-        <!-- <property name="dataDescription" value="http://freestyle.nci.nih.gov"/> -->
-        <!-- when 4.0 hits production, these URL's will change, need to wait on that. -->
-        <property name="dataDescription" value="http://freestyle-stage.nci.nih.gov"/>
-        <property name="caDsrUrl" value="http://cadsrapi-stage.nci.nih.gov/cadsrapi40/"/>
+        <property name="dataDescription" value="http://freestyle.nci.nih.gov"/>
+        <property name="caDsrUrl" value="http://cadsrapi.nci.nih.gov/cadsrapi40/"/>
         <property name="search">
             <ref bean="search" />
         </property>
