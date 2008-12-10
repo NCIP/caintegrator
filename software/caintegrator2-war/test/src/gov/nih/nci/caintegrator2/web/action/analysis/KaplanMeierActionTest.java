@@ -90,6 +90,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -103,6 +109,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -118,6 +125,7 @@ public class KaplanMeierActionTest {
     private KaplanMeierAction action;
     private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
+    private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
     
     private StringPermissibleValue val1 = new StringPermissibleValue();
     private StringPermissibleValue val2 = new StringPermissibleValue();
@@ -237,6 +245,31 @@ public class KaplanMeierActionTest {
         action.getKaplanMeierFormValues().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
         action.getKaplanMeierFormValues().setSurvivalValueDefinitionId("1");
         assertTrue(action.isCreatable());
+    }
+    
+    @Test
+    public void testGetAllStringPValues() {
+        plotService.setCaIntegratorPlotService(new CaIntegratorKMPlotServiceStub());
+        KMPlotConfiguration configuration = new KMPlotConfiguration();
+        configuration.setTitle("title");
+        configuration.setDurationLabel("duration");
+        configuration.setProbabilityLabel("probability");
+        SubjectGroup group1 = createGroup();
+        configuration.getGroups().add(group1);
+        SubjectGroup group2 = createGroup();
+        configuration.getGroups().add(group2);
+        KMPlot plot = plotService.generatePlot(configuration);
+        SessionHelper.setKmPlot(plot);
+        assertEquals("1.10", action.getAllStringPValues().get("group").get("group"));
+    }
+    
+    private SubjectGroup createGroup() {
+        SubjectGroup group = new SubjectGroup();
+        group.setColor(Color.BLACK);
+        group.setName("group");
+        SubjectSurvivalData survivalData = new SubjectSurvivalData(1, false);
+        group.getSurvivalData().add(survivalData);
+        return group;
     }
 
     private void setupActionVariables() {

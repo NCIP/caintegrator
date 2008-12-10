@@ -102,6 +102,7 @@ public class KMPlotConfiguration {
     private String title = DEFAULT_TITLE;
     
     private final List<SubjectGroup> groups = new ArrayList<SubjectGroup>();
+    private final List<SubjectGroup> filteredGroups = new ArrayList<SubjectGroup>();
     
     /**
      * @return the probabilityLabel
@@ -136,6 +137,13 @@ public class KMPlotConfiguration {
      */
     public List<SubjectGroup> getGroups() {
         return groups;
+    }
+    
+    /**
+     * @return the filterredGroups
+     */
+    public List<SubjectGroup> getFilteredGroups() {
+        return filteredGroups;
     }
 
     /**
