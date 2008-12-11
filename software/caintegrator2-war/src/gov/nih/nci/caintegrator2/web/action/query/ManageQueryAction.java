@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.Collection;
@@ -116,7 +117,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
     private String[] selectedOperators; //selected operators for all criterion as a list.
     private String[] selectedValues; //selected values for all criterion as a list.
-    private String selectedBasicOperator = "or"; // user selects AND or OR operation for a basic query
     private String searchName;
     private String searchDescription;
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
@@ -129,6 +129,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public void prepare() {
         super.prepare();
+        if ("selectedTabSearchResults".equals(selectedAction)) {
+            displayTab = "searchResults";
+            return;
+        }
         displayTab = "criteria";
         // Instantiate/prepopulate manageQueryHelper if necessary
         manageQueryHelper = ManageQueryHelper.getInstance();
@@ -182,12 +186,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     @Override
     public void validate() {
 
+        if ("selectedTabSearchResults".equals(selectedAction)) {
+            return;
+        }
+
         if (getStudySubscription() == null) {
             addActionError("Please select a study under \"My Studies\".");
             return;
         }
         
         saveFormData();
+        
         if ("executeQuery".equals(selectedAction)) {
             validateExecuteQuery(); 
         }
@@ -198,8 +207,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         
         if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
-        }
-            
+        } 
     }
     
     private void validateAddCriterionRow() {
@@ -235,7 +243,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             addActionError("No Criterion Added, must have Criteria to Search or Save a Query.");
         }
     }
-
    
     private void validateHasUserSelectedValues() {
         for (String selectedAnnotation : selectedAnnotations) {
@@ -254,20 +261,27 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             }
         }
     }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // Checking action type.
     public String execute()  {
+
+        if ("selectedTabSearchResults".equals(selectedAction)) {
+            return SUCCESS;
+        }
         
         // declarations
         String returnValue = ERROR;
         
         // Check which user action is submitted
         if ("remove".equals(selectedAction)) {
+            setQueryResult(null);
             returnValue = removeRow();
         } else if ("addCriterionRow".equals(selectedAction)) {
+            setQueryResult(null);
             returnValue = addCriterionRow();
         } else if ("executeQuery".equals(selectedAction)) {
             returnValue = executeQuery();
@@ -282,15 +296,15 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
             returnValue = SUCCESS;    
         } else if ("updateResultsPerPage".equals(selectedAction)) {
          // Does nothing right now, eventually might actually persist this value to db.
-            displayTab = "searchresults";
+            displayTab = "searchResults";
             returnValue = SUCCESS;
         } else if ("updateAnnotationDefinition".equals(selectedAction)) {
+            setQueryResult(null);
             returnValue = updateAnnotationDefinition();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
-        }     
-        
+        } 
         return returnValue;
     }
     
@@ -318,8 +332,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
                 manageQueryHelper.setResultType(ResultTypeEnum.GENOMIC.getValue());
             }
         }
-            
-
         return SUCCESS;
     }
     
@@ -349,28 +361,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
         manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
         manageQueryHelper.updateSelectedUserValues(getSelectedValues());
-        manageQueryHelper.setResultColumnCollection(getSelectedClinicalAnnotations(), EntityTypeEnum.SUBJECT);
-        manageQueryHelper.setResultColumnCollection(getSelectedImageAnnotations(), EntityTypeEnum.IMAGESERIES);
+        manageQueryHelper.setSaveClinicalAnnotations(getSelectedClinicalAnnotations());
+        manageQueryHelper.setSaveImageAnnotations(getSelectedImageAnnotations());
+        manageQueryHelper.setClinicalResultColumnCollection();
+        manageQueryHelper.setImageResultColumnCollection();
         manageQueryHelper.getColumnIndexOptions().clear();
         manageQueryHelper.indexOption();
-    }    
-    
-    /**
-     * Delete a criterion row from the query.
-     * 
-     * @return the Struts result.
-     */
-    public String deleteCriterionRow() {        
-        return SUCCESS;
-    }
-    
-    /**
-     * Delete all criterion rows from the query.
-     * 
-     * @return the Struts result.
-     */
-    public String deleteCriterionRowAll() {
-        return SUCCESS;
     }
     
     /**
@@ -382,32 +378,18 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         
         if (ResultTypeEnum.GENOMIC.getValue().equals(manageQueryHelper.getResultType())) {
             GenomicDataQueryResult genomicResult =  
-                manageQueryHelper.executeGenomicQuery(queryManagementService, 
-                                                      selectedBasicOperator);
+                manageQueryHelper.executeGenomicQuery(queryManagementService);
             setGenomicDataQueryResult(genomicResult);
         } else {
-            QueryResult result = manageQueryHelper.executeQuery(queryManagementService, selectedBasicOperator);
+            QueryResult result = manageQueryHelper.executeQuery(queryManagementService);
+            for (ResultRow resultRow : result.getRowCollection()) { // Load all images
+                if (resultRow.getImageSeries() != null) {
+                    resultRow.getImageSeries().getImageCollection().isEmpty();
+                }
+            }
             setQueryResult(new DisplayableQueryResult(result));
         }
-        displayTab = "searchresults";
-        return SUCCESS;
-    }
-    
-    /**
-     * Select the columns to be returned in the query.
-     * 
-     * @return the Struts result.
-     */
-    public String selectColumns() {
-        return SUCCESS;
-    }
-    
-    /**
-     * Select the sorting of columns that appear in the search results.
-     * 
-     * @return the Struts result.
-     */
-    public String selectSorting() {
+        displayTab = "searchResults";
         return SUCCESS;
     }
     
@@ -417,7 +399,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * @return the Struts result.
      */
     public String saveQuery() {
-        manageQueryHelper.saveQuery(queryManagementService, selectedBasicOperator, searchName, searchDescription);
+        manageQueryHelper.saveQuery(queryManagementService, searchName, searchDescription);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         return SUCCESS;
     }
@@ -454,101 +436,84 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      * @return the selectedAnnotations
      */
     public String[] getSelectedAnnotations() {
-        String[] holdArray = {""};
-        if (selectedAnnotations != null) {
-             holdArray = this.selectedAnnotations.clone();
-        }
-        return holdArray;
+        return (this.selectedAnnotations == null)
+            ? null : this.selectedAnnotations.clone();
     }
 
     /**
      * @param selectedAnnotations the selectedAnnotations to set
      */
     public void setSelectedAnnotations(String[] selectedAnnotations) {
-        String [] holdArray;
-        holdArray = selectedAnnotations.clone();
-        this.selectedAnnotations = holdArray;
+        this.selectedAnnotations = (selectedAnnotations == null)
+            ? null : selectedAnnotations.clone();
     }
 
     /**
      * @return the selectedOperators
      */
     public String[] getSelectedOperators() {
-        String [] holdArray = {""};
-        if (selectedOperators != null) {
-            holdArray = selectedOperators.clone();
-        }
-        return holdArray;
+        String[] cloneArray = (selectedOperators == null)
+            ? null : selectedOperators.clone();
+        return cloneArray;
     }
 
     /**
      * @param selectedOperators the selectedOperators to set
      */
     public void setSelectedOperators(String[] selectedOperators) {
-        String [] holdArray;
-        holdArray = selectedOperators.clone();
-        this.selectedOperators = holdArray;
+        this.selectedOperators = (selectedOperators == null)
+            ? null : selectedOperators.clone();
     }
 
     /**
      * @return the selectedValues
      */
     public String[] getSelectedValues() {
-        String [] holdArray = {""};
-        if (selectedValues != null) {
-            holdArray = selectedValues.clone();
-        }
-        return holdArray;
+        String[] cloneArray = (selectedValues == null)
+            ? null : selectedValues.clone();
+        return cloneArray;
     }
 
     /**
      * @param selectedValues the selectedValues to set
      */
     public void setSelectedValues(String[] selectedValues) {
-        String [] holdArray;
-        holdArray = selectedValues.clone();
-        this.selectedValues = holdArray;
+        this.selectedValues = (selectedValues == null)
+            ? null : selectedValues.clone();
     }
+    
     /**
      * @return the selectedClinicalAnnotations
      */
     public Long[] getSelectedClinicalAnnotations() {
-        Long [] holdArray = null;
-        if (selectedClinicalAnnotations != null) {
-            holdArray = selectedClinicalAnnotations.clone();
-        }
-        return holdArray;
-
+        Long[] cloneArray = (selectedClinicalAnnotations == null)
+            ? null : selectedClinicalAnnotations.clone();
+        return cloneArray;
     }
 
     /**
      * @param selectedClinicalAnnotations the selectedClinicalAnnotations to set
      */
     public void setSelectedClinicalAnnotations(Long[] selectedClinicalAnnotations) {
-        Long [] holdArray;
-        holdArray = selectedClinicalAnnotations.clone();
-        this.selectedClinicalAnnotations = holdArray;
-
+        this.selectedClinicalAnnotations = (selectedClinicalAnnotations == null)
+            ? null : selectedClinicalAnnotations.clone();
     }
 
     /**
      * @return the selectedImageAnnotations
      */
     public Long[] getSelectedImageAnnotations() {
-        Long [] holdArray = null;
-        if (selectedImageAnnotations != null) {
-            holdArray = selectedImageAnnotations.clone();
-        }
-        return holdArray;
+        Long[] cloneArray = (selectedImageAnnotations == null)
+            ? null : selectedImageAnnotations.clone();
+        return cloneArray;
     }
 
     /**
      * @param selectedImageAnnotations the selectedImageAnnotations to set
      */
     public void setSelectedImageAnnotations(Long[] selectedImageAnnotations) {
-       Long [] holdArray;
-        holdArray = selectedImageAnnotations.clone();
-        this.selectedImageAnnotations = holdArray;
+        this.selectedImageAnnotations = (selectedImageAnnotations == null)
+            ? null : selectedImageAnnotations.clone();
     }
 
     /**
@@ -577,20 +542,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public void setSelectedAction(String selectedAction) {
         this.selectedAction = selectedAction;
-    }
-
-    /**
-     * @return the selectedBasicOperator
-     */
-    public String getSelectedBasicOperator() {
-        return selectedBasicOperator;
-    }
-
-    /**
-     * @param selectedBasicOperator the selectedBasicOperator to set
-     */
-    public void setSelectedBasicOperator(String selectedBasicOperator) {
-        this.selectedBasicOperator = selectedBasicOperator;
     }
 
     /**
@@ -626,23 +577,22 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public int getClinicalDefinitionsSize() {
         return manageQueryHelper.getClinicalAnnotationDefinitions().size();
-        
     }
-
     
     /**
      * @return the imageDefinitionsSize
      */
     public int getImageDefinitionsSize() {
         return manageQueryHelper.getImageAnnotationDefinitions().size();
-        
     }
+    
     /**
      * @return the rowNumber
      */
     public String getRowNumber() {
         return rowNumber;
     }
+    
     /**
      * @param rowNumber the rowNumber to set
      */
@@ -655,5 +605,25 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
      */
     public String getDisplayTab() {
         return displayTab;
+    }
+    
+    /**
+     * @return page size
+     */
+    public String getPageSize() {
+        if (getQueryResult() != null) {
+            return Integer.toString(getQueryResult().getPageSize());
+        }
+        return null;
+    }
+    
+    /**
+     * Set the page size.
+     * @param pageSize the page size
+     */
+    public void setPageSize(String pageSize) {
+        if (getQueryResult() != null) {
+            getQueryResult().setPageSize(Integer.parseInt(pageSize));
+        }
     }
 }

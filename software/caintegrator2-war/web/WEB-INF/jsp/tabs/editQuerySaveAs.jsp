@@ -2,8 +2,6 @@
 
 <!--Save Search-->
 
-<s:div id="savesearch" label="Save as..." theme="ajax">
-
     <h2>Save This Search</h2>
 
     <table class="form">
@@ -46,6 +44,5 @@
     </div>
 
     <!--Buttons-->
-</s:div>
-
+    
 <!--/Save Search-->

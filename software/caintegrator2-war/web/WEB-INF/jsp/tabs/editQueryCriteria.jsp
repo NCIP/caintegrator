@@ -2,8 +2,6 @@
 
 <!--Search Criteria-->
 
-<s:div id="criteria" label="Criteria" theme="ajax">
-
     <h2>Define Search Criteria</h2>
 
     <s:hidden name="manageQueryHelper.advancedView" value="false" />
@@ -86,7 +84,7 @@
         </s:else>
     </table>
 
-    <div class="tablefooter"><s:radio name="selectedBasicOperator" list="{'or','and'}"></s:radio></div>
+    <div class="tablefooter"><s:radio name="manageQueryHelper.selectedBasicOperator" list="{'or','and'}"></s:radio></div>
 
     <!--Buttons-->
 
@@ -104,7 +102,5 @@
     </div>
 
     <!--/Buttons-->
-
-</s:div>
 
 <!--/Search Criteria-->

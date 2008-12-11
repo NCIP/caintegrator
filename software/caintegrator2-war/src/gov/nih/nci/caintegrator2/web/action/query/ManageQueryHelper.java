@@ -135,6 +135,9 @@ final class ManageQueryHelper {
     private Map<Long, AnnotationDefinition> allAnnotationDefinitionsMap = new HashMap<Long, AnnotationDefinition>();
     private List<ResultColumn> columnList = new ArrayList<ResultColumn>();
     private List<Integer> columnIndexOptions = new ArrayList<Integer>();
+    private String selectedBasicOperator = "or"; // user selects AND or OR operation for a basic query
+    private Long[] saveClinicalAnnotations; // selected clinical annotations from columns tab.
+    private Long[] saveImageAnnotations;    // selected image annotations from columns tab.
     
     private final Map<String, AnnotationDefinition> annotationDefinitionToObject
         = new HashMap<String, AnnotationDefinition>();
@@ -176,7 +179,6 @@ final class ManageQueryHelper {
             throw new IllegalStateException("Not inside of an ActionContext!");
         }
     }
-    
        
     /**
      * @return the advancedView
@@ -431,8 +433,8 @@ final class ManageQueryHelper {
     boolean configureImageSeriesQueryCriterionRow() {
         if (getImageSeriesAnnotationSelections() == null 
                 || getImageSeriesAnnotationSelections().getAnnotationDefinitions().isEmpty()) {
-               return false;
-           }
+            return false;
+        }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         //queryAnnotationCriteria.setAnnotationSelections(this.getCurrentAnnotationSelections());
         queryAnnotationCriteria.setAnnotationSelection(this.getImageSeriesAnnotationSelections().cloneObject());
@@ -450,8 +452,8 @@ final class ManageQueryHelper {
     boolean configureGeneExpressionCriterionRow() {
         if (getGenomicAnnotationSelections() == null 
                 || getGenomicAnnotationSelections().getGenomicAnnotationDefinitions().isEmpty()) {
-               return false;
-           }
+            return false;
+        }
         QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
         queryAnnotationCriteria.setAnnotationSelection(this.getGenomicAnnotationSelections().cloneObject());
         queryAnnotationCriteria.setSelectedAnnotationValue("");
@@ -513,23 +515,40 @@ final class ManageQueryHelper {
             }
             i++;
         }
-    }    
+    }
 
-    public void setResultColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
+    public void setClinicalResultColumnCollection() {
         
-        if (selectedValues != null) {
+        if (saveClinicalAnnotations != null) {
             // Iterate over a list of user selected annotationDefinitions Id's(which has all the Ids)
-            for (Long columnIds : selectedValues) {
+            for (Long columnIds : saveClinicalAnnotations) {
                 //Checking the given Id is present in the Map(contains Id and annotationDefinition)
                 if (this.allAnnotationDefinitionsMap.containsKey(columnIds)) {
-                   AnnotationDefinition annoDef = allAnnotationDefinitionsMap.get(columnIds);  
-                        getSelectedColumnCollection(annoDef, entityType);
-                   }
+                    AnnotationDefinition annoDef = allAnnotationDefinitionsMap.get(columnIds);  
+                    getSelectedColumnCollection(annoDef, EntityTypeEnum.SUBJECT);
+                }
             }
         } else {
-            removeColumn(entityType);
+            removeColumn(EntityTypeEnum.SUBJECT);
         }
-        checkColumnCollection(selectedValues, entityType); 
+        checkColumnCollection(saveClinicalAnnotations, EntityTypeEnum.SUBJECT); 
+    }  
+
+    public void setImageResultColumnCollection() {
+        
+        if (saveImageAnnotations != null) {
+            // Iterate over a list of user selected annotationDefinitions Id's(which has all the Ids)
+            for (Long columnIds : saveImageAnnotations) {
+                //Checking the given Id is present in the Map(contains Id and annotationDefinition)
+                if (this.allAnnotationDefinitionsMap.containsKey(columnIds)) {
+                    AnnotationDefinition annoDef = allAnnotationDefinitionsMap.get(columnIds);  
+                    getSelectedColumnCollection(annoDef, EntityTypeEnum.IMAGESERIES);
+                }
+            }
+        } else {
+            removeColumn(EntityTypeEnum.IMAGESERIES);
+        }
+        checkColumnCollection(saveImageAnnotations, EntityTypeEnum.IMAGESERIES); 
     }
       
 
@@ -564,9 +583,9 @@ final class ManageQueryHelper {
     private void removeColumn(EntityTypeEnum entityType) {
         for (Iterator<ResultColumn> iter = columnList.iterator(); iter.hasNext();) {
             ResultColumn singleColumn = iter.next();
-                if (singleColumn.getEntityType().equals(entityType.getValue())) {
-                    iter.remove();
-                }
+            if (singleColumn.getEntityType().equals(entityType.getValue())) {
+                iter.remove();
+            }
         }
     }
     
@@ -575,22 +594,22 @@ final class ManageQueryHelper {
     private void checkColumnCollection(Long[] selectedValues, EntityTypeEnum entityType) {
         if (selectedValues != null) { 
             List<ResultColumn> colCollection = new ArrayList<ResultColumn>(); 
-                for (Long columnId : selectedValues) {
-                        createUserSelectedList(columnId, colCollection, entityType);
-                }
-        removeDuplicateColumn(colCollection, entityType);
-      }
+            for (Long columnId : selectedValues) {
+                createUserSelectedList(columnId, colCollection, entityType);
+            }
+            removeDuplicateColumn(colCollection, entityType);
+        }
     }
     
     private void createUserSelectedList(Long columnId, List<ResultColumn> colCollection, EntityTypeEnum entityType) {
-       for (ResultColumn column : columnList) {
-                if (column.getAnnotationDefinition() != null && column.getEntityType().equals(entityType.getValue())) {
-                        Long columnCollectionId = column.getAnnotationDefinition().getId();
-                        if (columnId.equals(columnCollectionId)) {
-                            colCollection.add(column);
-                        }
+        for (ResultColumn column : columnList) {
+            if (column.getAnnotationDefinition() != null && column.getEntityType().equals(entityType.getValue())) {
+                Long columnCollectionId = column.getAnnotationDefinition().getId();
+                if (columnId.equals(columnCollectionId)) {
+                    colCollection.add(column);
                 }
-       }
+            }
+        }
     }
     private void removeDuplicateColumn(List<ResultColumn> colCollection, EntityTypeEnum entityType) {
         for (Iterator<ResultColumn> iter = columnList.iterator(); iter.hasNext();) {
@@ -606,14 +625,12 @@ final class ManageQueryHelper {
     }
     /**
      * @param queryManagementService A QueryManagementService instance
-     * @param basicQueryOperator String AND or OR
-     * @param queryCriteriaRowList list of populated QueryAnnotationCriteria (query row criteria).
      * @return QueryResult Valid results from the query execution, or null 
      */
-    QueryResult executeQuery(QueryManagementService queryManagementService, String basicQueryOperator) {
+    QueryResult executeQuery(QueryManagementService queryManagementService) {
         QueryResult queryResult = null;
 
-        queryResult = createQueryHelper(basicQueryOperator).executeQuery(queryManagementService,
+        queryResult = createQueryHelper().executeQuery(queryManagementService,
                 this.getQueryCriteriaRowList(), this.getColumnList());
                 
         return queryResult;
@@ -621,15 +638,12 @@ final class ManageQueryHelper {
     
     /**
      * @param queryManagementService A QueryManagementService instance
-     * @param basicQueryOperator String AND or OR
-     * @param reporterType this is the type of reporter to use.
      * @return QueryResult Valid results from the query execution, or null 
      */
-    GenomicDataQueryResult executeGenomicQuery(QueryManagementService queryManagementService, 
-                                               String basicQueryOperator) {
+    GenomicDataQueryResult executeGenomicQuery(QueryManagementService queryManagementService) {
         GenomicDataQueryResult queryResult = null;
 
-        queryResult = createQueryHelper(basicQueryOperator).executeGenomicQuery(queryManagementService,
+        queryResult = createQueryHelper().executeGenomicQuery(queryManagementService,
                 this.getQueryCriteriaRowList(), ReporterTypeEnum.getByValue(reporterType));
         return queryResult;
     }
@@ -637,16 +651,14 @@ final class ManageQueryHelper {
     /**
      * Saves the query based on the queryCriteriaRowList.
      * @param queryManagementService - service object to pass to the query helper.
-     * @param basicQueryOperator - String AND or OR.
      * @param queryName The name of the query.
      * @param queryDescription The description of the query.
      * @return - true/false depending on if it gets saved or not.
      */
     boolean saveQuery(QueryManagementService queryManagementService, 
-                             String basicQueryOperator,
                              String queryName, 
                              String queryDescription) {
-        QueryHelper queryHelper = createQueryHelper(basicQueryOperator);
+        QueryHelper queryHelper = createQueryHelper();
         queryHelper.setReporterType(ReporterTypeEnum.getByValue(reporterType));
         Query query = queryHelper.buildQuery(queryManagementService,
                 getQueryCriteriaRowList(), queryName, queryDescription, ResultTypeEnum.getByValue(resultType), 
@@ -667,13 +679,13 @@ final class ManageQueryHelper {
         return false;
     }
     
-    private QueryHelper createQueryHelper(String basicQueryOperator) {
+    private QueryHelper createQueryHelper() {
         QueryHelper queryHelper = new QueryHelper();
         queryHelper.setAdvancedView(advancedView);
-        if (basicQueryOperator == null || basicQueryOperator.equals("")) {
+        if (selectedBasicOperator == null || selectedBasicOperator.equals("")) {
             queryHelper.setBasicQueryOperator(BooleanOperatorEnum.OR.getValue());
         } else {
-            queryHelper.setBasicQueryOperator(basicQueryOperator);
+            queryHelper.setBasicQueryOperator(selectedBasicOperator);
         }
         return queryHelper;
     }
@@ -720,7 +732,7 @@ final class ManageQueryHelper {
         this.allAnnotationDefinitionsMap = allAnnotationDefinitionsMap;
     }
 
-     /**
+    /**
      * @return the columnCollection
      */
     public List<ResultColumn> getColumnList() {
@@ -733,8 +745,6 @@ final class ManageQueryHelper {
     public void setColumnList(List<ResultColumn> columnList) {
         this.columnList = columnList;
     }
-
-    
 
     /**
      * @return the genomicAnnotationSelections
@@ -798,5 +808,53 @@ final class ManageQueryHelper {
         for (i = 0; i < getColumnList().size(); i++) {
             columnIndexOptions.add(i);
         }
+    }
+
+    /**
+     * @return the selectedBasicOperator
+     */
+    public String getSelectedBasicOperator() {
+        return selectedBasicOperator;
+    }
+
+    /**
+     * @param selectedBasicOperator the selectedBasicOperator to set
+     */
+    public void setSelectedBasicOperator(String selectedBasicOperator) {
+        this.selectedBasicOperator = selectedBasicOperator;
+    }
+
+    /**
+     * @return the saveClinicalAnnotations
+     */
+    public Long[] getSaveClinicalAnnotations() {
+        Long[] cloneArray = (saveClinicalAnnotations == null)
+            ? null : saveClinicalAnnotations.clone();
+        return cloneArray;
+    }
+
+    /**
+     * @param saveClinicalAnnotations the saveClinicalAnnotations to set
+     */
+    public void setSaveClinicalAnnotations(Long[] saveClinicalAnnotations) {
+        this.saveClinicalAnnotations = (saveClinicalAnnotations == null)
+            ? null : saveClinicalAnnotations.clone();
+    }
+
+    /**
+     * @return the saveImageAnnotations
+     */
+    public Long[] getSaveImageAnnotations() {
+        Long[] cloneArray = (saveImageAnnotations == null)
+            ? null : saveImageAnnotations.clone();
+        return cloneArray;
+    }
+
+    /**
+     * @param saveImageAnnotations the saveImageAnnotations to set
+     */
+    public void setSaveImageAnnotations(Long[] saveImageAnnotations) {
+        this.saveImageAnnotations = (saveImageAnnotations == null)
+            ? null : saveImageAnnotations.clone();
     }
 }

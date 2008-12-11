@@ -295,11 +295,18 @@
             <result name="input" type="tiles">manageQuery</result>
             <result name="error" type="tiles">manageQuery</result>
         </action>
+        
+        <action name="selectQueryTab" class="selectQueryTabAction">
+            <result name="selectedTabCriteria">/WEB-INF/jsp/tabs/editQueryCriteria.jsp</result>
+            <result name="selectedTabColumns">/WEB-INF/jsp/tabs/editQueryColumns.jsp</result>
+            <result name="selectedTabSorting">/WEB-INF/jsp/tabs/editQuerySorting.jsp</result>
+            <result name="selectedTabSearchResults">/WEB-INF/jsp/tabs/editQuerySearchResults.jsp</result>
+            <result name="selectedTabSaveAs">/WEB-INF/jsp/tabs/editQuerySaveAs.jsp</result>
+        </action>
                 
         <action name="executeQuery" class="executeQueryAction">
             <result type="tiles">viewResults</result>
         </action>
-                     
         <!--  Analysis Actions -->
    
         <action name="genePatternAnalysis" class="genePatternAnalysisAction">

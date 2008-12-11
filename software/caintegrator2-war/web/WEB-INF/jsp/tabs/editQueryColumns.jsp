@@ -1,27 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script language="javascript">
-
-    function setClinicalAnnotations(onOff){
-        var size='<s:property value="getClinicalDefinitionsSize()"/>';
-        for(i=1;i<=size;i++){
-            var item = 'selectedClinicalAnnotations-' + i;
-            document.manageQueryForm[item].checked = onOff;
-        }
-    }
-    function setImageAnnotations(onOff){
-        var size='<s:property value="getImageDefinitionsSize()"/>';
-        for(i=1;i<=size;i++){
-            var item = 'selectedImageAnnotations-' + i;
-            document.manageQueryForm[item].checked = onOff;
-        }
-    }
-    
-</script>
-
 <!--Columns-->
 
-<s:div id="columns" label="Columns" theme="ajax">
     <s:if test="!manageQueryHelper.clinicalAnnotationDefinitions.isEmpty()">
         <h2>Select Results Display</h2>
         <div><b>Select Result Type: </b> <s:radio name="manageQueryHelper.resultType"
@@ -40,7 +20,7 @@
         <ul class="checklist">
             <s:checkboxlist cssClass="checklist" name="selectedClinicalAnnotations"
                 list="manageQueryHelper.clinicalAnnotationDefinitions" listKey="id" listValue="displayName"
-                theme="cai2simple" value="getSelectedClinicalAnnotations()"></s:checkboxlist>
+                theme="cai2simple" value="manageQueryHelper.saveClinicalAnnotations"></s:checkboxlist>
         </ul>
         <ul>
             <s:if test="!manageQueryHelper.clinicalAnnotationDefinitions.isEmpty()">
@@ -55,7 +35,7 @@
         <ul class="checklist">
             <s:checkboxlist cssClass="checklist" name="selectedImageAnnotations"
                 list="manageQueryHelper.imageAnnotationDefinitions" listKey="id" listValue="displayName"
-                theme="cai2simple" value="getSelectedImageAnnotations()"></s:checkboxlist>
+                theme="cai2simple" value="manageQueryHelper.saveImageAnnotations"></s:checkboxlist>
         </ul>
 
         <ul>
@@ -81,6 +61,5 @@
     <s:else>
         <p>These options are fixed when viewing a saved query. Click the Criteria tab to edit a new query.</p>
     </s:else>
-</s:div>
 
 <!--/Columns-->
