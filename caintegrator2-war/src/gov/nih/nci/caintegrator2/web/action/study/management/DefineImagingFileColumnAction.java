@@ -153,13 +153,20 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     @Override
     public void prepare() {
         super.prepare();
-        clearErrorsAndMessages();
         if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
         }
         setReadOnly(true);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        clearErrorsAndMessages();
+    }
+
     /**
      * Edit a clinical data source file column.
      * 
@@ -236,17 +243,22 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and Try/Catch  
     public String selectDataElement() {
+        FileColumn originalFileColumn = getFileColumn();
         try {
             getStudyManagementService().setDataElement(getFileColumn(), 
-                                                       getDataElements().get(getDataElementIndex()),
+                                                       retrieveSelectedDataElement(),
                                                        getStudyConfiguration().getStudy(),
                                                        EntityTypeEnum.IMAGESERIES);
         } catch (ConnectionException e) {
             addActionError(e.getMessage());
-            return INPUT;
+            setFileColumn(originalFileColumn);
+            prepare();
+            return ERROR;
         } catch (ValidationException e) {
-            addActionError(e.getMessage());
-            return INPUT;
+            addActionError(e.getResult().getInvalidMessage());
+            setFileColumn(originalFileColumn);
+            prepare();
+            return ERROR;
         }
         if (getFileColumn() != null 
             && getFileColumn().getFieldDescriptor() != null 
@@ -257,6 +269,14 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         return SUCCESS;
     }
     
+    private CommonDataElement retrieveSelectedDataElement() {
+        CommonDataElement selectedDataElement = getDataElements().get(getDataElementIndex());
+        selectedDataElement.setId(null);
+        selectedDataElement.setValueDomain(null);
+        return selectedDataElement;
+    }
+    
+
     /**
      * Updates a clinical data source file column.
      * 
