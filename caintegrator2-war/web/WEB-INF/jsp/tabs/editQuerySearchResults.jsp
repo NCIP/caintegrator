@@ -3,16 +3,15 @@
 
 <!--Search Results-->
 
-
-<s:div id="searchresults" label="Search Results" theme="ajax">
-
     <h2>Search Results for: <s:property value="query.name" /></h2>
 
-    <div class="tableheader"><label>Results per Page:</label> <s:select name="queryResult.pageSize"
-        list="{'10', '20', '50', '100'}" /> <s:a href="#"
-        onclick="document.manageQueryForm.selectedAction.value = 'updateResultsPerPage';document.manageQueryForm.submit();">
-        <span class="btn_img">Apply</span>
-    </s:a></div>
+    <div class="tableheader">
+        <label>Results per Page:</label>
+        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
+        <s:a href="#" onclick="document.manageQueryForm.selectedAction.value='updateResultsPerPage';document.manageQueryForm.submit();">
+            <span class="btn_img">Apply</span>
+        </s:a>
+    </div>
 
     <br>
     <table class="data">
@@ -56,7 +55,7 @@
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />
             <display:table name="queryResult.rows" uid="queryResultRows" id="queryResultRows" pagesize="${pageSizeVar}"
-                sort="list" class="data" requestURI="" export="true">
+                sort="list" class="data" requestURI="manageQuery.action#" export="true">
                 <display:setProperty name="paging.banner.placement" value="both" />
                 <display:setProperty name="export.excel" value="false" />
                 <display:setProperty name="export.xml" value="false" />
@@ -106,9 +105,6 @@
     </div>
 
     <!--/Buttons-->
-
-</s:div>
-
 
 <!--/Search Results-->
 

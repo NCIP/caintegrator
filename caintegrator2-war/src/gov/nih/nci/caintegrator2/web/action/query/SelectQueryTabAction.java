@@ -85,83 +85,51 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+/**
+ * 
+ */
+public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
+    private static final long serialVersionUID = 1L;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class ManageQueryHelperTest {
-
+    private String selectedAction;
     private ManageQueryHelper manageQueryHelper;
-    private final List<QueryAnnotationCriteria> rowList = new ArrayList<QueryAnnotationCriteria>();
-    private final Collection<AnnotationDefinition> annotationDefinitionSet = new HashSet<AnnotationDefinition>();
-    private final Long[] selectedValues = {Long.valueOf(12), Long.valueOf(4)};
-    private final List<ResultColumn> columnList = new ArrayList<ResultColumn>();
-    private StudySubscription studySubscription;
-    
-    @Before
-    public void setUp() {
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
         manageQueryHelper = ManageQueryHelper.getInstance();
-        manageQueryHelper.setAdvancedView(Boolean.TRUE);
-        manageQueryHelper.setQueryCriteriaRowList(rowList);
-        manageQueryHelper.setSaveClinicalAnnotations(selectedValues);
-        manageQueryHelper.setClinicalResultColumnCollection();
-        manageQueryHelper.setSaveImageAnnotations(selectedValues);
-        manageQueryHelper.setImageResultColumnCollection();
-        manageQueryHelper.setColumnList(columnList);
-        
-        studySubscription = new StudySubscription();
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
-        annotationDefinitionSet.add(annotationDefinition);
-        Study study = new Study();
-        studySubscription.setStudy(study);
-        studySubscription.setId(Long.valueOf(1));
-        study.setImageSeriesAnnotationCollection(annotationDefinitionSet);
-        study.setSubjectAnnotationCollection(annotationDefinitionSet);
-        study.setSampleAnnotationCollection(annotationDefinitionSet);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        return selectedAction;
     }
-   
-    @Test
-    public void testIt() {        
-        assertTrue(manageQueryHelper.isAdvancedView());
-        manageQueryHelper.getQueryCriteriaRowList().add(new QueryAnnotationCriteria());
-        manageQueryHelper.prepopulateAnnotationSelectLists(studySubscription.getStudy());
-        assertEquals(1, manageQueryHelper.getQueryCriteriaRowList().size());
-        assertNotNull(manageQueryHelper.getClinicalAnnotationDefinitions());
-        assertNotNull(manageQueryHelper.getSampleAnnotationDefinitions());
-        assertNotNull(manageQueryHelper.getImageAnnotationDefinitions());
-        assertNotNull(manageQueryHelper.getClinicalAnnotationSelections());
-        assertNotNull(manageQueryHelper.getSaveClinicalAnnotations());
-        assertNotNull(manageQueryHelper.getSaveImageAnnotations());
-        assertNotNull(manageQueryHelper.getColumnList());
-        
-        assertTrue(manageQueryHelper.configureClinicalQueryCriterionRow());
-        assertTrue(manageQueryHelper.configureImageSeriesQueryCriterionRow());
-        assertTrue(manageQueryHelper.configureGeneExpressionCriterionRow());
-        
-        manageQueryHelper = ManageQueryHelper.resetSessionInstance();
-        assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());
-    }  
+
+    /**
+     * @return the selectedAction
+     */
+    public String getSelectedAction() {
+        return selectedAction;
+    }
+
+    /**
+     * @param selectedAction the selectedAction to set
+     */
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    /**
+     * @return the manageQueryHelper
+     */
+    public ManageQueryHelper getManageQueryHelper() {
+        return manageQueryHelper;
+    }
     
+    /**
+     * @param manageQueryHelper the manageQueryHelper to set
+     */
+    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
+        this.manageQueryHelper = manageQueryHelper;
+    }
 }

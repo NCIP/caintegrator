@@ -110,7 +110,7 @@ public final class DisplayableQueryResult {
     private boolean hasSubjects;
     private boolean hasSamples;
     private boolean hasImageSeries;
-    private Integer pageSize;
+    private int pageSize = DEFAULT_PAGE_SIZE;
     
     DisplayableQueryResult(QueryResult result) {
         this.result = result;
@@ -216,9 +216,6 @@ public final class DisplayableQueryResult {
      * @return the pageSize
      */
     public int getPageSize() {
-        if (pageSize == null) {
-            return DEFAULT_PAGE_SIZE;
-        }
         return pageSize;
     }
 
