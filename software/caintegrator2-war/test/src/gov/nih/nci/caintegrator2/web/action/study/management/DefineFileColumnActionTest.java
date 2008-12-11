@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public class DefineFileColumnActionTest {
     
     @Test
     public void testSelectDataElement() {
-        action.getDataElements().add(null);
+        action.getDataElements().add(new CommonDataElement());
         assertEquals(Action.SUCCESS, action.selectDataElement());
         assertTrue(studyManagementServiceStub.setDataElementCalled);
     }
