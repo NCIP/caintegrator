@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
@@ -204,7 +205,12 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         // Are we supposed to save before searching or not?
         getStudyManagementService().save(getStudyConfiguration());
         definitions = getStudyManagementService().getMatchingDefinitions(keywordsList);
-        dataElements = getStudyManagementService().getMatchingDataElements(keywordsList);
+        try {
+            dataElements = getStudyManagementService().getMatchingDataElements(keywordsList);
+        } catch (SearchException e) {
+            addActionError("caDSR provider currently unavailable!");
+            prepare();
+        }
         return SUCCESS;
     }
     

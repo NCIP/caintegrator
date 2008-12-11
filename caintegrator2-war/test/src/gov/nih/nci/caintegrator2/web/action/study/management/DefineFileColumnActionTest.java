@@ -155,7 +155,11 @@ public class DefineFileColumnActionTest {
         assertEquals(Action.SUCCESS, action.searchDefinitions());
         assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
         assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);
+        assertTrue(action.getActionErrors().isEmpty());
         
+        studyManagementServiceStub.throwSearchError = true;
+        assertEquals(Action.SUCCESS, action.searchDefinitions());
+        assertFalse(action.getActionErrors().isEmpty());
     }
     
     @Test
