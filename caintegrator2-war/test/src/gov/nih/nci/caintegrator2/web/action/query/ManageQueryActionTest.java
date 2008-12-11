@@ -141,18 +141,18 @@ public class ManageQueryActionTest {
         setupSession();
         
         // the first time the parameter is null so
-        // confirm that the getter method returns an empty array
-        String[] emptyArray = {""};  // test the first time when the array is null
+        // confirm that the getter method returns a null or an empty array
         Long[] emptyLongArray = new Long[0];
-        assertArrayEquals(emptyArray,manageQueryAction.getSelectedAnnotations());
+
+        assertArrayEquals(null,manageQueryAction.getSelectedAnnotations());
         manageQueryAction.setSelectedAnnotations(selectedAnnotationsArray);
         assertArrayEquals(selectedAnnotationsArray,manageQueryAction.getSelectedAnnotations());
         
-        assertArrayEquals(emptyArray,manageQueryAction.getSelectedOperators());
+        assertArrayEquals(null,manageQueryAction.getSelectedOperators());
         manageQueryAction.setSelectedOperators(operatorsArray);
         assertArrayEquals(operatorsArray,manageQueryAction.getSelectedOperators());
         
-        assertArrayEquals(emptyArray,manageQueryAction.getSelectedValues());
+        assertArrayEquals(null,manageQueryAction.getSelectedValues());
         manageQueryAction.setSelectedValues(selectedValuesArray);
         assertArrayEquals(selectedValuesArray,manageQueryAction.getSelectedValues());
         
@@ -163,10 +163,6 @@ public class ManageQueryActionTest {
         assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedImageAnnotations());
         manageQueryAction.setSelectedImageAnnotations(holdLongArray);
         assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
-        
-        
-        manageQueryAction.setSelectedBasicOperator("or");
-        assertEquals("or",manageQueryAction.getSelectedBasicOperator());
         
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         
@@ -322,10 +318,6 @@ public class ManageQueryActionTest {
         assertEquals(Action.ERROR, manageQueryAction.execute());
 
         assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
-        assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRow());
-        assertEquals(Action.SUCCESS, manageQueryAction.deleteCriterionRowAll());
-        assertEquals(Action.SUCCESS, manageQueryAction.selectColumns());
-        assertEquals(Action.SUCCESS, manageQueryAction.selectSorting());
         assertNotNull(manageQueryAction.getQueryManagementService());
     }
 }
