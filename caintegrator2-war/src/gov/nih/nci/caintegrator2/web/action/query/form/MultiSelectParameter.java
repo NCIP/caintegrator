@@ -89,6 +89,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * Represents a single text operand field.
  * 
@@ -97,13 +99,14 @@ import java.util.List;
 @SuppressWarnings({ "PMD.ArrayIsStoredDirectly", "PMD.MethodReturnsInternalArray" })    // array handling necessary
 public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     
-    private final SelectOptionList<E> options;
+    private final OptionList<E> optionList;
     private String[] selectedKeys;
     private final ValuesSelectedHandler<E> valuesSelectedHandler;
 
-    MultiSelectParameter(SelectOptionList<E> options, ValuesSelectedHandler<E> valuesSelectedHandler,
-            Collection<E> initialSelections) {
-        this.options = options;
+    MultiSelectParameter(String formFieldName, OptionList<E> options, 
+            ValuesSelectedHandler<E> valuesSelectedHandler, Collection<E> initialSelections) {
+        super(formFieldName);
+        this.optionList = options;
         this.valuesSelectedHandler = valuesSelectedHandler;
         this.selectedKeys = options.getKeys(initialSelections);
     }
@@ -119,15 +122,8 @@ public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     /**
      * @return the option keys
      */
-    public List<String> getKeys() {
-        return options.getKeys();
-    }
-
-    /**
-     * @return the option keys
-     */
-    public List<String> getValues() {
-        return options.getDisplayedValues();
+    public List<Option<E>> getOptions() {
+        return optionList.getOptions();
     }
 
     /**
@@ -143,8 +139,16 @@ public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     public void setValue(String[] values) {
         if (!Arrays.equals(selectedKeys, values)) {
             this.selectedKeys = values;
-            valuesSelectedHandler.valuesSelected(options.getActualValues(values));
+            valuesSelectedHandler.valuesSelected(optionList.getActualValues(values));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void validate(ValidationAware action) {
+        // no-op; no validations necessary on multi-select
     }
 
 }

@@ -85,67 +85,99 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
- * Used to hold and manage options in Struts 2 select lists.
- *
- * @param <E> type of objects maintained in the list.
+ * Allows a user to select columns to be shown in query results.
  */
-class SelectOptionList<E> {
+public class ColumnSelectionList {
     
-    private final List<String> keys = new ArrayList<String>();
-    private final List<String> displayedValues = new ArrayList<String>();
-    private final Map<String, E> keyToActualValueMap = new HashMap<String, E>();
-    private final Map<E, String> actualValueToKeyMap = new HashMap<E, String>();
-    
-    void addOption(String displayedValue, E actualValue) {
-        addOption(displayedValue, displayedValue, actualValue);
-    }
-    
-    void addOption(String key, String displayedValue, E actualValue) {
-        keys.add(key);
-        displayedValues.add(displayedValue);
-        keyToActualValueMap.put(key, actualValue);
-        actualValueToKeyMap.put(actualValue, key);
-    }
-    
-    String getKey(E actualValue) {
-        return actualValueToKeyMap.get(actualValue);
+    private final OptionList<AnnotationDefinition> columnList;
+    private final EntityTypeEnum entityType;
+    private final ResultConfiguration resultConfiguration;
+
+    ColumnSelectionList(ResultConfiguration resultConfiguration,
+            Collection<AnnotationDefinition> annotationDefinitions, EntityTypeEnum entityType) {
+        this.resultConfiguration = resultConfiguration;
+        this.entityType = entityType;
+        columnList = createColumnList(annotationDefinitions);
     }
 
-    List<String> getKeys() {
-        return keys;
-    }
-
-    List<String> getDisplayedValues() {
-        return displayedValues;
-    }
-    
-    E getActualValue(String key) {
-        return keyToActualValueMap.get(key);
-    }
-
-    List<E> getActualValues(String[] selectedKeys) {
-        List<E> actualValues = new ArrayList<E>(selectedKeys.length);
-        for (String key : selectedKeys) {
-            actualValues.add(keyToActualValueMap.get(key));
+    private OptionList<AnnotationDefinition> createColumnList(Collection<AnnotationDefinition> annotationDefinitions) {
+        OptionList<AnnotationDefinition> options = new OptionList<AnnotationDefinition>();
+        for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+            options.addOption(annotationDefinition.getDisplayName(), annotationDefinition);
         }
-        return actualValues;
+        return options;
+    }
+
+    /**
+     * @return the columnList
+     */
+    public OptionList<AnnotationDefinition> getColumnList() {
+        return columnList;
     }
     
-    String[] getKeys(Collection<E> actualValues) {
-        List<String> selectedKeys = new ArrayList<String>();
-        for (String key : keys) {
-            if (actualValues.contains(getActualValue(key))) {
-                selectedKeys.add(key);
+    /**
+     * Returns the selected column names.
+     * 
+     * @return the column names.
+     */
+    public String[] getValues() {
+        List<String> columnNames = new ArrayList<String>();
+        for (ResultColumn column : resultConfiguration.getQuery().getColumnCollection()) {
+            if (entityType.getValue().equals(column.getEntityType())) {
+                columnNames.add(column.getAnnotationDefinition().getDisplayName());
             }
         }
-        return selectedKeys.toArray(new String[selectedKeys.size()]);
+        return columnNames.toArray(new String[columnNames.size()]);
     }
     
+    /**
+     * Sets the selected columns by column names.
+     * 
+     * @param values the array of selected column names.
+     */
+    public void setValues(String[] values) {
+        Set<AnnotationDefinition> selectedColumns = new HashSet<AnnotationDefinition>();
+        selectedColumns.addAll(getColumnList().getActualValues(values));
+        handleExistingAndRemovedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+        addNewSelectedColumns(resultConfiguration.getQuery().getColumnCollection(), selectedColumns);
+    }
+
+    private void addNewSelectedColumns(Collection<ResultColumn> columnCollection,
+            Set<AnnotationDefinition> selectedColumns) {
+        for (AnnotationDefinition annotationDefinition : selectedColumns) {
+            ResultColumn column = new ResultColumn();
+            column.setEntityType(entityType.getValue());
+            column.setAnnotationDefinition(annotationDefinition);
+            column.setColumnIndex(columnCollection.size());
+            columnCollection.add(column);
+        }
+    }
+
+    private void handleExistingAndRemovedColumns(Collection<ResultColumn> columnCollection,
+            Set<AnnotationDefinition> selectedColumns) {
+        Iterator<ResultColumn> columnIterator = columnCollection.iterator();
+        while (columnIterator.hasNext()) {
+            ResultColumn nextColumn = columnIterator.next();
+            if (entityType.getValue().equals(nextColumn.getEntityType())) {
+                if (selectedColumns.contains(nextColumn.getAnnotationDefinition())) {
+                    selectedColumns.remove(nextColumn.getAnnotationDefinition());
+                } else {
+                    columnIterator.remove();
+                }
+            }
+        }
+    }
+
 }

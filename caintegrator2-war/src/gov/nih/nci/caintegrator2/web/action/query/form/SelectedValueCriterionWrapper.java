@@ -85,11 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
+import static gov.nih.nci.caintegrator2.common.PermissibleValueUtil.getDisplayString;
+
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -135,8 +139,10 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
                 }
             
         };
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
         MultiSelectParameter<AbstractPermissibleValue> parameter = 
-            new MultiSelectParameter<AbstractPermissibleValue>(getOptions(), handler, criterion.getValueCollection());
+            new MultiSelectParameter<AbstractPermissibleValue>(fieldName, 
+                    getOptions(), handler, criterion.getValueCollection());
         parameter.setOperatorHandler(this);
         return parameter;
     }
@@ -156,16 +162,25 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
         } else {
             value = criterion.getValueCollection().iterator().next();
         }
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
         SelectListParameter<AbstractPermissibleValue> parameter = 
-            new SelectListParameter<AbstractPermissibleValue>(getOptions(), handler, value);
+            new SelectListParameter<AbstractPermissibleValue>(fieldName, getOptions(), handler, value);
         parameter.setOperatorHandler(this);
         return parameter;
     }
     
-    private SelectOptionList<AbstractPermissibleValue> getOptions() {
-        SelectOptionList<AbstractPermissibleValue> options = new SelectOptionList<AbstractPermissibleValue>();
-        for (AbstractPermissibleValue value : criterion.getAnnotationDefinition().getPermissibleValueCollection()) {
-            options.addOption(PermissibleValueUtil.getDisplayString(value), value);
+    private OptionList<AbstractPermissibleValue> getOptions() {
+        List<AbstractPermissibleValue> orderedValues = new ArrayList<AbstractPermissibleValue>();
+        orderedValues.addAll(criterion.getAnnotationDefinition().getPermissibleValueCollection());
+        Comparator<AbstractPermissibleValue> valueComparator = new Comparator<AbstractPermissibleValue>() {
+            public int compare(AbstractPermissibleValue value1, AbstractPermissibleValue value2) {
+                return getDisplayString(value1).compareTo(getDisplayString(value2));
+            }
+        };
+        Collections.sort(orderedValues, valueComparator);
+        OptionList<AbstractPermissibleValue> options = new OptionList<AbstractPermissibleValue>();
+        for (AbstractPermissibleValue value : orderedValues) {
+            options.addOption(getDisplayString(value), value);
         }
         return options;
     }

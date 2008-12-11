@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import java.util.Collections;
 import java.util.List;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * Contains information for a single <code>AbstractCriterion</code>.
  */
@@ -117,6 +119,14 @@ public abstract class AbstractCriterionRow {
      * @param fieldName the fieldName to set
      */
     public abstract void setFieldName(String fieldName);
+    
+    /**
+     * Removes this row from the query.
+     */
+    public void remove() {
+        removeCriterionFromQuery();
+        getGroup().getRows().remove(this);
+    }
 
     abstract AbstractCriterionWrapper getCriterionWrapper();
 
@@ -151,6 +161,18 @@ public abstract class AbstractCriterionRow {
         } else {
             return getCriterionWrapper().getParameters();
         }
+    }
+
+    abstract void setCriterion(AbstractCriterion criterion);
+
+    void validate(ValidationAware action) {
+        for (AbstractCriterionParameter parameter : getParameters()) {
+            parameter.validate(action);
+        }
+    }
+
+    String getOgnlPath() {
+        return "queryForm.criteriaGroup.rows[" + getGroup().getRows().indexOf(this) + "]";
     }
 
 }

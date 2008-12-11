@@ -94,9 +94,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * Wraps access to a <code>NumericComparisonCriterion</code>.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // anonymous inner class
 final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterionWrapper {
 
     private static final Map<CriterionOperatorEnum, NumericComparisonOperatorEnum> OPERATOR_TO_NUMERIC_COMPARISON_MAP = 
@@ -135,18 +138,36 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
         getParameters().add(createValueParameter());
     }
 
+    @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // anonymous inner class
     private TextFieldParameter createValueParameter() {
-        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getNumericValue().toString());
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
+        TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getNumericValue().toString());
         valueParameter.setOperatorHandler(this);
-        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
-            /**
-             * {@inheritDoc}
-             */
+        ValueHandler valueHandler = new ValueHandlerAdapter() {
+
+            @Override
+            public boolean isValid(String value) {
+                try {
+                    Double.parseDouble(value);
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+
+            @Override
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addFieldError(formFieldName, "Numeric value required");
+                }
+            }
+            
+            @Override
             public void valueChanged(String value) {
                 criterion.setNumericValue(Double.valueOf(value));
             }
         };
-        valueParameter.setValueChangeHandler(valueChangeHandler);
+        valueParameter.setValueHandler(valueHandler);
         return valueParameter;
     }
 

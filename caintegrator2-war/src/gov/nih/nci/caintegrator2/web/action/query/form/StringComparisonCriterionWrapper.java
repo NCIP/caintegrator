@@ -125,9 +125,10 @@ final class StringComparisonCriterionWrapper extends AbstractAnnotationCriterion
     }
 
     private TextFieldParameter createValueParameter() {
-        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getStringValue());
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
+        TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getStringValue());
         valueParameter.setOperatorHandler(this);
-        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
+        ValueHandler valueHandler = new ValueHandlerAdapter() {
             /**
              * {@inheritDoc}
              */
@@ -135,7 +136,7 @@ final class StringComparisonCriterionWrapper extends AbstractAnnotationCriterion
                 criterion.setStringValue(value);
             }
         };
-        valueParameter.setValueChangeHandler(valueChangeHandler);
+        valueParameter.setValueHandler(valueHandler);
         return valueParameter;
     }
 

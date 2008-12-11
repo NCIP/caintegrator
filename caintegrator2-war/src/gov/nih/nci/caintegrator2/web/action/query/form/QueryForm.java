@@ -87,6 +87,11 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import java.util.HashSet;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ValidationAware;
+
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -100,10 +105,12 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
  */
 public class QueryForm {
     
+    private static final String NAME_FIELDNAME = "queryForm.query.name";
     private Query query;
     private AnnotationDefinitionList clinicalAnnotations;
     private AnnotationDefinitionList imageSeriesAnnotations;
     private CriteriaGroup criteriaGroup;
+    private ResultConfiguration resultConfiguration;
     
     /**
      * Configures a new query.
@@ -117,7 +124,9 @@ public class QueryForm {
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(subscription);
+        query.setResultType(ResultTypeEnum.CLINICAL.getValue());
         setQuery(query);
+        setResultConfiguration(new ResultConfiguration(this));
     }
 
     private void initialize() {
@@ -125,6 +134,7 @@ public class QueryForm {
         clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection());
         imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection());
         criteriaGroup = new CriteriaGroup(this);
+        resultConfiguration = new ResultConfiguration(this);
     }
 
     /**
@@ -159,6 +169,52 @@ public class QueryForm {
      */
     public CriteriaGroup getCriteriaGroup() {
         return criteriaGroup;
+    }
+    
+    /**
+     * Validates the form prior to saving the query.
+     * 
+     * @param action receives validation errors.
+     */
+    public void validate(ValidationAware action) {
+        getCriteriaGroup().validate(action);
+    }
+    
+    /**
+     * Validates the form prior to saving the query.
+     * 
+     * @param action receives validation errors.
+     */
+    public void validateForSave(ValidationAware action) {
+        validate(action);
+        validateQueryName(action);
+    }
+
+    private void validateQueryName(ValidationAware action) {
+        if (StringUtils.isBlank(getQuery().getName())) {
+            action.addFieldError(NAME_FIELDNAME, "Query Name is required.");
+        } else {
+            validateUniqueQueryName(action);
+        }
+    }
+
+    private void validateUniqueQueryName(ValidationAware action) {
+        for (Query nextQuery : getQuery().getSubscription().getQueryCollection()) {
+            if (getQuery().getName().equalsIgnoreCase(nextQuery.getName())) {
+                action.addFieldError(NAME_FIELDNAME, "There is already a Query named " + getQuery().getName() + ".");
+            }
+        }
+    }
+
+    /**
+     * @return the resultConfiguration
+     */
+    public ResultConfiguration getResultConfiguration() {
+        return resultConfiguration;
+    }
+
+    private void setResultConfiguration(ResultConfiguration resultConfiguration) {
+        this.resultConfiguration = resultConfiguration;
     }
 
 }

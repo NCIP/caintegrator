@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 
 import java.util.Arrays;
 import java.util.List;
@@ -139,6 +141,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
             return null;
         }
     }
+
     /**
      * {@inheritDoc}
      */
@@ -166,15 +169,35 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     }
 
     private void setGenomicCriterionWrapper(AbstractGenomicCriterionWrapper genomicCriterionWrapper) {
+        if (this.genomicCriterionWrapper != null) {
+            removeCriterionFromQuery();
+        }
         this.genomicCriterionWrapper = genomicCriterionWrapper;
+        if (genomicCriterionWrapper != null) {
+            addCriterionToQuery();
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     AbstractCriterionWrapper getCriterionWrapper() {
         return getGenomicCriterionWrapper();
+    }
+
+    @Override
+    void setCriterion(AbstractCriterion criterion) {
+        this.genomicCriterionWrapper = createCriterionWrapper(criterion);
+    }
+    
+    private AbstractGenomicCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
+        if (criterion instanceof FoldChangeCriterion) {
+            FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterion;
+            return new FoldChangeCriterionWrapper(foldChangeCriterion, this);
+        } else if (criterion instanceof GeneNameCriterion) {
+            GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
+            return new GeneNameCriterionWrapper(geneNameCriterion, this);
+        } else {
+            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
+        }
     }
 
 }

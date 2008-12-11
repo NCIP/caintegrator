@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -235,6 +236,26 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     @Override
     public List<String> getAvailableFieldNames() {
         return getAnnotationDefinitionList().getNames();
+    }
+
+    @Override
+    void setCriterion(AbstractCriterion criterion) {
+        this.annotationCriterionWrapper = createCriterionWrapper(criterion);
+    };
+    
+    private AbstractAnnotationCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
+        if (criterion instanceof StringComparisonCriterion) {
+            StringComparisonCriterion stringComparisonCriterion = (StringComparisonCriterion) criterion;
+            return new StringComparisonCriterionWrapper(stringComparisonCriterion, this);
+        } else if (criterion instanceof NumericComparisonCriterion) {
+            NumericComparisonCriterion numericComparisonCriterion = (NumericComparisonCriterion) criterion;
+            return new NumericComparisonCriterionWrapper(numericComparisonCriterion, this);
+        } else if (criterion instanceof SelectedValueCriterion) {
+            SelectedValueCriterion selectedValueCriterion = (SelectedValueCriterion) criterion;
+            return new SelectedValueCriterionWrapper(selectedValueCriterion, this);
+        } else {
+            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
+        }
     }
 
 }

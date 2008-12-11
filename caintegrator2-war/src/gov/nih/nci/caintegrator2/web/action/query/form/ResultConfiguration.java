@@ -85,154 +85,138 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.ValidationAware;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
- * Contains a set of rows that are either logically ANDed or ORed together. There is a
- * single top-level group per query.
+ * Contains query form configuration for the result rows to be displayed.
  */
-public class CriteriaGroup {
-    
-    private final CompoundCriterion compoundCriterion;
+public class ResultConfiguration {
+
     private final QueryForm form;
-    private CriterionRowTypeEnum criterionType;
-    private final List<AbstractCriterionRow> rows = new ArrayList<AbstractCriterionRow>();
+    private final ColumnSelectionList subjectColumns;
+    private final ColumnSelectionList imageSeriesColumns;
 
-    CriteriaGroup(QueryForm form) {
-        if (form.getQuery() == null || form.getQuery().getCompoundCriterion() == null) {
-            throw new IllegalArgumentException("Argument queryForm requires an initialized query.");
-        }
+    ResultConfiguration(QueryForm form) {
         this.form = form;
-        this.compoundCriterion = form.getQuery().getCompoundCriterion();
-        initializeCriteria(compoundCriterion.getCriterionCollection());
+        subjectColumns = 
+            new ColumnSelectionList(this, getStudy().getSubjectAnnotationCollection(), EntityTypeEnum.SUBJECT);
+        imageSeriesColumns = 
+            new ColumnSelectionList(this, getStudy().getImageSeriesAnnotationCollection(), EntityTypeEnum.IMAGESERIES);
     }
 
-    private void initializeCriteria(Collection<AbstractCriterion> criterionCollection) {
-        Iterator<AbstractCriterion> iterator = criterionCollection.iterator();
-        while (iterator.hasNext()) {            
-            rows.add(createCriterionRow(iterator.next()));
-        }
+    Study getStudy() {
+        return getQuery().getSubscription().getStudy();
     }
 
-    private AbstractCriterionRow createCriterionRow(AbstractCriterion criterion) {
-        AbstractCriterionRow row = createRow(getCriterionRowType(criterion));
-        row.setCriterion(criterion);
-        return row;
+    /**
+     * @return the resultType
+     */
+    public String getResultType() {
+        return getQuery().getResultType();
     }
 
-    private CriterionRowTypeEnum getCriterionRowType(AbstractCriterion criterion) {
-        if (criterion instanceof AbstractGenomicCriterion) {
-            return CriterionRowTypeEnum.GENE_EXPRESSION;
-        } else if (criterion instanceof AbstractAnnotationCriterion) {
-            AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
-            switch (EntityTypeEnum.getByValue(annotationCriterion.getEntityType())) {
-            case IMAGESERIES:
-                return CriterionRowTypeEnum.IMAGE_SERIES;
-            case SUBJECT:
-                return CriterionRowTypeEnum.CLINICAL;
-            default:
-                throw new IllegalArgumentException("Unsupported entity type: " + annotationCriterion.getEntityType());
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported criterion: " + criterion.getClass());
+    /**
+     * @param resultType the resultType to set
+     */
+    public void setResultType(String resultType) {
+        getQuery().setResultType(resultType);
+        if (ResultTypeEnum.GENOMIC.getValue().equals(resultType)) {
+            getQuery().getColumnCollection().clear();
         }
     }
 
     /**
-     * @return the booleanOperatorName
+     * @return the reporterType
      */
-    public String getBooleanOperatorName() {
-        return compoundCriterion.getBooleanOperator();
+    public String getReporterType() {
+        return getQuery().getReporterType();
     }
 
     /**
-     * @param booleanOperatorName the booleanOperatorName to set
+     * @param reporterType the reporterType to set
      */
-    public void setBooleanOperatorName(String booleanOperatorName) {
-        compoundCriterion.setBooleanOperator(booleanOperatorName);
+    public void setReporterType(String reporterType) {
+        getQuery().setReporterType(reporterType);
     }
 
     /**
-     * Adds a new criterion of the currently selected type.
+     * @return the form
      */
-    public void addCriterion() {
-        rows.add(createRow(criterionType));
-    }
-
-    private AbstractCriterionRow createRow(CriterionRowTypeEnum rowType) {
-        AbstractCriterionRow criterionRow;
-        if (rowType == null) {
-            throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
-        }
-        switch (rowType) {
-        case CLINICAL:
-            criterionRow = new ClinicalCriterionRow(this);
-            break;
-        case IMAGE_SERIES:
-            criterionRow = new ImageSeriesCriterionRow(this);
-            break;
-        case GENE_EXPRESSION:
-            criterionRow = new GeneExpressionCriterionRow(this);
-            break;
-        default:
-            throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
-        }
-        return criterionRow;
-    }
-
-    /**
-     * @return the criterionTypeName
-     */
-    public String getCriterionTypeName() {
-        if (criterionType == null) {
-            return "";
-        } else {
-            return criterionType.getValue();
-        }
-    }
-
-    /**
-     * @param criterionTypeName the criterionTypeName to set
-     */
-    public void setCriterionTypeName(String criterionTypeName) {
-        if (StringUtils.isBlank(criterionTypeName)) {
-            criterionType = null;
-        } else {
-            criterionType = CriterionRowTypeEnum.getByValue(criterionTypeName);
-        }
-    }
-
-    QueryForm getForm() {
+    private QueryForm getForm() {
         return form;
     }
 
     /**
-     * @return the rows
+     * @return the query
      */
-    public List<AbstractCriterionRow> getRows() {
-        return rows;
+    Query getQuery() {
+        return getForm().getQuery();
     }
 
-    CompoundCriterion getCompoundCriterion() {
-        return compoundCriterion;
+    /**
+     * @return the subjectColumns
+     */
+    public ColumnSelectionList getSubjectColumns() {
+        return subjectColumns;
     }
 
-    void validate(ValidationAware action) {
-        for (AbstractCriterionRow row : rows) {
-            row.validate(action);
+    /**
+     * @return the imageSeriesColumns
+     */
+    public ColumnSelectionList getImageSeriesColumns() {
+        return imageSeriesColumns;
+    }
+    
+    /**
+     * @return the list of columns in order by columnIndex
+     */
+    public List<ResultColumn> getSelectedColumns() {
+        List<ResultColumn> selectedColumns = new ArrayList<ResultColumn>();
+        selectedColumns.addAll(getQuery().getColumnCollection());
+        final Comparator<ResultColumn> columnIndexComparator = new Comparator<ResultColumn>() {
+            /**
+             * {@inheritDoc}
+             */
+            public int compare(ResultColumn column1, ResultColumn column2) {
+                return column1.getColumnIndex() - column2.getColumnIndex();
+            }
+        };
+        Collections.sort(selectedColumns, columnIndexComparator);
+        return selectedColumns;
+    }
+    
+    /**
+     * @param columnName get index of this column
+     * @return the index
+     */
+    public int getColumnIndex(String columnName) {
+        return getColumn(columnName).getColumnIndex();
+    }
+    
+    /**
+     * @param columnName get index of this column
+     * @param index the index
+     */
+    public void setColumnIndex(String columnName, int index) {
+        getColumn(columnName).setColumnIndex(index);
+    }
+
+    private ResultColumn getColumn(String columnName) {
+        for (ResultColumn column : getQuery().getColumnCollection()) {
+            if (column.getAnnotationDefinition().getDisplayName().equals(columnName)) {
+                return column;
+            }
         }
+        return null;
     }
+
 }

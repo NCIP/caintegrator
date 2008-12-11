@@ -98,15 +98,20 @@ class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private final GeneNameCriterion criterion;
 
     GeneNameCriterionWrapper(GeneExpressionCriterionRow row) {
+        this(new GeneNameCriterion(), row);
+    }
+
+    GeneNameCriterionWrapper(GeneNameCriterion criterion, GeneExpressionCriterionRow row) {
         super(row);
-        this.criterion = new GeneNameCriterion();
+        this.criterion = criterion;
         getParameters().add(createGeneNameParameter());
     }
 
     private TextFieldParameter createGeneNameParameter() {
-        TextFieldParameter valueParameter = new TextFieldParameter(criterion.getGeneSymbol());
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
+        TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
         valueParameter.setLabel("equals");
-        ValueChangeHandler valueChangeHandler = new ValueChangeHandler() {
+        ValueHandler valueHandler = new ValueHandlerAdapter() {
             /**
              * {@inheritDoc}
              */
@@ -114,7 +119,7 @@ class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 criterion.setGeneSymbol(value);
             }
         };
-        valueParameter.setValueChangeHandler(valueChangeHandler);
+        valueParameter.setValueHandler(valueHandler);
         return valueParameter;
     }
 
