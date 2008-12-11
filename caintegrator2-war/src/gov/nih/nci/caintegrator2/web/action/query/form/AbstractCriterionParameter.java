@@ -90,6 +90,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * A single operand for a single criterion.
  */
@@ -113,9 +115,11 @@ public abstract class AbstractCriterionParameter {
     private String label = "";
     private List<String> availableOperators = new ArrayList<String>();
     private OperatorHandler operatorHandler;
+    private final String formFieldName;
 
-    AbstractCriterionParameter() {
+    AbstractCriterionParameter(String formFieldName) {
         super();
+        this.formFieldName = formFieldName;
     }
 
     void setOperatorHandler(OperatorHandler operatorHandler) {
@@ -174,6 +178,15 @@ public abstract class AbstractCriterionParameter {
      */
     public List<String> getAvailableOperators() {
         return availableOperators;
+    }
+
+    abstract void validate(ValidationAware action);
+
+    /**
+     * @return the formFieldName
+     */
+    public String getFormFieldName() {
+        return formFieldName;
     }
 
 }

@@ -86,10 +86,38 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 /**
- * Handles changes to a singly-valued field.
+ * A single option in a <code>OptionList</code>.
+ * 
+ * @param <E> the type of object held in the option.
  */
-interface ValueChangeHandler {
+public class Option<E> {
     
-    void valueChanged(String value);
+    private final String key;
+    private final String displayValue;
+    private final E actualValue;
+
+    Option(String key, String displayValue, E actualValue) {
+        this.key = key;
+        this.displayValue = displayValue;
+        this.actualValue = actualValue;
+    }
+
+    /**
+     * @return the key
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * @return the displayValue
+     */
+    public String getDisplayValue() {
+        return displayValue;
+    }
+
+    E getActualValue() {
+        return actualValue;
+    }
 
 }

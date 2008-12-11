@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 
 /**
  * Represents a single text operand field.
@@ -94,10 +96,10 @@ import org.apache.commons.lang.StringUtils;
 public class TextFieldParameter extends AbstractCriterionParameter {
     
     private String value;
-    private ValueChangeHandler valueChangeHandler;
+    private ValueHandler valueHandler;
 
-    TextFieldParameter(String initialValue) {
-        super();
+    TextFieldParameter(String formFieldName, String initialValue) {
+        super(formFieldName);
         this.value = initialValue;
     }
 
@@ -122,16 +124,23 @@ public class TextFieldParameter extends AbstractCriterionParameter {
     public void setValue(String value) {
         if (!StringUtils.equals(getValue(), value)) {
             this.value = value;
-            valueChangeHandler.valueChanged(value);
+            if (getValueHandler().isValid(value)) {
+                getValueHandler().valueChanged(value);
+            }
         }
     }
 
-    ValueChangeHandler getValueChangeHandler() {
-        return valueChangeHandler;
+    private ValueHandler getValueHandler() {
+        return valueHandler;
     }
 
-    void setValueChangeHandler(ValueChangeHandler valueChangeHandler) {
-        this.valueChangeHandler = valueChangeHandler;
+    void setValueHandler(ValueHandler valueHandler) {
+        this.valueHandler = valueHandler;
+    }
+
+    @Override
+    void validate(ValidationAware action) {
+        getValueHandler().validate(getFormFieldName(), value, action);
     }
 
 }
