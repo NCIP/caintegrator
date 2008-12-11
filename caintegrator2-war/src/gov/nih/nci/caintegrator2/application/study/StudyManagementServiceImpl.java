@@ -432,11 +432,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 PermissibleValueUtil.retrieveValuesNotPermissible(study, entityType, annotationDefinition, dao);
             if (!invalidValues.isEmpty()) {
                 StringBuffer message = new StringBuffer();
-                message.append("Values currently exist that aren't in the Data Element's permissible value list: ");
+                message.append("The following values exist that are NOT permissible for '" 
+                                + annotationDefinition.getDisplayName() + "': <br> {");
                 for (String invalidValue : invalidValues) {
-                    message.append("'" + invalidValue + "' ");
+                    message.append(" '" + invalidValue + "' ");
                 }
-                message.append(".  Select a different Data Element.");
+                message.append("} <br> Please select a different Data Element.");
                 validationResult.setValid(false);
                 validationResult.setInvalidMessage(message.toString());
             }

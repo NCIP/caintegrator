@@ -153,11 +153,18 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     @Override
     public void prepare() {
         super.prepare();
-        clearErrorsAndMessages();
         if (fileColumn.getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
         }
         setReadOnly(true);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        clearErrorsAndMessages();
     }
 
     /**
@@ -236,17 +243,22 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and Try/Catch
     public String selectDataElement() {
+        FileColumn originalFileColumn = getFileColumn();
         try {
             getStudyManagementService().setDataElement(getFileColumn(), 
-                                                       getDataElements().get(getDataElementIndex()),
+                                                       retrieveSelectedDataElement(),
                                                        getStudyConfiguration().getStudy(),
                                                        EntityTypeEnum.SUBJECT);
         } catch (ConnectionException e) {
             addActionError(e.getMessage());
-            return INPUT;
+            setFileColumn(originalFileColumn);
+            prepare();
+            return ERROR;
         } catch (ValidationException e) {
-            addActionError(e.getMessage());
-            return INPUT;
+            addActionError(e.getResult().getInvalidMessage());
+            setFileColumn(originalFileColumn);
+            prepare();
+            return ERROR;
         }
         if (getFileColumn() != null 
             && getFileColumn().getFieldDescriptor() != null 
@@ -255,6 +267,13 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
             getFileColumn().getFieldDescriptor().getDefinition().setKeywords(getKeywordsForSearch());
         }
         return SUCCESS;
+    }
+
+    private CommonDataElement retrieveSelectedDataElement() {
+        CommonDataElement selectedDataElement = getDataElements().get(getDataElementIndex());
+        selectedDataElement.setId(null);
+        selectedDataElement.setValueDomain(null);
+        return selectedDataElement;
     }
     
     /**

@@ -6,9 +6,8 @@
     <!--Page Help-->
     
     <div class="pagehelp"><a href="#" class="help"></a></div>
-    
     <!--/Page Help-->           
-    
+    <s:actionerror />
     <h1>Assign Annotation Definition for Column: <s:property value="fileColumn.name" /></h1>
 
 	<s:form action="saveColumnType">
@@ -38,7 +37,7 @@
 	        </s:if>
             <s:if test="%{permissibleOn}">
                 <tr><td><br/></td></tr>
-                <tr><td><s:actionerror/></td></tr>
+                
                 <s:optiontransferselect
                     name="permissibleUpdateList"
                     list="permissibleValues"
