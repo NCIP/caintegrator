@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
@@ -123,6 +124,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean retrieveStudyLogoCalled;
     public boolean createNewSurvivalValueDefinitionCalled;
     public boolean removeSurvivalValueDefinitionCalled;
+    public boolean throwSearchError;
     
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -160,6 +162,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         retrieveStudyLogoCalled = false;
         createNewSurvivalValueDefinitionCalled = false;
         removeSurvivalValueDefinitionCalled = false;
+        throwSearchError = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -195,6 +198,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
         getMatchingDataElementsCalled = true;
+        if (throwSearchError) {
+            throw new SearchException("Bad Search");
+        }
         return Collections.emptyList();
     }
 
