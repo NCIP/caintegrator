@@ -88,9 +88,12 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * Wraps access to a single <code>FoldChangeCriterion</code>.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
 class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     
     private static final String FOLDS_LABEL = "Folds";
@@ -100,8 +103,13 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private final FoldChangeCriterion criterion;
 
     FoldChangeCriterionWrapper(GeneExpressionCriterionRow row) {
+        this(new FoldChangeCriterion(), row);
+    }
+
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")  // bogus error; mistakenly thinks isValid is called
+    FoldChangeCriterionWrapper(FoldChangeCriterion criterion, GeneExpressionCriterionRow row) {
         super(row);
-        this.criterion = new FoldChangeCriterion();
+        this.criterion = criterion;
         if (criterion.getFolds() == null) {
             criterion.setFolds((float) 2.0);
         }
@@ -110,7 +118,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     }
 
     private SelectListParameter<String> createRegulationTypeParameter() {
-        SelectOptionList<String> options = new SelectOptionList<String>();
+        OptionList<String> options = new OptionList<String>();
         options.addOption("Up", "Up");
         options.addOption("Down", "Down");
         ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
@@ -121,24 +129,40 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 criterion.setRegulationType(value);
             }
         };
+        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
         SelectListParameter<String> regulationTypeParameter = 
-            new SelectListParameter<String>(options, handler, criterion.getRegulationType());
+            new SelectListParameter<String>(fieldName, options, handler, criterion.getRegulationType());
         regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
         return regulationTypeParameter;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
     private TextFieldParameter createFoldsParameter() {
-        TextFieldParameter foldsParameter = new TextFieldParameter(criterion.getFolds().toString());
+        String fieldName = getRow().getOgnlPath() + ".parameter[1]";
+        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFolds().toString());
         foldsParameter.setLabel(FOLDS_LABEL);
-        ValueChangeHandler foldsChangeHandler = new ValueChangeHandler() {
-            /**
-             * {@inheritDoc}
-             */
+        ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
+
+            public boolean isValid(String value) {
+                try {
+                    Float.parseFloat(value);
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addFieldError(formFieldName, "Numeric value required");
+                }
+            }
+
             public void valueChanged(String value) {
                 criterion.setFolds(Float.valueOf(value));
             }
         };
-        foldsParameter.setValueChangeHandler(foldsChangeHandler);
+        foldsParameter.setValueHandler(foldsChangeHandler);
         return foldsParameter;
     }
     
@@ -157,7 +181,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     String getFieldName() {
         return FOLD_CHANGE;
     }
-    
+
     /**
      * {@inheritDoc}
      */

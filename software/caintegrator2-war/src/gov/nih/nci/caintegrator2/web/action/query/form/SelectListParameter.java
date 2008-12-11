@@ -89,6 +89,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.ValidationAware;
+
 /**
  * Represents a single text operand field.
  * 
@@ -96,13 +98,14 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SelectListParameter<E> extends AbstractCriterionParameter {
     
-    private final SelectOptionList<E> options;
+    private final OptionList<E> optionList;
     private String selectedKey;
     private final ValueSelectedHandler<E> valueSelectedHandler;
 
-    SelectListParameter(SelectOptionList<E> options, ValueSelectedHandler<E> valueSelectedHandler, E initialValue) {
-        super();
-        this.options = options;
+    SelectListParameter(String formFieldName, OptionList<E> options, 
+            ValueSelectedHandler<E> valueSelectedHandler, E initialValue) {
+        super(formFieldName);
+        this.optionList = options;
         this.valueSelectedHandler = valueSelectedHandler;
         this.selectedKey = options.getKey(initialValue);
     }
@@ -118,15 +121,8 @@ public class SelectListParameter<E> extends AbstractCriterionParameter {
     /**
      * @return the option keys
      */
-    public List<String> getKeys() {
-        return options.getKeys();
-    }
-
-    /**
-     * @return the option keys
-     */
-    public List<String> getValues() {
-        return options.getDisplayedValues();
+    public List<Option<E>> getOptions() {
+        return optionList.getOptions();
     }
 
     /**
@@ -142,8 +138,16 @@ public class SelectListParameter<E> extends AbstractCriterionParameter {
     public void setValue(String value) {
         if (!StringUtils.equals(getValue(), value)) {
             this.selectedKey = value;
-            valueSelectedHandler.valueSelected(options.getActualValue(value));
+            valueSelectedHandler.valueSelected(optionList.getActualValue(value));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void validate(ValidationAware action) {
+        // no-op; no validations necessary on select list
     }
 
 }

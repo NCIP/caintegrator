@@ -85,154 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.opensymphony.xwork2.ValidationAware;
 
 /**
- * Contains a set of rows that are either logically ANDed or ORed together. There is a
- * single top-level group per query.
+ * Handles changes and validation for a singly-valued field.
  */
-public class CriteriaGroup {
+interface ValueHandler {
     
-    private final CompoundCriterion compoundCriterion;
-    private final QueryForm form;
-    private CriterionRowTypeEnum criterionType;
-    private final List<AbstractCriterionRow> rows = new ArrayList<AbstractCriterionRow>();
+    void valueChanged(String value);
 
-    CriteriaGroup(QueryForm form) {
-        if (form.getQuery() == null || form.getQuery().getCompoundCriterion() == null) {
-            throw new IllegalArgumentException("Argument queryForm requires an initialized query.");
-        }
-        this.form = form;
-        this.compoundCriterion = form.getQuery().getCompoundCriterion();
-        initializeCriteria(compoundCriterion.getCriterionCollection());
-    }
+    boolean isValid(String value);
 
-    private void initializeCriteria(Collection<AbstractCriterion> criterionCollection) {
-        Iterator<AbstractCriterion> iterator = criterionCollection.iterator();
-        while (iterator.hasNext()) {            
-            rows.add(createCriterionRow(iterator.next()));
-        }
-    }
+    void validate(String formFieldName, String value, ValidationAware action);
 
-    private AbstractCriterionRow createCriterionRow(AbstractCriterion criterion) {
-        AbstractCriterionRow row = createRow(getCriterionRowType(criterion));
-        row.setCriterion(criterion);
-        return row;
-    }
-
-    private CriterionRowTypeEnum getCriterionRowType(AbstractCriterion criterion) {
-        if (criterion instanceof AbstractGenomicCriterion) {
-            return CriterionRowTypeEnum.GENE_EXPRESSION;
-        } else if (criterion instanceof AbstractAnnotationCriterion) {
-            AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
-            switch (EntityTypeEnum.getByValue(annotationCriterion.getEntityType())) {
-            case IMAGESERIES:
-                return CriterionRowTypeEnum.IMAGE_SERIES;
-            case SUBJECT:
-                return CriterionRowTypeEnum.CLINICAL;
-            default:
-                throw new IllegalArgumentException("Unsupported entity type: " + annotationCriterion.getEntityType());
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported criterion: " + criterion.getClass());
-        }
-    }
-
-    /**
-     * @return the booleanOperatorName
-     */
-    public String getBooleanOperatorName() {
-        return compoundCriterion.getBooleanOperator();
-    }
-
-    /**
-     * @param booleanOperatorName the booleanOperatorName to set
-     */
-    public void setBooleanOperatorName(String booleanOperatorName) {
-        compoundCriterion.setBooleanOperator(booleanOperatorName);
-    }
-
-    /**
-     * Adds a new criterion of the currently selected type.
-     */
-    public void addCriterion() {
-        rows.add(createRow(criterionType));
-    }
-
-    private AbstractCriterionRow createRow(CriterionRowTypeEnum rowType) {
-        AbstractCriterionRow criterionRow;
-        if (rowType == null) {
-            throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
-        }
-        switch (rowType) {
-        case CLINICAL:
-            criterionRow = new ClinicalCriterionRow(this);
-            break;
-        case IMAGE_SERIES:
-            criterionRow = new ImageSeriesCriterionRow(this);
-            break;
-        case GENE_EXPRESSION:
-            criterionRow = new GeneExpressionCriterionRow(this);
-            break;
-        default:
-            throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
-        }
-        return criterionRow;
-    }
-
-    /**
-     * @return the criterionTypeName
-     */
-    public String getCriterionTypeName() {
-        if (criterionType == null) {
-            return "";
-        } else {
-            return criterionType.getValue();
-        }
-    }
-
-    /**
-     * @param criterionTypeName the criterionTypeName to set
-     */
-    public void setCriterionTypeName(String criterionTypeName) {
-        if (StringUtils.isBlank(criterionTypeName)) {
-            criterionType = null;
-        } else {
-            criterionType = CriterionRowTypeEnum.getByValue(criterionTypeName);
-        }
-    }
-
-    QueryForm getForm() {
-        return form;
-    }
-
-    /**
-     * @return the rows
-     */
-    public List<AbstractCriterionRow> getRows() {
-        return rows;
-    }
-
-    CompoundCriterion getCompoundCriterion() {
-        return compoundCriterion;
-    }
-
-    void validate(ValidationAware action) {
-        for (AbstractCriterionRow row : rows) {
-            row.validate(action);
-        }
-    }
 }
