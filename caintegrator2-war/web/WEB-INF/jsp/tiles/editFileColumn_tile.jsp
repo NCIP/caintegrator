@@ -48,7 +48,7 @@
                     allowUpDownOnLeft="false"
                     allowUpDownOnRight="false"
                     leftTitle="Permissible"
-                    rightTitle="Non-Permissable"
+                    rightTitle="Non-Permissible"
                     addToLeftLabel=" < Add"
                     addToRightLabel=" Remove > "
                     allowSelectAll="false"
