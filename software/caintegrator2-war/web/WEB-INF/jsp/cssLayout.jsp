@@ -4,13 +4,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
-	<head>
+    <head>
 		<title>caIntegrator2</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="address bar icon" href="favicon.ico" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="common/css/caintegrator2.css" />
+        <script language="javascript">
+            function setFoci(){
+                document.input.j_username.focus();
+            }
+        </script>
 		<script type="text/javascript" src="common/js/pde.js"></script>
         <script type="text/javascript" src="common/js/prototype.js"></script>
         <script type="text/javascript" src="common/js/scriptaculous.js"></script>
@@ -18,7 +23,6 @@
         <script type="text/javascript" src="common/js/caintegrator2.js"></script>
         <s:head theme="ajax"/>
 	</head>
-	
 	<body>
 		
 		<a href="#content" id="navskip">Skip to Page Content</a>
@@ -62,6 +66,10 @@
 			<!--/Footer-->
 		
 		</div>
+        
+        <script language="javascript">
+            setFoci();
+        </script>
 			
 	</body>
 	
