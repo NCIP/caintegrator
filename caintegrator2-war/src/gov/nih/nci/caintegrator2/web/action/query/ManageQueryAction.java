@@ -606,24 +606,4 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     public String getDisplayTab() {
         return displayTab;
     }
-    
-    /**
-     * @return page size
-     */
-    public String getPageSize() {
-        if (getQueryResult() != null) {
-            return Integer.toString(getQueryResult().getPageSize());
-        }
-        return null;
-    }
-    
-    /**
-     * Set the page size.
-     * @param pageSize the page size
-     */
-    public void setPageSize(String pageSize) {
-        if (getQueryResult() != null) {
-            getQueryResult().setPageSize(Integer.parseInt(pageSize));
-        }
-    }
 }
