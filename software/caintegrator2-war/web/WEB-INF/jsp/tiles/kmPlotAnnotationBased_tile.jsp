@@ -9,7 +9,7 @@
     
     <!--/Page Help-->           
     
-    <h1>Kaplan-Meier Surival Plots</h1>
+    <h1>Annotation Based Kaplan-Meier Surival Plots</h1>
     
     <s:actionerror/>
 
@@ -67,7 +67,7 @@
         <s:if test="creatable">
 	        <br>
 	        <center>
-	        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierInputForm.action = 'createKMPlot.action';document.kaplanMeierInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
+	        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierInputForm.action = 'createAnnotationBasedKMPlot.action';document.kaplanMeierInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
 	        </center>
         </s:if>
     </s:form>

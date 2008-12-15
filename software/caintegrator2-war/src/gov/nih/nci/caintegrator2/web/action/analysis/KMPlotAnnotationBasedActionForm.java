@@ -91,7 +91,7 @@ import java.util.HashSet;
 /**
  * 
  */
-public class KaplanMeierActionForm {
+public class KMPlotAnnotationBasedActionForm {
     
     private String annotationTypeSelection;
     private String selectedAnnotationId;
