@@ -120,9 +120,9 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class KaplanMeierActionTest {
+public class KMPlotAnnotationBasedActionTest {
     
-    private KaplanMeierAction action;
+    private KMPlotAnnotationBasedAction action;
     private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
@@ -141,7 +141,7 @@ public class KaplanMeierActionTest {
         subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        action = new KaplanMeierAction();
+        action = new KMPlotAnnotationBasedAction();
         action.setAnalysisService(analysisServiceStub);
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
         workspaceService.setSubscription(subscription);
@@ -183,7 +183,7 @@ public class KaplanMeierActionTest {
     public void testPrepare() {
         SurvivalValueDefinition svd = new SurvivalValueDefinition();
         svd.setId(Long.valueOf(1));
-        action.setSurvivalValueDefinition(svd);
+        action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
@@ -211,7 +211,7 @@ public class KaplanMeierActionTest {
     public void testUpdateAnnotationDefinitions() {
         // Invalid because thre's not an Annotation EntityType selected.
         assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
-        KaplanMeierActionForm form = new KaplanMeierActionForm();
+        KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
         form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
         action.setKaplanMeierFormValues(form);
         assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
@@ -229,14 +229,14 @@ public class KaplanMeierActionTest {
     public void testCreatePlot() {
         setupActionVariables();
         assertEquals(ActionSupport.INPUT, action.createPlot());
-        action.setSelectedValues(new HashSet<AbstractPermissibleValue>());
-        action.getSelectedValues().add(val1);
-        action.getSelectedValues().add(val2);
+        action.getKmPlotParameters().getSelectedValues().clear();
+        action.getKmPlotParameters().getSelectedValues().add(val1);
+        action.getKmPlotParameters().getSelectedValues().add(val2);
         assertEquals(ActionSupport.INPUT, action.createPlot());
-        action.setSurvivalValueDefinition(new SurvivalValueDefinition());
-        action.getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
-        action.getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
-        action.getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
+        action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         assertTrue(analysisServiceStub.createKMPlotCalled);
         assertFalse(action.isCreatable());
@@ -273,7 +273,7 @@ public class KaplanMeierActionTest {
     }
 
     private void setupActionVariables() {
-        KaplanMeierActionForm form = new KaplanMeierActionForm();
+        KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
         form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
         form.getSelectedValuesIds().add("1");
         form.getSelectedValuesIds().add("2");
@@ -283,7 +283,7 @@ public class KaplanMeierActionTest {
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());
-        action.setSelectedAnnotation(selectedAnnotation);
+        action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotation);
     }
     
 

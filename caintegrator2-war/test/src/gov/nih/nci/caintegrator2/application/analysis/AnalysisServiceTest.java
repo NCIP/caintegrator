@@ -182,12 +182,14 @@ public class AnalysisServiceTest {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
+        KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
         subscription.setStudy(study);
-        KMPlot kmPlot = service.createKMPlot(subscription,
-                EntityTypeEnum.SUBJECT,
-                studyCreator.getGroupAnnotationField(), 
-                studyCreator.getPlotGroupValues(), 
-                studyCreator.getSurvivalValueDefinition());
+        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
+        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
+        annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
+        annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        assertTrue(annotationParameters.validate());
+        KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
         
         assertNotNull(kmPlot);
         assertTrue(caIntegratorPlotServiceStub.computeLogRankPValueBetweenCalled);
@@ -195,11 +197,8 @@ public class AnalysisServiceTest {
         assertTrue(daoStub.retrieveValueForAnnotationSubjectCalled);
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
-            kmPlot = service.createKMPlot(subscription, 
-                EntityTypeEnum.SUBJECT,
-                studyCreator.getGroupAnnotationField(), 
-                studyCreator.getPlotGroupValues(), 
-                null);
+            annotationParameters.setSurvivalValueDefinition(null);
+            kmPlot = service.createKMPlot(subscription, annotationParameters);
         } catch (IllegalArgumentException e) {
             exceptionCaught = true;
         }
@@ -208,11 +207,8 @@ public class AnalysisServiceTest {
         exceptionCaught = false;
         studyCreator.getSurvivalValueDefinition().setLastFollowupDate(null);
         try { // Try giving survivalValueDefinition without a followup date
-            kmPlot = service.createKMPlot(subscription, 
-                EntityTypeEnum.SUBJECT,
-                studyCreator.getGroupAnnotationField(), 
-                studyCreator.getPlotGroupValues(), 
-                studyCreator.getSurvivalValueDefinition());
+            annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+            kmPlot = service.createKMPlot(subscription, annotationParameters);
         } catch (IllegalArgumentException e) {
             exceptionCaught = true;
         }
