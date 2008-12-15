@@ -140,11 +140,7 @@ class KMPlotHelper {
         this.queryManagementService = queryManagementService;
     }
     
-    KMPlot createPlot(StudySubscription subscription, 
-                      AnnotationDefinition groupAnnotationField,
-                      EntityTypeEnum groupFieldType,
-                      Collection<AbstractPermissibleValue> plotGroupValues) {
-        KMPlotConfiguration configuration = new KMPlotConfiguration();
+    KMPlot createPlot(StudySubscription subscription, AbstractKMParameters kmParameters) {
         if (survivalValueDefinition == null) {
             throw new IllegalArgumentException("SurvivalValueDefinition cannot be null");
         }
@@ -154,10 +150,20 @@ class KMPlotHelper {
             throw new IllegalArgumentException("Must have a Start Date, Death Date, and Last Followup Date" 
                     + " defined for definition '" + survivalValueDefinition.getName() + "'.");
         }
+        if (kmParameters instanceof KMAnnotationBasedParameters) {
+            return createAnnotationBasedPlot(subscription, (KMAnnotationBasedParameters) kmParameters);
+        }
+        return null;
+    }
+    
+    private KMPlot createAnnotationBasedPlot(StudySubscription subscription, 
+                                             KMAnnotationBasedParameters kmParameters) {
+        KMPlotConfiguration configuration = new KMPlotConfiguration();
+        AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(plotGroupValues, subjectGroupCollection);
+        retrieveSubjectGroups(kmParameters.getSelectedValues(), subjectGroupCollection);
         Collection <ResultRow> subjectRows = 
-                retrieveSubjectRowsFromDatabase(groupFieldType, groupAnnotationField, subscription);
+                retrieveSubjectRowsFromDatabase(kmParameters.getEntityType(), groupAnnotationField, subscription);
         retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
         filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
         return kmPlotService.generatePlot(configuration);

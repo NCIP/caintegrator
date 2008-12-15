@@ -237,6 +237,7 @@ public class KMPlotStudyCreator {
         
         // Add survival items
         survivalValueDefinition = new SurvivalValueDefinition();
+        survivalValueDefinition.setId(Long.valueOf(1));
         AnnotationDefinition survivalStartDateAnnotation = new AnnotationDefinition();
         survivalStartDateAnnotation.setDisplayName("Survival Start Date");
         survivalStartDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());

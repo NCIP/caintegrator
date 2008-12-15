@@ -90,17 +90,12 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -166,18 +161,14 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      */
     public KMPlot createKMPlot(StudySubscription subscription,
-                               EntityTypeEnum groupFieldType,
-                               AnnotationDefinition groupAnnotationField,
-                               Collection <AbstractPermissibleValue> plotGroupValues,
-                               SurvivalValueDefinition survivalValueDefinition) {
+                               AbstractKMParameters kmParameters) {
         KMPlotHelper kmPlotHelper = new KMPlotHelper(kmPlotService, 
                                                      dao, 
-                                                     survivalValueDefinition, 
+                                                     kmParameters.getSurvivalValueDefinition(), 
                                                      queryManagementService);
-        return kmPlotHelper.createPlot(subscription,
-                                       groupAnnotationField, 
-                                       groupFieldType,
-                                       plotGroupValues);
+        
+        return kmPlotHelper.createPlot(subscription, kmParameters);
+
     }
 
 

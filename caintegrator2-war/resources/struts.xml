@@ -316,29 +316,33 @@
             <result name="input" type="tiles">genePatternAnalysis</result>
         </action>
         
-        <action name="kmPlotInput" method="input" class="kaplanMeierAction">
-            <result type="tiles">kaplanMeier</result>
-            <result name="input" type="tiles">kaplanMeier</result>
-        </action>
-        
-        <action name="kmPlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="kaplanMeierAction">
-            <result type="tiles">kaplanMeier</result>
-            <result name="input" type="tiles">kaplanMeier</result>
-        </action>
-        
-         <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kaplanMeierAction">
-            <result type="tiles">kaplanMeier</result>
-            <result name="input" type="tiles">kaplanMeier</result>
-        </action>
-        
-         <action name="createKMPlot" method="createPlot" class="kaplanMeierAction">
-            <result type="tiles">kaplanMeier</result>
-            <result name="input" type="tiles">kaplanMeier</result>
-        </action>
-        
-        <action name="retrieveKMPlot" method="retrievePlot" class="kaplanMeierAction">
+        <!-- Kaplan-Meier Actions -->
+        <action name="retrieveKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
             <result name="kmPlotResult" type="kmPlotResult"/>
         </action>
+        
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        <action name="kmPlotAnnotationBasedInput" method="input" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kaplanMeierAnnotationBased</result>
+            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        </action>
+        
+        <action name="kmPlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kaplanMeierAnnotationBased</result>
+            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        </action>
+        
+         <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kaplanMeierAnnotationBased</result>
+            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        </action>
+        
+         <action name="createAnnotationBasedKMPlot" method="createPlot" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kaplanMeierAnnotationBased</result>
+            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        </action>
+        
+
     </package>
     
 </struts>

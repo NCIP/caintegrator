@@ -81,7 +81,7 @@
         <li class="stdnav"><div>Analysis Tools</div>
             <ul>
                 <li>
-                    <s:url id="kmPlotUrl" includeParams="none" action="kmPlotInput" />
+                    <s:url id="kmPlotUrl" includeParams="none" action="kmPlotAnnotationBasedInput" />
                     <a href="${ kmPlotUrl }">Generate KM Plot</a></li>
                 <li>
                     <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />

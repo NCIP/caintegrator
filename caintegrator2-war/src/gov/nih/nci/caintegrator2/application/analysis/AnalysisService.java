@@ -86,15 +86,10 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -124,18 +119,11 @@ public interface AnalysisService {
     throws GenePatternServiceException;
     
     /**
-     * Creates a KMPlot object based on all clinical subjects for the given parameters.
+     * Creates a KMPlot object based on clinical subjects for the given parameters.
      * @param subscription the study subscription that the user wants to create the plot for.
-     * @param groupFieldType the entity type for the grouping field (subject, sample, etc.)
-     * @param groupAnnotationField the annotation definition for the grouping.
-     * @param plotGroupValues the permissible values allowed for the plot groups.
-     * @param survivalValueDefinition the SurvivalValueDefinition to use for this plot.
+     * @param kmParameters are the input parameters for the KMPlot.
      * @return the plot object.
      */
-    KMPlot createKMPlot(StudySubscription subscription,
-                        EntityTypeEnum groupFieldType,
-                        AnnotationDefinition groupAnnotationField,
-                        Collection <AbstractPermissibleValue> plotGroupValues,
-                        SurvivalValueDefinition survivalValueDefinition);
+    KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters);
     
 }
