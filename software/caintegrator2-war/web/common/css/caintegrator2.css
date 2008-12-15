@@ -599,7 +599,7 @@ A.remove:hover
 #content .btnrow LI, #content .btnrow2 LI 
 { display:table-cell; background:none }
 .actionsrow 
-{ height:31px; background:#fbfcfb url("../../images/bg_h2.gif") repeat-x bottom;  margin-top:0px; padding:7px 10px 0 10px; clear:both; text-decoration:none !important; text-align:center; border:1px solid #999; border-top:0; }
+{ height:31px; background:#fbfcfb url("../../images/bg_h2.gif") repeat-x bottom;  margin-top:0px; padding:7px 10px 0 10px; clear:both; text-decoration:none !important; text-align:center; }
 .box2 .actionsrow
 { border:0 }
 * .btnrow LI,* .btnrow2 LI { float:left; }

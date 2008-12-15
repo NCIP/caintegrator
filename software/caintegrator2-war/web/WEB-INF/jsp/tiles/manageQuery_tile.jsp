@@ -52,7 +52,8 @@
         </s:url>
         
         <s:form action="manageQuery" name="manageQueryForm" id="manageQueryForm" theme="simple">
-            <s:tabbedPanel id="mainTabPanel" selectedTab="%{displayTab}">
+            <s:tabbedPanel id="mainTabPanel" selectedTab="%{displayTab}"
+                templateCssPath="/common/css/TabContainer.css">
 
                 <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm"/>
                 <s:div href="%{columnsUrl}" id="columns" label="Columns" theme="ajax" formId="manageQueryForm"/>
