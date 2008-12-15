@@ -2,8 +2,6 @@
 
 <!--Sort Order-->
 
-<s:div id="sortorder" label="Sorting" theme="ajax">
-
     <h2>Set Sort Order for Selected Columns</h2>
 
     <table class="data">
@@ -21,7 +19,7 @@
                     <td><s:property value="annotationDefinition.displayName" /></td>
 
                     <td><s:select name="manageQueryHelper.columnList[%{#columnStatus.index}].columnIndex"
-                        list="manageQueryHelper.columnIndexOptions" value="%{columnIndex}" /></td>
+                        list="manageQueryHelper.columnIndexOptions" value="%{columnIndex}" theme="simple"/></td>
 
                 </tr>
             </s:iterator>
@@ -45,7 +43,5 @@
     </div>
 
     <!--Buttons-->
-
-</s:div>
-
+    
 <!--/Sort Order-->
