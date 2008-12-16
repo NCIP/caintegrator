@@ -245,19 +245,25 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     }
    
     private void validateHasUserSelectedValues() {
-        for (String selectedAnnotation : selectedAnnotations) {
-            if (selectedAnnotation.equalsIgnoreCase("1")) {
-                addActionError(" Please select an Annotation ");
+        if (selectedAnnotations != null) {
+            for (String selectedAnnotation : selectedAnnotations) {
+                if (selectedAnnotation.equalsIgnoreCase("1")) {
+                    addActionError(" Please select an Annotation ");
+                }
             }
         }
-        for (String selectedOperator : selectedOperators) {
-            if (selectedOperator.equalsIgnoreCase("1")) {
-                addActionError(" Please select an Operator ");
+        if (selectedOperators != null) {
+            for (String selectedOperator : selectedOperators) {
+                if (selectedOperator.equalsIgnoreCase("1")) {
+                    addActionError(" Please select an Operator ");
+                }
             }
         }
-        for (String selectedValue : selectedValues) {
-            if (selectedValue.equalsIgnoreCase("")) {
-                addActionError(" Please select or type a value to run the query ");
+        if (selectedValues != null) {
+            for (String selectedValue : selectedValues) {
+                if (selectedValue.equalsIgnoreCase("")) {
+                    addActionError(" Please select or type a value to run the query ");
+                }
             }
         }
     }
