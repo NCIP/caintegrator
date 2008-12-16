@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
     private static final long serialVersionUID = 1L;
 
+    private static final int DEFAULT_PAGE_SIZE = 20;
     private String selectedAction;
     private ManageQueryHelper manageQueryHelper;
 
@@ -132,4 +133,15 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
     public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
         this.manageQueryHelper = manageQueryHelper;
     }
+    
+    /**
+     * @return page size
+     */
+    public int getPageSize() {
+        if (getQueryResult() != null) {
+            return getQueryResult().getPageSize();
+        }
+        return DEFAULT_PAGE_SIZE;
+    }
+
 }
