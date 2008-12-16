@@ -11,11 +11,6 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="common/css/caintegrator2.css" />
-        <script language="javascript">
-            function setFoci(){
-                document.input.j_username.focus();
-            }
-        </script>
 		<script type="text/javascript" src="common/js/pde.js"></script>
         <script type="text/javascript" src="common/js/prototype.js"></script>
         <script type="text/javascript" src="common/js/scriptaculous.js"></script>
@@ -67,9 +62,6 @@
 		
 		</div>
         
-        <script language="javascript">
-            setFoci();
-        </script>
 			
 	</body>
 	
