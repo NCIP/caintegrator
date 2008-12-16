@@ -165,8 +165,11 @@ public class ManageQueryActionTest {
         assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
         
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
-        
+
         manageQueryAction.setSelectedAction("");
+        assertEquals("", manageQueryAction.getSelectedAction());    
+        
+        manageQueryAction.setPageSize(10);
         assertEquals("", manageQueryAction.getSelectedAction());    
         
     }
