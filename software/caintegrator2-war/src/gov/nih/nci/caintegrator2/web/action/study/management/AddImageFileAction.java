@@ -130,10 +130,12 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
             imageSource.setStudyConfiguration(this.getStudyConfiguration());
             setImageSource(imageSource);
             getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSource());
+            if (imagingFile !=  null) {
             ImageAnnotationConfiguration imageAnnotationSource = 
                         getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(), getImagingFile(), 
                 getImagingFileFileName());
             setImagingSource(imageAnnotationSource);
+            }
             getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
                     getImageClinicalMappingFile()); 
             return SUCCESS;
@@ -153,9 +155,6 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
      */
     @Override
 public void validate() {
-        if (imagingFile == null) {
-            addFieldError("imagingFile", "Imaging File is required");
-        }
         if (imageClinicalMappingFile == null) {
             addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
         }
