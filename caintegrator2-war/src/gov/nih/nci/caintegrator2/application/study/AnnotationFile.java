@@ -480,10 +480,13 @@ public class AnnotationFile implements PersistentObject {
     }
     
     private Date getDateValue(String value) throws ParseException {
-        final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         if (StringUtils.isBlank(value)) {
             return null;
+        } else if (value.contains("-")) {
+            final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+            return format.parse(value);
         } else {
+            final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
             return format.parse(value);
         }
     }
