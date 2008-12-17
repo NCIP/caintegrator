@@ -50,6 +50,7 @@
             
         <action name="deployStudy" class="deployStudyAction">
             <result type="redirectAction">manageStudies</result>
+            <result name="error" type="tiles">editStudy</result>
         </action>
       
         <action name="editStudy" class="editStudyAction">
