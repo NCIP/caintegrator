@@ -9,7 +9,7 @@
     
     <!--/Page Help-->           
     
-    <h1>Annotation Based Kaplan-Meier Surival Plots</h1>
+    <h1>Annotation Based Kaplan-Meier Survival Plots</h1>
     
     <s:actionerror/>
 
