@@ -1,0 +1,10 @@
+tocTab[tocTab.length] = new Array("1.1.5:1", "", "Characteristic Hierarchy", "EARoot/EA1/EA1/EA5/EA78.htm", "175.png", "22", "0", "", "Logical diagram0","{6979FD38-D85B-4343-AF00-308F87133524}");
+tocTab[tocTab.length] = new Array("1.1.5:2", "", "gov.nih.nci.caarray.domain.sample", "EARoot/EA1/EA1/EA5/EA80.htm", "175.png", "21", "0", "", "Logical diagram0","{0F978147-6E20-4aa9-9E35-1C9E229BCF23}");
+tocTab[tocTab.length] = new Array("1.1.5:3", "", "AbstractBioMaterial", "EARoot/EA1/EA1/EA5/EA82.htm", "5.png", "104", "0", "", "Class0","{04EAC143-C9DB-46e9-88F7-DCBEC7DAEF2A}");
+tocTab[tocTab.length] = new Array("1.1.5:4", "", "AbstractCharacteristic", "EARoot/EA1/EA1/EA5/EA83.htm", "5.png", "107", "0", "", "Class0","{32A2DC47-CB97-4536-99BD-0E7DB0266035}");
+tocTab[tocTab.length] = new Array("1.1.5:5", "", "Extract", "EARoot/EA1/EA1/EA5/EA84.htm", "5.png", "111", "0", "", "Class0","{849047CD-71BD-4263-B828-C9CE1B0A8984}");
+tocTab[tocTab.length] = new Array("1.1.5:6", "", "LabeledExtract", "EARoot/EA1/EA1/EA5/EA85.htm", "5.png", "105", "0", "", "Class0","{1A2B928A-2A8A-4708-838C-2BBCD4AE12E5}");
+tocTab[tocTab.length] = new Array("1.1.5:7", "", "MeasurementCharacteristic", "EARoot/EA1/EA1/EA5/EA86.htm", "5.png", "103", "0", "", "Class0","{03B0C5F1-7B0D-43d2-87CA-1786BCD67FF8}");
+tocTab[tocTab.length] = new Array("1.1.5:8", "", "Sample", "EARoot/EA1/EA1/EA5/EA88.htm", "5.png", "109", "0", "", "Class0","{4E0D12DD-99C7-4faa-934B-411586617F0C}");
+tocTab[tocTab.length] = new Array("1.1.5:9", "", "Source", "EARoot/EA1/EA1/EA5/EA89.htm", "5.png", "108", "0", "", "Class0","{34182F2E-3B49-4233-ADEA-382EF67343D5}");
+tocTab[tocTab.length] = new Array("1.1.5:10", "", "TermBasedCharacteristic", "EARoot/EA1/EA1/EA5/EA90.htm", "5.png", "110", "0", "", "Class0","{743A3827-3156-4860-90B4-987BCC14CE56}");

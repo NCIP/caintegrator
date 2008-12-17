@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Note</title>
+<link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">Note  : public   note</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">8/6/2007 6:23:24 AM</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">4/10/2008 8:48:28 PM</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{5C23AD05-9227-46f2-839B-0429513A5815}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA9.htm">Model Notes</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">&lt;p&gt;CHANGE HISTORY&lt;br/&gt;&lt;/p&gt;&lt;p&gt;========================&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 2.1.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Synced model version number to caArray release version number&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Hybridization.protocolApplication changed to ordered, one-to-many Hybridization.protocolApplications&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- AbstractBioMaterial.protocolApplications changed to ordered collection&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 1.0.1&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added missing source-side multiplicities on associations ExpressionProbeAnnotation --&gt; Gene&lt;br/&gt;&lt;/p&gt;&lt;p&gt;and ArrayDesign --&gt; Microarray.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 1.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added association HybridizationData.labeledExtract&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed Hybridization.label&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed multiplicities for Experiment.source, .sample, etc. from * to 1 on Experiment end of association.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.13&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Reverted back to unidirectional associations from 0.12 (not mapped in grid)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.12&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added missing associations from DataRetrievalRequest&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Renamed Category.termSource to Category.source&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Made several unidirectional associations bidirectional to reflect code.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.11&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Moved DataRetrievalRequest to Logical Model:gov.nih.nci.nih.domain.data package&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added id:Long to DataRetrievalRequest&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added generalization from ArrayGroup to AbstractCaArrayObject&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.10&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Term.source(TermSource)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed Term.category (multiplicity 1) to Term.categories (1..*)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed Term.accession:Accession, added Term.accession:String and Term.url:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Category.accession:String and Category.url:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed Category.parent (multiplicity 1) to Category.parents (1..*)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed ValueBasedCharacterstic&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed Accession&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.experimentDesignTypes:Term (0..*)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.organism:Organism&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.experimentDesignDescription:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.qualityControlDescription:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.replicateDescription:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.publicIdentifier:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added Experiment.assayType:String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.9&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed FileType class, converted to String attribute CaArrayFile.type&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added annotationFile assocation to ArrayDesign&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Extracted Gene as class in array reporter annotation&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added type to ArrayDesign (ValueDomain is SNP, Expression, Exon)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed AbstractDesignElement to extend from AbstractCaArrayObject&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Moved name from AbstractDesignElement to AbstractProbe&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Made LogicalProbe -&gt; Probe -&gt; Feature associations unidirectional for efficiency.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed ParameterValue.unit from Term to String (to match Java model)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added tissueSite, cellType, and diseaseState associations to AbstractBioMaterial&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Renamed ArrayDesign.type to assayType, added AssayType ValueDomain&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed Gene attributes to mirror Gene Identifier model&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added externalSampleId to Sample&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed Address.streetAddress1 and streetAddress2 to street1 and street2&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.8&lt;br/&gt;&lt;/p&gt;&lt;p&gt;10/8/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Revised array annotation&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Provided complete semantic linking from DataSet&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.7&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/23/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added caTissue MolecularSpecimen to model, added association to Extract.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Brought caBIO Microarray into Logical Model, added association to ArrayDesign.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Cleaned up diagrams.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.6&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/21/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Renamed Reporter to Probe in array package&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&#160;&#160;&#160; - Renamed CompositeReporter to LogicalProbe&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Deleted sequence package -- reusing elements from caBIO&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Revised sample package&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&#160;&#160;&#160; - Revised characteristics modeling&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&#160;&#160;&#160; - Created association from Sample to Specimen (from caTissue)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&#160;&#160;&#160; - Organism from OrganismCDE model&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Revised array package&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&#160;&#160;&#160; - Synched with concepts / model elements from caBIO&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.5&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/21/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Rolled back changes to BioMaterial characteristics to synch with current code and in anticipation of revision.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Fixed missing generalizations in model.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added id:Long to data classes to ensure grid/caCORE compatibility.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed QuantitationType.type : Class -&gt; type : String for grid compatibility&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed CaArrayFile.status : FileStatus -&gt; status : String&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.4&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/12/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed multiplicity Hybridization &lt;--&gt; DerivedArrayData&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added additional base class AbstractCaArrayObject (for objects that don&#39;t require LSID)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Revised DataSet and associated objects: added hybridization association to DataSet and made associations bidirectional.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.3&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/10/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;[Model revision for review by Analysis Services Best Practices Working Group]&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Put full array design annotation (Features, Reporters, etc.) back into the registered model.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Put hybridization data classes into the registered model.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.2&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/9/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added an association from Publication to Term to model the &quot;type&quot; of publication (main, reference etc.).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added attributes to Publication based on MAGE-OM BibliographicReference (uri, publication, publisher, editor, year, volume, issue, pages).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed &quot;Investigation&quot; to &quot;Experiment&quot;, and &quot;InvestigationContact&quot; to &quot;ExperimentContact&quot;.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Changed multiplicity of Experiment&#39;s &quot;factors&quot; to 0..*.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Linked Experiment to Hybridization (many-to-many).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added unit and value to FactorValue.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Allowed samples to have 0..* sources and extracts to have 0..* samples.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Removed LabeledExtract. Extract or Hybridization can have an associated label.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Extracts can be transformed into other Extracts (labeled or unlabeled). This satisfies ChIP-chip example shown in MAGE-TAB specification too.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added amount and unit attributes to Hybridization.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added association from RawArrayData to sourceImages (0..*).&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added a defaultValue for a Parameter.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added a &quot;notes&quot; attribute to ProtocolApplication.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added an association from Protocol to CaArrayFile to allow pdf description of protocol etc.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Expanded Characteristics into TermCharacteristics, ValueCharacteristics and well-known characteristics: Organism, OrganismPart, DiseaseState, DiseaseStaging and Age.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Searched caDSR and made list of potential reusable CDEs. Need to work with caDSR/EVS contact before annotating model.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added a TODO item to add &quot;documentation&quot; tags for all classes and &quot;description&quot; tags for all attributes in order to make the model ready for submission to caDSR.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Added an ArrayGroup element.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version 0.1&lt;br/&gt;&lt;/p&gt;&lt;p&gt;8/3/2007&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Initial draft reviewed internally.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Based on MAGE-TAB support with additional considerations for MIAME and caArray 1.x migration.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- Result of E1 iteration.&lt;br/&gt;&lt;/p&gt;</div>
+
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

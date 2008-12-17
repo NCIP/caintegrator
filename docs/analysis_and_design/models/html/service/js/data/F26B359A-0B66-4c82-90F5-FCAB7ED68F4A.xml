@@ -1,0 +1,12 @@
+tocTab[tocTab.length] = new Array("2:1", "", "Annotation", "EARoot/EA2/EA100.htm", "5.png", "26", "0", "", "Class0","{FAC0D88E-B712-4831-A939-F4AFD2DD789E}");
+tocTab[tocTab.length] = new Array("2:2", "", "ClinicalTrialProtocol", "EARoot/EA2/EA101.htm", "5.png", "21", "0", "", "Class0","{7B894220-A474-49c2-8CA6-D678161BC790}");
+tocTab[tocTab.length] = new Array("2:3", "", "ClinicalTrialSite", "EARoot/EA2/EA102.htm", "5.png", "15", "0", "", "Class0","{0B03EDC6-D43D-45fb-AC90-7591CB77DF10}");
+tocTab[tocTab.length] = new Array("2:4", "", "ClinicalTrialSponsor", "EARoot/EA2/EA103.htm", "5.png", "19", "0", "", "Class0","{620AA1A8-529F-45a1-8032-BBF0AD4C4A28}");
+tocTab[tocTab.length] = new Array("2:5", "", "ClinicalTrialSubject", "EARoot/EA2/EA104.htm", "5.png", "25", "0", "", "Class0","{E8CF05CF-1E13-447f-839C-B528F2D172FE}");
+tocTab[tocTab.length] = new Array("2:6", "", "CurationData", "EARoot/EA2/EA105.htm", "5.png", "22", "0", "", "Class0","{89CB9C34-3A05-4079-B266-9B30E209F195}");
+tocTab[tocTab.length] = new Array("2:7", "", "Equipment", "EARoot/EA2/EA106.htm", "5.png", "18", "0", "", "Class0","{590B8CE4-0963-491f-B3E4-6E7E9A202A7E}");
+tocTab[tocTab.length] = new Array("2:8", "", "Image", "EARoot/EA2/EA107.htm", "5.png", "16", "0", "", "Class0","{184444B4-B9FD-4b90-BB23-36514F84786D}");
+tocTab[tocTab.length] = new Array("2:9", "", "Patient", "EARoot/EA2/EA108.htm", "5.png", "17", "0", "", "Class0","{29712CDA-464E-414d-9282-319B1949912C}");
+tocTab[tocTab.length] = new Array("2:10", "", "Series", "EARoot/EA2/EA109.htm", "5.png", "23", "0", "", "Class0","{B00E2D7D-7876-4a9a-8D22-57547436E1B4}");
+tocTab[tocTab.length] = new Array("2:11", "", "Study", "EARoot/EA2/EA110.htm", "5.png", "20", "0", "", "Class0","{7855F361-5FBC-40f7-AABB-8DAA00D999E7}");
+tocTab[tocTab.length] = new Array("2:12", "", "TrialDataProvenance", "EARoot/EA2/EA111.htm", "5.png", "24", "0", "", "Class0","{BE81145E-AE42-46cc-9181-6176EBA7BB3E}");

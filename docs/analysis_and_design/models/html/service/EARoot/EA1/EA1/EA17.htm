@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Note</title>
+<link href="../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">Note  : public   note</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">8/8/2007 1:54:10 PM</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">8/10/2007 7:09:04 AM</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{84828963-4A40-4233-8CEF-B5559633B3B1}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA9.htm">Model Notes</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">&lt;p&gt;POTENTIAL REUSABLE CDEs from caDSR:&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;caArray class-&gt;attribute: CDE ID, Short Name, Long Name, Type, Length&lt;br/&gt;&lt;/p&gt;&lt;p&gt;-------------------------------------------------------------------------------&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Person-&gt;firstName: 2238014, 2237860v1.0:2178533v1.0, Person First Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Person-&gt;lastName: 2238015, 2237861v1.0:2178533v1.0, Person Last Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Organization-&gt;name: 2475652, 2179555v2.31:2178533v1.0, Organization Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Address-&gt;city: 2475714, 2179561v2.31:2178533v1.0, Address City, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Address-&gt;state: 2475715, 2475518v1.0:2542179v1.0, Address United States State Text Name, CHARACTER,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Address-&gt;zip: 2475717, 2475519v1.0:2178533v1.0, Address Zip Code, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Address-&gt;streetAddress: 2475713, 2475517v1.0:2178533v1.0, Address Street Address, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;*(Change streetAddress1 and streetAddress2 to streetAddress?)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Contact-&gt;email: 2224383, 2224235v3.0:2178533v1.0, Contact Info Email Address, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Contact-&gt;fax: 2224378, 2224230v3.0:2178533v1.0, Contact Info Fax Number, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Contact-&gt;phone: 2518194, CONT_PRSN_PH_NB, Contact Person Telephone Number, Alphanumeric, length=up to 25&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Contact-&gt;url: 2187488, ContactURI, URI, java.lang.String (DRAFT NEW status)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;ArrayDesign-&gt;name: 2535274, 2535058v1.0:2178533v1.0, Physical Array Design Object Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Image-&gt;name: 2669665, 2669510v1.0:2178533v1.0, Image Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Hybridization-&gt;name: 2535343, 2535126v1.0:2178533v1.0, Nucleic Acid Hybridization Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Experiment-&gt;name: 2438064, 2437861v1.0:2178533v1.0, Microarray Data Experiment Name, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Experiment-&gt;dateOfExperiment: 2619946, 2619647v1.0:2222504v1.0, Experiment End Date, java.util.Date,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Project: Project Name exists in caDSR, but we don&#39;t have a &quot;name&quot; attribute in our model.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;title: 2422269, ST_PUB_TITLE_NAME, Study Publication Title Name, CHARACTER, length=1-200&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;publication: 2422271, ST_PUB_JOURNAL_NAME, Study Publication Journal Name, CHARACTER, length=1-200&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;volume: 2422273, ST_PUB_VOLUME_TEXT, Study Publication Journal Name, CHARACTER, length=1-100&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;pubMedId: 2224328, 2224180v3.0:2178534v1.0, Scientific Publication PubMed Identifier, java.lang.Long,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;*(Change pubMedId to Long?)&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;publisher: 2422277, ST_PUB_PUBLISH_TEXT, Study Publication Publisher Text, CHARACTER, length=1-100&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Publication-&gt;pages: 2422279, ST_PUB_PAGE_TXT, Study Publication Page Text, CHARACTER, length=1-100&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Sequence-&gt;sequence: 2223795, 2223637v3.0:2178533v1.0, Nucleotide Sequence Value, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Term-&gt;value: 2519109, 2519094v1.0:2178533v1.0, Controlled Vocabulary Annotation Term, java.lang.String,&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Accession-&gt;value: 2238037, 2237886v1.0:2178533v1.0, Database Entry Accession Number, java.lang.String,&lt;br/&gt;&lt;/p&gt;</div>
+
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

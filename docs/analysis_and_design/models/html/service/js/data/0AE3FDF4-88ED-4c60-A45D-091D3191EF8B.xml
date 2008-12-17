@@ -1,0 +1,3 @@
+tocTab[tocTab.length] = new Array("1.1.1:1", "", "gov.nih.nci.caarray.domain", "EARoot/EA1/EA1/EA1/EA20.htm", "175.png", "8", "0", "", "Logical diagram0","{C390EF86-1EA9-404a-8482-805DC2E9E15D}");
+tocTab[tocTab.length] = new Array("1.1.1:2", "", "AbstractCaArrayEntity", "EARoot/EA1/EA1/EA1/EA22.htm", "5.png", "49", "0", "", "Class0","{BECE57ED-DA20-400b-AB6B-B11DC0E89AAE}");
+tocTab[tocTab.length] = new Array("1.1.1:3", "", "AbstractCaArrayObject", "EARoot/EA1/EA1/EA1/EA23.htm", "5.png", "48", "0", "", "Class0","{A2ACF61C-BEF4-440a-AAFC-6A04EC3649F0}");

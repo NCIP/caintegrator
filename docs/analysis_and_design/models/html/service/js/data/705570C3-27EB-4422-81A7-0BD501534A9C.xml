@@ -1,0 +1,9 @@
+tocTab[tocTab.length] = new Array("1.1:1", "", "Logical Model", "EARoot/EA1/EA1/EA7.htm", "175.png", "5", "0", "", "Logical diagram0","{4FE09E38-EE48-4e95-AE84-402DB7836C67}");
+tocTab[tocTab.length] = new Array("1.1:2", "", "Model Notes", "EARoot/EA1/EA1/EA9.htm", "175.png", "6", "0", "", "Logical diagram0","{B2A20DF8-44F0-4bc7-9C96-EAB74EFF5DF8}");
+tocTab[tocTab.length] = new Array("1.1.1", "1", "gov.nih.nci.caarray.domain", "EARoot/EA1/EA1/EA11.htm", "4.png", "", "", "{0AE3FDF4-88ED-4c60-A45D-091D3191EF8B}", "Package");
+tocTab[tocTab.length] = new Array("1.1.2", "1", "gov.nih.nci.caarray.domain.array", "EARoot/EA1/EA1/EA12.htm", "4.png", "", "", "{7936387B-3B4B-4364-8AD9-AF7969D9E778}", "Package");
+tocTab[tocTab.length] = new Array("1.1.3", "1", "gov.nih.nci.caarray.domain.data", "EARoot/EA1/EA1/EA13.htm", "4.png", "", "", "{94EBCEDE-80F8-48a1-9107-E158D02E254F}", "Package");
+tocTab[tocTab.length] = new Array("1.1.4", "1", "gov.nih.nci.caarray.domain.project", "EARoot/EA1/EA1/EA14.htm", "4.png", "", "", "{DF8C96BE-CA02-4799-85F0-7F5C8D637681}", "Package");
+tocTab[tocTab.length] = new Array("1.1.5", "1", "gov.nih.nci.caarray.domain.sample", "EARoot/EA1/EA1/EA15.htm", "4.png", "", "", "{8F359124-B2B1-45d7-B71B-20DC1DC8422B}", "Package");
+tocTab[tocTab.length] = new Array("1.1.6", "1", "java.lang", "EARoot/EA1/EA1/EA16.htm", "4.png", "", "", "{65084C9F-9856-4f37-AB9C-9F2BFF1CF9C9}", "Package");
+tocTab[tocTab.length] = new Array("1.1.7", "1", "ValueDomains", "EARoot/EA1/EA1/EA19.htm", "4.png", "", "", "{FA2E5A6A-BE02-4495-833A-715E4F403C83}", "Package");
