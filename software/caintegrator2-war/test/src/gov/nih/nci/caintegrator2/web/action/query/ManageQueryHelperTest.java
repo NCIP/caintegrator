@@ -162,6 +162,20 @@ public class ManageQueryHelperTest {
         
         manageQueryHelper = ManageQueryHelper.resetSessionInstance();
         assertEquals(0, manageQueryHelper.getQueryCriteriaRowList().size());
+
+        manageQueryHelper.setSampleAnnotationDefinitions(null);
+        assertEquals(null, manageQueryHelper.getSampleAnnotationDefinitions());
+        manageQueryHelper.setImageAnnotationDefinitions(null);
+        assertEquals(null, manageQueryHelper.getImageAnnotationDefinitions());
+        manageQueryHelper.setClinicalAnnotationDefinitions(null);
+        assertEquals(null, manageQueryHelper.getClinicalAnnotationDefinitions());
+        manageQueryHelper.setImageSeriesAnnotationSelections(null);
+        assertEquals(null, manageQueryHelper.getImageSeriesAnnotationSelections());
+        manageQueryHelper.setAllAnnotationDefinitionsMap(null);
+        assertEquals(null, manageQueryHelper.getAllAnnotationDefinitionsMap());
+        manageQueryHelper.setGenomicAnnotationSelections(null);
+        manageQueryHelper.setSelectedBasicOperator("and");
+        assertEquals("and", manageQueryHelper.getSelectedBasicOperator());
     }  
     
 }
