@@ -125,6 +125,12 @@ public class AnnotationValueUtilTest {
         Date date = (Date)formatter.parse("10-11-2008");  
         val3.setDateValue(date);
         assertTrue(AnnotationValueUtil.getDisplayString(val3).equalsIgnoreCase("10-11-2008"));
+        
+        DateAnnotationValue val4 = new DateAnnotationValue();
+        final SimpleDateFormat formatter2 = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        date = (Date)formatter2.parse("10/11/2008");  
+        val4.setDateValue(date);
+        assertTrue(AnnotationValueUtil.getDisplayString(val4).equalsIgnoreCase("10-11-2008"));
     }
 
     /**
