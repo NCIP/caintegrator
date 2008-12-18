@@ -100,16 +100,19 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
+
 /**
  * Handles the form in which the user constructs, edits and runs a query.
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" }) // see execute method
 
-public class ManageQueryAction extends AbstractCaIntegrator2Action {
+public class ManageQueryAction extends AbstractCaIntegrator2Action implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;
     private QueryManagementService queryManagementService;
     private ManageQueryHelper manageQueryHelper;
+    private boolean export = false;
     private String selectedAction = "";
     private String rowNumber = "";
     private String selectedRowCriterion = "uninitializedselectedRowCriterion";
@@ -122,7 +125,33 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
     private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
     private String displayTab;
-    
+
+    /*
+     * Filter out parameters from the display tag and check for export
+     * parameter to set the export variable.
+     * @param parameterName the request parameter
+     * @return boolean
+     */
+    /**
+     * {@inheritDoc}
+     */
+    public boolean acceptableParameterName(String parameterName) {
+        boolean retVal = true;
+        String firstCharacter = parameterName.substring(0, 1);
+
+        if (parameterName != null) {
+            if (parameterName.startsWith("d-")) {
+                retVal = false;
+                if (parameterName.endsWith("-e")) {
+                    setExport(true);
+                }
+            } else if (StringUtils.isNumeric(firstCharacter)) {
+                retVal = false;
+            }
+        }
+        return retVal;
+    }
+
     /**
      * The 'prepare' interceptor will look for this method enabling 
      * preprocessing.
@@ -276,7 +305,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
     public String execute()  {
 
         if ("selectedTabSearchResults".equals(selectedAction)) {
-            return SUCCESS;
+            return (isExport()) ? "export" : SUCCESS;
         }
         
         // declarations
@@ -623,4 +652,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action {
         }
     }
 
+    /**
+     * @return the export
+     */
+    public boolean isExport() {
+        return export;
+    }
+
+    /**
+     * @param export the export to set
+     */
+    public void setExport(boolean export) {
+        this.export = export;
+    }
 }

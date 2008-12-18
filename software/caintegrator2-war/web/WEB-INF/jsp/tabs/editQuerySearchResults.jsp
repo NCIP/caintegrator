@@ -2,7 +2,7 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <!--Search Results-->
-
+<s:div theme="xhtml">
     <h2>Search Results for: <s:property value="query.name" /></h2>
 
     <div class="tableheader">
@@ -105,7 +105,7 @@
     </div>
 
     <!--/Buttons-->
-
+</s:div>
 <!--/Search Results-->
 
 
