@@ -89,6 +89,8 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -322,5 +324,10 @@ public class ManageQueryActionTest {
 
         assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
         assertNotNull(manageQueryAction.getQueryManagementService());
+        
+        assertFalse(manageQueryAction.acceptableParameterName("d-12345-e"));
+        assertFalse(manageQueryAction.acceptableParameterName("d-12345-p"));
+        assertFalse(manageQueryAction.acceptableParameterName("12345f678"));
+        assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
     }
 }
