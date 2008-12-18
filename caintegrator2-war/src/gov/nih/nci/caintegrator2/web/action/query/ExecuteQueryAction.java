@@ -104,12 +104,14 @@ public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
     private String queryName;
     private Long queryId;
     private Long openMenuTreeId;
-    
+    private String displayTab;
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
+        
+        displayTab = "searchResults";
         if ("image".equals(queryName)) {
             setQuery(TestQueries.getImageQuery());            
         } else if ("genomic".equals(queryName)) {
@@ -119,6 +121,7 @@ public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
         } else {
             setQuery(retrieveQuery());
         }
+        
     }
     
     /**
@@ -200,6 +203,20 @@ public class ExecuteQueryAction extends AbstractCaIntegrator2Action {
      */
     public void setOpenMenuTreeId(Long openMenuTreeId) {
         this.openMenuTreeId = openMenuTreeId;
+    }
+
+    /**
+     * @return the displayTab
+     */
+    public String getDisplayTab() {
+        return displayTab;
+    }
+
+    /**
+     * @param displayTab the displayTab to set
+     */
+    public void setDisplayTab(String displayTab) {
+        this.displayTab = displayTab;
     }
 
     

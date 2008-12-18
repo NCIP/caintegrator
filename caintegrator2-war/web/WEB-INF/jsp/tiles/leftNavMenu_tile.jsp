@@ -57,7 +57,7 @@
 
                                     <s:set name="temp" value="%{openMenuTreeId[0]}"/>
                                                                         
-                                    <li><s:a href="%{queryURL}#searchresults" cssClass="queries">
+                                    <li><s:a href="%{queryURL}" cssClass="queries">
                                          <s:if test="#temp==id">
                                             <strong> <s:property value="name"/> </strong>
                                           </s:if>
