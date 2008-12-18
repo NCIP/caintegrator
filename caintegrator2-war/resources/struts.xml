@@ -295,6 +295,7 @@
             <result type="tiles">manageQuery</result>
             <result name="input" type="tiles">manageQuery</result>
             <result name="error" type="tiles">manageQuery</result>
+            <result name="export" type="tiles">exportSearchResults</result>
         </action>
         
         <action name="selectQueryTab" class="selectQueryTabAction">

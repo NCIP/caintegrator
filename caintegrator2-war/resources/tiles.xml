@@ -105,6 +105,11 @@
     <definition name="saveQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
+    
+    <!-- Needs to open up the Download page -->
+    <definition name="exportSearchResults" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/exportSearchResults_tile.jsp" />
+    </definition>
 
     <!-- Analysis pages -->
     <definition name="genePatternAnalysis" extends="cssBaseDef">
