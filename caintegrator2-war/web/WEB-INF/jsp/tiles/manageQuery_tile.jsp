@@ -30,6 +30,11 @@ function selectAll () {
     document.manageQueryForm.submit();
 }
 
+function selectNone () {
+    document.manageQueryForm.selectedAction.value='selectNone';
+    document.manageQueryForm.submit();
+}
+
 </script>
 
 
