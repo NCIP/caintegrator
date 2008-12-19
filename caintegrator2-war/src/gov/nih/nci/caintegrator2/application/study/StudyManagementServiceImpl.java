@@ -577,6 +577,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         annotationDefinition.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         annotationDefinition.setDisplayName(descriptor.getName());
+        annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
         addDefinitionToStudy(descriptor, study, entityType, annotationDefinition);
         dao.save(annotationDefinition);
