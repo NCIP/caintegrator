@@ -193,7 +193,7 @@ public class PermissibleValueUtilTest {
         permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         stringValues = new ArrayList<String>();
         stringValues.add("11-10-2008");
-        stringValues.add("05-28-2008");
+        stringValues.add("05/28/2008");
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
