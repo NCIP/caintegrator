@@ -305,6 +305,9 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>

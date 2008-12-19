@@ -60,6 +60,9 @@
                 <display:setProperty name="export.excel" value="false" />
                 <display:setProperty name="export.xml" value="false" />
                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
+                <display:column title="<s:a href='#' onclick='selectAll()'>Toggle Select All</s:a>" sortable="false">
+                    <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].checkedRow"/>
+                </display:column>
                 <s:if test="queryResult.hasSubjects">
                     <display:column title="Subject Identifier" sortable="true">
                         <s:property
@@ -94,7 +97,12 @@
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
-        <li><s:a href="#" cssClass="btn"
+        <li><s:a href="#" cssClass="btn" 
+            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+            <span class="btn_img"><span class="search">Forward To NCIA Basket</span></span>
+            </s:a>
+        </li>
+        <li><s:a href="#" cssClass="btn" 
             onclick="document.manageQueryForm.selectedAction.value='executeQuery';document.manageQueryForm.submit();">
             <span class="btn_img"><span class="search">Run Search</span></span>
         </s:a></li>

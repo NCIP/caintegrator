@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
@@ -120,6 +121,7 @@ public class DisplayableUserWorkspace {
     private AnalysisForm analysisForm = new AnalysisForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
+    private NCIABasket nciaBasket = new NCIABasket();
 
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -312,6 +314,20 @@ public class DisplayableUserWorkspace {
             return LOGO_SERVLET_URL;
         }
                             
+    }
+
+    /**
+     * @return the nciaBasket
+     */
+    public NCIABasket getNciaBasket() {
+        return nciaBasket;
+    }
+
+    /**
+     * @param nciaBasket the nciaBasket to set
+     */
+    public void setNciaBasket(NCIABasket nciaBasket) {
+        this.nciaBasket = nciaBasket;
     }
 
 }
