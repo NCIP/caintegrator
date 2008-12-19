@@ -360,6 +360,9 @@ public class ManageQueryActionTest {
         for (DisplayableResultRow row : displayableUserWorkspace.getQueryResult().getRows()) {
             assertTrue(row.isCheckedRow());
         }
+        manageQueryAction.setSelectedAction("selectNone");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         // All rows should now be unchecked
         for (DisplayableResultRow row : displayableUserWorkspace.getQueryResult().getRows()) {

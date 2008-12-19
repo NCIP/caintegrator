@@ -235,9 +235,9 @@ public final class DisplayableQueryResult {
     }
 
     /**
-     * Toggles between true and false for this value.
+     * @param selectAll the selectAll to set
      */
-    public void toggleSelectAll() {
-        selectAll = !selectAll;
+    public void setSelectAll(Boolean selectAll) {
+        this.selectAll = selectAll;
     }
 }
