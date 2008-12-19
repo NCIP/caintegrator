@@ -93,9 +93,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -147,7 +149,8 @@ public class AnnotationValueUtilTest {
         annotationValueCollection.add(val1);
         assertTrue(annotationValueCollection.size() == 2);
         Set<String> filterList = new HashSet<String>();
-        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, filterList).size() == 1);
+        List<String> dataValues = new ArrayList<String>();
+        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
     }
 
 }
