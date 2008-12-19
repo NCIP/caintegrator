@@ -346,9 +346,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = forwardToNciaBasket();
         } else if ("selectAll".equals(selectedAction)) {
             displayTab = SEARCH_RESULTS_TAB;
-            getDisplayableWorkspace().getQueryResult().toggleSelectAll();
-            returnValue = selectAllCheckboxes();
-            
+            getDisplayableWorkspace().getQueryResult().setSelectAll(true);
+            returnValue = toggleCheckboxSelections();
+        } else if ("selectNone".equals(selectedAction)) {
+            displayTab = SEARCH_RESULTS_TAB;
+            getDisplayableWorkspace().getQueryResult().setSelectAll(false);
+            returnValue = toggleCheckboxSelections();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -360,7 +363,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * Selects all checkboxes.
      * @return the Struts result.
      */
-    public String selectAllCheckboxes() {
+    public String toggleCheckboxSelections() {
         if (getQueryResult() != null 
                 && getQueryResult().getRows() != null
                 && !getQueryResult().getRows().isEmpty()) {

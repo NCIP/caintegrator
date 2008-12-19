@@ -32,7 +32,7 @@ public class DisplayableQueryResultTest {
         assertEquals("2.0", result.getRows().get(0).getValues().get(1));
         
         assertTrue(result.getSelectAll());
-        result.toggleSelectAll();
+        result.setSelectAll(false);
         assertFalse(result.getSelectAll());
     }
 
