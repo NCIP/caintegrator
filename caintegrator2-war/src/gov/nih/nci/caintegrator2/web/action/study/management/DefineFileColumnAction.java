@@ -469,11 +469,12 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     }
     
     /**
-    * @return the availableValue
+     * @return the availableValue
+     * @throws ValidationException Invalid data
     */
-   public Set<String> getAvailableValues() {
+   public Set<String> getAvailableValues() throws ValidationException {
        return AnnotationValueUtil.getAdditionalValue(getAnnotationValueCollection(),
-               getPermissibleValues());
+               fileColumn.getDataValues(), getPermissibleValues());
    }
     
     /**

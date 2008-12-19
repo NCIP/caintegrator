@@ -281,8 +281,13 @@ public final class PermissibleValueUtil {
     private static void addDateValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
         DatePermissibleValue newPermissibleValue = new DatePermissibleValue();
-        final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-        newPermissibleValue.setDateValue((Date) formatter.parse(displayString));
+        if (displayString.contains("-")) {
+            final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+            newPermissibleValue.setDateValue((Date) formatter.parse(displayString));
+        } else {
+            final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+            newPermissibleValue.setDateValue((Date) formatter.parse(displayString));
+        }
         abstractPermissibleValues.add(newPermissibleValue);
     }
     

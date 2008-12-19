@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -130,12 +131,18 @@ public final class AnnotationValueUtil {
     
     /**
      * @param abstractAnnotationValues abstractAnnotationValues
+     * @param dataValues the values from the current upload file
      * @param filterList the list of display string to filter
      * @return set of distinct available values
      */
     public static Set<String> getAdditionalValue(Collection<AbstractAnnotationValue> abstractAnnotationValues,
-            Set<String> filterList) {
+            List<String>dataValues, Set<String> filterList) {
         Set<String> results = new HashSet<String>();
+        for (String dataValue : dataValues) {
+            if (dataValue != null && !filterList.contains(dataValue)) {
+                results.add(dataValue);
+            }
+        }
         for (AbstractAnnotationValue abstractAnnotationValue : abstractAnnotationValues) {
             String displayString = getDisplayString(abstractAnnotationValue);
             if (displayString != null && !filterList.contains(displayString)) {
