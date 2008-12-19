@@ -111,6 +111,7 @@ public final class DisplayableQueryResult {
     private boolean hasSamples;
     private boolean hasImageSeries;
     private int pageSize = DEFAULT_PAGE_SIZE;
+    private Boolean selectAll = true;
     
     DisplayableQueryResult(QueryResult result) {
         this.result = result;
@@ -224,5 +225,19 @@ public final class DisplayableQueryResult {
      */
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    /**
+     * @return the selectAll
+     */
+    public Boolean getSelectAll() {
+        return selectAll;
+    }
+
+    /**
+     * Toggles between true and false for this value.
+     */
+    public void toggleSelectAll() {
+        selectAll = !selectAll;
     }
 }

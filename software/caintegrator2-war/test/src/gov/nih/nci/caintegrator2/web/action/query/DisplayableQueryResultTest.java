@@ -30,6 +30,10 @@ public class DisplayableQueryResultTest {
         assertFalse(result.getHasSamples());
         assertEquals("value1", result.getRows().get(0).getValues().get(0));
         assertEquals("2.0", result.getRows().get(0).getValues().get(1));
+        
+        assertTrue(result.getSelectAll());
+        result.toggleSelectAll();
+        assertFalse(result.getSelectAll());
     }
 
     public static DisplayableQueryResult getTestResult() {
