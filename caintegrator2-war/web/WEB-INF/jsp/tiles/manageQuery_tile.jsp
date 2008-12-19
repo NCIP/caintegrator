@@ -24,6 +24,12 @@
         }
     }
     
+
+function selectAll () {
+    document.manageQueryForm.selectedAction.value='selectAll';
+    document.manageQueryForm.submit();
+}
+
 </script>
 
 

@@ -88,20 +88,23 @@ package gov.nih.nci.caintegrator2.web.action.query;
 //import gov.nih.nci.caintegrator2.data.StudyHelper;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.ArrayList;
@@ -125,6 +128,7 @@ public class ManageQueryActionTest {
     // Study objects
     private static final String selectedRowCriterion = "clinical";
     private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
+    private final StudyManagementService studyManagementService = new StudyManagementServiceStub();
    
     // dummy string array for testing
     private final String [] selectedAnnotationsArray = {"annotation1", "annotation2"};
@@ -139,6 +143,7 @@ public class ManageQueryActionTest {
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);
+        manageQueryAction.setStudyManagementService(studyManagementService);
         manageQueryAction.setWorkspaceService(new WorkspaceServiceStub());
         setupSession();
         
@@ -167,13 +172,12 @@ public class ManageQueryActionTest {
         assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
         
         manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
-
+        
         manageQueryAction.setSelectedAction("");
         assertEquals("", manageQueryAction.getSelectedAction());    
         
         manageQueryAction.setPageSize(10);
         assertEquals("", manageQueryAction.getSelectedAction());    
-        
     }
 
     @SuppressWarnings({"PMD", "unchecked"})
@@ -239,6 +243,8 @@ public class ManageQueryActionTest {
         
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
         // test - addition of criteria rows
@@ -306,6 +312,7 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
+        
         // test removal of invalid row still returns success (adds error message though)
         manageQueryAction.setRowNumber("10");
         manageQueryAction.prepare();
@@ -329,5 +336,49 @@ public class ManageQueryActionTest {
         assertFalse(manageQueryAction.acceptableParameterName("d-12345-p"));
         assertFalse(manageQueryAction.acceptableParameterName("12345f678"));
         assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
+    }
+    
+    @Test
+    public void testPostQueryResultExecuteMethods() {
+        // Test creating NCIA basket
+        manageQueryAction.setSelectedAction("forwardToNcia");
+        assertEquals("nciaBasket", manageQueryAction.execute());
+        DisplayableUserWorkspace displayableUserWorkspace = SessionHelper.getInstance().getDisplayableUserWorkspace();
+        DisplayableQueryResult displayableQueryResult = DisplayableQueryResultTest.getTestResult();
+        displayableUserWorkspace.setQueryResult(displayableQueryResult);
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        
+        assertEquals("nciaBasket", manageQueryAction.execute());
+        assertNotNull(displayableUserWorkspace.getNciaBasket().getNciaBasketUrl());
+        
+        // Test select all on checkboxes
+        manageQueryAction.setSelectedAction("selectAll");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        // Default is that all rows are checked
+        for (DisplayableResultRow row : displayableUserWorkspace.getQueryResult().getRows()) {
+            assertTrue(row.isCheckedRow());
+        }
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        // All rows should now be unchecked
+        for (DisplayableResultRow row : displayableUserWorkspace.getQueryResult().getRows()) {
+            assertFalse(row.isCheckedRow());
+        }
+        
+        // Test the page size switch.
+        manageQueryAction.setPageSize(20);
+        manageQueryAction.setSelectedAction("updateResultsPerPage");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals(20, SessionHelper.getInstance().getDisplayableUserWorkspace().getQueryResult().getPageSize());
+    }
+    
+    @Test
+    public void testValidate() {
+        manageQueryAction.clearErrorsAndMessages();
+        manageQueryAction.setSelectedRowCriterion("Select Criteria Type");
+        manageQueryAction.setSelectedAction("addCriterionRow");
+        manageQueryAction.validate();
+        assertTrue(!manageQueryAction.getActionErrors().isEmpty());
     }
 }

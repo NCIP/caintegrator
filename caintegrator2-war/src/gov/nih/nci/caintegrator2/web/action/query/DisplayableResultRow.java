@@ -109,7 +109,8 @@ public class DisplayableResultRow {
     private final List<String> values = new ArrayList<String>();
     private final ResultRow resultRow;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-
+    private boolean checkedRow = true;
+    
     DisplayableResultRow(ResultRow resultRow, Map<String, Integer> columnLocations) {
         this.resultRow = resultRow;
         loadValues(columnLocations);
@@ -201,5 +202,18 @@ public class DisplayableResultRow {
             return "";
         }
     }
-    
+
+    /**
+     * @return the checkedRow
+     */
+    public boolean isCheckedRow() {
+        return checkedRow;
+    }
+
+    /**
+     * @param checkedRow the checkedRow to set
+     */
+    public void setCheckedRow(boolean checkedRow) {
+        this.checkedRow = checkedRow;
+    }
 }

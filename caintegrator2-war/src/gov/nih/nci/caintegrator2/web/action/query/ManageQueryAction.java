@@ -89,11 +89,14 @@ package gov.nih.nci.caintegrator2.web.action.query;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.Collection;
@@ -110,7 +113,9 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 public class ManageQueryAction extends AbstractCaIntegrator2Action implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;
+    private static final String SEARCH_RESULTS_TAB = "searchResults";
     private QueryManagementService queryManagementService;
+    private StudyManagementService studyManagementService;
     private ManageQueryHelper manageQueryHelper;
     private boolean export = false;
     private String selectedAction = "";
@@ -125,7 +130,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
     private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
     private String displayTab;
-
+    
     /*
      * Filter out parameters from the display tag and check for export
      * parameter to set the export variable.
@@ -159,7 +164,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public void prepare() {
         super.prepare();
         if ("selectedTabSearchResults".equals(selectedAction)) {
-            displayTab = "searchResults";
+            displayTab = SEARCH_RESULTS_TAB;
             return;
         }
         displayTab = "criteria";
@@ -331,16 +336,76 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = SUCCESS;    
         } else if ("updateResultsPerPage".equals(selectedAction)) {
          // Does nothing right now, eventually might actually persist this value to db.
-            displayTab = "searchResults";
+            displayTab = SEARCH_RESULTS_TAB;
             returnValue = SUCCESS;
         } else if ("updateAnnotationDefinition".equals(selectedAction)) {
             setQueryResult(null);
             returnValue = updateAnnotationDefinition();
+        } else if ("forwardToNcia".equals(selectedAction)) {
+            displayTab = SEARCH_RESULTS_TAB;
+            returnValue = forwardToNciaBasket();
+        } else if ("selectAll".equals(selectedAction)) {
+            displayTab = SEARCH_RESULTS_TAB;
+            getDisplayableWorkspace().getQueryResult().toggleSelectAll();
+            returnValue = selectAllCheckboxes();
+            
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
         } 
         return returnValue;
+    }
+    
+    /**
+     * Selects all checkboxes.
+     * @return the Struts result.
+     */
+    public String selectAllCheckboxes() {
+        if (getQueryResult() != null 
+                && getQueryResult().getRows() != null
+                && !getQueryResult().getRows().isEmpty()) {
+            for (DisplayableResultRow row : getQueryResult().getRows()) {
+                row.setCheckedRow(getDisplayableWorkspace().getQueryResult().getSelectAll());
+            }
+        }
+        return SUCCESS;
+    }
+    
+    /**
+     * Forwards to NCIA.
+     * @return the Struts result.
+     */
+    public String forwardToNciaBasket() {
+        NCIABasket basket = new NCIABasket();
+        if (getQueryResult() != null 
+                && getQueryResult().getRows() != null
+                && !getQueryResult().getRows().isEmpty()) {
+            for (DisplayableResultRow row : getQueryResult().getRows()) {
+                if (row.isCheckedRow()) {
+                    handleCheckedRow(basket, row);
+                }
+            }
+        }
+        if (!basket.getImageSeriesIDs().isEmpty() || !basket.getImageStudyIDs().isEmpty()) {
+            getDisplayableWorkspace().setNciaBasket(basket);
+        }
+        return "nciaBasket";
+    }
+
+    private void handleCheckedRow(NCIABasket basket, DisplayableResultRow row) {
+        StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
+        if (studySubjectAssignment != null && studySubjectAssignment != null) {
+            studySubjectAssignment = getStudyManagementService().getRefreshedStudyEntity(row.getSubjectAssignment());
+        }
+        if (row.getImageSeries() != null) {
+            basket.getImageSeriesIDs().add(row.getImageSeries().getIdentifier());
+        } else if (studySubjectAssignment != null 
+                   && studySubjectAssignment.getImageStudyCollection() != null
+                   && !studySubjectAssignment.getImageStudyCollection().isEmpty()) {
+            for (ImageSeriesAcquisition imageStudy : studySubjectAssignment.getImageStudyCollection()) {
+                basket.getImageStudyIDs().add(imageStudy.getIdentifier());
+            }
+        }
     }
     
     /**
@@ -424,7 +489,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             }
             setQueryResult(new DisplayableQueryResult(result));
         }
-        displayTab = "searchResults";
+        displayTab = SEARCH_RESULTS_TAB;
         return SUCCESS;
     }
     
@@ -650,6 +715,18 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         if (getQueryResult() != null) {
             getQueryResult().setPageSize(pageSize);
         }
+    }
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 
     /**
