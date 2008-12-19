@@ -262,7 +262,7 @@ public class DefineImagingFileColumnActionTest {
         List<String> stringValues = new ArrayList<String>();
         action.setPermissibleUpdateList(stringValues);
         stringValues.add("10-05-2004");
-        stringValues.add("01-02-1999");
+        stringValues.add("01/02/1999");
         assertEquals(Action.SUCCESS, action.updateFileColumn());
         assertEquals(definition.getPermissibleValueCollection().size(), 2);
         stringValues.add("11-10-2008");

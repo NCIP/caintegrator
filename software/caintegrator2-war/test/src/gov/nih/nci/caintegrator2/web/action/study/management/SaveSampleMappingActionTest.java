@@ -86,14 +86,21 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 @SuppressWarnings("PMD")
 public class SaveSampleMappingActionTest {
@@ -103,6 +110,9 @@ public class SaveSampleMappingActionTest {
 
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", SaveSampleMappingActionTest.class); 
         action = (SaveSampleMappingAction) context.getBean("saveSampleMappingAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
@@ -112,5 +122,17 @@ public class SaveSampleMappingActionTest {
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
+        assertTrue(action.isFileUpload());
+        action.setSampleMappingFile(null);
+        assertEquals(null, action.getSampleMappingFile());
+        action.setSampleMappingFileContentType("Genomic");
+        assertEquals("Genomic", action.getSampleMappingFileContentType());
+        assertEquals(null, action.getSampleMappingFileFileName());
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setSampleMappingFileFileName("TestFile");
+        assertEquals("TestFile", action.getSampleMappingFileFileName());
+        action.validate();
+        
     }
 }
