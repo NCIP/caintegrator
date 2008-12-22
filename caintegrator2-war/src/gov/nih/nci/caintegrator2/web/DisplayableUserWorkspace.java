@@ -85,6 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -136,6 +141,7 @@ public class DisplayableUserWorkspace {
         putCurrentStudyOnValueStack();
         refreshQuery();
         putQueryObjectsOnValueStack();
+        
     }
 
     private void refreshQuery() {
@@ -229,6 +235,24 @@ public class DisplayableUserWorkspace {
         
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
         getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
+    }
+    
+    /**
+     * @return the subscriptionCollection
+     */
+    public List<StudySubscription> getOrderedSubscriptionList() {
+        List<StudySubscription> orderedSubscriptionCollection = new ArrayList<StudySubscription>();
+        if (getUserWorkspace().getSubscriptionCollection() != null) {
+            orderedSubscriptionCollection.addAll(getUserWorkspace().getSubscriptionCollection());
+        }
+        Comparator<StudySubscription> nameComparator = new Comparator<StudySubscription>() {
+            public int compare(StudySubscription subscription1, StudySubscription subscription2) {
+                return subscription1.getStudy().getShortTitleText().
+                       compareToIgnoreCase(subscription2.getStudy().getShortTitleText());
+            }
+        };
+        Collections.sort(orderedSubscriptionCollection, nameComparator);
+        return orderedSubscriptionCollection;
     }
     
     private void putQueryObjectsOnValueStack() {
