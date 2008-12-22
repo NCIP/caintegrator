@@ -9,17 +9,17 @@
 		<!-- Attributes mapping for the ReporterSet class -->
 		<property name="reporterType" type="string" column="REPORTER_TYPE"/>
 		<!-- Associations mapping for the ReporterSet class -->
-		<set name="reporters" lazy="true" cascade="save-update" inverse="true">
+		<set name="reporters" lazy="true" cascade="save-update,merge" inverse="true">
 			<cache usage="read-write" />
 			<key column="REPORTER_SET_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter"/>
 		</set>
-	    <set name="arrayDataCollection" lazy="true" cascade="save-update" inverse="true">
+	    <set name="arrayDataCollection" lazy="true" cascade="save-update,merge" inverse="true">
             <cache usage="read-write" />
             <key column="REPORTER_SET_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
         </set>
 		
-		<many-to-one name="platform" class="gov.nih.nci.caintegrator2.domain.genomic.Platform" column="PLATFORM_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="platform" class="gov.nih.nci.caintegrator2.domain.genomic.Platform" column="PLATFORM_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

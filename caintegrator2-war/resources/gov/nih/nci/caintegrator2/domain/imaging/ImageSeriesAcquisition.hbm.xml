@@ -10,12 +10,12 @@
         <property name="identifier" type="string" column="IDENTIFIER"/>
         <property name="nciaTrialIdentifier" type="string" column="NCIA_TRIAL_IDENTIFIER"/>
 		<!-- Associations mapping for the ImageSeriesAcquisition class -->
-		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" lazy="proxy" cascade="save-update" />
-		<set name="seriesCollection" lazy="true" cascade="save-update" >
+		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" lazy="proxy" cascade="save-update,merge" />
+		<set name="seriesCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="IMAGE_STUDY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeries"/>
 		</set>
-		<many-to-one name="assignment" class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment" column="STUDY_SUBJECT_ASSIGN_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="assignment" class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment" column="STUDY_SUBJECT_ASSIGN_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

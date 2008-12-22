@@ -108,7 +108,7 @@ class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     }
 
     private TextFieldParameter createGeneNameParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
+        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
         valueParameter.setLabel("equals");
         ValueHandler valueHandler = new ValueHandlerAdapter() {

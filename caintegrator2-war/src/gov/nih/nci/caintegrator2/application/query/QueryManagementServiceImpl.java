@@ -131,7 +131,11 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      * {@inheritDoc}
      */
     public void save(Query query) {
-        dao.save(query);
+        if (query.getId() == null) {
+            dao.save(query);
+        } else {
+            dao.merge(query);
+        }
     }
 
     /**

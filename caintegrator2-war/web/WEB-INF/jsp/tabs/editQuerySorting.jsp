@@ -8,25 +8,16 @@
         <tr>
             <th>Column<br></th>
             <th>Order (L-R)<br></th>
-            <th>Vertical Sorting (1st)<br></th>
-            <th>Vertical Sorting (2nd)<br></th>
-            <th>Action<br></th>
         </tr>
-        <s:if test="!manageQueryHelper.columnList.isEmpty()">
 
-            <s:iterator value="manageQueryHelper.columnList" status="columnStatus" id="currentColumn">
-                <tr>
-                    <td><s:property value="annotationDefinition.displayName" /></td>
-
-                    <td><s:select name="manageQueryHelper.columnList[%{#columnStatus.index}].columnIndex"
-                        list="manageQueryHelper.columnIndexOptions" value="%{columnIndex}" theme="simple"/></td>
-
-                </tr>
-            </s:iterator>
-        </s:if>
-        <s:else>
-            <p>These options are fixed when viewing a saved query. Click the Criteria tab to edit a new query.</p>
-        </s:else>
+        <s:iterator value="queryForm.resultConfiguration.selectedColumns" id="column">
+            <tr>
+                <td><s:property value="annotationDefinition.displayName" /></td>
+                <td><s:select name="queryForm.resultConfiguration.columnIndex['%{annotationDefinition.displayName}']"
+                    list="queryForm.resultConfiguration.columnIndexOptions" theme="simple" />
+                </td>
+            </tr>
+        </s:iterator>
 
     </table>
     <!--Buttons-->
@@ -43,5 +34,5 @@
     </div>
 
     <!--Buttons-->
-    
+
 <!--/Sort Order-->

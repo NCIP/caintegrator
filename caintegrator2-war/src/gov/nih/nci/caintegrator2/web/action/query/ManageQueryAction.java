@@ -86,11 +86,13 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
+
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -98,12 +100,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
-
-import java.util.Collection;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
 /**
  * Handles the form in which the user constructs, edits and runs a query.
@@ -113,30 +109,20 @@ import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 public class ManageQueryAction extends AbstractCaIntegrator2Action implements ParameterNameAware {
 
     private static final long serialVersionUID = 1L;
-    private static final String SEARCH_RESULTS_TAB = "searchResults";
+
+    private static final String RESULTS_TAB = "searchResults";
+    private static final String CRITERIA_TAB = "criteria";
+    private static final String COLUMNS_TAB = "columns";
+    private static final String SORTING_TAB = "sorting";
+    
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
-    private ManageQueryHelper manageQueryHelper;
-    private boolean export = false;
-    private String selectedAction = "";
-    private String rowNumber = "";
-    private String selectedRowCriterion = "uninitializedselectedRowCriterion";
-    //Struts should automatically populate these arrays from the form element.
-    private String[] selectedAnnotations;  //selected annotations for all criterion as a list.
-    private String[] selectedOperators; //selected operators for all criterion as a list.
-    private String[] selectedValues; //selected values for all criterion as a list.
-    private String searchName;
-    private String searchDescription;
-    private Long[] selectedClinicalAnnotations; // selected clinical annotations from columns tab.
-    private Long[] selectedImageAnnotations;    // selected image annotations from columns tab.
+    private String selectedAction = "executeQuery";
     private String displayTab;
-    
-    /*
-     * Filter out parameters from the display tag and check for export
-     * parameter to set the export variable.
-     * @param parameterName the request parameter
-     * @return boolean
-     */
+    private int rowNumber;
+    private Long queryId;
+    private boolean export = false;
+
     /**
      * {@inheritDoc}
      */
@@ -156,61 +142,17 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         }
         return retVal;
     }
+    
 
     /**
-     * The 'prepare' interceptor will look for this method enabling 
-     * preprocessing.
+     * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
         if ("selectedTabSearchResults".equals(selectedAction)) {
-            displayTab = SEARCH_RESULTS_TAB;
-            return;
-        }
-        displayTab = "criteria";
-        // Instantiate/prepopulate manageQueryHelper if necessary
-        manageQueryHelper = ManageQueryHelper.getInstance();
-        if ("createNewQuery".equals(selectedAction)) {
-            manageQueryHelper = ManageQueryHelper.resetSessionInstance();
-        }
-
-        if (getStudySubscription() != null) {
-            if (!manageQueryHelper.isPrepopulated()) {
-                manageQueryHelper.prepopulateAnnotationSelectLists(getStudy());
-            }
-            if (this.selectedAnnotations == null || this.selectedAnnotations.length == 0) {
-                checkClinicalAnnotationDefinitions();     
-                checkImageAnnotationDefinitions();
-            }
-        }
-    }
-    /**
-     * Setting all the Clinical definitions checked in JSP as a default action.
-     */
-    public void checkClinicalAnnotationDefinitions() {
-        Collection<AnnotationDefinition> annotationDefinitions = manageQueryHelper.getClinicalAnnotationDefinitions();
-        if (annotationDefinitions != null) {
-            this.selectedClinicalAnnotations = new Long[annotationDefinitions.size()];
-            int i = 0;
-            for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
-                this.selectedClinicalAnnotations[i] = annotationDefinition.getId();
-                i++;
-            }
-        }
-    }
-    
-    /**
-     * Setting all the Image definitions checked in JSP as a default action.
-     */
-    public void checkImageAnnotationDefinitions() {
-        Collection<AnnotationDefinition> annotationDefinitions = manageQueryHelper.getImageAnnotationDefinitions();
-        if (annotationDefinitions != null) {
-            this.selectedImageAnnotations = new Long[annotationDefinitions.size()];
-            int i = 0;
-            for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
-                this.selectedImageAnnotations[i] = annotationDefinition.getId();
-                i++;
-            }
+            displayTab = RESULTS_TAB;
+        } else {
+            displayTab = CRITERIA_TAB;
         }
     }
     
@@ -219,88 +161,33 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     @Override
     public void validate() {
-
-        if ("selectedTabSearchResults".equals(selectedAction)) {
-            return;
-        }
-
         if (getStudySubscription() == null) {
             addActionError("Please select a study under \"My Studies\".");
             return;
-        }
-        
-        saveFormData();
-        
-        if ("executeQuery".equals(selectedAction)) {
+        } else if ("selectedTabSearchResults".equals(selectedAction)) {
+            return;
+        } else if ("executeQuery".equals(selectedAction)) {
             validateExecuteQuery(); 
-        }
-            
-        if ("saveQuery".equals(selectedAction)) {
+        } else if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
-        }
-        
-        if ("addCriterionRow".equals(selectedAction)) {
+        } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
         } 
     }
     
     private void validateAddCriterionRow() {
-        if (selectedRowCriterion.equalsIgnoreCase("Select Criteria Type")) {
-            addActionError(" Please select a Criteria type");
-        }
+        getQueryForm().validate(this);
     }
     
     private void validateExecuteQuery() {
-        validateHasCriterion();
-        validateHasUserSelectedValues();
+        ensureQueryIsLoaded();
+        getQueryForm().validate(this);
     }
     
     private void validateSaveQuery() {
-        validateHasCriterion();
-        validateHasUserSelectedValues();
-        // Need to see if there's non-space characters in the saved name.
-        if (StringUtils.isEmpty(searchName)) {
-            addActionError("Must have a name for your query");
-        } else {
-            for (Query query : getStudySubscription().getQueryCollection()) {
-                if (searchName.equalsIgnoreCase(query.getName())) {
-                    addActionError("There is already a query named '" + searchName
-                            + "', either delete that one, or use a different name.");
-                    break;
-                }
-            }
-        }
+        getQueryForm().validateForSave(this);
     }
     
-    private void validateHasCriterion() {
-        if (manageQueryHelper.getQueryCriteriaRowList().isEmpty()) {
-            addActionError("No Criterion Added, must have Criteria to Search or Save a Query.");
-        }
-    }
-   
-    private void validateHasUserSelectedValues() {
-        if (selectedAnnotations != null) {
-            for (String selectedAnnotation : selectedAnnotations) {
-                if (selectedAnnotation.equalsIgnoreCase("1")) {
-                    addActionError(" Please select an Annotation ");
-                }
-            }
-        }
-        if (selectedOperators != null) {
-            for (String selectedOperator : selectedOperators) {
-                if (selectedOperator.equalsIgnoreCase("1")) {
-                    addActionError(" Please select an Operator ");
-                }
-            }
-        }
-        if (selectedValues != null) {
-            for (String selectedValue : selectedValues) {
-                if (selectedValue.equalsIgnoreCase("")) {
-                    addActionError(" Please select or type a value to run the query ");
-                }
-            }
-        }
-    }
     
     /**
      * {@inheritDoc}
@@ -308,14 +195,13 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     @Override
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // Checking action type.
     public String execute()  {
+        
+        String returnValue = ERROR;
 
         if ("selectedTabSearchResults".equals(selectedAction)) {
             return (isExport()) ? "export" : SUCCESS;
         }
-        
-        // declarations
-        String returnValue = ERROR;
-        
+
         // Check which user action is submitted
         if ("remove".equals(selectedAction)) {
             setQueryResult(null);
@@ -327,29 +213,32 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();
-        } else if ("editQuery".equals(selectedAction)) {
-            // call editQuery
+        } else if ("updateCriteria".equals(selectedAction)) {
+            displayTab = CRITERIA_TAB;
             returnValue = SUCCESS;
+        } else if ("updateColumns".equals(selectedAction)) {
+            displayTab = COLUMNS_TAB;
+            returnValue = SUCCESS;
+        } else if ("updateSorting".equals(selectedAction)) {
+            updateSorting();
+            displayTab = SORTING_TAB;
+            returnValue = SUCCESS;
+        } else if ("updateResultsPerPage".equals(selectedAction)) {
+               displayTab = RESULTS_TAB;
+               returnValue = SUCCESS;
         } else if ("createNewQuery".equals(selectedAction)) {
-            // call new query
+            getQueryForm().createQuery(getStudySubscription());
             setQueryResult(null);
             returnValue = SUCCESS;    
-        } else if ("updateResultsPerPage".equals(selectedAction)) {
-         // Does nothing right now, eventually might actually persist this value to db.
-            displayTab = SEARCH_RESULTS_TAB;
-            returnValue = SUCCESS;
-        } else if ("updateAnnotationDefinition".equals(selectedAction)) {
-            setQueryResult(null);
-            returnValue = updateAnnotationDefinition();
         } else if ("forwardToNcia".equals(selectedAction)) {
-            displayTab = SEARCH_RESULTS_TAB;
+            displayTab = RESULTS_TAB;
             returnValue = forwardToNciaBasket();
         } else if ("selectAll".equals(selectedAction)) {
-            displayTab = SEARCH_RESULTS_TAB;
+            displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(true);
             returnValue = toggleCheckboxSelections();
         } else if ("selectNone".equals(selectedAction)) {
-            displayTab = SEARCH_RESULTS_TAB;
+            displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(false);
             returnValue = toggleCheckboxSelections();
         } else {
@@ -359,6 +248,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return returnValue;
     }
     
+    private void updateSorting() {
+        getQueryForm().getResultConfiguration().reindexColumns();
+    }
+
     /**
      * Selects all checkboxes.
      * @return the Struts result.
@@ -417,59 +310,13 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String addCriterionRow() {
-        
-        if (EntityTypeEnum.SUBJECT.getValue().equals(this.selectedRowCriterion) 
-            && !manageQueryHelper.configureClinicalQueryCriterionRow()) {
-                addActionError("There are no clinical annotations defined for this study.");
-        }
-        if (EntityTypeEnum.IMAGESERIES.getValue().equals(this.selectedRowCriterion)
-            && !manageQueryHelper.configureImageSeriesQueryCriterionRow()) {
-                addActionError("There are no image series annotations defined for this study.");
-        }
-        
-        if (EntityTypeEnum.GENEEXPRESSION.getValue().equals(this.selectedRowCriterion)) {
-            if (!manageQueryHelper.configureGeneExpressionCriterionRow()) {
-                addActionError("There are no gene expression annotations defined for this study.");
-            } else {
-                // Turn it into a genomic query type, by default, if they add a genomic row.
-                manageQueryHelper.setResultType(ResultTypeEnum.GENOMIC.getValue());
-            }
-        }
+        getQueryForm().getCriteriaGroup().addCriterion();
         return SUCCESS;
     }
     
     private String removeRow() {
-        try {
-            if (!manageQueryHelper.removeQueryAnnotationCriteria(Integer.valueOf(rowNumber))) {
-                addActionError("Invalid row to remove");
-            }
-        } catch (NumberFormatException e) {
-            addActionError("rowNumber is not a valid number.");
-        }
+        getQueryForm().getCriteriaGroup().getRows().get(rowNumber).remove();
         return SUCCESS;
-    }
-    
-    private String updateAnnotationDefinition() {
-        try {
-             if (this.selectedAnnotations != null) {
-                  manageQueryHelper.updateAnnotationDefinition(selectedAnnotations, Integer.valueOf(rowNumber));
-                }
-        } catch (NumberFormatException e) {
-            addActionError("rowNumber is not a valid number.");  
-        }
-        return SUCCESS;
-    }
-
-    private void saveFormData() {
-        manageQueryHelper.updateSelectedValues(getSelectedAnnotations());
-        manageQueryHelper.updateSelectedOperatorValues(getSelectedOperators());
-        manageQueryHelper.updateSelectedUserValues(getSelectedValues());
-        manageQueryHelper.setSaveClinicalAnnotations(getSelectedClinicalAnnotations());
-        manageQueryHelper.setSaveImageAnnotations(getSelectedImageAnnotations());
-        manageQueryHelper.setClinicalResultColumnCollection();
-        manageQueryHelper.setImageResultColumnCollection();
-        manageQueryHelper.getColumnIndexOptions().clear();
-        manageQueryHelper.indexOption();
     }
     
     /**
@@ -478,22 +325,33 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String executeQuery() {
-        
-        if (ResultTypeEnum.GENOMIC.getValue().equals(manageQueryHelper.getResultType())) {
-            GenomicDataQueryResult genomicResult =  
-                manageQueryHelper.executeGenomicQuery(queryManagementService);
+        ensureQueryIsLoaded();
+        updateSorting();
+        if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
+            GenomicDataQueryResult genomicResult = 
+                queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
             setGenomicDataQueryResult(genomicResult);
         } else {
-            QueryResult result = manageQueryHelper.executeQuery(queryManagementService);
-            for (ResultRow resultRow : result.getRowCollection()) { // Load all images
-                if (resultRow.getImageSeries() != null) {
-                    resultRow.getImageSeries().getImageCollection().isEmpty();
-                }
-            }
+            QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
+            loadAllImages(result);
             setQueryResult(new DisplayableQueryResult(result));
         }
-        displayTab = SEARCH_RESULTS_TAB;
+        displayTab = RESULTS_TAB;
         return SUCCESS;
+    }
+
+    private void ensureQueryIsLoaded() {
+        if (getQueryForm().getQuery() == null) {
+            getQueryForm().setQuery(getQueryById());
+        }
+    }
+
+    private void loadAllImages(QueryResult result) {
+        for (ResultRow resultRow : result.getRowCollection()) {
+            if (resultRow.getImageSeries() != null) {
+                resultRow.getImageSeries().getImageCollection().isEmpty();
+            }
+        }
     }
     
     /**
@@ -502,121 +360,15 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String saveQuery() {
-        manageQueryHelper.saveQuery(queryManagementService, searchName, searchDescription);
+        updateSorting();
+        Query query = getQueryForm().getQuery();
+        if (!getStudySubscription().getQueryCollection().contains(query)) {
+            getStudySubscription().getQueryCollection().add(query);
+            query.setSubscription(getStudySubscription());
+        }
+        queryManagementService.save(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         return SUCCESS;
-    }
-
-    /**
-     * @return the manageQueryHelper
-     */
-    public ManageQueryHelper getManageQueryHelper() {
-        return manageQueryHelper;
-    }
-    
-    /**
-     * @param manageQueryHelper the manageQueryHelper to set
-     */
-    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
-        this.manageQueryHelper = manageQueryHelper;
-    }
-
-    /**
-     * @return the selectedRowCriterion
-     */
-    public String getSelectedRowCriterion() {
-        return selectedRowCriterion;
-    }
-
-    /**
-     * @param selectedRowCriterion the selectedRowCriterion to set
-     */
-    public void setSelectedRowCriterion(String selectedRowCriterion) {
-        this.selectedRowCriterion = selectedRowCriterion;
-    }
-
-    /**
-     * @return the selectedAnnotations
-     */
-    public String[] getSelectedAnnotations() {
-        return (this.selectedAnnotations == null)
-            ? null : this.selectedAnnotations.clone();
-    }
-
-    /**
-     * @param selectedAnnotations the selectedAnnotations to set
-     */
-    public void setSelectedAnnotations(String[] selectedAnnotations) {
-        this.selectedAnnotations = (selectedAnnotations == null)
-            ? null : selectedAnnotations.clone();
-    }
-
-    /**
-     * @return the selectedOperators
-     */
-    public String[] getSelectedOperators() {
-        String[] cloneArray = (selectedOperators == null)
-            ? null : selectedOperators.clone();
-        return cloneArray;
-    }
-
-    /**
-     * @param selectedOperators the selectedOperators to set
-     */
-    public void setSelectedOperators(String[] selectedOperators) {
-        this.selectedOperators = (selectedOperators == null)
-            ? null : selectedOperators.clone();
-    }
-
-    /**
-     * @return the selectedValues
-     */
-    public String[] getSelectedValues() {
-        String[] cloneArray = (selectedValues == null)
-            ? null : selectedValues.clone();
-        return cloneArray;
-    }
-
-    /**
-     * @param selectedValues the selectedValues to set
-     */
-    public void setSelectedValues(String[] selectedValues) {
-        this.selectedValues = (selectedValues == null)
-            ? null : selectedValues.clone();
-    }
-    
-    /**
-     * @return the selectedClinicalAnnotations
-     */
-    public Long[] getSelectedClinicalAnnotations() {
-        Long[] cloneArray = (selectedClinicalAnnotations == null)
-            ? null : selectedClinicalAnnotations.clone();
-        return cloneArray;
-    }
-
-    /**
-     * @param selectedClinicalAnnotations the selectedClinicalAnnotations to set
-     */
-    public void setSelectedClinicalAnnotations(Long[] selectedClinicalAnnotations) {
-        this.selectedClinicalAnnotations = (selectedClinicalAnnotations == null)
-            ? null : selectedClinicalAnnotations.clone();
-    }
-
-    /**
-     * @return the selectedImageAnnotations
-     */
-    public Long[] getSelectedImageAnnotations() {
-        Long[] cloneArray = (selectedImageAnnotations == null)
-            ? null : selectedImageAnnotations.clone();
-        return cloneArray;
-    }
-
-    /**
-     * @param selectedImageAnnotations the selectedImageAnnotations to set
-     */
-    public void setSelectedImageAnnotations(Long[] selectedImageAnnotations) {
-        this.selectedImageAnnotations = (selectedImageAnnotations == null)
-            ? null : selectedImageAnnotations.clone();
     }
 
     /**
@@ -648,59 +400,19 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     }
 
     /**
-     * @return the searchName
-     */
-    public String getSearchName() {
-        return searchName;
-    }
-
-    /**
-     * @param searchName the searchName to set
-     */
-    public void setSearchName(String searchName) {
-        this.searchName = searchName;
-    }
-
-    /**
-     * @return the searchDescription
-     */
-    public String getSearchDescription() {
-        return searchDescription;
-    }
-
-    /**
-     * @param searchDescription the searchDescription to set
-     */
-    public void setSearchDescription(String searchDescription) {
-        this.searchDescription = searchDescription;
-    }
-
-    /**
-     * @return the clinicalDefinitionsSize
-     */
-    public int getClinicalDefinitionsSize() {
-        return manageQueryHelper.getClinicalAnnotationDefinitions().size();
-    }
-    
-    /**
-     * @return the imageDefinitionsSize
-     */
-    public int getImageDefinitionsSize() {
-        return manageQueryHelper.getImageAnnotationDefinitions().size();
-    }
-    
-    /**
      * @return the rowNumber
      */
     public String getRowNumber() {
-        return rowNumber;
+        return String.valueOf(rowNumber);
     }
     
     /**
      * @param rowNumber the rowNumber to set
      */
     public void setRowNumber(String rowNumber) {
-        this.rowNumber = rowNumber;
+        if (!StringUtils.isBlank(rowNumber)) {
+            this.rowNumber = Integer.parseInt(rowNumber);
+        }
     }
         
     /**
@@ -709,14 +421,32 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public String getDisplayTab() {
         return displayTab;
     }
-    
+
     /**
-     * Set the page size.
-     * @param pageSize the page size
+     * @param queryId the queryId to set
      */
-    public void setPageSize(int pageSize) {
-        if (getQueryResult() != null) {
-            getQueryResult().setPageSize(pageSize);
+    public void setQueryId(Long queryId) {
+        getQueryForm().setQuery(null);
+        this.queryId = queryId;
+    }
+
+    private Query getQueryById() {
+        for (Query query : getStudySubscription().getQueryCollection()) {
+            if (queryId.equals(query.getId())) {
+                return query;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the currently open query id for the left nav menu.
+     */
+    public Long getOpenQueryId() {
+        if (getQueryForm().getQuery() != null) {
+            return getQueryForm().getQuery().getId();
+        } else {
+            return null;
         }
     }
     /**
@@ -731,7 +461,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public void setStudyManagementService(StudyManagementService studyManagementService) {
         this.studyManagementService = studyManagementService;
     }
-
+    
     /**
      * @return the export
      */
@@ -745,4 +475,15 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public void setExport(boolean export) {
         this.export = export;
     }
+        
+    /**
+     * Set the page size.
+     * @param pageSize the page size
+     */
+    public void setPageSize(int pageSize) {
+        if (getQueryResult() != null) {
+            getQueryResult().setPageSize(pageSize);
+        }
+    }
+
 }

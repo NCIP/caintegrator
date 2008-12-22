@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import java.util.HashSet;
 
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -134,6 +135,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
             subscription.setId(Long.valueOf(1));
             subscription.setStudy(new Study());
             subscription.getStudy().setShortTitleText("Study Name");
+            subscription.setQueryCollection(new HashSet<Query>());
         }
         return subscription;
     }

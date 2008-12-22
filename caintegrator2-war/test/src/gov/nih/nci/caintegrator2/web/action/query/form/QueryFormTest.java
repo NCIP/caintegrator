@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
@@ -167,6 +168,7 @@ public class QueryFormTest {
         definition.setId(nextId++);
         definition.setType(type.getValue());
         definition.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        definition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         return definition;
     }
 
@@ -204,9 +206,9 @@ public class QueryFormTest {
     public void testCriteriaGroup() {
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
-        assertEquals(BooleanOperatorEnum.AND.getValue(), group.getBooleanOperatorName());
-        group.setBooleanOperatorName("or");
-        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperatorName());
+        assertEquals(BooleanOperatorEnum.AND.getValue(), group.getBooleanOperator());
+        group.setBooleanOperator("or");
+        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
         group.setCriterionTypeName("");
         assertEquals("", group.getCriterionTypeName());
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
@@ -494,7 +496,7 @@ public class QueryFormTest {
         CriteriaGroup group = queryForm.getCriteriaGroup();
         assertNotNull(group);
         assertEquals(compoundCriterion, group.getCompoundCriterion());
-        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperatorName());
+        assertEquals(BooleanOperatorEnum.OR.getValue(), group.getBooleanOperator());
         assertEquals(3, group.getRows().size());
         
         ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
@@ -539,7 +541,7 @@ public class QueryFormTest {
         assertEquals(EntityTypeEnum.SUBJECT.getValue(), column.getEntityType());
         assertEquals(stringClinicalAnnotation2, column.getAnnotationDefinition());
         assertEquals(0, (int) column.getColumnIndex());
-        assertEquals(0, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
+        assertEquals(1, queryForm.getResultConfiguration().getColumnIndex("stringClinicalAnnotation2"));
         assertEquals(1, queryForm.getResultConfiguration().getSelectedColumns().size());
         assertEquals(stringClinicalAnnotation2, queryForm.getResultConfiguration().getSelectedColumns().get(0).getAnnotationDefinition());
 

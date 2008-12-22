@@ -154,7 +154,10 @@ public abstract class AbstractCriterionParameter {
     public abstract String getFieldType();
 
 
-    String getOperator() {
+    /**
+     * @return the current operator.
+     */
+    public String getOperator() {
         if (operatorHandler.getOperator() == null) {
             return "";
         } else {
@@ -162,7 +165,10 @@ public abstract class AbstractCriterionParameter {
         }
     }
 
-    void setOperator(String operator) {
+    /**
+     * @param operator the new operator value
+     */
+    public void setOperator(String operator) {
         if (!StringUtils.equals(getOperator(), operator)) {
             if (StringUtils.isBlank(operator)) {
                 operatorHandler.operatorChanged(this, null);

@@ -200,4 +200,12 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRowType() {
+        return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
+    }
+
 }

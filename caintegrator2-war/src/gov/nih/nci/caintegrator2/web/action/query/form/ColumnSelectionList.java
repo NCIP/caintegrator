@@ -91,6 +91,8 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -114,17 +116,33 @@ public class ColumnSelectionList {
 
     private OptionList<AnnotationDefinition> createColumnList(Collection<AnnotationDefinition> annotationDefinitions) {
         OptionList<AnnotationDefinition> options = new OptionList<AnnotationDefinition>();
-        for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+        for (AnnotationDefinition annotationDefinition : sortDefinitions(annotationDefinitions)) {
             options.addOption(annotationDefinition.getDisplayName(), annotationDefinition);
         }
         return options;
     }
 
-    /**
-     * @return the columnList
-     */
-    public OptionList<AnnotationDefinition> getColumnList() {
+    private List<AnnotationDefinition> sortDefinitions(Collection<AnnotationDefinition> definitions) {
+        List<AnnotationDefinition> sortedDefinitions = new ArrayList<AnnotationDefinition>();
+        sortedDefinitions.addAll(definitions);
+        Comparator<AnnotationDefinition> comparator = new Comparator<AnnotationDefinition>() {
+            public int compare(AnnotationDefinition definition1, AnnotationDefinition definition2) {
+                return definition1.getDisplayName().compareTo(definition2.getDisplayName());
+            }
+        };
+        Collections.sort(sortedDefinitions, comparator);
+        return sortedDefinitions;
+    }
+
+    OptionList<AnnotationDefinition> getColumnList() {
         return columnList;
+    }
+    
+    /**
+     * @return the column options.
+     */
+    public List<Option<AnnotationDefinition>> getOptions() {
+        return getColumnList().getOptions();
     }
     
     /**
@@ -178,6 +196,13 @@ public class ColumnSelectionList {
                 }
             }
         }
+    }
+    
+    /**
+     * @return true if there are no associated columns.
+     */
+    public boolean isEmpty() {
+        return getColumnList().getOptions().isEmpty();
     }
 
 }

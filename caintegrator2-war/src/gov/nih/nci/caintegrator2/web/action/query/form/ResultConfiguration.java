@@ -90,6 +90,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -131,6 +134,9 @@ public class ResultConfiguration {
         getQuery().setResultType(resultType);
         if (ResultTypeEnum.GENOMIC.getValue().equals(resultType)) {
             getQuery().getColumnCollection().clear();
+            if (StringUtils.isBlank(getReporterType())) {
+                setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+            }
         }
     }
 
@@ -193,13 +199,24 @@ public class ResultConfiguration {
         Collections.sort(selectedColumns, columnIndexComparator);
         return selectedColumns;
     }
-    
+
     /**
      * @param columnName get index of this column
      * @return the index
      */
     public int getColumnIndex(String columnName) {
-        return getColumn(columnName).getColumnIndex();
+        return getColumn(columnName).getColumnIndex() + 1;
+    }
+
+    /**
+     * @return the allowable indexes
+     */
+    public int[] getColumnIndexOptions() {
+        int[] indexes = new int[getQuery().getColumnCollection().size()];
+        for (int i = 0; i < indexes.length; i++) {
+            indexes[i] = i + 1;
+        }
+        return indexes;
     }
     
     /**
@@ -207,7 +224,7 @@ public class ResultConfiguration {
      * @param index the index
      */
     public void setColumnIndex(String columnName, int index) {
-        getColumn(columnName).setColumnIndex(index);
+        getColumn(columnName).setColumnIndex(index - 1);
     }
 
     private ResultColumn getColumn(String columnName) {
@@ -217,6 +234,16 @@ public class ResultConfiguration {
             }
         }
         return null;
+    }
+
+    /**
+     * Revises the result column indexes to ensure there are no duplicates.
+     */
+    public void reindexColumns() {
+        List<ResultColumn> selectedColumns = getSelectedColumns();
+        for (int i = 0; i < selectedColumns.size(); i++) {
+            selectedColumns.get(i).setColumnIndex(i);
+        }
     }
 
 }

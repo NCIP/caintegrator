@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.ArrayList;
@@ -109,6 +110,7 @@ class AnnotationDefinitionList {
         for (AnnotationDefinition definition : definitions) {
             names.add(definition.getDisplayName());
             nameToDefinitionMap.put(definition.getDisplayName(), definition);
+            Cai2Util.loadCollections(definition);
         }
         Collections.sort(names);
     }

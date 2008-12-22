@@ -297,7 +297,7 @@
             <result name="input" type="tiles">manageQuery</result>
             <result name="error" type="tiles">manageQuery</result>
             <result name="nciaBasket" type="redirect">${displayableWorkspace.nciaBasket.nciaBasketUrl} </result>
-            <result name="export" type="tiles">exportSearchResults</result>            
+            <result name="export" type="tiles">exportSearchResults</result>
         </action>
         
         <action name="selectQueryTab" class="selectQueryTabAction">
@@ -307,10 +307,7 @@
             <result name="selectedTabSearchResults">/WEB-INF/jsp/tabs/editQuerySearchResults.jsp</result>
             <result name="selectedTabSaveAs">/WEB-INF/jsp/tabs/editQuerySaveAs.jsp</result>
         </action>
-                
-        <action name="executeQuery" class="executeQueryAction">
-            <result type="tiles">viewResults</result>
-        </action>
+
         <!--  Analysis Actions -->
    
         <action name="genePatternAnalysis" class="genePatternAnalysisAction">

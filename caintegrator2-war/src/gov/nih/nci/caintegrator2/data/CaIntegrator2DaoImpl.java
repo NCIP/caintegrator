@@ -483,4 +483,12 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             throw new IllegalStateException("Unknown Entity Type.");
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")      // hibernate operation not parameterized
+    public <T> T merge(T persistentObject) {
+        return (T) getHibernateTemplate().merge(persistentObject);
+    }
 }

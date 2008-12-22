@@ -321,17 +321,6 @@
         </property>
     </bean>
     
-    <bean id="executeQueryAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.query.ExecuteQueryAction">
-        <property name="queryManagementService">
-            <ref local="queryManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>   
-
     <!-- Analysis actions -->
     
     <bean id="genePatternAnalysisAction"

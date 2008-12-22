@@ -10,12 +10,12 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalSpringContextTests {
+public class LoadAffymetrixDesignsTestIntegrationDisabled extends AbstractTransactionalSpringContextTests {
     
     private ArrayDataService arrayDataService;
     private CaIntegrator2Dao dao;
     
-    public LoadAffymetrixDesignsTestIntegration() {
+    public LoadAffymetrixDesignsTestIntegrationDisabled() {
         setDefaultRollback(false);
     }
     
