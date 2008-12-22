@@ -44,22 +44,15 @@
                 <li><a href="#">Queries</a>
                     <ul>
                         <li><a href="#">My Queries</a>
-                            <ul>
-                                <li><a href='/caintegrator2/executeQuery.action?queryName=simple#searchresults' class="queries">Disease = Astrocytoma</a></li>
-                                <li><a href='/caintegrator2/executeQuery.action?queryName=image#searchresults' class="queries">Image Series Query</a></li>
-                                <li><a href='/caintegrator2/executeQuery.action?queryName=genomic#searchresults' class="queries">Genomic Data Query</a></li>
-                                
-                                <s:iterator value="studySubscription.queryCollection">
-                                    <s:url id="queryURL" action="executeQuery">
+                            <ul>                                
+                                <s:iterator value="displayableWorkspace.userQueries">
+                                    <s:url id="queryUrl" action="manageQuery" includeParams="none">
                                         <s:param name="queryId" value="id" />
-                                        <s:param name="openMenuTreeId" value="id" />
                                     </s:url>
-
-                                    <s:set name="temp" value="%{openMenuTreeId[0]}"/>
                                                                         
-                                    <li><s:a href="%{queryURL}" cssClass="queries">
-                                         <s:if test="#temp==id">
-                                            <strong> <s:property value="name"/> </strong>
+                                    <li><s:a href="%{queryUrl}" cssClass="queries">
+                                         <s:if test="id == openQueryId">
+                                            <strong><s:property value="name"/></strong>
                                           </s:if>
                                           <s:else>
                                             <s:property value="name"/>
@@ -68,7 +61,6 @@
                                     </li>
                                 </s:iterator>
                                 
-                                <!-- li><a href='/caintegrator2/executeQuery.action?queryName=genomic' class="queries">Genomic Query</a></li -->
                             </ul>
                         </li>
                     </ul>

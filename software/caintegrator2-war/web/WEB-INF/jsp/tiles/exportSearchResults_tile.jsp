@@ -1,10 +1,3 @@
-<%@ page language="java"
-    import="java.util.*, 
-    com.opensymphony.xwork2.ActionContext,
-     gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
-    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria"
-    pageEncoding="ISO-8859-1"%>
-
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 

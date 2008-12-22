@@ -85,10 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.query.domain;
 
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 /**
  * 
  */
@@ -123,8 +122,6 @@ public final class ResultColumnGenerator extends AbstractTestDataGenerator<Resul
         rc.setSortType(getUniqueString());
         rc.setColumnIndex(getUniqueInt());
         rc.setEntityType(getUniqueString());
-        rc.setAnnotationDefinition(new AnnotationDefinition());
-
     }
 
 }

@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.application.study.DatePermissibleValueGenerator
 import gov.nih.nci.caintegrator2.application.study.NumericPermissibleValueGenerator;
 import gov.nih.nci.caintegrator2.application.study.StringPermissibleValueGenerator;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
@@ -124,7 +123,6 @@ public final class SelectedValueCriterionGenerator extends AbstractTestDataGener
     @Override
     public void setValues(SelectedValueCriterion selectedValueCriterion) {
         selectedValueCriterion.setEntityType("Subject");
-        selectedValueCriterion.setAnnotationDefinition(new AnnotationDefinition());
         selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
 
         NumericPermissibleValue numVal = NumericPermissibleValueGenerator.INSTANCE.createPersistentObject();

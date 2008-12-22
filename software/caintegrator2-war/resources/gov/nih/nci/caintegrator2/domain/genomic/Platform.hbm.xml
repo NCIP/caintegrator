@@ -10,7 +10,7 @@
 		<property name="name" type="string" column="NAME"/>
 		<property name="vendor" type="string" column="VENDOR"/>
 		<!-- Associations mapping for the Platform class -->
-		<set name="reporterSets" lazy="true" cascade="save-update" >
+		<set name="reporterSets" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="PLATFORM_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ReporterSet"/>

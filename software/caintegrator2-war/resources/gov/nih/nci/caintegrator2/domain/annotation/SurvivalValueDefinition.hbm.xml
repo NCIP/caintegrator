@@ -11,9 +11,9 @@
         <property name="survivalValueType" type="string" column="SURVIVAL_VALUE_TYPE"/>
 		
 		<!-- Associations mapping for the AbstractAnnotationValue class -->
-		<many-to-one name="survivalStartDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_START_DATE_ID" lazy="proxy" cascade="save-update" />
-		<many-to-one name="deathDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="DEATH_DATE_ID" lazy="proxy" cascade="save-update" />
-		<many-to-one name="lastFollowupDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="LAST_FOLLOWUP_DATE_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="survivalStartDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="SURVIVAL_START_DATE_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="deathDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="DEATH_DATE_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="lastFollowupDate" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="LAST_FOLLOWUP_DATE_ID" lazy="proxy" cascade="save-update,merge" />
 
 	</class>
 </hibernate-mapping>

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
@@ -139,6 +140,7 @@ public class StudyHelper {
         
         sampleAnnotationDefinition = new AnnotationDefinition();
         sampleAnnotationDefinition.setDisplayName("SampleAnnotation");
+        sampleAnnotationDefinition.setType(AnnotationTypeEnum.NUMERIC.getValue());
         
         imageSeriesAnnotationDefinition = new AnnotationDefinition();
         imageSeriesAnnotationDefinition.setDisplayName("ImageSeriesAnnotation");
@@ -308,11 +310,8 @@ public class StudyHelper {
          */
         // Add permissible values.
         sampleAnnotationDefinition.setPermissibleValueCollection(permissibleValueCollection);
-        permval1.setLowValue(10.0);
-        permval1.setHighValue(12.0);
-        
-        permval2.setLowValue(13.0);
-        permval2.setHighValue(14.0);
+        permval1.setNumericValue(100.0);
+        permval2.setNumericValue(15.0);
         
         numval1.setAnnotationDefinition(sampleAnnotationDefinition);
         numval1.setNumericValue(10.0);
@@ -549,6 +548,7 @@ public class StudyHelper {
         SelectedValueCriterion criterion = new SelectedValueCriterion();
         criterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
         criterion.getValueCollection().add(permval1);
+        criterion.setAnnotationDefinition(sampleAnnotationDefinition);
         
         criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
         criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());

@@ -166,7 +166,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
         CompoundCriterion compoundCriterion4 = studyHelper.createCompoundCriterion3();
         CompoundCriterionHandler compoundCriterionHandler4 = CompoundCriterionHandler.create(compoundCriterion4);
-        assertEquals(3, compoundCriterionHandler4.getMatches(dao, study, entityTypesInQuery).size());
+        assertEquals(1, compoundCriterionHandler4.getMatches(dao, study, entityTypesInQuery).size());
     }
     
     /**

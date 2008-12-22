@@ -91,7 +91,6 @@ import static org.junit.Assert.assertNull;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 
 import java.util.HashMap;
 
@@ -125,7 +124,6 @@ public class CaIntegrator2ActionTest {
         assertNull(action.getDisplayableWorkspace());
         assertNull(action.getStudySubscription());
         assertNull(action.getStudy());
-        assertNull(action.getQuery());
         assertNull(action.getQueryResult());
         assertNull(action.getGenomicDataQueryResult());
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
@@ -133,17 +131,12 @@ public class CaIntegrator2ActionTest {
         assertNotNull(action.getDisplayableWorkspace());
         assertNotNull(action.getStudySubscription());
         assertNotNull(action.getStudy());
-        Query query = new Query();
-        query.setId(1L);
-        action.setQuery(query);
-        assertEquals(query, action.getQuery());
         GenomicDataQueryResult genomicDataQueryResult = new GenomicDataQueryResult();
         genomicDataQueryResult.setId(1L);
         action.setGenomicDataQueryResult(genomicDataQueryResult);
         assertEquals(genomicDataQueryResult, action.getGenomicDataQueryResult());
         action.setStudySubscription(null);
         action.prepare();
-        assertNull(action.getQuery());
         assertNull(action.getQueryResult());
         assertNull(action.getGenomicDataQueryResult());
     }

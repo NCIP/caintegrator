@@ -152,17 +152,17 @@ public class CriteriaGroup {
     }
 
     /**
-     * @return the booleanOperatorName
+     * @return the booleanOperator
      */
-    public String getBooleanOperatorName() {
+    public String getBooleanOperator() {
         return compoundCriterion.getBooleanOperator();
     }
 
     /**
-     * @param booleanOperatorName the booleanOperatorName to set
+     * @param booleanOperator the booleanOperator to set
      */
-    public void setBooleanOperatorName(String booleanOperatorName) {
-        compoundCriterion.setBooleanOperator(booleanOperatorName);
+    public void setBooleanOperator(String booleanOperator) {
+        compoundCriterion.setBooleanOperator(booleanOperator);
     }
 
     /**
@@ -202,6 +202,17 @@ public class CriteriaGroup {
         } else {
             return criterionType.getValue();
         }
+    }
+
+    /**
+     * @return the valid criterionTypeNames
+     */
+    public List<String> getCriterionTypeNames() {
+        List<String> names = new ArrayList<String>();
+        for (CriterionRowTypeEnum rowType : CriterionRowTypeEnum.values()) {
+            names.add(rowType.getValue());
+        }
+        return names;
     }
 
     /**

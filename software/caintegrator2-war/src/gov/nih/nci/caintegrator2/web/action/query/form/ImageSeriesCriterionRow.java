@@ -113,4 +113,12 @@ public class ImageSeriesCriterionRow extends AbstractAnnotationCriterionRow {
         return EntityTypeEnum.IMAGESERIES;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRowType() {
+        return CriterionRowTypeEnum.IMAGE_SERIES.getValue();
+    }
+
 }

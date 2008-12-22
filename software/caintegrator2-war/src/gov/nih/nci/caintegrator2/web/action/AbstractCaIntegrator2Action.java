@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -95,6 +94,7 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -197,11 +197,11 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
 
     /**
-     * @return the query
+     * @return the query form
      */
-    protected final Query getQuery() {
+    public QueryForm getQueryForm() {
         if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getQuery();
+            return getDisplayableWorkspace().getQueryForm();
         } else {
             return null;
         }
@@ -227,13 +227,6 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         } else {
             return null;
         }
-    }
-
-    /**
-     * @param query the query to set
-     */
-    protected final void setQuery(Query query) {
-        getDisplayableWorkspace().setQuery(query);
     }
 
     /**

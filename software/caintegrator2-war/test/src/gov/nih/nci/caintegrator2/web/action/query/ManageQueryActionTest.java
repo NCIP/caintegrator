@@ -85,30 +85,24 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-//import gov.nih.nci.caintegrator2.data.StudyHelper;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -126,58 +120,18 @@ public class ManageQueryActionTest {
     private ManageQueryAction manageQueryAction;
     
     // Study objects
-    private static final String selectedRowCriterion = "clinical";
-    private final QueryManagementService queryManagementService = new QueryManagementServiceStub();
+    private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
     private final StudyManagementService studyManagementService = new StudyManagementServiceStub();
-   
-    // dummy string array for testing
-    private final String [] selectedAnnotationsArray = {"annotation1", "annotation2"};
-    private final String [] operatorsArray =  {"equals",">"};
-    private final String [] selectedValuesArray = {"String1", "1.0"};
-    private final Long [] holdLongArray = {Long.valueOf(12), Long.valueOf(4)};
     
     @Before
     @SuppressWarnings({"PMD"})
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-management-action-test-config.xml", ManageQueryActionTest.class); 
         manageQueryAction = (ManageQueryAction) context.getBean("manageQueryAction");
-        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
         manageQueryAction.setQueryManagementService(queryManagementService);
         manageQueryAction.setStudyManagementService(studyManagementService);
         manageQueryAction.setWorkspaceService(new WorkspaceServiceStub());
         setupSession();
-        
-        // the first time the parameter is null so
-        // confirm that the getter method returns a null or an empty array
-        Long[] emptyLongArray = new Long[0];
-
-        assertArrayEquals(null,manageQueryAction.getSelectedAnnotations());
-        manageQueryAction.setSelectedAnnotations(selectedAnnotationsArray);
-        assertArrayEquals(selectedAnnotationsArray,manageQueryAction.getSelectedAnnotations());
-        
-        assertArrayEquals(null,manageQueryAction.getSelectedOperators());
-        manageQueryAction.setSelectedOperators(operatorsArray);
-        assertArrayEquals(operatorsArray,manageQueryAction.getSelectedOperators());
-        
-        assertArrayEquals(null,manageQueryAction.getSelectedValues());
-        manageQueryAction.setSelectedValues(selectedValuesArray);
-        assertArrayEquals(selectedValuesArray,manageQueryAction.getSelectedValues());
-        
-        assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedClinicalAnnotations());
-        manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
-        assertArrayEquals(holdLongArray,manageQueryAction.getSelectedClinicalAnnotations());
-        
-        assertArrayEquals(emptyLongArray,manageQueryAction.getSelectedImageAnnotations());
-        manageQueryAction.setSelectedImageAnnotations(holdLongArray);
-        assertArrayEquals(holdLongArray,manageQueryAction.getSelectedImageAnnotations());
-        
-        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
-        
-        manageQueryAction.setSelectedAction("");
-        assertEquals("", manageQueryAction.getSelectedAction());    
-        
-        manageQueryAction.setPageSize(10);
-        assertEquals("", manageQueryAction.getSelectedAction());    
     }
 
     @SuppressWarnings({"PMD", "unchecked"})
@@ -185,38 +139,24 @@ public class ManageQueryActionTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SessionHelper sessionHelper = SessionHelper.getInstance();
-        manageQueryAction.setSelectedClinicalAnnotations(holdLongArray);
-        manageQueryAction.setSelectedImageAnnotations(holdLongArray);
         manageQueryAction.prepare();
         assertEquals("criteria", manageQueryAction.getDisplayTab());
         
+        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
+        StudySubscription studySubscription = createStudySubscription(1L);
+        createStudySubscription(2L);
+        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
+    }
+
+    private StudySubscription createStudySubscription(long id) {
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(new Study());
-        studySubscription.setId(1L);
-        StudySubscription studySubscription2 = new StudySubscription();
-        studySubscription2.setStudy(new Study());
-        studySubscription2.setId(2L);
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription2);
-        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
-        manageQueryAction.validate();
-        manageQueryAction.getManageQueryHelper().setQueryCriteriaRowList(new ArrayList<QueryAnnotationCriteria>());
-        QueryAnnotationCriteria queryAnnotationCriteria = new QueryAnnotationCriteria();
-        AnnotationSelection annotationSelection = new AnnotationSelection();
-        annotationSelection.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
-        annotationSelection.getAnnotationDefinitions().add(new AnnotationDefinition());
-        queryAnnotationCriteria.setAnnotationSelection(annotationSelection);
-        queryAnnotationCriteria.setRowType(EntityTypeEnum.SUBJECT);
-        manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria);
-
-        QueryAnnotationCriteria queryAnnotationCriteria2 = new QueryAnnotationCriteria();
-        AnnotationSelection annotationSelection2 = new AnnotationSelection();
-        annotationSelection2.setAnnotationDefinitions(new HashSet<AnnotationDefinition>());
-        annotationSelection2.getAnnotationDefinitions().add(new AnnotationDefinition());
-        queryAnnotationCriteria2.setAnnotationSelection(annotationSelection2);
-        queryAnnotationCriteria2.setRowType(EntityTypeEnum.SUBJECT);
-        manageQueryAction.getManageQueryHelper().getQueryCriteriaRowList().add(queryAnnotationCriteria2);
+        studySubscription.setId(id);
+        studySubscription.getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+        studySubscription.getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        studySubscription.setQueryCollection(new HashSet<Query>());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
+        return studySubscription;
     }
 
     @Test
@@ -227,110 +167,45 @@ public class ManageQueryActionTest {
         manageQueryAction.setSelectedAction("createNewQuery");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         
-        // test edit new query
-        manageQueryAction.setSelectedAction("editQuery");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
         // test execute query
         manageQueryAction.setSelectedAction("executeQuery");
-        manageQueryAction.getManageQueryHelper().setResultType(ResultTypeEnum.GENOMIC.getValue());
-        manageQueryAction.getManageQueryHelper().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        manageQueryAction.prepare();
         manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
+        assertTrue(queryManagementService.executeCalled);
+        manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.executeGenomicDataQueryCalled);
+
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
         manageQueryAction.prepare();
         manageQueryAction.validate();
+        assertTrue(manageQueryAction.hasErrors());
+        manageQueryAction.clearErrorsAndMessages();
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.saveCalled);
         
         // test - addition of criteria rows
-
-        // test - addition of row with non-clinical criterion
-        manageQueryAction.setSelectedRowCriterion("notaclinicalrow");
-        assertEquals("notaclinicalrow",manageQueryAction.getSelectedRowCriterion());
         manageQueryAction.setSelectedAction("addCriterionRow");
-        manageQueryAction.prepare();
+        manageQueryAction.getQueryForm().getCriteriaGroup().setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
         manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        // test - addition of row with clinical criterion
-        manageQueryAction.setSelectedRowCriterion(selectedRowCriterion);
-        assertEquals(selectedRowCriterion,manageQueryAction.getSelectedRowCriterion());
-        manageQueryAction.setSelectedAction("addCriterionRow");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        //test - update Annotation Definition
-        
-        Collection<AnnotationDefinition> subjectAnnotationCollection = new ArrayList<AnnotationDefinition>();
-        AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setId(1L);
-        definition.setDisplayName("annotation1");
-        definition.setType("string");
-        definition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
-        subjectAnnotationCollection.add(definition);
-        definition = new AnnotationDefinition();
-        definition.setId(2L);
-        definition.setDisplayName("annotation2");
-        definition.setType("string");
-        definition.setPermissibleValueCollection(new ArrayList<AbstractPermissibleValue>());
-        subjectAnnotationCollection.add(definition);
-        
-        StudySubscription studySubscription = new StudySubscription();
-        studySubscription.setStudy(new Study());
-        studySubscription.getStudy().setSubjectAnnotationCollection(subjectAnnotationCollection);
-        studySubscription.setId(1L);
-        
-        StudySubscription studySubscription2 = new StudySubscription();
-        studySubscription2.setStudy(new Study());
-        studySubscription2.getStudy().setSubjectAnnotationCollection(subjectAnnotationCollection);
-        studySubscription2.setId(2L);
-
-        SessionHelper sessionHelper = SessionHelper.getInstance();
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().clear();
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
-        sessionHelper.getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription2);
-        sessionHelper.getDisplayableUserWorkspace().setCurrentStudySubscription(studySubscription);
-
-        manageQueryAction.getManageQueryHelper().prepopulateAnnotationSelectLists(studySubscription.getStudy());
-
-        manageQueryAction.setSelectedAction("updateAnnotationDefinition");
-        manageQueryAction.setRowNumber("0");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals(1, manageQueryAction.getQueryForm().getCriteriaGroup().getRows().size());
         
         // test removal of row
         manageQueryAction.setSelectedAction("remove");
         manageQueryAction.setRowNumber("0");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        
-        // test removal of invalid row still returns success (adds error message though)
-        manageQueryAction.setRowNumber("10");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        
-        // test invalid removal string still returns success (adds error message though)
-        manageQueryAction.setRowNumber("INVALID INT");
-        manageQueryAction.prepare();
-        manageQueryAction.validate();
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals(0, manageQueryAction.getQueryForm().getCriteriaGroup().getRows().size());
 
         // test for invalid action
-        manageQueryAction.setSelectedAction(null);
+        manageQueryAction.setSelectedAction("invalid");
         assertEquals(Action.ERROR, manageQueryAction.execute());
-
-        assertEquals(Action.SUCCESS, manageQueryAction.addCriterionRow());
-        assertNotNull(manageQueryAction.getQueryManagementService());
         
         assertFalse(manageQueryAction.acceptableParameterName("d-12345-e"));
         assertFalse(manageQueryAction.acceptableParameterName("d-12345-p"));
@@ -338,6 +213,7 @@ public class ManageQueryActionTest {
         assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
     }
     
+
     @Test
     public void testPostQueryResultExecuteMethods() {
         // Test creating NCIA basket
@@ -376,12 +252,4 @@ public class ManageQueryActionTest {
         assertEquals(20, SessionHelper.getInstance().getDisplayableUserWorkspace().getQueryResult().getPageSize());
     }
     
-    @Test
-    public void testValidate() {
-        manageQueryAction.clearErrorsAndMessages();
-        manageQueryAction.setSelectedRowCriterion("Select Criteria Type");
-        manageQueryAction.setSelectedAction("addCriterionRow");
-        manageQueryAction.validate();
-        assertTrue(!manageQueryAction.getActionErrors().isEmpty());
-    }
 }

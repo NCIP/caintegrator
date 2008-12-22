@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2.data;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
@@ -101,10 +103,11 @@ import org.junit.Test;
 
 public class SelectedValueCriterionHandlerTest {
 
-
     @Test
     public void testTranslate() {
         SelectedValueCriterion svCriterion = new SelectedValueCriterion();
+        svCriterion.setAnnotationDefinition(new AnnotationDefinition());
+        svCriterion.getAnnotationDefinition().setType(AnnotationTypeEnum.NUMERIC.getValue());
         Collection <AbstractPermissibleValue> valueCollection = new HashSet<AbstractPermissibleValue>();
         NumericPermissibleValue val1 = new NumericPermissibleValue();
         val1.setNumericValue(Double.valueOf(123));
@@ -113,8 +116,16 @@ public class SelectedValueCriterionHandlerTest {
         
         Criterion crit = AbstractAnnotationCriterionHandler.create(svCriterion).translate();
         assertNotNull(crit);
-        // This needs to be "boundedValue in Collection(PermissibleValue)"
-        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.PERMISSIBLE_VALUE_COLUMN+" in").
+        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.NUMERIC_VALUE_COLUMN+" in").
+                                    matcher(crit.toString()).find());
+        svCriterion.getAnnotationDefinition().setType(AnnotationTypeEnum.STRING.getValue());
+        valueCollection.clear();
+        crit = AbstractAnnotationCriterionHandler.create(svCriterion).translate();
+        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.STRING_VALUE_COLUMN+" in").
+                                    matcher(crit.toString()).find());
+        svCriterion.getAnnotationDefinition().setType(AnnotationTypeEnum.DATE.getValue());
+        crit = AbstractAnnotationCriterionHandler.create(svCriterion).translate();
+        assertTrue(Pattern.compile(AbstractAnnotationCriterionHandler.DATE_VALUE_COLUMN+" in").
                                     matcher(crit.toString()).find());
     }
 

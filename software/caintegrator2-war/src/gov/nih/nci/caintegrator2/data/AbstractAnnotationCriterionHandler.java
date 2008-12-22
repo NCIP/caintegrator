@@ -109,10 +109,6 @@ public abstract class AbstractAnnotationCriterionHandler {
      * Date Value (Currently Unused, but maybe in the future?).
      */
     public static final String DATE_VALUE_COLUMN = "dateValue";
-    /**
-     * Permissible Value.
-     */
-    public static final String PERMISSIBLE_VALUE_COLUMN = "boundedValue";
     
     /**
      * Creates the appropriate Annotation Criterion Handler based on the criterion object.

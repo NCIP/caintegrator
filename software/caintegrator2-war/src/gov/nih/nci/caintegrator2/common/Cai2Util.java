@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -251,5 +252,24 @@ public final class Cai2Util {
             throw new IllegalArgumentException("value is of type Date, but permissibleValue is not.");
         }
         return false;
+    }
+
+    /**
+     * Make sure all persistent collections are loaded.
+     * 
+     * @param definition the definition to ensure is loaded from Hibernate.
+     */
+    public static void loadCollections(AnnotationDefinition definition) {
+        loadCollection(definition.getAnnotationValueCollection());
+        loadCollection(definition.getPermissibleValueCollection());
+    }
+
+    /**
+     * Ensure that a persistent collection is loaded.
+     * 
+     * @param collection the collection to load.
+     */
+    public static void loadCollection(Collection<? extends Object> collection) {
+        collection.isEmpty();
     }
 }

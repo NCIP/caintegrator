@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
+import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -116,14 +117,13 @@ public class DisplayableUserWorkspace {
     private static final String USER_WORKSPACE_VALUE_STACK_KEY = "workspace";
     private static final String CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY = "studySubscription";
     private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
-    private static final String CURRENT_QUERY_VALUE_STACK_KEY = "query";
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
     private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
-    private Query query;
     private AnalysisForm analysisForm = new AnalysisForm();
+    private final QueryForm queryForm = new QueryForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIABasket nciaBasket = new NCIABasket();
@@ -139,30 +139,13 @@ public class DisplayableUserWorkspace {
             currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
         }
         putCurrentStudyOnValueStack();
-        refreshQuery();
+        refreshQueryForm();
         putQueryObjectsOnValueStack();
-        
     }
 
-    private void refreshQuery() {
-        if (query != null) {
-            if (query.getId() != null) {
-                retrieveQueryFromStudySubscription();
-            } else {
-                refreshQueryAssociations();
-            }
-        }
-    }
-
-    private void refreshQueryAssociations() {
-        query.setSubscription(getCurrentStudySubscription());
-    }
-
-    private void retrieveQueryFromStudySubscription() {
-        for (Query nextQuery : getCurrentStudySubscription().getQueryCollection()) {
-            if (nextQuery.equals(query)) {
-                query = nextQuery;
-            }
+    private void refreshQueryForm() {
+        if (queryForm.getQuery() != null) {
+            queryForm.getQuery().setSubscription(getCurrentStudySubscription());
         }
     }
 
@@ -211,9 +194,9 @@ public class DisplayableUserWorkspace {
      */
     public void setCurrentStudySubscriptionId(Long currentStudySubscriptionId) {
         if (currentStudySubscriptionId == null || currentStudySubscriptionId.equals(NO_STUDY_SELECTED_ID)) {
-            setQuery(null);
             setQueryResult(null);
             setGenomicDataQueryResult(null);
+            getQueryForm().setQuery(null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
         putCurrentStudyOnValueStack();
@@ -256,24 +239,8 @@ public class DisplayableUserWorkspace {
     }
     
     private void putQueryObjectsOnValueStack() {
-        getValueStack().set(CURRENT_QUERY_VALUE_STACK_KEY, getQuery());
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
-    }
-
-    /**
-     * @return the query
-     */
-    public Query getQuery() {
-        return query;
-    }
-
-    /**
-     * @param query the query to set
-     */
-    public void setQuery(Query query) {
-        this.query = query;
-        getValueStack().set(CURRENT_QUERY_VALUE_STACK_KEY, query);
     }
 
     /**
@@ -288,9 +255,6 @@ public class DisplayableUserWorkspace {
      */
     public void setQueryResult(DisplayableQueryResult queryResult) {
         this.queryResult = queryResult;
-        if (queryResult != null) {
-            this.setQuery(queryResult.getQuery());
-        }
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, queryResult);
     }
 
@@ -306,9 +270,6 @@ public class DisplayableUserWorkspace {
      */
     public void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         this.genomicDataQueryResult = genomicDataQueryResult;
-        if (genomicDataQueryResult != null) {
-            this.setQuery(genomicDataQueryResult.getQuery());
-        }
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, genomicDataQueryResult);
     }
 
@@ -338,6 +299,30 @@ public class DisplayableUserWorkspace {
             return LOGO_SERVLET_URL;
         }
                             
+    }
+
+    /**
+     * @return the queryForm
+     */
+    public QueryForm getQueryForm() {
+        return queryForm;
+    }
+    
+    /**
+     * @return the user's queries, ordered by name.
+     */
+    public List<Query> getUserQueries() {
+        List<Query> queries = new ArrayList<Query>();
+        if (getCurrentStudySubscription() != null) {
+            queries.addAll(getCurrentStudySubscription().getQueryCollection());
+        }
+        Comparator<Query> nameComparator = new Comparator<Query>() {
+            public int compare(Query query1, Query query2) {
+                return query1.getName().compareToIgnoreCase(query2.getName());
+            }
+        };
+        Collections.sort(queries, nameComparator);
+        return queries;
     }
 
     /**
