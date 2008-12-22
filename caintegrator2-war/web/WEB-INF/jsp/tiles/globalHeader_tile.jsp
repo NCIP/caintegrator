@@ -47,7 +47,7 @@
                         value="displayableWorkspace.currentStudySubscriptionId" 
                         headerKey="%{@gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace@NO_STUDY_SELECTED_ID}" 
                         headerValue="-- Please Select --"
-                        list="workspace.subscriptionCollection" 
+                        list="displayableWorkspace.orderedSubscriptionList" 
                         listKey="id"
                         listValue="study.shortTitleText" onchange="this.form.submit();" theme="simple" />
 
