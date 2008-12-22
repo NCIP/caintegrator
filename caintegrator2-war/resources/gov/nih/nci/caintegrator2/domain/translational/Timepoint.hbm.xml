@@ -12,12 +12,12 @@
 		<property name="name" type="string" column="NAME"/>
 		<property name="startDate" type="java.util.Date" column="START_DATE"/>
 		<!-- Associations mapping for the Timepoint class -->
-		<set name="sampleAcquisitionCollection" lazy="true" cascade="save-update" >
+		<set name="sampleAcquisitionCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="TIMEPOINT_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition"/>
 		</set>
-		<set name="ImageSeriesAcquisitionCollection" lazy="true" cascade="save-update" >
+		<set name="ImageSeriesAcquisitionCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="TIMEPOINT_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition"/>

@@ -8,11 +8,11 @@
 
         <tr>
             <td class="label"><label for="searchname">Search Name:</label></td>
-            <td class="value"><s:textfield label="Search Name" name="searchName" theme="simple" /></td>
+            <td class="value"><s:textfield label="Search Name" name="queryForm.query.name" theme="simple" /></td>
         </tr>
         <tr>
             <td class="label"><label for="searchdesc">Search Description:</label></td>
-            <td class="value"><s:textarea label="Search Description" name="searchDescription" cols="40" rows="2"
+            <td class="value"><s:textarea label="Search Description" name="queryForm.query.description" cols="40" rows="2"
                 theme="simple" /></td>
 
         </tr>

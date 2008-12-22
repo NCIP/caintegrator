@@ -95,14 +95,13 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
     private String selectedAction;
-    private ManageQueryHelper manageQueryHelper;
+    private Long queryId;   // to prevent warnings in log
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
-        manageQueryHelper = ManageQueryHelper.getInstance();
         return selectedAction;
     }
 
@@ -117,21 +116,11 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
      * @param selectedAction the selectedAction to set
      */
     public void setSelectedAction(String selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
-    /**
-     * @return the manageQueryHelper
-     */
-    public ManageQueryHelper getManageQueryHelper() {
-        return manageQueryHelper;
-    }
-    
-    /**
-     * @param manageQueryHelper the manageQueryHelper to set
-     */
-    public void setManageQueryHelper(ManageQueryHelper manageQueryHelper) {
-        this.manageQueryHelper = manageQueryHelper;
+        if (selectedAction.contains(",")) {
+            this.selectedAction = selectedAction.split(",")[0];
+        } else {
+            this.selectedAction = selectedAction;
+        }
     }
     
     /**
@@ -142,6 +131,20 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
             return getQueryResult().getPageSize();
         }
         return DEFAULT_PAGE_SIZE;
+    }
+
+    /**
+     * @return the queryId
+     */
+    public Long getQueryId() {
+        return queryId;
+    }
+
+    /**
+     * @param queryId the queryId to set
+     */
+    public void setQueryId(Long queryId) {
+        this.queryId = queryId;
     }
 
 }

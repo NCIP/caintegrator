@@ -274,5 +274,14 @@ public interface CaIntegrator2Dao {
             AnnotationDefinition definition,
             EntityTypeEnum entityType,
             Class<T> objectClass);
+
+    /**
+     * Ensures the given object is attached.
+     * 
+     * @param <T> type of the object
+     * @param persistentObject the object to attach if detached.
+     * @return the merged object.
+     */
+    <T> T merge(T persistentObject);
     
 }

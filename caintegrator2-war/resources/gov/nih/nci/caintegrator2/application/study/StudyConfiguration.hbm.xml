@@ -22,28 +22,28 @@
 		
 		<property name="status" type="Status" column="STATUS"/>
     
-        <list name="clinicalConfigurationCollection" lazy="true" cascade="save-update">
+        <list name="clinicalConfigurationCollection" lazy="true" cascade="save-update,merge">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
         </list>
     
-        <list name="genomicDataSources" lazy="true" cascade="save-update">
+        <list name="genomicDataSources" lazy="true" cascade="save-update,merge">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration"/>
         </list>
     
-        <list name="imageAnnotationConfigurations" lazy="true" cascade="save-update">
+        <list name="imageAnnotationConfigurations" lazy="true" cascade="save-update,merge">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration"/>
         </list>
     
-        <list name="imageDataSources" lazy="true" cascade="save-update">
+        <list name="imageDataSources" lazy="true" cascade="save-update,merge">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
@@ -51,9 +51,9 @@
         </list>
         
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
-		    lazy="proxy" cascade="save-update" />
+		    lazy="proxy" cascade="save-update,merge" />
 		    
         <many-to-one name="studyLogo" class="gov.nih.nci.caintegrator2.application.study.StudyLogo" column="STUDY_LOGO_ID"
-            lazy="proxy" cascade="save-update" />
+            lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

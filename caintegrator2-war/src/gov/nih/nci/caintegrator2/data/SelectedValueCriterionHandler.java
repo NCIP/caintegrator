@@ -85,10 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -113,8 +119,41 @@ public class SelectedValueCriterionHandler extends AbstractAnnotationCriterionHa
      */
     @Override
     Criterion translate() {
-        Collection<AbstractPermissibleValue> permissibleValueCollection = selectedValueCriterion.getValueCollection();
-        return Restrictions.in(PERMISSIBLE_VALUE_COLUMN, permissibleValueCollection);
+        switch (AnnotationTypeEnum.getByValue(selectedValueCriterion.getAnnotationDefinition().getType())) {
+        case STRING:
+            return Restrictions.in(STRING_VALUE_COLUMN, getSelectedStringValues());
+        case NUMERIC:
+            return Restrictions.in(NUMERIC_VALUE_COLUMN, getSelectedNumericValues());
+        case DATE:
+            return Restrictions.in(DATE_VALUE_COLUMN, getSelectedDateValues());
+        default:
+            throw new IllegalArgumentException("Unsupported type " 
+                    + selectedValueCriterion.getAnnotationDefinition().getType());
+        }
+    }
+
+    private String[] getSelectedStringValues() {
+        List<String> values = new ArrayList<String>();
+        for (AbstractPermissibleValue permissibleValue : selectedValueCriterion.getValueCollection()) {
+            values.add(((StringPermissibleValue) permissibleValue).getStringValue());
+        }
+        return values.toArray(new String[values.size()]);
+    }
+
+    private Double[] getSelectedNumericValues() {
+        List<Double> values = new ArrayList<Double>();
+        for (AbstractPermissibleValue permissibleValue : selectedValueCriterion.getValueCollection()) {
+            values.add(((NumericPermissibleValue) permissibleValue).getNumericValue());
+        }
+        return values.toArray(new Double[values.size()]);
+    }
+
+    private Date[] getSelectedDateValues() {
+        List<Date> values = new ArrayList<Date>();
+        for (AbstractPermissibleValue permissibleValue : selectedValueCriterion.getValueCollection()) {
+            values.add(((DatePermissibleValue) permissibleValue).getDateValue());
+        }
+        return values.toArray(new Date[values.size()]);
     }
 
 }

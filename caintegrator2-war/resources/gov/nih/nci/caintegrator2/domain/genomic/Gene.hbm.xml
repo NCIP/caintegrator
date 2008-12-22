@@ -15,7 +15,7 @@
 		<property name="symbol" type="string" column="SYMBOL"/>
 		<property name="unigeneclusterID" type="string" column="UNIGENE_CLUSTER_ID"/>
 		<!-- Associations mapping for the Gene class -->
-		<set name="reporterCollection" lazy="true" cascade="save-update" inverse="true">
+		<set name="reporterCollection" lazy="true" cascade="save-update,merge" inverse="true">
 			<cache usage="read-write" />
 			<key column="GENE_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter"/>

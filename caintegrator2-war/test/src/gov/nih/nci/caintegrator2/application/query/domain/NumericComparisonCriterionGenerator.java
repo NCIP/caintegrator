@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 
 
@@ -114,7 +113,6 @@ public final class NumericComparisonCriterionGenerator extends AbstractTestDataG
     @Override
     public void setValues(NumericComparisonCriterion numericComparisonCriterion) {
         numericComparisonCriterion.setEntityType("Subject");
-        numericComparisonCriterion.setAnnotationDefinition(new AnnotationDefinition());
         numericComparisonCriterion.setNumericValue(Double.valueOf(getUniqueInt()));
 
     }

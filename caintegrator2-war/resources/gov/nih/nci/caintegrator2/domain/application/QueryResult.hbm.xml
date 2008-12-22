@@ -8,11 +8,11 @@
 		</id>
 		<!-- Attributes mapping for the QueryResult class -->
 		<!-- Associations mapping for the QueryResult class -->
-		<set name="rowCollection" lazy="true" cascade="save-update" >
+		<set name="rowCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="QUERY_RESULT_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.ResultRow"/>
 		</set>
-		<many-to-one name="query" class="gov.nih.nci.caintegrator2.domain.application.Query" column="QUERY_ID" lazy="proxy" cascade="save-update" />
+		<many-to-one name="query" class="gov.nih.nci.caintegrator2.domain.application.Query" column="QUERY_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

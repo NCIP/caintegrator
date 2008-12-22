@@ -112,4 +112,12 @@ public class ClinicalCriterionRow extends AbstractAnnotationCriterionRow {
         return EntityTypeEnum.SUBJECT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRowType() {
+        return CriterionRowTypeEnum.CLINICAL.getValue();
+    }
+
 }

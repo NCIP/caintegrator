@@ -127,6 +127,11 @@ public abstract class AbstractCriterionRow {
         removeCriterionFromQuery();
         getGroup().getRows().remove(this);
     }
+    
+    /**
+     * @return the row type.
+     */
+    public abstract String getRowType();
 
     abstract AbstractCriterionWrapper getCriterionWrapper();
 

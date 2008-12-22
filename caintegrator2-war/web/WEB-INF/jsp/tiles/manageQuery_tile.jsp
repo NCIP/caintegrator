@@ -1,8 +1,6 @@
 <%@ page language="java"
     import="java.util.*, 
-    com.opensymphony.xwork2.ActionContext,
-     gov.nih.nci.caintegrator2.web.action.query.AnnotationSelection,
-    gov.nih.nci.caintegrator2.web.action.query.QueryAnnotationCriteria"
+    com.opensymphony.xwork2.ActionContext"
     pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
@@ -10,25 +8,25 @@
 <script language="javascript">
 
     function setClinicalAnnotations(onOff){
-        var size='<s:property value="getClinicalDefinitionsSize()"/>';
+        var size='<s:property value="queryForm.resultConfiguration.subjectColumns.options.size"/>';
         for(i=1;i<=size;i++){
-            var item = 'selectedClinicalAnnotations-' + i;
+            var item = 'queryForm.resultConfiguration.subjectColumns.values-' + i;
             document.manageQueryForm[item].checked = onOff;
         }
     }
     function setImageAnnotations(onOff){
-        var size='<s:property value="getImageDefinitionsSize()"/>';
+        var size='<s:property value="queryForm.resultConfiguration.imageSeriesColumns.options.size"/>';
         for(i=1;i<=size;i++){
-            var item = 'selectedImageAnnotations-' + i;
+            var item = 'queryForm.resultConfiguration.imageSeriesColumns.values-' + i;
             document.manageQueryForm[item].checked = onOff;
         }
     }
     
 
-function selectAll () {
-    document.manageQueryForm.selectedAction.value='selectAll';
-    document.manageQueryForm.submit();
-}
+    function selectAll () {
+        document.manageQueryForm.selectedAction.value='selectAll';
+        document.manageQueryForm.submit();
+    }
 
 function selectNone () {
     document.manageQueryForm.selectedAction.value='selectNone';
@@ -68,7 +66,7 @@ function selectNone () {
 
                 <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm"/>
                 <s:div href="%{columnsUrl}" id="columns" label="Columns" theme="ajax" formId="manageQueryForm"/>
-                <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm"/>
+                <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm" refreshOnShow="true" />
                 <s:div href="%{searchResultsUrl}" id="searchResults" label="Search Results" theme="ajax" formId="manageQueryForm"/>
                 <s:div href="%{saveAsUrl}" id="saveAs" label="Save as..." theme="ajax" formId="manageQueryForm"/>
 

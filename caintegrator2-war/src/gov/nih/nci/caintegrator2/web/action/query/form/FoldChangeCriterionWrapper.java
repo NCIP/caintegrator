@@ -129,7 +129,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 criterion.setRegulationType(value);
             }
         };
-        String fieldName = getRow().getOgnlPath() + ".parameter[0]";
+        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         SelectListParameter<String> regulationTypeParameter = 
             new SelectListParameter<String>(fieldName, options, handler, criterion.getRegulationType());
         regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
@@ -138,7 +138,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
     private TextFieldParameter createFoldsParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameter[1]";
+        String fieldName = getRow().getOgnlPath() + ".parameters[1]";
         TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFolds().toString());
         foldsParameter.setLabel(FOLDS_LABEL);
         ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {

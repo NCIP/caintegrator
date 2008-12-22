@@ -135,6 +135,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean isDuplicateStudyNameCalled;
     public boolean retrieveStudyLogoCalled;
     public boolean retrieveValueForAnnotationSubjectCalled;
+    public boolean mergeCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -167,6 +168,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         isDuplicateStudyNameCalled = false;
         retrieveStudyLogoCalled = false;
         retrieveValueForAnnotationSubjectCalled = false;
+        mergeCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -322,6 +324,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
            }
        }
         return values;
+    }
+
+    public <T> T merge(T persistentObject) {
+        mergeCalled = true;
+        return persistentObject;
     }
 
 }

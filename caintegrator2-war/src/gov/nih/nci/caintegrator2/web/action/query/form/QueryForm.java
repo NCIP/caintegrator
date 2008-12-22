@@ -130,11 +130,18 @@ public class QueryForm {
     }
 
     private void initialize() {
-        Study study = getQuery().getSubscription().getStudy();
-        clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection());
-        imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection());
-        criteriaGroup = new CriteriaGroup(this);
-        resultConfiguration = new ResultConfiguration(this);
+        if (query != null) {
+            Study study = getQuery().getSubscription().getStudy();
+            clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection());
+            imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection());
+            criteriaGroup = new CriteriaGroup(this);
+            resultConfiguration = new ResultConfiguration(this);
+        } else {
+            criteriaGroup = null;
+            resultConfiguration = null;
+            clinicalAnnotations = null;
+            imageSeriesAnnotations = null;
+        }
     }
 
     /**
@@ -200,7 +207,7 @@ public class QueryForm {
 
     private void validateUniqueQueryName(ValidationAware action) {
         for (Query nextQuery : getQuery().getSubscription().getQueryCollection()) {
-            if (getQuery().getName().equalsIgnoreCase(nextQuery.getName())) {
+            if (getQuery().getName().equalsIgnoreCase(nextQuery.getName()) && !getQuery().equals(nextQuery)) {
                 action.addFieldError(NAME_FIELDNAME, "There is already a Query named " + getQuery().getName() + ".");
             }
         }
