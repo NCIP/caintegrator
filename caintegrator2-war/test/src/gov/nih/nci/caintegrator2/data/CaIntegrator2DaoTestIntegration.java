@@ -237,7 +237,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples3 = dao.findMatchingSamples(criterion3, study);
         
-        assertEquals(3, matchingSamples3.size());
+        assertEquals(1, matchingSamples3.size());
         
         // Try the other permissible values (should be size 2)
         SelectedValueCriterion criterion4 = new SelectedValueCriterion();
@@ -248,7 +248,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion4.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples4 = dao.findMatchingSamples(criterion4, study);
         
-        assertEquals(2, matchingSamples4.size());
+        assertEquals(0, matchingSamples4.size());
         
         
         // Try using a different Annotation Definition and verify that it returns 0 from that.
