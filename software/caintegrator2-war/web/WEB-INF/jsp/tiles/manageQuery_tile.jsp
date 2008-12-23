@@ -28,10 +28,14 @@
         document.manageQueryForm.submit();
     }
 
-function selectNone () {
-    document.manageQueryForm.selectedAction.value='selectNone';
-    document.manageQueryForm.submit();
-}
+    function selectNone () {
+        document.manageQueryForm.selectedAction.value='selectNone';
+        document.manageQueryForm.submit();
+    }
+    
+    function filterParam (field) {
+        return field.name == "selectedAction";
+    }
 
 </script>
 
@@ -64,11 +68,11 @@ function selectNone () {
             <s:tabbedPanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
 
-                <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm"/>
-                <s:div href="%{columnsUrl}" id="columns" label="Columns" theme="ajax" formId="manageQueryForm"/>
-                <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm" refreshOnShow="true" />
-                <s:div href="%{searchResultsUrl}" id="searchResults" label="Search Results" theme="ajax" formId="manageQueryForm"/>
-                <s:div href="%{saveAsUrl}" id="saveAs" label="Save as..." theme="ajax" formId="manageQueryForm"/>
+                <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
+                <s:div href="%{columnsUrl}" id="columns" label="Columns" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
+                <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm" refreshOnShow="true" formFilter="filterParam" />
+                <s:div href="%{searchResultsUrl}" id="searchResults" label="Search Results" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
+                <s:div href="%{saveAsUrl}" id="saveAs" label="Save as..." theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
 
             </s:tabbedPanel>
 	    </s:form>
