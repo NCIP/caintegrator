@@ -122,18 +122,8 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
             return getAnnotationCriterionWrapper().getFieldName();
         }
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFieldName(String fieldName) {
-        if (!StringUtils.equals(getFieldName(), fieldName)) {
-            handleFieldNameChange(fieldName);
-        }
-    }
 
-    private void handleFieldNameChange(String fieldName) {
+    void handleFieldNameChange(String fieldName) {
         if (StringUtils.isEmpty(fieldName)) {
             setAnnotationCriterionWrapper(null);
         } else if (getAnnotationCriterionWrapper() == null) {

@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.opensymphony.xwork2.ValidationAware;
 
 /**
@@ -98,6 +100,7 @@ import com.opensymphony.xwork2.ValidationAware;
 public abstract class AbstractCriterionRow {
 
     private final CriteriaGroup group;
+    private String newFieldName;
 
     AbstractCriterionRow(CriteriaGroup group) {
         this.group = group;
@@ -118,7 +121,9 @@ public abstract class AbstractCriterionRow {
     /**
      * @param fieldName the fieldName to set
      */
-    public abstract void setFieldName(String fieldName);
+    public final void setFieldName(String fieldName) {
+        newFieldName = fieldName;
+    }
     
     /**
      * Removes this row from the query.
@@ -179,5 +184,13 @@ public abstract class AbstractCriterionRow {
     String getOgnlPath() {
         return "queryForm.criteriaGroup.rows[" + getGroup().getRows().indexOf(this) + "]";
     }
+
+    void processCriteriaChanges() {
+        if (!StringUtils.equals(getFieldName(), newFieldName)) {
+            handleFieldNameChange(newFieldName);
+        }
+    }
+
+    abstract void handleFieldNameChange(String fieldName);
 
 }

@@ -218,7 +218,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();
         } else if ("updateCriteria".equals(selectedAction)) {
-            displayTab = CRITERIA_TAB;
+            updateCriteria();
             returnValue = SUCCESS;
         } else if ("updateColumns".equals(selectedAction)) {
             displayTab = COLUMNS_TAB;
@@ -250,6 +250,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = ERROR; 
         } 
         return returnValue;
+    }
+
+
+    private void updateCriteria() {
+        displayTab = CRITERIA_TAB;
+        getQueryForm().processCriteriaChanges();
     }
     
     private void updateSorting() {

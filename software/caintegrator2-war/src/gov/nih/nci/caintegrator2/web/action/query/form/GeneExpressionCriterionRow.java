@@ -142,17 +142,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFieldName(String fieldName) {
-        if (!StringUtils.equals(getFieldName(), fieldName)) {
-            handleFieldNameChange(fieldName);
-        }
-    }
-
-    private void handleFieldNameChange(String fieldName) {
+    void handleFieldNameChange(String fieldName) {
         if (StringUtils.isBlank(fieldName)) {
             setGenomicCriterionWrapper(null);
         } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
