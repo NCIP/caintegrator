@@ -247,4 +247,10 @@ public class CriteriaGroup {
             row.validate(action);
         }
     }
+
+    void processCriteriaChanges() {
+        for (AbstractCriterionRow row : getRows()) {
+            row.processCriteriaChanges();
+        }
+    }
 }
