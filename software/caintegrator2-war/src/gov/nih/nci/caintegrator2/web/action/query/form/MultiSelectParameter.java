@@ -129,17 +129,18 @@ public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     /**
      * @return the value
      */
-    public String[] getValue() {
+    public String[] getValues() {
         return selectedKeys;
     }
 
     /**
      * @param values the values to set
      */
-    public void setValue(String[] values) {
+    public void setValues(String[] values) {
         if (!Arrays.equals(selectedKeys, values)) {
-            this.selectedKeys = values;
-            valuesSelectedHandler.valuesSelected(optionList.getActualValues(values));
+            List<E> actualValues = optionList.getActualValues(values);
+            valuesSelectedHandler.valuesSelected(actualValues);
+            this.selectedKeys = optionList.getKeys(actualValues);
         }
     }
 

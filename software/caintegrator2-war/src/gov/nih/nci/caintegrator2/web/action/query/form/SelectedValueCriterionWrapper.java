@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import static gov.nih.nci.caintegrator2.common.PermissibleValueUtil.getDisplayString;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
@@ -212,6 +213,10 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
      */
     public void operatorChanged(AbstractCriterionParameter parameter, CriterionOperatorEnum operator) {
         selectOperator = operator;
+        refreshParameters();
+    }
+
+    private void refreshParameters() {
         getParameters().clear();
         getParameters().add(createParameter());
     }
@@ -222,6 +227,13 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
     @Override
     CriterionTypeEnum getCriterionType() {
         return CriterionTypeEnum.SELECTED_VALUE;
+    }
+
+    @Override
+    void setField(AnnotationDefinition field) {
+        super.setField(field);
+        criterion.getValueCollection().clear();
+        refreshParameters();
     }
 
 }

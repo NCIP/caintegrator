@@ -124,7 +124,9 @@ class OptionList<E> {
     List<E> getActualValues(String[] selectedKeys) {
         List<E> actualValues = new ArrayList<E>(selectedKeys.length);
         for (String key : selectedKeys) {
-            actualValues.add(keyToOptionMap.get(key).getActualValue());
+            if (keyToOptionMap.containsKey(key)) {
+                actualValues.add(keyToOptionMap.get(key).getActualValue());
+            }
         }
         return actualValues;
     }
