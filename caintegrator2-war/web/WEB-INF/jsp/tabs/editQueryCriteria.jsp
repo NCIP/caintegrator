@@ -75,13 +75,13 @@
                                                 theme="simple" />
                                         </s:elseif>
                                         <s:elseif test="fieldType == 'multiselect'">
-                                            <s:select name="%{formFieldName}.value"
+                                            <s:select name="%{formFieldName}.values"
                                                 multiple="true"
                                                 size="5"
                                                 list="options"
                                                 listKey="key"
                                                 listValue="displayValue"
-                                                value="value"
+                                                value="values"
                                                 theme="simple" />
                                         </s:elseif>
                                     </td>
