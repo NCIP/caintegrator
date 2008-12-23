@@ -114,6 +114,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private static final String CRITERIA_TAB = "criteria";
     private static final String COLUMNS_TAB = "columns";
     private static final String SORTING_TAB = "sorting";
+    private static final String SAVE_AS_TAB = "saveAs";
     
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
@@ -186,6 +187,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     
     private void validateSaveQuery() {
         getQueryForm().validateForSave(this);
+        if (this.hasErrors()) {
+            displayTab = SAVE_AS_TAB;
+        }
     }
     
     

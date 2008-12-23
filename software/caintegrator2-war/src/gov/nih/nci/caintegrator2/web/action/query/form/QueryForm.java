@@ -105,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
  */
 public class QueryForm {
     
-    private static final String NAME_FIELDNAME = "queryForm.query.name";
     private Query query;
     private AnnotationDefinitionList clinicalAnnotations;
     private AnnotationDefinitionList imageSeriesAnnotations;
@@ -199,7 +198,7 @@ public class QueryForm {
 
     private void validateQueryName(ValidationAware action) {
         if (StringUtils.isBlank(getQuery().getName())) {
-            action.addFieldError(NAME_FIELDNAME, "Query Name is required.");
+            action.addActionError("Query Name is required.");
         } else {
             validateUniqueQueryName(action);
         }
@@ -208,7 +207,7 @@ public class QueryForm {
     private void validateUniqueQueryName(ValidationAware action) {
         for (Query nextQuery : getQuery().getSubscription().getQueryCollection()) {
             if (getQuery().getName().equalsIgnoreCase(nextQuery.getName()) && !getQuery().equals(nextQuery)) {
-                action.addFieldError(NAME_FIELDNAME, "There is already a Query named " + getQuery().getName() + ".");
+                action.addActionError("There is already a Query named " + getQuery().getName() + ".");
             }
         }
     }
