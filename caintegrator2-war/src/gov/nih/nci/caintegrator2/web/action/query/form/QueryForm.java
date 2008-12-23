@@ -223,4 +223,11 @@ public class QueryForm {
         this.resultConfiguration = resultConfiguration;
     }
 
+    /**
+     * Updates the underlying query with any pending changes.
+     */
+    public void processCriteriaChanges() {
+        getCriteriaGroup().processCriteriaChanges();
+    }
+
 }
