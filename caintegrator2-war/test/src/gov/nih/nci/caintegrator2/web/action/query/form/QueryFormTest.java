@@ -129,7 +129,8 @@ public class QueryFormTest {
     private AnnotationDefinition stringClinicalAnnotation1;
     private AnnotationDefinition stringClinicalAnnotation2;
     private AnnotationDefinition numericClinicalAnnotation;
-    private AnnotationDefinition selectClinicalAnnotation;
+    private AnnotationDefinition selectClinicalAnnotation1;
+    private AnnotationDefinition selectClinicalAnnotation2;
     private AnnotationDefinition testImageSeriesAnnotation;
     private StringPermissibleValue value1 = new StringPermissibleValue();
     private StringPermissibleValue value2 = new StringPermissibleValue();
@@ -146,18 +147,26 @@ public class QueryFormTest {
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
         numericClinicalAnnotation = createDefinition("numericClinicalAnnotation", AnnotationTypeEnum.NUMERIC);
-        selectClinicalAnnotation = createDefinition("selectClinicalAnnotation", AnnotationTypeEnum.STRING);
-        selectClinicalAnnotation.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        selectClinicalAnnotation1 = createDefinition("selectClinicalAnnotation1", AnnotationTypeEnum.STRING);
+        selectClinicalAnnotation1.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         value1.setStringValue("value1");
         value3.setStringValue("value3");
         value2.setStringValue("value2");
-        selectClinicalAnnotation.getPermissibleValueCollection().add(value1);
-        selectClinicalAnnotation.getPermissibleValueCollection().add(value2);
-        selectClinicalAnnotation.getPermissibleValueCollection().add(value3);
+        selectClinicalAnnotation1.getPermissibleValueCollection().add(value1);
+        selectClinicalAnnotation1.getPermissibleValueCollection().add(value2);
+        selectClinicalAnnotation1.getPermissibleValueCollection().add(value3);
+
+        selectClinicalAnnotation2 = createDefinition("selectClinicalAnnotation2", AnnotationTypeEnum.STRING);
+        selectClinicalAnnotation2.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
+        StringPermissibleValue value2_1 = new StringPermissibleValue();
+        value2_1.setStringValue("value2_1");
+        selectClinicalAnnotation2.getPermissibleValueCollection().add(value2_1);
+
         study.getSubjectAnnotationCollection().add(stringClinicalAnnotation1);
         study.getSubjectAnnotationCollection().add(stringClinicalAnnotation2);
         study.getSubjectAnnotationCollection().add(numericClinicalAnnotation);
-        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation);
+        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation1);
+        study.getSubjectAnnotationCollection().add(selectClinicalAnnotation2);
         testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
         study.getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
     }
@@ -178,7 +187,7 @@ public class QueryFormTest {
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
-        assertEquals(4, queryForm.getClinicalAnnotations().getNames().size());
+        assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
         assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(0));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
     }
@@ -259,9 +268,9 @@ public class QueryFormTest {
 
     @SuppressWarnings("unchecked")
     private void checkChangeToSelectField(ClinicalCriterionRow criterionRow) {
-        criterionRow.setFieldName("selectClinicalAnnotation");
+        criterionRow.setFieldName("selectClinicalAnnotation1");
         SelectedValueCriterion criterion = (SelectedValueCriterion) criterionRow.getCriterion();
-        assertEquals(selectClinicalAnnotation, criterion.getAnnotationDefinition());
+        assertEquals(selectClinicalAnnotation1, criterion.getAnnotationDefinition());
         assertEquals(EntityTypeEnum.SUBJECT.getValue(), criterion.getEntityType());
         assertTrue(criterion.getValueCollection().isEmpty());
         assertEquals(1, criterionRow.getParameters().size());
@@ -284,19 +293,27 @@ public class QueryFormTest {
         assertEquals("value1", multiSelect.getOptions().get(0).getDisplayValue());
         assertEquals("value2", multiSelect.getOptions().get(1).getDisplayValue());
         assertEquals("value3", multiSelect.getOptions().get(2).getDisplayValue());
-        assertTrue(multiSelect.getValue().length == 1);
-        assertTrue(multiSelect.getValue()[0] == "value2");
-        multiSelect.setValue(new String[] {"value1", "value3"});
-        assertTrue(multiSelect.getValue().length == 2);
-        assertTrue(multiSelect.getValue()[0] == "value1");
-        assertTrue(multiSelect.getValue()[1] == "value3");
+        assertTrue(multiSelect.getValues().length == 1);
+        assertTrue(multiSelect.getValues()[0] == "value2");
+        multiSelect.setValues(new String[] {"value1", "value3"});
+        assertTrue(multiSelect.getValues().length == 2);
+        assertTrue(multiSelect.getValues()[0] == "value1");
+        assertTrue(multiSelect.getValues()[1] == "value3");
         assertEquals(2, criterion.getValueCollection().size());
         assertTrue(criterion.getValueCollection().contains(value1));
         assertTrue(criterion.getValueCollection().contains(value3));
-        multiSelect.setValue(new String[] {"value1", "value3"});
-        assertTrue(multiSelect.getValue().length == 2);
-        assertTrue(multiSelect.getValue()[0] == "value1");
-        assertTrue(multiSelect.getValue()[1] == "value3");
+        multiSelect.setValues(new String[] {"value1", "value3"});
+        assertEquals(2, multiSelect.getValues().length);
+        assertTrue(multiSelect.getValues()[0] == "value1");
+        assertTrue(multiSelect.getValues()[1] == "value3");
+        criterionRow.setFieldName("selectClinicalAnnotation2");
+        assertEquals(CriterionOperatorEnum.IN.getValue(), select.getOperator());
+        multiSelect = (MultiSelectParameter<AbstractPermissibleValue>) criterionRow.getParameters().get(0);
+        assertEquals(1, multiSelect.getOptions().size());
+        assertEquals("value2_1", multiSelect.getOptions().get(0).getDisplayValue());
+        assertEquals(0, multiSelect.getValues().length);
+        multiSelect.setValues(new String[] {"invalid value"});
+        assertEquals(0, multiSelect.getValues().length);
     }
 
     private void checkChangeNumericOperator(ClinicalCriterionRow criterionRow) {
@@ -415,7 +432,7 @@ public class QueryFormTest {
     }
 
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(4, criterionRow.getAvailableFieldNames().size());
+        assertEquals(5, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());
@@ -525,7 +542,7 @@ public class QueryFormTest {
         assertEquals(numericClinicalAnnotation, queryForm.getResultConfiguration().getSelectedColumns().get(1).getAnnotationDefinition());
         assertEquals(stringClinicalAnnotation1, queryForm.getResultConfiguration().getSelectedColumns().get(2).getAnnotationDefinition());
         
-        assertEquals(4, queryForm.getResultConfiguration().getSubjectColumns().getColumnList().getOptions().size());
+        assertEquals(5, queryForm.getResultConfiguration().getSubjectColumns().getColumnList().getOptions().size());
         List<String> columnNames = Arrays.asList(queryForm.getResultConfiguration().getSubjectColumns().getValues());
         assertEquals(2, columnNames.size());
         assertTrue(columnNames.contains("stringClinicalAnnotation1"));
