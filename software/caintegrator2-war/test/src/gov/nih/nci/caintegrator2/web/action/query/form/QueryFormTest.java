@@ -522,6 +522,7 @@ public class QueryFormTest {
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         assertEquals(CriterionOperatorEnum.CONTAINS.getValue(), parameter.getOperator());
         assertEquals("value", parameter.getValue());
+        assertEquals("queryForm.criteriaGroup.rows[0].parameters[0]", parameter.getFormFieldName());
         
         GeneExpressionCriterionRow foldChangeRow = (GeneExpressionCriterionRow) group.getRows().get(1);
         assertEquals(foldChangeCriterion, foldChangeRow.getCriterion());
