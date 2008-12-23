@@ -123,12 +123,13 @@ public class CriteriaGroup {
     private void initializeCriteria(Collection<AbstractCriterion> criterionCollection) {
         Iterator<AbstractCriterion> iterator = criterionCollection.iterator();
         while (iterator.hasNext()) {            
-            rows.add(createCriterionRow(iterator.next()));
+            addCriterionRow(iterator.next());
         }
     }
 
-    private AbstractCriterionRow createCriterionRow(AbstractCriterion criterion) {
+    private AbstractCriterionRow addCriterionRow(AbstractCriterion criterion) {
         AbstractCriterionRow row = createRow(getCriterionRowType(criterion));
+        rows.add(row);
         row.setCriterion(criterion);
         return row;
     }
