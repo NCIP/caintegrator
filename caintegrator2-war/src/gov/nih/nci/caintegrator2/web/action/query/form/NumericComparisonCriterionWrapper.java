@@ -158,7 +158,7 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
             @Override
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addFieldError(formFieldName, "Numeric value required");
+                    action.addActionError("Numeric value required for " + getFieldName());
                 }
             }
             

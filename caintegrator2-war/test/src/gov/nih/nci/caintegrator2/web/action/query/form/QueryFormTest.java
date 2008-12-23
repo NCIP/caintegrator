@@ -208,7 +208,7 @@ public class QueryFormTest {
         parameter.setValue("not a number");
         assertEquals("not a number", parameter.getValue());
         queryForm.validate(validationAware);
-        assertTrue(validationAware.hasFieldErrors());
+        assertTrue(validationAware.hasActionErrors());
     }
     
     @Test
@@ -367,7 +367,7 @@ public class QueryFormTest {
         assertEquals("not a number", foldsParameter.getValue());
         assertEquals(2.0, foldChangeCriterion.getFolds(), 0.0);
         queryForm.validate(validationAware);
-        assertTrue(validationAware.hasFieldErrors());
+        assertTrue(validationAware.hasActionErrors());
     }
 
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {

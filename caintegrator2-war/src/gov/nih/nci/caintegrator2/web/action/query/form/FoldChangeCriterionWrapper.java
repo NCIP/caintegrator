@@ -154,7 +154,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addFieldError(formFieldName, "Numeric value required");
+                    action.addActionError("Numeric value required for Folds");
                 }
             }
 
