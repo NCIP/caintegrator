@@ -117,6 +117,10 @@ public abstract class AbstractCriterionParameter {
     private OperatorHandler operatorHandler;
     private final String formFieldName;
 
+    private boolean operatorChanged;
+
+    private String newOperator;
+
     AbstractCriterionParameter(String formFieldName) {
         super();
         this.formFieldName = formFieldName;
@@ -170,12 +174,8 @@ public abstract class AbstractCriterionParameter {
      */
     public void setOperator(String operator) {
         if (!StringUtils.equals(getOperator(), operator)) {
-            if (StringUtils.isBlank(operator)) {
-                operatorHandler.operatorChanged(this, null);
-            } else {
-                operatorHandler.operatorChanged(this, CriterionOperatorEnum.getByValue(operator));
-            }
-            availableOperators = getOperatorNames(operatorHandler.getAvailableOperators());
+            newOperator = operator;
+            operatorChanged = true;
         }
     }
 
@@ -193,6 +193,18 @@ public abstract class AbstractCriterionParameter {
      */
     public String getFormFieldName() {
         return formFieldName;
+    }
+
+    void processCriteriaChanges() {
+        if (operatorChanged) {
+            if (StringUtils.isBlank(newOperator)) {
+                operatorHandler.operatorChanged(this, null);
+            } else {
+                operatorHandler.operatorChanged(this, CriterionOperatorEnum.getByValue(newOperator));
+            }
+            availableOperators = getOperatorNames(operatorHandler.getAvailableOperators());
+            operatorChanged = false;
+        }
     }
 
 }

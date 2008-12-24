@@ -210,7 +210,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @return the queryResult
      */
-    protected final DisplayableQueryResult getQueryResult() {
+    public final DisplayableQueryResult getQueryResult() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getQueryResult();
         } else {
