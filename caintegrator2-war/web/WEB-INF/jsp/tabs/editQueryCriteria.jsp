@@ -15,7 +15,7 @@
         <tr>
             <td colspan="4" class="tableheader">
                 <select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1"
-                    style="margin-left: 5px; width: 200px">
+                    style="margin-top: 10px; margin-left: 5px; width: 200px">
                     <option>Clinical</option>
                     <option>Gene Expression</option>
                     <option>Image Series</option>
@@ -47,10 +47,10 @@
                             theme="simple" />
                     </td>
                     <td class="value_inline">
-                        <table>
+                        <table class="criterion">
                             <s:iterator value="parameters">
                                 <tr>
-                                    <td>
+                                    <td class="criterion">
                                         <s:property value="label" />
                                         <s:if test="!availableOperators.isEmpty()">
                                             <s:select name="%{formFieldName}.operator" 
@@ -60,10 +60,11 @@
                                                 theme="simple" />
                                         </s:if>
                                     </td>
-                                    <td>
+                                    <td class="criterion">
                                         <s:if test="fieldType == 'text'">
                                             <s:textfield name="%{formFieldName}.value"
-                                                size="30" 
+                                                size="30"
+                                                cssClass="keyword"
                                                 theme="simple" />
                                         </s:if>
                                         <s:elseif test="fieldType == 'select'">

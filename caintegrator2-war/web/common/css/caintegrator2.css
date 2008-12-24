@@ -554,12 +554,16 @@ TABLE.data TD.action_inline
 { width:60px; color:#808080; padding:18px 8px 10px 5px; text-align:left; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
 TABLE.data TD.thin_inline
 { padding-top:15px; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
+TABLE.data TABLE.criterion
+{ border:0; width:100% }
+TABLE.criterion TD.criterion
+{ border:0px; border-top:0; border-bottom:0; border-right:0; border-left:0; padding:0px 0px 0px 0px; }
 .value_inline SELECT
 { margin-bottom:3px; width:250px }
 .value_inline2 SELECT
 { margin-bottom:3px; width:130px }
 .value_inline INPUT.keyword
-{ margin-bottom:3px; width:123 px; padding:1px; }
+{ margin-bottom:3px; width:250 px; padding:1px; }
 #content .value_inline P
 {margin:0; padding:2px 0 3px 0; text-align:center; font-size:10pt }
 TABLE.data TD.tableheader
