@@ -188,6 +188,14 @@ public abstract class AbstractCriterionRow {
     void processCriteriaChanges() {
         if (!StringUtils.equals(getFieldName(), newFieldName)) {
             handleFieldNameChange(newFieldName);
+        } else {
+            processParameterChanges();
+        }
+    }
+
+    private void processParameterChanges() {
+        for (AbstractCriterionParameter parameter : getParameters()) {
+            parameter.processCriteriaChanges();
         }
     }
 
