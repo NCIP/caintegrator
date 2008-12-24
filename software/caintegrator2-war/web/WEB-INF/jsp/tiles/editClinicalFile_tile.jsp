@@ -47,7 +47,8 @@
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="clinicalSource.id" value="clinicalSource.id" />
                         <s:param name="fileColumn.id" value="id" />
-                    </s:url> 
+                    </s:url>
+                    <br>
                     <s:a href="%{editFileColumn}">Change Assignment</s:a> 
                 </td>
                 <td><s:property value="name" /></td>
