@@ -93,7 +93,7 @@
     <hr>
 	    <table class="data">
 	        <tr>
-	            <th colspan="2">Matching Annotation Definitions</th>
+	            <th colspan="4">Matching Annotation Definitions</th>
 	        </tr>
 	        <tr>
 	            <th>Name</th>
@@ -126,7 +126,7 @@
     <s:else>
         <table class="data">
             <tr>
-                <th colspan="2">Matching Annotation Definitions</th>
+                <th colspan="4">Matching Annotation Definitions</th>
             </tr>
             <tr>
                 <th>Name</th>
@@ -142,7 +142,7 @@
     <s:if test="%{!dataElements.isEmpty}">
 	    <table class="data">
 	        <tr>
-	            <th colspan="3">Matches from caDSR</th>
+	            <th colspan="6">Matches from caDSR</th>
 	        </tr>
 	        <tr>
                 <th>Name</th>
@@ -186,7 +186,7 @@
     <s:else>
         <table class="data">
             <tr>
-                <th colspan="3">Matches from caDSR</th>
+                <th colspan="6">Matches from caDSR</th>
             </tr>
             <tr>
                 <th>Name</th>
