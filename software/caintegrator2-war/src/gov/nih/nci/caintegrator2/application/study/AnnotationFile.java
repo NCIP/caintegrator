@@ -515,7 +515,7 @@ public class AnnotationFile implements PersistentObject {
         return "Invalid format for data type '" + descriptor.getDefinition().getType()
             + "' on field '" + descriptor.getName()
             + "' of descriptor '" + descriptor.getDefinition().getDisplayName()
-            + "' with value = '" + value + "'";
+            + "' with value = '" + value + "'. The two formats allowed are MM-dd-yyyy and MM/dd/yyyy ";
     }
     
     /**
