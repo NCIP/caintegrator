@@ -17,7 +17,7 @@
         <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" />
         <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" />
         <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" />
-        <s:textfield label="caArray Password" name="genomicSource.serverProfile.password" />
+        <s:password label="caArray Password" name="genomicSource.serverProfile.password" />
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
         <s:submit value="Save" />
     </s:form>
