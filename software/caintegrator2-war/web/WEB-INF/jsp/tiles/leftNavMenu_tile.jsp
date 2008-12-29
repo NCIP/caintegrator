@@ -20,23 +20,19 @@
     
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
-        <li class="stdnav"><div><s:property value="study.shortTitleText"/></div>
+        <li class="stdnav">
+            <div><s:property value="study.shortTitleText"/></div>
             <ul>
-                <li><s:url id="homePageUrl" includeParams="none" action="workspace" /><a href="${ homePageUrl }">Home</a></li>
-                <li class="stdnav"><a href='<s:property value="#newQueryUrl" />'>Search <s:property value="studySubscription.study.shortTitleText"/></a></li>
+                <li><s:url id="homePageUrl" includeParams="none" action="workspace" />
+                    <a href="${ homePageUrl }">Home</a>
+                </li>
+                <li class="stdnav">
+                    <a href='<s:property value="#newQueryUrl" />'>
+                    Search <s:property value="study.shortTitleText"/></a>
+                </li>
             </ul>
         </li>
         
-        <s:if test="#sessionHelper.studyManager">
-             <li class="stdnav"><div>Study Elements</div>
-                <ul>
-                    <li><a href="${ notYetImplementedUrl }">Subjects</a></li>
-                    <li><a href="${ notYetImplementedUrl }">Samples</a></li>
-                    <li><a href="${ notYetImplementedUrl }">Array Data</a></li>
-                    <li><a href="${ notYetImplementedUrl }">Images</a></li>
-                </ul>
-            </li>
-        </s:if>
         <!--Tree Control-->
         
         <li class="treenav"><div>Study Data</div>
