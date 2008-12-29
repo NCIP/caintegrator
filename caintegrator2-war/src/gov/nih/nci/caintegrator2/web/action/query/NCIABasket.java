@@ -94,7 +94,7 @@ import java.util.Set;
 public class NCIABasket {
     private final Set <String> imageSeriesIDs = new HashSet<String>();
     private final Set <String> imageStudyIDs = new HashSet<String>();
-    private static final String NCIA_BASKET_URL = "http://nci.nih.gov/ncia/basket/";
+    private static final String NCIA_BASKET_URL = "https://imaging.nci.nih.gov/ncia/basket/";
     
     /**
      * @return the imageSeriesIDs
