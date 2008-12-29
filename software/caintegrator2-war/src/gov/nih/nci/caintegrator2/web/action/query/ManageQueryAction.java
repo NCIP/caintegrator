@@ -292,9 +292,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
                 }
             }
         }
-        if (!basket.getImageSeriesIDs().isEmpty() || !basket.getImageStudyIDs().isEmpty()) {
-            getDisplayableWorkspace().setNciaBasket(basket);
-        }
+        getDisplayableWorkspace().setNciaBasket(basket);
+
         return "nciaBasket";
     }
 
