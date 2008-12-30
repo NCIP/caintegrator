@@ -119,6 +119,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public boolean getCalled;
     public boolean saveCalled;
+    public boolean deleteCalled;
     public boolean getManagedStudiesCalled;
     public boolean findMatchesCalled;
     public boolean findMatchingImageSeriesCalled;
@@ -147,6 +148,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public void save(Object entity) {
         saveCalled = true;
+    }
+
+    public void delete(Object persistentObject) {
+        deleteCalled = true;
     }
     
     public void clear() {

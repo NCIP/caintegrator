@@ -150,6 +150,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         persist(studyConfiguration);
     }
 
+    /**
+     *  {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration) {
+        dao.delete(studyConfiguration);
+    }
+
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }

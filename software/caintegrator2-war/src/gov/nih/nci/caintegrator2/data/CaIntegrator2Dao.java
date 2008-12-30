@@ -117,6 +117,13 @@ public interface CaIntegrator2Dao {
      * @param persistentObject the object to save.
      */
     void save(Object persistentObject);
+    
+    /**
+     * Deletes the object given.
+     * 
+     * @param persistentObject the object to delete.
+     */
+    void delete(Object persistentObject);
 
     /**
      * Returns the persistent object with the id given.

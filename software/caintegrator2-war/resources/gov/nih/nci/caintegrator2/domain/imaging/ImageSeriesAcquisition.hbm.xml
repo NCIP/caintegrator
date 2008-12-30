@@ -11,7 +11,7 @@
         <property name="nciaTrialIdentifier" type="string" column="NCIA_TRIAL_IDENTIFIER"/>
 		<!-- Associations mapping for the ImageSeriesAcquisition class -->
 		<many-to-one name="timepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="TIMEPOINT_ID" lazy="proxy" cascade="save-update,merge" />
-		<set name="seriesCollection" lazy="true" cascade="save-update,merge" >
+		<set name="seriesCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="IMAGE_STUDY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeries"/>

@@ -111,6 +111,13 @@ public interface StudyManagementService {
     void save(StudyConfiguration studyConfiguration);
     
     /**
+     * Deletes a study.
+     * 
+     * @param studyConfiguration study to delete
+     */
+    void delete(StudyConfiguration studyConfiguration);
+    
+    /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
      * file provided as an argument to be removed after completion of this method.
      * 
