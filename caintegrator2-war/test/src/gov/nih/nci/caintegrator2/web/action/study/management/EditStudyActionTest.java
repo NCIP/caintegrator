@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -108,6 +109,11 @@ public class EditStudyActionTest {
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, editStudyAction.execute());
+    }
+
+    @Test
+    public void testDelete() {
+        assertEquals(Action.SUCCESS, editStudyAction.deleteStudy());
     }
 
     @Test

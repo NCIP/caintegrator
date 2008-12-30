@@ -28,7 +28,11 @@
                     <s:url id="editUrl" action="editStudy">
                         <s:param name="studyConfiguration.id" value="id" />
                     </s:url> 
-                    <s:a href="%{editUrl}">Edit</s:a> 
+                    <s:url id="deleteUrl" action="deleteStudy">
+                        <s:param name="studyConfiguration.id" value="id" />
+                    </s:url> 
+                    <s:a href="%{editUrl}">Edit </s:a> | 
+                    <s:a href="%{deleteUrl}">Delete</s:a> 
                 </td>
             </tr>
         </s:iterator>

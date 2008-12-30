@@ -57,6 +57,10 @@
         <action name="editStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
         </action>
+      
+        <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
+            <result type="redirectAction">manageStudies</result>
+        </action>
    
         <action name="saveStudy" class="saveStudyAction">
             <result type="tiles">editStudy</result>

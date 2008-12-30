@@ -103,6 +103,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public boolean deployStudyCalled;
     public boolean saveCalled;
+    public boolean deleteCalled;
     public boolean addGenomicSourceCalled;
     public boolean addClinicalAnnotationFileCalled;
     public boolean manageStudiesCalled;
@@ -132,6 +133,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void save(StudyConfiguration studyConfiguration) {
         saveCalled = true;
+    }
+
+    public void delete(StudyConfiguration studyConfiguration) {
+        deleteCalled = true;
     }
 
     public void deployStudy(StudyConfiguration studyConfiguration) {

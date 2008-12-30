@@ -150,6 +150,13 @@ public class StudyManagementServiceTest {
         studyManagementService.save(configTest);
         assertTrue(daoStub.saveCalled);
     }
+
+    @Test
+    public void testDelete() {
+        StudyConfiguration configTest = new StudyConfiguration();
+        studyManagementService.delete(configTest);
+        assertTrue(daoStub.deleteCalled);
+    }
     
     @Test
     public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException{

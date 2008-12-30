@@ -10,12 +10,12 @@
         <property name="name" type="string" column="NAME"/>
         <!-- Associations mapping for the Sample class -->
         <many-to-one name="sampleAcquisition" class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition" column="SAMPLE_ACQUISITION_ID" unique="true" lazy="proxy" cascade="save-update,merge" />
-        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="save-update,merge" >
+        <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="SAMPLE_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="MICROARRAY_ID" />
         </set>
-        <set name="arrayDataCollection" lazy="true" cascade="save-update,merge" inverse="true">
+        <set name="arrayDataCollection" lazy="true" cascade="all" inverse="true">
             <cache usage="read-write" />
             <key column="SAMPLE_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
