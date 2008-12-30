@@ -10,37 +10,37 @@
 		<property name="longTitleText" type="string" column="LONG_TITLE_TEXT"/>
 		<property name="shortTitleText" type="string" column="SHORT_TITLE_TEXT"/>
 		<!-- Associations mapping for the Study class -->
-		<set name="timepointCollection" lazy="true" cascade="save-update,merge" >
+		<set name="timepointCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="STUDY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.translational.Timepoint"/>
 		</set>
-		<set name="sampleAnnotationCollection" table="STUDY_SAMPLE_ANNOTATIONS" lazy="true" cascade="save-update,merge" >
+		<set name="sampleAnnotationCollection" table="STUDY_SAMPLE_ANNOTATIONS" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="STUDY_ID" />
 			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
 		</set>
-		<set name="imageSeriesAnnotationCollection" table="STUDY_IMAGE_ANNOTATIONS" lazy="true" cascade="save-update,merge" >
+		<set name="imageSeriesAnnotationCollection" table="STUDY_IMAGE_ANNOTATIONS" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="STUDY_ID" />
 			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
 		</set>
-        <set name="assignmentCollection" lazy="true" cascade="save-update,merge" >
+        <set name="assignmentCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment"/>
         </set>
-        <set name="controlSampleCollection" lazy="true" cascade="save-update,merge" >
+        <set name="controlSampleCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="CONTROL_FOR_STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample"/>
         </set>
-		<set name="subjectAnnotationCollection" table="STUDY_SUBJECT_ANNOTATIONS" lazy="true" cascade="save-update,merge" >
+		<set name="subjectAnnotationCollection" table="STUDY_SUBJECT_ANNOTATIONS" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="STUDY_ID" />
 			<many-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" />
 		</set>
-		<set name="survivalValueDefinitionCollection" lazy="true" cascade="save-update,merge" >
+		<set name="survivalValueDefinitionCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition"/>

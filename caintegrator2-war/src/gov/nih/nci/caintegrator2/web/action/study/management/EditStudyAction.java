@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+
 /**
  * Edits a study (new or existing).
  */
@@ -96,7 +97,15 @@ public class EditStudyAction extends AbstractStudyAction {
      * {@inheritDoc}
      */
     @Override
-    public String execute()  {
+    public String execute() {
+        return SUCCESS;
+    }
+    
+    /**
+     * @return SUCCESS
+     */
+    public String deleteStudy() {
+        getStudyManagementService().delete(getStudyConfiguration());
         return SUCCESS;
     }
 }

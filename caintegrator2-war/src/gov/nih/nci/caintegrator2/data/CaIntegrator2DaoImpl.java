@@ -159,6 +159,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    public void delete(Object persistentObject) {
+        getHibernateTemplate().delete(persistentObject);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)
     public <T> T get(Long id, Class<T> objectClass) {
         return (T) getHibernateTemplate().get(objectClass, id);

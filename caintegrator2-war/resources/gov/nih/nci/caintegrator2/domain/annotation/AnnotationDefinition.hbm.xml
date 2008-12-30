@@ -13,12 +13,12 @@
 		<property name="keywords" type="string" column="KEYWORDS"/>
 		<property name="unitsOfMeasure" type="string" column="UNITS_OF_MEASURE"/>
 		<!-- Associations mapping for the AnnotationDefinition class -->
-		<set name="annotationValueCollection" lazy="true" cascade="save-update,merge" >
+		<set name="annotationValueCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="ANNOTATION_DEFINITION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>
 		</set>
-		<set name="permissibleValueCollection" lazy="true" cascade="save-update,merge" >
+		<set name="permissibleValueCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="ANNOTATION_DEFINITION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue"/>
