@@ -181,7 +181,6 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             deploy();
             checkArrayData();
             checkQueries();
-            service.delete(studyConfiguration);
         } finally {
             cleanup();            
         }
