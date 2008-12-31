@@ -98,15 +98,24 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
  */
 @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
+    private static final Integer BUFFER_SIZE = 4096;
     
     private Cai2Util() { }
     
@@ -272,4 +281,43 @@ public final class Cai2Util {
     public static void loadCollection(Collection<? extends Object> collection) {
         collection.isEmpty();
     }
+    
+    /**
+     * Takes in a directory and zips it up.
+     * 
+     * @param dir - Directory to zip.
+     * @return Zipped file, stored in same location, with same name as the directory with .zip attached.
+     * @throws IOException - In case cannot be read.
+     */
+    public static File zipAndDeleteDirectory(String dir) throws IOException {
+        File directory = new File(dir);
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("Not a directory:  " + dir);
+        }
+        String[] entries = directory.list();
+        if (entries.length == 0) {
+            return null;
+        }
+        String zipfile = dir + ".zip";
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead;
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
+        for (int i = 0; i < entries.length; i++) {
+            File f = new File(directory, entries[i]);
+            if (f.isDirectory()) {
+                continue;
+            }
+            FileInputStream in = new FileInputStream(f); // Stream to read file
+            ZipEntry entry = new ZipEntry(f.getPath()); // Make a ZipEntry
+            out.putNextEntry(entry); // Store entry
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            in.close();
+        }
+        out.close();
+        FileUtils.deleteDirectory(directory);
+        return new File(zipfile);
+    }
+
 }

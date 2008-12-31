@@ -85,10 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -128,6 +131,20 @@ public class NCIAFacadeTestIntegration {
         } 
     }
 
+    @Test
+    public void testRetrieveDicomFilesBySeriesUID() throws ConnectionException, IOException {
+        String seriesInstanceUID = "1.3.6.1.4.1.9328.50.1.3";
+        
+        NCIADicomJob job = new NCIADicomJob();
+        job.setImageSeriesUID(seriesInstanceUID);
+        job.setJobId("uniqueID");
+        job.setServerConnection(connection);
+        File retrievedZip = nciaFacade.retrieveDicomFiles(job);
+        File expectedZip = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload" 
+                                     + File.separator + "uniqueID.zip");
+        expectedZip.deleteOnExit();
+        assertEquals(expectedZip.getCanonicalPath(), retrievedZip.getCanonicalPath());
+    }
 
     // Test below is commented out because getting all projects for "RIDER" takes a very long time...
     // might want to uncomment it later if we find a reasonable size project name to use.

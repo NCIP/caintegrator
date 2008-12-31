@@ -67,6 +67,7 @@
     <dependency org="apache" name="struts2-tiles-plugin" rev="2.0.11" conf="runtime"/>
     <dependency org="opensymphony" name="xwork" rev="2.0.4" conf="runtime" force="true"/>
     <dependency org="affymetrix" name="AffxFusion" rev="1.0.10b" conf="runtime" force="true"/>
+    <dependency org="iviCore" name="iviCore" rev="1.2dev" conf="compile" />
 
 
     <!-- These exist in the repository -->
@@ -107,6 +108,7 @@
     <dependency org="caGrid" name="data" rev="1.2" conf="runtime->stubs,utils" />
     <dependency org="caGrid" name="transfer" rev="1.2" conf="runtime->client" />
     <dependency org="caGrid" name="dataExtensions" rev="1.2" conf="runtime->style-cacore32" transitive="false"/>
+    <dependency org="caGrid" name="sdkQuery4" rev="1.2" conf="runtime->processor" transitive="false" />
     
   </dependencies>
   

@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import java.io.File;
+
 /**
  * Configurable properties for caIntegrator 2.
  */
@@ -93,7 +95,12 @@ public enum ConfigurationParameter {
     /**
      * Determines where Study files (NetCDF, annotation files, etc.) are stored on the system.
      */
-    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir"));
+    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir")),
+    
+    /**
+     * Determines where to store temporary files for download.
+     */
+    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload");
 
     private String defaultValue;
 

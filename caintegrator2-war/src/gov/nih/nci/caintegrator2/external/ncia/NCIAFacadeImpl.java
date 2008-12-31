@@ -89,11 +89,13 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.ncia.domain.Image;
 import gov.nih.nci.ncia.domain.Patient;
 import gov.nih.nci.ncia.domain.Series;
 import gov.nih.nci.ncia.domain.Study;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -107,6 +109,8 @@ public class NCIAFacadeImpl implements NCIAFacade {
     
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeImpl.class);
     private NCIAServiceFactory nciaServiceFactory;
+    private NCIADicomJobFactory nciaDicomJobFactory;
+    private FileManager fileManager;
 
     /**
      * {@inheritDoc}
@@ -175,6 +179,15 @@ public class NCIAFacadeImpl implements NCIAFacade {
         image.setIdentifier(nciaImage.getSopInstanceUID());
         return image;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File retrieveDicomFiles(NCIADicomJob job) 
+        throws ConnectionException {
+        NCIADicomJobRunner jobRunner = nciaDicomJobFactory.createNCIADicomJobRunner(fileManager, job);
+        return jobRunner.retrieveDicomFiles();
+    }
 
     /**
      * @return the nciaServiceFactory
@@ -188,6 +201,34 @@ public class NCIAFacadeImpl implements NCIAFacade {
      */
     public void setNciaServiceFactory(NCIAServiceFactory nciaServiceFactory) {
         this.nciaServiceFactory = nciaServiceFactory;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    /**
+     * @return the nciaDicomJobFactory
+     */
+    public NCIADicomJobFactory getNciaDicomJobFactory() {
+        return nciaDicomJobFactory;
+    }
+
+    /**
+     * @param nciaDicomJobFactory the nciaDicomJobFactory to set
+     */
+    public void setNciaDicomJobFactory(NCIADicomJobFactory nciaDicomJobFactory) {
+        this.nciaDicomJobFactory = nciaDicomJobFactory;
     }
   
 }

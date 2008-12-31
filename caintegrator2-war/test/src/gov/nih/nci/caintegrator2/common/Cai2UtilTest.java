@@ -89,6 +89,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
@@ -100,12 +102,16 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 
@@ -214,5 +220,27 @@ public class Cai2UtilTest {
             exceptionThrown = true;
         }
         assertTrue(exceptionThrown);
+    }
+    
+    @Test
+    public void testZipAndDeleteDirectory() throws IOException {
+        FileManagerImpl fileManager = new FileManagerImpl();
+        fileManager.setConfigurationHelper(new ConfigurationHelperStub());
+        File tempDirectory = fileManager.getNewTemporaryDirectory("cai2UtilTest");
+        File destFile = new File(tempDirectory, "tempFile");
+        File nullZipFile = Cai2Util.zipAndDeleteDirectory(tempDirectory.getCanonicalPath());
+        assertNull(nullZipFile);
+        FileUtils.copyFile(TestDataFiles.VALID_FILE, destFile);
+        try {
+            Cai2Util.zipAndDeleteDirectory(destFile.getCanonicalPath());
+            fail("Expected illegal argument exception, deleting a file and not directory.");
+        } catch(IllegalArgumentException e) {
+            
+        }
+        assertTrue(tempDirectory.exists());
+        File zippedDirectory = Cai2Util.zipAndDeleteDirectory(tempDirectory.getCanonicalPath());
+        assertEquals("cai2UtilTest.zip", zippedDirectory.getName());
+        assertFalse(tempDirectory.exists());
+        zippedDirectory.deleteOnExit();
     }
 }
