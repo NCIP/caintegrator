@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,80 +85,93 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.cagrid.ncia.client.NCIACoreServiceClient;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.ivi.utils.ZipEntryInputStream;
 
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.axis.types.URI.MalformedURIException;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 
 /**
- * 
+ * Class to deal with retrieving and temporarily storing DICOM files from NCIA through the grid.
  */
-public class NCIAFacadeTest {
-    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTest.class);
-    NCIAFacade nciaFacade;
-    ServerConnectionProfile connection;
+public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
     
+    private static final Integer BUFFER_SIZE = 8192;
+    private final File temporaryStorageDirectory;
+    private final NCIADicomJob job;
     
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTest.class); 
-        connection = new ServerConnectionProfile();
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacade");
-        nciaFacade = nciaFacadeImpl;
+    /**
+     * Public Constructor.
+     * @param fileManager determines where to place the temporary storage directory.
+     * @param job task that needs to run.
+     */
+    public NCIADicomJobRunnerImpl(FileManager fileManager, NCIADicomJob job) {
+        temporaryStorageDirectory = fileManager.getNewTemporaryDirectory(job.getJobId());
+        this.job = job;
     }
-
-
-    @Test
-    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
-        List<String> allProjects;
-        
-        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-        if (!allProjects.isEmpty()) {
-            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-            assertEquals("Project1", allProjects.get(0));
-            assertEquals("Project2", allProjects.get(1));
-            assertTrue(true);
-        } else {
-            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-            fail();
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File retrieveDicomFiles() throws ConnectionException {
+        File seriesDirectory = null;
+        try {
+            NCIACoreServiceClient client = new NCIACoreServiceClient(job.getServerConnection().getUrl());
+            TransferServiceContextReference tscr = client.retrieveDicomDataBySeriesUID(job.getImageSeriesUID());
+            TransferServiceContextClient tclient = new TransferServiceContextClient(tscr.getEndpointReference());
+            InputStream istream = TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+            seriesDirectory = storeDicomFiles(istream);
+            tclient.destroy();
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Malformed URI.", e);
+        } catch (RemoteException e) {
+            throw new ConnectionException("Remote Connection Failed.", e);
+        } catch (Exception e) {
+            throw new ConnectionException("Unable to get dicom data from Transfer Client.", e);
         }
-    }
-
-
-    @Test
-    public void testGetImageSeriesAcquisition() throws ConnectionException {
-        String trialDataProvenanceProject = "RIDER";
-        List<ImageSeriesAcquisition> imageStudies;
-        
-        imageStudies = nciaFacade.getImageSeriesAcquisitions(trialDataProvenanceProject, connection);
-        if (!imageStudies.isEmpty()){
-            LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
-        } else {
-            LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
-        }
-        assertTrue(true);
+        job.setCompleted(true);
+        return seriesDirectory;
     }
     
-    @Test
-    public void testRetrieveDicomFiles() throws ConnectionException {
-        NCIADicomJob job = new NCIADicomJob();
-        job.setImageSeriesUID("test");
-        job.setJobId("test");
-        job.setServerConnection(new ServerConnectionProfile());
-        nciaFacade.retrieveDicomFiles(job);
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) nciaFacade;
-        NCIADicomJobFactoryStub jobFactoryStub = (NCIADicomJobFactoryStub) nciaFacadeImpl.getNciaDicomJobFactory();
-        assertTrue(jobFactoryStub.nciaDicomJobRunnerStub.retrieveDicomFilesCalled);
+    private File storeDicomFiles(InputStream istream) throws IOException {
+        ZipInputStream zis = new ZipInputStream(istream);
+        ZipEntryInputStream zeis = null;
+        while (true) {
+            try {
+                zeis = new ZipEntryInputStream(zis);
+            } catch (EOFException e) {
+                break;
+            } catch (IOException e) {
+                break;
+            }
+            BufferedInputStream bis = new BufferedInputStream(zeis);
+            byte[] data = new byte[BUFFER_SIZE];
+            int bytesRead = 0;
+            File dicomFile = new File(temporaryStorageDirectory, zeis.getName());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dicomFile));
+            while ((bytesRead = (bis.read(data, 0, data.length))) > 0) {
+                bos.write(data, 0, bytesRead);
+            }
+            bos.flush();
+            bos.close();
+            zis.close();
+        }
+        return Cai2Util.zipAndDeleteDirectory(temporaryStorageDirectory.getCanonicalPath());
     }
-        
+
 }

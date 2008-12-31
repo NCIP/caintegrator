@@ -43,6 +43,18 @@ public class FileManagerImplTest {
         assertEquals(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
         assertEquals(TestDataFiles.VALID_FILE.length(), storedFile.length());
     }
+    
+    @Test
+    public void testGetNewTemporaryDirectory() {
+        File newTemporaryDirectory = fileManager.getNewTemporaryDirectory("test");
+        newTemporaryDirectory.deleteOnExit();
+        File expectedTemporaryDirectory = new File(System.getProperty("java.io.tmpdir") + 
+                                                    File.separator + 
+                                                    "tmpDownload" + 
+                                                    File.separator + "test" );
+        assertEquals(expectedTemporaryDirectory, newTemporaryDirectory);
+        assertEquals(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testStoreStudyFileIllegalArgument() throws IOException  {

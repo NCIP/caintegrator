@@ -108,6 +108,7 @@ public interface FileManager {
      */
     File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) throws IOException;
     
+        
     /**
      * Returns the storage directory for the given study.
      * 
@@ -115,5 +116,13 @@ public interface FileManager {
      * @return the directory.
      */
     File getStudyDirectory(Study study);
+
+
+    /**
+     * Creates a temporary directory to use based on the given directory name.
+     * @param dirName temporary directory name to use (just name, not path).
+     * @return the directory.
+     */
+    File getNewTemporaryDirectory(String dirName);
 
 }

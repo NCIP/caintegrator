@@ -118,7 +118,18 @@ public class FileManagerImpl implements FileManager {
         }
         return destFile;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File getNewTemporaryDirectory(String dirName) {
+        File newTemporaryDirectory = new File(getConfigurationHelper().
+                                                getString(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY), 
+                                                dirName);
+        newTemporaryDirectory.mkdirs();
+        return newTemporaryDirectory;
+    }
+    
     private File getStudyDirectory(StudyConfiguration studyConfiguration) {
         return getStudyDirectory(studyConfiguration.getStudy());
     }
@@ -150,6 +161,10 @@ public class FileManagerImpl implements FileManager {
     public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
         this.configurationHelper = configurationHelper;
     }
+
+
+
+
 
 
 }

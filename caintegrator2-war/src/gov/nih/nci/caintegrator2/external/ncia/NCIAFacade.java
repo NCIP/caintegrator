@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -115,6 +116,13 @@ public interface NCIAFacade {
      */
     List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
             ServerConnectionProfile profile) throws ConnectionException;
-
+    
+    /**
+     * Retrieves the Dicom files for the given job (currently only supports 1 imageSeries UID).
+     * @param job is the job to retrieve dicom images for.
+     * @return the zip file which contains the files.
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    File retrieveDicomFiles(NCIADicomJob job) throws ConnectionException;
 }
 
