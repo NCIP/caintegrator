@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,80 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.io.File;
 
 /**
- * 
+ * Interface for running NCIA Dicom Jobs.
  */
-public class NCIAFacadeTest {
-    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTest.class);
-    NCIAFacade nciaFacade;
-    ServerConnectionProfile connection;
+public interface NCIADicomJobRunner {
     
-    
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTest.class); 
-        connection = new ServerConnectionProfile();
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacade");
-        nciaFacade = nciaFacadeImpl;
-    }
+    /**
+     * Retrieves dicom files for the job.
+     * 
+     * NOTE: right now it assumes the job contains only 1 Series Instance UID, later
+     * we can expand it to have lists of the 3 different types of UID's.
+     * @return Zipped file.
+     * @throws ConnectionException if we are unable to connect.
+     */
+    File retrieveDicomFiles() throws ConnectionException;
 
-
-    @Test
-    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
-        List<String> allProjects;
-        
-        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-        if (!allProjects.isEmpty()) {
-            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-            assertEquals("Project1", allProjects.get(0));
-            assertEquals("Project2", allProjects.get(1));
-            assertTrue(true);
-        } else {
-            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-            fail();
-        }
-    }
-
-
-    @Test
-    public void testGetImageSeriesAcquisition() throws ConnectionException {
-        String trialDataProvenanceProject = "RIDER";
-        List<ImageSeriesAcquisition> imageStudies;
-        
-        imageStudies = nciaFacade.getImageSeriesAcquisitions(trialDataProvenanceProject, connection);
-        if (!imageStudies.isEmpty()){
-            LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
-        } else {
-            LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
-        }
-        assertTrue(true);
-    }
-    
-    @Test
-    public void testRetrieveDicomFiles() throws ConnectionException {
-        NCIADicomJob job = new NCIADicomJob();
-        job.setImageSeriesUID("test");
-        job.setJobId("test");
-        job.setServerConnection(new ServerConnectionProfile());
-        nciaFacade.retrieveDicomFiles(job);
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) nciaFacade;
-        NCIADicomJobFactoryStub jobFactoryStub = (NCIADicomJobFactoryStub) nciaFacadeImpl.getNciaDicomJobFactory();
-        assertTrue(jobFactoryStub.nciaDicomJobRunnerStub.retrieveDicomFilesCalled);
-    }
-        
 }

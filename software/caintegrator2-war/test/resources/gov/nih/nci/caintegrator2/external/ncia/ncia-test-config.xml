@@ -6,18 +6,46 @@
         <property name="nciaServiceFactory">
             <ref local="nciaServiceStubFactory"/>
         </property>
+        <property name="fileManager">
+            <ref local="fileManagerStub"/>
+        </property>
+        <property name="nciaDicomJobFactory">
+            <ref local="nciaDicomJobFactoryStub"/>
+        </property>    
     </bean>
     
     <bean name="nciaFacadeIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl" singleton="true">
         <property name="nciaServiceFactory">
             <ref local="nciaServiceFactoryIntegration"/>
         </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>
+        <property name="nciaDicomJobFactory">
+            <ref local="nciaDicomJobFactoryIntegration"/>
+        </property>    
     </bean>
+    
+    
+    <bean id="fileManagerStub" class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
+    
+    <bean id="fileManager"
+        class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
+        <property name="configurationHelper">
+            <ref local="configurationHelperStub" />
+        </property>
+    </bean>
+        
+    <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
     
     <bean id="nciaServiceStubFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceStubFactory" />
 
     <bean id="nciaServiceFactoryIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
         
+    <bean id="nciaDicomJobFactoryStub" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryStub" />
+
+    <bean id="nciaDicomJobFactoryIntegration" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
+
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->
        <!--  Note, the dev url below can only be used when behind NCI's VPN  -->

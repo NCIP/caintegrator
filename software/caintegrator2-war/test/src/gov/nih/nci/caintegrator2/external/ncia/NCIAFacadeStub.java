@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -111,5 +112,10 @@ public class NCIAFacadeStub implements NCIAFacade {
         acquisitions.add(new ImageSeriesAcquisition());
         return acquisitions;
     }
+
+    public File retrieveDicomFiles(NCIADicomJob job) throws ConnectionException {
+        return null;
+    }
+
 
 }

@@ -107,4 +107,8 @@ public class FileManagerStub implements FileManager {
         return new File("/");
     }
 
+    public File getNewTemporaryDirectory(String dirName) {
+        return new File("/");
+    }
+
 }

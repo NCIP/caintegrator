@@ -85,80 +85,31 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.io.File;
 
 /**
  * 
  */
-public class NCIAFacadeTest {
-    private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTest.class);
-    NCIAFacade nciaFacade;
-    ServerConnectionProfile connection;
+public class NCIADicomJobFactoryStub implements NCIADicomJobFactory {
+
+    public NCIADicomJobRunnerStub nciaDicomJobRunnerStub; 
     
-    
-    @Before
-    public void setUp() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTest.class); 
-        connection = new ServerConnectionProfile();
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacade");
-        nciaFacade = nciaFacadeImpl;
+    public NCIADicomJobRunner createNCIADicomJobRunner(FileManager fileManager, NCIADicomJob job) {
+        nciaDicomJobRunnerStub = new NCIADicomJobRunnerStub();
+        return nciaDicomJobRunnerStub;
     }
-
-
-    @Test
-    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
-        List<String> allProjects;
+    
+    public static class NCIADicomJobRunnerStub implements NCIADicomJobRunner {
+        public boolean retrieveDicomFilesCalled = false;
         
-        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
-        if (!allProjects.isEmpty()) {
-            LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
-            assertEquals("Project1", allProjects.get(0));
-            assertEquals("Project2", allProjects.get(1));
-            assertTrue(true);
-        } else {
-            LOGGER.error("Retrieve Projects FAILED, might be a connection error!");
-            fail();
+        public File retrieveDicomFiles() throws ConnectionException {
+            retrieveDicomFilesCalled = true;
+            return new File(".");
         }
+        
     }
 
-
-    @Test
-    public void testGetImageSeriesAcquisition() throws ConnectionException {
-        String trialDataProvenanceProject = "RIDER";
-        List<ImageSeriesAcquisition> imageStudies;
-        
-        imageStudies = nciaFacade.getImageSeriesAcquisitions(trialDataProvenanceProject, connection);
-        if (!imageStudies.isEmpty()){
-            LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
-        } else {
-            LOGGER.error("Retrieve ImageSeriesAcquisition FAILED, might be a connection error!");
-        }
-        assertTrue(true);
-    }
-    
-    @Test
-    public void testRetrieveDicomFiles() throws ConnectionException {
-        NCIADicomJob job = new NCIADicomJob();
-        job.setImageSeriesUID("test");
-        job.setJobId("test");
-        job.setServerConnection(new ServerConnectionProfile());
-        nciaFacade.retrieveDicomFiles(job);
-        NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) nciaFacade;
-        NCIADicomJobFactoryStub jobFactoryStub = (NCIADicomJobFactoryStub) nciaFacadeImpl.getNciaDicomJobFactory();
-        assertTrue(jobFactoryStub.nciaDicomJobRunnerStub.retrieveDicomFilesCalled);
-    }
-        
 }

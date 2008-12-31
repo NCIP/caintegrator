@@ -3,6 +3,10 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.1.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/servlet-2.3.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-beans-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-processor-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/iviCore-1.2dev.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/ncia-beans.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
@@ -111,7 +115,6 @@
 	<classpathentry kind="lib" path="software/caintegrator-cacore/output/caintegrator2/build/jar/caintegrator2-orm.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/caarray-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/nci-commons-core-1.0.9.jar"/>
-	<classpathentry kind="lib" path="software/lib/external-runtime/ncia-client-modified.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-common.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-stubs.jar"/>
