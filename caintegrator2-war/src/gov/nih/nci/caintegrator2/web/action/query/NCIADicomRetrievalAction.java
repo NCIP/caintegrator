@@ -94,6 +94,9 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
  * Action to run NCIA Dicom jobs which retrieve and download DICOM files.
  */
 public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
+
+    private static final long serialVersionUID = 1L;
+    
     private NCIAFacade nciaFacade;
     
     /**

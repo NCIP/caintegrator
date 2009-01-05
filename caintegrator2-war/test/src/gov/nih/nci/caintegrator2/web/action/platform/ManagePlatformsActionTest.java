@@ -83,135 +83,34 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.platform;
 
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileReader;
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileWriter;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.file.FileManager;
+import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
+import com.opensymphony.xwork2.ActionSupport;
 
-/**
- * Implementation of the array data service (backed by NetCDF).
- */
-@Transactional
-public class ArrayDataServiceImpl implements ArrayDataService {
+public class ManagePlatformsActionTest {
+
+    ManagePlatformsAction action = new ManagePlatformsAction();
+    ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
     
-    private static final Logger LOGGER = Logger.getLogger(ArrayDataServiceImpl.class);
-    
-    private CaIntegrator2Dao dao;
-    private FileManager fileManager;
-
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        return getData(arrayDataMatrix, arrayDataMatrix.getSampleDataCollection(), getReporters(arrayDataMatrix));
-    }
-
-    private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        reporters.addAll(arrayDataMatrix.getReporterSet().getReporters());
-        return reporters;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
-            Collection<AbstractReporter> reporters) {
-        NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(arrayDataMatrix);
-        for (ArrayData arrayData : arrayDatas) {
-            for (AbstractReporter reporter : reporters) {
-                values.setValue(arrayData, reporter, 
-                        reader.getArrayData(arrayData.getArray().getName(), reporter.getName()));
-            }
-        }
-        return values;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void save(ArrayDataValues values) {
-        dao.save(values.getArrayDataMatrix());
-        NetcdfFileWriter writer = new NetcdfFileWriter(values, getNetCdfFilename(values.getArrayDataMatrix()));
-        writer.create();
-    }
-
-    private String getNetCdfFilename(ArrayDataMatrix arrayDataMatrix) {
-        String filename = "data" + arrayDataMatrix.getId() + ".nc";
-        File netCdfFile = 
-            new File(getFileManager().getStudyDirectory(arrayDataMatrix.getStudy()), filename);
-        return netCdfFile.getAbsolutePath();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
-        LOGGER.info("Started loading design from " + platformSource.toString());
-        Platform platform = platformSource.getLoader().load(getDao());
-        LOGGER.info("Completed loading design from " + platformSource.toString());
-        return platform;
+    @Before
+    public void setUp() {
+        action.setArrayDataService(arrayDataServiceStub);        
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    public List<Platform> getPlatforms() {
-        return dao.getPlatforms();
+    @Test
+    public void testExecute() {
+        assertEquals(ActionSupport.SUCCESS, action.execute());
     }
 
-    /**
-     * @return the dao
-     */
-    public CaIntegrator2Dao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * @return the fileManager
-     */
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    /**
-     * @param fileManager the fileManager to set
-     */
-    public void setFileManager(FileManager fileManager) {
-        this.fileManager = fileManager;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
-        ArrayDataValues values = getData(arrayDataMatrix, arrayDatas, reporters);
-        ArrayDataValues controlValues = getData(arrayDataMatrix, controlArrayDatas, reporters);
-        return new FoldChangeCalculator(values, controlValues).calculate();
+    @Test
+    public void testGetPlatforms() {
+        assertNotNull(action.getPlatforms());
     }
 
 }

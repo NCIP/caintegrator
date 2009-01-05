@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Interface to the subsystem used store and retrieve microarray data.
@@ -143,5 +144,12 @@ public interface ArrayDataService {
      * @throws PlatformLoadingException if there was a problem loading the array design from the provided resources.
      */
      Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException;
+
+    /**
+     * Returns all platforms in alphabetical order.
+     * 
+     * @return the platforms.
+     */
+    List<Platform> getPlatforms();
     
 }
