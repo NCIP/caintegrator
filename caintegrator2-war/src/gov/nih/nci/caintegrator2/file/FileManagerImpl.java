@@ -94,6 +94,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -123,6 +124,9 @@ public class FileManagerImpl implements FileManager {
      * {@inheritDoc}
      */
     public File getNewTemporaryDirectory(String dirName) {
+        if (StringUtils.isBlank(dirName)) {
+            throw new IllegalArgumentException("Directory name is null or blank.");
+        }
         File newTemporaryDirectory = new File(getConfigurationHelper().
                                                 getString(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY), 
                                                 dirName);

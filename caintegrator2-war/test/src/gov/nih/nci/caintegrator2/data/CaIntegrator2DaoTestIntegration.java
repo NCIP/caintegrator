@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
@@ -540,6 +541,16 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(3, annotationDefinition2.getAnnotationValueCollection().size());
         
         
+    }
+    
+    @Test
+    public void testRetrieveImagingDataSourceForStudy() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        Study study = studyConfiguration.getStudy();
+        ImageDataSourceConfiguration imageDataSource = new ImageDataSourceConfiguration();
+        studyConfiguration.getImageDataSources().add(imageDataSource);
+        dao.save(studyConfiguration);
+        assertEquals(imageDataSource, dao.retrieveImagingDataSourceForStudy(study));
     }
     
     

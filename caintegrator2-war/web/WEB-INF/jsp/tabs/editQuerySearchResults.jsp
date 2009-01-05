@@ -102,7 +102,12 @@
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn" 
             onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-            <span class="btn_img"><span class="search">Forward To NCIA Basket</span></span>
+            <span class="btn_img"><span class="add">Forward To NCIA Basket</span></span>
+            </s:a>
+        </li>
+        <li><s:a href="#" cssClass="btn" 
+            onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
+            <span class="btn_img"><span class="add">Retrieve Dicom Images</span></span>
             </s:a>
         </li>
         <li><s:a href="#" cssClass="btn" 

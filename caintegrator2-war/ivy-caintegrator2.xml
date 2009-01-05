@@ -67,7 +67,7 @@
     <dependency org="apache" name="struts2-tiles-plugin" rev="2.0.11" conf="runtime"/>
     <dependency org="opensymphony" name="xwork" rev="2.0.4" conf="runtime" force="true"/>
     <dependency org="affymetrix" name="AffxFusion" rev="1.0.10b" conf="runtime" force="true"/>
-    <dependency org="iviCore" name="iviCore" rev="1.2dev" conf="compile" />
+    <dependency org="iviCore" name="iviCore" rev="1.2dev" conf="runtime" />
 
 
     <!-- These exist in the repository -->
