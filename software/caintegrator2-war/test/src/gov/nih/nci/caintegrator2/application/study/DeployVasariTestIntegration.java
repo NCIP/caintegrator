@@ -225,4 +225,14 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return "Survival Start Date";
     }
 
+    @Override
+    int getExpectedNumberOfGeneReporters() {
+        return 20886;
+    }
+
+    @Override
+    int getExpectedNumberProbeSets() {
+        return 54675;
+    }
+
 }

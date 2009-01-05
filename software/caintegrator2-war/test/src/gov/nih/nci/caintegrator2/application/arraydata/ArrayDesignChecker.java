@@ -19,7 +19,7 @@ public class ArrayDesignChecker {
     public static Platform checkLoadArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
-        AffymetrixPlatformSource source = new AffymetrixPlatformSource(cdfReader.getCdfData().getChipType(), annotationFile);
+        AffymetrixPlatformSource source = new AffymetrixPlatformSource(annotationFile);
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);
@@ -51,7 +51,6 @@ public class ArrayDesignChecker {
         for (AbstractReporter abstractReporter : probeSetReporters.getReporters()) {
             GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
             assertFalse(StringUtils.isBlank(reporter.getName()));
-            assertNotNull(reporter.getGene());
         }
     }
 

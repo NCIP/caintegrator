@@ -224,4 +224,14 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
         return "Survival Start Date";
     }
 
+    @Override
+    int getExpectedNumberOfGeneReporters() {
+        return 20886;
+    }
+
+    @Override
+    int getExpectedNumberProbeSets() {
+        return 54675;
+    }
+
 }

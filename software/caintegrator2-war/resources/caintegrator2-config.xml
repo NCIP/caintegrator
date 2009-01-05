@@ -364,6 +364,34 @@
         
     </bean>   
 
+   <bean id="managePlatformsAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.platform.ManagePlatformsAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>        
+    </bean>   
+
+   <bean id="addPlatformAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.platform.AddPlatformAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>        
+        <property name="jmsTemplate">
+            <ref local="platformLoaderJmsTemplate"/>
+        </property>        
+        <property name="queue">
+            <ref local="platformLoaderQueue"/>
+        </property>        
+    </bean>   
+
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
     <!-- ******************************************************************* -->
@@ -464,6 +492,12 @@
             <ref local="caIntegrator2Dao"/>
         </property>
     </bean>
+    
+    <bean id="platformLoaderListener" class="gov.nih.nci.caintegrator2.application.arraydata.PlatformLoaderListener">
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+    </bean>
 
     <bean id="arrayDataService" 
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
@@ -500,7 +534,7 @@
     </bean>
     
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
-    
+        
     <bean id="nciaDicomJobFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
         
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
@@ -533,7 +567,28 @@
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->
     <!-- ******************************************************************* -->
-        
+
+    <bean id="jmsConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:ConnectionFactory" />
+    </bean>
+    
+    <bean id="platformLoaderQueue" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="queue/platformLoaderQueue" />
+    </bean>
+    
+    <bean id="platformLoaderJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+        <property name="defaultDestination" ref="platformLoaderQueue" />
+        <property name="receiveTimeout" value="1" />
+    </bean>
+
+    <bean id="platformLoaderListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+        <property name="destination" ref="platformLoaderQueue" />
+        <property name="messageListener" ref="platformLoaderListener" />
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+    
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">
             <ref local="sessionFactory"/>

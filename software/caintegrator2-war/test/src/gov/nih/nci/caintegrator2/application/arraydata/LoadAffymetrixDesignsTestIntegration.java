@@ -10,12 +10,12 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class LoadAffymetrixDesignsTestIntegrationDisabled extends AbstractTransactionalSpringContextTests {
+public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private ArrayDataService arrayDataService;
     private CaIntegrator2Dao dao;
     
-    public LoadAffymetrixDesignsTestIntegrationDisabled() {
+    public LoadAffymetrixDesignsTestIntegration() {
         setDefaultRollback(false);
     }
     
@@ -25,6 +25,7 @@ public class LoadAffymetrixDesignsTestIntegrationDisabled extends AbstractTransa
 
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
+        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE, TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
         checkLoadArrayDesign(TestArrayDesignFiles.HG_U133A_CDF_FILE, TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
     }
 

@@ -118,7 +118,7 @@ public interface CaIntegrator2Dao {
      * @param persistentObject the object to save.
      */
     void save(Object persistentObject);
-    
+
     /**
      * Deletes the object given.
      * 
@@ -299,5 +299,12 @@ public interface CaIntegrator2Dao {
      * @return imaging source for study.
      */
     ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study);
+    
+    /**
+     * Returns all platforms ordered by name.
+     * 
+     * @return the platforms.
+     */
+    List<Platform> getPlatforms();
     
 }

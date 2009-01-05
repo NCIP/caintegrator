@@ -138,6 +138,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveStudyLogoCalled;
     public boolean retrieveValueForAnnotationSubjectCalled;
     public boolean mergeCalled;
+    public boolean getPlatformsCalled;
     public boolean retrieveImagingDataSourceForStudyCalled;
 
     public UserWorkspace getWorkspace(String username) {
@@ -151,7 +152,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public void save(Object entity) {
         saveCalled = true;
     }
-
+    
     public void delete(Object persistentObject) {
         deleteCalled = true;
     }
@@ -177,6 +178,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         retrieveValueForAnnotationSubjectCalled = false;
         mergeCalled = false;
         retrieveImagingDataSourceForStudyCalled = false;
+        getPlatformsCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -342,6 +344,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study) {
         retrieveImagingDataSourceForStudyCalled = true;
         return new ImageDataSourceConfiguration();
+    }
+
+    public List<Platform> getPlatforms() {
+        getPlatformsCalled = true;
+        return Collections.emptyList();
     }
 
 }

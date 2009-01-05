@@ -83,135 +83,164 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.platform;
 
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileReader;
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileWriter;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 /**
- * Implementation of the array data service (backed by NetCDF).
+ * Provides functionality to list and add array designs.
  */
-@Transactional
-public class ArrayDataServiceImpl implements ArrayDataService {
-    
-    private static final Logger LOGGER = Logger.getLogger(ArrayDataServiceImpl.class);
-    
-    private CaIntegrator2Dao dao;
-    private FileManager fileManager;
+public class AddPlatformAction extends AbstractCaIntegrator2Action {
 
+    private static final long serialVersionUID = 1L;
+    private ArrayDataService arrayDataService;
+    private File platformFile;
+    private String platformFileContentType;
+    private String platformFileFileName;
+    private JmsTemplate jmsTemplate;
+    private Queue queue;
+    
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        return getData(arrayDataMatrix, arrayDataMatrix.getSampleDataCollection(), getReporters(arrayDataMatrix));
+    @Override
+    protected boolean isFileUpload() {
+        return true;
     }
-
-    private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        reporters.addAll(arrayDataMatrix.getReporterSet().getReporters());
-        return reporters;
-    }
-
+    
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
-            Collection<AbstractReporter> reporters) {
-        NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(arrayDataMatrix);
-        for (ArrayData arrayData : arrayDatas) {
-            for (AbstractReporter reporter : reporters) {
-                values.setValue(arrayData, reporter, 
-                        reader.getArrayData(arrayData.getArray().getName(), reporter.getName()));
+    @Override
+    public void validate() {
+        prepareValueStack();
+    }
+    
+    /**
+     * @return the Struts result.
+     */
+    public String execute() {
+        AffymetrixPlatformSource source = new AffymetrixPlatformSource(getPlatformFile());
+        sendPlatformMessage(source);
+        return SUCCESS;
+    }
+    
+    private void sendPlatformMessage(final AbstractPlatformSource source) {
+        MessageCreator creator = new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+                ObjectMessage message = session.createObjectMessage();
+                message.setObject(source);
+                return message;
             }
-        }
-        return values;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void save(ArrayDataValues values) {
-        dao.save(values.getArrayDataMatrix());
-        NetcdfFileWriter writer = new NetcdfFileWriter(values, getNetCdfFilename(values.getArrayDataMatrix()));
-        writer.create();
-    }
-
-    private String getNetCdfFilename(ArrayDataMatrix arrayDataMatrix) {
-        String filename = "data" + arrayDataMatrix.getId() + ".nc";
-        File netCdfFile = 
-            new File(getFileManager().getStudyDirectory(arrayDataMatrix.getStudy()), filename);
-        return netCdfFile.getAbsolutePath();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
-        LOGGER.info("Started loading design from " + platformSource.toString());
-        Platform platform = platformSource.getLoader().load(getDao());
-        LOGGER.info("Completed loading design from " + platformSource.toString());
-        return platform;
+        };
+        getJmsTemplate().send(getQueue(), creator);
     }
     
     /**
-     * {@inheritDoc}
+     * @return the list of all platforms, alphabetized
      */
     public List<Platform> getPlatforms() {
-        return dao.getPlatforms();
+        return getArrayDataService().getPlatforms();
     }
 
     /**
-     * @return the dao
+     * @return the arrayDataService
      */
-    public CaIntegrator2Dao getDao() {
-        return dao;
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
     }
 
     /**
-     * @param dao the dao to set
+     * @param arrayDataService the arrayDataService to set
      */
-    public void setDao(CaIntegrator2Dao dao) {
-        this.dao = dao;
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 
     /**
-     * @return the fileManager
+     * @return the platformFile
      */
-    public FileManager getFileManager() {
-        return fileManager;
+    public File getPlatformFile() {
+        return platformFile;
     }
 
     /**
-     * @param fileManager the fileManager to set
+     * @param platformFile the platformFile to set
      */
-    public void setFileManager(FileManager fileManager) {
-        this.fileManager = fileManager;
+    public void setPlatformFile(File platformFile) {
+        this.platformFile = platformFile;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the platformFileContentType
      */
-    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
-        ArrayDataValues values = getData(arrayDataMatrix, arrayDatas, reporters);
-        ArrayDataValues controlValues = getData(arrayDataMatrix, controlArrayDatas, reporters);
-        return new FoldChangeCalculator(values, controlValues).calculate();
+    public String getPlatformFileContentType() {
+        return platformFileContentType;
+    }
+
+    /**
+     * @param platformFileContentType the platformFileContentType to set
+     */
+    public void setPlatformFileContentType(String platformFileContentType) {
+        this.platformFileContentType = platformFileContentType;
+    }
+
+    /**
+     * @return the platformFileFileName
+     */
+    public String getPlatformFileFileName() {
+        return platformFileFileName;
+    }
+
+    /**
+     * @param platformFileFileName the platformFileFileName to set
+     */
+    public void setPlatformFileFileName(String platformFileFileName) {
+        this.platformFileFileName = platformFileFileName;
+    }
+
+    /**
+     * @return the jmsTemplate
+     */
+    public JmsTemplate getJmsTemplate() {
+        return jmsTemplate;
+    }
+
+    /**
+     * @param jmsTemplate the jmsTemplate to set
+     */
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    /**
+     * @return the queue
+     */
+    public Queue getQueue() {
+        return queue;
+    }
+
+    /**
+     * @param queue the queue to set
+     */
+    public void setQueue(Queue queue) {
+        this.queue = queue;
     }
 
 }

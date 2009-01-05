@@ -116,16 +116,18 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private static final String ENSEMBL_HEADER = "Ensembl";
     private static final String UNIGENE_ID_HEADER = "UniGene ID";
 
-    private final String platformName;
+    private static final String PLATFORM_NAME_HEADER = "chip_type";
+    private static final Object NO_GENE_SYMBOL = "---";
+
     private final File annotationFile;
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
     private AffymetrixCdfReader cdfReader;
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
     private CSVReader annotationFileReader;
+    private final Map<String, String> fileHeaders = new HashMap<String, String>();
 
-    AffymetrixPlatformLoader(String platformName, File annotationFile) {
+    AffymetrixPlatformLoader(File annotationFile) {
         super();
-        this.platformName = platformName;
         this.annotationFile = annotationFile;
     }
 
@@ -147,7 +149,6 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private Platform createPlatform() {
         Platform platform = new Platform();
-        platform.setName(platformName);
         platform.setReporterSets(new HashSet<ReporterSet>());
         platform.setVendor("Affymetrix");
         return platform;
@@ -166,35 +167,48 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         platform.getReporterSets().add(probeSetReporters);
         try {
             annotationFileReader = new CSVReader(new FileReader(annotationFile));
-            loadAnnotationHeaders();
+            loadHeaders();
+            platform.setName(getHeaderValue(PLATFORM_NAME_HEADER));
             loadAnnotations(geneReporters, probeSetReporters, dao);
         } catch (IOException e) {
             throw new PlatformLoadingException("Couldn't read annotation file " + annotationFile.getName(), e);
         }
     }
 
-    private void loadAnnotationHeaders() throws PlatformLoadingException, IOException {
-        String[] headers = getHeaders();
-        if (headers.length == 0) {
-            throw new PlatformLoadingException("Invalid Affymetrix annotation file; headers not found in file: " 
-                    + annotationFile.getName());
-        }
-        for (int i = 0; i < headers.length; i++) {
-            headerToIndexMap .put(headers[i], i);
-        }
+    private String getHeaderValue(String headerName) {
+        return fileHeaders.get(headerName);
     }
 
-    private String[] getHeaders() throws IOException {
+    private void loadHeaders() throws PlatformLoadingException, IOException {
         String[] fields;
         while ((fields = annotationFileReader.readNext()) != null) {
-            if (isHeadersLine(fields)) {
-                return fields;
+            if (isFileHeaderLine(fields)) {
+                loadFileHeaderLine(fields);
+            } else if (isAnnotationHeadersLine(fields)) {
+                loadAnnotationHeaders(fields);
+                return;
             }
-        }
-        return new String[] {};
+        }        
+        throw new PlatformLoadingException("Invalid Affymetrix annotation file; headers not found in file: " 
+                + annotationFile.getName());
     }
 
-    private boolean isHeadersLine(String[] fields) {
+    private boolean isFileHeaderLine(String[] fields) {
+        return fields.length == 1 && fields[0].startsWith("#%");
+    }
+
+    private void loadFileHeaderLine(String[] fields) {
+        String[] parts = fields[0].substring(2).split("=");
+        fileHeaders.put(parts[0], parts[1]);
+    }
+
+    private void loadAnnotationHeaders(String[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            headerToIndexMap.put(headers[i], i);
+        }
+    }
+
+    private boolean isAnnotationHeadersLine(String[] fields) {
         return fields.length > 0 && PROBE_SET_ID_HEADER.equals(fields[0]);
     }
 
@@ -210,7 +224,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
             CaIntegrator2Dao dao) {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
         Gene gene = symbolToGeneMap.get(symbol);
-        if (gene == null) {
+        if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
             gene = lookupOrCreateGene(fields, dao);
             addGeneReporter(geneReporters, gene);
         }
@@ -255,7 +269,9 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
         reporter.setGene(gene);
-        gene.getReporterCollection().add(reporter);
+        if (gene != null) {
+            gene.getReporterCollection().add(reporter);
+        }
         reporter.setReporterSet(probeSetReporters);
         probeSetReporters.getReporters().add(reporter);
     }

@@ -85,10 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import java.io.Serializable;
+
 /**
  * Base class for platform source specifications.
  */
-public abstract class AbstractPlatformSource {
+public abstract class AbstractPlatformSource implements Serializable {
 
     abstract AbstractPlatformLoader getLoader();
     

@@ -91,19 +91,17 @@ import java.io.File;
  * Used to load Affymetrix array designs.
  */
 public class AffymetrixPlatformSource extends AbstractPlatformSource {
-    
+
+    private static final long serialVersionUID = 1L;
     private final File annotationFile;
-    private final String platformName;
     
     /**
      * Creates a new instance.
      * 
-     * @param platformName the name of the new design.
      * @param annotationFile the CSV annotation file.
      */
-    public AffymetrixPlatformSource(String platformName, File annotationFile) {
+    public AffymetrixPlatformSource(File annotationFile) {
         super();
-        this.platformName = platformName;
         if (annotationFile == null || !annotationFile.exists()) {
             throw new IllegalArgumentException("Annotation file must exist.");
         }
@@ -112,7 +110,15 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
 
     @Override
     AbstractPlatformLoader getLoader() {
-        return new AffymetrixPlatformLoader(platformName, annotationFile);
+        return new AffymetrixPlatformLoader(annotationFile);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Affymetrix CSV annotation file: " + annotationFile.getName();
     }
 
 

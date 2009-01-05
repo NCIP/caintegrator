@@ -47,7 +47,7 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
         PlatformHelper platformHelper = new PlatformHelper(platform);
         Collection<AbstractReporter> geneReporters = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        assertEquals(4563, geneReporters.size());
+        assertEquals(4562, geneReporters.size());
         for (AbstractReporter abstractReporter : geneReporters) {
             GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
             Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -127,6 +127,12 @@ public class ArrayDataServiceTest {
         assertEquals(3.3, (float) foldChangeValues.getValue(data2, reporter1), 0.0001);
         assertEquals(4.0, (float) foldChangeValues.getValue(data1, reporter2), 0.0001);
         assertEquals(8.0, (float) foldChangeValues.getValue(data2, reporter2), 0.0001);
+    }
+    
+    @Test
+    public void testGetPlatforms() {
+        service.getPlatforms();
+        assertTrue(daoStub.getPlatformsCalled);
     }
 
     private static class FoldChangeTestFileManagerStub extends FileManagerStub implements FileManager {

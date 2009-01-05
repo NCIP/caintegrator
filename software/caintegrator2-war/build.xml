@@ -847,11 +847,13 @@
     <property name="jboss.server.dir" location="${jboss.home}/server/${jboss.server.name}" />
     <property name="jboss.deploy.dir" location="${jboss.server.dir}/deploy" />
     <property name="caintegrator2.datasource" location="${software.dir}/common/resources/jboss-conf/caintegrator2-mysql-ds.xml" />
+    <property name="caintegrator2.jms.destinations.file" location="${software.dir}/common/resources/jboss-conf/caintegrator2-jms-destinations-service.xml" />
     
     <target name="deploy:jboss" depends="caintegrator2.war">
         <copy file="${caintegrator2.datasource}" todir="${jboss.deploy.dir}">
             <filterset refid="caintegrator2.filterset" />
         </copy>
+        <copy file="${caintegrator2.jms.destinations.file}" todir="${jboss.deploy.dir}/jms" />
         <copy file="${caintegrator2.war.compile.lib.dir}/mysql-connector-java-5.0.5.jar" todir="${jboss.server.dir}/lib" />
         <copy file="${caintegrator2.war}" todir="${jboss.deploy.dir}" />
     </target>
