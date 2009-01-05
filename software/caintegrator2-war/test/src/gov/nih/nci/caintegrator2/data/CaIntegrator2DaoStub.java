@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -137,6 +138,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveStudyLogoCalled;
     public boolean retrieveValueForAnnotationSubjectCalled;
     public boolean mergeCalled;
+    public boolean retrieveImagingDataSourceForStudyCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -174,6 +176,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         retrieveStudyLogoCalled = false;
         retrieveValueForAnnotationSubjectCalled = false;
         mergeCalled = false;
+        retrieveImagingDataSourceForStudyCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -334,6 +337,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public <T> T merge(T persistentObject) {
         mergeCalled = true;
         return persistentObject;
+    }
+
+    public ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study) {
+        retrieveImagingDataSourceForStudyCalled = true;
+        return new ImageDataSourceConfiguration();
     }
 
 }

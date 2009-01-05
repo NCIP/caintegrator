@@ -83,107 +83,67 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.ncia;
+package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * Action to run NCIA Dicom jobs which retrieve and download DICOM files.
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
+public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
+    private NCIAFacade nciaFacade;
     
     /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
+     * Retrieves NCIA Dicom Files from the job stored on the session, and zips it up.
+     * @return Struts 2 Result.
      */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
-    }
-
-    /**
-     * @return the completed
-     */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
-    }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
-    
-    /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
-     */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
+    public String runDicomJob() {
+      NCIADicomJob dicomJob = getDisplayableWorkspace().getDicomJob();
+        if (dicomJob != null) {
+            try {
+                dicomJob.setDicomFile(nciaFacade.retrieveDicomFiles(dicomJob));
+            } catch (ConnectionException e) {
+                addActionError(e.getMessage());
+                return ERROR;
+            }
+            if (dicomJob.getDicomFile() == null) {
+                addActionError("There was either no incoming data or unable to save to local system.");
+                return ERROR;
+            }
+            return SUCCESS;
         }
-        return true;
+        addActionError("No dicom job was stored to session.");
+        return ERROR;
+    }
+    
+    /**
+     * Downloads dicom file.
+     * @return Struts 2 result.
+     */
+    public String downloadDicomFile() {
+        NCIADicomJob dicomJob = getDisplayableWorkspace().getDicomJob();
+        if (dicomJob != null && dicomJob.getDicomFile() != null && dicomJob.isCompleted()) {
+            return "dicomFileResult";
+        }
+        addActionError("Dicom file doesn't exist, it may have already been downloaded and removed from server.");
+        return ERROR;
     }
 
     /**
-     * @return the dicomFile
+     * @return the nciaFacade
      */
-    public File getDicomFile() {
-        return dicomFile;
+    public NCIAFacade getNciaFacade() {
+        return nciaFacade;
     }
 
     /**
-     * @param dicomFile the dicomFile to set
+     * @param nciaFacade the nciaFacade to set
      */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
+    public void setNciaFacade(NCIAFacade nciaFacade) {
+        this.nciaFacade = nciaFacade;
     }
+
 }

@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -290,5 +291,13 @@ public interface CaIntegrator2Dao {
      * @return the merged object.
      */
     <T> T merge(T persistentObject);
+
+    /**
+     * Based on a given study, retrieves the ImageDataSourceConfiguration, it only returns the first one it finds
+     * so if there's multiple sources defined for a study it will not return all.
+     * @param study to find imaging source.
+     * @return imaging source for study.
+     */
+    ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study);
     
 }

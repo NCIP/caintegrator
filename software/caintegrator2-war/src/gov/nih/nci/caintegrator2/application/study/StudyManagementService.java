@@ -342,5 +342,13 @@ public interface StudyManagementService {
      * @param survivalValueDefinition - Object to remove from study.
      */
     void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition);
+    
+    /**
+     * Retrieves the image data source for a given study configuration. (If there's more than one,
+     * it takes the first one found).
+     * @param study to use for data source.
+     * @return image data source configuration for the study.
+     */
+    ImageDataSourceConfiguration retrieveImageDataSource(Study study);
 
 }

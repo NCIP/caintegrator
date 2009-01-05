@@ -555,6 +555,18 @@ public class StudyManagementServiceTest {
     
     @Test
     public void testRemoveSurvivalValueDefinition() {
+        Study study = StudyConfigurationFactory.createNewStudyConfiguration().getStudy();
+        SurvivalValueDefinition definition = studyManagementService.createNewSurvivalValueDefinition(study);
+        assertTrue(study.getSurvivalValueDefinitionCollection().contains(definition));
         
+        studyManagementService.removeSurvivalValueDefinition(study, definition);
+        assertTrue(daoStub.removeObjectsCalled);
+        assertFalse(study.getSurvivalValueDefinitionCollection().contains(definition));
+    }
+    
+    @Test
+    public void testRetrieveImageDataSource() {
+        studyManagementService.retrieveImageDataSource(new Study());
+        assertTrue(daoStub.retrieveImagingDataSourceForStudyCalled);
     }
 }

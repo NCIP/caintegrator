@@ -85,105 +85,24 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.io.File;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * Interface for anything that aggregates NCIA Images based on ImageSeriesID's, ImageStudyIDs, 
+ * or PatientIDs (future).  The basic purpose is to store sets of ID's of objects that can aggregate 
+ * down to an Image object (or multiple Image objects).
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
-    
-    /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
-     */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
-    }
+public interface NCIAImageAggregator {
 
     /**
-     * @return the completed
+     * Gets the set of ImageSeriesIDs.
+     * @return ImageSeriesIDs.
      */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
-    }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
+    Set<String> getImageSeriesIDs();
     
     /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
+     * Gets the set of ImageStudyIDs.
+     * @return ImageStudyIDs.
      */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return the dicomFile
-     */
-    public File getDicomFile() {
-        return dicomFile;
-    }
-
-    /**
-     * @param dicomFile the dicomFile to set
-     */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
-    }
+    Set<String> getImageStudyIDs();
 }

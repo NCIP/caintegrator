@@ -85,21 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
+import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
@@ -127,6 +128,7 @@ public class DisplayableUserWorkspace {
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIABasket nciaBasket = new NCIABasket();
+    private NCIADicomJob dicomJob;
 
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -337,6 +339,20 @@ public class DisplayableUserWorkspace {
      */
     public void setNciaBasket(NCIABasket nciaBasket) {
         this.nciaBasket = nciaBasket;
+    }
+
+    /**
+     * @return the dicomJob
+     */
+    public NCIADicomJob getDicomJob() {
+        return dicomJob;
+    }
+
+    /**
+     * @param dicomJob the dicomJob to set
+     */
+    public void setDicomJob(NCIADicomJob dicomJob) {
+        this.dicomJob = dicomJob;
     }
 
 }

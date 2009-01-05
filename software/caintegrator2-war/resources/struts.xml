@@ -8,6 +8,7 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
             <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotResult"/>
+            <result-type name="dicomFileResult" class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomFileResult"/>
             <result-type name="redirect" class="org.apache.struts2.dispatcher.ServletRedirectResult"/>
         </result-types>
         
@@ -302,6 +303,20 @@
             <result name="error" type="tiles">manageQuery</result>
             <result name="nciaBasket" type="redirect">${displayableWorkspace.nciaBasket.nciaBasketUrl} </result>
             <result name="export" type="tiles">exportSearchResults</result>
+            <result name="dicomJob" type="redirectAction">
+                <param name="actionName">runDicomJob</param>
+            </result>
+        </action>
+        
+        <action name="runDicomJob" method="runDicomJob" class="nciaDicomRetrievalAction">
+            <result name="success" type="tiles">dicomJob</result>
+            <result name="input" type="tiles">dicomJob</result>
+            <result name="error" type="tiles">dicomJob</result>
+        </action>
+        
+        <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
+            <result name="dicomFileResult" type="dicomFileResult"/>
+            <result name="error" type="tiles">dicomJob</result>
         </action>
         
         <action name="selectQueryTab" class="selectQueryTabAction">

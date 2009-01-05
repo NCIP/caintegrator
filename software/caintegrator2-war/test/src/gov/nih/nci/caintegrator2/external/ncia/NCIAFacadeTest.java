@@ -152,7 +152,6 @@ public class NCIAFacadeTest {
     @Test
     public void testRetrieveDicomFiles() throws ConnectionException {
         NCIADicomJob job = new NCIADicomJob();
-        job.setImageSeriesUID("test");
         job.setJobId("test");
         job.setServerConnection(new ServerConnectionProfile());
         nciaFacade.retrieveDicomFiles(job);

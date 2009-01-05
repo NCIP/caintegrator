@@ -86,12 +86,9 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.interceptor.ParameterNameAware;
-
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -99,7 +96,13 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.interceptor.ParameterNameAware;
 
 /**
  * Handles the form in which the user constructs, edits and runs a query.
@@ -245,6 +248,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             displayTab = RESULTS_TAB;
             getDisplayableWorkspace().getQueryResult().setSelectAll(false);
             returnValue = toggleCheckboxSelections();
+        } else if ("retrieveDicomImages".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            returnValue = createDicomJob();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -283,32 +289,52 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     public String forwardToNciaBasket() {
         NCIABasket basket = new NCIABasket();
-        if (getQueryResult() != null 
-                && getQueryResult().getRows() != null
-                && !getQueryResult().getRows().isEmpty()) {
-            for (DisplayableResultRow row : getQueryResult().getRows()) {
-                if (row.isCheckedRow()) {
-                    handleCheckedRow(basket, row);
-                }
-            }
-        }
+        fillImageAggregatorFromCheckedRows(basket);
         getDisplayableWorkspace().setNciaBasket(basket);
 
         return "nciaBasket";
     }
 
-    private void handleCheckedRow(NCIABasket basket, DisplayableResultRow row) {
+    /**
+     * Creates a dicom job and runs.
+     * @return the Struts result.
+     */
+    public String createDicomJob() {
+        NCIADicomJob dicomJob = new NCIADicomJob();
+        fillImageAggregatorFromCheckedRows(dicomJob);
+        dicomJob.setJobId("DICOM_JOB_" + getWorkspace().getUsername());
+        ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
+        if (dataSource != null) {
+            dicomJob.setServerConnection(dataSource.getServerProfile());
+        }
+        getDisplayableWorkspace().setDicomJob(dicomJob);
+        return "dicomJob";
+    }
+
+    private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator) {
+        if (getQueryResult() != null 
+                && getQueryResult().getRows() != null
+                && !getQueryResult().getRows().isEmpty()) {
+            for (DisplayableResultRow row : getQueryResult().getRows()) {
+                if (row.isCheckedRow()) {
+                    handleCheckedRowForImages(imageAggregator, row);
+                }
+            }
+        }
+    }
+
+    private void handleCheckedRowForImages(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
         StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
         if (studySubjectAssignment != null && studySubjectAssignment != null) {
             studySubjectAssignment = getStudyManagementService().getRefreshedStudyEntity(row.getSubjectAssignment());
         }
         if (row.getImageSeries() != null) {
-            basket.getImageSeriesIDs().add(row.getImageSeries().getIdentifier());
+            imageAggregator.getImageSeriesIDs().add(row.getImageSeries().getIdentifier());
         } else if (studySubjectAssignment != null 
                    && studySubjectAssignment.getImageStudyCollection() != null
                    && !studySubjectAssignment.getImageStudyCollection().isEmpty()) {
             for (ImageSeriesAcquisition imageStudy : studySubjectAssignment.getImageStudyCollection()) {
-                basket.getImageStudyIDs().add(imageStudy.getIdentifier());
+                imageAggregator.getImageStudyIDs().add(imageStudy.getIdentifier());
             }
         }
     }
@@ -494,5 +520,4 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             getQueryResult().setPageSize(pageSize);
         }
     }
-
 }

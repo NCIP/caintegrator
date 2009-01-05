@@ -313,6 +313,17 @@
         </property>
     </bean>
     
+    <bean id="nciaDicomRetrievalAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomRetrievalAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="nciaFacade">
+            <ref local="nciaFacade"/>
+        </property>
+    </bean>
+    
     <bean id="selectQueryTabAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.query.SelectQueryTabAction">
@@ -469,6 +480,12 @@
          <property name="nciaServiceFactory">
             <ref local="nciaServiceFactory"/>
         </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>
+        <property name="nciaDicomJobFactory">
+            <ref local="nciaDicomJobFactory"/>
+        </property>    
     </bean>
     
     <bean id="kmPlotService" 
@@ -483,6 +500,8 @@
     </bean>
     
     <bean id="nciaServiceFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIAServiceFactoryImpl" />
+    
+    <bean id="nciaDicomJobFactory" class="gov.nih.nci.caintegrator2.external.ncia.NCIADicomJobFactoryImpl" />
         
     <bean id="nciaServerConnectionProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" >
        <!--  <property name="url" value="http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService?" /> -->

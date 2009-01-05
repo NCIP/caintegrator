@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
@@ -54,6 +55,18 @@ public class FileManagerImplTest {
                                                     File.separator + "test" );
         assertEquals(expectedTemporaryDirectory, newTemporaryDirectory);
         assertEquals(ConfigurationParameter.TEMP_DOWNLOAD_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
+        
+        try {
+            fileManager.getNewTemporaryDirectory(null);
+            fail("Expcted illegal argument for null dir name.");
+        } catch(IllegalArgumentException e) {
+        }
+        
+        try {
+            fileManager.getNewTemporaryDirectory("");
+            fail("Expcted illegal argument for blank dir name.");
+        } catch(IllegalArgumentException e) {
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)

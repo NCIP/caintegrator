@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
@@ -497,5 +498,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings("unchecked")      // hibernate operation not parameterized
     public <T> T merge(T persistentObject) {
         return (T) getHibernateTemplate().merge(persistentObject);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study) {
+        Criteria imagingDataSourceConfigurationCrit = getCurrentSession().
+                                                      createCriteria(ImageDataSourceConfiguration.class);
+        imagingDataSourceConfigurationCrit.createCriteria("studyConfiguration")
+                                          .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+        List<ImageDataSourceConfiguration> sourceList = imagingDataSourceConfigurationCrit.list();
+        if (sourceList != null && !sourceList.isEmpty()) {
+            return sourceList.get(0);
+        }
+        return null;
     }
 }
