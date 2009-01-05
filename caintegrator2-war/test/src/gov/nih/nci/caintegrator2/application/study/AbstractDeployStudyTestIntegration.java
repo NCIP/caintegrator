@@ -160,31 +160,26 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
     
     public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
-        try {
-            AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
-            authentication.setUsername("manager");
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            loadDesign();
-            studyConfiguration = new StudyConfiguration();
-            studyConfiguration.getStudy().setShortTitleText(getStudyName());
-            studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
-            service.save(studyConfiguration);
-            loadAnnotationDefinitions();
-            loadClinicalData();
-            loadSurvivalValueDefinition();
-            loadSamples();
-            mapSamples();
-            loadControlSamples();
-            loadImages();
-            mapImages();
-            loadImageAnnotation();
-            deploy();
-            checkArrayData();
-            checkQueries();
-        } finally {
-            cleanup();            
-        }
-        
+        AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
+        authentication.setUsername("manager");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        loadDesign();
+        studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getStudy().setShortTitleText(getStudyName());
+        studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
+        service.save(studyConfiguration);
+        loadAnnotationDefinitions();
+        loadClinicalData();
+        loadSurvivalValueDefinition();
+        loadSamples();
+        mapSamples();
+        loadControlSamples();
+        loadImages();
+        mapImages();
+        loadImageAnnotation();
+        deploy();
+        checkArrayData();
+        checkQueries();
     }
 
     abstract protected String getStudyName();
@@ -198,7 +193,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             logStart();
             design = getExistingDesign();
             if (design == null) {
-                AffymetrixPlatformSource designSource = new AffymetrixPlatformSource(getPlatformName(), getPlatformAnnotationFile());
+                AffymetrixPlatformSource designSource = new AffymetrixPlatformSource(getPlatformAnnotationFile());
                 design = arrayDataService.loadArrayDesign(designSource);
             }
             logEnd();
@@ -294,16 +289,20 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             assertEquals(getExpectedSampleCount(), probeSetArrayDataMatrix.getSampleDataCollection().size());
             ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
             assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
-            assertEquals(54675, values.getAllReporters().size());
+            assertEquals(getExpectedNumberProbeSets(), values.getAllReporters().size());
             assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
             assertEquals(getExpectedSampleCount(), geneMatrix.getSampleDataCollection().size());
             values = arrayDataService.getData(geneMatrix);
             assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
-            assertEquals(20887, values.getAllReporters().size());
+            assertEquals(getExpectedNumberOfGeneReporters(), values.getAllReporters().size());
             logEnd();
         }
     }
 
+    abstract int getExpectedNumberOfGeneReporters();
+
+    abstract int getExpectedNumberProbeSets();
+    
     protected boolean getLoadSamples() {
         return true;
     }
@@ -364,12 +363,6 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         logStart();
         service.deployStudy(studyConfiguration);
         logEnd();
-    }
-
-    private void cleanup() {
-        if (sourceConfiguration != null && sourceConfiguration.getAnnotationFile() != null) {
-            sourceConfiguration.getAnnotationFile().getFile().delete();
-        }
     }
 
     private void loadClinicalData() throws IOException, ValidationException {

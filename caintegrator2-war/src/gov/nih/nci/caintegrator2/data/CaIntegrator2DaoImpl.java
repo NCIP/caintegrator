@@ -369,6 +369,15 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<Platform> getPlatforms() {
+        Query query = getCurrentSession().createQuery("from Platform order by name");
+        return query.list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)
     public boolean isDuplicateStudyName(Study study) {
         long id;

@@ -86,6 +86,12 @@
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
+            <li class="stdnav"><div>Application Management</div>
+                <ul>
+                    <li><s:url id="managePlatformsUrl" includeParams="none" action="managePlatforms" />
+                    <a href="${managePlatformsUrl}">Manage Platforms</a></li>
+                </ul>
+            </li>
         </s:if>
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>

@@ -92,9 +92,13 @@ import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class ArrayDataServiceStub implements ArrayDataService {
+
+    public boolean loadArrayDesignCalled;
 
     /**
      * {@inheritDoc}
@@ -124,6 +128,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
      * {@inheritDoc}
      */
     public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
+        loadArrayDesignCalled = true;
         return null;
     }
 
@@ -140,6 +145,17 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
             Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
         return getData(arrayDataMatrix, arrayDatas, reporters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Platform> getPlatforms() {
+        return Collections.emptyList();
+    }
+
+    public void clear() {
+        loadArrayDesignCalled = false;
     }
 
 }

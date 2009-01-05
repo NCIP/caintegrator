@@ -58,7 +58,7 @@
         <action name="editStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
         </action>
-      
+   
         <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
             <result type="redirectAction">manageStudies</result>
         </action>
@@ -361,8 +361,16 @@
             <result type="tiles">kaplanMeierAnnotationBased</result>
             <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
         </action>
+               
+        <!-- Platform Actions -->
+        <action name="managePlatforms" class="managePlatformsAction">
+            <result type="tiles">managePlatforms</result>
+        </action>
         
-
+        <action name="addPlatform" class="addPlatformAction">
+            <result type="tiles">managePlatforms</result>
+        </action>
+        
     </package>
     
 </struts>

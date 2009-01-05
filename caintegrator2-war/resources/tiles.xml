@@ -75,7 +75,7 @@
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/login_tile.jsp" />
     </definition>
-    
+
     <definition name="dicomJob" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/dicomJob_tile.jsp" />
@@ -128,6 +128,11 @@
     
     <definition name="kaplanMeierAnnotationBased" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlotAnnotationBased_tile.jsp" />
+    </definition>
+
+    <!-- Platform pages -->
+    <definition name="managePlatforms" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/managePlatforms_tile.jsp" />
     </definition>
 
 </tiles-definitions>
