@@ -118,6 +118,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -718,6 +719,17 @@ public class StudyManagementServiceImpl implements StudyManagementService {
        objectsToRemove.add(survivalValueDefinition);
        dao.removeObjects(objectsToRemove);
        dao.save(study);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
+        ImageDataSourceConfiguration dataSource = dao.retrieveImagingDataSourceForStudy(study);
+        if (dataSource != null) {
+            Hibernate.initialize(dataSource.getServerProfile());
+        }
+        return dataSource;
     }
 
 }

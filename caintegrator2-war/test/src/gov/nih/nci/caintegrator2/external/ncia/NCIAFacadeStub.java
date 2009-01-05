@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.external.ncia;
 
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -95,6 +96,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class NCIAFacadeStub implements NCIAFacade {
+    
+    public boolean retrieveDicomFilesCalled;
+    
+    public void clear() {
+        retrieveDicomFilesCalled = false;
+    }
 
     /**
      * {@inheritDoc}
@@ -114,7 +121,11 @@ public class NCIAFacadeStub implements NCIAFacade {
     }
 
     public File retrieveDicomFiles(NCIADicomJob job) throws ConnectionException {
-        return null;
+        NCIADicomJob dicomJob = new NCIADicomJob();
+        dicomJob.setCompleted(true);
+        dicomJob.setJobId("fakeJob");
+        retrieveDicomFilesCalled = true;
+        return TestDataFiles.VALID_FILE;
     }
 
 

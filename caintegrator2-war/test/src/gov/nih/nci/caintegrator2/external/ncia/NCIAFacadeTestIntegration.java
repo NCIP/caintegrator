@@ -100,9 +100,6 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * 
- */
 public class NCIAFacadeTestIntegration {
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTestIntegration.class);
     NCIAFacade nciaFacade;
@@ -132,11 +129,14 @@ public class NCIAFacadeTestIntegration {
     }
 
     @Test
-    public void testRetrieveDicomFilesBySeriesUID() throws ConnectionException, IOException {
+    public void testRetrieveDicomFiles() throws ConnectionException, IOException {
         String seriesInstanceUID = "1.3.6.1.4.1.9328.50.1.3";
-        
+        String seriesInstanceUID2 = "1.3.6.1.4.1.9328.50.1.7";
+        String studyInstanceUID = "1.3.6.1.4.1.9328.50.1.2";
         NCIADicomJob job = new NCIADicomJob();
-        job.setImageSeriesUID(seriesInstanceUID);
+        job.getImageSeriesIDs().add(seriesInstanceUID);
+        job.getImageSeriesIDs().add(seriesInstanceUID2);
+        job.getImageStudyIDs().add(studyInstanceUID);
         job.setJobId("uniqueID");
         job.setServerConnection(connection);
         File retrievedZip = nciaFacade.retrieveDicomFiles(job);

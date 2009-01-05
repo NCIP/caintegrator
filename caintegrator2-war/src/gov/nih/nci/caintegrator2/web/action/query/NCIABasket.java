@@ -85,13 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
+import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
+
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * caIntegrator2's version of an NCIA Basket.
  */
-public class NCIABasket {
+public class NCIABasket implements NCIAImageAggregator {
     private final Set <String> imageSeriesIDs = new HashSet<String>();
     private final Set <String> imageStudyIDs = new HashSet<String>();
     private static final String NCIA_BASKET_URL = "https://imaging.nci.nih.gov/ncia/basket/";

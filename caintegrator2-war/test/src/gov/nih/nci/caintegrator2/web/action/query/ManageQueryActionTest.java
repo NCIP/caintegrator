@@ -87,21 +87,20 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -121,7 +120,7 @@ public class ManageQueryActionTest {
     
     // Study objects
     private final QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
-    private final StudyManagementService studyManagementService = new StudyManagementServiceStub();
+    private final StudyManagementServiceStub studyManagementService = new StudyManagementServiceStub();
     
     @Before
     @SuppressWarnings({"PMD"})
@@ -227,6 +226,12 @@ public class ManageQueryActionTest {
         
         assertEquals("nciaBasket", manageQueryAction.execute());
         assertNotNull(displayableUserWorkspace.getNciaBasket().getNciaBasketUrl());
+        
+        // Test retrieve DICOM images
+        manageQueryAction.setSelectedAction("retrieveDicomImages");
+        assertEquals("dicomJob", manageQueryAction.execute());
+        assertTrue(studyManagementService.retrieveImageDataSourceCalled);
+        
         
         // Test select all on checkboxes
         manageQueryAction.setSelectedAction("selectAll");

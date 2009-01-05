@@ -126,6 +126,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean createNewSurvivalValueDefinitionCalled;
     public boolean removeSurvivalValueDefinitionCalled;
     public boolean throwSearchError;
+    public boolean retrieveImageDataSourceCalled;
     
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
         loadClinicalAnnotationCalled = true;
@@ -168,6 +169,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         createNewSurvivalValueDefinitionCalled = false;
         removeSurvivalValueDefinitionCalled = false;
         throwSearchError = false;
+        retrieveImageDataSourceCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -294,5 +296,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
      */
     public void removeSurvivalValueDefinition(Study study, SurvivalValueDefinition survivalValueDefinition) {
         removeSurvivalValueDefinitionCalled = true;
+    }
+
+    public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
+        retrieveImageDataSourceCalled = true;
+        return new ImageDataSourceConfiguration();
     }
 }

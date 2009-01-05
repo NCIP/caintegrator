@@ -112,6 +112,9 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
     
     private static final Integer BUFFER_SIZE = 8192;
+    private static final String REMOTE_CONNECTION_FAILED = "Remote Connection Failed.";
+    private static final String IMAGE_SERIES_DIR = "SERIES_";
+    private static final String IMAGE_STUDY_DIR = "STUDY_";
     private final File temporaryStorageDirectory;
     private final NCIADicomJob job;
     
@@ -129,26 +132,82 @@ public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
      * {@inheritDoc}
      */
     public File retrieveDicomFiles() throws ConnectionException {
-        File seriesDirectory = null;
+        if (!job.hasData()) {
+            return null;
+        }
         try {
             NCIACoreServiceClient client = new NCIACoreServiceClient(job.getServerConnection().getUrl());
-            TransferServiceContextReference tscr = client.retrieveDicomDataBySeriesUID(job.getImageSeriesUID());
+            parseImageSeriesFromJob(client);
+            parseImageStudyFromJob(client);
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Malformed URI.", e);
+        } catch (RemoteException e) {
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
+        } 
+        job.setCompleted(true);
+        try {
+            return Cai2Util.zipAndDeleteDirectory(temporaryStorageDirectory.getCanonicalPath());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private void parseImageSeriesFromJob(NCIACoreServiceClient client) throws ConnectionException {
+        if (!job.getImageSeriesIDs().isEmpty()) {
+            for (String imageSeriesId : job.getImageSeriesIDs()) {
+                retrieveImageSeriesDicomFiles(client, imageSeriesId);
+            }
+        }
+    }
+    
+    private void parseImageStudyFromJob(NCIACoreServiceClient client) throws ConnectionException {
+        if (!job.getImageStudyIDs().isEmpty()) {
+            for (String imageStudyId : job.getImageStudyIDs()) {
+                retrieveImageStudyDicomFiles(client, imageStudyId);
+            }
+        }
+    }
+
+    private void retrieveImageSeriesDicomFiles(NCIACoreServiceClient client, String imageSeriesUID) 
+        throws ConnectionException {
+        try {
+            TransferServiceContextReference tscr = client.retrieveDicomDataBySeriesUID(imageSeriesUID);
+            gridTransferDicomData(tscr, IMAGE_SERIES_DIR + imageSeriesUID);
+        } catch (RemoteException e) {
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
+        }
+    }
+
+    private void retrieveImageStudyDicomFiles(NCIACoreServiceClient client, String studyInstanceUID)
+            throws ConnectionException {
+        TransferServiceContextReference tscr;
+        try {
+            tscr = client.retrieveDicomDataByStudyUID(studyInstanceUID);
+            gridTransferDicomData(tscr, IMAGE_STUDY_DIR + studyInstanceUID);
+        } catch (RemoteException e) {
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
+        }
+    }
+
+    private void gridTransferDicomData(TransferServiceContextReference tscr, String parentDir) 
+        throws ConnectionException {
+        try {
             TransferServiceContextClient tclient = new TransferServiceContextClient(tscr.getEndpointReference());
             InputStream istream = TransferClientHelper.getData(tclient.getDataTransferDescriptor());
-            seriesDirectory = storeDicomFiles(istream);
+            storeDicomFiles(istream, parentDir);
             tclient.destroy();
         } catch (MalformedURIException e) {
             throw new ConnectionException("Malformed URI.", e);
         } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
         } catch (Exception e) {
             throw new ConnectionException("Unable to get dicom data from Transfer Client.", e);
         }
-        job.setCompleted(true);
-        return seriesDirectory;
     }
     
-    private File storeDicomFiles(InputStream istream) throws IOException {
+    private void storeDicomFiles(InputStream istream, String parentDir) throws IOException {
+        File dicomDirectory = new File(temporaryStorageDirectory, parentDir);
+        dicomDirectory.mkdir();
         ZipInputStream zis = new ZipInputStream(istream);
         ZipEntryInputStream zeis = null;
         while (true) {
@@ -162,7 +221,7 @@ public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
             BufferedInputStream bis = new BufferedInputStream(zeis);
             byte[] data = new byte[BUFFER_SIZE];
             int bytesRead = 0;
-            File dicomFile = new File(temporaryStorageDirectory, zeis.getName());
+            File dicomFile = new File(dicomDirectory, zeis.getName());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dicomFile));
             while ((bytesRead = (bis.read(data, 0, data.length))) > 0) {
                 bos.write(data, 0, bytesRead);
@@ -171,7 +230,6 @@ public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
             bos.close();
             zis.close();
         }
-        return Cai2Util.zipAndDeleteDirectory(temporaryStorageDirectory.getCanonicalPath());
     }
 
 }

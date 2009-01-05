@@ -298,26 +298,34 @@ public final class Cai2Util {
         if (entries.length == 0) {
             return null;
         }
-        String zipfile = dir + ".zip";
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int bytesRead;
+        File zipfile = new File(dir + ".zip");
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
-        for (int i = 0; i < entries.length; i++) {
-            File f = new File(directory, entries[i]);
-            if (f.isDirectory()) {
-                continue;
-            }
-            FileInputStream in = new FileInputStream(f); // Stream to read file
-            ZipEntry entry = new ZipEntry(f.getPath()); // Make a ZipEntry
-            out.putNextEntry(entry); // Store entry
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-            }
-            in.close();
-        }
+        addDir(directory, out);
         out.close();
         FileUtils.deleteDirectory(directory);
-        return new File(zipfile);
+        return zipfile;
     }
+    
+    private static void addDir(File dirObj, ZipOutputStream out) throws IOException {
+        File[] files = dirObj.listFiles();
+        byte[] tmpBuf = new byte[BUFFER_SIZE];
+
+        for (int i = 0; i < files.length; i++) {
+            File curFile = files[i];
+            if (curFile.isDirectory()) {
+                addDir(curFile, out);
+                continue;
+            }
+            FileInputStream in = new FileInputStream(curFile);
+            out.putNextEntry(new ZipEntry(curFile.getPath()));
+            int len;
+            while ((len = in.read(tmpBuf)) > 0) {
+                out.write(tmpBuf, 0, len);
+            }
+            // Complete the entry
+            out.closeEntry();
+            in.close();
+        }
+    } 
 
 }

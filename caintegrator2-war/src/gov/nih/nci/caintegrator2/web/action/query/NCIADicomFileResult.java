@@ -83,107 +83,60 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.ncia;
+package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
+import java.io.DataInputStream;
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * Struts2 result type for downloading the dicom file stored on the temporary storage file system, and
+ * then cleaning up the job on the session and deleting the file.
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
-    
-    /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
-     */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
-    }
+public class NCIADicomFileResult implements Result {
+
+    private static final long serialVersionUID = 1L;
+    private static final Integer BUFSIZE = 4096;
 
     /**
-     * @return the completed
+     * {@inheritDoc}
      */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
-    }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
-    
-    /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
-     */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
+    public void execute(ActionInvocation invocation) throws IOException {
+        NCIADicomJob dicomJob = SessionHelper.getInstance().getDisplayableUserWorkspace().getDicomJob();
+        HttpServletResponse response = ServletActionContext.getResponse();
+        ServletOutputStream op = response.getOutputStream();
+        File dicomFile = dicomJob.getDicomFile();
+        response.setContentType("application/zip");
+        response.setContentLength((int) dicomFile.length());
+        response.setHeader("Content-Disposition", "attachment; filename=\"dicomImages.zip\""); 
+        
+        byte[] bbuf = new byte[BUFSIZE];
+        DataInputStream in = new DataInputStream(new FileInputStream(dicomFile));
+        int length;
+        while ((length = in.read(bbuf)) != -1) {
+            op.write(bbuf, 0, length);
         }
-        return true;
+        in.close();
+        op.flush();
+        cleanupDicomJob(dicomJob);
     }
 
-    /**
-     * @return the dicomFile
-     */
-    public File getDicomFile() {
-        return dicomFile;
-    }
 
-    /**
-     * @param dicomFile the dicomFile to set
-     */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
+    private void cleanupDicomJob(NCIADicomJob dicomJob) {
+        dicomJob.getDicomFile().delete();
+        dicomJob.setDicomFile(null);
+        dicomJob.setCompleted(false);
     }
 }
