@@ -9,7 +9,7 @@
         <!-- Attributes mapping for the Sample class -->
         <property name="name" type="string" column="NAME"/>
         <!-- Associations mapping for the Sample class -->
-        <many-to-one name="sampleAcquisition" class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition" column="SAMPLE_ACQUISITION_ID" unique="true" lazy="proxy" cascade="save-update,merge" />
+        <many-to-one name="sampleAcquisition" class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition" column="SAMPLE_ACQUISITION_ID" unique="true" lazy="proxy" cascade="all" />
         <set name="arrayCollection" table="MICROARRAY_SAMPLES" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="SAMPLE_ID" />

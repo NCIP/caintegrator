@@ -99,10 +99,12 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     private StudySubscription subscription;
     public boolean subscribeCalled;
+    public boolean deSubscribeCalled;
     public boolean saveUserWorspaceCalled;
     
     public void clear() {
         subscribeCalled = false;
+        deSubscribeCalled = false;
         saveUserWorspaceCalled = false; 
     }
     public UserWorkspace getWorkspace() {
@@ -123,6 +125,11 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void subscribe(UserWorkspace workspace, Study study) {
         subscribeCalled = true;
+    }
+
+    public void unsubscribe(UserWorkspace workspace, Study study) {
+        deSubscribeCalled = true;
+        
     }
     
     public void setSubscription(StudySubscription subscription) {

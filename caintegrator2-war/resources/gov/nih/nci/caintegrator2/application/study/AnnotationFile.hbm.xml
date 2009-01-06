@@ -18,10 +18,10 @@
         </list>
         
         <many-to-one name="identifierColumn" class="gov.nih.nci.caintegrator2.application.study.FileColumn" column="IDENTIFIER_COLUMN_ID"
-            lazy="proxy" cascade="save-update,merge" />
+            lazy="proxy" cascade="all" />
             
         <many-to-one name="timepointColumn" class="gov.nih.nci.caintegrator2.application.study.FileColumn" column="TIMEPOINT_COLUMN_ID"
-            lazy="proxy" cascade="save-update,merge" />
+            lazy="proxy" cascade="all" />
         
 	</class>
 </hibernate-mapping>

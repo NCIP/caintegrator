@@ -118,6 +118,13 @@ public interface StudyManagementService {
     void delete(StudyConfiguration studyConfiguration);
     
     /**
+     * Deletes a clinical source.
+     * 
+     * @param clinicalSource clinical source to delete
+     */
+    void delete(DelimitedTextClinicalSourceConfiguration clinicalSource);
+    
+    /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
      * file provided as an argument to be removed after completion of this method.
      * 

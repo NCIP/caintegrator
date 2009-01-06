@@ -140,6 +140,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
+    public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
+        deleteCalled = true;
+    }
+
     public void deployStudy(StudyConfiguration studyConfiguration) {
         deployStudyCalled = true;
     }
