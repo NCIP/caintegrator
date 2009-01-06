@@ -111,8 +111,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xml-apis-1.2.01.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xmlsec-1.2.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/xwork-2.0.4.jar" sourcepath="software/lib/src/xwork-2.0.4-sources.jar"/>
-	<classpathentry kind="lib" path="software/caintegrator-cacore/output/caintegrator2/build/jar/caintegrator2-beans.jar"/>
-	<classpathentry kind="lib" path="software/caintegrator-cacore/output/caintegrator2/build/jar/caintegrator2-orm.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/caarray-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/nci-commons-core-1.0.9.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/NCIACoreService-client.jar"/>

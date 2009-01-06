@@ -24,12 +24,6 @@
     <property name="target.dir" location="${build.dir}/target" />
     <property name="common.dir" value="${software.dir}/common"/>
 
-    <!-- Main caCORE properties; required for taskdefs -->
-    <property name="caintegrator2-cacore.dir" location="${software.dir}/caintegrator-cacore" />
-    <property name="caintegrator2-cacore.system.dir" location="${caintegrator2-cacore.dir}/system" />
-    <property name="caintegrator2-cacore.system.dist.dir" location="${caintegrator2-cacore.system.dir}/dist" />
-    <property name="caintegrator2-cacore.system.lib.dir" location="${caintegrator2-cacore.system.dir}/lib" />
-
     <!-- Environment properties -->
     <property environment="env" />
     <property file="${build.dir}/local.properties" />
@@ -237,8 +231,7 @@
         description="Builds and deploys caIntegrator 2 and performs the complete suite of tests." />
 
     <target name="clean" 
-        depends="clean:caintegrator2-cacore,
-        clean:caintegrator2.war,
+        depends="clean:caintegrator2.war,
         clean:dependencies,
         clean:reports"
         description="Removes all generated artifacts from the working directory." />
@@ -312,26 +305,6 @@
     <property name="kaplan-meier.jar" location="${kaplan-meier.jar.target.dir}/kaplan-meier.jar" />
     <property name="kaplan-meier.jar.compile.lib.dir" location="${kaplan-meier.jar.dir}/lib/compile"/>    
     
-    
-    <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2-CACORE                                          ** -->
-    <!-- ******************************************************************* -->
-    <property name="caintegrator2-cacore.output.dir" location="${caintegrator2-cacore.dir}/output/caintegrator2" />
-    <property name="caintegrator2-cacore.output.src.dir" location="${caintegrator2-cacore.output.dir}/src" />
-    <property name="caintegrator2-cacore.build.jar.dir" location="${caintegrator2-cacore.output.dir}/build/jar" />
-    <property name="caintegrator2-beans.jar" location="${caintegrator2-cacore.build.jar.dir}/caintegrator2-beans.jar" />
-    <property name="caintegrator2-orm.jar" location="${caintegrator2-cacore.build.jar.dir}/caintegrator2-orm.jar" />
-    <property name="csm.security.config.file" location="sdk.csm.new.hibernate.cfg.xml" />
-    
-    <target name="caintegrator2-beans.jar" depends="build:caintegrator2-cacore" />
-
-    <target name="clean:caintegrator2-cacore">
-        <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="clean" />
-    </target>
-
-    <target name="build:caintegrator2-cacore">
-        <ant inheritAll="false" inheritRefs="false" dir="${caintegrator2-cacore.dir}" antfile="${caintegrator2-cacore.dir}/build.xml" target="build-system" />
-    </target>
 
     <!-- ******************************************************************* -->
     <!-- ** CAINTEGRATOR2.WAR                                             ** -->
@@ -353,8 +326,6 @@
     <target name="path:caintegrator2.war.dependencies" depends="ivy:setup-compile">
         <path id="caintegrator2.war.dependencies.path">
             <pathelement location="${caintegrator2.war.java.classes.dir}" />
-            <pathelement location="${caintegrator2-beans.jar}" />
-            <pathelement location="${caintegrator2-orm.jar}" />
             <pathelement location="${genepattern-service.jar}" />
             <pathelement location="${kaplan-meier.jar}" />
             <fileset dir="${caintegrator2.war.compile.lib.dir}">
@@ -390,7 +361,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,caintegrator2-beans.jar,caintegrator2-orm.jar,compile:caintegrator2.war,caintegrator2.csm.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
@@ -407,10 +378,6 @@
             <fileset dir="${caintegrator2.war.web.src.dir}">
                 <exclude name="WEB-INF/**" />
             </fileset>
-            <lib dir="${caintegrator2-cacore.build.jar.dir}">
-                <include name="caintegrator2-beans.jar"/>
-                <include name="caintegrator2-orm.jar"/>
-            </lib>
             <lib dir="${caintegrator2.war.runtime.lib.dir}" includes="*.jar"> 
                 <exclude name="log4j*.jar"/>
             </lib>
@@ -423,19 +390,10 @@
                 <exclude name="log4j*.jar"/>
             </lib>
             <lib dir="${external.runtime.lib.dir}" includes="*.jar"/>
-            <classes dir="${caintegrator2-cacore.output.src.dir}">
-                <include name="${csm.security.config.file}"/>
-            </classes>
-            <classes dir="${caintegrator2.war.java.classes.dir}" >
-                <exclude name="hibernate.cfg.xml" />
-            </classes>
+            <classes dir="${caintegrator2.war.java.classes.dir}" />
             <classes dir="${caintegrator2.war.resources.src.dir}">
                 <exclude name="*hibernate.cfg.xml" />
-                <exclude name="**/*.hbm.xml"/>
             </classes>
-            <webinf dir="${caintegrator2-cacore.output.src.dir}">
-                <include name="server-config.wsdd"/>
-            </webinf>
             <webinf dir="${caintegrator2.war.resources.src.dir}">
                 <include name="tiles.xml"/>
             </webinf>
@@ -445,7 +403,7 @@
         </war>
     </target>
 
-    <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies,caintegrator2-beans.jar,caintegrator2-orm.jar">
+    <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies">
         <mkdir dir="${caintegrator2.war.java.classes.dir}" />
         <javac srcdir="${caintegrator2.war.java.src.dir}" destdir="${caintegrator2.war.java.classes.dir}" classpathref="caintegrator2.war.dependencies.path" debug="true" />
     </target>
@@ -515,24 +473,6 @@
         <javac srcdir="${caintegrator2.war.test.src.dir}" destdir="${caintegrator2.war.test.classes.dir}" classpathref="caintegrator2.war.test.dependencies.path" debug="true" />
     </target>
 
-    <!-- ******************************************************************* -->
-    <!-- ** CAINTEGRATOR2-ORM.JAR                                         ** -->
-    <!-- ******************************************************************* -->
-    <target name="caintegrator2-orm.jar" depends="hibernate.cfg.xml.deploy">
-        <delete file="${caintegrator2-orm.jar}" />
-        <jar destfile="${caintegrator2-orm.jar}">
-            <manifest>
-                <attribute name="Generated-By" value="caCORE SDK Code Generator"/>
-            </manifest>
-            <fileset dir="${caintegrator2.war.resources.src.dir}">
-                <include name="**/*.hbm.xml"/>
-                <include name="ehcache.xml"/>
-            </fileset>
-            <fileset dir="${caintegrator2.war.java.classes.dir}">
-                <include name="hibernate.cfg.xml"/>
-            </fileset>
-        </jar>
-    </target>
 
     <!-- ******************************************************************* -->
     <!-- ** DATABASE TARGETS                                              ** -->
@@ -594,8 +534,6 @@
             <hbm2ddl drop="false" create="true" export="false" outputfilename="create-tables-generated.sql" />
             <hbm2ddl drop="true" create="false" export="false" outputfilename="drop-tables-generated.sql" />
             <classpath>
-                <pathelement location="${caintegrator2-beans.jar}" />
-                <pathelement location="${caintegrator2-orm.jar}" />
                 <pathelement location="${caintegrator2.war.java.classes.dir}" />
                 <pathelement location="${caintegrator2.war.resources.src.dir}" />
             </classpath>
@@ -651,10 +589,6 @@
     <path id="caintegrator2.full.classpath">
         <path refid="caintegrator2.war.dependencies.path" />
         <pathelement location="${caintegrator2.war.java.classes.dir}" />
-        <pathelement location="${caintegrator2-beans.jar}" />
-        <pathelement location="${caintegrator2-orm.jar}" />
-        <!-- axis.jar is included for the MalformedURIException for Checkstyle -->
-        <!-- <pathelement location="${ncia.lib.dir}/axis.jar" /> -->
     </path>
 
     <!-- ******************************************************************* -->
@@ -938,20 +872,12 @@
     <!-- ** DOCUMENTATION TARGETS                                         ** -->
     <!-- ******************************************************************* -->
 
-    <target name="javadoc" depends="javadoc:full,javadoc:client" description="Generates javadoc for all source code" />
+    <target name="javadoc" depends="javadoc:full" description="Generates javadoc for all source code" />
 
-    <target name="javadoc:full" depends="build:caintegrator2-cacore">
+    <target name="javadoc:full">
         <mkdir dir="${reports.dir}/docs/api" />
         <javadoc destdir="${reports.dir}/docs/api" classpathref="caintegrator2.full.classpath">
             <packageset dir="${caintegrator2.war.java.src.dir}" />
-            <packageset dir="${caintegrator2-cacore.output.src.dir}" />
-        </javadoc>
-    </target>
-
-    <target name="javadoc:client" depends="build:caintegrator2-cacore">
-        <mkdir dir="${reports.dir}/docs/client-api" />
-        <javadoc destdir="${reports.dir}/docs/client-api" classpathref="caintegrator2.full.classpath">
-            <packageset dir="${caintegrator2-cacore.output.src.dir}" />
         </javadoc>
     </target>
 
