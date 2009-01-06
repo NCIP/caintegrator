@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 
 /**
@@ -115,7 +116,12 @@ public class EditStudyAction extends AbstractStudyAction {
      * @return SUCCESS
      */
     public String deleteStudy() {
-        getStudyManagementService().delete(getStudyConfiguration());
+
+        if (SessionHelper.getInstance().isAuthenticated()) {
+            getStudyManagementService().delete(getStudyConfiguration());
+        } else {
+            addActionError("User is unauthenticated");
+        }
         return SUCCESS;
     }
 }

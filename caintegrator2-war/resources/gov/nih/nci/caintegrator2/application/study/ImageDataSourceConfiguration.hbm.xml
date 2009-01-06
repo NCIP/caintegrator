@@ -15,7 +15,7 @@
             update="false"/>
         
         <many-to-one name="serverProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" column="SERVER_CONNECTION_PROFILE_ID"
-            lazy="proxy" cascade="save-update,merge" />
+            lazy="proxy" cascade="all" />
                    
         <list name="imageSeriesAcquisitions" table="IMAGE_DATA_SOURCE_CONFIGURATION_ACQUISITIONS" lazy="true" cascade="all">
             <cache usage="read-write" />

@@ -155,7 +155,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      *  {@inheritDoc}
      */
     public void delete(StudyConfiguration studyConfiguration) {
+        getWorkspaceService().unsubscribe(getWorkspaceService().getWorkspace(), studyConfiguration.getStudy());
         dao.delete(studyConfiguration);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
+        dao.delete(clinicalSource);
     }
 
     private boolean isNew(StudyConfiguration studyConfiguration) {
