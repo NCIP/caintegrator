@@ -158,6 +158,20 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void unsubscribe(UserWorkspace workspace, Study study) {
+        for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
+            if (subscription.getStudy().equals(study)) {
+                workspace.getSubscriptionCollection().remove(subscription);
+                saveUserWorkspace(workspace);
+                dao.delete(subscription);
+                return;
+            }
+        }
+    }
+
     private boolean isSubscribed(UserWorkspace workspace, Study study) {
         for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
             if (subscription.getStudy().equals(study)) {

@@ -29,7 +29,7 @@
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.AbstractClinicalSourceConfiguration"/>
         </list>
     
-        <list name="genomicDataSources" lazy="true" cascade="save-update,merge">
+        <list name="genomicDataSources" lazy="true" cascade="all">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
             <list-index column="LIST_INDEX"/>
@@ -51,9 +51,9 @@
         </list>
         
 		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID"
-		    lazy="proxy" cascade="save-update,merge" />
+		    lazy="proxy" cascade="all" />
 		    
         <many-to-one name="studyLogo" class="gov.nih.nci.caintegrator2.application.study.StudyLogo" column="STUDY_LOGO_ID"
-            lazy="proxy" cascade="save-update,merge" />
+            lazy="proxy" cascade="all" />
 	</class>
 </hibernate-mapping>

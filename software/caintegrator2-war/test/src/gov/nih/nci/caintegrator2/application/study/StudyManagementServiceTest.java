@@ -156,6 +156,10 @@ public class StudyManagementServiceTest {
         StudyConfiguration configTest = new StudyConfiguration();
         studyManagementService.delete(configTest);
         assertTrue(daoStub.deleteCalled);
+        daoStub.deleteCalled = false;
+        DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
+        studyManagementService.delete(clinicalSource);
+        assertTrue(daoStub.deleteCalled);
     }
     
     @Test
