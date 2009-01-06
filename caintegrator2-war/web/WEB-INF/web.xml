@@ -7,8 +7,6 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/classes/application-config.xml 
-            /WEB-INF/classes/application-config-web.xml
             /WEB-INF/classes/application-config-security.xml 
             /WEB-INF/classes/application-config-web-security.xml
             /WEB-INF/classes/caintegrator2-config.xml
@@ -85,33 +83,6 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-
-    <servlet>
-        <servlet-name>httpinvoker</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AxisServlet</servlet-name>
-        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>GetXML</servlet-name>
-        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>GetHTML</servlet-name>
-        <servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>
-    </servlet>
     
     <servlet>
         <servlet-name>logoRenderingServlet</servlet-name>
@@ -121,37 +92,6 @@
     <servlet-mapping>
         <servlet-name>logoRenderingServlet</servlet-name>
         <url-pattern>/logo</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>httpinvoker</servlet-name>
-        <url-pattern>/http/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/services/AdminService</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AxisServlet</servlet-name>
-        <url-pattern>/services/*</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>AxisServlet</servlet-name>
-        <url-pattern>*.jws</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GetXML</servlet-name>
-        <url-pattern>/GetXML</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>GetHTML</servlet-name>
-        <url-pattern>/GetHTML</url-pattern>
     </servlet-mapping>
 
     <mime-mapping>
