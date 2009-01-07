@@ -58,7 +58,7 @@
         <action name="editStudy" class="editStudyAction">
             <result type="tiles">editStudy</result>
         </action>
-   
+      
         <action name="deleteStudy" method="deleteStudy" class="editStudyAction">
             <result type="redirectAction">manageStudies</result>
         </action>
@@ -303,15 +303,7 @@
             <result name="error" type="tiles">manageQuery</result>
             <result name="nciaBasket" type="redirect">${displayableWorkspace.nciaBasket.nciaBasketUrl} </result>
             <result name="export" type="tiles">exportSearchResults</result>
-            <result name="dicomJob" type="redirectAction">
-                <param name="actionName">runDicomJob</param>
-            </result>
-        </action>
-        
-        <action name="runDicomJob" method="runDicomJob" class="nciaDicomRetrievalAction">
-            <result name="success" type="tiles">dicomJob</result>
-            <result name="input" type="tiles">dicomJob</result>
-            <result name="error" type="tiles">dicomJob</result>
+            <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
         </action>
         
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
