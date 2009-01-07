@@ -100,6 +100,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate3.HibernateAccessor;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -164,6 +165,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      */
     public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
         LOGGER.info("Started loading design from " + platformSource.toString());
+        getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
         Platform platform = platformSource.getLoader().load(getDao());
         LOGGER.info("Completed loading design from " + platformSource.toString());
         return platform;

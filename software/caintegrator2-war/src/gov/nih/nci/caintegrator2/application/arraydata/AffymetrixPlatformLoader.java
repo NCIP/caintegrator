@@ -119,16 +119,17 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private static final String PLATFORM_NAME_HEADER = "chip_type";
     private static final Object NO_GENE_SYMBOL = "---";
 
-    private final File annotationFile;
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
     private AffymetrixCdfReader cdfReader;
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
     private CSVReader annotationFileReader;
     private final Map<String, String> fileHeaders = new HashMap<String, String>();
 
-    AffymetrixPlatformLoader(File annotationFile) {
+    private final AffymetrixPlatformSource source;
+
+    AffymetrixPlatformLoader(AffymetrixPlatformSource source) {
         super();
-        this.annotationFile = annotationFile;
+        this.source = source;
     }
 
     /**
@@ -142,9 +143,16 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
             dao.save(platform);
         } finally {
             releaseResources();
+            cleanUp();
         }
         return platform;
 
+    }
+
+    private void cleanUp() {
+        if (source.getDeleteFileOnCompletion()) {
+            getAnnotationFile().delete();
+        }
     }
 
     private Platform createPlatform() {
@@ -166,13 +174,18 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         platform.getReporterSets().add(probeSetReporters);
         try {
-            annotationFileReader = new CSVReader(new FileReader(annotationFile));
+            annotationFileReader = new CSVReader(new FileReader(getAnnotationFile()));
             loadHeaders();
             platform.setName(getHeaderValue(PLATFORM_NAME_HEADER));
             loadAnnotations(geneReporters, probeSetReporters, dao);
         } catch (IOException e) {
-            throw new PlatformLoadingException("Couldn't read annotation file " + annotationFile.getName(), e);
+            throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFile().getName(), e);
         }
+    }
+
+    private File getAnnotationFile() {
+        // TODO Auto-generated method stub
+        return source.getAnnotationFile();
     }
 
     private String getHeaderValue(String headerName) {
@@ -190,7 +203,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
             }
         }        
         throw new PlatformLoadingException("Invalid Affymetrix annotation file; headers not found in file: " 
-                + annotationFile.getName());
+                + getAnnotationFile().getName());
     }
 
     private boolean isFileHeaderLine(String[] fields) {
@@ -280,16 +293,16 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         if (cdfReader != null) {
             cdfReader.close();
         }
-        closeAnnotationFileREader();
+        closeAnnotationFileReader();
         cdfReader = null;
     }
 
-    private void closeAnnotationFileREader() {
+    private void closeAnnotationFileReader() {
         if (annotationFileReader != null) {
             try {
                 annotationFileReader.close();
             } catch (IOException e) {
-                LOGGER.error("Couldn't close annotation file reader for file " + annotationFile.getAbsolutePath());
+                LOGGER.error("Couldn't close annotation file reader for file " + getAnnotationFile().getAbsolutePath());
             }
         }
     }
