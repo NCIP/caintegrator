@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 /**
@@ -96,31 +94,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
-    
-    private NCIAFacade nciaFacade;
-    
-    /**
-     * Retrieves NCIA Dicom Files from the job stored on the session, and zips it up.
-     * @return Struts 2 Result.
-     */
-    public String runDicomJob() {
-      NCIADicomJob dicomJob = getDisplayableWorkspace().getDicomJob();
-        if (dicomJob != null) {
-            try {
-                dicomJob.setDicomFile(nciaFacade.retrieveDicomFiles(dicomJob));
-            } catch (ConnectionException e) {
-                addActionError(e.getMessage());
-                return ERROR;
-            }
-            if (dicomJob.getDicomFile() == null) {
-                addActionError("There was either no incoming data or unable to save to local system.");
-                return ERROR;
-            }
-            return SUCCESS;
-        }
-        addActionError("No dicom job was stored to session.");
-        return ERROR;
-    }
     
     /**
      * Downloads dicom file.
@@ -134,19 +107,4 @@ public class NCIADicomRetrievalAction extends AbstractCaIntegrator2Action {
         addActionError("Dicom file doesn't exist, it may have already been downloaded and removed from server.");
         return ERROR;
     }
-
-    /**
-     * @return the nciaFacade
-     */
-    public NCIAFacade getNciaFacade() {
-        return nciaFacade;
-    }
-
-    /**
-     * @param nciaFacade the nciaFacade to set
-     */
-    public void setNciaFacade(NCIAFacade nciaFacade) {
-        this.nciaFacade = nciaFacade;
-    }
-
 }

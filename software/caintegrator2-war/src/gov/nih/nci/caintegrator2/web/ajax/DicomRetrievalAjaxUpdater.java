@@ -83,122 +83,116 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.ncia;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * This is an object which is turned into an AJAX javascript file using the DWR framework.  The whole purpose
+ * is to update the jsp page with information based on the DicomRetrievalAjaxRunner's status updates.  It
+ * uses the reverse-ajax technology of DWR to achieve this.
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
-    private boolean currentlyRunning = false;
+public class DicomRetrievalAjaxUpdater { 
+    private Util utilThis;
+    private NCIAFacade nciaFacade;
+    private NCIADicomJob dicomJob;
     
     /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
+     * Retrieves the DicomJob from the session and creates a new DicomRetrievalAjaxRunner thread and starts it.
+     * This function is called directly from the dicomJobAjax_tile.jsp page using DWR's reverse ajax mechanism.
      */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
-    }
-
-    /**
-     * @return the completed
-     */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
-    }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
-    
-    /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
-     */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
+    public void runDicomJob() {
+        WebContext wctx = WebContextFactory.get();
+        DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
+            wctx.getSession().getAttribute("displayableWorkspace");
+        utilThis = new Util(wctx.getScriptSession());
+        dicomJob = workspace.getDicomJob();
+        
+        if (dicomJob != null) {
+            initializeJobDescription();
+            DicomRetrievalAjaxRunner runner = new DicomRetrievalAjaxRunner(this);
+            new Thread(runner).start();
+        } else {
+            addErrorMessage("No Dicom Job was found on the Session");
         }
-        return true;
+    }
+    
+    private void initializeJobDescription() {
+        if (!dicomJob.getImageSeriesIDs().isEmpty()) {
+            utilThis.setValue("imageSeriesStatus", "<h3>Image Series UIds</h3>", false);
+            utilThis.addOptions("imageSeriesList", dicomJob.getImageSeriesIDs().
+                                                   toArray(new String[dicomJob.getImageSeriesIDs().size()]));
+        }
+        
+        if (!dicomJob.getImageStudyIDs().isEmpty()) {
+            utilThis.setValue("imageStudyStatus", "<h3>Image Study UIds</h3>");
+            utilThis.addOptions("imageStudyList", dicomJob.getImageStudyIDs().
+                                                   toArray(new String[dicomJob.getImageStudyIDs().size()]));
+        }
+    }
+    
+    /**
+     * 
+     * @param currentStatus sets status on JSP page.
+     */
+    public void updateCurrentStatus(String currentStatus) {
+        utilThis.setValue("currentStatus", currentStatus);
+    }
+    
+    /**
+     * The final update of the dynamic test, assuming a successful finish occurs.
+     */
+    public void finish() {
+        completeJob();
+        
+        String finalizedText = "<b> Job Finished </b> <br>" 
+                               + "<a href=\"downloadDicomFile.action\">Download DICOM Files</a>";
+        utilThis.setValue("finalizedText", finalizedText, false);
+    }
+    
+    /**
+     * Dynamically adds an error message to the page.
+     * @param message error message to add.
+     */
+    public void addErrorMessage(String message) {
+        completeJob();
+        utilThis.setValue("errorMessages", message);
+    }
+
+    private void completeJob() {
+        dicomJob.setCurrentlyRunning(false);
+        removeStatusDiv();
+    }
+    
+    private void removeStatusDiv() {
+        utilThis.setValue("overallStatusDiv", "");
     }
 
     /**
-     * @return the dicomFile
+     * @return the nciaFacade
      */
-    public File getDicomFile() {
-        return dicomFile;
+    public NCIAFacade getNciaFacade() {
+        return nciaFacade;
     }
 
     /**
-     * @param dicomFile the dicomFile to set
+     * @param nciaFacade the nciaFacade to set
      */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
+    public void setNciaFacade(NCIAFacade nciaFacade) {
+        this.nciaFacade = nciaFacade;
     }
 
     /**
-     * @return the currentlyRunning
+     * @return the dicomJob
      */
-    public boolean isCurrentlyRunning() {
-        return currentlyRunning;
+    public NCIADicomJob getDicomJob() {
+        return dicomJob;
     }
 
-    /**
-     * @param currentlyRunning the currentlyRunning to set
-     */
-    public void setCurrentlyRunning(boolean currentlyRunning) {
-        this.currentlyRunning = currentlyRunning;
-    }
 }

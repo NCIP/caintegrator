@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-processor-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/iviCore-1.2dev.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ncia-beans.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dwr-2.0.5.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>

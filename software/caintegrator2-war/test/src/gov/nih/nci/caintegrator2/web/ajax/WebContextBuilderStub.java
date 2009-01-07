@@ -83,122 +83,155 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.ncia;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.directwebremoting.Container;
+import org.directwebremoting.ScriptBuffer;
+import org.directwebremoting.ScriptSession;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory.WebContextBuilder;
+import org.springframework.mock.web.MockHttpSession;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * Stub for DWR's WebContextBuilder.
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
-    private boolean currentlyRunning = false;
-    
-    /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
-     */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
+public class WebContextBuilderStub implements WebContextBuilder {
+
+    public WebContext get() {
+        return new WebContextStub();
     }
 
-    /**
-     * @return the completed
-     */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
+            Container arg4) {
     }
 
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
+    public void unset() {
+
     }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
-    
-    /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
-     */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
+
+    private static class WebContextStub implements WebContext {
+
+        public String forwardToString(String arg0) throws ServletException, IOException {
+
+            return null;
         }
-        return true;
-    }
 
-    /**
-     * @return the dicomFile
-     */
-    public File getDicomFile() {
-        return dicomFile;
-    }
+        public String getCurrentPage() {
 
-    /**
-     * @param dicomFile the dicomFile to set
-     */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
-    }
+            return null;
+        }
 
-    /**
-     * @return the currentlyRunning
-     */
-    public boolean isCurrentlyRunning() {
-        return currentlyRunning;
-    }
+        public HttpServletRequest getHttpServletRequest() {
+            return null;
+        }
 
-    /**
-     * @param currentlyRunning the currentlyRunning to set
-     */
-    public void setCurrentlyRunning(boolean currentlyRunning) {
-        this.currentlyRunning = currentlyRunning;
+        public HttpServletResponse getHttpServletResponse() {
+            return null;
+        }
+
+        public ScriptSession getScriptSession() {
+            return new ScriptSessionStub();
+        }
+
+        public HttpSession getSession() {
+            MockHttpSession session = new MockHttpSession();
+            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
+                    .getDisplayableUserWorkspace();
+            session.putValue("displayableWorkspace", workspace);
+            return session;
+        }
+
+        public HttpSession getSession(boolean arg0) {
+
+            return null;
+        }
+
+        public void setCurrentPageInformation(String arg0, String arg1) {
+
+        }
+
+        public Collection<Object> getAllScriptSessions() {
+            return null;
+        }
+
+        public Container getContainer() {
+            return null;
+        }
+
+        public Collection<Object> getScriptSessionsByPage(String arg0) {
+            return null;
+        }
+
+        public ServletConfig getServletConfig() {
+
+            return null;
+        }
+
+        public ServletContext getServletContext() {
+            return null;
+        }
+
+        public String getVersion() {
+            return null;
+        }
+
+        private static class ScriptSessionStub implements ScriptSession {
+
+            public void addScript(ScriptBuffer arg0) {
+
+            }
+
+            public Object getAttribute(String arg0) {
+                return null;
+            }
+
+            public Iterator<Object> getAttributeNames() {
+                return null;
+            }
+
+            public long getCreationTime() {
+                return 0;
+            }
+
+            public String getId() {
+                return null;
+            }
+
+            public long getLastAccessedTime() {
+
+                return 0;
+            }
+
+            public void invalidate() {
+
+            }
+
+            public boolean isInvalidated() {
+                return false;
+            }
+
+            public void removeAttribute(String arg0) {
+
+            }
+
+            public void setAttribute(String arg0, Object arg1) {
+
+            }
+
+        }
     }
 }
