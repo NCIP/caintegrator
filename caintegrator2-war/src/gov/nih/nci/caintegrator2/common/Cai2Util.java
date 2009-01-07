@@ -294,30 +294,32 @@ public final class Cai2Util {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("Not a directory:  " + dir);
         }
+        int index = directory.getPath().indexOf(directory.getName());
         String[] entries = directory.list();
         if (entries.length == 0) {
             return null;
         }
         File zipfile = new File(dir + ".zip");
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
-        addDir(directory, out);
+        addDir(directory, out, index);
         out.close();
         FileUtils.deleteDirectory(directory);
         return zipfile;
     }
     
-    private static void addDir(File dirObj, ZipOutputStream out) throws IOException {
+    private static void addDir(File dirObj, ZipOutputStream out, int index) throws IOException {
         File[] files = dirObj.listFiles();
         byte[] tmpBuf = new byte[BUFFER_SIZE];
 
         for (int i = 0; i < files.length; i++) {
             File curFile = files[i];
             if (curFile.isDirectory()) {
-                addDir(curFile, out);
+                addDir(curFile, out, index);
                 continue;
             }
             FileInputStream in = new FileInputStream(curFile);
-            out.putNextEntry(new ZipEntry(curFile.getPath()));
+            String relativePathName = curFile.getPath().substring(index);
+            out.putNextEntry(new ZipEntry(relativePathName));
             int len;
             while ((len = in.read(tmpBuf)) > 0) {
                 out.write(tmpBuf, 0, len);
