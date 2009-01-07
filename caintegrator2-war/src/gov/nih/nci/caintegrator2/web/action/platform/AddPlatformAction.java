@@ -89,9 +89,11 @@ import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.jms.JMSException;
@@ -100,6 +102,8 @@ import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
@@ -109,7 +113,9 @@ import org.springframework.jms.core.MessageCreator;
 public class AddPlatformAction extends AbstractCaIntegrator2Action {
 
     private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(AddPlatformAction.class);
     private ArrayDataService arrayDataService;
+    private FileManager fileManager;
     private File platformFile;
     private String platformFileContentType;
     private String platformFileFileName;
@@ -136,11 +142,31 @@ public class AddPlatformAction extends AbstractCaIntegrator2Action {
      * @return the Struts result.
      */
     public String execute() {
-        AffymetrixPlatformSource source = new AffymetrixPlatformSource(getPlatformFile());
-        sendPlatformMessage(source);
-        return SUCCESS;
+        try {
+            AffymetrixPlatformSource source = new AffymetrixPlatformSource(getPlatformFileCopy());
+            source.setDeleteFileOnCompletion(true);
+            sendPlatformMessage(source);
+            return SUCCESS;
+        } catch (IOException e) {
+            LOGGER.error("Couldn't copy uploaded file", e);
+            addActionError("Please contact the system administrator. Couldn't copy the uploaded file: " 
+                    + e.getMessage());
+            return ERROR;
+        }
     }
     
+    /**
+     * Creates a copy of the uploaded file, as the original is deleted as soon as the action completes.
+     * 
+     * @return the copied file
+     * @throws IOException if the file couldn't be copied
+     */
+    private File getPlatformFileCopy() throws IOException {
+        File copy = new File(getFileManager().getNewTemporaryDirectory("platform"), getPlatformFile().getName());
+        FileUtils.copyFile(getPlatformFile(), copy);
+        return copy;
+    }
+
     private void sendPlatformMessage(final AbstractPlatformSource source) {
         MessageCreator creator = new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
@@ -241,6 +267,20 @@ public class AddPlatformAction extends AbstractCaIntegrator2Action {
      */
     public void setQueue(Queue queue) {
         this.queue = queue;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 }

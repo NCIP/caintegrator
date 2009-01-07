@@ -306,5 +306,12 @@ public interface CaIntegrator2Dao {
      * @return the platforms.
      */
     List<Platform> getPlatforms();
+
+    /**
+     * Sets the Hibernate flush mode.
+     * 
+     * @param mode the flush mode.
+     */
+    void setFlushMode(int mode);
     
 }

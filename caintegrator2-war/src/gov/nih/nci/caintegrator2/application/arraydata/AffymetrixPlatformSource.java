@@ -94,6 +94,7 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
     private final File annotationFile;
+    private boolean deleteFileOnCompletion;
     
     /**
      * Creates a new instance.
@@ -110,7 +111,7 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
 
     @Override
     AbstractPlatformLoader getLoader() {
-        return new AffymetrixPlatformLoader(annotationFile);
+        return new AffymetrixPlatformLoader(this);
     }
     
     /**
@@ -119,6 +120,27 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
     @Override
     public String toString() {
         return "Affymetrix CSV annotation file: " + annotationFile.getName();
+    }
+
+    /**
+     * @return the deleteFileOnCompletion
+     */
+    public boolean getDeleteFileOnCompletion() {
+        return deleteFileOnCompletion;
+    }
+
+    /**
+     * @param deleteFileOnCompletion the deleteFileOnCompletion to set
+     */
+    public void setDeleteFileOnCompletion(boolean deleteFileOnCompletion) {
+        this.deleteFileOnCompletion = deleteFileOnCompletion;
+    }
+
+    /**
+     * @return the annotationFile
+     */
+    File getAnnotationFile() {
+        return annotationFile;
     }
 
 

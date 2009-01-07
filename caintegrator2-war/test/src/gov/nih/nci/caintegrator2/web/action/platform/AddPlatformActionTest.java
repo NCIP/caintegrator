@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import javax.jms.Destination;
 
@@ -104,10 +105,12 @@ public class AddPlatformActionTest {
 
     AddPlatformAction action = new AddPlatformAction();
     ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
+    FileManagerStub fileManagerStub = new FileManagerStub();
     
     @Before
     public void setUp() {
         action.setArrayDataService(arrayDataServiceStub);        
+        action.setFileManager(fileManagerStub);
     }
     
     @Test
