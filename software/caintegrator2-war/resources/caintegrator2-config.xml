@@ -403,6 +403,7 @@
         <property name="nciaFacade">
           <ref local="nciaFacade"/>
         </property>
+        <aop:scoped-proxy proxy-target-class="false" />
     </bean>
 
     <!-- ******************************************************************* -->
