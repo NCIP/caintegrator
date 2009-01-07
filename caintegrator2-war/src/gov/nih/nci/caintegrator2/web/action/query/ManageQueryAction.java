@@ -100,6 +100,8 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.util.Random;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.opensymphony.xwork2.interceptor.ParameterNameAware;
@@ -118,6 +120,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private static final String COLUMNS_TAB = "columns";
     private static final String SORTING_TAB = "sorting";
     private static final String SAVE_AS_TAB = "saveAs";
+    private static final Integer RANDOM_NUMBER_MAX = 10000;
     
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
@@ -300,15 +303,24 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String createDicomJob() {
+        if (getDisplayableWorkspace().getDicomJob() != null 
+                && getDisplayableWorkspace().getDicomJob().isCurrentlyRunning()) {
+            addActionError("There is currently a Dicom retrieval job running on this session, " 
+                            + "please wait for that to complete before running another.");
+            return ERROR;
+        }
         NCIADicomJob dicomJob = new NCIADicomJob();
         fillImageAggregatorFromCheckedRows(dicomJob);
-        dicomJob.setJobId("DICOM_JOB_" + getWorkspace().getUsername());
+        Random generator = new Random();
+        dicomJob.setJobId("DICOM_JOB_" + generator.nextInt(RANDOM_NUMBER_MAX) 
+                            + "_" + getWorkspace().getUsername());
         ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
         if (dataSource != null) {
             dicomJob.setServerConnection(dataSource.getServerProfile());
         }
         getDisplayableWorkspace().setDicomJob(dicomJob);
-        return "dicomJob";
+        dicomJob.setCurrentlyRunning(true);
+        return "dicomJobAjax";
     }
 
     private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator) {

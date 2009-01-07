@@ -83,122 +83,46 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.ncia;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 
 /**
- * Object used to represent an NCIA Dicom Retrieval job.
+ * This is what calls the NCIAFacade to retrieve the DICOM files through the grid, it is 
+ * thread based, so it is asynchronous and started via the DicomRetrievalAjaxUpdater.
  */
-public class NCIADicomJob implements NCIAImageAggregator {
-    
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private String jobId;
-    private ServerConnectionProfile serverConnection = new ServerConnectionProfile();
-    private boolean completed = false;
-    private File dicomFile;
-    private boolean currentlyRunning = false;
-    
-    /**
-     * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
-     * from the image series).
-     */
-    public NCIADicomJob() {
-        serverConnection.setUrl("http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService");
-    }
-    
-    /**
-     * @return the jobId
-     */
-    public String getJobId() {
-        return jobId;
-    }
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    /**
-     * @return the serverConnection
-     */
-    public ServerConnectionProfile getServerConnection() {
-        return serverConnection;
-    }
-    /**
-     * @param serverConnection the serverConnection to set
-     */
-    public void setServerConnection(ServerConnectionProfile serverConnection) {
-        this.serverConnection = serverConnection;
-    }
+public class DicomRetrievalAjaxRunner implements Runnable {
 
-    /**
-     * @return the completed
-     */
-    public boolean isCompleted() {
-        return completed;
-    }
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
-    }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
-    }
+    private final DicomRetrievalAjaxUpdater updater;
+    
+    DicomRetrievalAjaxRunner(DicomRetrievalAjaxUpdater updater) {
+        this.updater = updater;
+     }
     
     /**
-     * Validates if a job has imaging ID data. 
-     * @return T/F value.
+     * {@inheritDoc}
      */
-    public boolean hasData() {
-        if (imageSeriesIDs.isEmpty() && imageStudyIDs.isEmpty()) {
-            return false;
+    public void run() {
+        NCIADicomJob dicomJob = updater.getDicomJob();
+        NCIAFacade nciaFacade = updater.getNciaFacade();
+        if (!dicomJob.isCompleted()) {   
+            try {
+                updater.updateCurrentStatus("Retrieving file from NCIA through grid... Please Wait");
+                updater.getDicomJob().setDicomFile(nciaFacade.retrieveDicomFiles(dicomJob));
+                if (dicomJob.getDicomFile() == null) {
+                    updater.addErrorMessage("There was either no incoming data or unable to save to local system.");
+                    return;
+                }
+                updater.finish();
+            } catch (ConnectionException e) {
+                updater.addErrorMessage("Error retrieving file from server: " 
+                                        + dicomJob.getServerConnection().getUrl());
+            }
+        } else {
+            updater.finish();
         }
-        return true;
     }
 
-    /**
-     * @return the dicomFile
-     */
-    public File getDicomFile() {
-        return dicomFile;
-    }
-
-    /**
-     * @param dicomFile the dicomFile to set
-     */
-    public void setDicomFile(File dicomFile) {
-        this.dicomFile = dicomFile;
-    }
-
-    /**
-     * @return the currentlyRunning
-     */
-    public boolean isCurrentlyRunning() {
-        return currentlyRunning;
-    }
-
-    /**
-     * @param currentlyRunning the currentlyRunning to set
-     */
-    public void setCurrentlyRunning(boolean currentlyRunning) {
-        this.currentlyRunning = currentlyRunning;
-    }
 }
