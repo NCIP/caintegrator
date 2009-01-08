@@ -149,6 +149,7 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
             }
             KMPlotPointSeriesSet groupPointSeriesSet = prepareKaplanMeierPlotPointSeriesSet
                                                      (dataPoints,groupToPlot.getGroupName(), groupToPlot.getColor());
+            groupPointSeriesSet.setGroupSize(groupToPlot.getGroupSize());
             plotPointSeriesSetCollection.add(groupPointSeriesSet);
         }
         return   plotPointSeriesSetCollection;
@@ -163,7 +164,7 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
             iterator.hasNext();) {
            KMPlotPointSeriesSet KMPlotPointSeriesSet = iterator.next();
            Color color = KMPlotPointSeriesSet.getColor();
-           String title = KMPlotPointSeriesSet.getLegendTitle();
+           String title = KMPlotPointSeriesSet.getLegendTitle() + " (" + KMPlotPointSeriesSet.getGroupSize() + ")";
            item = new LegendItem(title, null, null, null, new Rectangle2D.Double(2,2,10,10), color);
            legendSrc.addLegendItem(item);
        }

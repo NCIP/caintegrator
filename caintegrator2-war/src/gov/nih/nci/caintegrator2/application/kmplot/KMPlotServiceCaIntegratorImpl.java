@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator.plots.kaplanmeier.dto.KMSampleGroupCriteriaDTO;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.jfree.chart.JFreeChart;
@@ -135,12 +136,23 @@ public class KMPlotServiceCaIntegratorImpl implements KMPlotService {
         criteriaDTO.setProbablityAxisLabel(configuration.getProbabilityLabel());
         criteriaDTO.setPlotTitle(configuration.getTitle());
         criteriaDTO.setSampleGroupCriteriaDTOCollection(new HashSet<KMSampleGroupCriteriaDTO>());
-        for (SubjectGroup group : configuration.getGroups()) {
+        addSubjectGroups(configuration.getGroups(), groupToDTOMap, criteriaDTO, true);
+        addSubjectGroups(configuration.getFilteredGroups(), groupToDTOMap, criteriaDTO, false);
+        return criteriaDTO;
+    }
+
+
+    private void addSubjectGroups(List<SubjectGroup> subjectGroups,
+                                  Map<SubjectGroup, KMSampleGroupCriteriaDTO> groupToDTOMap, 
+                                  KMCriteriaDTO criteriaDTO,
+                                  boolean containsSubjects) {
+        for (SubjectGroup group : subjectGroups) {
             KMSampleGroupCriteriaDTO sampleGroupCriteriaDTO = createSampleGroupCriteriaDTO(group);
             criteriaDTO.getSampleGroupCriteriaDTOCollection().add(sampleGroupCriteriaDTO);
-            groupToDTOMap.put(group, sampleGroupCriteriaDTO);
+            if (containsSubjects) {
+                groupToDTOMap.put(group, sampleGroupCriteriaDTO);
+            }
         }
-        return criteriaDTO;
     }
 
     private KMSampleGroupCriteriaDTO createSampleGroupCriteriaDTO(SubjectGroup group) {

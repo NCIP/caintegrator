@@ -80,14 +80,6 @@
             
             <strong>Log-rank P-value for significance of difference in survival between groups</strong>
             <br>
-            <s:if test="!#kmPlot.configuration.filteredGroups.empty">
-                <s:iterator value="#kmPlot.configuration.filteredGroups">
-                    <font color="red">
-                    <s:property value="name"/> has 0 patients. 
-                    </font>
-                    <br> 
-                </s:iterator>
-            </s:if>
             <table cellspacing="10">
             
             <!-- Outter Map -->

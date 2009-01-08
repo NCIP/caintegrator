@@ -93,7 +93,7 @@ public class KMPlotServiceImpl implements KMPlotService {
             Color color = (groupCrit.getColor() != null) ? groupCrit.getColor() : DEFAULT_COLOR;
             Collection<KMSampleDTO>  samples = groupCrit.getKmSampleDTOCollection();
             Collection<XYCoordinate> dataPoints = kmAlgorithm.getPlottingCoordinates(samples );
-            GroupCoordinates groupToBePlotted = new GroupCoordinates(dataPoints, groupName, color);
+            GroupCoordinates groupToBePlotted = new GroupCoordinates(dataPoints, groupName, color, samples.size());
             groupsToBePlotted.add(groupToBePlotted);
         }
 
@@ -114,7 +114,7 @@ public class KMPlotServiceImpl implements KMPlotService {
             Color color = (groupCrit.getColor() != null) ? groupCrit.getColor() : DEFAULT_COLOR;
             Collection<KMSampleDTO>  samples = groupCrit.getKmSampleDTOCollection();
             Collection<XYCoordinate> dataPoints = kmAlgorithm.getPlottingCoordinates(samples );
-            GroupCoordinates groupToBePlotted = new GroupCoordinates(dataPoints, groupName, color);
+            GroupCoordinates groupToBePlotted = new GroupCoordinates(dataPoints, groupName, color, samples.size());
             groupsToBePlotted.add(groupToBePlotted);
         }
 

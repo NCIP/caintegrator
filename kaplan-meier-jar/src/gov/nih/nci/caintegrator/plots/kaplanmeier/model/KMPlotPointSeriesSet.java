@@ -30,6 +30,7 @@ public class KMPlotPointSeriesSet implements Serializable{
 	@SuppressWarnings("unchecked")
     private Comparable hashKey = 0;
 	private Color color;
+	private Integer groupSize;
 	
 	public KMPlotPointSeriesSet() {
 		hashKey = createHash();
@@ -132,4 +133,19 @@ public class KMPlotPointSeriesSet implements Serializable{
     public Comparable getHashKey() {
 		return hashKey;
 	}
+
+    /**
+     * @return the groupSize
+     */
+    public Integer getGroupSize() {
+        return groupSize;
+    }
+
+    /**
+     * @param groupSize the groupSize to set
+     */
+    public void setGroupSize(Integer groupSize) {
+        this.groupSize = groupSize;
+    }
+	
 }
