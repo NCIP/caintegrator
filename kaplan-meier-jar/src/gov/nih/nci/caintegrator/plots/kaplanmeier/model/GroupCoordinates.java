@@ -13,37 +13,31 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GroupCoordinates {
-    Collection<XYCoordinate> dataPoints;
-    String groupName;
-    Color color;
+    final Collection<XYCoordinate> dataPoints;
+    final String groupName;
+    final Color color;
+    final Integer groupSize;
 
-    public GroupCoordinates(Collection<XYCoordinate> dataPoints, String groupName, Color color) {
+    public GroupCoordinates(Collection<XYCoordinate> dataPoints, String groupName, Color color, Integer groupSize) {
         this.dataPoints = dataPoints;
         this.groupName = groupName;
         this.color = color;
+        this.groupSize = groupSize;
     }
 
     public Collection<XYCoordinate> getDataPoints() {
         return dataPoints;
     }
 
-    public void setDataPoints(Collection<XYCoordinate> dataPoints) {
-        this.dataPoints = dataPoints;
-    }
-
     public String getGroupName() {
         return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public Integer getGroupSize() {
+        return groupSize;
     }
 }
