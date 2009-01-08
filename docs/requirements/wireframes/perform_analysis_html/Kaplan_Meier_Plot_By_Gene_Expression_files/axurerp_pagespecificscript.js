@@ -48,8 +48,6 @@ var u5 = document.getElementById('u5');
 gv_vAlignTable['u5'] = 'top';
 var u0 = document.getElementById('u0');
 
-var u13 = document.getElementById('u13');
-
 var u3 = document.getElementById('u3');
 gv_vAlignTable['u3'] = 'top';
 var u9 = document.getElementById('u9');
@@ -58,14 +56,12 @@ var u6 = document.getElementById('u6');
 
 var u1 = document.getElementById('u1');
 gv_vAlignTable['u1'] = 'center';
-var u12 = document.getElementById('u12');
-
 var u4 = document.getElementById('u4');
 gv_vAlignTable['u4'] = 'top';
 var u11 = document.getElementById('u11');
-gv_vAlignTable['u11'] = 'top';
-var u7 = document.getElementById('u7');
 
+var u7 = document.getElementById('u7');
+gv_vAlignTable['u7'] = 'top';
 var u2 = document.getElementById('u2');
 
 var u8 = document.getElementById('u8');
