@@ -97,6 +97,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -184,7 +185,6 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     }
 
     private File getAnnotationFile() {
-        // TODO Auto-generated method stub
         return source.getAnnotationFile();
     }
 
@@ -236,7 +236,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private void loadAnnotations(String[] fields, ReporterSet geneReporters, ReporterSet probeSetReporters, 
             CaIntegrator2Dao dao) {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
-        Gene gene = symbolToGeneMap.get(symbol);
+        Gene gene = symbolToGeneMap.get(symbol.toUpperCase(Locale.getDefault()));
         if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
             gene = lookupOrCreateGene(fields, dao);
             addGeneReporter(geneReporters, gene);
@@ -260,7 +260,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         if (gene == null) {
             gene = createGene(fields);
         }
-        symbolToGeneMap.put(symbol, gene);
+        symbolToGeneMap.put(symbol.toUpperCase(Locale.getDefault()), gene);
         return gene;
     }
 
