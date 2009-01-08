@@ -104,11 +104,11 @@ public class FileManagerStub implements FileManager {
     }
     
     public File getStudyDirectory(Study study) {
-        return new File("/");
+        return new File(System.getProperty("java.io.tmpdir"));
     }
 
     public File getNewTemporaryDirectory(String dirName) {
-        return new File("/");
+        return new File(System.getProperty("java.io.tmpdir"));
     }
 
 }
