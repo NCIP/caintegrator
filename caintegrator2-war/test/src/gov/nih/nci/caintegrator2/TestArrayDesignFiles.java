@@ -98,6 +98,16 @@ public class TestArrayDesignFiles {
     public static final String YEAST_2_CDF_PATH = "/arraydesign/affymetrix/Yeast_2.cdf";
     public static final String YEAST_2_ANNOTATION_PATH = "/arraydesign/affymetrix/Yeast_2.na26.annot.csv";
     public static final String TEST3_ANNOTATION_PATH = "/arraydesign/affymetrix/Test3.annot.csv";
+    public static final String HG_U133B_ANNOTATION_PATH = "/arraydesign/affymetrix/HG-U133B.na27.annot.csv";
+    public static final String HG_U95AV2_ANNOTATION_PATH = "/arraydesign/affymetrix/HG_U95Av2.na27.annot.csv";
+    public static final String HG_U95B_ANNOTATION_PATH = "/arraydesign/affymetrix/HG_U95B.na27.annot.csv";
+    public static final String HG_U95C_ANNOTATION_PATH = "/arraydesign/affymetrix/HG_U95C.na27.annot.csv";
+    public static final String HG_U95D_ANNOTATION_PATH = "/arraydesign/affymetrix/HG_U95D.na27.annot.csv";
+    public static final String HG_U133B_CDF_PATH = "/arraydesign/affymetrix/HG-U133B.cdf";
+    public static final String HG_U95AV2_CDF_PATH = "/arraydesign/affymetrix/HG_U95Av2.CDF";
+    public static final String HG_U95B_CDF_PATH = "/arraydesign/affymetrix/HG_U95B.CDF";
+    public static final String HG_U95C_CDF_PATH = "/arraydesign/affymetrix/HG_U95C.CDF";
+    public static final String HG_U95D_CDF_PATH = "/arraydesign/affymetrix/HG_U95D.CDF";
 
     public static final File HG_U133A_CDF_FILE = getFile(HG_U133A_CDF_PATH);
     public static final File HG_U133A_ANNOTATION_FILE = getFile(HG_U133A_ANNOTATION_PATH);
@@ -106,5 +116,15 @@ public class TestArrayDesignFiles {
     public static final File YEAST_2_ANNOTATION_FILE = getFile(YEAST_2_ANNOTATION_PATH);
     public static final File YEAST_2_CDF_FILE = getFile(YEAST_2_CDF_PATH);
     public static final File TEST3_ANNOTATION_FILE = getFile(TEST3_ANNOTATION_PATH);
+    public static final File HG_U133B_ANNOTATION_FILE = getFile(HG_U133B_ANNOTATION_PATH);
+    public static final File HG_U95AV2_ANNOTATION_FILE = getFile(HG_U95AV2_ANNOTATION_PATH);
+    public static final File HG_U95B_ANNOTATION_FILE = getFile(HG_U95B_ANNOTATION_PATH);
+    public static final File HG_U95C_ANNOTATION_FILE = getFile(HG_U95C_ANNOTATION_PATH);
+    public static final File HG_U95D_ANNOTATION_FILE = getFile(HG_U95D_ANNOTATION_PATH);
+    public static final File HG_U133B_CDF_FILE = getFile(HG_U133B_CDF_PATH);
+    public static final File HG_U95AV2_CDF_FILE = getFile(HG_U95AV2_CDF_PATH);
+    public static final File HG_U95B_CDF_FILE = getFile(HG_U95B_CDF_PATH);
+    public static final File HG_U95C_CDF_FILE = getFile(HG_U95C_CDF_PATH);
+    public static final File HG_U95D_CDF_FILE = getFile(HG_U95D_CDF_PATH);
 
 }
