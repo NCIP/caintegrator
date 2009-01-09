@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -95,6 +96,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -141,6 +143,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
+        deleteCalled = true;
+    }
+
+    public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {
         deleteCalled = true;
     }
 

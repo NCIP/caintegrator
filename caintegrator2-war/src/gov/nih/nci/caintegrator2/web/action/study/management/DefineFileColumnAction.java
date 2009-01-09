@@ -133,6 +133,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private String columnType;
     
     private void clearCacheMemory() {
+        columnType = null;
         definitions.clear();
         dataElements.clear();
         availableUpdateList.clear();
@@ -183,13 +184,13 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @return the Struts result.
      */
     public String saveColumnType() {
-        clearCacheMemory();
         updateColumnType();
         if (isColumnTypeAnnotation() && getFileColumn().getFieldDescriptor() == null) {
             getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
             getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
         }
         getStudyManagementService().save(getStudyConfiguration());
+        clearCacheMemory();
         return SUCCESS;
     }
     /**
@@ -489,7 +490,8 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @throws ParseException 
      */
     private void updatePermissible() throws ParseException {
-        PermissibleValueUtil.update(getType(), getPermissibleCollection(), getPermissibleUpdateList());
+        PermissibleValueUtil.update(getStudyManagementService(), getType(),
+                getPermissibleCollection(), getPermissibleUpdateList());
     }
 
     private Collection<AbstractPermissibleValue> getPermissibleCollection() {
