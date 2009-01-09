@@ -85,10 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -111,13 +113,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
  */
 public class PermissibleValueUtilTest {
 
+    private StudyManagementService studyManagementService;
+
+    @Before
+    public void setUp() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
+        studyManagementService = (StudyManagementService) context.getBean("studyManagementService");
+    }
     /**
      * Test method for {@link gov.nih.nci.caintegrator2.common.PermissibleValueUtil#getDisplayString(gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue)}.
      * @throws ParseException 
@@ -265,7 +277,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("ABC");
         newStringValues.add("XYZ");
-        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
@@ -274,7 +286,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("123.0");
         newStringValues.add("89.95");
-        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
@@ -283,7 +295,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("01-15-1995");
         newStringValues.add("11-02-2008");
-        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
     }
