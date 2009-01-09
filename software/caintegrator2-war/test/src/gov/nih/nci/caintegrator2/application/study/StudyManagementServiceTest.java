@@ -114,7 +114,9 @@ import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -160,6 +162,10 @@ public class StudyManagementServiceTest {
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
         studyManagementService.delete(clinicalSource);
         assertTrue(daoStub.deleteCalled);
+
+        Collection<AbstractPermissibleValue> abstractPermissibleValues = new ArrayList<AbstractPermissibleValue>();
+        studyManagementService.delete(abstractPermissibleValues);
+        assertTrue(daoStub.removeObjectsCalled);
     }
     
     @Test

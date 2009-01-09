@@ -19,7 +19,7 @@
         <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
     </s:form>
         
-    <s:form cssClass="currentAnnotationDefinition">
+    <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imagingSource.id" />
         <s:hidden name="fileColumn.id" />
@@ -59,7 +59,7 @@
                     doubleMultiple="true"
                     cssStyle="min-width:100px; vertical-align=middle;"
                     buttonCssStyle="min-width:100px;"
-                    label="Permissable Values"
+                    label="Permissible Values"
                     disabled="%{fromCadsr}" 
                     doubleDisabled="%{fromCadsr}"
                     />

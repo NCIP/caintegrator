@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -96,6 +97,7 @@ import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentExceptio
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -116,6 +118,13 @@ public interface StudyManagementService {
      * @param studyConfiguration study to delete
      */
     void delete(StudyConfiguration studyConfiguration);
+    
+    /**
+     * Deletes abstractPermissibleValues.
+     * 
+     * @param abstractPermissibleValues to delete
+     */
+    void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues);
     
     /**
      * Deletes a clinical source.

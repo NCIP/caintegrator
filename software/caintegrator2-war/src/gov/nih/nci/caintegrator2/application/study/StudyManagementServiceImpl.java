@@ -162,6 +162,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      *  {@inheritDoc}
      */
+    public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {
+        dao.removeObjects(abstractPermissibleValues);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
     public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
         dao.delete(clinicalSource);
     }
