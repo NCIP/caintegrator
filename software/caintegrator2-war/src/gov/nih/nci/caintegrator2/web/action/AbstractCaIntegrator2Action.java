@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -199,6 +200,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @return the query form
      */
+    public Query getQuery() {
+        if (getQueryForm() != null) {
+            return getQueryForm().getQuery();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the query form
+     */
     public QueryForm getQueryForm() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getQueryForm();
@@ -221,7 +233,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @return the genomicDataQueryResult
      */
-    protected final GenomicDataQueryResult getGenomicDataQueryResult() {
+    public final GenomicDataQueryResult getGenomicDataQueryResult() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getGenomicDataQueryResult();
         } else {
