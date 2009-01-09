@@ -389,7 +389,10 @@
         </property>        
         <property name="queue">
             <ref local="platformLoaderQueue"/>
-        </property>        
+        </property>
+                <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>  
     </bean>   
 
     <!-- ******************************************************************* -->
