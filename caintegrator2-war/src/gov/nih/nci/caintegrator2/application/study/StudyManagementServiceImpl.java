@@ -258,9 +258,31 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
+        //deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.loadAnnontation();
+        }
+        save(studyConfiguration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+        throws ValidationException {
+        clinicalSourceConfiguration.loadAnnontation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
+        //TODO Delete all subject annotation then reload
+        // deleteClinicalAnnotation(studyConfiguration);
+        for (AbstractClinicalSourceConfiguration configuration 
+                : studyConfiguration.getClinicalConfigurationCollection()) {
+            configuration.reLoadAnnontation();
         }
         save(studyConfiguration);
     }
