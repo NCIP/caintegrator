@@ -125,6 +125,16 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     void loadAnnontation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void reLoadAnnontation() throws ValidationException {
+        if (isCurrentlyLoaded()) {
+            getAnnotationFile().loadAnnontation(new SubjectAnnotationHandler(this));
+        }
+    }
 
     /**
      * @return ClinicalSourceType

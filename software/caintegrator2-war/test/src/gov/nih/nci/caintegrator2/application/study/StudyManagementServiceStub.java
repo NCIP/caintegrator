@@ -134,6 +134,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadClinicalAnnotationCalled = true;
     }
 
+    public void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+        throws ValidationException {
+        loadClinicalAnnotationCalled = true;
+    }
+
     public void save(StudyConfiguration studyConfiguration) {
         saveCalled = true;
     }

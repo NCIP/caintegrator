@@ -100,7 +100,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
     @Override
     public String execute() {
         try {
-            getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration());
+            getStudyManagementService().loadClinicalAnnotation(getClinicalSource());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return INPUT;
