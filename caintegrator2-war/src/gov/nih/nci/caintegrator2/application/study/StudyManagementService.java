@@ -168,7 +168,7 @@ public interface StudyManagementService {
      * @return Object retrieved from database.
      */
     StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
-    
+
     /**
      * Loads clinical annotations given a study configuration.
      * 
@@ -176,6 +176,15 @@ public interface StudyManagementService {
      * @throws ValidationException fail to load
      */
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
+
+    /**
+     * Loads a specific clinical annotation.
+     * 
+     * @param clinicalSourceConfiguration clinical source configuration to load
+     * @throws ValidationException fail to load
+     */
+    void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+        throws ValidationException;
 
     /**
      * Deploys or redeploys a study.
