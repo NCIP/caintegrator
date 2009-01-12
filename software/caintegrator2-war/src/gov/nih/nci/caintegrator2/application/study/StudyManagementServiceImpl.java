@@ -269,9 +269,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException {
         clinicalSourceConfiguration.loadAnnontation();
+        save(studyConfiguration);
     }
 
     /**

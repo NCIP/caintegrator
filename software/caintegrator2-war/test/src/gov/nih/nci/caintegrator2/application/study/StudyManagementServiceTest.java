@@ -217,7 +217,7 @@ public class StudyManagementServiceTest {
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         studyManagementService.loadClinicalAnnotation(studyConfiguration); 
-        studyManagementService.loadClinicalAnnotation(sourceConfiguration); 
+        studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
     }
     
     @Test 

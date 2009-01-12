@@ -178,12 +178,14 @@ public interface StudyManagementService {
     void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
 
     /**
-     * Loads a specific clinical annotation.
+     * Loads a specific clinical annotation from study configuration.
      * 
+     * @param studyConfiguration study configuration to load
      * @param clinicalSourceConfiguration clinical source configuration to load
      * @throws ValidationException fail to load
      */
-    void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException;
 
     /**

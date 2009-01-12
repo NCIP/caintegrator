@@ -134,7 +134,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadClinicalAnnotationCalled = true;
     }
 
-    public void loadClinicalAnnotation(AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
+    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException {
         loadClinicalAnnotationCalled = true;
     }
