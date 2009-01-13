@@ -85,54 +85,121 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Test case.
- */
-public class QueryTranslatorTest {
 
-    /**
-     * Test Case.
-     */
-    @Test
-    public void testExecute() {
-        ApplicationContext context = 
-            new ClassPathXmlApplicationContext("query-test-config.xml", QueryTranslatorTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
-        ResultHandlerStub resultHandlerStub = (ResultHandlerStub) context.getBean("resultHandlerStub");
-        resultHandlerStub.clear();
-        daoStub.clear();       
+public class FoldChangeCriterionHandlerTest {
+
+    private CaIntegrator2DaoStub daoStub = new DaoStub();
+    private ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
+    private Query query;
+    private Study study;
+    private ArrayDataMatrix matrix;
+    private Gene gene;
+    
+    @Before
+    public void setUp() {
+        matrix = new ArrayDataMatrix();
+        matrix.setReporterSet(new ReporterSet());
+        matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        gene = new Gene();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        gene.getReporterCollection().add(reporter);
         
-        Study study = new Study();
+        daoStub.clear();       
+        study = new Study();
+        query = new Query();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
-        Query query = new Query();
-        query.setCompoundCriterion(compoundCriterion);
         query.setSubscription(subscription);
-        query.setColumnCollection(new HashSet<ResultColumn>());
-
-        QueryTranslator queryTranslator = new QueryTranslator(query, daoStub, arrayDataServiceStub, resultHandlerStub);
-        queryTranslator.execute();
-        assertTrue(resultHandlerStub.createResultsCalled);
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        study.getAssignmentCollection().add(assignment);
+        SampleAcquisition acquisition = new SampleAcquisition();
+        Sample sample = new Sample();
+        ArrayData arrayData = new ArrayData();
+        arrayData.setMatrix(matrix);
+        arrayData.setReporterSet(matrix.getReporterSet());
+        arrayData.setSample(sample);
+        sample.setSampleAcquisition(acquisition);
+        sample.getArrayDataCollection().add(arrayData);
+        acquisition.setSample(sample);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
     }
 
+    @Test
+    public void testGetMatches() {        
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
+        criterion.setFolds(1.0f);
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+        Set<ResultRow> rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        assertEquals(1, rows.size());
+        criterion.setRegulationType(RegulationTypeEnum.DOWN);
+        rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        assertEquals(0, rows.size());
+        assertTrue(arrayDataServiceStub.getFoldChangeValuesCalled);
+    }
+    
+    @Test
+    public void testGetters() {
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setRegulationType(RegulationTypeEnum.UP);
+        criterion.setFolds(1.0f);
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+        assertTrue(handler.hasEntityCriterion());
+        assertTrue(handler.hasReporterCriterion());
+        assertTrue(handler.isEntityMatchHandler());
+        assertTrue(handler.isReporterMatchHandler());
+    }
 
+    @Test
+    public void testGetReporterMatches() {        
+        FoldChangeCriterion criterion = new FoldChangeCriterion();
+        FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
+        assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).size());
+    }
+    
+    private class DaoStub extends CaIntegrator2DaoStub {
+
+        @Override
+        public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
+            List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
+            matrixes.add(matrix);
+            return matrixes;
+        }
+
+        @Override
+        public Gene getGene(String symbol) {
+            return gene;
+        }
+        
+    }
+ 
 }

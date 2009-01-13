@@ -94,22 +94,19 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 
-import java.util.HashSet;
-
 import org.junit.Test;
 
 public class GeneCriterionHandlerTest {
 
     @Test
     public void testGetMatches() {
-        assertTrue(GeneCriterionHandler.create(null).getMatches(null, null, null).isEmpty());
+        assertTrue(GeneCriterionHandler.create(null).getMatches(null, null, null, null).isEmpty());
     }
 
     @Test
     public void testGetReporterMatches() {
         GeneCriterion criterion = new GeneCriterion();
         Gene gene = new Gene();
-        gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         ReporterSet reporterSet1 = new ReporterSet();
         reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());

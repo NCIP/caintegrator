@@ -85,13 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.HashSet;
-
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+
+import java.util.HashSet;
 
 /**
  * The purpose of this is to create a new StudyConfiguration the same way StudyManagementServiceImpl would,
@@ -104,7 +103,6 @@ public class StudyConfigurationFactory {
         studyConfiguration.setId(Long.valueOf(1));
         Study study = new Study();
         studyConfiguration.setStudy(study);
-        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
     
         study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());

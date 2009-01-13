@@ -5,7 +5,8 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -15,9 +16,9 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String identifier;
-    private Collection<ImageSeriesAcquisition> imageStudyCollection;
-    private Collection<SampleAcquisition> sampleAcquisitionCollection;
-    private Collection<SubjectAnnotation> subjectAnnotationCollection;
+    private Set<ImageSeriesAcquisition> imageStudyCollection = new HashSet<ImageSeriesAcquisition>();
+    private Set<SampleAcquisition> sampleAcquisitionCollection = new HashSet<SampleAcquisition>();
+    private Set<SubjectAnnotation> subjectAnnotationCollection = new HashSet<SubjectAnnotation>();
     private Study study;
     private Subject subject;
     
@@ -33,48 +34,6 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
      */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
-    }
-    
-    /**
-     * @return the imageStudyCollection
-     */
-    public Collection<ImageSeriesAcquisition> getImageStudyCollection() {
-        return imageStudyCollection;
-    }
-    
-    /**
-     * @param imageStudyCollection the imageStudyCollection to set
-     */
-    public void setImageStudyCollection(Collection<ImageSeriesAcquisition> imageStudyCollection) {
-        this.imageStudyCollection = imageStudyCollection;
-    }
-    
-    /**
-     * @return the sampleAcquisitionCollection
-     */
-    public Collection<SampleAcquisition> getSampleAcquisitionCollection() {
-        return sampleAcquisitionCollection;
-    }
-    
-    /**
-     * @param sampleAcquisitionCollection the sampleAcquisitionCollection to set
-     */
-    public void setSampleAcquisitionCollection(Collection<SampleAcquisition> sampleAcquisitionCollection) {
-        this.sampleAcquisitionCollection = sampleAcquisitionCollection;
-    }
-    
-    /**
-     * @return the subjectAnnotationCollection
-     */
-    public Collection<SubjectAnnotation> getSubjectAnnotationCollection() {
-        return subjectAnnotationCollection;
-    }
-    
-    /**
-     * @param subjectAnnotationCollection the subjectAnnotationCollection to set
-     */
-    public void setSubjectAnnotationCollection(Collection<SubjectAnnotation> subjectAnnotationCollection) {
-        this.subjectAnnotationCollection = subjectAnnotationCollection;
     }
     
     /**
@@ -103,6 +62,51 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
      */
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    /**
+     * @return the imageStudyCollection
+     */
+    public Set<ImageSeriesAcquisition> getImageStudyCollection() {
+        return imageStudyCollection;
+    }
+
+    /**
+     * @param imageStudyCollection the imageStudyCollection to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setImageStudyCollection(Set<ImageSeriesAcquisition> imageStudyCollection) {
+        this.imageStudyCollection = imageStudyCollection;
+    }
+
+    /**
+     * @return the sampleAcquisitionCollection
+     */
+    public Set<SampleAcquisition> getSampleAcquisitionCollection() {
+        return sampleAcquisitionCollection;
+    }
+
+    /**
+     * @param sampleAcquisitionCollection the sampleAcquisitionCollection to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setSampleAcquisitionCollection(Set<SampleAcquisition> sampleAcquisitionCollection) {
+        this.sampleAcquisitionCollection = sampleAcquisitionCollection;
+    }
+
+    /**
+     * @return the subjectAnnotationCollection
+     */
+    public Set<SubjectAnnotation> getSubjectAnnotationCollection() {
+        return subjectAnnotationCollection;
+    }
+
+    /**
+     * @param subjectAnnotationCollection the subjectAnnotationCollection to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setSubjectAnnotationCollection(Set<SubjectAnnotation> subjectAnnotationCollection) {
+        this.subjectAnnotationCollection = subjectAnnotationCollection;
     }
 
 }

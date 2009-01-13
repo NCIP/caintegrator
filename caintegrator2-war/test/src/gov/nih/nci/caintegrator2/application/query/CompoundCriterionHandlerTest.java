@@ -86,12 +86,15 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
@@ -108,9 +111,14 @@ public class CompoundCriterionHandlerTest {
     public void testGetMatches() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
+        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
         daoStub.clear();       
         
         Study study = new Study();
+        Query query = new Query();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        query.setSubscription(subscription);
         study.setDefaultTimepoint(new Timepoint());
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
@@ -135,7 +143,7 @@ public class CompoundCriterionHandlerTest {
         CompoundCriterionHandler compoundCriterionHandler=CompoundCriterionHandler.create(compoundCriterion3);
         compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
         
-        compoundCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
+        compoundCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         assertTrue(daoStub.findMatchingSubjectsCalled);

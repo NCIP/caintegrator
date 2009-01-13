@@ -160,14 +160,10 @@ public class QueryManagementServiceImplTest {
         GenomicDataTestDaoStub daoStub = new GenomicDataTestDaoStub();
         queryManagementService.setDao(daoStub);
         Study study = query.getSubscription().getStudy();
-        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment = new StudySubjectAssignment();
-        assignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         sample.setSampleAcquisition(acquisition);
-        sample.setArrayCollection(new HashSet<Array>());
-        sample.setArrayDataCollection(new HashSet<ArrayData>());
         Array array = new Array();
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
@@ -185,10 +181,8 @@ public class QueryManagementServiceImplTest {
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
-        study.setControlSampleCollection(new HashSet<Sample>());
         GeneCriterion geneCriterion = new GeneCriterion();
         Gene gene = new Gene();
-        gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
         reporter.setReporterSet(reporterSet);

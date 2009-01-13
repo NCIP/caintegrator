@@ -115,7 +115,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      * {@inheritDoc}
      */
     public QueryResult execute(Query query) {
-        QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+        QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
     
