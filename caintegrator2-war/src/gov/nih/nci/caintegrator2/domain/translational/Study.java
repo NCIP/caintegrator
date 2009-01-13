@@ -1,11 +1,17 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -15,23 +21,14 @@ public class Study extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
 
     private String longTitleText;
-
     private String shortTitleText;
-
     private Collection<Timepoint> timepointCollection;
-
     private Collection<SurvivalValueDefinition> survivalValueDefinitionCollection;
-
-    private Collection<Sample> controlSampleCollection;
-
+    private Set<Sample> controlSampleCollection = new HashSet<Sample>();
     private Collection<AnnotationDefinition> imageSeriesAnnotationCollection;
-
-    private Collection<StudySubjectAssignment> assignmentCollection;
-
+    private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
     private Collection<AnnotationDefinition> subjectAnnotationCollection;
-
     private Timepoint defaultTimepoint;
-
     private Collection<AnnotationDefinition> sampleAnnotationCollection;
 
     /**
@@ -96,21 +93,6 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the controlSampleCollection
-     */
-    public Collection<Sample> getControlSampleCollection() {
-        return controlSampleCollection;
-    }
-
-    /**
-     * @param controlSampleCollection
-     *            the controlSampleCollection to set
-     */
-    public void setControlSampleCollection(Collection<Sample> controlSampleCollection) {
-        this.controlSampleCollection = controlSampleCollection;
-    }
-
-    /**
      * @return the imageSeriesAnnotationCollection
      */
     public Collection<AnnotationDefinition> getImageSeriesAnnotationCollection() {
@@ -123,21 +105,6 @@ public class Study extends AbstractCaIntegrator2Object {
      */
     public void setImageSeriesAnnotationCollection(Collection<AnnotationDefinition> imageSeriesAnnotationCollection) {
         this.imageSeriesAnnotationCollection = imageSeriesAnnotationCollection;
-    }
-
-    /**
-     * @return the assignmentCollection
-     */
-    public Collection<StudySubjectAssignment> getAssignmentCollection() {
-        return assignmentCollection;
-    }
-
-    /**
-     * @param assignmentCollection
-     *            the assignmentCollection to set
-     */
-    public void setAssignmentCollection(Collection<StudySubjectAssignment> assignmentCollection) {
-        this.assignmentCollection = assignmentCollection;
     }
 
     /**
@@ -183,6 +150,65 @@ public class Study extends AbstractCaIntegrator2Object {
      */
     public void setSampleAnnotationCollection(Collection<AnnotationDefinition> sampleAnnotationCollection) {
         this.sampleAnnotationCollection = sampleAnnotationCollection;
+    }
+
+    /**
+     * Returns all samples associated with the study.
+     * 
+     * @return the samples.
+     */
+    public Set<Sample> getSamples() {
+        Set<Sample> samples = new HashSet<Sample>();
+        for (StudySubjectAssignment subjectAssignment : getAssignmentCollection()) {
+            for (SampleAcquisition sampleAcquisition : subjectAssignment.getSampleAcquisitionCollection()) {
+                samples.add(sampleAcquisition.getSample());
+            }
+        }
+        return Collections.unmodifiableSet(samples);
+    }
+
+    /**
+     * Returns all array datas of the given type in the project.
+     * 
+     * @param reporterType get array datas of this type.
+     * @return an immutable set of the matching array datas.
+     */
+    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType) {
+        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
+        for (Sample sample : getSamples()) {
+            arrayDatas.addAll(sample.getArrayDatas(reporterType));
+        }
+        return Collections.unmodifiableSet(arrayDatas);
+    }
+
+    /**
+     * @return the assignmentCollection
+     */
+    public Set<StudySubjectAssignment> getAssignmentCollection() {
+        return assignmentCollection;
+    }
+
+    /**
+     * @param assignmentCollection the assignmentCollection to set
+     */
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setAssignmentCollection(Set<StudySubjectAssignment> assignmentCollection) {
+        this.assignmentCollection = assignmentCollection;
+    }
+
+    /**
+     * @return the controlSampleCollection
+     */
+    public Set<Sample> getControlSampleCollection() {
+        return controlSampleCollection;
+    }
+
+    /**
+     * @param controlSampleCollection the controlSampleCollection to set
+     */
+    @SuppressWarnings("unused") // required by Hibernate
+    private void setControlSampleCollection(Set<Sample> controlSampleCollection) {
+        this.controlSampleCollection = controlSampleCollection;
     }
 
 }

@@ -266,7 +266,6 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private Gene createGene(String[] fields) {
         Gene gene = new Gene();
-        gene.setReporterCollection(new HashSet<GeneExpressionReporter>());
         gene.setSymbol(getAnnotationValue(fields, GENE_SYMBOL_HEADER));
         gene.setEntrezgeneID(getAnnotationValue(fields, ENTREZ_GENE_HEADER));
         gene.setEnsemblgeneID(getAnnotationValue(fields, ENSEMBL_HEADER));

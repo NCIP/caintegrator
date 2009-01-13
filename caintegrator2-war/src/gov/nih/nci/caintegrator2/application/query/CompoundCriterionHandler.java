@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
@@ -93,9 +94,11 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -145,6 +148,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(GeneListCriterionHandler.create((GeneListCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof GeneNameCriterion) {
                     handlers.add(GeneNameCriterionHandler.create((GeneNameCriterion) abstractCriterion));
+                } else if (abstractCriterion instanceof FoldChangeCriterion) {
+                    handlers.add(FoldChangeCriterionHandler.create((FoldChangeCriterion) abstractCriterion));
                 } else {
                     throw new IllegalStateException("Unknown AbstractCriterion class: " + abstractCriterion);
                 }
@@ -157,11 +162,13 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
-    Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
+    Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
+            Set<EntityTypeEnum> entityTypes) {
+        Study study = query.getSubscription().getStudy();
         if (!hasEntityCriterion()) {
             return getAllRows(study, entityTypes);
         } else {
-            return getMatchingRows(dao, study, entityTypes);
+            return getMatchingRows(dao, arrayDataService, entityTypes, query);
         }
     }
 
@@ -196,14 +203,16 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         return imageSeriesSet;
     }
 
-    private Set<ResultRow> getMatchingRows(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes) {
+    private Set<ResultRow> getMatchingRows(CaIntegrator2Dao dao, ArrayDataService arrayDataService,
+            Set<EntityTypeEnum> entityTypes, 
+            Query query) {
         boolean rowsRetrieved = false;
         Set<ResultRow> allValidRows = new HashSet<ResultRow>();
         for (AbstractCriterionHandler handler : handlers) {
             if (!handler.isEntityMatchHandler()) {
                 continue;
             }
-            Set<ResultRow> newRows = handler.getMatches(dao, study, entityTypes);
+            Set<ResultRow> newRows = handler.getMatches(dao, arrayDataService, query, entityTypes);
             if (!rowsRetrieved) {
                 allValidRows = newRows;
                 rowsRetrieved = true;

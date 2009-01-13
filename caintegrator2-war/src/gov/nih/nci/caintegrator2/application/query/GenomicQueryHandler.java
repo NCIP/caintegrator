@@ -197,7 +197,8 @@ class GenomicQueryHandler {
         if (criterionHandler.hasEntityCriterion()) {
             Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();
             samplesOnly.add(EntityTypeEnum.SAMPLE);
-            Set<ResultRow> rows = criterionHandler.getMatches(dao, query.getSubscription().getStudy(), samplesOnly);
+            Set<ResultRow> rows = criterionHandler.getMatches(dao, 
+                    arrayDataService, query, samplesOnly);
             return getArrayDatas(rows, ReporterTypeEnum.getByValue(query.getReporterType()));
         } else {
             return getAllArrayDatas(ReporterTypeEnum.getByValue(query.getReporterType()));

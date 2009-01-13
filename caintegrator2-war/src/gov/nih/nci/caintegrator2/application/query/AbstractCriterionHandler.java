@@ -85,9 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -102,11 +104,14 @@ abstract class AbstractCriterionHandler {
     /**
      * Gets all matches from the DAO.
      * @param dao object to use.
-     * @param study object to use
+     * @param arrayDataService TODO
+     * @param query TODO
+     * @param query the query the criterion belongs to
      * @param entityTypes entityTypes that are in this criterion to use.
      * @return set of ResultRows that match..
      */
-    abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, Study study, Set<EntityTypeEnum> entityTypes);
+    abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
+            Set<EntityTypeEnum> entityTypes);
     
     /**
      * Gets all <code>AbstractReporters</code> matched by this handler.

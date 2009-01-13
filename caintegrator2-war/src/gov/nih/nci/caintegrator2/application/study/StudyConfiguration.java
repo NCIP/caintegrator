@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.common.PersistentObject;
 import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
-import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -251,8 +250,6 @@ public class StudyConfiguration implements PersistentObject {
         studySubjectAssignment.setSubject(new Subject());
         studySubjectAssignment.setStudy(getStudy());
         studySubjectAssignment.setIdentifier(identifier);
-        studySubjectAssignment.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
-        studySubjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         getStudy().getAssignmentCollection().add(studySubjectAssignment);
         getIdentifierToSubjectAssignmentMap().put(identifier, studySubjectAssignment);
         return studySubjectAssignment;

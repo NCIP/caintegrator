@@ -330,7 +330,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         criterion.setGeneSymbol("TEST");
         Gene gene = new Gene();
         gene.setSymbol("TEST");
-        Collection<GeneExpressionReporter> reporterCollection = new HashSet<GeneExpressionReporter>();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
         Collection<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
@@ -340,8 +339,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         arrayData.setReporterSet(reporterSet);
         reporterSet.setArrayDataCollection(arrayDataCollection);
         reporter.setReporterSet(reporterSet);
-        reporterCollection.add(reporter);
-        gene.setReporterCollection(reporterCollection);
+        gene.getReporterCollection().add(reporter);
         reporter.setGene(gene);
         dao.save(study);
         dao.save(gene);
@@ -382,7 +380,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testRetrieveValueForAnnotationSubject() {
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
-        studySubjectAssignment.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         
         SubjectAnnotation genderSubjectAnnotation = new SubjectAnnotation();
         SubjectAnnotation weightSubjectAnnotation = new SubjectAnnotation();
@@ -416,16 +413,12 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     @Test
     public void testRetrieveUniqueValuesForStudyAnnotation() {
         Study study = new Study();
-        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
-        
+
         StudySubjectAssignment studySubjectAssignment1 = new StudySubjectAssignment();
-        studySubjectAssignment1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studySubjectAssignment1.setStudy(study);
         StudySubjectAssignment studySubjectAssignment2 = new StudySubjectAssignment();
-        studySubjectAssignment2.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studySubjectAssignment2.setStudy(study);
         StudySubjectAssignment studySubjectAssignment3 = new StudySubjectAssignment();
-        studySubjectAssignment3.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studySubjectAssignment3.setStudy(study);
         
         study.getAssignmentCollection().add(studySubjectAssignment1);

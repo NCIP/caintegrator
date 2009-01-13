@@ -292,11 +292,11 @@ public class StudyHelper {
         subjectAnnotation5.setStudySubjectAssignment(studySubjectAssignment5);
         studySubjectAssignment5.setSubject(subject5);
 
-        Collection<SubjectAnnotation> subjectAnnotationCollection1 = new HashSet<SubjectAnnotation>();
-        Collection<SubjectAnnotation> subjectAnnotationCollection2 = new HashSet<SubjectAnnotation>();
-        Collection<SubjectAnnotation> subjectAnnotationCollection3 = new HashSet<SubjectAnnotation>();
-        Collection<SubjectAnnotation> subjectAnnotationCollection4 = new HashSet<SubjectAnnotation>();
-        Collection<SubjectAnnotation> subjectAnnotationCollection5 = new HashSet<SubjectAnnotation>();
+        Collection<SubjectAnnotation> subjectAnnotationCollection1 = studySubjectAssignment1.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection2 = studySubjectAssignment2.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection3 = studySubjectAssignment3.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection4 = studySubjectAssignment4.getSubjectAnnotationCollection();
+        Collection<SubjectAnnotation> subjectAnnotationCollection5 = studySubjectAssignment5.getSubjectAnnotationCollection();
         
         subjectAnnotationCollection1.add(subjectAnnotation1);
         subjectAnnotationCollection2.add(subjectAnnotation2);
@@ -361,11 +361,11 @@ public class StudyHelper {
         sampleAcquisition5.setAssignment(studySubjectAssignment5);
 //        sampleAcquisition5.setTimepoint(defaultTimepoint);
 
-        Collection<SampleAcquisition> saCollection1 = new HashSet<SampleAcquisition>();
-        Collection<SampleAcquisition> saCollection2 = new HashSet<SampleAcquisition>();
-        Collection<SampleAcquisition> saCollection3 = new HashSet<SampleAcquisition>();
-        Collection<SampleAcquisition> saCollection4 = new HashSet<SampleAcquisition>();
-        Collection<SampleAcquisition> saCollection5 = new HashSet<SampleAcquisition>();
+        Collection<SampleAcquisition> saCollection1 = studySubjectAssignment1.getSampleAcquisitionCollection();
+        Collection<SampleAcquisition> saCollection2 = studySubjectAssignment2.getSampleAcquisitionCollection();
+        Collection<SampleAcquisition> saCollection3 = studySubjectAssignment3.getSampleAcquisitionCollection();
+        Collection<SampleAcquisition> saCollection4 = studySubjectAssignment4.getSampleAcquisitionCollection();
+        Collection<SampleAcquisition> saCollection5 = studySubjectAssignment5.getSampleAcquisitionCollection();
         
         saCollection1.add(sampleAcquisition1);
         saCollection1.add(sampleAcquisition1_2);
@@ -436,11 +436,11 @@ public class StudyHelper {
         imageSeries5.setImageStudy(isAcquisition5);
 //        isAcquisition5.setTimepoint(defaultTimepoint);
         
-        Collection<ImageSeriesAcquisition> isaCollection1 = new HashSet<ImageSeriesAcquisition>();
-        Collection<ImageSeriesAcquisition> isaCollection2 = new HashSet<ImageSeriesAcquisition>();
-        Collection<ImageSeriesAcquisition> isaCollection3 = new HashSet<ImageSeriesAcquisition>();
-        Collection<ImageSeriesAcquisition> isaCollection4 = new HashSet<ImageSeriesAcquisition>();
-        Collection<ImageSeriesAcquisition> isaCollection5 = new HashSet<ImageSeriesAcquisition>();
+        Collection<ImageSeriesAcquisition> isaCollection1 = studySubjectAssignment1.getImageStudyCollection();
+        Collection<ImageSeriesAcquisition> isaCollection2 = studySubjectAssignment2.getImageStudyCollection();
+        Collection<ImageSeriesAcquisition> isaCollection3 = studySubjectAssignment3.getImageStudyCollection();
+        Collection<ImageSeriesAcquisition> isaCollection4 = studySubjectAssignment4.getImageStudyCollection();
+        Collection<ImageSeriesAcquisition> isaCollection5 = studySubjectAssignment5.getImageStudyCollection();
         
         isaCollection1.add(isAcquisition1);
         isaCollection2.add(isAcquisition2);
@@ -448,37 +448,13 @@ public class StudyHelper {
         isaCollection4.add(isAcquisition4);
         isaCollection5.add(isAcquisition5);
         
-
-        
-        // studySubjectAssignment1 is unique to the others in that he has 3 sample acquisitions in his collection
-        studySubjectAssignment1.setSampleAcquisitionCollection(saCollection1);
-        studySubjectAssignment1.setImageStudyCollection(isaCollection1);
-        studySubjectAssignment1.setSubjectAnnotationCollection(subjectAnnotationCollection1);
-        
-        studySubjectAssignment2.setSampleAcquisitionCollection(saCollection2);
-        studySubjectAssignment2.setImageStudyCollection(isaCollection2);
-        studySubjectAssignment2.setSubjectAnnotationCollection(subjectAnnotationCollection2);
-        
-        studySubjectAssignment3.setSampleAcquisitionCollection(saCollection3);
-        studySubjectAssignment3.setImageStudyCollection(isaCollection3);
-        studySubjectAssignment3.setSubjectAnnotationCollection(subjectAnnotationCollection3);
-        
-        studySubjectAssignment4.setSampleAcquisitionCollection(saCollection4);
-        studySubjectAssignment4.setImageStudyCollection(isaCollection4);
-        studySubjectAssignment4.setSubjectAnnotationCollection(subjectAnnotationCollection4);
-        
-        studySubjectAssignment5.setSampleAcquisitionCollection(saCollection5);
-        studySubjectAssignment5.setImageStudyCollection(isaCollection5);
-        studySubjectAssignment5.setSubjectAnnotationCollection(subjectAnnotationCollection5);
-        
-        Collection<StudySubjectAssignment> ssaCollection = new HashSet<StudySubjectAssignment>();
+        Collection<StudySubjectAssignment> ssaCollection = myStudy.getAssignmentCollection();
         ssaCollection.add(studySubjectAssignment1);
         ssaCollection.add(studySubjectAssignment2);
         ssaCollection.add(studySubjectAssignment3);
         ssaCollection.add(studySubjectAssignment4);
         ssaCollection.add(studySubjectAssignment5);
         
-        myStudy.setAssignmentCollection(ssaCollection);
         return studySubscription;
     }
     

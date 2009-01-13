@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -142,9 +141,6 @@ class SampleMappingHelper {
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
         sampleAcquisition.setSample(sample);
         sample.setSampleAcquisition(sampleAcquisition);
-        if (subjectAssignment.getSampleAcquisitionCollection() == null) {
-            subjectAssignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
-        }
         subjectAssignment.getSampleAcquisitionCollection().add(sampleAcquisition);
     }
 

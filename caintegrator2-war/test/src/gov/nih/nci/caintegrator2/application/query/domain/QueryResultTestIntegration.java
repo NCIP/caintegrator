@@ -94,10 +94,6 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
  */
 public class QueryResultTestIntegration extends AbstractHibernateMappingTestIntegration<QueryResult> {
 
-//    public QueryResultTestIntegration() {
-//        this.setDefaultRollback(false);
-//    }
-
     @Override
     protected AbstractTestDataGenerator<QueryResult> getDataGenerator() {
         return QueryResultGenerator.INSTANCE;

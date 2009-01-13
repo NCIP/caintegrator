@@ -393,16 +393,13 @@ public class StudyManagementServiceTest {
     @Test
     public void testMapSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
         assignment1.setId(1L);
         assignment1.setIdentifier("E05004");
-        assignment1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment1);
         StudySubjectAssignment assignment2 = new StudySubjectAssignment();
         assignment2.setId(2L);
         assignment2.setIdentifier("E05012");
-        assignment2.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         Sample sample1 = new Sample();
@@ -505,18 +502,13 @@ public class StudyManagementServiceTest {
     @Test
     public void testMapImageSeriesAcquisitions() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment1 = new StudySubjectAssignment();
         assignment1.setId(1L);
         assignment1.setIdentifier("E05004");
-        assignment1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment1);
-        assignment1.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         StudySubjectAssignment assignment2 = new StudySubjectAssignment();
         assignment2.setId(2L);
         assignment2.setIdentifier("E05012");
-        assignment2.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
-        assignment2.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         studyConfiguration.getStudy().getAssignmentCollection().add(assignment2);
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         imageDataSourceConfiguration.setStudyConfiguration(studyConfiguration);

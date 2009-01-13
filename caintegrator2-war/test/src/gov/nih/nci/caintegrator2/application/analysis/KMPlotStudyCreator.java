@@ -116,16 +116,12 @@ public class KMPlotStudyCreator {
     
     public Study createKMPlotStudy() {
         Study kmPlotStudy = new Study();
-        kmPlotStudy.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment male1 = new StudySubjectAssignment();
         male1.setId(Long.valueOf(1));
         StudySubjectAssignment male2 = new StudySubjectAssignment();
         male2.setId(Long.valueOf(2));
         StudySubjectAssignment female1 = new StudySubjectAssignment();
         female1.setId(Long.valueOf(3));
-        male1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
-        male2.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
-        female1.setSubjectAnnotationCollection(new HashSet<SubjectAnnotation>());
         kmPlotStudy.getAssignmentCollection().add(male1);
         kmPlotStudy.getAssignmentCollection().add(male2);
         kmPlotStudy.getAssignmentCollection().add(female1);

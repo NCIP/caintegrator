@@ -283,12 +283,6 @@ class DataRetrievalHelper {
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         arrayData.setStudy(genomicSource.getStudyConfiguration().getStudy());
-        if (sample.getArrayDataCollection() == null) {
-            sample.setArrayDataCollection(new HashSet<ArrayData>());
-        }
-        if (sample.getArrayCollection() == null) {
-            sample.setArrayCollection(new HashSet<Array>());
-        }
         sample.getArrayCollection().add(array);
         sample.getArrayDataCollection().add(arrayData);
         dao.save(array);

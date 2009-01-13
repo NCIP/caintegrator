@@ -1,8 +1,11 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -13,8 +16,8 @@ public class Sample extends AbstractCaIntegrator2Object {
     
     private String name;
     private SampleAcquisition sampleAcquisition;
-    private Collection<ArrayData> arrayDataCollection;
-    private Collection<Array> arrayCollection;
+    private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
+    private Set<Array> arrayCollection = new HashSet<Array>();
     
     /**
      * @return the name
@@ -43,32 +46,50 @@ public class Sample extends AbstractCaIntegrator2Object {
     public void setSampleAcquisition(SampleAcquisition sampleAcquisition) {
         this.sampleAcquisition = sampleAcquisition;
     }
-    
+
+    /**
+     * Returns all array datas of the given type for this sample.
+     * 
+     * @param reporterType return array data of this type.
+     * @return the array datas.
+     */
+    public Set<ArrayData> getArrayDatas(ReporterTypeEnum reporterType) {
+        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
+        for (ArrayData arrayData : getArrayDataCollection()) {
+            if (reporterType.equals(arrayData.getReporterType())) {
+                arrayDatas.add(arrayData);
+            }
+        }
+        return Collections.unmodifiableSet(arrayDatas);
+    }
+
     /**
      * @return the arrayDataCollection
      */
-    public Collection<ArrayData> getArrayDataCollection() {
+    public Set<ArrayData> getArrayDataCollection() {
         return arrayDataCollection;
     }
-    
+
     /**
      * @param arrayDataCollection the arrayDataCollection to set
      */
-    public void setArrayDataCollection(Collection<ArrayData> arrayDataCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setArrayDataCollection(Set<ArrayData> arrayDataCollection) {
         this.arrayDataCollection = arrayDataCollection;
     }
-    
+
     /**
      * @return the arrayCollection
      */
-    public Collection<Array> getArrayCollection() {
+    public Set<Array> getArrayCollection() {
         return arrayCollection;
     }
-    
+
     /**
      * @param arrayCollection the arrayCollection to set
      */
-    public void setArrayCollection(Collection<Array> arrayCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setArrayCollection(Set<Array> arrayCollection) {
         this.arrayCollection = arrayCollection;
     }
 
