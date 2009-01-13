@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -121,6 +122,7 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringContextTests {
 
     private CaIntegrator2DaoImpl dao;
+    private ArrayDataService arrayDataService;
     private ResultHandlerImpl resultHandler;
     
     protected String[] getConfigLocations() {
@@ -165,7 +167,7 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         
         Query query = studyHelper.createQuery(compoundCriterion, columnCollection, studySubscription);
         
-        QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+        QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
         
         QueryResult queryResult = queryTranslator.execute();
         assertEquals(10, queryResult.getRowCollection().size());
@@ -247,7 +249,7 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
             compoundCriterion.setCriterionCollection(criterionCollection);
             Query query = studyHelper.createQuery(compoundCriterion, columnCollection, vasariStudySubscription);
             
-            QueryTranslator queryTranslator = new QueryTranslator(query, dao, resultHandler);
+            QueryTranslator queryTranslator = new QueryTranslator(query, dao,arrayDataService, resultHandler);
             QueryResult queryResult = queryTranslator.execute();
             
             for (ResultRow row : queryResult.getRowCollection()) {
@@ -284,6 +286,20 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
      */
     public void setResultHandler(ResultHandlerImpl resultHandler) {
         this.resultHandler = resultHandler;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
 
 }

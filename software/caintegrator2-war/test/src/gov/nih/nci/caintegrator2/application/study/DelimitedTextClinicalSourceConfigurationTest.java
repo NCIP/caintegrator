@@ -90,9 +90,6 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-
-import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +102,6 @@ public class DelimitedTextClinicalSourceConfigurationTest {
     @Before
     public void setUp() throws Exception {
         StudyConfiguration studyConfig = new StudyConfiguration();
-        studyConfig.getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         AnnotationFile annotationFile = AnnotationFile.load(TestDataFiles.VALID_FILE, new CaIntegrator2DaoStub());
         // Create the identifier descriptor for our test file.
         identifierDescriptor = new AnnotationFieldDescriptor();

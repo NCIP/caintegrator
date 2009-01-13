@@ -104,8 +104,8 @@ import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.SampleList;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -352,12 +352,15 @@ public class QueryFormTest {
         setFieldName(criterionRow, "Fold Change");
         assertEquals(0, criterionRow.getParameters().get(0).getAvailableOperators().size());
         assertTrue(criterionRow.getCriterion() instanceof FoldChangeCriterion);
-        assertEquals(2, criterionRow.getParameters().size());
-        ((SelectListParameter<String>) criterionRow.getParameters().get(0)).setValue("Up");
-        TextFieldParameter foldsParameter = ((TextFieldParameter) criterionRow.getParameters().get(1));
+        assertEquals(3, criterionRow.getParameters().size());
+        TextFieldParameter geneSymbolParameter = ((TextFieldParameter) criterionRow.getParameters().get(0));
+        geneSymbolParameter.setValue("EGFR");
+        ((SelectListParameter<String>) criterionRow.getParameters().get(1)).setValue("Up");
+        TextFieldParameter foldsParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
         foldsParameter.setValue("2.0");
         FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterionRow.getCriterion();
-        assertEquals("Up", foldChangeCriterion.getRegulationType());
+        assertEquals("EGFR", foldChangeCriterion.getGeneSymbol());
+        assertEquals(RegulationTypeEnum.UP, foldChangeCriterion.getRegulationType());
         assertEquals(2.0, foldChangeCriterion.getFolds(), 0.0);
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
@@ -490,8 +493,7 @@ public class QueryFormTest {
 
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
         foldChangeCriterion.setFolds(3.0f);
-        foldChangeCriterion.setRegulationType("Down");
-        foldChangeCriterion.setCompareToSamples(new SampleList());
+        foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
         foldChangeCriterion.setId(2L);
         compoundCriterion.getCriterionCollection().add(foldChangeCriterion);
         
@@ -537,8 +539,8 @@ public class QueryFormTest {
         GeneExpressionCriterionRow foldChangeRow = (GeneExpressionCriterionRow) group.getRows().get(1);
         assertEquals(foldChangeCriterion, foldChangeRow.getCriterion());
         assertEquals(FoldChangeCriterionWrapper.FOLD_CHANGE, foldChangeRow.getFieldName());
-        SelectListParameter<String> regulationParameter = (SelectListParameter<String>) foldChangeRow.getParameters().get(0);
-        TextFieldParameter foldsParameter = (TextFieldParameter) foldChangeRow.getParameters().get(1);
+        SelectListParameter<String> regulationParameter = (SelectListParameter<String>) foldChangeRow.getParameters().get(1);
+        TextFieldParameter foldsParameter = (TextFieldParameter) foldChangeRow.getParameters().get(2);
         assertEquals("Down", regulationParameter.getValue());
         assertEquals("3.0", foldsParameter.getValue());
         

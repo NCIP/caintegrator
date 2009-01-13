@@ -85,10 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
-
-import java.util.HashSet;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -110,15 +108,12 @@ public class GenomicDataSourceConfigurationTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         Study study = new Study();
         studyConfiguration.setStudy(study);
-        studyConfiguration.getStudy().setControlSampleCollection(new HashSet<Sample>());
         study.getControlSampleCollection().add(sample3);
         studyConfiguration.getGenomicDataSources().add(configuration);
         configuration.setStudyConfiguration(studyConfiguration);
-        study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         study.getAssignmentCollection().add(assignment);
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
-        assignment.setSampleAcquisitionCollection(new HashSet<SampleAcquisition>());
         assignment.getSampleAcquisitionCollection().add(sampleAcquisition);
         sampleAcquisition.setSample(sample1);
         configuration.getSamples().add(sample1);

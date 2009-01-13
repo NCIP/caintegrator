@@ -91,7 +91,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.HashSet;
 
 /**
  * Reads control sample files and adds samples to the control list for a study.
@@ -123,9 +122,6 @@ class ControlSampleHelper {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber 
                     + ", there is no sample with the identifier " + sampleName + " in the study.");
         } else {
-            if (studyConfiguration.getStudy().getControlSampleCollection() == null) {
-                studyConfiguration.getStudy().setControlSampleCollection(new HashSet<Sample>());
-            }
             studyConfiguration.getStudy().getControlSampleCollection().add(sample);
         }
     }

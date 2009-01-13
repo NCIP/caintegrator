@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -105,6 +106,7 @@ class QueryTranslator {
     private final ResultHandler resultHandler;
     private final Query query;
     private final CaIntegrator2Dao dao;
+    private final ArrayDataService arrayDataService;
     
     /**
      * Only constructor for a QueryTranslator takes a query and a dao.
@@ -112,9 +114,11 @@ class QueryTranslator {
      * @param dao - Dao to read from database.
      * @param resultHandler - ResultHandler to handle the results.
      */
-    QueryTranslator(Query query, CaIntegrator2Dao dao, ResultHandler resultHandler) {
+    QueryTranslator(Query query, CaIntegrator2Dao dao, ArrayDataService arrayDataService, 
+            ResultHandler resultHandler) {
         this.query = query;
         this.dao = dao;
+        this.arrayDataService = arrayDataService;
         this.resultHandler = resultHandler;
     }
     
@@ -131,7 +135,7 @@ class QueryTranslator {
                 entityTypesInQuery.add(EntityTypeEnum.getByValue(col.getEntityType()));
             }
             Set<ResultRow> resultsCollection = 
-                compoundCriterionHandler.getMatches(dao, query.getSubscription().getStudy(), entityTypesInQuery);
+                compoundCriterionHandler.getMatches(dao, arrayDataService, query, entityTypesInQuery);
             
             
             return resultHandler.createResults(query, resultsCollection);

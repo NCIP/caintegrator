@@ -99,6 +99,7 @@ import java.util.List;
 public class ArrayDataServiceStub implements ArrayDataService {
 
     public boolean loadArrayDesignCalled;
+    public boolean getFoldChangeValuesCalled;
 
     /**
      * {@inheritDoc}
@@ -144,6 +145,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
      */
     public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
             Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
+        getFoldChangeValuesCalled = true;
         return getData(arrayDataMatrix, arrayDatas, reporters);
     }
 

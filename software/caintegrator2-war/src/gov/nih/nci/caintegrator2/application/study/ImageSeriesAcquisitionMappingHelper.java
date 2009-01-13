@@ -92,7 +92,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -132,9 +131,6 @@ class ImageSeriesAcquisitionMappingHelper {
         if (subjectAssignment == null || acquisition == null) {
             LOGGER.warn("Couldn't map ImageSeriesAcquisition to StudySubjectAssignment due to null entity");
             return;
-        }
-        if (subjectAssignment.getImageStudyCollection() == null) {
-            subjectAssignment.setImageStudyCollection(new HashSet<ImageSeriesAcquisition>());
         }
         subjectAssignment.getImageStudyCollection().add(acquisition);
     }

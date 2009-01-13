@@ -99,7 +99,7 @@ public class GeneNameCriterionHandlerTest {
 
     @Test
     public void testGetMatches() {
-        assertTrue(GeneNameCriterionHandler.create(null).getMatches(null, null, null).isEmpty());
+        assertTrue(GeneNameCriterionHandler.create(null).getMatches(null, null, null, null).isEmpty());
     }
 
     @Test

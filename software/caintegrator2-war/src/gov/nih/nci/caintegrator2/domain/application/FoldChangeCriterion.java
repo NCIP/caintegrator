@@ -1,5 +1,10 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+
 /**
  * 
  */
@@ -8,8 +13,9 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion {
     private static final long serialVersionUID = 1L;
     
     private Float folds;
-    private String regulationType;
-    private SampleList compareToSamples;
+    private RegulationTypeEnum regulationType;
+    private String geneSymbol;
+    private Set<Sample> compareToSamples = new HashSet<Sample>();
     
     /**
      * @return the folds
@@ -26,31 +32,43 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion {
     }
     
     /**
+     * @return the compareToSamples
+     */
+    public Set<Sample> getCompareToSamples() {
+        return compareToSamples;
+    }
+
+    @SuppressWarnings("unused") // necessary for Hibernate
+    private void setCompareToSamples(Set<Sample> compareToSamples) {
+        this.compareToSamples = compareToSamples;
+    }
+
+    /**
+     * @return the geneSymbol
+     */
+    public String getGeneSymbol() {
+        return geneSymbol;
+    }
+
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
+    }
+
+    /**
      * @return the regulationType
      */
-    public String getRegulationType() {
+    public RegulationTypeEnum getRegulationType() {
         return regulationType;
     }
-    
+
     /**
      * @param regulationType the regulationType to set
      */
-    public void setRegulationType(String regulationType) {
+    public void setRegulationType(RegulationTypeEnum regulationType) {
         this.regulationType = regulationType;
-    }
-    
-    /**
-     * @return the compareToSamples
-     */
-    public SampleList getCompareToSamples() {
-        return compareToSamples;
-    }
-    
-    /**
-     * @param compareToSamples the compareToSamples to set
-     */
-    public void setCompareToSamples(SampleList compareToSamples) {
-        this.compareToSamples = compareToSamples;
     }
 
 }

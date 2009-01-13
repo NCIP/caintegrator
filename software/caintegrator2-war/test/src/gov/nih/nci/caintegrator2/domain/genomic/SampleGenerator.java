@@ -24,8 +24,8 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
     @Override
     public void setValues(Sample sample) {
         sample.setName(getUniqueString());
-        sample.setArrayCollection(new HashSet<Array>());
-        sample.setArrayDataCollection(new HashSet<ArrayData>());
+        sample.getArrayCollection().clear();
+        sample.getArrayDataCollection().clear();
         ArrayData arrayData1 = new ArrayData();
         Array array1 = new Array();
         sample.getArrayCollection().add(array1);

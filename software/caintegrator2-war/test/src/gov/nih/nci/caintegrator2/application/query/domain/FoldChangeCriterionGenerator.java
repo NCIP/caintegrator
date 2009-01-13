@@ -88,7 +88,8 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.SampleList;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 
 /**
  * Gets called by the QueryResultTestIntegration through the CompoundCriterionGenerator.
@@ -103,7 +104,7 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
     @Override
     public void compareFields(FoldChangeCriterion original, FoldChangeCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getCompareToSamples().getId(), retrieved.getCompareToSamples().getId());
+        compareCollections(original.getCompareToSamples(), retrieved.getCompareToSamples(), SampleGenerator.INSTANCE);
         assertEquals(original.getFolds(), retrieved.getFolds());
         assertEquals(original.getRegulationType(), retrieved.getRegulationType());
         
@@ -116,10 +117,12 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
 
     @Override
     public void setValues(FoldChangeCriterion foldChangeCriterion) {
-        SampleList compareToSamples = new SampleList();
         foldChangeCriterion.setFolds(Float.valueOf(getUniqueInt()));
-        foldChangeCriterion.setCompareToSamples(compareToSamples);
-        foldChangeCriterion.setRegulationType(getUniqueString());
+        foldChangeCriterion.getCompareToSamples().clear();
+        for (int i = 0; i < 3; i++) {
+            foldChangeCriterion.getCompareToSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+        }
+        foldChangeCriterion.setRegulationType(getNewEnumValue(foldChangeCriterion.getRegulationType(), RegulationTypeEnum.values()));
     }
 
 }

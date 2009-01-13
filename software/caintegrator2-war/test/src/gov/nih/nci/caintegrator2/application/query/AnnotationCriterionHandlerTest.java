@@ -86,9 +86,12 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.HashSet;
@@ -105,23 +108,29 @@ public class AnnotationCriterionHandlerTest {
     public void testGetMatches() {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class); 
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
+        ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
         daoStub.clear();       
         
         Study study = new Study();
+        Query query = new Query();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        query.setSubscription(subscription);
+        
         AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(abstractAnnotationCriterion);
-        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
-        annotationCriterionHandler.getMatches(daoStub, study, new HashSet<EntityTypeEnum>());
+        annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
     }
 

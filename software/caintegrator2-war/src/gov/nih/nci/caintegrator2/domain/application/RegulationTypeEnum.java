@@ -83,40 +83,77 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.translational;
+package gov.nih.nci.caintegrator2.domain.application;
 
-import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+import java.util.HashMap;
+import java.util.Map;
 
-public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
+/**
+ * Indicates whether to search for up or down regulated genes in fold change query.
+ */
+public enum RegulationTypeEnum {
+
+    /**
+     * Up regulated.
+     */
+    UP("Up"),
     
-    public static final StudyTestDataGenerator INSTANCE = new StudyTestDataGenerator();
+    /**
+     * Down regulated.
+     */
+    DOWN("Down");
 
-    private StudyTestDataGenerator() {
-        super();
-    }
+    private static Map<String, RegulationTypeEnum> valueToTypeMap = new HashMap<String, RegulationTypeEnum>();
+
+    private String value;
     
-    @Override
-    public void compareFields(Study original, Study retrieved) {
-        assertEquals(original.getLongTitleText(), retrieved.getLongTitleText());
-        assertEquals(original.getShortTitleText(), retrieved.getShortTitleText());
-        compareCollections(original.getControlSampleCollection(), retrieved.getControlSampleCollection(), SampleGenerator.INSTANCE);
+    private RegulationTypeEnum(String value) {
+        this.value = value;
     }
 
-    @Override
-    public Study createPersistentObject() {
-        return new Study();
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return value;
     }
 
-    @Override
-    public void setValues(Study study) {
-        study.setShortTitleText(getUniqueString());
-        study.setLongTitleText(getUniqueString());
-        study.getControlSampleCollection().clear();
-        for (int i = 0; i < 3; i++) {
-            study.getControlSampleCollection().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    private static Map<String, RegulationTypeEnum> getValueToTypeMap() {
+        if (valueToTypeMap.isEmpty()) {
+            for (RegulationTypeEnum type : values()) {
+                valueToTypeMap.put(type.getValue(), type);
+            }
+        }
+        return valueToTypeMap;
+    }
+
+    /**
+     * Returns the <code>RegulationTypeEnum</code> corresponding to the given value. Returns null
+     * for null value.
+     * 
+     * @param value the value to match
+     * @return the matching type.
+     */
+    public static RegulationTypeEnum getByValue(String value) {
+        checkType(value);
+        return getValueToTypeMap().get(value);
+    }
+
+    /**
+     * Checks to see that the value given is a legal <code>AssayType</code> value.
+     * 
+     * @param value the value to check;
+     */
+    public static void checkType(String value) {
+        if (value != null && !getValueToTypeMap().containsKey(value)) {
+            throw new IllegalArgumentException("No matching type for " + value);
         }
     }
-
 }

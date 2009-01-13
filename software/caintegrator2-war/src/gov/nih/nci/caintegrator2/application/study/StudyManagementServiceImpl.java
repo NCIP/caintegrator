@@ -185,9 +185,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                         "PMD.ExcessiveMethodLength", 
                         "PMD.NPathComplexity" })   // multiple simple null checks
     private void configureNew(Study study) {
-        if (study.getAssignmentCollection() == null) {
-            study.setAssignmentCollection(new HashSet<StudySubjectAssignment>());
-        }
         if (study.getImageSeriesAnnotationCollection() == null) {
             study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         }

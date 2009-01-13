@@ -85,8 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 
 import com.opensymphony.xwork2.ValidationAware;
 
@@ -96,6 +99,7 @@ import com.opensymphony.xwork2.ValidationAware;
 @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
 class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     
+    private static final String SYMBOL_LABEL = "Gene Symbol";
     private static final String FOLDS_LABEL = "Folds";
     private static final String REGULATION_TYPE_LABEL = "Regulation Type";
     static final String FOLD_CHANGE = "Fold Change";
@@ -113,32 +117,54 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         if (criterion.getFolds() == null) {
             criterion.setFolds((float) 2.0);
         }
+        getParameters().add(createGeneSymbolParameter());
         getParameters().add(createRegulationTypeParameter());
         getParameters().add(createFoldsParameter());
     }
 
-    private SelectListParameter<String> createRegulationTypeParameter() {
-        OptionList<String> options = new OptionList<String>();
-        options.addOption("Up", "Up");
-        options.addOption("Down", "Down");
-        ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
-            /**
-             * {@inheritDoc}
-             */
-            public void valueSelected(String value) {
+    private AbstractCriterionParameter createGeneSymbolParameter() {
+        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
+        TextFieldParameter geneSymbolParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
+        geneSymbolParameter.setLabel(SYMBOL_LABEL);
+        ValueHandler geneSymbolHandler = new ValueHandlerAdapter() {
+            
+            public boolean isValid(String value) {
+                return !StringUtils.isBlank(value);
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (StringUtils.isBlank(value)) {
+                    action.addActionError("A value is required for Gene Sybmol");
+                }
+            }
+
+            public void valueChanged(String value) {
+                criterion.setGeneSymbol(value);
+            }
+        };
+        geneSymbolParameter.setValueHandler(geneSymbolHandler);
+        return geneSymbolParameter;
+    }
+
+    private SelectListParameter<RegulationTypeEnum> createRegulationTypeParameter() {
+        OptionList<RegulationTypeEnum> options = new OptionList<RegulationTypeEnum>();
+        options.addOption(RegulationTypeEnum.UP.getValue(), RegulationTypeEnum.UP);
+        options.addOption(RegulationTypeEnum.DOWN.getValue(), RegulationTypeEnum.DOWN);
+        ValueSelectedHandler<RegulationTypeEnum> handler = new ValueSelectedHandler<RegulationTypeEnum>() {
+            public void valueSelected(RegulationTypeEnum value) {
                 criterion.setRegulationType(value);
             }
         };
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
-        SelectListParameter<String> regulationTypeParameter = 
-            new SelectListParameter<String>(fieldName, options, handler, criterion.getRegulationType());
+        String fieldName = getRow().getOgnlPath() + ".parameters[1]";
+        SelectListParameter<RegulationTypeEnum> regulationTypeParameter = 
+            new SelectListParameter<RegulationTypeEnum>(fieldName, options, handler, criterion.getRegulationType());
         regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
         return regulationTypeParameter;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
     private TextFieldParameter createFoldsParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[1]";
+        String fieldName = getRow().getOgnlPath() + ".parameters[2]";
         TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFolds().toString());
         foldsParameter.setLabel(FOLDS_LABEL);
         ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {

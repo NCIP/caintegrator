@@ -86,39 +86,128 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
- * Handler that matches genes based on the Symbol name.
+ * Handler that returns samples matching the given fold change criterion.
  */
-final class GeneNameCriterionHandler extends AbstractCriterionHandler {
+final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
-    private final GeneNameCriterion criterion;
+    private final FoldChangeCriterion foldChangeCriterion;
 
-    private GeneNameCriterionHandler(GeneNameCriterion criterion) {
-        this.criterion = criterion;
+    private FoldChangeCriterionHandler(FoldChangeCriterion foldChangeCriterion) {
+        this.foldChangeCriterion = foldChangeCriterion;
     }
-
+    
+    static FoldChangeCriterionHandler create(FoldChangeCriterion foldChangeCriterion) {
+        return new FoldChangeCriterionHandler(foldChangeCriterion);
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) {
-        return Collections.emptySet();
+        Study study = query.getSubscription().getStudy();
+        ReporterTypeEnum reporterType = getReporterType(query);
+        configureCompareToSamples(study);
+        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
+        ArrayDataMatrix matrix = getArrayDataMatrix(dao, query, reporterType);
+        ArrayDataValues values = 
+            arrayDataService.getFoldChangeValues(matrix,
+                    getCandidateArrayDatas(study, reporterType), reporters, getCompareToArrayDatas(reporterType));
+        return getRows(values, entityTypes);
+    }
+
+    private ArrayDataMatrix getArrayDataMatrix(CaIntegrator2Dao dao, Query query, ReporterTypeEnum reporterType) {
+        List<ArrayDataMatrix> matrixes = dao.getArrayDataMatrixes(query.getSubscription().getStudy(), reporterType);
+        if (!matrixes.isEmpty()) {
+            return matrixes.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    private ReporterTypeEnum getReporterType(Query query) {
+        if (!StringUtils.isBlank(query.getReporterType())) {
+            return ReporterTypeEnum.getByValue(query.getReporterType());
+        } else {
+            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+        }
+    }
+
+    private Set<ResultRow> getRows(ArrayDataValues values, Set<EntityTypeEnum> entityTypes) {
+        ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
+        Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
+        for (ArrayData arrayData : values.getAllArrayDatas()) {
+            if (hasFoldChangeMatch(arrayData, values)) {
+                sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
+            }
+        }
+        return rowFactory.getSampleRows(sampleAcquisitions);
+    }
+
+    private boolean hasFoldChangeMatch(ArrayData arrayData, ArrayDataValues values) {
+        for (AbstractReporter reporter : values.getAllReporters()) {
+            Float foldChangeValue = values.getValue(arrayData, reporter);
+            if (isFoldChangeMatch(foldChangeValue)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isFoldChangeMatch(Float foldChangeValue) {
+        if (RegulationTypeEnum.UP.equals(foldChangeCriterion.getRegulationType())) {
+            return foldChangeValue >= foldChangeCriterion.getFolds();
+        } else if (RegulationTypeEnum.DOWN.equals(foldChangeCriterion.getRegulationType())) {
+            return foldChangeValue <= (1  / foldChangeCriterion.getFolds());
+        } else {
+            throw new IllegalStateException("Illegal regulation type: " + foldChangeCriterion.getRegulationType());
+        }
+    }
+
+    private Collection<ArrayData> getCandidateArrayDatas(Study study, ReporterTypeEnum reporterType) {
+        Set<ArrayData> candidateDatas = new HashSet<ArrayData>();
+        candidateDatas.addAll(study.getArrayDatas(reporterType));
+        candidateDatas.removeAll(getCompareToArrayDatas(reporterType));
+        return candidateDatas;
+    }
+
+    private Collection<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType) {
+        Set<ArrayData> compareToDatas = new HashSet<ArrayData>();
+        for (Sample sample : foldChangeCriterion.getCompareToSamples()) {
+            compareToDatas.addAll(sample.getArrayDatas(reporterType));
+        }
+        return compareToDatas;
+    }
+
+    private void configureCompareToSamples(Study study) {
+        if (foldChangeCriterion.getCompareToSamples().isEmpty()) {
+            foldChangeCriterion.getCompareToSamples().addAll(study.getControlSampleCollection());
+        }
     }
 
     /**
@@ -126,17 +215,9 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
-        if (reporterType == null) {
-            throw new IllegalArgumentException("ReporterType is not set.");
-        }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        for (Gene gene : dao.findMatchingGenes(criterion, study)) {
-            for (GeneExpressionReporter reporter : gene.getReporterCollection()) {
-                if (reporterType.getValue().equals(reporter.getReporterSet().getReporterType())) {
-                    reporters.add(reporter);
-                }
-            }
-        }
+        Gene gene = dao.getGene(foldChangeCriterion.getGeneSymbol());
+        reporters.addAll(gene.getReporterCollection());
         return reporters;
     }
 
@@ -144,8 +225,24 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
      * {@inheritDoc}
      */
     @Override
+    boolean hasEntityCriterion() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    boolean hasReporterCriterion() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     boolean isEntityMatchHandler() {
-        return false;
+        return true;
     }
 
     /**
@@ -156,18 +253,5 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
         return true;
     }
 
-    public static GeneNameCriterionHandler create(GeneNameCriterion criterion) {
-        return new GeneNameCriterionHandler(criterion);
-    }
-
-    @Override
-    boolean hasEntityCriterion() {
-        return false;
-    }
-
-    @Override
-    boolean hasReporterCriterion() {
-        return true;
-    }
 
 }

@@ -116,7 +116,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -174,7 +173,6 @@ public class CaArrayFacadeTest {
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setExperimentIdentifier("test-data");
         genomicSource.setStudyConfiguration(new StudyConfiguration());
-        genomicSource.getStudyConfiguration().getStudy().setAssignmentCollection(new HashSet<StudySubjectAssignment>());
         Sample sample1 = new Sample();
         Sample sample2 = new Sample();
         sample1.setName("sample1");

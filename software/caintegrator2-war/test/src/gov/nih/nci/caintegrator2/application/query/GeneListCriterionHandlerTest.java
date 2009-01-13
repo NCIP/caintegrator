@@ -103,7 +103,7 @@ public class GeneListCriterionHandlerTest {
 
     @Test
     public void testGetMatches() {
-        assertTrue(GeneListCriterionHandler.create(null).getMatches(null, null, null).isEmpty());
+        assertTrue(GeneListCriterionHandler.create(null).getMatches(null, null, null, null).isEmpty());
     }
 
     @Test
@@ -117,7 +117,6 @@ public class GeneListCriterionHandlerTest {
         reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         ReporterSet reporterSet2 = new ReporterSet();
         reporterSet2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        gene1.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
         reporter1.setReporterSet(reporterSet1);
@@ -128,7 +127,6 @@ public class GeneListCriterionHandlerTest {
         gene1.getReporterCollection().add(reporter2);
         geneList.getGeneCollection().add(gene1);
         Gene gene2 = new Gene();
-        gene2.setReporterCollection(new HashSet<GeneExpressionReporter>());
         GeneExpressionReporter reporter3 = new GeneExpressionReporter();
         reporter3.setId(3L);
         reporter3.setReporterSet(reporterSet2);
