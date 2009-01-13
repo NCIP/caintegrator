@@ -128,7 +128,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     
     @Override
     protected boolean getLoadSamples() {
-        return false;
+        return true;
     }
     
     @Override
@@ -143,7 +143,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     int getExpectedMappedSampleCount() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
     @Override
     protected File getSampleMappingFile() {
-        return TestDataFiles.SMALL_STUDY_SAMPLE_MAPPING_FILE;
+        return TestDataFiles.REMBRANDT_NCRI_SAMPLE_MAPPING_FILE;
     }
 
     @Override
