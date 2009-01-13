@@ -102,7 +102,7 @@
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn" 
             onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-            <span class="btn_img"><span class="add">Forward To NCIA Basket</span></span>
+            <span class="btn_img"><span class="add">Forward To NCIA</span></span>
             </s:a>
         </li>
         <li><s:a href="#" cssClass="btn" 
