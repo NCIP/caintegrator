@@ -85,73 +85,97 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 
 /**
- * Abstract class that represents input parameters for a Kaplan-Meier plot.
+ * Parameters used for creating a Gene Expression Based KaplanMeier plot. 
  */
-public abstract class AbstractKMParameters {
-    private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private final List<String> errorMessages = new ArrayList<String>();
-    
+public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
+
+    private Double underexpressedFoldChangeNumber;
+    private Double overexpressedFoldChangeNumber;
+    private Gene gene;
+
     /**
-     * Validates that all parameters are set.
-     * @return T/F value.
+     * {@inheritDoc}
      */
-    public abstract boolean validate();
-    
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
-    
-    
-    /**
-     * Validates the survival value definition.
-     * @param currentValidation current status of validation.
-     * @return T/F value if it is valid or not.
-     */
-    protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
+    @Override
+    public boolean validate() {
+        getErrorMessages().clear();
+        boolean isValid = true;
+        if (getGene() == null) {
+            getErrorMessages().add("Gene is null, please select a valid Gene.");
             isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
         }
+        if (underexpressedFoldChangeNumber == null) {
+            getErrorMessages().add("Under Expressed Fold Change value is not a valid number.");
+            isValid = false;
+        }
+        if (overexpressedFoldChangeNumber == null) {
+            getErrorMessages().add("Over Expressed Fold Change value is not a valid number.");
+            isValid = false;
+        }
+        isValid = validateSurvivalValueDefinition(isValid);
         return isValid;
     }
-    
+
     
     /**
-     * @return the survivalValueDefinition
+     * @return the gene
      */
-    public SurvivalValueDefinition getSurvivalValueDefinition() {
-        return survivalValueDefinition;
+    public Gene getGene() {
+        return gene;
     }
 
     /**
-     * @param survivalValueDefinition the survivalValueDefinition to set
+     * @param gene the gene to set
      */
-    public void setSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
-        this.survivalValueDefinition = survivalValueDefinition;
+    public void setGene(Gene gene) {
+        this.gene = gene;
+    }
+
+
+    /**
+     * @return the underexpressedFoldChangeNumber
+     */
+    public Double getUnderexpressedFoldChangeNumber() {
+        return underexpressedFoldChangeNumber;
+    }
+
+
+    /**
+     * @param underexpressedFoldChangeNumber the underexpressedFoldChangeNumber to set
+     */
+    public void setUnderexpressedFoldChangeNumber(Double underexpressedFoldChangeNumber) {
+        this.underexpressedFoldChangeNumber = underexpressedFoldChangeNumber;
+    }
+
+
+    /**
+     * @return the overexpressedFoldChangeNumber
+     */
+    public Double getOverexpressedFoldChangeNumber() {
+        return overexpressedFoldChangeNumber;
+    }
+
+
+    /**
+     * @param overexpressedFoldChangeNumber the overexpressedFoldChangeNumber to set
+     */
+    public void setOverexpressedFoldChangeNumber(Double overexpressedFoldChangeNumber) {
+        this.overexpressedFoldChangeNumber = overexpressedFoldChangeNumber;
     }
 
     /**
-     * @return the errorMessages
+     * {@inheritDoc}
      */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    @Override
+    public void clear() {
+        underexpressedFoldChangeNumber = null;
+        overexpressedFoldChangeNumber = null;
+        gene = new Gene();
+        
     }
+    
 
 }

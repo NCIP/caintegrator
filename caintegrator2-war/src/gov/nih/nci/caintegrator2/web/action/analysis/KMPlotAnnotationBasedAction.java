@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.KMAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
@@ -96,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
@@ -114,77 +114,39 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
 
-    private KMPlotAnnotationBasedActionForm kaplanMeierFormValues = new KMPlotAnnotationBasedActionForm();
-    
-    // JSP Select List Options
-    private Map<String, AnnotationDefinition> annotationDefinitions = new HashMap<String, AnnotationDefinition>();
-    private Map<String, String> permissibleValues = new HashMap<String, String>();
-    private Map<String, SurvivalValueDefinition> survivalValueDefinitions = 
-                                        new HashMap<String, SurvivalValueDefinition>();
-
+//    private KMPlotAnnotationBasedActionForm kaplanMeierFormValues = new KMPlotAnnotationBasedActionForm();
     private KMAnnotationBasedParameters kmPlotParameters = new KMAnnotationBasedParameters();
-    
-    /**
-     * Refreshes the current clinical source configuration.
-     */
-    @Override
-    public void prepare() {
-        super.prepare();
-        populateSurvivalValueDefinitions();
-        retrieveFormValues();
-        refreshObjectInstances();
-    }
-    
-    private void populateSurvivalValueDefinitions() {
-        if (getStudy() != null 
-            && getStudy().getSurvivalValueDefinitionCollection() != null
-            && survivalValueDefinitions.size() 
-                != getStudy().getSurvivalValueDefinitionCollection().size()) {
-            survivalValueDefinitions = new HashMap<String, SurvivalValueDefinition>();
-            for (SurvivalValueDefinition def 
-                    : getStudy().getSurvivalValueDefinitionCollection()) {
-                survivalValueDefinitions.put(def.getId().toString(), def);
-            }
-        }
-    }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-        }
-        if (survivalValueDefinitions.isEmpty()) {
-            addActionError("There are no survival value definitions defined for this study, "
-                    + "unable to create Kaplan-Meier plot.");
-        }
+    public void prepare() {
+        super.prepare();
+        setDisplayTab(ANNOTATION_TAB);
+        retrieveFormValues();
+        refreshObjectInstances();
     }
     
+    
     private void retrieveFormValues() {
-        if (kaplanMeierFormValues.getSelectedAnnotationId() != null 
-                && !StringUtils.isEmpty(kaplanMeierFormValues.getSelectedAnnotationId())) {
+        if (getForm().getSelectedAnnotationId() != null 
+                && !StringUtils.isEmpty(getForm().getSelectedAnnotationId())) {
                kmPlotParameters.getSelectedAnnotation().setId(
-                       Long.valueOf(kaplanMeierFormValues.getSelectedAnnotationId()));
+                       Long.valueOf(getForm().getSelectedAnnotationId()));
            }
-       if (kaplanMeierFormValues.getSurvivalValueDefinitionId() != null 
-                && !StringUtils.isEmpty(kaplanMeierFormValues.getSurvivalValueDefinitionId())) {
-               kmPlotParameters.getSurvivalValueDefinition().setId(
-                       Long.valueOf(kaplanMeierFormValues.getSurvivalValueDefinitionId()));
-       }
        retrieveFormSelectedValues();
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks and switch statement
     private void retrieveFormSelectedValues() {
-        if (!kaplanMeierFormValues.getSelectedValuesIds().isEmpty()) {
+        if (!getForm().getSelectedValuesIds().isEmpty()) {
             refreshSelectedAnnotationInstance();
             kmPlotParameters.getSelectedValues().clear();
             
             AnnotationTypeEnum permissibleValuesType = AnnotationTypeEnum.getByValue(
                                         kmPlotParameters.getSelectedAnnotation().getType());
-            for (String id : kaplanMeierFormValues.getSelectedValuesIds()) {
+            for (String id : getForm().getSelectedValuesIds()) {
                 AbstractPermissibleValue value = null;
                 switch(permissibleValuesType) {
                 case STRING:
@@ -209,10 +171,6 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     private void refreshObjectInstances() {
         refreshSelectedAnnotationInstance();
         refreshSelectedAnnotationValuesInstance();
-        if (kmPlotParameters.getSurvivalValueDefinition().getId() != null) {
-            kmPlotParameters.setSurvivalValueDefinition(getStudyManagementService().
-                    getRefreshedStudyEntity(kmPlotParameters.getSurvivalValueDefinition()));
-        }
     }
     
     private void refreshSelectedAnnotationInstance() {
@@ -234,29 +192,27 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         }
     }
     
-    private void clear() {
-        kaplanMeierFormValues.clear();
-        clearAnnotationDefinitions();
+    /**
+     * Clears all input values and km plots on the session.
+     * @return Struts return value.
+     */
+    public String reset() {
+        clearAnnotationBasedKmPlot();
+        getForm().clear();
+        kmPlotParameters.clear();
+        return SUCCESS;
     }
-    private void clearAnnotationDefinitions() {
-        annotationDefinitions = new HashMap<String, AnnotationDefinition>();
-        kmPlotParameters.setSelectedAnnotation(new AnnotationDefinition());
-        kaplanMeierFormValues.setSelectedAnnotationId(null);
-        clearPermissibleValues();
+
+    private void clearAnnotationBasedKmPlot() {
+        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, null);
     }
-    private void clearPermissibleValues() {
-        SessionHelper.setKmPlot(null);
-        permissibleValues = new HashMap<String, String>();
-        kmPlotParameters.getSelectedValues().clear();
-        kaplanMeierFormValues.getSelectedValuesIds().clear();
-    }
-    
+
     /**
      * Used to bring up the input form.
      * @return Struts return value.
      */
     public String input() {
-        clear();
+        setDisplayTab(ANNOTATION_TAB);
         return SUCCESS;
     }
     
@@ -269,7 +225,8 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         if (!validateAnnotationType()) {
             return INPUT;
         }
-        clearPermissibleValues();
+        clearAnnotationBasedKmPlot();
+        getForm().clearPermissibleValues();
         if (!loadAnnotationDefinitions()) {
             return INPUT;
         }
@@ -278,11 +235,11 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private boolean validateAnnotationType() {
         try {
-            if (kaplanMeierFormValues.getAnnotationTypeSelection() == null) {
+            if (getForm().getAnnotationTypeSelection() == null) {
                 addActionError("Annotation Type unknown for selected annotation.");
                 return false;
             }
-            EntityTypeEnum.checkType(kaplanMeierFormValues.getAnnotationTypeSelection());
+            EntityTypeEnum.checkType(getForm().getAnnotationTypeSelection());
         } catch (IllegalArgumentException e) {
             addActionError("Annotation Type unknown for selected annotation.");
             return false;
@@ -292,14 +249,14 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
 
     private boolean loadAnnotationDefinitions() {
-        if (kaplanMeierFormValues.getAnnotationTypeSelection() == null 
-                || kaplanMeierFormValues.getAnnotationTypeSelection().equals("invalidSelection")) {
+        if (getForm().getAnnotationTypeSelection() == null 
+                || getForm().getAnnotationTypeSelection().equals("invalidSelection")) {
             addActionError("Must select Annotation Type first");
             return false;
         }
         EntityTypeEnum annotationEntityType = 
-            EntityTypeEnum.getByValue(kaplanMeierFormValues.getAnnotationTypeSelection());
-        annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+            EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection());
+        getForm().setAnnotationDefinitions(new HashMap<String, AnnotationDefinition>());
         Collection<AnnotationDefinition> studyDefinitionCollection = new HashSet<AnnotationDefinition>();
         switch (annotationEntityType) {
         case SUBJECT:
@@ -323,7 +280,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         for (AnnotationDefinition definition : definitions) {
             if (definition.getPermissibleValueCollection() != null 
                 && !definition.getPermissibleValueCollection().isEmpty()) {
-                annotationDefinitions.put(definition.getId().toString(), definition);
+                getForm().getAnnotationDefinitions().put(definition.getId().toString(), definition);
             }
         }
     }
@@ -339,7 +296,8 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
             addActionError("Plesae select a valid annotation");
             return INPUT;
         }
-        clearPermissibleValues();
+        getForm().clearPermissibleValues();
+        clearAnnotationBasedKmPlot();
         loadPermissibleValues();
         return SUCCESS;
     }
@@ -347,7 +305,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     private void loadPermissibleValues() {
         for (AbstractPermissibleValue value 
               : kmPlotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
-            permissibleValues.put(value.getId().toString(), 
+            getForm().getPermissibleValues().put(value.getId().toString(), 
                     PermissibleValueUtil.getDisplayString(value));
         }
     }
@@ -366,88 +324,50 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
             }
             return INPUT;
         }
-        kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(kaplanMeierFormValues.getAnnotationTypeSelection()));
+        kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
         KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-        SessionHelper.setKmPlot(plot);
+        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
         return SUCCESS;
     }
     
-    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Map<String, String>> getAllStringPValues() {
+        if (SessionHelper.getAnnotationBasedKmPlot() != null) {
+            return retrieveAllStringPValues(SessionHelper.getAnnotationBasedKmPlot());
+        }
+        return new HashMap<String, Map<String, String>>();
+    }
     
     /**
-     * Determines if the "Create Plot" button should be displayed.
-     * @return T/F value.
+     * {@inheritDoc}
      */
     @Override
     public boolean isCreatable() {
-        if (kaplanMeierFormValues.getSelectedAnnotationId() != null 
-            && !"-1".equals(kaplanMeierFormValues.getSelectedAnnotationId())
-            && kaplanMeierFormValues.getAnnotationTypeSelection() != null 
-            && kaplanMeierFormValues.getSurvivalValueDefinitionId() != null) {
+        if (getForm().getSelectedAnnotationId() != null 
+            && !"-1".equals(getForm().getSelectedAnnotationId())
+            && getForm().getAnnotationTypeSelection() != null 
+            && getKmPlotForm().getSurvivalValueDefinitionId() != null) {
             return true;
         }
         return false;
     }
 
-    /**
-     * @return the annotationDefinitions
-     */
-    public Map<String, AnnotationDefinition> getAnnotationDefinitions() {
-        return annotationDefinitions;
-    }
 
     /**
-     * @param annotationDefinitions the annotationDefinitions to set
+     * @return
      */
-    public void setAnnotationDefinitions(Map<String, AnnotationDefinition> annotationDefinitions) {
-        this.annotationDefinitions = annotationDefinitions;
-    }
-
-    /**
-     * @return the permissibleValues
-     */
-    public Map<String, String> getPermissibleValues() {
-        return permissibleValues;
-    }
-
-    /**
-     * @param permissibleValues the permissibleValues to set
-     */
-    public void setPermissibleValues(Map<String, String> permissibleValues) {
-        this.permissibleValues = permissibleValues;
-    }
-
-    /**
-     * @return the survivalValueDefinitions
-     */
-    public Map<String, SurvivalValueDefinition> getSurvivalValueDefinitions() {
-        return survivalValueDefinitions;
-    }
-
-    /**
-     * @param survivalValueDefinitions the survivalValueDefinitions to set
-     */
-    public void setSurvivalValueDefinitions(Map<String, SurvivalValueDefinition> survivalValueDefinitions) {
-        this.survivalValueDefinitions = survivalValueDefinitions;
-    }
-
-    /**
-     * @return the kaplanMeierFormValues
-     */
-    public KMPlotAnnotationBasedActionForm getKaplanMeierFormValues() {
-        return kaplanMeierFormValues;
-    }
-
-    /**
-     * @param kaplanMeierFormValues the kaplanMeierFormValues to set
-     */
-    public void setKaplanMeierFormValues(KMPlotAnnotationBasedActionForm kaplanMeierFormValues) {
-        this.kaplanMeierFormValues = kaplanMeierFormValues;
+    private KMPlotAnnotationBasedActionForm getForm() {
+        return getKmPlotForm().getAnnotationBasedForm();
     }
 
     /**
      * @return the kmPlotParameters
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public KMAnnotationBasedParameters getKmPlotParameters() {
         return kmPlotParameters;
     }

@@ -83,75 +83,88 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Abstract class that represents input parameters for a Kaplan-Meier plot.
+ * 
  */
-public abstract class AbstractKMParameters {
-    private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private final List<String> errorMessages = new ArrayList<String>();
+public class KMPlotForm {
     
-    /**
-     * Validates that all parameters are set.
-     * @return T/F value.
-     */
-    public abstract boolean validate();
+    private KMPlotTypeEnum plotType;
+    private KMPlotAnnotationBasedActionForm annotationBasedForm = new KMPlotAnnotationBasedActionForm();
+    private KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm = new KMPlotGeneExpressionBasedActionForm();
     
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
-    
-    
-    /**
-     * Validates the survival value definition.
-     * @param currentValidation current status of validation.
-     * @return T/F value if it is valid or not.
-     */
-    protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
-            isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
-        }
-        return isValid;
-    }
-    
-    
-    /**
-     * @return the survivalValueDefinition
-     */
-    public SurvivalValueDefinition getSurvivalValueDefinition() {
-        return survivalValueDefinition;
-    }
+    private Map<String, SurvivalValueDefinition> survivalValueDefinitions = 
+        new HashMap<String, SurvivalValueDefinition>();
+    private String survivalValueDefinitionId;
 
+    
     /**
-     * @param survivalValueDefinition the survivalValueDefinition to set
+     * @return the plotType
      */
-    public void setSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
-        this.survivalValueDefinition = survivalValueDefinition;
+    public KMPlotTypeEnum getPlotType() {
+        return plotType;
     }
-
     /**
-     * @return the errorMessages
+     * @param plotType the plotType to set
      */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    public void setPlotType(KMPlotTypeEnum plotType) {
+        this.plotType = plotType;
     }
-
+    /**
+     * @return the annotationBasedForm
+     */
+    public KMPlotAnnotationBasedActionForm getAnnotationBasedForm() {
+        return annotationBasedForm;
+    }
+    /**
+     * @param annotationBasedForm the annotationBasedForm to set
+     */
+    public void setAnnotationBasedForm(KMPlotAnnotationBasedActionForm annotationBasedForm) {
+        this.annotationBasedForm = annotationBasedForm;
+    }
+    /**
+     * @return the survivalValueDefinitions
+     */
+    public Map<String, SurvivalValueDefinition> getSurvivalValueDefinitions() {
+        return survivalValueDefinitions;
+    }
+    /**
+     * @param survivalValueDefinitions the survivalValueDefinitions to set
+     */
+    public void setSurvivalValueDefinitions(Map<String, SurvivalValueDefinition> survivalValueDefinitions) {
+        this.survivalValueDefinitions = survivalValueDefinitions;
+    }
+    /**
+     * @return the survivalValueDefinitionId
+     */
+    public String getSurvivalValueDefinitionId() {
+        return survivalValueDefinitionId;
+    }
+    /**
+     * @param survivalValueDefinitionId the survivalValueDefinitionId to set
+     */
+    public void setSurvivalValueDefinitionId(String survivalValueDefinitionId) {
+        this.survivalValueDefinitionId = survivalValueDefinitionId;
+    }
+    /**
+     * @return the geneExpressionBasedForm
+     */
+    public KMPlotGeneExpressionBasedActionForm getGeneExpressionBasedForm() {
+        return geneExpressionBasedForm;
+    }
+    /**
+     * @param geneExpressionBasedForm the geneExpressionBasedForm to set
+     */
+    public void setGeneExpressionBasedForm(KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm) {
+        this.geneExpressionBasedForm = geneExpressionBasedForm;
+    }
+    
+    
 }

@@ -85,8 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.io.IOException;
@@ -112,10 +114,21 @@ public class KMPlotResultTest {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         KMPlotStub kmPlot = new KMPlotStub();
         kmPlot.clear();
-        SessionHelper.setKmPlot(kmPlot);
+        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, kmPlot);
         KMPlotResult result = new KMPlotResult();
+        result.setType(KMPlotTypeEnum.ANNOTATION_BASED.getValue());
         result.execute(new MockActionInvocation());
         assertTrue(kmPlot.writePlotImageCalled);
+        kmPlot.clear();
+        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, kmPlot);
+        result.setType(KMPlotTypeEnum.GENE_EXPRESSION.getValue());
+        result.execute(new MockActionInvocation());
+        assertTrue(kmPlot.writePlotImageCalled);
+        kmPlot.clear();
+        result.setType("Invalid Type");
+        result.execute(new MockActionInvocation());
+        assertFalse(kmPlot.writePlotImageCalled);
+        
     }
 
 }

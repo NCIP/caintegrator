@@ -85,28 +85,57 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
- * 
+ * Form used to store input values for Annotation Based KM Plots. 
  */
 public class KMPlotAnnotationBasedActionForm {
     
+    private KMPlot plot;
     private String annotationTypeSelection;
     private String selectedAnnotationId;
     private Collection <String> selectedValuesIds = new HashSet<String>();
-    private String survivalValueDefinitionId;
     
+    
+    // JSP Select List Options
+    private Map<String, AnnotationDefinition> annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+    private Map<String, String> permissibleValues = new HashMap<String, String>();
+    
+
 
     /**
      * Clears all the variables to null.
      */
     public void clear() {
+        plot = null;
         annotationTypeSelection = null;
         selectedAnnotationId = null;
         selectedValuesIds = new HashSet<String>();
-        survivalValueDefinitionId = null;
+        clearAnnotationDefinitions();
+    }
+    
+    /**
+     * Clears the annotation definitions.
+     */
+    public void clearAnnotationDefinitions() {
+        annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+        setSelectedAnnotationId(null);
+        clearPermissibleValues();
+    }
+    
+    /**
+     * Clears the permissible values.
+     */
+    public void clearPermissibleValues() {
+        permissibleValues = new HashMap<String, String>();
+        getSelectedValuesIds().clear();
     }
     
     /**
@@ -152,19 +181,46 @@ public class KMPlotAnnotationBasedActionForm {
         this.selectedValuesIds = selectedValuesIds;
     }
 
-
     /**
-     * @return the survivalValueDefinitionId
+     * @return the annotationDefinitions
      */
-    public String getSurvivalValueDefinitionId() {
-        return survivalValueDefinitionId;
+    public Map<String, AnnotationDefinition> getAnnotationDefinitions() {
+        return annotationDefinitions;
     }
 
     /**
-     * @param survivalValueDefinitionId the survivalValueDefinitionId to set
+     * @param annotationDefinitions the annotationDefinitions to set
      */
-    public void setSurvivalValueDefinitionId(String survivalValueDefinitionId) {
-        this.survivalValueDefinitionId = survivalValueDefinitionId;
+    public void setAnnotationDefinitions(Map<String, AnnotationDefinition> annotationDefinitions) {
+        this.annotationDefinitions = annotationDefinitions;
+    }
+
+    /**
+     * @return the permissibleValues
+     */
+    public Map<String, String> getPermissibleValues() {
+        return permissibleValues;
+    }
+
+    /**
+     * @param permissibleValues the permissibleValues to set
+     */
+    public void setPermissibleValues(Map<String, String> permissibleValues) {
+        this.permissibleValues = permissibleValues;
+    }
+
+    /**
+     * @return the plot
+     */
+    public KMPlot getPlot() {
+        return plot;
+    }
+
+    /**
+     * @param plot the plot to set
+     */
+    public void setPlot(KMPlot plot) {
+        this.plot = plot;
     }
 
 }

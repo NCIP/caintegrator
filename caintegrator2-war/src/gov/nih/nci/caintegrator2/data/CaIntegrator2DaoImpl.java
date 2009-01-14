@@ -423,7 +423,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                 add(Restrictions.eq("studySubjectAssignment", subject));
         List<AbstractAnnotationValue> valueList = abstractAnnotationValueCriteria.list();
         AbstractAnnotationValue value = null;
-        if (valueList != null) {
+        if (valueList != null && !valueList.isEmpty()) {
             value = valueList.get(0);
         }                
         return value;
