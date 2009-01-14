@@ -87,38 +87,42 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(timeout = 2880)
-public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestIntegration {
+public class DeployDCLungStudyTestIntegration extends AbstractDeployStudyTestIntegration {
     
-    private final static Logger LOGGER = Logger.getLogger(DeploySmallStudyTestIntegration.class);
+    private final static Logger LOGGER = Logger.getLogger(DeployDCLungStudyTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
         deployStudy();
     }
     
     @Override
     protected boolean getMapImages() {
-        return true;
+        return false;
     }
     
     @Override
     protected boolean getLoadImages() {
-        return true;
+        return false;
     }
     
     @Override
     protected boolean getLoadImageAnnotation() {
-        return true;
+        return false;
     }
 
     @Override
@@ -130,25 +134,30 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
     protected boolean getLoadSamples() {
         return true;
     }
-    
+
+    @Override
+    protected String getCaArrayHostname() {
+        return "array-stage.nci.nih.gov";
+    }
+
     @Override
     protected String getCaArrayId() {
-        return "jagla-00034";
+        return "liu-00175";
     }
 
     @Override
     int getExpectedSampleCount() {
-        return 3;
+        return 101;
     }
 
     @Override
     int getExpectedMappedSampleCount() {
-        return 2;
+        return 101;
     }
 
     @Override
     int getExpectedControlSampleCount() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -158,80 +167,84 @@ public class DeploySmallStudyTestIntegration extends AbstractDeployStudyTestInte
 
     @Override
     protected String getNCIAServerUrl() {
-        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
+        return null;
     }
     
     @Override
     protected String getNCIATrialId() {
-        return "Biochange08";
+        return null;
     }
 
     @Override
     protected String getStudyName() {
-        return "Small Study";
+        return "DC Lung Study";
+    }
+
+    protected String getDescription() {
+        return "DC Lung Study";
     }
 
     @Override
     protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
+        return TestDataFiles.DC_LUNG_ANNOTATION_DEFINITIONS_FILE;
     }
 
     File getImageAnnotationFile() {
-        return TestDataFiles.SMALL_STUDY_IMAGE_ANNOTATION_FILE;
+        return null;
     }
 
     @Override
     protected File getImageMappingFile() {
-        return TestDataFiles.SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE;
+        return null;
     }
     @Override
     protected File getSampleMappingFile() {
-        return TestDataFiles.SMALL_STUDY_SAMPLE_MAPPING_FILE;
+        return TestDataFiles.DC_LUNG_SAMPLE_MAPPING_FILE;
     }
 
     @Override
     protected File getControlSamplesFile() {
-        return TestDataFiles.SMALL_STUDY_CONTROL_SAMPLES_FILE;
+        return null;
     }
 
     @Override
     protected File getSubjectAnnotationFile() {
-        return TestDataFiles.REMBRANDT_CLINICAL_FILE;
+        return TestDataFiles.DC_LUNG_CLINICAL_FILE;
     }
 
     @Override
     File getPlatformAnnotationFile() {
-        return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
+        return TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE;
     }
 
     @Override
     String getPlatformName() {
-        return "HG-U133_Plus_2";
+        return "HG-U133A";
     }
     
     @Override
     protected String getDeathDateName() {
-        return "Death Date";
+        return "DEATH_DATE";
     }
 
     @Override
     protected String getLastFollowupDateName() {
-        return "Last Followup Date";
+        return "LAST_CONTACT_DATE";
     }
 
     @Override
     protected String getSurvivalStartDateName() {
-        return "Survival Start Date";
+        return "ENROLLMENT_DATE";
     }
 
     @Override
     int getExpectedNumberOfGeneReporters() {
-        return 20886;
+        return 13266;
     }
 
     @Override
     int getExpectedNumberProbeSets() {
-        return 54675;
+        return 22283;
     }
 
 }

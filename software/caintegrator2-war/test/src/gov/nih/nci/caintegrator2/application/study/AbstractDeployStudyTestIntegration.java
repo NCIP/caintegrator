@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -101,18 +100,14 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -166,7 +161,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         loadDesign();
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
-        studyConfiguration.getStudy().setLongTitleText("Rembrandt/VASARI demo study");
+        studyConfiguration.getStudy().setLongTitleText(getDescription());
         service.save(studyConfiguration);
         loadAnnotationDefinitions();
         loadClinicalData();
@@ -326,13 +321,17 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         if (getLoadSamples()) {
             logStart();
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-            genomicSource.getServerProfile().setHostname("array.nci.nih.gov");
+            genomicSource.getServerProfile().setHostname(getCaArrayHostname());
             genomicSource.getServerProfile().setPort(8080);
             genomicSource.setExperimentIdentifier(getCaArrayId());
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
             logEnd();
         }
+    }
+
+    protected String getCaArrayHostname() {
+        return "array.nci.nih.gov";
     }
 
     abstract protected String getCaArrayId();
@@ -347,7 +346,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     private void loadControlSamples() throws ValidationException, IOException {
-        if (getLoadSamples()) {
+        if (getLoadSamples() && getControlSamplesFile() != null) {
             logStart();
             service.addControlSamples(studyConfiguration, getControlSamplesFile());
             assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().getControlSampleCollection().size());
@@ -457,8 +456,8 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             Query query = createQuery();
             query.setResultType(ResultTypeEnum.GENOMIC.getValue());
             query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-            GeneCriterion geneCriterion = new GeneCriterion();
-            geneCriterion.setGene(getGene("EGFR"));
+            GeneNameCriterion geneCriterion = new GeneNameCriterion();
+            geneCriterion.setGeneSymbol("EGFR");
             query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
             
             GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
@@ -469,17 +468,6 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     }
 
     abstract protected Logger getLogger();
-
-    private Gene getGene(String name) {
-        ReporterSet geneReporters = new PlatformHelper(design).getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        for (AbstractReporter reporter : geneReporters.getReporters()) {
-            GeneExpressionReporter expressionReporter = (GeneExpressionReporter) reporter;
-            if (name.equals(expressionReporter.getGene().getSymbol())) {
-                return expressionReporter.getGene();
-            }
-        }
-        return null;
-    }
 
     private Query createQuery() {
         Query query = new Query();

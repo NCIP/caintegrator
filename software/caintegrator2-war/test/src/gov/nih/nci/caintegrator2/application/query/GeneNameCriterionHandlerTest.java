@@ -112,7 +112,7 @@ public class GeneNameCriterionHandlerTest {
         criterion.setGeneSymbol("TEST");
         GeneNameCriterionHandler handler = GeneNameCriterionHandler.create(criterion);
         handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        assertTrue(daoStub.findMatchingGenesCalled);
+        assertTrue(daoStub.findGeneExpressionReportersCalled);
     }
     
     @Test(expected=IllegalArgumentException.class)

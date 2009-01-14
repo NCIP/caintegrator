@@ -96,11 +96,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -133,7 +133,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getArrayDataMatrixesCalled;
     public boolean getWorkspaceCalled;
     public boolean removeObjectsCalled;
-    public boolean findMatchingGenesCalled;
+    public boolean findGeneExpressionReportersCalled;
     public boolean isDuplicateStudyNameCalled;
     public boolean retrieveStudyLogoCalled;
     public boolean retrieveValueForAnnotationSubjectCalled;
@@ -174,7 +174,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         timepoint.setId(Long.valueOf(1));
         getWorkspaceCalled = false;
         removeObjectsCalled = false;
-        findMatchingGenesCalled = false;
+        findGeneExpressionReportersCalled = false;
         isDuplicateStudyNameCalled = false;
         retrieveStudyLogoCalled = false;
         retrieveValueForAnnotationSubjectCalled = false;
@@ -295,14 +295,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    public Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study) {
-        findMatchingGenesCalled = true;
-        return Collections.emptySet();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public boolean isDuplicateStudyName(Study study) {
         isDuplicateStudyNameCalled =true;
         return false;
@@ -363,7 +355,16 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public void setFlushMode(int mode) {
         setFlushModeCalled = true;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType,
+            Study study) {
+        findGeneExpressionReportersCalled = true;
+        return Collections.emptySet();
+    }
+    
     /**
      * {@inheritDoc}
      */

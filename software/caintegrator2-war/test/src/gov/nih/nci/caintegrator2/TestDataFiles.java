@@ -103,22 +103,18 @@ public class TestDataFiles {
     public static final String REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/rembrandt_control_samples.csv";
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/short_rembrandt_control_samples.csv";
     public static final String SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/short_rembrandt_sample_mapping.csv";
-    public static final String SMALL_STUDY_CONTROL_SAMPLES_FILE_PATH = "/small_study_control_samples.csv";
-    public static final String SMALL_STUDY_SAMPLE_MAPPING_FILE_PATH = "/small_study_sample_mapping.csv";
+    public static final String JAGLA_00034_CONTROL_SAMPLES_FILE_PATH = "/jagla_0034_control_samples.csv";
     public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
     public static final String REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH = "/rembrandt_ncia_image_studies.csv";
     public static final String SIMPLE_SAMPLE_MAPPING_FILE_PATH = "/simple_sample_mapping.csv";
     public static final String SIMPLE_IMAGE_MAPPING_FILE_PATH = "/simple_image_mapping.csv";
     public static final String ISPY_IMAGE_ANNOTATION_FILE_PATH = "/ispy_image_annotations.csv";
     public static final String ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ispy_clinical_image_mapping.csv";
-    public static final String SMALL_STUDY_IMAGE_ANNOTATION_FILE_PATH = "/small_study_image_annotations.csv";
-    public static final String SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/small_study_clinical_image_mapping.csv";
     public static final String REMBRANDT_NCRI_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv";
     public static final String REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH = "/ncri_image_annotations.csv";
     public static final String REMBRANDT_NCRI_IMAGE_SERIES_TO_SUBJECT_FILE_PATH = "/ncri_image_mapping.csv";
     public static final String REMBRANDT_NCRI_SAMPLE_MAPPING_FILE_PATH = "/ncri_sample_mapping.csv";
     
-
     public static final File VALID_FILE = getFile(VALID_FILE_RESOURCE_PATH);
     public static final File VALID_FILE_TIMEPOINT = getFile(VALID_FILE_TIMEPOINT_RESOURCE_PATH);
     public static final File INVALID_FILE_MISSING_VALUE = getFile(INVALID_FILE_MISSING_VALUE_RESOURCE_PATH);
@@ -138,12 +134,18 @@ public class TestDataFiles {
     public static final File ISPY_IMAGE_ANNOTATION_FILE = getFile(ISPY_IMAGE_ANNOTATION_FILE_PATH);
     public static final File ISPY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(ISPY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
 
+    // Files for DC Lung Study (liu-00175 in caarray-stage)
+    public static final String DC_LUNG_CLINICAL_FILE_PATH = "/dc_lung_clinical_data.csv";
+    public static final String DC_LUNG_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping.csv";
+    public static final String DC_LUNG_ANNOTATION_DEFINITIONS_FILE_PATH = "/dc_lung_annotation_definitions.csv";
+
+    public static final File DC_LUNG_CLINICAL_FILE = getFile(DC_LUNG_CLINICAL_FILE_PATH);
+    public static final File DC_LUNG_SAMPLE_MAPPING_FILE = getFile(DC_LUNG_SAMPLE_MAPPING_FILE_PATH);
+    public static final File DC_LUNG_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_ANNOTATION_DEFINITIONS_FILE_PATH);
+    
     // Samples from caArray Experiment jagla-00034
-    public static final File SMALL_STUDY_SAMPLE_MAPPING_FILE = getFile(SMALL_STUDY_SAMPLE_MAPPING_FILE_PATH);
-    public static final File SMALL_STUDY_CONTROL_SAMPLES_FILE = getFile(SMALL_STUDY_CONTROL_SAMPLES_FILE_PATH);
-    // Trial Biochange08 from NCIA DEV
-    public static final File SMALL_STUDY_IMAGE_ANNOTATION_FILE = getFile(SMALL_STUDY_IMAGE_ANNOTATION_FILE_PATH);
-    public static final File SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE = getFile(SMALL_STUDY_IMAGE_SERIES_TO_SUBJECT_FILE_PATH);
+    public static final File JAGLA_00034_CONTROL_SAMPLES_FILE = getFile(JAGLA_00034_CONTROL_SAMPLES_FILE_PATH);
+
     // Trial NCRI from NCIA
     public static final File REMBRANDT_NCRI_CLINICAL_FILE = getFile(REMBRANDT_NCRI_CLINICAL_FILE_PATH);
     public static final File REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE = getFile(REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE_PATH);

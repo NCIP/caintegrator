@@ -833,7 +833,7 @@
          </junit>
     </target>
 
-    <target name="deploy:small-study" depends="test:compile:caintegrator2.war.test.classes,
+    <target name="deploy:dc-lung" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
         hibernate.cfg.xml.test,
         database:reinitialize">
@@ -844,7 +844,7 @@
              <formatter type="xml" />
              <batchtest todir="${caintegrator2.war.target.dir}/junit">
                  <fileset dir="${caintegrator2.war.test.src.dir}">
-                     <include name="**/DeploySmallStudyTestIntegration.java" />
+                     <include name="**/DeployDCLungStudyTestIntegration.java" />
                  </fileset>
              </batchtest>
          </junit>

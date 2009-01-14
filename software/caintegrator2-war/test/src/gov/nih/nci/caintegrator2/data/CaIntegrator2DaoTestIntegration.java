@@ -98,7 +98,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -325,26 +324,24 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     }
     
     @Test
-    public void testFindMatchingGenes() {
+    public void testFindGeneExpressionReporters() {
         Study study = new Study();
-        GeneNameCriterion criterion = new GeneNameCriterion();
-        criterion.setGeneSymbol("TEST");
         Gene gene = new Gene();
         gene.setSymbol("TEST");
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
-        Collection<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
+        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
-        arrayDataCollection.add(arrayData);
+        reporterSet.getArrayDataCollection().add(arrayData);
         arrayData.setReporterSet(reporterSet);
-        reporterSet.setArrayDataCollection(arrayDataCollection);
         reporter.setReporterSet(reporterSet);
-        gene.getReporterCollection().add(reporter);
+        reporterSet.getReporters().add(reporter);
         reporter.setGene(gene);
         dao.save(study);
+        dao.save(arrayData);
         dao.save(gene);
-        assertEquals(1, dao.findMatchingGenes(criterion, study).size());
+        assertEquals(1, dao.findGeneExpressionReporters("TEST", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
     }
     
     @Test
