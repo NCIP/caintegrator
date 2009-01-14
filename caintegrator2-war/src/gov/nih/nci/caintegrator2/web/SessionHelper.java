@@ -85,11 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
-import java.util.Map;
-
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
+import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotMapper;
+
+import java.util.Map;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -216,19 +218,52 @@ public final class SessionHelper {
     
     
     /**
+     * Uses a KMPlotMapper object to store multiple KMPlots on the value stack, based on
+     * one per plot type.
+     * @param plotType the plot type to add the plot to.
      * @param kmPlot the kmPlot to set on the ValueStack.
      */
     @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
-    public static void setKmPlot(KMPlot kmPlot) {
-        getSession().put(KM_PLOT_SESSION_KEY, kmPlot);
+    public static void setKmPlot(KMPlotTypeEnum plotType, KMPlot kmPlot) {
+        if (getSession().get(KM_PLOT_SESSION_KEY) == null) {
+            getSession().put(KM_PLOT_SESSION_KEY, new KMPlotMapper());
+        }
+        KMPlotMapper map = (KMPlotMapper) getSession().get(KM_PLOT_SESSION_KEY);
+        map.getKmPlotMap().put(plotType, kmPlot);
     }
     
     /**
      * 
      * @return the kmPlot on the ValueStack.
      */
-    public static KMPlot getKmPlot() {
-        return (KMPlot) getSession().get(KM_PLOT_SESSION_KEY);
+    public static KMPlot getAnnotationBasedKmPlot() {
+        KMPlotMapper map = (KMPlotMapper) getSession().get(KM_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getAnnotationBasedKmPlot();
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @return the kmPlot on the ValueStack.
+     */
+    public static KMPlot getGeneExpressionBasedKmPlot() {
+        KMPlotMapper map = (KMPlotMapper) getSession().get(KM_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getGeneExpressionBasedKmPlot();
+        }
+        return null;
+    }
+    
+    /**
+     * Clears all plots off the session.
+     */
+    public static void clearKmPlots() {
+        KMPlotMapper mapper = (KMPlotMapper) getSession().get(KM_PLOT_SESSION_KEY);
+        if (mapper != null) {
+            mapper.clear();
+        }
     }
 
 

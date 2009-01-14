@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
@@ -125,6 +126,7 @@ public class DisplayableUserWorkspace {
     private Long currentStudySubscriptionId;
     private AnalysisForm analysisForm = new AnalysisForm();
     private final QueryForm queryForm = new QueryForm();
+    private final KMPlotForm kmPlotForm = new KMPlotForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIABasket nciaBasket = new NCIABasket();
@@ -353,6 +355,13 @@ public class DisplayableUserWorkspace {
      */
     public void setDicomJob(NCIADicomJob dicomJob) {
         this.dicomJob = dicomJob;
+    }
+
+    /**
+     * @return the kmPlotForm
+     */
+    public KMPlotForm getKmPlotForm() {
+        return kmPlotForm;
     }
 
 }

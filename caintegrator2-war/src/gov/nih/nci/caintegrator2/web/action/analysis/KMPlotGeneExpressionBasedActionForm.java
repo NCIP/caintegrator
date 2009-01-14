@@ -83,75 +83,86 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 
 /**
- * Abstract class that represents input parameters for a Kaplan-Meier plot.
+ * Form used to store input values for Gene Expression Based KM Plots.
  */
-public abstract class AbstractKMParameters {
-    private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private final List<String> errorMessages = new ArrayList<String>();
+public class KMPlotGeneExpressionBasedActionForm {
     
-    /**
-     * Validates that all parameters are set.
-     * @return T/F value.
-     */
-    public abstract boolean validate();
+    private static final String DEFAULT_OVER_EXPRESSED = "2.0";
+    private static final String DEFAULT_UNDER_EXPRESSED = "2.0";
     
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
+    private String geneSymbol;
+    private String overexpressedNumber;
+    private String underexpressedNumber;
+    private boolean initialized = false;
     
     
     /**
-     * Validates the survival value definition.
-     * @param currentValidation current status of validation.
-     * @return T/F value if it is valid or not.
+     * Clears all the variables to null.
      */
-    protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
-            isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
-        }
-        return isValid;
-    }
-    
-    
-    /**
-     * @return the survivalValueDefinition
-     */
-    public SurvivalValueDefinition getSurvivalValueDefinition() {
-        return survivalValueDefinition;
+    public void clear() {
+        geneSymbol = null;
+        overexpressedNumber = DEFAULT_OVER_EXPRESSED;
+        underexpressedNumber = DEFAULT_UNDER_EXPRESSED;
+        initialized = true;
     }
 
     /**
-     * @param survivalValueDefinition the survivalValueDefinition to set
+     * @return the geneSymbol
      */
-    public void setSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
-        this.survivalValueDefinition = survivalValueDefinition;
+    public String getGeneSymbol() {
+        return geneSymbol;
     }
 
     /**
-     * @return the errorMessages
+     * @param geneSymbol the geneSymbol to set
      */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
     }
 
+    /**
+     * @return the overexpressedNumber
+     */
+    public String getOverexpressedNumber() {
+        return overexpressedNumber;
+    }
+
+    /**
+     * @param overexpressedNumber the overexpressedNumber to set
+     */
+    public void setOverexpressedNumber(String overexpressedNumber) {
+        this.overexpressedNumber = overexpressedNumber;
+    }
+
+    /**
+     * @return the underexpressedNumber
+     */
+    public String getUnderexpressedNumber() {
+        return underexpressedNumber;
+    }
+
+    /**
+     * @param underexpressedNumber the underexpressedNumber to set
+     */
+    public void setUnderexpressedNumber(String underexpressedNumber) {
+        this.underexpressedNumber = underexpressedNumber;
+    }
+
+    /**
+     * @return the initialized
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * @param initialized the initialized to set
+     */
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
 }
