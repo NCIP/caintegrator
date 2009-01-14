@@ -93,11 +93,13 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -207,6 +209,13 @@ public class QueryManagementServiceImplTest {
         GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
+        FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
+        foldChangeCriterion.setFolds(1.0f);
+        foldChangeCriterion.setGeneSymbol("GENE");
+        foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP);
+        query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(1, result.getRowCollection().size());
     }
 
     
