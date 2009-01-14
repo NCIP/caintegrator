@@ -493,7 +493,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @throws ParseException 
      */
     private void updatePermissible() throws ParseException {
-        PermissibleValueUtil.update(getStudyManagementService(), getType(),
+        PermissibleValueUtil.update(getType(),
                 getPermissibleCollection(), getPermissibleUpdateList());
     }
 

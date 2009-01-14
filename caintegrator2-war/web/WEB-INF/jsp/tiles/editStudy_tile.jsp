@@ -77,16 +77,21 @@
                     <s:param name="clinicalSource.id" value="id" />
                 </s:url> 
                 <s:a href="%{editClinicalSource}">Edit</s:a> 
-                <s:if test="%{!currentlyLoaded}" >
-                    <s:url id="loadClinicalSource" action="loadClinicalSource">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="clinicalSource.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{loadClinicalSource}">
-                        <s:if test="%{!currentlyLoaded}">
-                             |Load Clinical
-                        </s:if>
-                    </s:a> 
+                <s:if test="%{loadable}" > |
+                    <s:if test="%{currentlyLoaded}">
+                       <s:url id="reLoadClinicalSource" action="reLoadClinicalSource">
+                          <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                          <s:param name="clinicalSource.id" value="id" />
+                       </s:url> 
+                       <s:a href="%{reLoadClinicalSource}">Reload All Clinical</s:a> 
+                    </s:if>
+                    <s:else>
+                       <s:url id="loadClinicalSource" action="loadClinicalSource">
+                          <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                          <s:param name="clinicalSource.id" value="id" />
+                       </s:url> 
+                       <s:a href="%{loadClinicalSource}">Load Clinical</s:a> 
+                    </s:else>
                 </s:if>
             </td>
         </tr>

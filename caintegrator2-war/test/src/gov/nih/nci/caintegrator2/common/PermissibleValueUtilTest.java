@@ -123,12 +123,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class PermissibleValueUtilTest {
 
-    private StudyManagementService studyManagementService;
-
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
-        studyManagementService = (StudyManagementService) context.getBean("studyManagementService");
     }
     /**
      * Test method for {@link gov.nih.nci.caintegrator2.common.PermissibleValueUtil#getDisplayString(gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue)}.
@@ -277,7 +274,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("ABC");
         newStringValues.add("XYZ");
-        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
@@ -286,7 +283,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("123.0");
         newStringValues.add("89.95");
-        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
@@ -295,7 +292,7 @@ public class PermissibleValueUtilTest {
         newStringValues = new ArrayList<String>();
         newStringValues.add("01-15-1995");
         newStringValues.add("11-02-2008");
-        PermissibleValueUtil.update(studyManagementService, AnnotationTypeEnum.STRING.getValue(),
+        PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
     }

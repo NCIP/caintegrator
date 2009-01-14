@@ -153,6 +153,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    public void refresh(Object persistentObject) {
+        getHibernateTemplate().refresh(persistentObject);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void save(Object persistentObject) {
         getHibernateTemplate().saveOrUpdate(persistentObject);
     }

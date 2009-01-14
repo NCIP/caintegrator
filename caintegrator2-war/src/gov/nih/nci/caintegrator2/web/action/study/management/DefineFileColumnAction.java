@@ -490,7 +490,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      * @throws ParseException 
      */
     private void updatePermissible() throws ParseException {
-        PermissibleValueUtil.update(getStudyManagementService(), getType(),
+        PermissibleValueUtil.update(getType(),
                 getPermissibleCollection(), getPermissibleUpdateList());
     }
 
