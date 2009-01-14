@@ -110,7 +110,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -210,7 +209,6 @@ public class CaArrayFacadeTest {
             reporters.setId(1L);
             reporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
             platform.getReporterSets().add(reporters);
-            reporters.setReporters(new HashSet<AbstractReporter>());
             reporters.getReporters().add(reporter1);
             reporters.getReporters().add(reporter2);
             reporter1.setReporterSet(reporters);

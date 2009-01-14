@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -114,10 +113,10 @@ import org.apache.commons.lang.StringUtils;
  */
 final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
-    private final FoldChangeCriterion foldChangeCriterion;
+    private final FoldChangeCriterion criterion;
 
-    private FoldChangeCriterionHandler(FoldChangeCriterion foldChangeCriterion) {
-        this.foldChangeCriterion = foldChangeCriterion;
+    private FoldChangeCriterionHandler(FoldChangeCriterion criterion) {
+        this.criterion = criterion;
     }
     
     static FoldChangeCriterionHandler create(FoldChangeCriterion foldChangeCriterion) {
@@ -180,12 +179,12 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
 
     private boolean isFoldChangeMatch(Float foldChangeValue) {
-        if (RegulationTypeEnum.UP.equals(foldChangeCriterion.getRegulationType())) {
-            return foldChangeValue >= foldChangeCriterion.getFolds();
-        } else if (RegulationTypeEnum.DOWN.equals(foldChangeCriterion.getRegulationType())) {
-            return foldChangeValue <= (1  / foldChangeCriterion.getFolds());
+        if (RegulationTypeEnum.UP.equals(criterion.getRegulationType())) {
+            return foldChangeValue >= criterion.getFolds();
+        } else if (RegulationTypeEnum.DOWN.equals(criterion.getRegulationType())) {
+            return foldChangeValue <= (1  / criterion.getFolds());
         } else {
-            throw new IllegalStateException("Illegal regulation type: " + foldChangeCriterion.getRegulationType());
+            throw new IllegalStateException("Illegal regulation type: " + criterion.getRegulationType());
         }
     }
 
@@ -198,15 +197,15 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
     private Collection<ArrayData> getCompareToArrayDatas(ReporterTypeEnum reporterType) {
         Set<ArrayData> compareToDatas = new HashSet<ArrayData>();
-        for (Sample sample : foldChangeCriterion.getCompareToSamples()) {
+        for (Sample sample : criterion.getCompareToSamples()) {
             compareToDatas.addAll(sample.getArrayDatas(reporterType));
         }
         return compareToDatas;
     }
 
     private void configureCompareToSamples(Study study) {
-        if (foldChangeCriterion.getCompareToSamples().isEmpty()) {
-            foldChangeCriterion.getCompareToSamples().addAll(study.getControlSampleCollection());
+        if (criterion.getCompareToSamples().isEmpty()) {
+            criterion.getCompareToSamples().addAll(study.getControlSampleCollection());
         }
     }
 
@@ -216,8 +215,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        Gene gene = dao.getGene(foldChangeCriterion.getGeneSymbol());
-        reporters.addAll(gene.getReporterCollection());
+        reporters.addAll(dao.findGeneExpressionReporters(criterion.getGeneSymbol(), reporterType, study));
         return reporters;
     }
 

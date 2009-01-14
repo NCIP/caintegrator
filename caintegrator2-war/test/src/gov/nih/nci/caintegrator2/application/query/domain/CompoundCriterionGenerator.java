@@ -90,8 +90,6 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -120,10 +118,6 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
         StringComparisonCriterion retrievedStringCriterion = null;
         SelectedValueCriterion originalSelectedValueCriterion = null;
         SelectedValueCriterion retrievedSelectedValueCriterion = null;
-        GeneListCriterion originalGeneListCriterion = null;
-        GeneListCriterion retrievedGeneListCriterion = null;
-        GeneCriterion originalGeneCriterion = null;
-        GeneCriterion retrievedGeneCriterion = null;
         FoldChangeCriterion originalFoldChangeCriterion = null;
         FoldChangeCriterion retrievedFoldChangeCriterion = null;
         
@@ -136,12 +130,6 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
             }
             if (criterion instanceof SelectedValueCriterion) {
                 originalSelectedValueCriterion = (SelectedValueCriterion) criterion;
-            }
-            if (criterion instanceof GeneListCriterion) {
-                originalGeneListCriterion = (GeneListCriterion) criterion;
-            }
-            if (criterion instanceof GeneCriterion) {
-                originalGeneCriterion = (GeneCriterion) criterion;
             }
             if (criterion instanceof FoldChangeCriterion) {
                 originalFoldChangeCriterion = (FoldChangeCriterion) criterion;
@@ -158,12 +146,6 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
             if (criterion instanceof SelectedValueCriterion) {
                 retrievedSelectedValueCriterion = (SelectedValueCriterion) criterion;
             }
-            if (criterion instanceof GeneListCriterion) {
-                retrievedGeneListCriterion = (GeneListCriterion) criterion;
-            }
-            if (criterion instanceof GeneCriterion) {
-                retrievedGeneCriterion = (GeneCriterion) criterion;
-            }
             if (criterion instanceof FoldChangeCriterion) {
                 retrievedFoldChangeCriterion = (FoldChangeCriterion) criterion;
             }
@@ -172,8 +154,6 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
         NumericComparisonCriterionGenerator.INSTANCE.compare(originalNumericCriterion, retrievedNumericCriterion);
         StringComparisonCriterionGenerator.INSTANCE.compare(originalStringCriterion, retrievedStringCriterion);
         SelectedValueCriterionGenerator.INSTANCE.compare(originalSelectedValueCriterion, retrievedSelectedValueCriterion);
-        GeneListCriterionGenerator.INSTANCE.compare(originalGeneListCriterion, retrievedGeneListCriterion);
-        GeneCriterionGenerator.INSTANCE.compare(originalGeneCriterion, retrievedGeneCriterion);
         FoldChangeCriterionGenerator.INSTANCE.compare(originalFoldChangeCriterion, retrievedFoldChangeCriterion);
     }
 
@@ -198,14 +178,6 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
         SelectedValueCriterion svc = new SelectedValueCriterion();
         SelectedValueCriterionGenerator.INSTANCE.setValues(svc);
         abstractCriterionCollection.add(svc);
-        
-        GeneListCriterion glc = new GeneListCriterion();
-        GeneListCriterionGenerator.INSTANCE.setValues(glc);
-        abstractCriterionCollection.add(glc);
-        
-        GeneCriterion gc = new GeneCriterion();
-        GeneCriterionGenerator.INSTANCE.setValues(gc);
-        abstractCriterionCollection.add(gc);
         
         FoldChangeCriterion fc = new FoldChangeCriterion();
         FoldChangeCriterionGenerator.INSTANCE.setValues(fc);

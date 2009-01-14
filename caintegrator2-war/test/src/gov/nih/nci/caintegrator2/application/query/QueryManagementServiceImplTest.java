@@ -93,14 +93,13 @@ import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
@@ -115,6 +114,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -181,18 +181,17 @@ public class QueryManagementServiceImplTest {
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
         study.getAssignmentCollection().add(assignment);
-        GeneCriterion geneCriterion = new GeneCriterion();
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         Gene gene = new Gene();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
         reporter.setReporterSet(reporterSet);
         reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
-        gene.getReporterCollection().add(reporter);
-        geneCriterion.setGene(gene);
-        query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
+        reporter.setGene(gene);
+        geneNameCriterion.setGeneSymbol("GENE");
+        query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         ArrayDataMatrix matrix = new ArrayDataMatrix();
         matrix.setReporterSet(reporterSet);
-        matrix.getReporterSet().setReporters(new HashSet<AbstractReporter>());
         matrix.getReporterSet().getReporters().add(reporter);
         reporter.setReporterSet(reporterSet);
         matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
@@ -220,6 +219,7 @@ public class QueryManagementServiceImplTest {
     private static class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
 
         ArrayDataMatrix matrix;
+        private GeneExpressionReporter reporter = new GeneExpressionReporter();
 
         @Override
         public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
@@ -227,7 +227,14 @@ public class QueryManagementServiceImplTest {
             matrixes.add(matrix);
             return matrixes;
         }
-        
+
+        @Override
+        public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol,
+                ReporterTypeEnum reporterType, Study study) {
+            Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+            reporters.add(reporter );
+            return reporters;
+        }
     }
 
 }

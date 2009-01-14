@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -168,10 +167,8 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         geneReporters.setPlatform(platform);
         geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         platform.getReporterSets().add(geneReporters);
-        geneReporters.setReporters(new HashSet<AbstractReporter>());
         ReporterSet probeSetReporters = new ReporterSet();
         probeSetReporters.setPlatform(platform);
-        probeSetReporters.setReporters(new HashSet<AbstractReporter>());
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         platform.getReporterSets().add(probeSetReporters);
         try {
@@ -248,7 +245,6 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private void addGeneReporter(ReporterSet geneReporters, Gene gene) {
         GeneExpressionReporter geneReporter = new GeneExpressionReporter();
         geneReporter.setGene(gene);
-        gene.getReporterCollection().add(geneReporter);
         geneReporter.setName(gene.getSymbol());
         geneReporter.setReporterSet(geneReporters);
         geneReporters.getReporters().add(geneReporter);
@@ -281,9 +277,6 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
         reporter.setGene(gene);
-        if (gene != null) {
-            gene.getReporterCollection().add(reporter);
-        }
         reporter.setReporterSet(probeSetReporters);
         probeSetReporters.getReporters().add(reporter);
     }

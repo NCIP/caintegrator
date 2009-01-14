@@ -191,7 +191,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     protected File getControlSamplesFile() {
-        return TestDataFiles.SMALL_STUDY_CONTROL_SAMPLES_FILE;
+        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE;
     }
 
     @Override

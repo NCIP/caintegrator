@@ -2,9 +2,6 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * 
  */
@@ -19,7 +16,6 @@ public class Gene extends AbstractCaIntegrator2Object {
     private String genbankAccessionVersion;
     private String symbol;
     private String unigeneclusterID;
-    private Set<GeneExpressionReporter> reporterCollection = new HashSet<GeneExpressionReporter>();
     
     /**
      * @return the ensemblgeneID
@@ -117,21 +113,6 @@ public class Gene extends AbstractCaIntegrator2Object {
      */
     public void setUnigeneclusterID(String unigeneclusterID) {
         this.unigeneclusterID = unigeneclusterID;
-    }
-    
-    /**
-     * @return the reporterCollection
-     */
-    public Set<GeneExpressionReporter> getReporterCollection() {
-        return reporterCollection;
-    }
-    
-    /**
-     * @param reporterCollection the reporterCollection to set
-     */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setReporterCollection(Set<GeneExpressionReporter> reporterCollection) {
-        this.reporterCollection = reporterCollection;
     }
 
 }
