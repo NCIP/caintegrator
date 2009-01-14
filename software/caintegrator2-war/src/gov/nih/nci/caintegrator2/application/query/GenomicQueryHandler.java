@@ -90,6 +90,9 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
@@ -99,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -109,6 +113,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
@@ -187,9 +193,64 @@ class GenomicQueryHandler {
         List<ArrayDataMatrix> matrixes = getDataMatrixes();
         ArrayDataValues values = new ArrayDataValues();
         for (ArrayDataMatrix matrix : matrixes) {
-            values.addValues(arrayDataService.getData(matrix, arrayDatas, reporters));               
+            values.addValues(getDataValues(arrayDatas, reporters, matrix));               
         }
         return values;
+    }
+
+    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters,
+            ArrayDataMatrix matrix) {
+        if (isFoldChangeQuery()) {
+            return arrayDataService.getFoldChangeValues(matrix, arrayDatas, reporters, getControlArrayDatas());
+        } else {
+            return arrayDataService.getData(matrix, arrayDatas, reporters);
+        }
+    }
+
+    private Collection<ArrayData> getControlArrayDatas() {
+        ReporterTypeEnum reporterType = getReporterType();
+        Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
+        for (Sample sample : getFoldChangeCriterion().getCompareToSamples()) {
+            arrayDatas.addAll(sample.getArrayDatas(reporterType));
+        }
+        return arrayDatas;
+    }
+
+    private ReporterTypeEnum getReporterType() {
+        if (!StringUtils.isBlank(query.getReporterType())) {
+            return ReporterTypeEnum.getByValue(query.getReporterType());
+        } else {
+            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+        }
+    }
+
+    private boolean isFoldChangeQuery() {
+        return getFoldChangeCriterion() != null;
+    }
+
+    private FoldChangeCriterion getFoldChangeCriterion() {
+        return getFoldChangeCriterionFromCompoundCriterion(query.getCompoundCriterion());
+    }
+
+    private FoldChangeCriterion getFoldChangeCriterion(AbstractCriterion criterion) {
+        if (criterion instanceof FoldChangeCriterion) {
+            return (FoldChangeCriterion) criterion;
+        } else if (criterion instanceof CompoundCriterion) {
+            CompoundCriterion compoundCriterion = (CompoundCriterion) criterion;
+            return getFoldChangeCriterionFromCompoundCriterion(compoundCriterion);
+        } else {
+            return null;
+        }
+    }
+
+    private FoldChangeCriterion getFoldChangeCriterionFromCompoundCriterion(CompoundCriterion compoundCriterion) {
+        for (AbstractCriterion criterion : compoundCriterion.getCriterionCollection()) {
+            FoldChangeCriterion foldChangeCriterion = getFoldChangeCriterion(criterion);
+            if (foldChangeCriterion != null) {
+                return foldChangeCriterion;
+            }
+        }
+        return null;
     }
 
     private Collection<ArrayData> getMatchingArrayDatas() {
