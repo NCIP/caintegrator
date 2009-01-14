@@ -141,6 +141,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean getPlatformsCalled;
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
+    public boolean refreshCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -181,6 +182,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         retrieveImagingDataSourceForStudyCalled = false;
         getPlatformsCalled = false;
         setFlushModeCalled = false;
+        refreshCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -360,6 +362,14 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
      */
     public void setFlushMode(int mode) {
         setFlushModeCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void refresh(Object persistentObject) {
+        refreshCalled = true;
+        
     }
 
 }

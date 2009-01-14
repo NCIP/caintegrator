@@ -123,6 +123,7 @@ public class WorkspaceServiceTest {
         assertEquals(1, workspace.getSubscriptionCollection().size());
         workspaceService.unsubscribe(workspace, study);
         assertEquals(0, workspace.getSubscriptionCollection().size());
+        workspaceService.refreshAnnotationDefinitions();
     }
 
 }

@@ -115,6 +115,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean setDataElementCalled;
     public boolean setDefinitionCalled;
     public boolean loadClinicalAnnotationCalled;
+    public boolean reLoadClinicalAnnotationCalled;
     public boolean mapSamplesCalled;
     public boolean addImageSourceCalled;
     public boolean addImageAnnotationFileCalled;
@@ -140,6 +141,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadClinicalAnnotationCalled = true;
     }
 
+    public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
+        throws ValidationException {
+        reLoadClinicalAnnotationCalled = true;
+    }
+
     public void save(StudyConfiguration studyConfiguration) {
         saveCalled = true;
     }
@@ -162,6 +168,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void clear() {
         loadClinicalAnnotationCalled = false;
+        reLoadClinicalAnnotationCalled = false;
         deployStudyCalled = false;
         saveCalled = false;
         addClinicalAnnotationFileCalled = false;

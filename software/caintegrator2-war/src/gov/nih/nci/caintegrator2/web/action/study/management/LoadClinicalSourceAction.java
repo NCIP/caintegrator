@@ -103,7 +103,21 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
             getStudyManagementService().loadClinicalAnnotation(getStudyConfiguration(), getClinicalSource());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
-            return INPUT;
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+    /**
+     * Reload a clinical source file.
+     * @return string
+     */
+    public String reLoad() {
+        try {
+            getStudyManagementService().reLoadClinicalAnnotation(getStudyConfiguration());
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            return ERROR;
         }
         return SUCCESS;
     }
