@@ -329,29 +329,63 @@
         </action>
         
         <!-- Kaplan-Meier Actions -->
-        <action name="retrieveKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
-            <result name="kmPlotResult" type="kmPlotResult"/>
+        <action name="initializeKmPlot" method="initializeKmPlot" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
         </action>
-        
+
         <!-- Annotation Based Kaplan-Meier Actions -->
         <action name="kmPlotAnnotationBasedInput" method="input" class="kmPlotAnnotationBasedAction">
-            <result type="tiles">kaplanMeierAnnotationBased</result>
-            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
         </action>
         
         <action name="kmPlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="kmPlotAnnotationBasedAction">
-            <result type="tiles">kaplanMeierAnnotationBased</result>
-            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
         </action>
         
-         <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kmPlotAnnotationBasedAction">
-            <result type="tiles">kaplanMeierAnnotationBased</result>
-            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        <action name="kmPlotUpdatePermissibleValues" method="updatePermissibleValues" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>        
+         </action>
+         
+        <action name="resetAnnotationBasedKMPlot" method="reset" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
         </action>
         
-         <action name="createAnnotationBasedKMPlot" method="createPlot" class="kmPlotAnnotationBasedAction">
-            <result type="tiles">kaplanMeierAnnotationBased</result>
-            <result name="input" type="tiles">kaplanMeierAnnotationBased</result>
+        <action name="createAnnotationBasedKMPlot" method="createPlot" class="kmPlotAnnotationBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <action name="retrieveAnnotationKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">annotationBased</param>
+            </result>
+        </action>
+        
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        <action name="kmPlotGeneExpressionBasedInput" method="input" class="kmPlotGeneExpressionBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
+        </action>
+        
+        <action name="resetGeneExpressionBasedKMPlot" method="reset" class="kmPlotGeneExpressionBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+       <action name="createGeneExpressionBasedKMPlot" method="createPlot" class="kmPlotGeneExpressionBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <action name="retrieveGeneExpressionKMPlot" method="retrievePlot" class="kmPlotGeneExpressionBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">geneExpression</param>
+            </result>
         </action>
                
         <!-- Platform Actions -->

@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
@@ -97,16 +96,13 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -121,15 +117,12 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class KMPlotAnnotationBasedActionTest {
+public class KMPlotGeneExpressionBasedActionTest {
     
-    private KMPlotAnnotationBasedAction action;
+    private KMPlotGeneExpressionBasedAction action;
     private StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
     private AnalysisServiceStub analysisServiceStub = new AnalysisServiceStub();
     private KMPlotServiceCaIntegratorImpl plotService = new KMPlotServiceCaIntegratorImpl();
-    
-    private StringPermissibleValue val1 = new StringPermissibleValue();
-    private StringPermissibleValue val2 = new StringPermissibleValue();
     
     @Before
     public void setUp() {
@@ -142,7 +135,7 @@ public class KMPlotAnnotationBasedActionTest {
         subscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
         ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        action = new KMPlotAnnotationBasedAction();
+        action = new KMPlotGeneExpressionBasedAction();
         action.setAnalysisService(analysisServiceStub);
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
         workspaceService.setSubscription(subscription);
@@ -155,24 +148,6 @@ public class KMPlotAnnotationBasedActionTest {
     
     private Study createFakeStudy() {
         Study study = new Study();
-        study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        AnnotationDefinition subjectDef1 = new AnnotationDefinition();
-        subjectDef1.setId(Long.valueOf(1));
-        subjectDef1.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
-        val1.setId(Long.valueOf(1));
-        val1.setStringValue("M");
-        val2.setId(Long.valueOf(2));
-        val2.setStringValue("F");
-        subjectDef1.getPermissibleValueCollection().add(val1);
-        subjectDef1.getPermissibleValueCollection().add(val2);
-        subjectDef1.getPermissibleValueCollection().add(new StringPermissibleValue());
-        AnnotationDefinition subjectDef2 = new AnnotationDefinition();
-        subjectDef2.setId(Long.valueOf(2));
-        study.getSubjectAnnotationCollection().add(subjectDef1);
-        study.getSubjectAnnotationCollection().add(subjectDef2);
         study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
@@ -184,6 +159,7 @@ public class KMPlotAnnotationBasedActionTest {
     public void testPrepare() {
         SurvivalValueDefinition svd = new SurvivalValueDefinition();
         svd.setId(Long.valueOf(1));
+        action.getKmPlotForm().setSurvivalValueDefinitionId("1");
         action.getKmPlotParameters().setSurvivalValueDefinition(svd);
         setupActionVariables();
         action.prepare();
@@ -194,11 +170,15 @@ public class KMPlotAnnotationBasedActionTest {
     @Test
     public void testValidate() {
         action.clearErrorsAndMessages();
+        ActionContext.getContext().getValueStack().setValue("studySubscription", null);
         action.validate();
-        assertTrue(action.getActionErrors().size() > 0);
+        assertTrue(action.getActionErrors().size() == 2);
         action.clearErrorsAndMessages();
         action.getKmPlotForm().getSurvivalValueDefinitions().put("1", new SurvivalValueDefinition());
         action.validate();
+        assertTrue(action.getActionErrors().size() == 1);
+        action.clearErrorsAndMessages();
+        ActionContext.getContext().getValueStack().setValue("studySubscription", new StudySubscription());
         assertTrue(action.getActionErrors().isEmpty());
     }
 
@@ -206,32 +186,10 @@ public class KMPlotAnnotationBasedActionTest {
     public void testInput() {
         assertEquals(ActionSupport.SUCCESS, action.input());
     }
-    
-    @Test
-    public void testUpdateAnnotationDefinitions() {
-        // Invalid because thre's not an Annotation EntityType selected.
-        assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
-        KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
-        action.getKmPlotForm().setAnnotationBasedForm(form);
-        assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
-        assertEquals(1, action.getKmPlotForm().getAnnotationBasedForm().getAnnotationDefinitions().size());
-        assertTrue(action.getKmPlotForm().getAnnotationBasedForm().getAnnotationDefinitions().containsKey("1"));
-    }
-    
-    @Test
-    public void testUpdatePermissibleValues() {
-        setupActionVariables();
-        assertEquals(ActionSupport.SUCCESS, action.updatePermissibleValues());
-    }
-    
+
     @Test
     public void testCreatePlot() {
         setupActionVariables();
-        assertEquals(ActionSupport.INPUT, action.createPlot());
-        action.getKmPlotParameters().getSelectedValues().clear();
-        action.getKmPlotParameters().getSelectedValues().add(val1);
-        action.getKmPlotParameters().getSelectedValues().add(val2);
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
@@ -239,11 +197,7 @@ public class KMPlotAnnotationBasedActionTest {
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
         assertEquals(ActionSupport.SUCCESS, action.createPlot());
         assertTrue(analysisServiceStub.createKMPlotCalled);
-        assertFalse(action.isCreatable());
         
-        action.getKmPlotForm().getAnnotationBasedForm().setSelectedAnnotationId("1");
-        action.getKmPlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
-        action.getKmPlotForm().setSurvivalValueDefinitionId("1");
         assertTrue(action.isCreatable());
     }
     
@@ -259,7 +213,7 @@ public class KMPlotAnnotationBasedActionTest {
         SubjectGroup group2 = createGroup();
         configuration.getGroups().add(group2);
         KMPlot plot = plotService.generatePlot(configuration);
-        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
+        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, plot);
         assertEquals("1.10", action.getAllStringPValues().get("group").get("group"));
     }
     
@@ -273,17 +227,12 @@ public class KMPlotAnnotationBasedActionTest {
     }
 
     private void setupActionVariables() {
-        KMPlotAnnotationBasedActionForm form = new KMPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
-        form.getSelectedValuesIds().add("1");
-        form.getSelectedValuesIds().add("2");
-        action.getKmPlotForm().setAnnotationBasedForm(form);
-        AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
-        selectedAnnotation.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
-        selectedAnnotation.getPermissibleValueCollection().add(val1);
-        selectedAnnotation.getPermissibleValueCollection().add(val2);
-        selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());
-        action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotation);
+        action.getKmPlotParameters().setGene(new Gene());
+        action.getKmPlotParameters().setOverexpressedFoldChangeNumber(2.0);
+        action.getKmPlotParameters().setUnderexpressedFoldChangeNumber(2.0);
+        action.getKmPlotForm().getGeneExpressionBasedForm().setGeneSymbol("EGFR");
+        action.getKmPlotForm().getGeneExpressionBasedForm().setOverexpressedNumber("2.0");
+        action.getKmPlotForm().getGeneExpressionBasedForm().setUnderexpressedNumber("2.0");
     }
     
 

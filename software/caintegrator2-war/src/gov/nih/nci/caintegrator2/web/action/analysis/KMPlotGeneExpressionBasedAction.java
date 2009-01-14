@@ -83,75 +83,134 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
- * Abstract class that represents input parameters for a Kaplan-Meier plot.
+ * Action dealing with Kaplan-Meier Gene Expression based plotting.
  */
-public abstract class AbstractKMParameters {
-    private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private final List<String> errorMessages = new ArrayList<String>();
+public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private KMGeneExpressionBasedParameters kmPlotParameters = new KMGeneExpressionBasedParameters();
     
     /**
-     * Validates that all parameters are set.
-     * @return T/F value.
+     * {@inheritDoc}
      */
-    public abstract boolean validate();
+    @Override
+    public void prepare() {
+        super.prepare();
+        setDisplayTab(GENE_EXPRESSION_TAB);
+        retrieveFormValues();
+        refreshObjectInstances();
+    }
     
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
-    
-    
-    /**
-     * Validates the survival value definition.
-     * @param currentValidation current status of validation.
-     * @return T/F value if it is valid or not.
-     */
-    protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
-            isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
+    private void retrieveFormValues() {
+        if (NumberUtils.isNumber(getForm().getOverexpressedNumber())) {
+            kmPlotParameters.setOverexpressedFoldChangeNumber(Double.valueOf(getForm().getOverexpressedNumber()));
         }
-        return isValid;
-    }
-    
-    
-    /**
-     * @return the survivalValueDefinition
-     */
-    public SurvivalValueDefinition getSurvivalValueDefinition() {
-        return survivalValueDefinition;
+        if (NumberUtils.isNumber(getForm().getUnderexpressedNumber())) {
+            kmPlotParameters.setUnderexpressedFoldChangeNumber(Double.valueOf(getForm().getUnderexpressedNumber()));
+        }
+        kmPlotParameters.setGene(new Gene());
+        kmPlotParameters.getGene().setSymbol(getForm().getGeneSymbol());
     }
 
     /**
-     * @param survivalValueDefinition the survivalValueDefinition to set
+     * @return
      */
-    public void setSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
-        this.survivalValueDefinition = survivalValueDefinition;
+    private KMPlotGeneExpressionBasedActionForm getForm() {
+        return getKmPlotForm().getGeneExpressionBasedForm();
+    }
+    
+    private void refreshObjectInstances() {
+        // This will eventually retrieve the Gene based on the given symbol.
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCreatable() {
+        return true;
+    }
+    
+    /**
+     * Used to bring up the input form.
+     * @return Struts return value.
+     */
+    public String input() {
+        if (!getForm().isInitialized()) {
+            getForm().clear();
+        }
+        setDisplayTab(GENE_EXPRESSION_TAB);
+        return SUCCESS;
+    }
+    
+    /**
+     * Clears all input values and km plots on the session.
+     * @return Struts return value.
+     */
+    public String reset() {
+        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, null);
+        getForm().clear();
+        kmPlotParameters.clear();
+        return SUCCESS;
+    }
+    
+    /**
+     * When the form is filled out and the user clicks "Create Plot" this calls the
+     * analysis service to generate a KMPlot object.
+     * @return Struts return value.
+     */
+    public String createPlot() {
+        if (!kmPlotParameters.validate()) {
+            for (String errorMessages : kmPlotParameters.getErrorMessages()) {
+                addActionError(errorMessages);
+            }
+            return INPUT;
+        }
+        KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, plot);
+        return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Map<String, String>> getAllStringPValues() {
+        if (SessionHelper.getGeneExpressionBasedKmPlot() != null) {
+            return retrieveAllStringPValues(SessionHelper.getGeneExpressionBasedKmPlot());
+        }
+        return new HashMap<String, Map<String, String>>();
     }
 
     /**
-     * @return the errorMessages
+     * @return the kmPlotParameters
      */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    @SuppressWarnings("unchecked")
+    @Override
+    public KMGeneExpressionBasedParameters getKmPlotParameters() {
+        return kmPlotParameters;
+    }
+
+    /**
+     * @param kmPlotParameters the kmPlotParameters to set
+     */
+    public void setKmPlotParameters(KMGeneExpressionBasedParameters kmPlotParameters) {
+        this.kmPlotParameters = kmPlotParameters;
     }
 
 }

@@ -89,20 +89,17 @@ import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 /**
- * Parameters used for creating a KaplanMeier plot. 
+ * Parameters used for creating an Annotation Based KaplanMeier plot. 
  */
 public class KMAnnotationBasedParameters extends AbstractKMParameters {
 
     private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
     private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
     private EntityTypeEnum entityType;
-    private final List<String> errorMessages = new ArrayList<String>();
     
     
     /**
@@ -110,7 +107,7 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
      */
     @Override
     public boolean validate() {
-        errorMessages.clear();
+        getErrorMessages().clear();
         boolean isValid = true;
         if (getSelectedAnnotation() == null) {
             getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
@@ -124,25 +121,15 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
         return isValid;
     }
 
-    private boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
-            isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
-        }
-        return isValid;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        setSelectedAnnotation(new AnnotationDefinition());
+        getSelectedValues().clear();
     }
     
-
     /**
      * @return the selectedAnnotation
      */
@@ -177,13 +164,5 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
     public void setEntityType(EntityTypeEnum entityType) {
         this.entityType = entityType;
     }
-
-    /**
-     * @return the errorMessages
-     */
-    public List<String> getErrorMessages() {
-        return errorMessages;
-    }
-
 
 }

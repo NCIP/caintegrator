@@ -87,10 +87,12 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 
 import gov.nih.nci.caintegrator.plots.kaplanmeier.KMAlgorithm;
+import gov.nih.nci.caintegrator2.application.analysis.AbstractKMParameters;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
@@ -100,15 +102,98 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
 public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Action {
 
+    /**
+     * Annotation Tab.
+     */
+    protected static final String ANNOTATION_TAB = "annotationTab";
+    /**
+     * Gene Expression Tab.
+     */
+    protected static final String GENE_EXPRESSION_TAB = "geneExpressionTab";
     private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
     private static final String KMPLOT_RESULT = "kmPlotResult";
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
+    private String displayTab;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() {
+        super.prepare();
+        retrieveAndRefreshSurvivalValueDefinition();
+        populateSurvivalValueDefinitions();
+    }
+    
+    /**
+     * Starting point for the kmPlot_tile.jsp.
+     * @return Struts string.
+     */
+    public String initializeKmPlot() {
+        return SUCCESS;
+    }
+    
+    private void retrieveAndRefreshSurvivalValueDefinition() {
+       AbstractKMParameters params = getKmPlotParameters();
+       if (getKmPlotForm().getSurvivalValueDefinitionId() != null 
+                && !StringUtils.isEmpty(getKmPlotForm().getSurvivalValueDefinitionId()) 
+                && params != null
+                && params.getSurvivalValueDefinition() != null) {
+                params.getSurvivalValueDefinition().setId(
+                       Long.valueOf(getKmPlotForm().getSurvivalValueDefinitionId()));
+                params.setSurvivalValueDefinition(getStudyManagementService().
+                        getRefreshedStudyEntity(params.getSurvivalValueDefinition()));
+       }
+    }
+    
+    /**
+     * Return the kmPlotParameters for the action.
+     * @param <T> implementation subclass of AbstractKMParameter.
+     * @return implementation subclass of AbstractKMParameter.
+     */
+    public abstract <T extends AbstractKMParameters> T getKmPlotParameters();
+    
+    private void populateSurvivalValueDefinitions() {
+        if (getStudy() != null 
+            && getStudy().getSurvivalValueDefinitionCollection() != null
+            && getKmPlotForm().getSurvivalValueDefinitions().size() 
+                != getStudy().getSurvivalValueDefinitionCollection().size()) {
+            getKmPlotForm().setSurvivalValueDefinitions(new HashMap<String, SurvivalValueDefinition>());
+            for (SurvivalValueDefinition def 
+                    : getStudy().getSurvivalValueDefinitionCollection()) {
+                getKmPlotForm().getSurvivalValueDefinitions().put(def.getId().toString(), def);
+            }
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (getStudySubscription() == null) {
+            addActionError("Please select a study under \"My Studies\".");
+        }
+        if (getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
+            addActionError("There are no survival value definitions defined for this study, "
+                    + "unable to create Kaplan-Meier plot.");
+        }
+    }
+    
+    /**
+     * Clears the survival value definition ID.
+     */
+    protected void clearKmPlot() {
+        SessionHelper.clearKmPlots();
+        getKmPlotForm().setSurvivalValueDefinitionId(null);
+    }
     
     /**
      * Returns the KMPlotResult image to the JSP.
@@ -128,14 +213,14 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
      * Gets all the string pvalues from the KMPlot on the session.
      * @return map of all string PValues.
      */
-    public Map<String, Map<String, String>> getAllStringPValues() {
-        if (SessionHelper.getKmPlot() != null) {
-            return retrieveAllStringPValues(SessionHelper.getKmPlot());
-        }
-        return new HashMap<String, Map<String, String>>();
-    }
-    
-    private Map<String, Map<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
+    public abstract Map<String, Map<String, String>> getAllStringPValues();
+
+    /**
+     * Retrieves all string PValues.
+     * @param kmPlot Plot to use.
+     * @return Map of Strings for PValues, for output on the JSP.
+     */
+    protected Map<String, Map<String, String>> retrieveAllStringPValues(KMPlot kmPlot) {
         
         Map<String, Map<String, String>> allPValues = new HashMap<String, Map<String, String>>();
         Set<SubjectGroup> currentlyCalculatedGroups = new HashSet<SubjectGroup>();
@@ -201,6 +286,21 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
-    
 
+    /**
+     * @return the displayTab
+     */
+    public String getDisplayTab() {
+        if (displayTab == null) {
+            displayTab = ANNOTATION_TAB;
+        }
+        return displayTab;
+    }
+
+    /**
+     * @param displayTab the displayTab to set
+     */
+    public void setDisplayTab(String displayTab) {
+        this.displayTab = displayTab;
+    }
 }

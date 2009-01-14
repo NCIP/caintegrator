@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
@@ -266,5 +267,15 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         }
     }
 
+    /**
+     * @return the KM Plot form
+     */
+    public KMPlotForm getKmPlotForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getKmPlotForm();
+        } else {
+            return null;
+        }
+    }
     
 }

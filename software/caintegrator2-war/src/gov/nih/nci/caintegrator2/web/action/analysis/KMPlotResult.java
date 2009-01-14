@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.io.IOException;
@@ -103,17 +104,46 @@ import com.opensymphony.xwork2.Result;
 public class KMPlotResult implements Result {
 
     private static final long serialVersionUID = 1L;
+    private String type;
 
     /**
      * {@inheritDoc}
      */
     public void execute(ActionInvocation invocation) throws IOException {
-        KMPlot kmPlot = SessionHelper.getKmPlot();
-        if (kmPlot != null) {
-            HttpServletResponse response = ServletActionContext.getResponse();
-            kmPlot.writePlotImage(response.getOutputStream());
-            response.setContentType("image/png");
-            response.getOutputStream().flush();
+        if (KMPlotTypeEnum.checkType(type)) {
+            KMPlot kmPlot = null;
+            switch (KMPlotTypeEnum.getByValue(type)) {
+            case ANNOTATION_BASED:
+                kmPlot = SessionHelper.getAnnotationBasedKmPlot();
+                break;
+            case GENE_EXPRESSION:
+                kmPlot = SessionHelper.getGeneExpressionBasedKmPlot();
+                break;
+            default:
+                kmPlot = null;
+                break;
+            }
+            if (kmPlot != null) {
+                HttpServletResponse response = ServletActionContext.getResponse();
+                kmPlot.writePlotImage(response.getOutputStream());
+                response.setContentType("image/png");
+                response.getOutputStream().flush();
+            }
         }
+        
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 }

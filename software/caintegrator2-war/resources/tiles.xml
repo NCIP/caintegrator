@@ -130,9 +130,9 @@
     <definition name="genePatternAnalysisResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisResults_tile.jsp" />
     </definition>
-    
-    <definition name="kaplanMeierAnnotationBased" extends="cssBaseDef">
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlotAnnotationBased_tile.jsp" />
+
+    <definition name="kmPlot" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />
     </definition>
 
     <!-- Platform pages -->

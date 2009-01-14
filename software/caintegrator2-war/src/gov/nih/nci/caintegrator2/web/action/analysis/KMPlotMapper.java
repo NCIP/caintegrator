@@ -83,75 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Abstract class that represents input parameters for a Kaplan-Meier plot.
+ * Object that is used to store KM Plots on the session, based on a maximum of one per plot type.
  */
-public abstract class AbstractKMParameters {
-    private SurvivalValueDefinition survivalValueDefinition = new SurvivalValueDefinition();
-    private final List<String> errorMessages = new ArrayList<String>();
+public class KMPlotMapper {
     
-    /**
-     * Validates that all parameters are set.
-     * @return T/F value.
-     */
-    public abstract boolean validate();
-    
-    /**
-     * Clears all values.
-     */
-    public abstract void clear();
-    
-    
-    /**
-     * Validates the survival value definition.
-     * @param currentValidation current status of validation.
-     * @return T/F value if it is valid or not.
-     */
-    protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
-        boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
-            getErrorMessages().add("Must select a valid Survival Value Definition.");
-            isValid = false;
-        } else {
-            if (getSurvivalValueDefinition().getSurvivalStartDate() == null 
-                 || getSurvivalValueDefinition().getDeathDate() == null
-                 || getSurvivalValueDefinition().getLastFollowupDate() == null
-                 ) {
-                getErrorMessages().add("Survival Value Definition '" + getSurvivalValueDefinition().getName() 
-                               + "' must have a " + "Start Date, Death Date, and Last Followup Date definied.");
-                isValid = false;
-            }
-        }
-        return isValid;
-    }
-    
-    
-    /**
-     * @return the survivalValueDefinition
-     */
-    public SurvivalValueDefinition getSurvivalValueDefinition() {
-        return survivalValueDefinition;
-    }
+    private final Map<KMPlotTypeEnum, KMPlot> kmPlotMap = new HashMap<KMPlotTypeEnum, KMPlot>();
 
     /**
-     * @param survivalValueDefinition the survivalValueDefinition to set
+     * Clears the map of KM Plots.
      */
-    public void setSurvivalValueDefinition(SurvivalValueDefinition survivalValueDefinition) {
-        this.survivalValueDefinition = survivalValueDefinition;
+    public void clear() {
+        kmPlotMap.clear();
     }
-
+    
     /**
-     * @return the errorMessages
+     * @return the kmPlotMap
      */
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    public Map<KMPlotTypeEnum, KMPlot> getKmPlotMap() {
+        return kmPlotMap;
+    }
+    
+    /**
+     * Returns the Annotation Based KMPlot.
+     * @return KMPlot object.
+     */
+    public KMPlot getAnnotationBasedKmPlot() {
+        return kmPlotMap.get(KMPlotTypeEnum.ANNOTATION_BASED);
+    }
+    
+    /**
+     * Returns the Gene Expression based KMPlot.
+     * @return KMPlot object.
+     */
+    public KMPlot getGeneExpressionBasedKmPlot() {
+        return kmPlotMap.get(KMPlotTypeEnum.GENE_EXPRESSION);
     }
 
 }
