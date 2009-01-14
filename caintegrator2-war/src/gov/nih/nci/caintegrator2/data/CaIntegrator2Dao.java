@@ -111,6 +111,14 @@ import java.util.Set;
  * Main DAO interface for storage and retrieval of persistent entities.
  */
 public interface CaIntegrator2Dao {
+
+    
+    /**
+     * Refreshes the object given.
+     * 
+     * @param persistentObject the object to refresh.
+     */
+    void refresh(Object persistentObject);
     
     /**
      * Saves the object given.

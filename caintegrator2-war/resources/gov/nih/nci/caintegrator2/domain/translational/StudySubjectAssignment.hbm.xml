@@ -15,7 +15,7 @@
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition"/>
 		</set>
 		<many-to-one name="subject" class="gov.nih.nci.caintegrator2.domain.translational.Subject" column="SUBJECT_ID" lazy="proxy" cascade="all" />
-		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="all" />
+		<many-to-one name="study" class="gov.nih.nci.caintegrator2.domain.translational.Study" column="STUDY_ID" lazy="proxy" cascade="save-update,merge" />
 		<set name="subjectAnnotationCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="STUDY_SUBJECT_ASSIGNMENT_ID" />

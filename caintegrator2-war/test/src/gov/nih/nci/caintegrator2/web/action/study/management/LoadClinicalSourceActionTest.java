@@ -115,4 +115,10 @@ public class LoadClinicalSourceActionTest {
         assertTrue(studyManagementServiceStub.loadClinicalAnnotationCalled);
     }
 
+    @Test
+    public void reLoad() {
+        assertEquals(Action.SUCCESS, action.reLoad());
+        assertTrue(studyManagementServiceStub.reLoadClinicalAnnotationCalled);
+    }
+
 }

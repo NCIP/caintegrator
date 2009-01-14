@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -161,17 +160,16 @@ public final class PermissibleValueUtil {
     /**
      * Update the permissibleValue collection.
      * 
-     * @param studyManagementService studyManagementService to access the DB
      * @param type the type of the abstractPermissibleValue
      * @param abstractPermissibleValues the PermissibleValue collection
      * @param newList the new list of DisplayValues
      * @throws ParseException Exception for parsing the Date string
      */
-    public static void update(StudyManagementService studyManagementService, String type,
+    public static void update(String type,
             Collection<AbstractPermissibleValue> abstractPermissibleValues,
             List<String> newList) throws ParseException {
         
-        checkObsolete(studyManagementService, abstractPermissibleValues, newList);
+        checkObsolete(abstractPermissibleValues, newList);
         addNewValue(type, abstractPermissibleValues, newList);
     }
 
@@ -179,8 +177,7 @@ public final class PermissibleValueUtil {
      * @param abstractPermissibleValues
      * @param newList
      */
-    private static void checkObsolete(StudyManagementService studyManagementService,
-            Collection<AbstractPermissibleValue> abstractPermissibleValues,
+    private static void checkObsolete(Collection<AbstractPermissibleValue> abstractPermissibleValues,
             List<String> newList) {
         List<AbstractPermissibleValue> removeList = new ArrayList<AbstractPermissibleValue>();
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
@@ -189,7 +186,6 @@ public final class PermissibleValueUtil {
             }
         }
         abstractPermissibleValues.removeAll(removeList);
-        studyManagementService.delete(removeList);
     }
 
     /**

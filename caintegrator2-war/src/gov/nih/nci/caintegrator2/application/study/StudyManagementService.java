@@ -189,6 +189,15 @@ public interface StudyManagementService {
         throws ValidationException;
 
     /**
+     * ReLoads clinical annotations for study configuration.
+     * 
+     * @param studyConfiguration study configuration to load
+     * @throws ValidationException fail to load
+     */
+    void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
+        throws ValidationException;
+
+    /**
      * Deploys or redeploys a study.
      * 
      * @param studyConfiguration the study configuration to deploy

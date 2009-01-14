@@ -99,13 +99,15 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     private StudySubscription subscription;
     public boolean subscribeCalled;
-    public boolean deSubscribeCalled;
+    public boolean unSubscribeCalled;
     public boolean saveUserWorspaceCalled;
+    public boolean refreshAnnotationDefinitionsCalled;
     
     public void clear() {
         subscribeCalled = false;
-        deSubscribeCalled = false;
-        saveUserWorspaceCalled = false; 
+        unSubscribeCalled = false;
+        saveUserWorspaceCalled = false;
+        refreshAnnotationDefinitionsCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -128,7 +130,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     }
 
     public void unsubscribe(UserWorkspace workspace, Study study) {
-        deSubscribeCalled = true;
+        unSubscribeCalled = true;
         
     }
     
@@ -145,5 +147,9 @@ public class WorkspaceServiceStub implements WorkspaceService {
             subscription.setQueryCollection(new HashSet<Query>());
         }
         return subscription;
+    }
+
+    public void refreshAnnotationDefinitions() {
+        refreshAnnotationDefinitionsCalled = true;
     }
 }

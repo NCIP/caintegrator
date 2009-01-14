@@ -277,15 +277,26 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
-        //TODO Delete all subject annotation then reload
-        // deleteClinicalAnnotation(studyConfiguration);
+        deleteClinicalAnnotation(studyConfiguration);
         for (AbstractClinicalSourceConfiguration configuration 
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.reLoadAnnontation();
         }
         save(studyConfiguration);
+        getWorkspaceService().refreshAnnotationDefinitions();
     }
-
+    
+    private void deleteClinicalAnnotation(StudyConfiguration studyConfiguration) {
+        Study study = studyConfiguration.getStudy();
+        for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
+            for (SubjectAnnotation subjectAnnotation : studySubjectAssignment.getSubjectAnnotationCollection()) {
+                dao.delete(subjectAnnotation);
+            }
+            studySubjectAssignment.getSubjectAnnotationCollection().clear();
+        }
+        study.setSubjectAnnotationCollection(null);
+    }
+    
     private void persist(StudyConfiguration studyConfiguration) {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
