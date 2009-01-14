@@ -93,10 +93,10 @@ import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -111,7 +111,7 @@ import java.util.Set;
  * Main DAO interface for storage and retrieval of persistent entities.
  */
 public interface CaIntegrator2Dao {
-
+    
     
     /**
      * Refreshes the object given.
@@ -205,14 +205,15 @@ public interface CaIntegrator2Dao {
     List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study);
 
     /**
-     * Returns the genes (via their linked <code>SampleAcquisitions</code> that match
-     * the corresponding criterion or GeneName and exist in the given study.
+     * Returns the gene expression reporters that match the parameters given.
      * 
-     * @param criterion finds genes that match the given criterion.
+     * @param geneSymbol finds expression reporters for genes that match the symbol.
+     * @param reporterType return only reporters of this type
      * @param study restrict the search to the given study.
      * @return the list of matches.
      */
-    Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study);
+    Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType, 
+            Study study);
 
     
     /**

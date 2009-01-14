@@ -96,10 +96,10 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -280,21 +280,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             return studySubjectAssignmentCrit.list();
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public Set<Gene> findMatchingGenes(GeneNameCriterion criterion, Study study) {
-        Set <Gene> geneSet = new HashSet<Gene>();
-        geneSet.addAll(
-                (List<Gene>) getCurrentSession().createCriteria(Gene.class).
-                    add(Restrictions.like("symbol", criterion.getGeneSymbol())).
-                        createCriteria("reporterCollection").
-                        createCriteria("reporterSet").
-                        createCriteria("arrayDataCollection").
-                    add(Restrictions.eq("study", study)).list());
-        return geneSet;
+    public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType, 
+            Study study) {
+        Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+        Criteria criteria = getCurrentSession().createCriteria(GeneExpressionReporter.class);
+        criteria.createCriteria("gene").add(Restrictions.like("symbol", geneSymbol));
+        Criteria reporterCriteria = criteria.createCriteria("reporterSet");
+        reporterCriteria.add(Restrictions.eq("reporterType", reporterType.getValue()));
+        reporterCriteria.createCriteria("arrayDataCollection").add(Restrictions.eq("study", study));
+        reporters.addAll((List<GeneExpressionReporter>) criteria.list());
+        return reporters;
     }
     
     /**

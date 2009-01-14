@@ -123,6 +123,7 @@ public class FoldChangeCriterionHandlerTest {
     private Study study;
     private ArrayDataMatrix matrix;
     private Gene gene;
+    GeneExpressionReporter reporter = new GeneExpressionReporter();
     
     @Before
     public void setUp() {
@@ -130,8 +131,7 @@ public class FoldChangeCriterionHandlerTest {
         matrix.setReporterSet(new ReporterSet());
         matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
         gene = new Gene();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        gene.getReporterCollection().add(reporter);
+        reporter.setGene(gene);
         
         daoStub.clear();       
         study = new Study();
@@ -196,8 +196,11 @@ public class FoldChangeCriterionHandlerTest {
         }
 
         @Override
-        public Gene getGene(String symbol) {
-            return gene;
+        public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol,
+                ReporterTypeEnum reporterType, Study study) {
+            Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+            reporters.add(reporter);
+            return reporters;
         }
         
     }

@@ -95,8 +95,6 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneListCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
@@ -142,10 +140,6 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                     handlers.add(new AnnotationCriterionHandler((AbstractAnnotationCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof CompoundCriterion) {
                     handlers.add(CompoundCriterionHandler.create((CompoundCriterion) abstractCriterion));
-                } else if (abstractCriterion instanceof GeneCriterion) {
-                    handlers.add(GeneCriterionHandler.create((GeneCriterion) abstractCriterion));
-                } else if (abstractCriterion instanceof GeneListCriterion) {
-                    handlers.add(GeneListCriterionHandler.create((GeneListCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof GeneNameCriterion) {
                     handlers.add(GeneNameCriterionHandler.create((GeneNameCriterion) abstractCriterion));
                 } else if (abstractCriterion instanceof FoldChangeCriterion) {

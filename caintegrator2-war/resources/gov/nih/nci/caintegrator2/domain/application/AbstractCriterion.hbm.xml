@@ -65,16 +65,6 @@
                     <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID" />
                 </set>
             </joined-subclass>
-            <joined-subclass name="GeneListCriterion" table="GENE_LIST_CRITERION" lazy="false">
-                <key column="ID" />
-                <!-- Associations mapping for the GeneListCriterion class -->
-                <many-to-one name="geneList" class="gov.nih.nci.caintegrator2.domain.application.GeneList" column="GENE_LIST_ID" lazy="proxy" cascade="save-update,merge" />
-            </joined-subclass>
-            <joined-subclass name="GeneCriterion" table="GENE_CRITERION" lazy="false">
-                <key column="ID" />
-                <!-- Associations mapping for the GeneCriterion class -->
-                <many-to-one name="gene" class="gov.nih.nci.caintegrator2.domain.genomic.Gene" column="GENE_ID" lazy="proxy" cascade="save-update,merge" />
-            </joined-subclass>
             <joined-subclass name="GeneNameCriterion" table="GENE_NAME_CRITERION" lazy="false">
                 <key column="ID" />
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>

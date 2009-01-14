@@ -88,8 +88,6 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 
-import java.util.HashSet;
-
 
 public final class ReporterSetGenerator extends AbstractTestDataGenerator<ReporterSet> {
 
@@ -124,7 +122,7 @@ public final class ReporterSetGenerator extends AbstractTestDataGenerator<Report
                 reporter.setReporterSet(null);
             }
         }
-        reporterSet.setReporters(new HashSet<AbstractReporter>());
+        reporterSet.getReporters().clear();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setReporterSet(reporterSet);
         GeneExpressionReporterGenerator.INSTANCE.setValues(reporter);
