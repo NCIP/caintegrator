@@ -365,6 +365,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         dao.save(matrix2);
         dao.save(matrix3);
         dao.save(study2);
+        dao.save(study1);
         List<ArrayDataMatrix> retrieved = dao.getArrayDataMatrixes(study1, ReporterTypeEnum.GENE_EXPRESSION_GENE);
         assertEquals(2, retrieved.size());
         assertTrue(retrieved.contains(matrix1) && retrieved.contains(matrix3));
