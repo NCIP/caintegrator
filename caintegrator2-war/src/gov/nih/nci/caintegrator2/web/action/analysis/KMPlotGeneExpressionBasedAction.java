@@ -85,14 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
 
@@ -113,18 +112,16 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         super.prepare();
         setDisplayTab(GENE_EXPRESSION_TAB);
         retrieveFormValues();
-        refreshObjectInstances();
     }
     
     private void retrieveFormValues() {
         if (NumberUtils.isNumber(getForm().getOverexpressedNumber())) {
-            kmPlotParameters.setOverexpressedFoldChangeNumber(Double.valueOf(getForm().getOverexpressedNumber()));
+            kmPlotParameters.setOverexpressedFoldChangeNumber(Float.valueOf(getForm().getOverexpressedNumber()));
         }
         if (NumberUtils.isNumber(getForm().getUnderexpressedNumber())) {
-            kmPlotParameters.setUnderexpressedFoldChangeNumber(Double.valueOf(getForm().getUnderexpressedNumber()));
+            kmPlotParameters.setUnderexpressedFoldChangeNumber(Float.valueOf(getForm().getUnderexpressedNumber()));
         }
-        kmPlotParameters.setGene(new Gene());
-        kmPlotParameters.getGene().setSymbol(getForm().getGeneSymbol());
+        kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());
     }
 
     /**
@@ -132,10 +129,6 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
      */
     private KMPlotGeneExpressionBasedActionForm getForm() {
         return getKmPlotForm().getGeneExpressionBasedForm();
-    }
-    
-    private void refreshObjectInstances() {
-        // This will eventually retrieve the Gene based on the given symbol.
     }
     
     /**

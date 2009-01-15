@@ -91,85 +91,56 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
- * Helper method for AnalysisService to generate a KMPlot object.
+ * Abstract class representing a Handler for KM Plot creation.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See calculateEndDate function
-class KMPlotHelper {
+abstract class AbstractKMPlotHandler {
     
     private static final int MONTHS_IN_YEAR = 12;
-    private final KMPlotService kmPlotService;
     private final CaIntegrator2Dao dao;
     private final SurvivalValueDefinition survivalValueDefinition;
     private final QueryManagementService queryManagementService;
-    private final Map<SubjectGroup, AbstractPermissibleValue> subjectGroupPermissibleValue = 
-                                        new HashMap<SubjectGroup, AbstractPermissibleValue>();
     
-    KMPlotHelper(KMPlotService kmPlotService, CaIntegrator2Dao dao, SurvivalValueDefinition survivalValueDefinition, 
-                 QueryManagementService queryManagementService) {
-        this.kmPlotService = kmPlotService;
+    protected AbstractKMPlotHandler(CaIntegrator2Dao dao, 
+            SurvivalValueDefinition survivalValueDefinition, 
+            QueryManagementService queryManagementService) {
         this.dao = dao;
         this.survivalValueDefinition = survivalValueDefinition;
         this.queryManagementService = queryManagementService;
     }
     
-    KMPlot createPlot(StudySubscription subscription, AbstractKMParameters kmParameters) {
-        if (survivalValueDefinition == null) {
-            throw new IllegalArgumentException("SurvivalValueDefinition cannot be null");
-        }
-        if (survivalValueDefinition.getSurvivalStartDate() == null
-             || survivalValueDefinition.getDeathDate() == null 
-             || survivalValueDefinition.getLastFollowupDate() == null) {
-            throw new IllegalArgumentException("Must have a Start Date, Death Date, and Last Followup Date" 
-                    + " defined for definition '" + survivalValueDefinition.getName() + "'.");
-        }
+    public static AbstractKMPlotHandler createKMPlotHandler(CaIntegrator2Dao dao, 
+                                                            SurvivalValueDefinition survivalValueDefinition, 
+                                                            QueryManagementService queryManagementService,
+                                                            AbstractKMParameters kmParameters) {
         if (kmParameters instanceof KMAnnotationBasedParameters) {
-            return createAnnotationBasedPlot(subscription, (KMAnnotationBasedParameters) kmParameters);
+            return new AnnotationBasedKMPlotHandler(dao, 
+                                                    survivalValueDefinition, 
+                                                    queryManagementService, 
+                                                    (KMAnnotationBasedParameters) kmParameters);
+        } else if (kmParameters instanceof KMGeneExpressionBasedParameters) {
+            return new GeneExpressionBasedKMPlotHandler(dao, 
+                                                        survivalValueDefinition, 
+                                                        queryManagementService, 
+                                                        (KMGeneExpressionBasedParameters) kmParameters);
         }
-        return null;
+        throw new IllegalArgumentException("Unknown Parameter Type");         
     }
     
-    private KMPlot createAnnotationBasedPlot(StudySubscription subscription, 
-                                             KMAnnotationBasedParameters kmParameters) {
-        KMPlotConfiguration configuration = new KMPlotConfiguration();
-        AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 
-        Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(kmParameters.getSelectedValues(), subjectGroupCollection);
-        Collection <ResultRow> subjectRows = 
-                retrieveSubjectRowsFromDatabase(kmParameters.getEntityType(), groupAnnotationField, subscription);
-        retrieveSubjectSurvivalData(groupAnnotationField, subjectRows, subjectGroupCollection);
-        filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
-        return kmPlotService.generatePlot(configuration);
-    }
+    abstract KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription); 
 
-    private void filterGroupsWithoutSurvivalData(KMPlotConfiguration configuration,
+    protected void filterGroupsWithoutSurvivalData(KMPlotConfiguration configuration,
             Collection<SubjectGroup> subjectGroupCollection) {
         for (SubjectGroup group : subjectGroupCollection) {
             if (group.getSurvivalData().isEmpty()) {
@@ -180,26 +151,7 @@ class KMPlotHelper {
         }
     }
 
-    private void retrieveSubjectSurvivalData(AnnotationDefinition groupAnnotationField,
-                                            Collection <ResultRow> rows, 
-                                            Collection<SubjectGroup> subjectGroupCollection) {
-        for (ResultRow row : rows) {
-            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
-            SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-            if (subjectSurvivalData != null) {
-                AbstractAnnotationValue subjectPlotGroupValue = null;
-                for (ResultValue value : row.getValueCollection()) {
-                    if (value.getColumn().getAnnotationDefinition().equals(groupAnnotationField)) {
-                        subjectPlotGroupValue = value.getValue();
-                        break;
-                    }
-                }
-                assignSubjectToGroup(subjectGroupCollection, subjectSurvivalData, subjectPlotGroupValue);
-            }
-        }
-    }
-
-    private SubjectSurvivalData createSubjectSurvivalData(StudySubjectAssignment subjectAssignment) {
+    protected SubjectSurvivalData createSubjectSurvivalData(StudySubjectAssignment subjectAssignment) {
         Integer survivalLength = Integer.valueOf(0);
         DateAnnotationValue subjectSurvivalStartDate = null;
         DateAnnotationValue subjectDeathDate = null;
@@ -226,7 +178,7 @@ class KMPlotHelper {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks are necessary
-    private Boolean calculateEndDate(DateAnnotationValue subjectDeathDate,
+    protected Boolean calculateEndDate(DateAnnotationValue subjectDeathDate,
                                     DateAnnotationValue subjectLastFollowupDate, 
                                     Calendar calSubjectEndDate) {
         Boolean censor = false;
@@ -243,29 +195,7 @@ class KMPlotHelper {
         return censor;
     }
 
-    private void assignSubjectToGroup(Collection<SubjectGroup> subjectGroupCollection,
-            SubjectSurvivalData subjectSurvivalData, AbstractAnnotationValue subjectPlotGroupValue) {
-        for (SubjectGroup subjectGroup : subjectGroupCollection) {
-            if (Cai2Util.annotationValueBelongToPermissibleValue(
-                        subjectPlotGroupValue, subjectGroupPermissibleValue.get(subjectGroup))) {
-                subjectGroup.getSurvivalData().add(subjectSurvivalData);
-                break;
-            }
-        }
-    }
-
-    private void retrieveSubjectGroups(Collection<AbstractPermissibleValue> plotGroupValues,
-            Collection<SubjectGroup> subjectGroupCollection) {
-        for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
-            SubjectGroup subjectGroup = new SubjectGroup();
-            subjectGroup.setName(PermissibleValueUtil.getDisplayString(plotGroupValue));
-            subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
-            subjectGroupCollection.add(subjectGroup);
-            subjectGroup.setColor(getColor(subjectGroupCollection.size()));
-        }
-    }
-
-    private Color getColor(int colorNumber) {
+    protected Color getColor(int colorNumber) {
         switch(colorNumber) {
             case 1:
                 return Color.GREEN;
@@ -292,30 +222,43 @@ class KMPlotHelper {
         }
     }
     
-    private Integer monthsBetween(Calendar startDate, Calendar endDate) {
+    protected Integer monthsBetween(Calendar startDate, Calendar endDate) {
         int yearsBetween = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
         int monthsBetween = endDate.get(Calendar.MONTH) - startDate.get(Calendar.MONTH);
         return ((yearsBetween * MONTHS_IN_YEAR) + monthsBetween);
     }
     
-    private Collection<ResultRow> retrieveSubjectRowsFromDatabase(EntityTypeEnum groupFieldType, 
-                                                 AnnotationDefinition groupAnnotationField,
-                                                 StudySubscription subscription) {
-        Query query = new Query();
-        ResultColumn column = new ResultColumn();
-        column.setAnnotationDefinition(groupAnnotationField);
-        column.setEntityType(groupFieldType.getValue());
-        column.setColumnIndex(0);
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        query.getColumnCollection().add(column);
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
-        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
-        query.setSubscription(subscription);
-        QueryResult queryResult = queryManagementService.execute(query);
-        return queryResult.getRowCollection();
+    protected void validateSurvivalValueDefinition() {
+        if (survivalValueDefinition == null) {
+            throw new IllegalArgumentException("SurvivalValueDefinition cannot be null");
+        }
+        if (survivalValueDefinition.getSurvivalStartDate() == null
+             || survivalValueDefinition.getDeathDate() == null 
+             || survivalValueDefinition.getLastFollowupDate() == null) {
+            throw new IllegalArgumentException("Must have a Start Date, Death Date, and Last Followup Date" 
+                    + " defined for definition '" + survivalValueDefinition.getName() + "'.");
+        }
     }
-    
-    
-    
+
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
+    }
+
+    /**
+     * @return the survivalValueDefinition
+     */
+    public SurvivalValueDefinition getSurvivalValueDefinition() {
+        return survivalValueDefinition;
+    }
+
+    /**
+     * @return the queryManagementService
+     */
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
+    }
+
 }

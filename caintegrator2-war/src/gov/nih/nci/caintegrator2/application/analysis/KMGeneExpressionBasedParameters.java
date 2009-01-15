@@ -85,16 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Parameters used for creating a Gene Expression Based KaplanMeier plot. 
  */
 public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
 
-    private Double underexpressedFoldChangeNumber;
-    private Double overexpressedFoldChangeNumber;
-    private Gene gene;
+    private Float underexpressedFoldChangeNumber;
+    private Float overexpressedFoldChangeNumber;
+    private String geneSymbol;
 
     /**
      * {@inheritDoc}
@@ -103,8 +103,8 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (getGene() == null) {
-            getErrorMessages().add("Gene is null, please select a valid Gene.");
+        if (StringUtils.isBlank(geneSymbol)) {
+            getErrorMessages().add("Gene Symbol is blank, please enter a valid Gene.");
             isValid = false;
         }
         if (underexpressedFoldChangeNumber == null) {
@@ -119,26 +119,11 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
         return isValid;
     }
 
-    
-    /**
-     * @return the gene
-     */
-    public Gene getGene() {
-        return gene;
-    }
-
-    /**
-     * @param gene the gene to set
-     */
-    public void setGene(Gene gene) {
-        this.gene = gene;
-    }
-
 
     /**
      * @return the underexpressedFoldChangeNumber
      */
-    public Double getUnderexpressedFoldChangeNumber() {
+    public Float getUnderexpressedFoldChangeNumber() {
         return underexpressedFoldChangeNumber;
     }
 
@@ -146,7 +131,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     /**
      * @param underexpressedFoldChangeNumber the underexpressedFoldChangeNumber to set
      */
-    public void setUnderexpressedFoldChangeNumber(Double underexpressedFoldChangeNumber) {
+    public void setUnderexpressedFoldChangeNumber(Float underexpressedFoldChangeNumber) {
         this.underexpressedFoldChangeNumber = underexpressedFoldChangeNumber;
     }
 
@@ -154,7 +139,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     /**
      * @return the overexpressedFoldChangeNumber
      */
-    public Double getOverexpressedFoldChangeNumber() {
+    public Float getOverexpressedFoldChangeNumber() {
         return overexpressedFoldChangeNumber;
     }
 
@@ -162,7 +147,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     /**
      * @param overexpressedFoldChangeNumber the overexpressedFoldChangeNumber to set
      */
-    public void setOverexpressedFoldChangeNumber(Double overexpressedFoldChangeNumber) {
+    public void setOverexpressedFoldChangeNumber(Float overexpressedFoldChangeNumber) {
         this.overexpressedFoldChangeNumber = overexpressedFoldChangeNumber;
     }
 
@@ -173,8 +158,24 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
     public void clear() {
         underexpressedFoldChangeNumber = null;
         overexpressedFoldChangeNumber = null;
-        gene = new Gene();
+        geneSymbol = null;
         
+    }
+
+
+    /**
+     * @return the geneSymbol
+     */
+    public String getGeneSymbol() {
+        return geneSymbol;
+    }
+
+
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
     }
     
 

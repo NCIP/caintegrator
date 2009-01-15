@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -97,6 +98,8 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
     public boolean executeCalled;
     public QueryResult QR;
     public boolean executeGenomicDataQueryCalled;
+    public KMPlotTypeEnum kmPlotType;
+    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
 
     public void save(Query query) {
         saveCalled = true;
@@ -105,8 +108,16 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
     @SuppressWarnings("unchecked")
     public QueryResult execute(Query query) {
         executeCalled = true;
-        KMPlotStudyCreator creator = new KMPlotStudyCreator();
-        QR = creator.retrieveQueryResultFromThisStudy(query);
+        switch (kmPlotType) {
+        case ANNOTATION_BASED:
+            QR = creator.retrieveQueryResultForAnnotationBased(query);
+            break;
+        case GENE_EXPRESSION:
+            QR = creator.retrieveQueryResultForGeneExpressionBased(query);
+            break;
+        default:
+            return null;
+        }
         QR.setQuery(query);
         return QR;
     }

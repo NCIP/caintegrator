@@ -104,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -113,6 +114,7 @@ public class KMPlotStudyCreator {
     private AnnotationDefinition groupAnnotationField;
     private Collection <AbstractPermissibleValue> plotGroupValues;
     private SurvivalValueDefinition survivalValueDefinition;
+    private Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
     
     public Study createKMPlotStudy() {
         Study kmPlotStudy = new Study();
@@ -338,14 +340,13 @@ public class KMPlotStudyCreator {
         return kmPlotStudy;
     }
     
-    public QueryResult retrieveQueryResultFromThisStudy(Query query) {
-        Study study = createKMPlotStudy();
+    public QueryResult retrieveQueryResultForAnnotationBased(Query query) {
+        Study study = query.getSubscription().getStudy();
         QueryResult result = new QueryResult();
         result.setRowCollection(new HashSet<ResultRow>());
-        AnnotationDefinition groupAnnotationField = new AnnotationDefinition();
-        // Assuming the query has only one column we're interested in.
+        Set<AnnotationDefinition> groupAnnotationFields = new HashSet<AnnotationDefinition>();
         for (ResultColumn column : query.getColumnCollection()) {
-            groupAnnotationField = column.getAnnotationDefinition();
+            groupAnnotationFields.add(column.getAnnotationDefinition());
         }
         for (StudySubjectAssignment assignment : study.getAssignmentCollection()) {
             ResultRow row = new ResultRow();
@@ -353,19 +354,41 @@ public class KMPlotStudyCreator {
             row.setValueCollection(new HashSet<ResultValue>());
             result.getRowCollection().add(row);
             for(SubjectAnnotation annotation : assignment.getSubjectAnnotationCollection()) {
-                if (groupAnnotationField.equals(annotation.getAnnotationValue().getAnnotationDefinition())) {
+                AnnotationDefinition currentAnnotationDefinition = annotation.getAnnotationValue().getAnnotationDefinition();
+                if (groupAnnotationFields.contains(currentAnnotationDefinition)) {
                     ResultValue value = new ResultValue();
                     value.setValue(annotation.getAnnotationValue());
                     ResultColumn column = new ResultColumn();
-                    column.setAnnotationDefinition(groupAnnotationField);
+                    column.setAnnotationDefinition(currentAnnotationDefinition);
                     value.setColumn(column);
                     row.getValueCollection().add(value);
-                    break;
                 }
             }
         }
         return result;
         
+    }
+    
+    /**
+     * Completely fake results by just giving it all subjects in the study.
+     * @param query
+     * @return
+     */
+    public QueryResult retrieveQueryResultForGeneExpressionBased(Query query) {
+        Study study = query.getSubscription().getStudy();
+        QueryResult result = new QueryResult();
+        result.setRowCollection(new HashSet<ResultRow>());
+        for (StudySubjectAssignment assignment : study.getAssignmentCollection()) {
+            if (!usedSubjects.contains(assignment)) {
+                ResultRow row = new ResultRow();
+                row.setSubjectAssignment(assignment);
+                row.setValueCollection(new HashSet<ResultValue>());
+                result.getRowCollection().add(row);
+                usedSubjects.add(assignment);
+                break;
+            }
+        }
+        return result;
     }
 
     /**

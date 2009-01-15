@@ -3,6 +3,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * 
@@ -19,7 +20,7 @@ public class Query extends AbstractCaIntegrator2Object {
     
     private StudySubscription subscription;
     private CompoundCriterion compoundCriterion;
-    private Collection<ResultColumn> columnCollection;
+    private Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
     
     /**
      * @return the description
