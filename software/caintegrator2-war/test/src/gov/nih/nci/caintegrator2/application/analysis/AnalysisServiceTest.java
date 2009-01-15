@@ -95,6 +95,7 @@ import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -177,18 +178,7 @@ public class AnalysisServiceTest {
         assertEquals("value", genePatternParameter.getValue());
     }
     
-    @Test
-    public void testCreateKMPlot() {
-        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
-        Study study = studyCreator.createKMPlotStudy();
-        StudySubscription subscription = new StudySubscription();
-        KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
-        subscription.setStudy(study);
-        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
-        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
-        annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
-        annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
-        assertTrue(annotationParameters.validate());
+    private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
         
         assertNotNull(kmPlot);
@@ -213,6 +203,40 @@ public class AnalysisServiceTest {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
+    }
+    
+    @Test
+    public void testCreateAnnotationBasedKMPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.ANNOTATION_BASED;
+        KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
+        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
+        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
+        annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
+        annotationParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        assertTrue(annotationParameters.validate());
+        runKMPlotTest(studyCreator, subscription, annotationParameters);
+        
+    }
+    
+    @Test
+    public void testCreateGeneExpressionBasedKMPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.GENE_EXPRESSION;
+        KMGeneExpressionBasedParameters geneExpressionParameters = new KMGeneExpressionBasedParameters();
+        geneExpressionParameters.setGeneSymbol("EGFR");
+        geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
+        geneExpressionParameters.setUnderexpressedFoldChangeNumber(2.0F);
+        geneExpressionParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        assertTrue(geneExpressionParameters.validate());
+        runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
+        
     }
     
     

@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
@@ -227,9 +226,9 @@ public class KMPlotGeneExpressionBasedActionTest {
     }
 
     private void setupActionVariables() {
-        action.getKmPlotParameters().setGene(new Gene());
-        action.getKmPlotParameters().setOverexpressedFoldChangeNumber(2.0);
-        action.getKmPlotParameters().setUnderexpressedFoldChangeNumber(2.0);
+        action.getKmPlotParameters().setGeneSymbol("EGFR");
+        action.getKmPlotParameters().setOverexpressedFoldChangeNumber(2.0F);
+        action.getKmPlotParameters().setUnderexpressedFoldChangeNumber(2.0F);
         action.getKmPlotForm().getGeneExpressionBasedForm().setGeneSymbol("EGFR");
         action.getKmPlotForm().getGeneExpressionBasedForm().setOverexpressedNumber("2.0");
         action.getKmPlotForm().getGeneExpressionBasedForm().setUnderexpressedNumber("2.0");

@@ -162,12 +162,9 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public KMPlot createKMPlot(StudySubscription subscription,
                                AbstractKMParameters kmParameters) {
-        KMPlotHelper kmPlotHelper = new KMPlotHelper(kmPlotService, 
-                                                     dao, 
-                                                     kmParameters.getSurvivalValueDefinition(), 
-                                                     queryManagementService);
-        
-        return kmPlotHelper.createPlot(subscription, kmParameters);
+        AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
+                dao, kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
+        return kmPlotHandler.createPlot(kmPlotService, subscription);
 
     }
 
@@ -180,7 +177,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     /**
-     * @param dao the dao to set
+     * @param dao
+     *            the dao to set
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
