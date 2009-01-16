@@ -157,11 +157,12 @@ public class FoldChangeCriterionHandlerTest {
     public void testGetMatches() {        
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
-        criterion.setFolds(1.0f);
+        criterion.setFoldsUp(1.0f);
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
         Set<ResultRow> rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
         criterion.setRegulationType(RegulationTypeEnum.DOWN);
+        criterion.setFoldsDown(1.0f);
         rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(0, rows.size());
         assertTrue(arrayDataServiceStub.getFoldChangeValuesCalled);
@@ -171,7 +172,7 @@ public class FoldChangeCriterionHandlerTest {
     public void testGetters() {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.UP);
-        criterion.setFolds(1.0f);
+        criterion.setFoldsUp(1.0f);
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
         assertTrue(handler.hasEntityCriterion());
         assertTrue(handler.hasReporterCriterion());

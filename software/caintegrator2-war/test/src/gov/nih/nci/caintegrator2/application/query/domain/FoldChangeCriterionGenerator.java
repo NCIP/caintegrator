@@ -105,7 +105,8 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
     public void compareFields(FoldChangeCriterion original, FoldChangeCriterion retrieved) {
         assertEquals(original.getId(), retrieved.getId());
         compareCollections(original.getCompareToSamples(), retrieved.getCompareToSamples(), SampleGenerator.INSTANCE);
-        assertEquals(original.getFolds(), retrieved.getFolds());
+        assertEquals(original.getFoldsUp(), retrieved.getFoldsUp());
+        assertEquals(original.getFoldsDown(), retrieved.getFoldsDown());
         assertEquals(original.getRegulationType(), retrieved.getRegulationType());
         
     }
@@ -117,7 +118,8 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
 
     @Override
     public void setValues(FoldChangeCriterion foldChangeCriterion) {
-        foldChangeCriterion.setFolds(Float.valueOf(getUniqueInt()));
+        foldChangeCriterion.setFoldsUp(Float.valueOf(getUniqueInt()));
+        foldChangeCriterion.setFoldsDown(Float.valueOf(getUniqueInt()));
         foldChangeCriterion.getCompareToSamples().clear();
         for (int i = 0; i < 3; i++) {
             foldChangeCriterion.getCompareToSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());

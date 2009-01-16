@@ -207,7 +207,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private FoldChangeCriterion retrieveUpRegulatedFoldChangeCriterion() {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.UP);
-        criterion.setFolds(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
+        criterion.setFoldsUp(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
         criterion.setGeneSymbol(kmParameters.getGeneSymbol());
         return criterion;
     }
@@ -215,7 +215,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private FoldChangeCriterion retrieveDownRegulatedFoldChangeCriterion() {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.DOWN);
-        criterion.setFolds(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
+        criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
         criterion.setGeneSymbol(kmParameters.getGeneSymbol());
         return criterion;
     }
