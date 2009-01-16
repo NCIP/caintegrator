@@ -121,9 +121,4 @@ public interface WorkspaceService {
      * @param workspace - object that needs to be updated.
      */
     void saveUserWorkspace(UserWorkspace workspace);
-
-    /**
-     * Refreshes all annotation definitions in the current workspace.
-     */
-    void refreshAnnotationDefinitions();
 }

@@ -114,9 +114,7 @@ import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -154,18 +152,17 @@ public class StudyManagementServiceTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws ValidationException {
         StudyConfiguration configTest = new StudyConfiguration();
-        studyManagementService.delete(configTest);
+        configTest.getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+
+        DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
+        studyManagementService.delete(configTest, clinicalSource);
         assertTrue(daoStub.deleteCalled);
         daoStub.deleteCalled = false;
-        DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
-        studyManagementService.delete(clinicalSource);
-        assertTrue(daoStub.deleteCalled);
 
-        Collection<AbstractPermissibleValue> abstractPermissibleValues = new ArrayList<AbstractPermissibleValue>();
-        studyManagementService.delete(abstractPermissibleValues);
-        assertTrue(daoStub.removeObjectsCalled);
+        studyManagementService.delete(configTest);
+        assertTrue(daoStub.deleteCalled);
     }
     
     @Test
@@ -216,7 +213,6 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         sourceConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
-        studyManagementService.loadClinicalAnnotation(studyConfiguration); 
         studyManagementService.loadClinicalAnnotation(studyConfiguration, sourceConfiguration); 
         studyManagementService.reLoadClinicalAnnotation(studyConfiguration); 
     }

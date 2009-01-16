@@ -83,7 +83,7 @@
                           <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                           <s:param name="clinicalSource.id" value="id" />
                        </s:url> 
-                       <s:a href="%{reLoadClinicalSource}">Reload All Clinical</s:a> 
+                       <s:a href="%{reLoadClinicalSource}">Reload All Clinical</s:a>
                     </s:if>
                     <s:else>
                        <s:url id="loadClinicalSource" action="loadClinicalSource">
@@ -93,6 +93,11 @@
                        <s:a href="%{loadClinicalSource}">Load Clinical</s:a> 
                     </s:else>
                 </s:if>
+                <s:url id="deleteClinicalSource" action="deleteClinicalSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="clinicalSource.id" value="id" />
+                </s:url> 
+                <s:a href="%{deleteClinicalSource}" onclick="return confirm('This clinical source file will be deleted.')"> | Delete</s:a>
             </td>
         </tr>
         </s:iterator>

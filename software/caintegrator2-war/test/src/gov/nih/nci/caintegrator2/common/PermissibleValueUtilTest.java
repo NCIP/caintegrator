@@ -356,16 +356,15 @@ public class PermissibleValueUtilTest {
 
         AnnotationDefinition annotationDefinition3 = new AnnotationDefinition();
         annotationDefinition3.setType(AnnotationTypeEnum.DATE.getValue());
-        annotationDefinition3.setPermissibleValueCollection(createNumericPermissible());
+        annotationDefinition3.setPermissibleValueCollection(createDatePermissible());
         annotationDefinition3.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         DateAnnotationValue validValue3 = new DateAnnotationValue();
         validValue3.setDateValue(new Date());
         validValue3.setAnnotationDefinition(annotationDefinition3);
-        validValue3.setAnnotationDefinition(annotationDefinition3);
         annotationDefinition3.getAnnotationValueCollection().add(validValue3);
         invalidValues = 
             PermissibleValueUtil.retrieveValuesNotPermissible(study, EntityTypeEnum.SUBJECT, annotationDefinition3, dao);
-        assertTrue(invalidValues.size() == 0);
+        assertTrue(invalidValues.size() == 1);
     }
     
     private Collection<AbstractPermissibleValue> createStringPermissible() throws ParseException {

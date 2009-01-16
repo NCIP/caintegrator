@@ -122,4 +122,18 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
         return SUCCESS;
     }
     
+    /**
+     * Delete a clinical source file.
+     * @return string
+     */
+    public String delete() {
+        try {
+            getStudyManagementService().delete(getStudyConfiguration(), getClinicalSource());
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
 }

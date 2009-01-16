@@ -108,5 +108,14 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
     private void setSubjectAnnotationCollection(Set<SubjectAnnotation> subjectAnnotationCollection) {
         this.subjectAnnotationCollection = subjectAnnotationCollection;
     }
+    
+    /**
+     * @return whether all collections are empty
+     */
+    public boolean isObsolete() {
+        return (imageStudyCollection.isEmpty()
+                && sampleAcquisitionCollection.isEmpty()
+                && subjectAnnotationCollection.isEmpty());
+    }
 
 }
