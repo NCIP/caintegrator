@@ -97,11 +97,21 @@ public enum RegulationTypeEnum {
      * Up regulated.
      */
     UP("Up"),
-    
+
     /**
      * Down regulated.
      */
-    DOWN("Down");
+    DOWN("Down"),
+
+    /**
+     * Up or down regulated.
+     */
+    UP_OR_DOWN("Up or Down"),
+    
+    /**
+     * Up or down regulated.
+     */
+    UNCHANGED("Unchanged");
 
     private static Map<String, RegulationTypeEnum> valueToTypeMap = new HashMap<String, RegulationTypeEnum>();
 

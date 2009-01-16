@@ -85,11 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 
@@ -99,8 +100,10 @@ import com.opensymphony.xwork2.ValidationAware;
 @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
 class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     
+    private static final float DEFAULT_FOLDS = 2.0f;
+    private static final Float DEFAULT_FOLDS_UNCHANGED_DOWN = 0.8f;
+    private static final Float DEFAULT_FOLDS_UNCHANGED_UP = 1.2f;
     private static final String SYMBOL_LABEL = "Gene Symbol";
-    private static final String FOLDS_LABEL = "Folds";
     private static final String REGULATION_TYPE_LABEL = "Regulation Type";
     static final String FOLD_CHANGE = "Fold Change";
 
@@ -114,12 +117,67 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     FoldChangeCriterionWrapper(FoldChangeCriterion criterion, GeneExpressionCriterionRow row) {
         super(row);
         this.criterion = criterion;
-        if (criterion.getFolds() == null) {
-            criterion.setFolds((float) 2.0);
+        if (criterion.getRegulationType() == null) {
+            criterion.setRegulationType(RegulationTypeEnum.UP);
+            setCriterionDefaults();
         }
         getParameters().add(createGeneSymbolParameter());
         getParameters().add(createRegulationTypeParameter());
-        getParameters().add(createFoldsParameter());
+        addFoldsParameters();
+    }
+
+    private void setUpFoldsParameters() {
+        setCriterionDefaults();
+        removeExistingFoldsParameters();
+        addFoldsParameters();
+    }
+
+    private void addFoldsParameters() {
+        switch (criterion.getRegulationType()) {
+            case UP:
+                getParameters().add(createFoldsUpParameter());
+                break;
+            case DOWN:
+                getParameters().add(createFoldsDownParameter());
+                break;
+            case UP_OR_DOWN:
+            case UNCHANGED:
+                getParameters().add(createFoldsDownParameter());
+                getParameters().add(createFoldsUpParameter());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void removeExistingFoldsParameters() {
+        if (getParameters().size() == 4) {
+            getParameters().remove(3);
+        }
+        if (getParameters().size() == 3) {
+            getParameters().remove(2);
+        }
+    }
+
+    private void setCriterionDefaults() {
+        switch (criterion.getRegulationType()) {
+            case UP:
+                criterion.setFoldsUp(DEFAULT_FOLDS);
+                break;
+            case DOWN:
+                criterion.setFoldsDown(DEFAULT_FOLDS);
+                break;
+            case UP_OR_DOWN:
+                criterion.setFoldsUp(DEFAULT_FOLDS);
+                criterion.setFoldsDown(DEFAULT_FOLDS);
+                break;
+            case UNCHANGED:
+                criterion.setFoldsDown(DEFAULT_FOLDS_UNCHANGED_DOWN);
+                criterion.setFoldsUp(DEFAULT_FOLDS_UNCHANGED_UP);
+                break;
+            default:
+                break;
+        }
     }
 
     private AbstractCriterionParameter createGeneSymbolParameter() {
@@ -150,42 +208,72 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         OptionList<RegulationTypeEnum> options = new OptionList<RegulationTypeEnum>();
         options.addOption(RegulationTypeEnum.UP.getValue(), RegulationTypeEnum.UP);
         options.addOption(RegulationTypeEnum.DOWN.getValue(), RegulationTypeEnum.DOWN);
+        options.addOption(RegulationTypeEnum.UP_OR_DOWN.getValue(), RegulationTypeEnum.UP_OR_DOWN);
+        options.addOption(RegulationTypeEnum.UNCHANGED.getValue(), RegulationTypeEnum.UNCHANGED);
         ValueSelectedHandler<RegulationTypeEnum> handler = new ValueSelectedHandler<RegulationTypeEnum>() {
             public void valueSelected(RegulationTypeEnum value) {
                 criterion.setRegulationType(value);
+                setUpFoldsParameters();
             }
         };
         String fieldName = getRow().getOgnlPath() + ".parameters[1]";
         SelectListParameter<RegulationTypeEnum> regulationTypeParameter = 
             new SelectListParameter<RegulationTypeEnum>(fieldName, options, handler, criterion.getRegulationType());
         regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
+        regulationTypeParameter.setUpdateFormOnChange(true);
         return regulationTypeParameter;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
-    private TextFieldParameter createFoldsParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[2]";
-        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFolds().toString());
-        foldsParameter.setLabel(FOLDS_LABEL);
+    private TextFieldParameter createFoldsUpParameter() {
+        final String label = 
+            RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) ? "And" : "Up-regulation folds";
+        int parameterIndex = RegulationTypeEnum.UP.equals(criterion.getRegulationType()) ? 2 : 3;
+        String fieldName = getRow().getOgnlPath() + ".parameters[" + parameterIndex + "]";
+        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFoldsUp().toString());
+        foldsParameter.setLabel(label);
         ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
 
             public boolean isValid(String value) {
-                try {
-                    Float.parseFloat(value);
-                    return true;
-                } catch (NumberFormatException e) {
-                    return false;
-                }
+                return NumberUtils.isNumber(value);
             }
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (!isValid(value)) {
-                    action.addActionError("Numeric value required for Folds");
+                    action.addActionError("Numeric value required for " + label);
                 }
             }
 
             public void valueChanged(String value) {
-                criterion.setFolds(Float.valueOf(value));
+                criterion.setFoldsUp(Float.valueOf(value));
+            }
+        };
+        foldsParameter.setValueHandler(foldsChangeHandler);
+        return foldsParameter;
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // anonymous inner class
+    private TextFieldParameter createFoldsDownParameter() {
+        final String label = 
+            RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) 
+                ? "Folds between" : "Down-regulation folds";
+        String fieldName = getRow().getOgnlPath() + ".parameters[2]";
+        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFoldsDown().toString());
+        foldsParameter.setLabel(label);
+        ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
+
+            public boolean isValid(String value) {
+                return NumberUtils.isNumber(value);
+            }
+
+            public void validate(String formFieldName, String value, ValidationAware action) {
+                if (!isValid(value)) {
+                    action.addActionError("Numeric value required for " + label);
+                }
+            }
+
+            public void valueChanged(String value) {
+                criterion.setFoldsDown(Float.valueOf(value));
             }
         };
         foldsParameter.setValueHandler(foldsChangeHandler);

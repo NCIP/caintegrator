@@ -101,6 +101,7 @@ public class SelectListParameter<E> extends AbstractCriterionParameter {
     private final OptionList<E> optionList;
     private String selectedKey;
     private final ValueSelectedHandler<E> valueSelectedHandler;
+    private boolean updateFormOnChange;
 
     SelectListParameter(String formFieldName, OptionList<E> options, 
             ValueSelectedHandler<E> valueSelectedHandler, E initialValue) {
@@ -148,6 +149,20 @@ public class SelectListParameter<E> extends AbstractCriterionParameter {
     @Override
     void validate(ValidationAware action) {
         // no-op; no validations necessary on select list
+    }
+
+    /**
+     * @return the updateFormOnChange
+     */
+    public boolean getUpdateFormOnChange() {
+        return updateFormOnChange;
+    }
+
+    /**
+     * @param updateFormOnChange the updateFormOnChange to set
+     */
+    public void setUpdateFormOnChange(boolean updateFormOnChange) {
+        this.updateFormOnChange = updateFormOnChange;
     }
 
 }
