@@ -130,20 +130,22 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean removeSurvivalValueDefinitionCalled;
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
-    
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) {
-        loadClinicalAnnotationCalled = true;
-    }
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException {
         loadClinicalAnnotationCalled = true;
+        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+            throw new ValidationException(new ValidationResult());
+        }
     }
 
     public void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
         throws ValidationException {
         reLoadClinicalAnnotationCalled = true;
+        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+            throw new ValidationException(new ValidationResult());
+        }
     }
 
     public void save(StudyConfiguration studyConfiguration) {
@@ -154,8 +156,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
-    public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
+    public void delete(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
         deleteCalled = true;
+        if (studyConfiguration.getStudy().getShortTitleText().equalsIgnoreCase("Invalid")) {
+            throw new ValidationException(new ValidationResult());
+        }
     }
 
     public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {

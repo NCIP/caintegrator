@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
@@ -329,7 +330,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
            } else if (value instanceof NumericAnnotationValue) {
                NumericAnnotationValue numericVal = (NumericAnnotationValue) value;
                values.add(numericVal.getNumericValue());
-           }
+           } else if (value instanceof DateAnnotationValue) {
+               DateAnnotationValue dateVal = (DateAnnotationValue) value;
+               values.add(dateVal.getDateValue());
+       }
        }
         return values;
     }

@@ -107,6 +107,12 @@
             <result name="input" type="tiles">editStudy</result>
             <result name="error" type="tiles">editStudy</result>
         </action>
+                      
+        <action name="deleteClinicalSource" method="delete" class="loadClinicalSourceAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
         
         <action name="createNewDefinition" method="createNewDefinition" class="defineFileColumnAction">
             <result type="tiles">editFileColumn</result>
