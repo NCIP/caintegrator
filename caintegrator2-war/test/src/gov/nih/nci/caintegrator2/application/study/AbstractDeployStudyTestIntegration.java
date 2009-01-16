@@ -371,7 +371,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
                     getSubjectAnnotationFile().getName());
         sourceConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         assertTrue(sourceConfiguration.isLoadable());
-        service.loadClinicalAnnotation(studyConfiguration);
+        service.loadClinicalAnnotation(studyConfiguration, sourceConfiguration);
         assertTrue(sourceConfiguration.isCurrentlyLoaded());
         logEnd();
     }

@@ -173,6 +173,31 @@ public class StudyConfiguration implements PersistentObject {
     public void addClinicalConfiguration(AbstractClinicalSourceConfiguration configuration) {
         this.clinicalConfigurationCollection.add(configuration);
     }
+    
+    /**
+     * Deletes a clinical source configuration from the collection.
+     * @param clinicalSourceConfiguration - Configuration file to remove from the list.
+     */
+    public void deleteClinicalSourceConfiguration(AbstractClinicalSourceConfiguration clinicalSourceConfiguration) {
+        identifierToSubjectAssignmentMap = null;
+        this.clinicalConfigurationCollection.remove(clinicalSourceConfiguration);
+    }
+    
+    /**
+     * Updates the mapping of subjectAssignment (remove empty subjectAssignment from the collection).
+     * @return a list of obsolete subject assignments
+     */
+    public List<StudySubjectAssignment> removeObsoleteSubjectAssignment() {
+        List<StudySubjectAssignment> removeList = new ArrayList<StudySubjectAssignment>();
+        identifierToSubjectAssignmentMap = null;
+        for (StudySubjectAssignment studySubjectAssignment : getStudy().getAssignmentCollection()) {
+            if (studySubjectAssignment.isObsolete()) {
+                removeList.add(studySubjectAssignment);
+            }
+        }
+        getStudy().getAssignmentCollection().removeAll(removeList);
+        return removeList;
+    }
 
     /**
      * @return the visibility

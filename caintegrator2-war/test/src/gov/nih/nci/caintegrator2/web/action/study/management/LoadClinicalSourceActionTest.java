@@ -111,14 +111,29 @@ public class LoadClinicalSourceActionTest {
 
     @Test
     public void testExecute() {
+        action.getStudyConfiguration().getStudy().setShortTitleText("Invalid");
+        assertEquals(Action.ERROR, action.execute());
+        action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(studyManagementServiceStub.loadClinicalAnnotationCalled);
     }
 
     @Test
-    public void reLoad() {
+    public void testReLoad() {
+        action.getStudyConfiguration().getStudy().setShortTitleText("Invalid");
+        assertEquals(Action.ERROR, action.reLoad());
+        action.getStudyConfiguration().getStudy().setShortTitleText("");
         assertEquals(Action.SUCCESS, action.reLoad());
         assertTrue(studyManagementServiceStub.reLoadClinicalAnnotationCalled);
+    }
+
+    @Test
+    public void testDelete() {
+        action.getStudyConfiguration().getStudy().setShortTitleText("Invalid");
+        assertEquals(Action.ERROR, action.delete());
+        action.getStudyConfiguration().getStudy().setShortTitleText("");
+        assertEquals(Action.SUCCESS, action.delete());
+        assertTrue(studyManagementServiceStub.deleteCalled);
     }
 
 }

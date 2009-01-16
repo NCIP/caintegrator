@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -97,7 +96,6 @@ import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentExceptio
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -120,19 +118,16 @@ public interface StudyManagementService {
     void delete(StudyConfiguration studyConfiguration);
     
     /**
-     * Deletes abstractPermissibleValues.
-     * 
-     * @param abstractPermissibleValues to delete
-     */
-    void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues);
-    
-    /**
      * Deletes a clinical source.
      * 
+     * @param studyConfiguration study configuration of the clinical source
      * @param clinicalSource clinical source to delete
+     * @throws ValidationException fail to reload
      */
-    void delete(DelimitedTextClinicalSourceConfiguration clinicalSource);
-    
+    void delete(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSource)
+        throws ValidationException;
+
     /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
      * file provided as an argument to be removed after completion of this method.
@@ -170,14 +165,6 @@ public interface StudyManagementService {
     StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
 
     /**
-     * Loads clinical annotations given a study configuration.
-     * 
-     * @param studyConfiguration study configuration to load
-     * @throws ValidationException fail to load
-     */
-    void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
-
-    /**
      * Loads a specific clinical annotation from study configuration.
      * 
      * @param studyConfiguration study configuration to load
@@ -196,7 +183,7 @@ public interface StudyManagementService {
      */
     void reLoadClinicalAnnotation(StudyConfiguration studyConfiguration)
         throws ValidationException;
-
+    
     /**
      * Deploys or redeploys a study.
      * 

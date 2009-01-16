@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -138,19 +137,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void refreshAnnotationDefinitions() {
-        for (StudySubscription studySubscription : getWorkspace().getSubscriptionCollection()) {
-            for (AnnotationDefinition annotationDefinition
-                : studySubscription.getStudy().getSubjectAnnotationCollection()) {
-                dao.refresh(annotationDefinition);
-            }
-        }
-        dao.refresh(getWorkspace());
     }
     
     /**

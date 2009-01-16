@@ -159,20 +159,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         dao.delete(studyConfiguration);
     }
 
-    /**
-     *  {@inheritDoc}
-     */
-    public void delete(Collection<AbstractPermissibleValue> abstractPermissibleValues) {
-        dao.removeObjects(abstractPermissibleValues);
-    }
-
-    /**
-     *  {@inheritDoc}
-     */
-    public void delete(DelimitedTextClinicalSourceConfiguration clinicalSource) {
-        dao.delete(clinicalSource);
-    }
-
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }
@@ -254,18 +240,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void loadClinicalAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
-        //deleteClinicalAnnotation(studyConfiguration);
-        for (AbstractClinicalSourceConfiguration configuration 
-                : studyConfiguration.getClinicalConfigurationCollection()) {
-            configuration.loadAnnontation();
-        }
-        save(studyConfiguration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
         throws ValidationException {
@@ -282,8 +256,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 : studyConfiguration.getClinicalConfigurationCollection()) {
             configuration.reLoadAnnontation();
         }
+        dao.removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
+        refreshAnnotationDefinitions(studyConfiguration.getStudy());
         save(studyConfiguration);
-        getWorkspaceService().refreshAnnotationDefinitions();
+    }
+    
+    private void refreshAnnotationDefinitions(Study study) {
+        for (AnnotationDefinition annotationDefinition : study.getSubjectAnnotationCollection()) {
+            dao.refresh(annotationDefinition);
+        }
     }
     
     private void deleteClinicalAnnotation(StudyConfiguration studyConfiguration) {
@@ -294,7 +275,18 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             }
             studySubjectAssignment.getSubjectAnnotationCollection().clear();
         }
-        study.setSubjectAnnotationCollection(null);
+        study.getSubjectAnnotationCollection().clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration,
+            AbstractClinicalSourceConfiguration clinicalSource) throws ValidationException {
+        deleteClinicalAnnotation(studyConfiguration);
+        studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSource);
+        dao.delete(clinicalSource);
+        reLoadClinicalAnnotation(studyConfiguration);
     }
     
     private void persist(StudyConfiguration studyConfiguration) {
