@@ -143,54 +143,40 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private void retrieveSubjectGroups(StudySubscription subscription, 
                                        Collection<SubjectGroup> subjectGroupCollection) {
         // Up Regulated
-        SubjectGroup upRegulatedGroup = retrieveUpRegulatedGroup(subscription);
+        SubjectGroup upRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " > " 
+                                                                + kmParameters.getOverexpressedFoldChangeNumber() 
+                                                                + "-fold overexpressed",
+                                                                RegulationTypeEnum.UP,
+                                                                subscription);
         subjectGroupCollection.add(upRegulatedGroup);
         upRegulatedGroup.setColor(getColor(subjectGroupCollection.size()));
         
         // Down Regulated
-        SubjectGroup downRegulatedGroup = retrieveDownRegulatedGroup(subscription);
+        SubjectGroup downRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " < " 
+                                                        + kmParameters.getUnderexpressedFoldChangeNumber() 
+                                                        + "-fold underexpressed",
+                                                        RegulationTypeEnum.DOWN,
+                                                        subscription);
         subjectGroupCollection.add(downRegulatedGroup);
         downRegulatedGroup.setColor(getColor(subjectGroupCollection.size()));
         
         // Intermediate
-        SubjectGroup intermediateGroup = retrieveIntermediateGroup(subscription);
+        SubjectGroup intermediateGroup = retrieveGroup("Intermediate",
+                                                        RegulationTypeEnum.UNCHANGED,
+                                                        subscription);
         subjectGroupCollection.add(intermediateGroup);
         intermediateGroup.setColor(getColor(subjectGroupCollection.size()));
     }
     
-    private SubjectGroup retrieveUpRegulatedGroup(StudySubscription subscription) {
-        SubjectGroup upRegulatedGroup = new SubjectGroup();
-        upRegulatedGroup.setName(kmParameters.getGeneSymbol() + " > " 
-                                 + kmParameters.getOverexpressedFoldChangeNumber() 
-                                 + "-fold overexpressed");
+    private SubjectGroup retrieveGroup(String groupName, RegulationTypeEnum regulationType, 
+                                       StudySubscription subscription) {
+        SubjectGroup group = new SubjectGroup();
+        group.setName(groupName);
         Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
-        criterionCollection.add(retrieveUpRegulatedFoldChangeCriterion());
-        Collection<ResultRow> upRegulatedRows = retrieveFoldChangeRows(subscription, criterionCollection);
-        assignRowsToGroup(upRegulatedGroup, upRegulatedRows);
-        return upRegulatedGroup;
-    }
-    
-    private SubjectGroup retrieveDownRegulatedGroup(StudySubscription subscription) {
-        SubjectGroup downRegulatedGroup = new SubjectGroup();
-        downRegulatedGroup.setName(kmParameters.getGeneSymbol() + " < " 
-                                 + kmParameters.getUnderexpressedFoldChangeNumber() 
-                                 + "-fold underexpressed");
-        Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
-        criterionCollection.add(retrieveDownRegulatedFoldChangeCriterion());
-        Collection<ResultRow> downRegulatedRows = retrieveFoldChangeRows(subscription, criterionCollection);
-        assignRowsToGroup(downRegulatedGroup, downRegulatedRows);
-        return downRegulatedGroup;
-    }
-    
-    private SubjectGroup retrieveIntermediateGroup(StudySubscription subscription) {
-        SubjectGroup intermediateGroup = new SubjectGroup();
-        intermediateGroup.setName("Intermediate");
-        Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
-        criterionCollection.add(retrieveDownRegulatedFoldChangeCriterion());
-        criterionCollection.add(retrieveUpRegulatedFoldChangeCriterion());
-        Collection<ResultRow> intermediateRows = retrieveFoldChangeRows(subscription, criterionCollection);
-        assignRowsToGroup(intermediateGroup, intermediateRows);
-        return intermediateGroup;
+        criterionCollection.add(retrieveFoldChangeCriterion(regulationType));
+        Collection<ResultRow> rows = retrieveFoldChangeRows(subscription, criterionCollection);
+        assignRowsToGroup(group, rows);
+        return group;
     }
 
     private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
@@ -204,18 +190,15 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         }
     }
     
-    private FoldChangeCriterion retrieveUpRegulatedFoldChangeCriterion() {
+    private FoldChangeCriterion retrieveFoldChangeCriterion(RegulationTypeEnum regulationType) {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.UP);
+        criterion.setRegulationType(regulationType);
         criterion.setFoldsUp(kmParameters.getOverexpressedFoldChangeNumber().floatValue());
-        criterion.setGeneSymbol(kmParameters.getGeneSymbol());
-        return criterion;
-    }
-    
-    private FoldChangeCriterion retrieveDownRegulatedFoldChangeCriterion() {
-        FoldChangeCriterion criterion = new FoldChangeCriterion();
-        criterion.setRegulationType(RegulationTypeEnum.DOWN);
-        criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
+        if (RegulationTypeEnum.UNCHANGED.equals(regulationType)) {
+            criterion.setFoldsDown(1 / kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
+        } else {
+            criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
+        }
         criterion.setGeneSymbol(kmParameters.getGeneSymbol());
         return criterion;
     }

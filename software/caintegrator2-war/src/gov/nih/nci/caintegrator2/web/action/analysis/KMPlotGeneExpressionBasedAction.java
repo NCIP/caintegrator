@@ -115,10 +115,12 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     }
     
     private void retrieveFormValues() {
-        if (NumberUtils.isNumber(getForm().getOverexpressedNumber())) {
+        if (NumberUtils.isNumber(getForm().getOverexpressedNumber())
+            && Float.valueOf(getForm().getOverexpressedNumber()) >= 1) {
             kmPlotParameters.setOverexpressedFoldChangeNumber(Float.valueOf(getForm().getOverexpressedNumber()));
         }
-        if (NumberUtils.isNumber(getForm().getUnderexpressedNumber())) {
+        if (NumberUtils.isNumber(getForm().getUnderexpressedNumber()) 
+            && Float.valueOf(getForm().getUnderexpressedNumber()) >= 1) {
             kmPlotParameters.setUnderexpressedFoldChangeNumber(Float.valueOf(getForm().getUnderexpressedNumber()));
         }
         kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());

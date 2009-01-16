@@ -108,11 +108,11 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
             isValid = false;
         }
         if (underexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Under Expressed Fold Change value is not a valid number.");
+            getErrorMessages().add("Under Expressed Fold Change value is not a valid number, must be >= 1.");
             isValid = false;
         }
         if (overexpressedFoldChangeNumber == null) {
-            getErrorMessages().add("Over Expressed Fold Change value is not a valid number.");
+            getErrorMessages().add("Over Expressed Fold Change value is not a valid number, must be >= 1.");
             isValid = false;
         }
         isValid = validateSurvivalValueDefinition(isValid);
