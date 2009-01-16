@@ -354,23 +354,40 @@ public class QueryFormTest {
         assertTrue(criterionRow.getCriterion() instanceof FoldChangeCriterion);
         assertEquals(3, criterionRow.getParameters().size());
         TextFieldParameter geneSymbolParameter = ((TextFieldParameter) criterionRow.getParameters().get(0));
+        SelectListParameter<RegulationTypeEnum> regulationParameter = ((SelectListParameter<RegulationTypeEnum>) criterionRow.getParameters().get(1));
         geneSymbolParameter.setValue("EGFR");
-        ((SelectListParameter<String>) criterionRow.getParameters().get(1)).setValue("Up");
-        TextFieldParameter foldsParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
-        foldsParameter.setValue("2.0");
+        regulationParameter.setValue(RegulationTypeEnum.UP.getValue());
+        TextFieldParameter foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
+        foldsUpParameter.setValue("2.0");
         FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterionRow.getCriterion();
         assertEquals("EGFR", foldChangeCriterion.getGeneSymbol());
         assertEquals(RegulationTypeEnum.UP, foldChangeCriterion.getRegulationType());
-        assertEquals(2.0, foldChangeCriterion.getFolds(), 0.0);
+        assertEquals(2.0, foldChangeCriterion.getFoldsUp(), 0.0);
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
+        
+        regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
+        TextFieldParameter foldsDownParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
+        foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(3));
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
-        foldsParameter.setValue("not a number");
-        assertEquals("not a number", foldsParameter.getValue());
-        assertEquals(2.0, foldChangeCriterion.getFolds(), 0.0);
+        foldsUpParameter.setValue("not a number");
+        assertEquals("not a number", foldsUpParameter.getValue());
+        assertEquals(2.0, foldChangeCriterion.getFoldsUp(), 0.0);
+        foldsDownParameter.setValue("not a number");
+        assertEquals("not a number", foldsDownParameter.getValue());
+        assertEquals(2.0, foldChangeCriterion.getFoldsDown(), 0.0);
         queryForm.validate(validationAware);
         assertTrue(validationAware.hasActionErrors());
+        
+        regulationParameter.setValue(RegulationTypeEnum.UP.getValue());
+        assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
+        regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
+        assertEquals(4, criterionRow.getParameters().size());
+        regulationParameter.setValue(RegulationTypeEnum.DOWN.getValue());
+        assertEquals(3, criterionRow.getParameters().size());
+        regulationParameter.setValue(RegulationTypeEnum.UNCHANGED.getValue());
+        assertEquals(4, criterionRow.getParameters().size());
     }
 
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
@@ -492,7 +509,7 @@ public class QueryFormTest {
         compoundCriterion.getCriterionCollection().add(stringCriterion);
 
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
-        foldChangeCriterion.setFolds(3.0f);
+        foldChangeCriterion.setFoldsDown(3.0f);
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
         foldChangeCriterion.setId(2L);
         compoundCriterion.getCriterionCollection().add(foldChangeCriterion);

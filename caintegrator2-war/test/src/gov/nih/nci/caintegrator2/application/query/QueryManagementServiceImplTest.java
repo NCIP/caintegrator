@@ -210,12 +210,22 @@ public class QueryManagementServiceImplTest {
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
-        foldChangeCriterion.setFolds(1.0f);
+        foldChangeCriterion.setFoldsUp(1.0f);
         foldChangeCriterion.setGeneSymbol("GENE");
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP);
         query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
+        foldChangeCriterion.setFoldsDown(1.0f);
+        foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(0, result.getRowCollection().size());
+        foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP_OR_DOWN);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(1, result.getRowCollection().size());
+        foldChangeCriterion.setRegulationType(RegulationTypeEnum.UNCHANGED);
+        result = queryManagementService.executeGenomicDataQuery(query);
+        assertEquals(0, result.getRowCollection().size());
     }
 
     

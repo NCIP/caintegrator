@@ -56,7 +56,8 @@
                 <key column="ID" />
                 <!-- Attributes mapping for the FoldChangeCriterion class -->
                 <property name="geneSymbol" type="string" column="GENE_SYMBOL"/>
-                <property name="folds" type="float" column="FOLDS"/>
+                <property name="foldsUp" type="float" column="FOLDS_UP"/>
+                <property name="foldsDown" type="float" column="FOLDS_DOWN"/>
                 <property name="regulationType" type="RegulationTypeEnum" column="REGULATION_TYPE"/>
                 <!-- Associations mapping for the FoldChangeCriterion class -->
                 <set name="compareToSamples" table="FOLD_CHANGE_CRITERION_COMPARE_TO_SAMPLES" lazy="true" cascade="save-update,merge" >

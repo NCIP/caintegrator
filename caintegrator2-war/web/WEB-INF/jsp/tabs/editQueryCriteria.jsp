@@ -73,6 +73,7 @@
                                                 listKey="key"
                                                 listValue="displayValue"
                                                 value="value"
+                                                onchange="if (%{updateFormOnChange}) {this.form.selectedAction.value = 'updateCriteria'; this.form.submit();}"
                                                 theme="simple" />
                                         </s:elseif>
                                         <s:elseif test="fieldType == 'multiselect'">

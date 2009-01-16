@@ -179,13 +179,30 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
 
     private boolean isFoldChangeMatch(Float foldChangeValue) {
-        if (RegulationTypeEnum.UP.equals(criterion.getRegulationType())) {
-            return foldChangeValue >= criterion.getFolds();
-        } else if (RegulationTypeEnum.DOWN.equals(criterion.getRegulationType())) {
-            return foldChangeValue <= (1  / criterion.getFolds());
-        } else {
-            throw new IllegalStateException("Illegal regulation type: " + criterion.getRegulationType());
+        switch (criterion.getRegulationType()) {
+            case UP:
+                return isFoldsUpMatch(foldChangeValue);
+            case DOWN:
+                return isFoldsDownMatch(foldChangeValue);
+            case UP_OR_DOWN:
+                return isFoldsUpMatch(foldChangeValue) || isFoldsDownMatch(foldChangeValue);
+            case UNCHANGED:
+                return !(isFoldsUpMatch(foldChangeValue) || isFoldsDownMatch(foldChangeValue));
+            default:
+                throw new IllegalStateException("Illegal regulation type: " + criterion.getRegulationType());
         }
+    }
+
+    private boolean isFoldsDownMatch(Float foldChangeValue) {
+        if (RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType())) {
+            return foldChangeValue >= criterion.getFoldsDown();
+        } else {
+            return foldChangeValue <= (1  / criterion.getFoldsDown());
+        }
+    }
+
+    private boolean isFoldsUpMatch(Float foldChangeValue) {
+        return foldChangeValue >= criterion.getFoldsUp();
     }
 
     private Collection<ArrayData> getCandidateArrayDatas(Study study, ReporterTypeEnum reporterType) {

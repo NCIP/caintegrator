@@ -12,24 +12,11 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion {
 
     private static final long serialVersionUID = 1L;
     
-    private Float folds;
+    private Float foldsUp;
+    private Float foldsDown;
     private RegulationTypeEnum regulationType;
     private String geneSymbol;
     private Set<Sample> compareToSamples = new HashSet<Sample>();
-    
-    /**
-     * @return the folds
-     */
-    public Float getFolds() {
-        return folds;
-    }
-    
-    /**
-     * @param folds the folds to set
-     */
-    public void setFolds(Float folds) {
-        this.folds = folds;
-    }
     
     /**
      * @return the compareToSamples
@@ -69,6 +56,34 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion {
      */
     public void setRegulationType(RegulationTypeEnum regulationType) {
         this.regulationType = regulationType;
+    }
+
+    /**
+     * @return the foldsUp
+     */
+    public Float getFoldsUp() {
+        return foldsUp;
+    }
+
+    /**
+     * @param foldsUp the foldsUp to set
+     */
+    public void setFoldsUp(Float foldsUp) {
+        this.foldsUp = foldsUp;
+    }
+
+    /**
+     * @return the foldsDown
+     */
+    public Float getFoldsDown() {
+        return foldsDown;
+    }
+
+    /**
+     * @param foldsDown the foldsDown to set
+     */
+    public void setFoldsDown(Float foldsDown) {
+        this.foldsDown = foldsDown;
     }
 
 }

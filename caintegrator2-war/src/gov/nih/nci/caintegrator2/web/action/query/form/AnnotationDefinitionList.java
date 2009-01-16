@@ -110,7 +110,7 @@ class AnnotationDefinitionList {
         for (AnnotationDefinition definition : definitions) {
             names.add(definition.getDisplayName());
             nameToDefinitionMap.put(definition.getDisplayName(), definition);
-            Cai2Util.loadCollections(definition);
+            Cai2Util.loadCollection(definition.getPermissibleValueCollection());
         }
         Collections.sort(names);
     }
