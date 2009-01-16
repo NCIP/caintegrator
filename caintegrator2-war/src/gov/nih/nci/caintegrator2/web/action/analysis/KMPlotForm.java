@@ -85,18 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
+ * Holder for the different types of KM Plot Forms.
  */
 public class KMPlotForm {
-    
-    private KMPlotTypeEnum plotType;
+
     private KMPlotAnnotationBasedActionForm annotationBasedForm = new KMPlotAnnotationBasedActionForm();
     private KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm = new KMPlotGeneExpressionBasedActionForm();
     
@@ -104,19 +103,15 @@ public class KMPlotForm {
         new HashMap<String, SurvivalValueDefinition>();
     private String survivalValueDefinitionId;
 
+    /**
+     * Clears all forms and the KM Plots out of the session.
+     */
+    public void clear() {
+        SessionHelper.clearKmPlots();
+        annotationBasedForm.clear();
+        geneExpressionBasedForm.clear();
+    }
     
-    /**
-     * @return the plotType
-     */
-    public KMPlotTypeEnum getPlotType() {
-        return plotType;
-    }
-    /**
-     * @param plotType the plotType to set
-     */
-    public void setPlotType(KMPlotTypeEnum plotType) {
-        this.plotType = plotType;
-    }
     /**
      * @return the annotationBasedForm
      */
