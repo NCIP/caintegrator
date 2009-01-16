@@ -152,11 +152,11 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
     @SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity" }) // Type checking and casting
     public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
         ValueDomain valueDomain = new ValueDomain();
+        // Satish Patel informed me that the cadsrApi clears out the SecurityContext after they're done with it,
+        // they are working on a fix but as a workaround I need to store the context and set it again after
+        // I am done with all of the caDSR domain objects.  --TJ
+        SecurityContext originalContext = SecurityContextHolder.getContext();
         try {
-            // Satish Patel informed me that the cadsrApi clears out the SecurityContext after they're done with it,
-            // they are working on a fix but as a workaround I need to store the context and set it again after
-            // I am done with all of the caDSR domain objects.  --TJ
-            SecurityContext originalContext = SecurityContextHolder.getContext();
             // Won't have to provide a URL when it goes from stage to production.
             ApplicationService cadsrApi = caDsrApplicationServiceFactory.retrieveCaDsrApplicationService(caDsrUrl);
             
@@ -192,6 +192,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             SecurityContextHolder.setContext(originalContext);
             return valueDomain;
         } catch (Exception e) {
+            SecurityContextHolder.setContext(originalContext);
             throw new ConnectionException("Couldn't connect to the caDSR server", e);
         }
     }
