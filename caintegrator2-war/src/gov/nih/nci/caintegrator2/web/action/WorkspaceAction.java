@@ -101,6 +101,7 @@ public class WorkspaceAction extends AbstractCaIntegrator2Action {
      * @return forward to workspace.
      */
     public String openWorkspace() {
+        getKmPlotForm().clear();
         if (getStudySubscription() != null) {
             if (getWorkspace().getDefaultSubscription() == null) {
                 getWorkspace().setDefaultSubscription(getStudySubscription());
