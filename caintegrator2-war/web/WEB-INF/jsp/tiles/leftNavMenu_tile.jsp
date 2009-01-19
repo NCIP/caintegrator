@@ -21,14 +21,14 @@
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
         <li class="stdnav">
-            <div><s:property value="study.shortTitleText"/></div>
+            <div><s:property value="currentStudy.shortTitleText"/></div>
             <ul>
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" />
                     <a href="${ homePageUrl }">Home</a>
                 </li>
                 <li class="stdnav">
                     <a href='<s:property value="#newQueryUrl" />'>
-                    Search <s:property value="study.shortTitleText"/></a>
+                    Search <s:property value="currentStudy.shortTitleText"/></a>
                 </li>
             </ul>
         </li>

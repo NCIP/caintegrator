@@ -10,7 +10,7 @@
     <!--/Page Help-->           
     
     <h1>Define Fields for Imaging Data</h1>
-    <h2>Study Name: <s:property value="study.shortTitleText" /></h2>
+    <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>
     <s:form action="saveImagingSource">
     <s:hidden name="studyConfiguration.id" />
     <s:hidden name="imagingSource.id" />
