@@ -19,8 +19,8 @@
     </s:else>
     <s:form>
         <s:hidden name="studyConfiguration.id"  />
-        <s:textfield label="Study Name" name="study.shortTitleText" />
-        <s:textarea label="Study Description" name="study.longTitleText" cols="40" rows="4" />
+        <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" />
+        <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" />
         
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">

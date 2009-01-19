@@ -124,6 +124,7 @@ public class CaIntegrator2ActionTest {
         assertNull(action.getDisplayableWorkspace());
         assertNull(action.getStudySubscription());
         assertNull(action.getStudy());
+        assertEquals(action.getStudy(), action.getCurrentStudy());
         assertNull(action.getQueryResult());
         assertNull(action.getGenomicDataQueryResult());
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());

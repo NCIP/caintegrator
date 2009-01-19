@@ -10,7 +10,7 @@
     <!--/Page Help-->           
     
     <h1>Define Fields for Clinical Data</h1>
-    <h2>Study Name: <s:property value="study.shortTitleText" /></h2>
+    <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>
     <s:form action="saveClinicalSource">
     <s:hidden name="studyConfiguration.id" />
     <s:hidden name="clinicalSource.id" />
