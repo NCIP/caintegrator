@@ -197,6 +197,14 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
             return null;
         }
     }
+    
+    /**
+     * Public wrapper for "getStudy()" so that JSP's can access the current study on the session through OGNL.
+     * @return the study
+     */
+    public Study getCurrentStudy() {
+        return getStudy();
+    }
 
     /**
      * @return the query form
