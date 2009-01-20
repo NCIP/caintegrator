@@ -134,6 +134,11 @@ abstract class AbstractKMPlotHandler {
                                                         survivalValueDefinition, 
                                                         queryManagementService, 
                                                         (KMGeneExpressionBasedParameters) kmParameters);
+        } else if (kmParameters instanceof KMQueryBasedParameters) {
+            return new QueryBasedKMPlotHandler(dao, 
+                    survivalValueDefinition, 
+                    queryManagementService, 
+                    (KMQueryBasedParameters) kmParameters);
         }
         throw new IllegalArgumentException("Unknown Parameter Type");         
     }

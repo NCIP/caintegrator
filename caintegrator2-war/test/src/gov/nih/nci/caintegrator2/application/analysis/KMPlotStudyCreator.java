@@ -374,7 +374,7 @@ public class KMPlotStudyCreator {
      * @param query
      * @return
      */
-    public QueryResult retrieveQueryResultForGeneExpressionBased(Query query) {
+    public QueryResult retrieveFakeQueryResults(Query query) {
         Study study = query.getSubscription().getStudy();
         QueryResult result = new QueryResult();
         result.setRowCollection(new HashSet<ResultRow>());
