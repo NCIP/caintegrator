@@ -230,4 +230,12 @@ public class QueryForm {
         getCriteriaGroup().processCriteriaChanges();
     }
 
+    /**
+     * Check if this is a saved query.
+     * @return boolean of is a saved query
+     */
+    public boolean isSavedQuery() {
+        return (getQuery().getId() != null);
+    }
+
 }

@@ -139,6 +139,13 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public void delete(Query query) {
+        dao.delete(query);
+    }
+
+    /**
      * @param dao the dao to set.
      */
     public void setDao(CaIntegrator2Dao dao) {

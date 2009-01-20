@@ -39,6 +39,16 @@
             onclick="document.manageQueryForm.selectedAction.value='saveQuery';document.manageQueryForm.submit();">
             <span class="btn_img"><span class="save">Save</span></span>
         </s:a></li>
+        <s:if test="queryForm.isSavedQuery()">
+            <li>
+                <s:url id="deleteUrl" action="manageQuery" includeParams="none">
+                    <s:param name="selectedAction" value="deleteQuery" />
+                </s:url>
+                <s:a href="#" cssClass="btn"
+                    onclick="return confirm('Delete this query.')">
+                    <span class="btn_img"><span class="cancel">Delete</span></span>
+            </s:a></li>
+        </s:if>
     </ul>
     </del>
     </div>

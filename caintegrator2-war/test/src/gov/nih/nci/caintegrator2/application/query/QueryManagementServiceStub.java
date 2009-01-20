@@ -95,12 +95,17 @@ import java.util.Collections;
 public class QueryManagementServiceStub implements QueryManagementService {
 
     public boolean saveCalled;
+    public boolean deleteCalled;
     public boolean executeCalled;
     public QueryResult QR;
     public boolean executeGenomicDataQueryCalled;
 
     public void save(Query query) {
         saveCalled = true;
+    }
+
+    public void delete(Query query) {
+        deleteCalled = true;
     }
     
     @SuppressWarnings("unchecked")
