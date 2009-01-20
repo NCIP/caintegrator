@@ -201,6 +201,20 @@ public class ManageQueryActionTest {
         manageQueryAction.setRowNumber("0");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals(0, manageQueryAction.getQueryForm().getCriteriaGroup().getRows().size());
+        
+        // test delete query
+        manageQueryAction.setSelectedAction("deleteQuery");
+        manageQueryAction.prepare();
+        manageQueryAction.validate();
+        manageQueryAction.getQueryForm().getQuery().setName("query name");
+        manageQueryAction.getQueryForm().getQuery().setId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.deleteCalled);
+        
 
         // test for invalid action
         manageQueryAction.setSelectedAction("invalid");
@@ -211,7 +225,6 @@ public class ManageQueryActionTest {
         assertFalse(manageQueryAction.acceptableParameterName("12345f678"));
         assertTrue(manageQueryAction.acceptableParameterName("NewQuery"));
     }
-    
 
     @Test
     public void testPostQueryResultExecuteMethods() {

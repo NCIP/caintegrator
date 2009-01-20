@@ -13,9 +13,9 @@
         <property name="reporterType" type="string" column="REPORTER_TYPE"/>
 		<property name="visibility" type="string" column="VISIBILITY"/>
 		<!-- Associations mapping for the Query class -->
-		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="save-update,merge"/>
+		<many-to-one name="compoundCriterion" class="gov.nih.nci.caintegrator2.domain.application.CompoundCriterion" column="COMPOUND_CRITERION_ID" unique="true" lazy="proxy" cascade="all"/>
 		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />
-		<set name="columnCollection" lazy="true" cascade="save-update,merge" >
+		<set name="columnCollection" lazy="true" cascade="all" >
 			<cache usage="read-write" />
 			<key column="QUERY_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.ResultColumn"/>

@@ -32,7 +32,7 @@
                         <s:param name="studyConfiguration.id" value="id" />
                     </s:url> 
                     <s:a href="%{editUrl}">Edit </s:a> | 
-                    <s:a href="%{deleteUrl}">Delete</s:a> 
+                    <s:a href="%{deleteUrl}" onclick="return confirm('This study will be deleted.')">Delete</s:a> 
                 </td>
             </tr>
         </s:iterator>
