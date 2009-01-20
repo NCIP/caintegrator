@@ -46,7 +46,7 @@
                 </s:url>
                 <s:a href="#" cssClass="btn"
                     onclick="return confirm('Delete this query.')">
-                    <span class="btn_img"><span class="cancel">Delete</span></span>
+                    <span class="btn_img"><span class="delete">Delete</span></span>
             </s:a></li>
         </s:if>
     </ul>
