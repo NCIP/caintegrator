@@ -85,97 +85,193 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
+
+import gov.nih.nci.caintegrator2.application.analysis.KMQueryBasedParameters;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Holder for the different types of KM Plot Forms.
+ * Action dealing with Kaplan-Meier Query Based plotting.
  */
-public class KMPlotForm {
+@SuppressWarnings("PMD.CyclomaticComplexity") // See retrieveFormSelectedValues()
+public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
 
-    private KMPlotAnnotationBasedActionForm annotationBasedForm = new KMPlotAnnotationBasedActionForm();
-    private KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm = new KMPlotGeneExpressionBasedActionForm();
-    private KMPlotQueryBasedActionForm queryBasedForm = new KMPlotQueryBasedActionForm();
-    
-    private Map<String, SurvivalValueDefinition> survivalValueDefinitions = 
-        new HashMap<String, SurvivalValueDefinition>();
-    private String survivalValueDefinitionId;
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Clears all forms and the KM Plots out of the session.
-     */
-    public void clear() {
-        SessionHelper.clearKmPlots();
-        annotationBasedForm.clear();
-        geneExpressionBasedForm.clear();
-        queryBasedForm.clear();
-    }
+    private KMQueryBasedParameters kmPlotParameters = new KMQueryBasedParameters();
     
     /**
-     * @return the annotationBasedForm
+     * {@inheritDoc}
      */
-    public KMPlotAnnotationBasedActionForm getAnnotationBasedForm() {
-        return annotationBasedForm;
-    }
-    /**
-     * @param annotationBasedForm the annotationBasedForm to set
-     */
-    public void setAnnotationBasedForm(KMPlotAnnotationBasedActionForm annotationBasedForm) {
-        this.annotationBasedForm = annotationBasedForm;
-    }
-    /**
-     * @return the survivalValueDefinitions
-     */
-    public Map<String, SurvivalValueDefinition> getSurvivalValueDefinitions() {
-        return survivalValueDefinitions;
-    }
-    /**
-     * @param survivalValueDefinitions the survivalValueDefinitions to set
-     */
-    public void setSurvivalValueDefinitions(Map<String, SurvivalValueDefinition> survivalValueDefinitions) {
-        this.survivalValueDefinitions = survivalValueDefinitions;
-    }
-    /**
-     * @return the survivalValueDefinitionId
-     */
-    public String getSurvivalValueDefinitionId() {
-        return survivalValueDefinitionId;
-    }
-    /**
-     * @param survivalValueDefinitionId the survivalValueDefinitionId to set
-     */
-    public void setSurvivalValueDefinitionId(String survivalValueDefinitionId) {
-        this.survivalValueDefinitionId = survivalValueDefinitionId;
-    }
-    /**
-     * @return the geneExpressionBasedForm
-     */
-    public KMPlotGeneExpressionBasedActionForm getGeneExpressionBasedForm() {
-        return geneExpressionBasedForm;
-    }
-    /**
-     * @param geneExpressionBasedForm the geneExpressionBasedForm to set
-     */
-    public void setGeneExpressionBasedForm(KMPlotGeneExpressionBasedActionForm geneExpressionBasedForm) {
-        this.geneExpressionBasedForm = geneExpressionBasedForm;
-    }
-
-    /**
-     * @return the queryBasedForm
-     */
-    public KMPlotQueryBasedActionForm getQueryBasedForm() {
-        return queryBasedForm;
-    }
-
-    /**
-     * @param queryBasedForm the queryBasedForm to set
-     */
-    public void setQueryBasedForm(KMPlotQueryBasedActionForm queryBasedForm) {
-        this.queryBasedForm = queryBasedForm;
+    @Override
+    public void prepare() {
+        super.prepare();
+        setDisplayTab(QUERY_TAB);
+        retrieveFormValues();
+        refreshObjectInstances();
+        populateQueries();
     }
     
     
+    private void retrieveFormValues() {
+        kmPlotParameters.setExclusiveGroups(getForm().isExclusiveGroups());
+        kmPlotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
+        if (!getForm().getSelectedQueryIDs().isEmpty()) {
+            kmPlotParameters.getQueries().clear();
+            for (String id : getForm().getSelectedQueryIDs()) {
+                Query query = new Query();
+                query.setId(Long.valueOf(id));
+                kmPlotParameters.getQueries().add(query);
+            }
+        }
+    }
+    
+    private void refreshObjectInstances() {
+        if (!kmPlotParameters.getQueries().isEmpty()) {
+            List <Query> newValues = new ArrayList<Query>();
+            for (Query value : kmPlotParameters.getQueries()) {
+                Query newValue = getStudyManagementService().getRefreshedStudyEntity(value);
+                newValues.add(newValue);
+            }
+            kmPlotParameters.getQueries().clear();
+            kmPlotParameters.getQueries().addAll(newValues);
+        }
+    }
+    
+    private void populateQueries() {
+        initialize();
+        loadSelectedQueries();
+    }
+
+    private void initialize() {
+        if (getStudySubscription() != null 
+            && getStudySubscription().getQueryCollection() != null
+            && getKmPlotForm().getQueryBasedForm().getSelectedQueries().isEmpty() 
+            && getKmPlotForm().getQueryBasedForm().getUnselectedQueries().isEmpty()) {
+            getKmPlotForm().getQueryBasedForm().setUnselectedQueries(new HashMap<String, Query>());
+            for (Query query 
+                    : getStudySubscription().getQueryCollection()) {
+                getKmPlotForm().getQueryBasedForm().getUnselectedQueries().
+                                                    put(query.getId().toString(), query);
+            }
+        }
+    }
+    
+    private void loadSelectedQueries() {
+        if (!kmPlotParameters.getQueries().isEmpty()) {
+            getKmPlotForm().getQueryBasedForm().getSelectedQueries().clear();
+            Set<Query> usedQueries = new HashSet<Query>();
+            for (Query query : kmPlotParameters.getQueries()) {
+                getKmPlotForm().getQueryBasedForm().getSelectedQueries().put(query.getId().toString(), query);
+                usedQueries.add(query);
+            }
+            loadAvailableQueries(usedQueries);
+        }
+    }
+
+    private void loadAvailableQueries(Set<Query> usedQueries) {
+        getKmPlotForm().getQueryBasedForm().getUnselectedQueries().clear();
+        for (Query query 
+                : getStudySubscription().getQueryCollection()) {
+            if (!usedQueries.contains(query)) {
+                getKmPlotForm().getQueryBasedForm().getUnselectedQueries().
+                                                put(query.getId().toString(), query);
+            }
+        }
+    }
+
+
+    /**
+     * Clears all input values and km plots on the session.
+     * @return Struts return value.
+     */
+    public String reset() {
+        clearQueryBasedKmPlot();
+        getForm().clear();
+        kmPlotParameters.clear();
+        return SUCCESS;
+    }
+
+    private void clearQueryBasedKmPlot() {
+        SessionHelper.setKmPlot(KMPlotTypeEnum.QUERY_BASED, null);
+    }
+
+    /**
+     * Used to bring up the input form.
+     * @return Struts return value.
+     */
+    public String input() {
+        setDisplayTab(QUERY_TAB);
+        return SUCCESS;
+    }
+
+    /**
+     * When the form is filled out and the user clicks "Create Plot" this calls the
+     * analysis service to generate a KMPlot object.
+     * @return Struts return value.
+     */
+    public String createPlot() {
+        if (!kmPlotParameters.validate()) {
+            for (String errorMessages : kmPlotParameters.getErrorMessages()) {
+                addActionError(errorMessages);
+            }
+            return INPUT;
+        }
+        KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+        SessionHelper.setKmPlot(KMPlotTypeEnum.QUERY_BASED, plot);
+        return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Map<String, String>> getAllStringPValues() {
+        if (SessionHelper.getQueryBasedKmPlot() != null) {
+            return retrieveAllStringPValues(SessionHelper.getQueryBasedKmPlot());
+        }
+        return new HashMap<String, Map<String, String>>();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCreatable() {
+        return true;
+    }
+
+
+    /**
+     * @return
+     */
+    private KMPlotQueryBasedActionForm getForm() {
+        return getKmPlotForm().getQueryBasedForm();
+    }
+
+    /**
+     * @return the kmPlotParameters
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public KMQueryBasedParameters getKmPlotParameters() {
+        return kmPlotParameters;
+    }
+
+    /**
+     * @param kmPlotParameters the kmPlotParameters to set
+     */
+    public void setKmPlotParameters(KMQueryBasedParameters kmPlotParameters) {
+        this.kmPlotParameters = kmPlotParameters;
+    }
+
 }

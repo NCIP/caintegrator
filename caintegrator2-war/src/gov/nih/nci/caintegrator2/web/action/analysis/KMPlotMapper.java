@@ -127,5 +127,13 @@ public class KMPlotMapper {
     public KMPlot getGeneExpressionBasedKmPlot() {
         return kmPlotMap.get(KMPlotTypeEnum.GENE_EXPRESSION);
     }
+    
+    /**
+     * Returns the Query based KMPlot.
+     * @return KMPlot object.
+     */
+    public KMPlot getQueryBasedKmPlot() {
+        return kmPlotMap.get(KMPlotTypeEnum.QUERY_BASED);
+    }
 
 }

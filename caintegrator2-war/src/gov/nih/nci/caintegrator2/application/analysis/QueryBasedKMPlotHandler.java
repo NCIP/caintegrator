@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,68 +83,98 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
+import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public KMPlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+/**
+ * KM Plot Handler for Query Based KM Plots.
+ */
+class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
 
-    public void save(Query query) {
-        saveCalled = true;
+    private final KMQueryBasedParameters kmParameters;
+    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
+    
+    QueryBasedKMPlotHandler(CaIntegrator2Dao dao, 
+                                 SurvivalValueDefinition survivalValueDefinition, 
+                                 QueryManagementService queryManagementService, 
+                                 KMQueryBasedParameters kmParameters) {
+        super(dao, survivalValueDefinition, queryManagementService);
+        this.kmParameters = kmParameters;
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public void delete(Query query) {
-        deleteCalled = true;
+    @Override
+    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
+        validateSurvivalValueDefinition();
+        KMPlotConfiguration configuration = new KMPlotConfiguration();
+        Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
+        retrieveSubjectGroups(subscription, subjectGroupCollection);
+        filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
+        return kmPlotService.generatePlot(configuration);
     }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
+
+    private void retrieveSubjectGroups(StudySubscription subscription, 
+                                       Collection<SubjectGroup> subjectGroupCollection) {
+        
+        for (Query query : kmParameters.getQueries()) {
+            SubjectGroup group = retrieveGroup(query);
+            subjectGroupCollection.add(group);
+            group.setColor(getColor(subjectGroupCollection.size()));
         }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return new GenomicDataQueryResult();
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
+        if (kmParameters.isAddPatientsNotInQueriesGroup()) {
+            SubjectGroup otherSubjectsGroup = retrieveOtherSubjectGroup(subscription);
+            subjectGroupCollection.add(otherSubjectsGroup);
+            otherSubjectsGroup.setColor(getColor(subjectGroupCollection.size()));
+        }
     }
     
+    private SubjectGroup retrieveGroup(Query query) {
+        SubjectGroup group = new SubjectGroup();
+        group.setName(query.getName());
+        Collection<ResultRow> rows = getQueryManagementService().execute(query).getRowCollection();
+        assignRowsToGroup(group, rows);
+        return group;
+    }
+
+    private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
+        for (ResultRow row : rows) {
+            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
+            if (!kmParameters.isExclusiveGroups() || !usedSubjects.contains(subjectAssignment)) {
+                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
+                group.getSurvivalData().add(subjectSurvivalData);
+                usedSubjects.add(subjectAssignment);
+            }
+        }
+    }
+
+    private SubjectGroup retrieveOtherSubjectGroup(StudySubscription subscription) {
+        SubjectGroup otherSubjectsGroup = new SubjectGroup();
+        otherSubjectsGroup.setName("All Others");
+        for (StudySubjectAssignment assignment : subscription.getStudy().getAssignmentCollection()) {
+            if (!usedSubjects.contains(assignment)) {
+                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(assignment);
+                otherSubjectsGroup.getSurvivalData().add(subjectSurvivalData);
+                usedSubjects.add(assignment);
+            }
+        }
+        return otherSubjectsGroup;
+    }
 }

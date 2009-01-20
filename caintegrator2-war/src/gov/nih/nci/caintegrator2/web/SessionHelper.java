@@ -257,6 +257,18 @@ public final class SessionHelper {
     }
     
     /**
+     * 
+     * @return the kmPlot on the ValueStack.
+     */
+    public static KMPlot getQueryBasedKmPlot() {
+        KMPlotMapper map = (KMPlotMapper) getSession().get(KM_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getQueryBasedKmPlot();
+        }
+        return null;
+    }
+    
+    /**
      * Clears all plots off the session.
      */
     public static void clearKmPlots() {

@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,68 +83,81 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import java.util.ArrayList;
+import java.util.List;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public KMPlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+/**
+ * Parameters used for creating a Query Based KaplanMeier plot. 
+ */
+public class KMQueryBasedParameters extends AbstractKMParameters {
 
-    public void save(Query query) {
-        saveCalled = true;
+    private final List<Query> queries = new ArrayList<Query>();
+    private boolean exclusiveGroups = false;
+    private boolean addPatientsNotInQueriesGroup = false;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        getErrorMessages().clear();
+        boolean isValid = true;
+        if (queries.size() < 2) {
+            getErrorMessages().add("Must select at least 2 queries to create plot.");
+            isValid = false;
+        }
+        isValid = validateSurvivalValueDefinition(isValid);
+        return isValid;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void delete(Query query) {
-        deleteCalled = true;
+    @Override
+    public void clear() {
+        queries.clear();
+        exclusiveGroups = false;
+        addPatientsNotInQueriesGroup = false;
+    }
+
+    /**
+     * @return the exclusiveGroups
+     */
+    public boolean isExclusiveGroups() {
+        return exclusiveGroups;
+    }
+
+    /**
+     * @param exclusiveGroups the exclusiveGroups to set
+     */
+    public void setExclusiveGroups(boolean exclusiveGroups) {
+        this.exclusiveGroups = exclusiveGroups;
+    }
+
+    /**
+     * @return the addPatientsNotInQueriesGroup
+     */
+    public boolean isAddPatientsNotInQueriesGroup() {
+        return addPatientsNotInQueriesGroup;
+    }
+
+    /**
+     * @param addPatientsNotInQueriesGroup the addPatientsNotInQueriesGroup to set
+     */
+    public void setAddPatientsNotInQueriesGroup(boolean addPatientsNotInQueriesGroup) {
+        this.addPatientsNotInQueriesGroup = addPatientsNotInQueriesGroup;
+    }
+
+    /**
+     * @return the queries
+     */
+    public List<Query> getQueries() {
+        return queries;
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return new GenomicDataQueryResult();
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
     
 }

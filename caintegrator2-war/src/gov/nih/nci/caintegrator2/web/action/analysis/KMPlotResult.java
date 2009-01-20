@@ -111,18 +111,7 @@ public class KMPlotResult implements Result {
      */
     public void execute(ActionInvocation invocation) throws IOException {
         if (KMPlotTypeEnum.checkType(type)) {
-            KMPlot kmPlot = null;
-            switch (KMPlotTypeEnum.getByValue(type)) {
-            case ANNOTATION_BASED:
-                kmPlot = SessionHelper.getAnnotationBasedKmPlot();
-                break;
-            case GENE_EXPRESSION:
-                kmPlot = SessionHelper.getGeneExpressionBasedKmPlot();
-                break;
-            default:
-                kmPlot = null;
-                break;
-            }
+            KMPlot kmPlot = retrieveKmPlot();
             if (kmPlot != null) {
                 HttpServletResponse response = ServletActionContext.getResponse();
                 kmPlot.writePlotImage(response.getOutputStream());
@@ -131,6 +120,25 @@ public class KMPlotResult implements Result {
             }
         }
         
+    }
+
+    private KMPlot retrieveKmPlot() {
+        KMPlot kmPlot;
+        switch (KMPlotTypeEnum.getByValue(type)) {
+        case ANNOTATION_BASED:
+            kmPlot = SessionHelper.getAnnotationBasedKmPlot();
+            break;
+        case GENE_EXPRESSION:
+            kmPlot = SessionHelper.getGeneExpressionBasedKmPlot();
+            break;
+        case QUERY_BASED:
+            kmPlot = SessionHelper.getQueryBasedKmPlot();
+            break;
+        default:
+            kmPlot = null;
+            break;
+        }
+        return kmPlot;
     }
 
     /**

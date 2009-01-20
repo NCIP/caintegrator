@@ -5,14 +5,6 @@
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script language="javascript">
-    function filterParam (field) {
-        return field.name == "selectedAction";
-    }
-
-</script>
-
-
 <div id="content"><!--Page Help-->
 
         <div class="pagehelp"><a href="#" class="help"></a></div>
@@ -28,6 +20,10 @@
         <s:url id="geneExpressionBasedUrl" action="kmPlotGeneExpressionBasedInput">
             <s:param name="displayTab">geneExpressionTab</s:param>
         </s:url>
+        
+         <s:url id="queryBasedUrl" action="kmPlotQueryBasedInput">
+            <s:param name="displayTab">queryTab</s:param>
+        </s:url>
 
             <s:tabbedPanel id="mainTabPanel" selectedTab="%{displayTab}"
                 templateCssPath="/common/css/TabContainer.css">
@@ -39,6 +35,10 @@
                 <s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
                 <s:div href="%{geneExpressionBasedUrl}" id="geneExpressionTab" label="For Gene Expression" theme="ajax" formId="kaplanMeierGeneExpressionInputForm" refreshOnShow="true" />
                 </s:form>
+                
+                
+                <s:div href="%{queryBasedUrl}" id="queryTab" label="For Queries" theme="ajax" refreshOnShow="true" />
+
             </s:tabbedPanel>
         <!--/Tab Box-->
 
