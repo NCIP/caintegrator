@@ -17,7 +17,11 @@ public enum KMPlotTypeEnum {
     /**
      * Gene Expression.
      */
-    GENE_EXPRESSION("geneExpression");
+    GENE_EXPRESSION("geneExpression"),
+    /**
+     * Query Based.
+     */
+    QUERY_BASED("queryBased");
     
     private static Map<String, KMPlotTypeEnum> valueToTypeMap = new HashMap<String, KMPlotTypeEnum>();
 
@@ -58,6 +62,7 @@ public enum KMPlotTypeEnum {
         Map<String, String> map = new HashMap<String, String>();
         map.put(KMPlotTypeEnum.ANNOTATION_BASED.getValue(), "Annotation Based");
         map.put(KMPlotTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression Based");
+        map.put(KMPlotTypeEnum.QUERY_BASED.getValue(), "Query Based");
         return map;
     }
     

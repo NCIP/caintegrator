@@ -114,7 +114,6 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
 
-//    private KMPlotAnnotationBasedActionForm kaplanMeierFormValues = new KMPlotAnnotationBasedActionForm();
     private KMAnnotationBasedParameters kmPlotParameters = new KMAnnotationBasedParameters();
     
     /**

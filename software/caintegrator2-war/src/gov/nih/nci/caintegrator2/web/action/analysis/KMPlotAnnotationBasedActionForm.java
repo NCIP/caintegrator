@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
 import java.util.Collection;
@@ -98,7 +97,6 @@ import java.util.Map;
  */
 public class KMPlotAnnotationBasedActionForm {
     
-    private KMPlot plot;
     private String annotationTypeSelection;
     private String selectedAnnotationId;
     private Collection <String> selectedValuesIds = new HashSet<String>();
@@ -114,7 +112,6 @@ public class KMPlotAnnotationBasedActionForm {
      * Clears all the variables to null.
      */
     public void clear() {
-        plot = null;
         annotationTypeSelection = null;
         selectedAnnotationId = null;
         selectedValuesIds = new HashSet<String>();
@@ -207,20 +204,6 @@ public class KMPlotAnnotationBasedActionForm {
      */
     public void setPermissibleValues(Map<String, String> permissibleValues) {
         this.permissibleValues = permissibleValues;
-    }
-
-    /**
-     * @return the plot
-     */
-    public KMPlot getPlot() {
-        return plot;
-    }
-
-    /**
-     * @param plot the plot to set
-     */
-    public void setPlot(KMPlot plot) {
-        this.plot = plot;
     }
 
 }

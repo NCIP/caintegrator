@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -237,6 +238,29 @@ public class AnalysisServiceTest {
         assertTrue(geneExpressionParameters.validate());
         runKMPlotTest(studyCreator, subscription, geneExpressionParameters);
         
+    }
+    
+    @Test
+    public void testCreateQueryBasedKMPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.QUERY_BASED;
+        KMQueryBasedParameters queryBasedParameters = new KMQueryBasedParameters();
+        queryBasedParameters.setExclusiveGroups(true);
+        queryBasedParameters.setAddPatientsNotInQueriesGroup(true);
+        Query query1 = new Query();
+        query1.setId(Long.valueOf(1));
+        query1.setSubscription(subscription);
+        queryBasedParameters.getQueries().add(query1);
+        Query query2 = new Query();
+        query2.setId(Long.valueOf(2));
+        query2.setSubscription(subscription);
+        queryBasedParameters.getQueries().add(query2);
+        queryBasedParameters.setSurvivalValueDefinition(studyCreator.getSurvivalValueDefinition());
+        assertTrue(queryBasedParameters.validate());
+        runKMPlotTest(studyCreator, subscription, queryBasedParameters);
     }
     
     

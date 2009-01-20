@@ -117,6 +117,10 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
      * Gene Expression Tab.
      */
     protected static final String GENE_EXPRESSION_TAB = "geneExpressionTab";
+    /**
+     * Query Tab.
+     */
+    protected static final String QUERY_TAB = "queryTab";
     private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
     private static final String KMPLOT_RESULT = "kmPlotResult";
     private StudyManagementService studyManagementService;

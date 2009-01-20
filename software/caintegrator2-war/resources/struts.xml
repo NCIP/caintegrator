@@ -405,6 +405,28 @@
                 <param name="type">geneExpression</param>
             </result>
         </action>
+        
+        <!-- Query Based Kaplan-Meier Actions -->
+        <action name="kmPlotQueryBasedInput" method="input" class="kmPlotQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
+        </action>
+        
+        <action name="resetQueryBasedKMPlot" method="reset" class="kmPlotQueryBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+       <action name="createQueryBasedKMPlot" method="createPlot" class="kmPlotQueryBasedAction">
+            <result type="tiles">kmPlot</result>
+            <result name="input" type="tiles">kmPlot</result>
+        </action>
+        
+        <action name="retrieveQueryKMPlot" method="retrievePlot" class="kmPlotQueryBasedAction">
+            <result name="kmPlotResult" type="kmPlotResult"> 
+                <param name="type">queryBased</param>
+            </result>
+        </action>
                
         <!-- Platform Actions -->
         <action name="managePlatforms" class="managePlatformsAction">
