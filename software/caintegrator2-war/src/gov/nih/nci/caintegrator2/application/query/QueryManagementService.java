@@ -110,12 +110,19 @@ public interface QueryManagementService {
      * @return the resulting data.
      */
     GenomicDataQueryResult executeGenomicDataQuery(Query query);
-    
+
     /**
      * Persists a query.
      * 
      * @param query item to update
      */
     void save(Query query);
+    
+    /**
+     * Deletes a query.
+     * 
+     * @param query item to update
+     */
+    void delete(Query query);
 
 }

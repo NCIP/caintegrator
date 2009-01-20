@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
 
     public boolean saveCalled;
+    public boolean deleteCalled;
     public boolean executeCalled;
     public QueryResult QR;
     public boolean executeGenomicDataQueryCalled;
@@ -103,6 +104,13 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
 
     public void save(Query query) {
         saveCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(Query query) {
+        deleteCalled = true;
     }
     
     @SuppressWarnings("unchecked")

@@ -320,6 +320,10 @@
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
         </action>
         
+        <action name="deleteQuery" method="deleteQuery" class="manageQueryAction">
+            <result type="tiles">homepage</result>
+        </action>
+        
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
             <result name="dicomFileResult" type="dicomFileResult"/>
             <result name="error" type="tiles">dicomJob</result>

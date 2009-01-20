@@ -127,7 +127,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private String selectedAction = "executeQuery";
     private String displayTab;
     private int rowNumber;
-    private Long queryId;
+    private Long queryId = null;
     private boolean export = false;
 
     /**
@@ -223,6 +223,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();
+        } else if ("deleteQuery".equals(selectedAction)) {
+            returnValue = deleteQuery();
         } else if ("updateCriteria".equals(selectedAction)) {
             updateCriteria();
             returnValue = SUCCESS;
@@ -260,7 +262,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } 
         return returnValue;
     }
-
 
     private void updateCriteria() {
         displayTab = CRITERIA_TAB;
@@ -415,6 +416,21 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         }
         queryManagementService.save(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
+        return SUCCESS;
+    }
+
+    /**
+     * Delete the current saved query.
+     * @return the Struts result.
+     */
+    public String deleteQuery() {
+        queryId = getQueryForm().getQuery().getId();
+        Query query = getQueryById();
+        getStudySubscription().getQueryCollection().remove(query);
+        queryManagementService.delete(query);
+        getWorkspaceService().saveUserWorkspace(getWorkspace());
+        getQueryForm().createQuery(getStudySubscription());
+        setQueryResult(null);
         return SUCCESS;
     }
 
