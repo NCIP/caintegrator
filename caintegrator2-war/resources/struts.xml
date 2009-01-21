@@ -435,6 +435,7 @@
         
         <action name="addPlatform" class="addPlatformAction">
             <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
         </action>
         
     </package>
