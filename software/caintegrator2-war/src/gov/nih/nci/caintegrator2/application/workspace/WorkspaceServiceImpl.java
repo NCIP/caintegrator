@@ -165,9 +165,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         for (StudySubscription subscription : workspace.getSubscriptionCollection()) {
             if (subscription.getStudy().equals(study)) {
                 workspace.getSubscriptionCollection().remove(subscription);
-                if (workspace.getDefaultSubscription().equals(subscription)) {
-                    workspace.setDefaultSubscription(null);
-                }
                 saveUserWorkspace(workspace);
                 dao.delete(subscription);
                 return;
