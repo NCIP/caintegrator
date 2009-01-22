@@ -157,7 +157,11 @@ final class ResultSetToGctConverter {
     private static String getDescription(AbstractReporter abstractReporter) {
         if (abstractReporter instanceof GeneExpressionReporter) {
             GeneExpressionReporter geneExpressionReporter = (GeneExpressionReporter) abstractReporter;
-            return "Gene: " + geneExpressionReporter.getGene().getSymbol();
+            if (geneExpressionReporter.getGene() != null) {
+                return "Gene: " + geneExpressionReporter.getGene().getSymbol();
+            } else {
+                return "N/A";
+            }
         } else {
             return "N/A";
         }
