@@ -37,8 +37,8 @@ public class ResultSetToGctConverterTest {
         checkLine(reader.readNext(), "#1.2");
         checkLine(reader.readNext(), "2", "3");
         checkLine(reader.readNext(), "NAME", "Description", "SAMPLE1", "SAMPLE2", "SAMPLE3");
-        checkLine(reader.readNext(), "REPORTER1", "Gene: REPORTER1", "1.1", "2.2", "3.3");
-        checkLine(reader.readNext(), "REPORTER2", "Gene: REPORTER2", "4.4", "5.5", "6.6");
+        checkLine(reader.readNext(), "REPORTER1", "Gene: GENE1", "1.1", "2.2", "3.3");
+        checkLine(reader.readNext(), "REPORTER2", "N/A", "4.4", "5.5", "6.6");
     }
 
     private void checkLine(String[] line, String... expecteds) {
@@ -52,17 +52,19 @@ public class ResultSetToGctConverterTest {
         addColumn(result, "SAMPLE1");
         addColumn(result, "SAMPLE2");
         addColumn(result, "SAMPLE3");
-        addRow(result, "REPORTER1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
-        addRow(result, "REPORTER2", new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
+        addRow(result, "REPORTER1", "GENE1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
+        addRow(result, "REPORTER2", null, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
         return result;
     }
 
-    private void addRow(GenomicDataQueryResult result, String reporterName, float[] values) {
+    private void addRow(GenomicDataQueryResult result, String reporterName, String geneName, float[] values) {
         GenomicDataResultRow row = new GenomicDataResultRow();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(reporterName);
-        reporter.setGene(new Gene());
-        reporter.getGene().setSymbol(reporterName);
+        if (geneName != null) {
+            reporter.setGene(new Gene());
+            reporter.getGene().setSymbol(geneName);
+        }
         row.setReporter(reporter);
         row.setValueCollection(new ArrayList<GenomicDataResultValue>());
         for (float value : values) {
