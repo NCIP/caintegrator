@@ -123,10 +123,10 @@ public class ArrayDataServiceTest {
         ArrayDataValues foldChangeValues = service.getFoldChangeValues(arrayDataMatrix, arrayDatas, reporters, controlArrayDatas);
         assertEquals(2, foldChangeValues.getAllArrayDatas().size());
         assertEquals(2, foldChangeValues.getAllReporters().size());
-        assertEquals(1.1, (float) foldChangeValues.getValue(data1, reporter1), 0.0001);
-        assertEquals(3.3, (float) foldChangeValues.getValue(data2, reporter1), 0.0001);
-        assertEquals(4.0, (float) foldChangeValues.getValue(data1, reporter2), 0.0001);
-        assertEquals(8.0, (float) foldChangeValues.getValue(data2, reporter2), 0.0001);
+        assertEquals(1.752, (float) foldChangeValues.getValue(data1, reporter1), 0.0001);
+        assertEquals(5.256, (float) foldChangeValues.getValue(data2, reporter1), 0.0001);
+        assertEquals(7.2886, (float) foldChangeValues.getValue(data1, reporter2), 0.0001);
+        assertEquals(14.5772, (float) foldChangeValues.getValue(data2, reporter2), 0.0001);
     }
     
     @Test

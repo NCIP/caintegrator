@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import org.apache.commons.math.stat.descriptive.rank.Median;
-
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 
@@ -98,6 +96,7 @@ class FoldChangeCalculator {
     private final ArrayDataValues values;
     private final ArrayDataValues controlValues;
     private final ArrayDataValues foldChangeValues = new ArrayDataValues();
+    private static final double NATURAL_LOG_OF_2 = Math.log(2);
 
     FoldChangeCalculator(ArrayDataValues values, ArrayDataValues controlValues) {
         this.values = values;
@@ -112,20 +111,25 @@ class FoldChangeCalculator {
     }
 
     private void calculate(AbstractReporter reporter) {
-        float medianOfControls = getMedianOfControls(reporter);
+        double controlValue = getControlValue(reporter);
         for (ArrayData arrayData : values.getAllArrayDatas()) {
-            float foldChange = values.getValue(arrayData, reporter) / medianOfControls;
+            float foldChange = (float) (values.getValue(arrayData, reporter) / controlValue);
             foldChangeValues.setValue(arrayData, reporter, foldChange);
         }
     }
 
-    private float getMedianOfControls(AbstractReporter reporter) {
-        double[] controlValuesForReporter = new double[controlValues.getAllArrayDatas().size()];
-        int index = 0;
+    private double getControlValue(AbstractReporter reporter) {
+        double valueProduct = 1.0f;
         for (ArrayData arrayData : controlValues.getAllArrayDatas()) {
-            controlValuesForReporter[index++] = controlValues.getValue(arrayData, reporter);
+            valueProduct *= controlValues.getValue(arrayData, reporter);
         }
-        return (float) new Median().evaluate(controlValuesForReporter);
+        double logSum = log2(valueProduct);
+        double logMean = logSum / controlValues.getAllArrayDatas().size();
+        return Math.pow(2, logMean);
+    }
+    
+    private double log2(double value) {
+        return Math.log(value) / NATURAL_LOG_OF_2;
     }
 
 }
