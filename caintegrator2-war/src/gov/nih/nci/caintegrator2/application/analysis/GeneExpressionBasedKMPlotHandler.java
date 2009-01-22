@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
@@ -206,6 +207,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private Collection<ResultRow> retrieveFoldChangeRows(StudySubscription subscription, 
                                   Collection<FoldChangeCriterion> foldChangeCriterionCollection) {
         Query query = new Query();
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
