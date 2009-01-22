@@ -195,7 +195,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
     private boolean isFoldsDownMatch(Float foldChangeValue) {
         if (RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType())) {
-            return foldChangeValue >= criterion.getFoldsDown();
+            return foldChangeValue <= criterion.getFoldsDown();
         } else {
             return foldChangeValue <= (1  / criterion.getFoldsDown());
         }
