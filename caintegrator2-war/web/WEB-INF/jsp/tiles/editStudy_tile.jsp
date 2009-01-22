@@ -64,11 +64,16 @@
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
             <td>
-                <s:if test="%{!currentlyLoaded}">
-                            Not Loaded
+                <s:if test="%{!loadable}">
+                            Definition Incomplete
                 </s:if>
                 <s:else>
+                    <s:if test="%{!currentlyLoaded}">
+                            Not Loaded
+                    </s:if>
+                    <s:else>
                             Loaded
+                    </s:else>
                 </s:else>  
             </td>
             <td>
