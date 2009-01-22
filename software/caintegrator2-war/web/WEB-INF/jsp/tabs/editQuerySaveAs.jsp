@@ -41,11 +41,11 @@
         </s:a></li>
         <s:if test="queryForm.isSavedQuery()">
             <li>
-                <s:url id="deleteUrl" action="manageQuery" includeParams="none">
+                <s:url id="deleteUrl" action="manageQuery">
                     <s:param name="selectedAction" value="deleteQuery" />
                 </s:url>
                 <s:a href="#" cssClass="btn"
-                    onclick="return confirm('Delete this query.')">
+                    onclick="document.manageQueryForm.selectedAction.value='deleteQuery';document.manageQueryForm.submit();">
                     <span class="btn_img"><span class="delete">Delete</span></span>
             </s:a></li>
         </s:if>
