@@ -435,6 +435,14 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
+    
+    <bean id="dataElementSearchAjaxUpdater" scope="session" class="gov.nih.nci.caintegrator2.web.ajax.DataElementSearchAjaxUpdater">
+        <dwr:remote javascript="DataElementSearchAjaxUpdater" />
+        <property name="studyManagementService">
+          <ref local="studyManagementService"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
 
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
