@@ -1,6 +1,8 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 
@@ -23,6 +25,15 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
      */
     public void setDateValue(Date dateValue) {
         this.dateValue = dateValue;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+        return formatter.format(dateValue);
     }
 
 }

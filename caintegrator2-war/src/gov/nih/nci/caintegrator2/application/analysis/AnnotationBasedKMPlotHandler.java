@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -182,7 +181,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
             Collection<SubjectGroup> subjectGroupCollection) {
         for (AbstractPermissibleValue plotGroupValue : plotGroupValues) {
             SubjectGroup subjectGroup = new SubjectGroup();
-            subjectGroup.setName(PermissibleValueUtil.getDisplayString(plotGroupValue));
+            subjectGroup.setName(plotGroupValue.toString());
             subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
             subjectGroupCollection.add(subjectGroup);
             subjectGroup.setColor(getColor(subjectGroupCollection.size()));

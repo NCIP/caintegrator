@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import static gov.nih.nci.caintegrator2.common.PermissibleValueUtil.getDisplayString;
-
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
@@ -175,13 +173,13 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
         orderedValues.addAll(criterion.getAnnotationDefinition().getPermissibleValueCollection());
         Comparator<AbstractPermissibleValue> valueComparator = new Comparator<AbstractPermissibleValue>() {
             public int compare(AbstractPermissibleValue value1, AbstractPermissibleValue value2) {
-                return getDisplayString(value1).compareTo(getDisplayString(value2));
+                return value1.toString().compareTo(value2.toString());
             }
         };
         Collections.sort(orderedValues, valueComparator);
         OptionList<AbstractPermissibleValue> options = new OptionList<AbstractPermissibleValue>();
         for (AbstractPermissibleValue value : orderedValues) {
-            options.addOption(getDisplayString(value), value);
+            options.addOption(value.toString(), value);
         }
         return options;
     }

@@ -36,6 +36,13 @@
     function filterParam (field) {
         return field.name == "selectedAction";
     }
+    
+    function deleteQuery () {
+        if (confirm('This query will be permanently deleted.')) {
+            document.manageQueryForm.selectedAction.value='deleteQuery';
+            document.manageQueryForm.submit();
+        }
+    }
 
 </script>
 

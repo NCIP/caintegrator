@@ -126,17 +126,17 @@ public class PermissibleValueUtilTest {
     public void testGetDisplayString() throws ParseException {
         StringPermissibleValue val1 = new StringPermissibleValue();
         val1.setStringValue("ABC");
-        assertTrue("ABC".equalsIgnoreCase(PermissibleValueUtil.getDisplayString(val1)));
+        assertTrue("ABC".equalsIgnoreCase(val1.toString()));
         
         NumericPermissibleValue val2 = new NumericPermissibleValue();
         val2.setNumericValue(Double.valueOf(123.0));
-        assertTrue("123.0".equalsIgnoreCase(PermissibleValueUtil.getDisplayString(val2)));
+        assertTrue("123.0".equalsIgnoreCase(val2.toString()));
         
         DatePermissibleValue val3 = new DatePermissibleValue();
         final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         Date date = (Date)formatter.parse("10-11-2008");  
         val3.setDateValue(date);
-        assertTrue(PermissibleValueUtil.getDisplayString(val3).equalsIgnoreCase("10-11-2008"));
+        assertTrue(val3.toString().equalsIgnoreCase("10-11-2008"));
     }
 
     /**
