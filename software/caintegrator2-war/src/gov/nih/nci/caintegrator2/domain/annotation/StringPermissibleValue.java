@@ -22,5 +22,13 @@ public class StringPermissibleValue extends AbstractPermissibleValue {
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return stringValue;
+    }
 
 }

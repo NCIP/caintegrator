@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
@@ -305,7 +304,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         for (AbstractPermissibleValue value 
               : kmPlotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
-                    PermissibleValueUtil.getDisplayString(value));
+                    value.toString());
         }
     }
     
