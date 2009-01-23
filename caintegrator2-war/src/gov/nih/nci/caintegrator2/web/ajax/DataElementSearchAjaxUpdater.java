@@ -303,18 +303,18 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     }
     
     private String retrieveRowOptions(int counter) {
-        String oddOrEven = "odd";
+        String bgcolor = "#f9f9f9";
         if (counter % 2 == 0) {
-            oddOrEven = "even";
+            bgcolor = "fff";
         }
         return "{ rowCreator:function(options) { "
             + " var row = document.createElement(\"tr\");"
-            + " row.setAttribute(\"class\",\"" + oddOrEven + "\");"
+            + " row.style.background=\"" + bgcolor + "\";"
             + "return row;"
             + "},"
             + "cellCreator:function(options) { "
             + "var td = document.createElement(\"td\");"
-            + "if (options.cellNum == 1) { td.setAttribute(\"nowrap\", true); }"
+            + "if (options.cellNum == 1) { td.style.whiteSpace=\"nowrap\"; }"
             + "return td;"
             + "},"
             + " escapeHtml:false }";
