@@ -53,19 +53,27 @@ public class NumericPermissibleValue extends AbstractPermissibleValue {
     public void setLowValue(Double lowValue) {
         this.lowValue = lowValue;
     }
-    
+
     /**
      * @return the numericValue
      */
     public Double getNumericValue() {
         return numericValue;
     }
-    
+
     /**
      * @param numericValue the numericValue to set
      */
     public void setNumericValue(Double numericValue) {
         this.numericValue = numericValue;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return numericValue.toString();
     }
 
 }

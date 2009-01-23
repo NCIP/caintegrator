@@ -22,5 +22,13 @@ public class NumericAnnotationValue extends AbstractAnnotationValue {
     public void setNumericValue(Double numericValue) {
         this.numericValue = numericValue;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return numericValue.toString();
+    }
 
 }

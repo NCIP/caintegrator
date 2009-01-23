@@ -86,15 +86,10 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -104,28 +99,6 @@ import java.util.Set;
 public final class AnnotationValueUtil {
 
     private AnnotationValueUtil() {
-        
-    }
-
-    /**
-     * @param abstractAnnotationValue different type of annotation
-     * @return String display string
-     */
-    public static String getDisplayString(AbstractAnnotationValue abstractAnnotationValue) {
-        if (abstractAnnotationValue instanceof StringAnnotationValue) {
-            StringAnnotationValue stringAnnotation = (StringAnnotationValue) abstractAnnotationValue;
-            return stringAnnotation.getStringValue();
-        }
-        if (abstractAnnotationValue instanceof NumericAnnotationValue
-                && ((NumericAnnotationValue) abstractAnnotationValue).getNumericValue() != null) {
-            return ((NumericAnnotationValue) abstractAnnotationValue).getNumericValue().toString();
-        }
-        if (abstractAnnotationValue instanceof DateAnnotationValue
-                && ((DateAnnotationValue) abstractAnnotationValue).getDateValue() != null) {
-            final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            return formatter.format(((DateAnnotationValue) abstractAnnotationValue).getDateValue());
-        }
-        return null;
         
     }
     
@@ -144,7 +117,7 @@ public final class AnnotationValueUtil {
             }
         }
         for (AbstractAnnotationValue abstractAnnotationValue : abstractAnnotationValues) {
-            String displayString = getDisplayString(abstractAnnotationValue);
+            String displayString = abstractAnnotationValue.toString();
             if (displayString != null && !filterList.contains(displayString)) {
                 results.add(displayString);
             }

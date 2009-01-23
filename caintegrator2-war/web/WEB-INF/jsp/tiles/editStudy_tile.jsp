@@ -102,7 +102,7 @@
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="clinicalSource.id" value="id" />
                 </s:url> 
-                <s:a href="%{deleteClinicalSource}" onclick="return confirm('This clinical source file will be deleted.')"> | Delete</s:a>
+                <s:a href="%{deleteClinicalSource}" onclick="return confirm('This clinical source file will be permanently deleted.')"> | Delete</s:a>
             </td>
         </tr>
         </s:iterator>

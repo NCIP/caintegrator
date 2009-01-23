@@ -114,30 +114,6 @@ public final class PermissibleValueUtil {
     private PermissibleValueUtil() {
         
     }
-
-    /**
-     * @param abstractPermissibleValue the abstractPermissibleValue
-     * @return String the value display string
-     */
-    public static String getDisplayString(
-            AbstractPermissibleValue abstractPermissibleValue) {
-        if (abstractPermissibleValue instanceof StringPermissibleValue) {
-            return ((StringPermissibleValue) abstractPermissibleValue).getStringValue();
-        }
-        if (abstractPermissibleValue instanceof NumericPermissibleValue
-                && ((NumericPermissibleValue) abstractPermissibleValue).getNumericValue() != null) {
-            //TODO Need to decide how to display null value
-            return ((NumericPermissibleValue) abstractPermissibleValue).getNumericValue().toString();
-        }
-        if (abstractPermissibleValue instanceof DatePermissibleValue
-                && ((DatePermissibleValue) abstractPermissibleValue).getDateValue() != null) {
-            //TODO Need to decide how to display null value
-            final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            return formatter.format(((DatePermissibleValue) abstractPermissibleValue).getDateValue());
-        }
-        return null;
-        
-    }
     
     /**
      * @param abstractPermissibleValues abstractPermissibleValues
@@ -147,7 +123,7 @@ public final class PermissibleValueUtil {
             Collection<AbstractPermissibleValue> abstractPermissibleValues) {
         Set<String> results = new HashSet<String>();
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
-            String displayString = getDisplayString(abstractPermissibleValue);
+            String displayString = abstractPermissibleValue.toString();
             //TODO Need to decide how to display null value, for now we just skip it
             if (displayString != null) {
                 results.add(displayString);
@@ -181,7 +157,7 @@ public final class PermissibleValueUtil {
             List<String> newList) {
         List<AbstractPermissibleValue> removeList = new ArrayList<AbstractPermissibleValue>();
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
-            if (newList == null || !newList.contains(getDisplayString(abstractPermissibleValue))) {
+            if (newList == null || !newList.contains(abstractPermissibleValue.toString())) {
                 removeList.add(abstractPermissibleValue);
             }
         }
@@ -242,7 +218,7 @@ public final class PermissibleValueUtil {
     private static AbstractPermissibleValue getObject(Collection<AbstractPermissibleValue> abstractPermissibleValues,
             String displayString) {
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
-            if (displayString.equals(getDisplayString(abstractPermissibleValue))) {
+            if (displayString.equals(abstractPermissibleValue.toString())) {
                 return abstractPermissibleValue;
             }
         }
@@ -296,7 +272,7 @@ public final class PermissibleValueUtil {
             String displayString) {
 
         for (AbstractPermissibleValue abstractPermissibleValue : abstractPermissibleValues) {
-            if (displayString.equals(getDisplayString(abstractPermissibleValue))) {
+            if (displayString.equals(abstractPermissibleValue.toString())) {
                 return true;
             }
         }
