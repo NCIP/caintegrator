@@ -83,59 +83,54 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class DicomRetrievalAjaxUpdaterTest {
-
-    private DicomRetrievalAjaxUpdater updater;
-    private NCIAFacadeStub nciaFacade;
+/**
+ * Wrapper object used for the searching of AnnotationDefinitions and CommonDataElements.
+ */
+public class DataElementSearchObject {
+    private final List<AnnotationDefinition> searchDefinitions = new ArrayList<AnnotationDefinition>();
+    private final List<CommonDataElement> searchCommonDataElements = new ArrayList<CommonDataElement>();
+    private String keywordsForSearch;
     
-    @Before
-    public void setUp() throws Exception {
-        updater = new DicomRetrievalAjaxUpdater();
-        nciaFacade = new NCIAFacadeStub();
-        updater.setNciaFacade(nciaFacade);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        NCIADicomJob dicomJob = new NCIADicomJob();
-        dicomJob.setCompleted(false);
-        dicomJob.setCurrentlyRunning(true);
-        dicomJob.getImageSeriesIDs().add("123");
-        dicomJob.getImageStudyIDs().add("345");
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(dicomJob);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+    /**
+     * Clears this back to original empty state.
+     */
+    public void clear() {
+        searchDefinitions.clear();
+        searchCommonDataElements.clear();
+        keywordsForSearch = null;
     }
-
-    @Test
-    public void testRunDicomJob() throws InterruptedException {
-        updater.runDicomJob();
-        // Testing asynchronously requires sleep for a second.
-        while (updater.getDicomJob().isCurrentlyRunning()) {
-            Thread.sleep(1000);
-        }
-        assertTrue(nciaFacade.retrieveDicomFilesCalled);
-        assertFalse(updater.getDicomJob().isCurrentlyRunning());
-        nciaFacade.clear();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(null);
-        updater.runDicomJob();
-        assertFalse(nciaFacade.retrieveDicomFilesCalled);
+    /**
+     * @return the keywordsForSearch
+     */
+    public String getKeywordsForSearch() {
+        return keywordsForSearch;
     }
-
+    /**
+     * @param keywordsForSearch the keywordsForSearch to set
+     */
+    public void setKeywordsForSearch(String keywordsForSearch) {
+        this.keywordsForSearch = keywordsForSearch;
+    }
+    /**
+     * @return the searchDefinitions
+     */
+    public List<AnnotationDefinition> getSearchDefinitions() {
+        return searchDefinitions;
+    }
+    /**
+     * @return the searchCommonDataElements
+     */
+    public List<CommonDataElement> getSearchCommonDataElements() {
+        return searchCommonDataElements;
+    }
+    
+    
 }

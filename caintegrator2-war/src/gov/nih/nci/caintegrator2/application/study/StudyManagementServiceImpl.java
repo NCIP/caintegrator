@@ -437,11 +437,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     @Transactional(rollbackFor = {ConnectionException.class, ValidationException.class })
     public void setDataElement(FileColumn fileColumn, 
                                 CommonDataElement dataElement, 
                                 Study study, 
-                                EntityTypeEnum entityType) 
+                                EntityTypeEnum entityType,
+                                String keywords) 
     throws ConnectionException, ValidationException {
         AnnotationDefinition annotationDefinition = createDefinition(fileColumn.getFieldDescriptor(), 
                                                                      study, 
@@ -452,6 +454,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
         annotationDefinition.setPreferredDefinition(dataElement.getDefinition());
         annotationDefinition.setCde(dataElement);
+        annotationDefinition.setKeywords(keywords);
         ValueDomain valueDomain = dataElement.getValueDomain();
         if (valueDomain == null) {
             valueDomain = retrieveValueDomain(dataElement);
