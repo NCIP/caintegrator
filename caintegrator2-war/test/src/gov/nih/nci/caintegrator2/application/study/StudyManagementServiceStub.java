@@ -240,7 +240,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         return Collections.emptyList();
     }
 
-    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType) {
+    public void setDataElement(FileColumn fileColumn, CommonDataElement dataElement, Study study, EntityTypeEnum entityType, String keywords) {
         setDataElementCalled = true;
     }
 

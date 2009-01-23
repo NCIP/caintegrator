@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationFieldDescriptor;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
@@ -101,15 +100,12 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
- * 
+ * Action used to edit the type and annotation of an imaging file column by a Study Manager.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See selectDataElement()
 public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
@@ -123,22 +119,17 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
     
     private FileColumn fileColumn = new FileColumn();
     private boolean readOnly;
-    private List<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
-    private List<CommonDataElement> dataElements = new ArrayList<CommonDataElement>();
     private List<String> availableUpdateList = new ArrayList<String>();
     private List<String> permissibleUpdateList = new ArrayList<String>();
     private int dataElementIndex;
     private int definitionIndex;
-    private String keywordsForSearch;
     private String columnType;
 
     private void clearCacheMemory() {
         columnType = null;
-        definitions.clear();
-        dataElements.clear();
+        getDisplayableWorkspace().getDataElementSearchObject().clear();
         availableUpdateList.clear();
         permissibleUpdateList.clear();
-        keywordsForSearch = "";
     }
     
     private Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
@@ -193,27 +184,6 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         clearCacheMemory();
         return SUCCESS;
     }
-    /**
-     * Retrieves from the database and from caDSR annotation definition that matches the current columns keywords.
-     * 
-     * @return the Struts result.
-     */
-    public String searchDefinitions() {
-        if (getKeywordsForSearch() == null || getKeywordsForSearch().length() == 0) {
-            return SUCCESS;
-        }
-        List<String> keywordsList = Arrays.asList(StringUtils.split(getKeywordsForSearch()));
-        // Are we supposed to save before searching or not?
-        getStudyManagementService().save(getStudyConfiguration());
-        definitions = getStudyManagementService().getMatchingDefinitions(keywordsList);
-        try {
-            dataElements = getStudyManagementService().getMatchingDataElements(keywordsList);
-        } catch (SearchException e) {
-            addActionError("caDSR provider currently unavailable!");
-            prepare();
-        }
-        return SUCCESS;
-    }
     
     /**
      * Selects an existing annotation definition for a column.
@@ -255,7 +225,8 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             getStudyManagementService().setDataElement(getFileColumn(), 
                                                        retrieveSelectedDataElement(),
                                                        getStudyConfiguration().getStudy(),
-                                                       EntityTypeEnum.IMAGESERIES);
+                                                       EntityTypeEnum.IMAGESERIES,
+                                                       getKeywordsForSearch());
         } catch (ConnectionException e) {
             addActionError(e.getMessage());
             setFileColumn(originalFileColumn);
@@ -266,12 +237,6 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             setFileColumn(originalFileColumn);
             prepare();
             return ERROR;
-        }
-        if (getFileColumn() != null 
-            && getFileColumn().getFieldDescriptor() != null 
-            && getFileColumn().getFieldDescriptor().getDefinition() != null 
-            && getFileColumn().getFieldDescriptor().getDefinition().getKeywords() == null) {
-            getFileColumn().getFieldDescriptor().getDefinition().setKeywords(getKeywordsForSearch());
         }
         return SUCCESS;
     }
@@ -388,14 +353,14 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the definitions
      */
     public List<AnnotationDefinition> getDefinitions() {
-        return definitions;
+        return getDisplayableWorkspace().getDataElementSearchObject().getSearchDefinitions();
     }
 
     /**
      * @return the dataElements
      */
     public List<CommonDataElement> getDataElements() {
-        return dataElements;
+        return getDisplayableWorkspace().getDataElementSearchObject().getSearchCommonDataElements();
     }
 
     /**
@@ -444,20 +409,9 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      * @return the keywordsForSearch
      */
     public String getKeywordsForSearch() {
-        return keywordsForSearch;
+        return getDisplayableWorkspace().getDataElementSearchObject().getKeywordsForSearch();
     }
 
-    /**
-     * @param keywordsForSearch the keywordsForSearch to set
-     */
-    public void setKeywordsForSearch(String keywordsForSearch) {
-        this.keywordsForSearch = keywordsForSearch;
-    }
-
-    
-    
-    
-    
 
 
     /**

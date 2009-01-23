@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
+import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,7 +132,8 @@ public class DisplayableUserWorkspace {
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIABasket nciaBasket = new NCIABasket();
     private NCIADicomJob dicomJob;
-
+    private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
+    
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
      *
@@ -362,6 +364,13 @@ public class DisplayableUserWorkspace {
      */
     public KMPlotForm getKmPlotForm() {
         return kmPlotForm;
+    }
+    
+    /**
+     * @return the dataElementSearchObject
+     */
+    public DataElementSearchObject getDataElementSearchObject() {
+        return dataElementSearchObject;
     }
 
 }

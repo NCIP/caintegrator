@@ -166,7 +166,9 @@ public class DicomRetrievalAjaxUpdater implements IDicomRetrievalAjaxUpdater {
     }
 
     private void completeJob() {
-        dicomJob.setCurrentlyRunning(false);
+        if (dicomJob != null) {
+            dicomJob.setCurrentlyRunning(false);
+        }
         removeStatusDiv();
     }
     

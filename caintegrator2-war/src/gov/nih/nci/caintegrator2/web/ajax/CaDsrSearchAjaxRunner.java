@@ -85,57 +85,43 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.cadsr.freestylesearch.util.SearchException;
+import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
-import java.util.HashMap;
+import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
+/**
+ * This is called to asynchronously run a caDSR search and update the results.
+ */
+public class CaDsrSearchAjaxRunner implements Runnable {
 
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class DicomRetrievalAjaxUpdaterTest {
-
-    private DicomRetrievalAjaxUpdater updater;
-    private NCIAFacadeStub nciaFacade;
+    private final DataElementSearchAjaxUpdater updater;
     
-    @Before
-    public void setUp() throws Exception {
-        updater = new DicomRetrievalAjaxUpdater();
-        nciaFacade = new NCIAFacadeStub();
-        updater.setNciaFacade(nciaFacade);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        NCIADicomJob dicomJob = new NCIADicomJob();
-        dicomJob.setCompleted(false);
-        dicomJob.setCurrentlyRunning(true);
-        dicomJob.getImageSeriesIDs().add("123");
-        dicomJob.getImageStudyIDs().add("345");
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(dicomJob);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-    }
-
-    @Test
-    public void testRunDicomJob() throws InterruptedException {
-        updater.runDicomJob();
-        // Testing asynchronously requires sleep for a second.
-        while (updater.getDicomJob().isCurrentlyRunning()) {
-            Thread.sleep(1000);
+    CaDsrSearchAjaxRunner(DataElementSearchAjaxUpdater updater) {
+        this.updater = updater;
+     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void run() {
+        boolean timedOut = false;
+        try {
+            updater.setCaDsrInProgress();
+            updater.increaseRunningThreadCount();
+            List<CommonDataElement> dataElements = updater.getStudyManagementService().
+                                        getMatchingDataElements(updater.getKeywordsList());
+            Thread.sleep(1); // See if it's been interrupted (from a timeout).
+            updater.updateCaDsrTable(dataElements);
+            
+        } catch (SearchException e) {
+            updater.setCaDsrError("caDSR provider currently unavailable!");
+        } catch (InterruptedException e) {
+            timedOut = true;
+        } finally {
+            if (!timedOut) {
+                updater.decreaseRunningThreadCount();
+            }
         }
-        assertTrue(nciaFacade.retrieveDicomFilesCalled);
-        assertFalse(updater.getDicomJob().isCurrentlyRunning());
-        nciaFacade.clear();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(null);
-        updater.runDicomJob();
-        assertFalse(nciaFacade.retrieveDicomFilesCalled);
     }
-
 }

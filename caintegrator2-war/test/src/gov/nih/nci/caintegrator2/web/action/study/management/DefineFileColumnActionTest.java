@@ -145,24 +145,6 @@ public class DefineFileColumnActionTest {
     }
     
     @Test
-    public void testSearchDefinitions() {
-        action.setKeywordsForSearch("");
-        assertEquals(Action.SUCCESS, action.searchDefinitions());
-        assertFalse(studyManagementServiceStub.getMatchingDefinitionsCalled);
-        assertFalse(studyManagementServiceStub.getMatchingDataElementsCalled);
-        
-        action.setKeywordsForSearch("anystring");
-        assertEquals(Action.SUCCESS, action.searchDefinitions());
-        assertTrue(studyManagementServiceStub.getMatchingDefinitionsCalled);
-        assertTrue(studyManagementServiceStub.getMatchingDataElementsCalled);
-        assertTrue(action.getActionErrors().isEmpty());
-        
-        studyManagementServiceStub.throwSearchError = true;
-        assertEquals(Action.SUCCESS, action.searchDefinitions());
-        assertFalse(action.getActionErrors().isEmpty());
-    }
-    
-    @Test
     public void testSelectDefintion() {
         action.getDefinitions().add(null);
         assertEquals(Action.SUCCESS, action.selectDefinition());

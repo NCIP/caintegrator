@@ -85,57 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeStub;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class DicomRetrievalAjaxUpdaterTest {
-
-    private DicomRetrievalAjaxUpdater updater;
-    private NCIAFacadeStub nciaFacade;
+/**
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
+ */
+public interface IDataElementSearchAjaxUpdater {
     
-    @Before
-    public void setUp() throws Exception {
-        updater = new DicomRetrievalAjaxUpdater();
-        nciaFacade = new NCIAFacadeStub();
-        updater.setNciaFacade(nciaFacade);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        NCIADicomJob dicomJob = new NCIADicomJob();
-        dicomJob.setCompleted(false);
-        dicomJob.setCurrentlyRunning(true);
-        dicomJob.getImageSeriesIDs().add("123");
-        dicomJob.getImageStudyIDs().add("345");
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(dicomJob);
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-    }
-
-    @Test
-    public void testRunDicomJob() throws InterruptedException {
-        updater.runDicomJob();
-        // Testing asynchronously requires sleep for a second.
-        while (updater.getDicomJob().isCurrentlyRunning()) {
-            Thread.sleep(1000);
-        }
-        assertTrue(nciaFacade.retrieveDicomFilesCalled);
-        assertFalse(updater.getDicomJob().isCurrentlyRunning());
-        nciaFacade.clear();
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setDicomJob(null);
-        updater.runDicomJob();
-        assertFalse(nciaFacade.retrieveDicomFilesCalled);
-    }
+    /**
+     * Runs an asynchronous search on both the caDSR and the local repository for matching definitions
+     * based on the keywords.
+     * @param type - Corresponds to an EntityTypeEnum (currently only subject or image)
+     * @param studyConfigurationId - ID of the study configuration.
+     * @param fileColumnId - ID of the file column.
+     * @param keywords - keywords to search on.
+     */
+    void runSearch(String type, String studyConfigurationId, String fileColumnId, String keywords);
+    
+    
+    /**
+     * Initializes the web context to this JSP so the update messages stream here, also checks to make sure
+     * the threads aren't timed out and if they're still running in the background will let the user know this.
+     */
+    void initializeJsp();
 
 }
