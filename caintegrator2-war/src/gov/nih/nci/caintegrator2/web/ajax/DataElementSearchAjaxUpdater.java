@@ -312,6 +312,11 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
             + " row.setAttribute(\"class\",\"" + oddOrEven + "\");"
             + "return row;"
             + "},"
+            + "cellCreator:function(options) { "
+            + "var td = document.createElement(\"td\");"
+            + "if (options.cellNum == 1) { td.setAttribute(\"nowrap\", true); }"
+            + "return td;"
+            + "},"
             + " escapeHtml:false }";
     }
     
