@@ -409,8 +409,7 @@ public class QueryFormTest {
         setFieldName(criterionRow, "numericClinicalAnnotation");
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
         assertEquals(5 , parameter.getAvailableOperators().size());
-        assertEquals("", parameter.getOperator());
-        setOperator(parameter, CriterionOperatorEnum.EQUALS.getValue());
+        assertEquals("equals", parameter.getOperator());
         assertEquals(CriterionOperatorEnum.EQUALS.getValue(), parameter.getOperator());
         assertTrue(criterionRow.getCriterion() instanceof NumericComparisonCriterion);
         assertEquals(1, criterionRow.getGroup().getCompoundCriterion().getCriterionCollection().size());
