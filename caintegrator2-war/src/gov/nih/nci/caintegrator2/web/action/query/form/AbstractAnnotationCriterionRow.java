@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -188,6 +189,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setAnnotationDefinition(field);
         criterion.setEntityType(getEntityType().getValue());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL.getValue());
         return new NumericComparisonCriterionWrapper(criterion, this);
     }
 
