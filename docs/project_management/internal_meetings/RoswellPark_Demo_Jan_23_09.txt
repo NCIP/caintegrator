@@ -1,0 +1,6 @@
+
+1.	Roswell Park current uses Agilent and Illumina platforms. CaIntegrator2 should be able to support these platforms. 
+2.	Roswell Park requires some sort of de-identification of their Medical Record Number, so that scientists doing the analysis should not be able to see the Medical Record Number and other specific data. 
+3.	Timepoint implementation is a critical requirement for Roswell Park. 
+4.	Roswell Park need help with in understanding de-identification process in NCIA – so that they can map back to their original sample (to use caIntegrator2)
+5.	Roswell Park requires some help from NCI CBIIT to classify and load their data to caIntegrator2 
