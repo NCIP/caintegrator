@@ -106,6 +106,8 @@ public class ColumnSelectionList {
     private final OptionList<AnnotationDefinition> columnList;
     private final EntityTypeEnum entityType;
     private final ResultConfiguration resultConfiguration;
+    
+    private String[] preselectValues = {};
 
     ColumnSelectionList(ResultConfiguration resultConfiguration,
             Collection<AnnotationDefinition> annotationDefinitions, EntityTypeEnum entityType) {
@@ -204,5 +206,23 @@ public class ColumnSelectionList {
     public boolean isEmpty() {
         return getColumnList().getOptions().isEmpty();
     }
+    
+    /**
+     * Populate the preselect values and unselect all values.
+     */
+    public void populatePreselectValues() {
+        preselectValues = getValues();
+        String[] unselectValues = {};
+        setValues(unselectValues);
+    }
+
+    /**
+     * @return the preselectValues
+     */
+    public String[] getPreselectValues() {
+        return preselectValues.clone();
+    }
+    
+    
 
 }

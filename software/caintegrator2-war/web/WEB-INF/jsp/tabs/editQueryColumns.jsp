@@ -40,7 +40,7 @@
                     listKey="key" 
                     listValue="displayValue"
                     theme="cai2simple" 
-                    value="queryForm.resultConfiguration.subjectColumns.values" />
+                    value="queryForm.resultConfiguration.subjectColumns.preselectValues" />
             </ul>
             <ul>
                 <s:if test="!queryForm.resultConfiguration.subjectColumns.isEmpty()">
@@ -59,7 +59,7 @@
                 listKey="key" 
                 listValue="displayValue"
                 theme="cai2simple" 
-                value="queryForm.resultConfiguration.imageSeriesColumns.values" />
+                value="queryForm.resultConfiguration.imageSeriesColumns.preselectValues" />
         </ul>
         
         <ul>

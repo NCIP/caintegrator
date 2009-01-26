@@ -176,6 +176,15 @@ public class ManageQueryActionTest {
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
 
+        // test preselect column values
+        String[] selectColumnValues = {"Age", "Gender"};
+        manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().setValues(selectColumnValues);
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertEquals(0, manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().getPreselectValues().length);
+        assertEquals(0, manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().getOptions().size());
+        assertTrue(manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().isEmpty());
+        
+        
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
         manageQueryAction.prepare();
@@ -228,6 +237,9 @@ public class ManageQueryActionTest {
 
     @Test
     public void testPostQueryResultExecuteMethods() {
+        // test create new query
+        manageQueryAction.setSelectedAction("createNewQuery");
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
         // Test creating NCIA basket
         manageQueryAction.setSelectedAction("forwardToNcia");
         assertEquals("nciaBasket", manageQueryAction.execute());
