@@ -259,7 +259,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
-        } 
+        }
+        getQueryForm().getResultConfiguration().getSubjectColumns().populatePreselectValues();
+        getQueryForm().getResultConfiguration().getImageSeriesColumns().populatePreselectValues();
         return returnValue;
     }
 
