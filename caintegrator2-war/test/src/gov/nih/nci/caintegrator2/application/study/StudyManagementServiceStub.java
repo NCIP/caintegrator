@@ -249,8 +249,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
         setDefinitionCalled = true;
     }
 
-    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)throws ValidationException {
+    public void mapSamples(StudyConfiguration studyConfiguration, File mappingFile)throws ValidationException, IOException {
         mapSamplesCalled = true;
+        if (studyConfiguration.getStudy().getShortTitleText().equals("Invalid")) {
+            throw new ValidationException("Invalid");
+        }
+        if (studyConfiguration.getStudy().getShortTitleText().equals("IOException")) {
+            throw new IOException("Invalid");
+        }
     }
     
     public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
@@ -296,7 +302,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
      */
     public boolean isDuplicateStudyName(Study study) {
         isDuplicateStudyNameCalled = true;
-        return false;
+        return study.getShortTitleText().equals("Duplicate");
     }
 
     /**
