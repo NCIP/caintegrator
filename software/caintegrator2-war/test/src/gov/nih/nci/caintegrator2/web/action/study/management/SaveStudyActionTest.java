@@ -135,12 +135,18 @@ public class SaveStudyActionTest {
     
     @Test
     public void testValidate() {
+        StringBuffer longName = new StringBuffer();
+        for (int i =0; i<210; i++) {
+            longName.append('A');
+        }
         action.getStudyConfiguration().getStudy().setShortTitleText("name");
+        action.getStudyConfiguration().getStudy().setLongTitleText("Description");
         action.validate();
         assertFalse(action.hasFieldErrors());
         assertTrue(studyManagementServiceStub.isDuplicateStudyNameCalled);
         studyManagementServiceStub.clear();
         action.getStudyConfiguration().getStudy().setShortTitleText(null);
+        action.getStudyConfiguration().getStudy().setLongTitleText("Description");
         action.validate();
         assertFalse(studyManagementServiceStub.isDuplicateStudyNameCalled);
         assertTrue(action.hasFieldErrors());
@@ -149,6 +155,19 @@ public class SaveStudyActionTest {
         action.validate();
         assertFalse(studyManagementServiceStub.isDuplicateStudyNameCalled);
         assertTrue(action.hasFieldErrors());
+        action.getStudyConfiguration().getStudy().setShortTitleText("Duplicate");
+        action.getStudyConfiguration().getStudy().setLongTitleText("Description");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.getStudyConfiguration().getStudy().setShortTitleText(longName.toString());
+        action.getStudyConfiguration().getStudy().setLongTitleText("Description");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.getStudyConfiguration().getStudy().setShortTitleText("name");
+        action.getStudyConfiguration().getStudy().setLongTitleText(longName.toString());
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
     }
 
 }

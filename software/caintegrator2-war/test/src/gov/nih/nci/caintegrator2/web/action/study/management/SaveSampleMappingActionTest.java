@@ -87,11 +87,11 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.HashMap;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
@@ -121,6 +121,12 @@ public class SaveSampleMappingActionTest {
 
     @Test
     public void testExecute() {
+        Study study = action.getStudyConfiguration().getStudy();
+        study.setShortTitleText("Invalid");
+        assertEquals(Action.INPUT, action.execute());
+        study.setShortTitleText("IOException");
+        assertEquals(Action.INPUT, action.execute());
+        study.setShortTitleText("Valid");
         assertEquals(Action.SUCCESS, action.execute());
         assertTrue(action.isFileUpload());
         action.setSampleMappingFile(null);

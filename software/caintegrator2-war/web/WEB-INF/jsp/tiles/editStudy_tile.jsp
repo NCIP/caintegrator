@@ -18,6 +18,7 @@
         <h1>Create New Study</h1>
     </s:else>
     <s:form>
+        <s:fielderror />
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" />
         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" />

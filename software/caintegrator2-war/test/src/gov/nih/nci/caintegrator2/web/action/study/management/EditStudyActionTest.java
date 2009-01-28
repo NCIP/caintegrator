@@ -112,6 +112,7 @@ public class EditStudyActionTest {
 
     @Test
     public void testDelete() {
+        
         assertEquals(Action.SUCCESS, editStudyAction.deleteStudy());
     }
 
