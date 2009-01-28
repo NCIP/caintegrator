@@ -18,7 +18,7 @@
         <tr>
             <th>Display in Browse</th>
             <th>Field Definition</th>
-            <th>File Header</th>
+            <th>Field Header from File</th>
             <th colspan="3" />Data from File</th>
         </tr>
         <s:iterator value="clinicalSource.annotationFile.columns" status="status">
