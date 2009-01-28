@@ -93,9 +93,13 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Saves basic study information.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") //Validate the study name
 public class SaveStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
+    
+    private static final int NAME_LENGHT = 50;
+    private static final int DESC_LENGHT = 200;
 
     /**
      * {@inheritDoc}
@@ -123,13 +127,20 @@ public class SaveStudyAction extends AbstractStudyAction {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Validate the study name
     public void validate() {
         String studyName = getStudyConfiguration().getStudy().getShortTitleText();
         if (StringUtils.isEmpty(studyName)) {
             addFieldError("study.shortTitleText", "Study Name is required");
+        } else if (studyName.length() > NAME_LENGHT) {
+            addFieldError("study.shortTitleText", "Study name is limit to 50 characters.");
         } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy())) {
-            addFieldError("study.shortTitleText", "There is already a study named " + studyName
-                    + ", use a different name.");
+            addFieldError("study.shortTitleText", "There is already a study named '" + studyName
+                    + "', use a different name.");
+        }
+        if (!StringUtils.isEmpty(getStudyConfiguration().getStudy().getLongTitleText())
+                && getStudyConfiguration().getStudy().getLongTitleText().length() > DESC_LENGHT) {
+            addFieldError("study.longTitleText", "Study description is limit to 200 characters.");
         }
     }
 
