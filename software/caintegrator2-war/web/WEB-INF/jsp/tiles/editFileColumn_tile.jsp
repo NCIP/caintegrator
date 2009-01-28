@@ -109,7 +109,7 @@
     </s:form>
     <table class="data">
             <tr>
-                <th colspan="4">Matching Annotation Definitions</th>
+                <th colspan="4">Matching Annotation Definitions from caintegrator2</th>
             </tr>
             <tr>
                 <th>Name</th>
@@ -153,7 +153,7 @@
 
         <table class="data">
             <tr>
-                <th colspan="6">Matches from caDSR</th>
+                <th colspan="6">Matching Annotation Definitions from caDSR</th>
             </tr>
             <tr>
                 <th>Name</th>
