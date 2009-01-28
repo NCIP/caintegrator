@@ -60,6 +60,7 @@
                 <display:setProperty name="export.excel" value="false" />
                 <display:setProperty name="export.xml" value="false" />
                 <display:setProperty name="export.csv.filename" value="StudySearchResults.csv" />
+                <display:setProperty name="export.csv.include_header" value="true" />
                 <display:column 
                     title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'><s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'> All</s:a> | <s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
                     media="html"
