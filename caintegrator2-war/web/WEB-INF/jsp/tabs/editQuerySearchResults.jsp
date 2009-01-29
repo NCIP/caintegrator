@@ -111,12 +111,6 @@
                 <span class="btn_img"><span class="add">Retrieve Dicom Images</span></span>
             </s:a></li>
         </s:if>
-        <li><s:a href="#" cssClass="btn" 
-            onclick="document.manageQueryForm.selectedAction.value='executeQuery';document.manageQueryForm.submit();">
-            <span class="btn_img"><span class="search">Run Search</span></span>
-        </s:a></li>
-        <li><span class="btn_img"><span class="search"><br>
-        </span></span></li>
     </ul>
     </del>
     </div>
