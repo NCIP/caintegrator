@@ -86,28 +86,29 @@
     </s:form>
     
     <s:if test="%{columnTypeAnnotation}">
-    <hr>
-    <h1>Search For an Annotation Definition: </h1>
-    <s:form theme="simple">
-        <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
-        <s:hidden name="clinicalSource.id" />
-        <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
-        <tr>
-            <td>
-                <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
-            </td>
-           <td> 
-	           <button type="button" onclick="runSearch(document.getElementById('searchFormStudyConfigurationId').value, 
+        <hr>
+        <h1>Search For an Annotation Definition: </h1>
+        <s:form theme="simple">
+            <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
+            <s:hidden name="clinicalSource.id" />
+            <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
+            <tr>
+                <td>
+                    <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
+                </td>
+                <td> 
+	               <button type="button" onclick="runSearch(document.getElementById('searchFormStudyConfigurationId').value, 
 	                                  document.getElementById('searchFormFileColumnId').value,
 	                                  document.getElementById('keywordsForSearch').value)"> Search </button>
-           </td>
-           <td>
-               <em>Search existing studies and caDSR for definitions.</em>
-           </td>
-        </tr>
-        <div id="errorMessages" style="color: red;"> </div>
-    </s:form>
-    <table class="data">
+                </td>
+                <td>
+                    <em>Search existing studies and caDSR for definitions.</em>
+                </td>
+            </tr>
+            <div id="errorMessages" style="color: red;"> </div>
+        </s:form>
+
+        <table class="data">
             <tr>
                 <th colspan="4">Matching Annotation Definitions from caintegrator2</th>
             </tr>
@@ -141,13 +142,6 @@
 		            </tr>
 	            </s:iterator>
             </s:if>
-            <s:else>
-                <tr>
-                    <td>
-                    No matches found for your Search.
-                    </td>
-                </tr>
-            </s:else>
             </tbody>
         </table>    
 
@@ -196,13 +190,6 @@
 		            </tr>
 	            </s:iterator>
             </s:if>
-            <s:else>
-                <tr>
-                    <td>
-                No matches found in caDSR for your Search.
-                    </td>
-                </tr>
-            </s:else>
             </tbody>
         </table>    
     </s:if>    
