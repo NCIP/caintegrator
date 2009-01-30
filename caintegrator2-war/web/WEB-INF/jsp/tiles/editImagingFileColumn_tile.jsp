@@ -87,28 +87,28 @@
     </s:form>
     
     <s:if test="%{columnTypeAnnotation}">
-    <hr>
-    <h1>Search For an Imaging Annotation Definition: </h1>
-    <s:form theme="simple">
-        <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
-        <s:hidden name="imagingSource.id" />
-        <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
-        <tr>
-            <td>
-                <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
-            </td>
-           <td> 
-               <button type="button" onclick="runSearch(document.getElementById('searchFormStudyConfigurationId').value, 
+        <hr>
+        <h1>Search For an Imaging Annotation Definition: </h1>
+        <s:form theme="simple">
+            <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
+            <s:hidden name="imagingSource.id" />
+            <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
+            <tr>
+                <td>
+                    <s:textfield label="Keywords" name="keywordsForSearch" id="keywordsForSearch"  />
+                </td>
+                <td> 
+                    <button type="button" onclick="runSearch(document.getElementById('searchFormStudyConfigurationId').value, 
                                       document.getElementById('searchFormFileColumnId').value,
                                       document.getElementById('keywordsForSearch').value)"> Search </button>
-           </td>
-           <td>
-               <em>Search existing studies and caDSR for definitions.</em>
-           </td>
-        </tr>
-        <div id="errorMessages" style="color: red;"> </div>
-    </s:form>
-    <table class="data">
+                </td>
+                <td>
+                    <em>Search existing studies and caDSR for definitions.</em>
+                </td>
+            </tr>
+            <div id="errorMessages" style="color: red;"> </div>
+        </s:form>
+        <table class="data">
             <tr>
                 <th colspan="4">Matching Annotation Definitions from caintegrator2</th>
             </tr>
@@ -142,13 +142,6 @@
             </tr>
                 </s:iterator>
             </s:if>
-            <s:else>
-                <tr>
-                    <td>
-                    No matches found for your Search.
-                    </td>
-                </tr>
-            </s:else>
             </tbody>
         </table>    
 
@@ -169,13 +162,13 @@
             <s:if test="%{!errorMessages.isEmpty}">
                 <s:iterator value="dataElements" status="status">
 	                <s:if test="#status.odd == true">
-	                  <tr class="odd">
+	                   <tr class="odd">
 	                </s:if>
 	                <s:else>
-	                  <tr class="even">
+	                   <tr class="even">
 	                </s:else>            
 	                <td>
-	                    <s:property value="longName" />
+	                   <s:property value="longName" />
 	                </td>
 	                <td nowrap>
 	                    <s:url id="selectImagingDataElement" action="selectImagingDataElement">
@@ -197,13 +190,6 @@
 	                </tr>
                 </s:iterator>
             </s:if>
-            <s:else>
-                <tr>
-                    <td>
-                No matches found in caDSR for your Search.
-                    </td>
-                </tr>
-            </s:else>
             </tbody>
         </table>    
     </s:if>    
