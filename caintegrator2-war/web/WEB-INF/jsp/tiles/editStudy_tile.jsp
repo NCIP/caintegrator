@@ -17,10 +17,21 @@
     <s:else>
         <h1>Create New Study</h1>
     </s:else>
-    <s:form>
+    
+    <script language="javascript">
+        function verifyName(theName) {
+            if (theName.length > 50) {
+                alert("Study name exceeds maximum length of 50 characters.\nPlease shorten the Study name.");
+                return (false);
+            }
+            return (true);
+        }
+    </script>
+
+    <s:form onsubmit="return verifyName(nameId.value)">
         <s:fielderror />
         <s:hidden name="studyConfiguration.id"  />
-        <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" />
+        <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId"/>
         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" />
         
         <s:submit action="saveStudy" value="Save" />
