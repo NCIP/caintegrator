@@ -109,6 +109,8 @@ public class KMPlotForm {
      */
     public void clear() {
         SessionHelper.clearKmPlots();
+        survivalValueDefinitions.clear();
+        survivalValueDefinitionId = null;
         annotationBasedForm.clear();
         geneExpressionBasedForm.clear();
         queryBasedForm.clear();
