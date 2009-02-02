@@ -709,3 +709,9 @@ DIV.selectorNote
 /** Styles for Annotation Definition page and optionTransferSelect Tag */
 TABLE.currentAnnotationDefinition TD
 { vertical-align:middle;  }
+
+/** Style for Edit Study Page **/
+FORM.editStudyFile TABLE.editStudyFile
+{ border-style: none; border:0px solid #ccc; float: left; }
+TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
+{ border-style: none; border:0px solid #ccc; float: left; }

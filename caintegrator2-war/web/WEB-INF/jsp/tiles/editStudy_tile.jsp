@@ -25,7 +25,7 @@
         
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">
-            <s:submit action="deployStudy" value="Deploy" />
+            <s:submit action="deployStudy" value="Save and Deploy" />
         </s:if>
     </s:form>
     <br>
@@ -109,10 +109,10 @@
         </s:iterator>
         <tr>
             <th colspan="4">
-                <s:form action="addClinicalFile" method="post" enctype="multipart/form-data">
-                    <s:hidden name="studyConfiguration.id"  />
-                    <s:file name="clinicalFile" label="File" />
-                    <s:submit value="Add Clinical Data File" action="addClinicalFile" />
+                <s:form action="addClinicalFile" method="post" enctype="multipart/form-data" cssClass="editStudyFile" >
+                    <s:hidden name="studyConfiguration.id" />
+                    <s:file name="clinicalFile" label="File (type CSV only)" />
+                    <s:submit value="Add Clinical Data Source" action="addClinicalFile" cssClass="editStudyFile" align="left" />
                 </s:form>
             </th>
         </tr>
@@ -123,12 +123,12 @@
             <table class="wwFormTable">
             <tbody>
             <tr>
-                <td>Survival Values</td>
+
                 <td style='font-weight: normal;'>
 		            <s:url id="editSurvivalValueDefinitions" action="editSurvivalValueDefinitions">
 		                <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
 		            </s:url>
-                    <div align="right">
+                    <div align="left">
                     <s:a href="%{editSurvivalValueDefinitions}"> Edit Survival Values</s:a>
                     </div>
                 </td>
