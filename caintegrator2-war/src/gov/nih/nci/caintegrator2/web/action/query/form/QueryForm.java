@@ -85,7 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -236,6 +238,22 @@ public class QueryForm {
      */
     public boolean isSavedQuery() {
         return (getQuery().getId() != null);
+    }
+    
+    /**
+     * @return a list of criteria types
+     */
+    public List<String> getCriteriaTypeOptions() {
+        Study study = query.getSubscription().getStudy();
+        List<String> options = new ArrayList<String>();
+        options.add(CriterionRowTypeEnum.CLINICAL.getValue());
+        if (study.hasGenomicDataSources()) {
+            options.add(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
+        }
+        if (study.hasImageSeriesData()) {
+            options.add(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
+        }
+        return options;
     }
 
 }

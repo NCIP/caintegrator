@@ -225,6 +225,14 @@ public class KMPlotAnnotationBasedActionTest {
     }
     
     @Test
+    public void testGetDisplayTab() {
+        setupActionVariables();
+        assertEquals("annotationTab", action.getDisplayTab());
+        action.setDisplayTab("Testing");
+        assertEquals("Testing", action.getDisplayTab());
+    }
+    
+    @Test
     public void testUpdatePermissibleValues() {
         setupActionVariables();
         assertEquals(ActionSupport.SUCCESS, action.updatePermissibleValues());
