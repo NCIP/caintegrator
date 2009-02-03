@@ -12,6 +12,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 public class DisplayableQueryResultTest {
+    
+    private static StudySubjectAssignment assignment1;
+    private static StudySubjectAssignment assignment2;
 
     @Test
     public void testDisplayableQueryResult() {
@@ -38,8 +42,20 @@ public class DisplayableQueryResultTest {
 
     public static DisplayableQueryResult getTestResult() {
         QueryResult sourceResult = new QueryResult();
-        Query query = new Query();
+        Query query = createQuery();
         sourceResult.setQuery(query);
+        ResultRow row1 = retrieveImageSeriesRow(sourceResult, query);
+        sourceResult.getRowCollection().add(row1);
+        
+        DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
+        return result;
+    }
+
+    /**
+     * @return
+     */
+    private static Query createQuery() {
+        Query query = new Query();
         query.setColumnCollection(new ArrayList<ResultColumn>());
         ResultColumn column1 = new ResultColumn();
         AnnotationDefinition annotationDefinition1 = new AnnotationDefinition();
@@ -53,29 +69,113 @@ public class DisplayableQueryResultTest {
         column2.setAnnotationDefinition(annotationDefinition2 );
         column2.setColumnIndex(1);
         query.getColumnCollection().add(column2);
-        
+        return query;
+    }
+
+    private static ResultRow retrieveImageSeriesRow(QueryResult sourceResult, Query query) {
+        ResultColumn column1 = null;
+        ResultColumn column2 = null;
+        int x = 1;
+        for (ResultColumn column : query.getColumnCollection()) {
+            if (x == 1) {
+                column1 = column;
+            } else {
+                column2 = column;
+            }
+            x++;
+        }
         sourceResult.setRowCollection(new ArrayList<ResultRow>());
-        ResultRow row1 = new ResultRow();
-        row1.setValueCollection(new ArrayList<ResultValue>());
+        ResultRow row = new ResultRow();
+        row.setValueCollection(new ArrayList<ResultValue>());
         ResultValue row1Value1 = new ResultValue();
         row1Value1.setColumn(column1);
         StringAnnotationValue annotationValue1 = new StringAnnotationValue();
         annotationValue1.setStringValue("value1");
         row1Value1.setValue(annotationValue1);
-        row1.getValueCollection().add(row1Value1);
+        row.getValueCollection().add(row1Value1);
         ResultValue row1Value2 = new ResultValue();
         row1Value2.setColumn(column2);
         NumericAnnotationValue annotationValue2 = new NumericAnnotationValue();
         annotationValue2.setNumericValue((double) 2);
         row1Value2.setValue(annotationValue2);
-        row1.getValueCollection().add(row1Value2);
-        
-        row1.setSubjectAssignment(new StudySubjectAssignment());
-        row1.setImageSeries(new ImageSeries());
+        row.getValueCollection().add(row1Value2);
+        assignment1 = new StudySubjectAssignment();
+        assignment1.setId(Long.valueOf(1));
+        row.setSubjectAssignment(assignment1);
+        ImageSeries imageSeries = new ImageSeries();
+        imageSeries.setIdentifier("1.2.3.4.5");
+        row.setImageSeries(imageSeries);
+        return row;
+    }
+    
+    private static ResultRow retrieveImageStudyRow(QueryResult sourceResult, Query query) {
+        ResultColumn column1 = null;
+        ResultColumn column2 = null;
+        int x = 1;
+        for (ResultColumn column : query.getColumnCollection()) {
+            if (x == 1) {
+                column1 = column;
+            } else {
+                column2 = column;
+            }
+            x++;
+        }
+        sourceResult.setRowCollection(new ArrayList<ResultRow>());
+        ResultRow row = new ResultRow();
+        row.setValueCollection(new ArrayList<ResultValue>());
+        ResultValue row1Value1 = new ResultValue();
+        row1Value1.setColumn(column1);
+        StringAnnotationValue annotationValue1 = new StringAnnotationValue();
+        annotationValue1.setStringValue("value1");
+        row1Value1.setValue(annotationValue1);
+        row.getValueCollection().add(row1Value1);
+        ResultValue row1Value2 = new ResultValue();
+        row1Value2.setColumn(column2);
+        NumericAnnotationValue annotationValue2 = new NumericAnnotationValue();
+        annotationValue2.setNumericValue((double) 2);
+        row1Value2.setValue(annotationValue2);
+        row.getValueCollection().add(row1Value2);
+        assignment2 = new StudySubjectAssignment();
+        assignment2.setId(Long.valueOf(2));
+        row.setSubjectAssignment(assignment2);
+        ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
+        acquisition.setIdentifier("1.2.3.4");
+        row.getSubjectAssignment().getImageStudyCollection().add(acquisition);
+        return row;
+    }
+    
+    
+    public static DisplayableQueryResult getImagingSeriesResult() {
+        QueryResult sourceResult = new QueryResult();
+        Query query = createQuery();
+        sourceResult.setQuery(query);
+        ResultRow row1 = retrieveImageSeriesRow(sourceResult, query);
         sourceResult.getRowCollection().add(row1);
         
         DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
         return result;
+    }
+    
+    public static DisplayableQueryResult getImageStudyResult() {
+        QueryResult sourceResult = new QueryResult();
+        Query query = createQuery();
+        sourceResult.setQuery(query);
+        ResultRow row1 = retrieveImageSeriesRow(sourceResult, query);
+        sourceResult.getRowCollection().add(row1);
+        ResultRow row2 = retrieveImageStudyRow(sourceResult, query);
+        sourceResult.getRowCollection().add(row2);
+        
+        DisplayableQueryResult result = new DisplayableQueryResult(sourceResult);
+        return result;
+    }
+    
+    public static StudySubjectAssignment retrieveStudySubjectAssignment(Long id) {
+        if (id.equals(assignment1.getId())) {
+            return assignment1;
+        } else if (id.equals(assignment2.getId())) {
+            return assignment2;            
+        }
+        return null;
     }
 
 }

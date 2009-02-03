@@ -89,6 +89,11 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+
+import java.util.List;
 
 
 /**
@@ -110,6 +115,20 @@ public interface QueryManagementService {
      * @return the resulting data.
      */
     GenomicDataQueryResult executeGenomicDataQuery(Query query);
+    
+    /**
+     * Creates a Dicom Job object based on the checked rows.
+     * @param checkedRows - rows the user selected.
+     * @return Dicom Job.
+     */
+    NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows);
+    
+    /**
+     * Creates an NCIA Basket object based on the checked rows.
+     * @param checkedRows - rows the user selected.
+     * @return NCIA Basket.
+     */
+    NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows);
 
     /**
      * Persists a query.

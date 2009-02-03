@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,83 +83,67 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.external.ncia;
 
-import java.util.List;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import java.util.HashSet;
+import java.util.Set;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public KMPlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
-    }
-
+/**
+ * caIntegrator2's version of an NCIA Basket.
+ */
+public class NCIABasket implements NCIAImageAggregator {
+    private final Set <String> imageSeriesIDs = new HashSet<String>();
+    private final Set <String> imageStudyIDs = new HashSet<String>();
+    private static final String NCIA_BASKET_URL = "https://imaging.nci.nih.gov/ncia/basket/";
+    private NCIAImageAggregationTypeEnum imageAggregationType;
+    
     /**
-     * {@inheritDoc}
+     * @return the imageSeriesIDs
      */
-    public void delete(Query query) {
-        deleteCalled = true;
+    public Set<String> getImageSeriesIDs() {
+        return imageSeriesIDs;
+    }
+    /**
+     * @return the imageStudyIDs
+     */
+    public Set<String> getImageStudyIDs() {
+        return imageStudyIDs;
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
     /**
-     * {@inheritDoc}
+     * Constructs the NCIA url dynamically.
+     * @return URL to NCIA basket.
      */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return new GenomicDataQueryResult();
+    public String getNciaBasketUrl() {
+        StringBuffer url = new StringBuffer();
+        url.append(NCIA_BASKET_URL);
+        if (!getImageSeriesIDs().isEmpty()) {
+            url.append("imageSeries=");
+            for (String imageSeriesId : getImageSeriesIDs()) {
+                url.append(imageSeriesId);
+                url.append(',');
+            }
+        } else if (!getImageStudyIDs().isEmpty()) {
+            url.append("imageStudy=");
+            for (String imageStudyId : getImageStudyIDs()) {
+                url.append(imageStudyId);
+                url.append(',');
+            }
+        } 
+        return url.toString();
     }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
+    /**
+     * @return the imageAggregationType
+     */
+    public NCIAImageAggregationTypeEnum getImageAggregationType() {
+        return imageAggregationType;
     }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
+    /**
+     * @param imageAggregationType the imageAggregationType to set
+     */
+    public void setImageAggregationType(NCIAImageAggregationTypeEnum imageAggregationType) {
+        this.imageAggregationType = imageAggregationType;
     }
     
 }

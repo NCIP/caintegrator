@@ -105,4 +105,10 @@ public interface NCIAImageAggregator {
      * @return ImageStudyIDs.
      */
     Set<String> getImageStudyIDs();
+    
+    /**
+     * The images are rolled up to either the image series or image series acquisition level.
+     * @return aggregation type.
+     */
+    NCIAImageAggregationTypeEnum getImageAggregationType();
 }
