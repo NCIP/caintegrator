@@ -102,6 +102,11 @@ public class NewQueryAction extends AbstractCaIntegrator2Action {
         if (getStudySubscription() == null) {
             addActionError("Please select a study under \"My Studies\".");
             return;
+        } else if (!getStudy().isDeployed()) {
+            addActionError("The study '"
+                    + getStudy().getShortTitleText()
+                    + "' is not yet deployed.");
+            return;
         }
     }
 }

@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
@@ -30,6 +31,21 @@ public class Study extends AbstractCaIntegrator2Object {
     private Collection<AnnotationDefinition> subjectAnnotationCollection;
     private Timepoint defaultTimepoint;
     private Collection<AnnotationDefinition> sampleAnnotationCollection;
+    private StudyConfiguration studyConfiguration;
+
+    /**
+     * @return the studyConfiguration
+     */
+    public StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
+    }
+
+    /**
+     * @param studyConfiguration the studyConfiguration to set
+     */
+    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
+        this.studyConfiguration = studyConfiguration;
+    }
 
     /**
      * @return the longTitleText
@@ -209,6 +225,38 @@ public class Study extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // required by Hibernate
     private void setControlSampleCollection(Set<Sample> controlSampleCollection) {
         this.controlSampleCollection = controlSampleCollection;
+    }
+    
+    /**
+     * @return the boolean of whether the study has clinical data 
+     */
+    public boolean hasClinicalData() {
+        return subjectAnnotationCollection != null
+            && !subjectAnnotationCollection.isEmpty();
+    }
+
+    /**
+     * @return the boolean of whether the study has Genomic data 
+     */
+    public boolean hasGenomicDataSources() {
+        return studyConfiguration != null
+            && studyConfiguration.hasGenomicDataSources();
+    }
+
+    /**
+     * @return the boolean of whether the study has ImageSeries data 
+     */
+    public boolean hasImageSeriesData() {
+        return imageSeriesAnnotationCollection != null 
+            && !imageSeriesAnnotationCollection.isEmpty();
+    }
+
+    /**
+     * @return the boolean of whether the study is deployed 
+     */
+    public boolean isDeployed() {
+        return studyConfiguration != null 
+            && studyConfiguration.isDeployed();
     }
 
 }

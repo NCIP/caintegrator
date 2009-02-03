@@ -184,8 +184,13 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
     public void validate() {
         if (getStudySubscription() == null) {
             addActionError("Please select a study under \"My Studies\".");
-        }
-        if (getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
+            return;
+        } else if (!getStudy().isDeployed()) {
+            addActionError("The study '"
+                    + getStudy().getShortTitleText()
+                    + "' is not yet deployed.");
+            return;
+        } else if (getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
             addActionError("There are no survival value definitions defined for this study, "
                     + "unable to create Kaplan-Meier plot.");
         }

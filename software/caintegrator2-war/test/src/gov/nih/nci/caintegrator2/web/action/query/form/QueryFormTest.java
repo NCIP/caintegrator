@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -141,8 +143,12 @@ public class QueryFormTest {
         subscription = new StudySubscription();
         subscription.setId(1L);
         Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
         study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
         subscription.setStudy(study);
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
@@ -190,6 +196,7 @@ public class QueryFormTest {
         assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
         assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(0));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
+        assertEquals(2, queryForm.getQuery().getCriteriaTypeOptions().size());
     }
 
     @Test

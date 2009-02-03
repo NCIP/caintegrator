@@ -96,6 +96,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImp
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -147,6 +149,9 @@ public class KMPlotQueryBasedActionTest {
     
     private Study createFakeStudy() {
         Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
         study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
@@ -171,7 +176,7 @@ public class KMPlotQueryBasedActionTest {
         action.clearErrorsAndMessages();
         ActionContext.getContext().getValueStack().setValue("studySubscription", null);
         action.validate();
-        assertTrue(action.getActionErrors().size() == 2);
+        assertTrue(action.getActionErrors().size() == 1);
         action.clearErrorsAndMessages();
         action.getKmPlotForm().getSurvivalValueDefinitions().put("1", new SurvivalValueDefinition());
         action.validate();
