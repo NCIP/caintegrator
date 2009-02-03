@@ -103,6 +103,7 @@ public class NCIADicomJob implements NCIAImageAggregator {
     private boolean completed = false;
     private File dicomFile;
     private boolean currentlyRunning = false;
+    private NCIAImageAggregationTypeEnum imageAggregationType;
     
     /**
      * Sets the default server connection (this is only temporary until we solve the solution of figuring out a server
@@ -200,5 +201,19 @@ public class NCIADicomJob implements NCIAImageAggregator {
      */
     public void setCurrentlyRunning(boolean currentlyRunning) {
         this.currentlyRunning = currentlyRunning;
+    }
+
+    /**
+     * @return the imageAggregationType
+     */
+    public NCIAImageAggregationTypeEnum getImageAggregationType() {
+        return imageAggregationType;
+    }
+
+    /**
+     * @param imageAggregationType the imageAggregationType to set
+     */
+    public void setImageAggregationType(NCIAImageAggregationTypeEnum imageAggregationType) {
+        this.imageAggregationType = imageAggregationType;
     }
 }

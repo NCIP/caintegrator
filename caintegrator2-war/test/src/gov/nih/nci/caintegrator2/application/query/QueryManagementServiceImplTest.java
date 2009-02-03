@@ -112,6 +112,10 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResultTest;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -234,6 +238,42 @@ public class QueryManagementServiceImplTest {
        queryManagementService.save(query);
        assertTrue(dao.saveCalled);
     }
+    
+    @Test
+    public void testCreateDicomJob() {
+        queryManagementService.setDao(new ImageStudyTestDaoStub());
+        NCIADicomJob dicomJob = queryManagementService.createDicomJob(DisplayableQueryResultTest.
+                                                                      getImagingSeriesResult().
+                                                                      getRows());
+        assertEquals(NCIAImageAggregationTypeEnum.IMAGESERIES, dicomJob.getImageAggregationType());
+        assertTrue(!dicomJob.getImageSeriesIDs().isEmpty());
+        assertTrue(dicomJob.getImageStudyIDs().isEmpty());
+        
+        dicomJob = queryManagementService.createDicomJob(DisplayableQueryResultTest.
+                                                        getImageStudyResult().
+                                                        getRows());
+        assertEquals(NCIAImageAggregationTypeEnum.IMAGESTUDY, dicomJob.getImageAggregationType());
+        assertTrue(dicomJob.getImageSeriesIDs().isEmpty());
+        assertTrue(!dicomJob.getImageStudyIDs().isEmpty());
+    }
+    
+    @Test
+    public void testCreateNciaBasket() {
+        queryManagementService.setDao(new ImageStudyTestDaoStub());
+        NCIABasket nciaBasket = queryManagementService.createNciaBasket(DisplayableQueryResultTest.
+                                                                      getImagingSeriesResult().
+                                                                      getRows());
+        assertEquals(NCIAImageAggregationTypeEnum.IMAGESERIES, nciaBasket.getImageAggregationType());
+        assertTrue(!nciaBasket.getImageSeriesIDs().isEmpty());
+        assertTrue(nciaBasket.getImageStudyIDs().isEmpty());
+        
+        nciaBasket = queryManagementService.createNciaBasket(DisplayableQueryResultTest.
+                                                        getImageStudyResult().
+                                                        getRows());
+        assertEquals(NCIAImageAggregationTypeEnum.IMAGESTUDY, nciaBasket.getImageAggregationType());
+        assertTrue(nciaBasket.getImageSeriesIDs().isEmpty());
+        assertTrue(!nciaBasket.getImageStudyIDs().isEmpty());
+    }
 
     private static class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
 
@@ -254,6 +294,14 @@ public class QueryManagementServiceImplTest {
             reporters.add(reporter );
             return reporters;
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static class ImageStudyTestDaoStub extends CaIntegrator2DaoStub {
+        public <T> T get(Long id, Class<T> objectClass) {
+            return (T) DisplayableQueryResultTest.retrieveStudySubjectAssignment(id);
+        }
+        
     }
 
 }

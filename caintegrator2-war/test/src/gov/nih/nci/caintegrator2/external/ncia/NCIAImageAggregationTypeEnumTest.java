@@ -83,55 +83,34 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query;
+package gov.nih.nci.caintegrator2.external.ncia;
 
-import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.junit.Test;
 
-/**
- * caIntegrator2's version of an NCIA Basket.
- */
-public class NCIABasket implements NCIAImageAggregator {
-    private final Set <String> imageSeriesIDs = new HashSet<String>();
-    private final Set <String> imageStudyIDs = new HashSet<String>();
-    private static final String NCIA_BASKET_URL = "https://imaging.nci.nih.gov/ncia/basket/";
-    
-    /**
-     * @return the imageSeriesIDs
-     */
-    public Set<String> getImageSeriesIDs() {
-        return imageSeriesIDs;
+public class NCIAImageAggregationTypeEnumTest {
+
+    @Test
+    public void testGetValue() {
+        assertEquals("imageSeries", NCIAImageAggregationTypeEnum.IMAGESERIES.getValue());
     }
-    /**
-     * @return the imageStudyIDs
-     */
-    public Set<String> getImageStudyIDs() {
-        return imageStudyIDs;
+
+    @Test
+    public void testGetByValue() {
+        assertEquals(NCIAImageAggregationTypeEnum.IMAGESERIES, NCIAImageAggregationTypeEnum.getByValue("imageSeries"));
+        assertNull(NCIAImageAggregationTypeEnum.getByValue(null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        NCIAImageAggregationTypeEnum.checkType("no match");
     }
     
-    /**
-     * Constructs the NCIA url dynamically.
-     * @return URL to NCIA basket.
-     */
-    public String getNciaBasketUrl() {
-        StringBuffer url = new StringBuffer();
-        url.append(NCIA_BASKET_URL);
-        if (!getImageSeriesIDs().isEmpty()) {
-            url.append("imageSeries=");
-            for (String imageSeriesId : getImageSeriesIDs()) {
-                url.append(imageSeriesId);
-                url.append(',');
-            }
-        } else if (!getImageStudyIDs().isEmpty()) {
-            url.append("imageStudy=");
-            for (String imageStudyId : getImageStudyIDs()) {
-                url.append(imageStudyId);
-                url.append(',');
-            }
-        } 
-        return url.toString();
+    @Test
+    public void testCheckTypeValid() {
+        NCIAImageAggregationTypeEnum.checkType("imageSeries");
     }
-    
+
 }

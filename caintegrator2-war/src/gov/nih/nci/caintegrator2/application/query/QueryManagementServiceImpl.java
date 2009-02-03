@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,10 +95,18 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
+import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 /**
  * Implementation of the QueryManagementService interface.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See handleCheckedRowForImageStudy()
 @Transactional(propagation = Propagation.REQUIRED)
 public class QueryManagementServiceImpl implements QueryManagementService {
     
@@ -125,6 +135,79 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
         GenomicQueryHandler handler = new GenomicQueryHandler(query, dao, arrayDataService);
         return handler.execute();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
+        NCIADicomJob dicomJob = new NCIADicomJob();
+        dicomJob.setImageAggregationType(retrieveAggregationType(checkedRows));
+        fillImageAggregatorFromCheckedRows(dicomJob, checkedRows);
+        return dicomJob;
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
+        NCIABasket basket = new NCIABasket();
+        basket.setImageAggregationType(retrieveAggregationType(checkedRows));
+        fillImageAggregatorFromCheckedRows(basket, checkedRows);
+        return basket;
+    }
+    
+    private NCIAImageAggregationTypeEnum retrieveAggregationType(List<DisplayableResultRow> rows) {
+        NCIAImageAggregationTypeEnum aggregationType = NCIAImageAggregationTypeEnum.IMAGESERIES;
+        for (DisplayableResultRow row : rows) {
+            if (row.getImageSeries() == null) {
+                aggregationType = NCIAImageAggregationTypeEnum.IMAGESTUDY;
+                break;
+            }
+        }
+        return aggregationType;
+    }
+
+    private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator, 
+                                                    List<DisplayableResultRow> checkedRows) {
+        for (DisplayableResultRow row : checkedRows) {
+            switch(imageAggregator.getImageAggregationType()) {
+            case IMAGESERIES:
+                handleCheckedRowForImageSeries(imageAggregator, row);
+                break;
+            case IMAGESTUDY:
+                handleCheckedRowForImageStudy(imageAggregator, row);
+                break;
+            default:
+                throw new IllegalStateException("Aggregate Level Type is unknown.");
+            }
+        }
+    }
+
+    private void handleCheckedRowForImageSeries(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
+        if (row.getImageSeries() != null) {
+            imageAggregator.getImageSeriesIDs().add(row.getImageSeries().getIdentifier());
+        } else {
+            throw new IllegalArgumentException(
+                "Aggregation is based on Image Series, and a row doesn't contain an Image Series.");
+        }
+        
+    }
+    
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks
+    private void handleCheckedRowForImageStudy(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
+        StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
+        if (studySubjectAssignment != null && studySubjectAssignment != null) {
+            studySubjectAssignment = dao.get(row.getSubjectAssignment().getId(), StudySubjectAssignment.class);
+        }
+        if (studySubjectAssignment != null 
+            && studySubjectAssignment.getImageStudyCollection() != null
+            && !studySubjectAssignment.getImageStudyCollection().isEmpty()) {
+            for (ImageSeriesAcquisition imageStudy : studySubjectAssignment.getImageStudyCollection()) {
+                imageAggregator.getImageStudyIDs().add(imageStudy.getIdentifier());
+            }
+        }
     }
 
     /**
@@ -165,4 +248,6 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
+
+
 }

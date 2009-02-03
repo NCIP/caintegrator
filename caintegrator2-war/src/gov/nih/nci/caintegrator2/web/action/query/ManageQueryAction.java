@@ -94,12 +94,12 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
@@ -299,10 +299,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String forwardToNciaBasket() {
-        NCIABasket basket = new NCIABasket();
-        fillImageAggregatorFromCheckedRows(basket);
+        NCIABasket basket = queryManagementService.createNciaBasket(retrieveCheckedRows());
         getDisplayableWorkspace().setNciaBasket(basket);
-
         return "nciaBasket";
     }
 
@@ -317,8 +315,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
                             + "please wait for that to complete before running another.");
             return ERROR;
         }
-        NCIADicomJob dicomJob = new NCIADicomJob();
-        fillImageAggregatorFromCheckedRows(dicomJob);
+        
+        NCIADicomJob dicomJob = queryManagementService.createDicomJob(retrieveCheckedRows());
         Random generator = new Random();
         dicomJob.setJobId("DICOM_JOB_" + generator.nextInt(RANDOM_NUMBER_MAX) 
                             + "_" + getWorkspace().getUsername());
@@ -331,32 +329,18 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return "dicomJobAjax";
     }
 
-    private void fillImageAggregatorFromCheckedRows(NCIAImageAggregator imageAggregator) {
+    private List<DisplayableResultRow> retrieveCheckedRows() {
+        List <DisplayableResultRow> checkedRows = new ArrayList<DisplayableResultRow>();
         if (getQueryResult() != null 
-                && getQueryResult().getRows() != null
-                && !getQueryResult().getRows().isEmpty()) {
+            && getQueryResult().getRows() != null
+            && !getQueryResult().getRows().isEmpty()) {
             for (DisplayableResultRow row : getQueryResult().getRows()) {
                 if (row.isCheckedRow()) {
-                    handleCheckedRowForImages(imageAggregator, row);
+                    checkedRows.add(row);
                 }
             }
         }
-    }
-
-    private void handleCheckedRowForImages(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
-        StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
-        if (studySubjectAssignment != null && studySubjectAssignment != null) {
-            studySubjectAssignment = getStudyManagementService().getRefreshedStudyEntity(row.getSubjectAssignment());
-        }
-        if (row.getImageSeries() != null) {
-            imageAggregator.getImageSeriesIDs().add(row.getImageSeries().getIdentifier());
-        } else if (studySubjectAssignment != null 
-                   && studySubjectAssignment.getImageStudyCollection() != null
-                   && !studySubjectAssignment.getImageStudyCollection().isEmpty()) {
-            for (ImageSeriesAcquisition imageStudy : studySubjectAssignment.getImageStudyCollection()) {
-                imageAggregator.getImageStudyIDs().add(imageStudy.getIdentifier());
-            }
-        }
+        return checkedRows;
     }
     
     /**

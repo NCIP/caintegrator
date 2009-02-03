@@ -91,11 +91,11 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
-import gov.nih.nci.caintegrator2.web.action.query.NCIABasket;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchObject;
 
