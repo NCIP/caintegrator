@@ -15,7 +15,7 @@
         <tr>
             <td colspan="4" class="tableheader">
                 <s:select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1"
-                    list="queryForm.query.criteriaTypeOptions" theme="simple"
+                    list="queryForm.criteriaTypeOptions" theme="simple"
                     cssStyle="margin-top: 10px; margin-left: 5px; width: 200px" />
                 <ul class="btnrow" style="margin: -22px 0 0 200px; height: 32px">
                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;"
