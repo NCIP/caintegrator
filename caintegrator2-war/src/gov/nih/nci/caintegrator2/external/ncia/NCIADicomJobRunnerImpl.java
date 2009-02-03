@@ -228,8 +228,8 @@ public class NCIADicomJobRunnerImpl implements NCIADicomJobRunner {
             }
             bos.flush();
             bos.close();
-            zis.close();
         }
+        zis.close();
     }
 
 }
