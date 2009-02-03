@@ -88,8 +88,12 @@ package gov.nih.nci.caintegrator2.application.query;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
+import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
+import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings("PMD")
 public class QueryManagementServiceStub implements QueryManagementService {
@@ -129,6 +133,16 @@ public class QueryManagementServiceStub implements QueryManagementService {
         saveCalled = false;
         executeCalled = false;
         executeGenomicDataQueryCalled = false;
+    }
+
+
+    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
+        return new NCIADicomJob();
+    }
+
+
+    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
+        return new NCIABasket();
     }
     
 }
