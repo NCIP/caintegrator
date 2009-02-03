@@ -158,6 +158,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         StudyConfiguration studyConfiguration2 = dao.get(studyConfiguration1.getId(), StudyConfiguration.class);
         Study study2 = studyConfiguration2.getStudy();
         
+        assertEquals(studyConfiguration2, study2.getStudyConfiguration());
         assertEquals(study1.getShortTitleText(), study2.getShortTitleText());
         assertEquals(study1.getLongTitleText(), study2.getLongTitleText());
         assertEquals(study1, study2);

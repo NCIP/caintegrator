@@ -92,6 +92,8 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -149,7 +151,11 @@ public class ManageQueryActionTest {
 
     private StudySubscription createStudySubscription(long id) {
         StudySubscription studySubscription = new StudySubscription();
-        studySubscription.setStudy(new Study());
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
+        studySubscription.setStudy(study);
         studySubscription.setId(id);
         studySubscription.getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         studySubscription.getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
@@ -191,6 +197,9 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         assertTrue(manageQueryAction.hasErrors());
         manageQueryAction.clearErrorsAndMessages();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        manageQueryAction.getCurrentStudy().setStudyConfiguration(studyConfiguration);
         manageQueryAction.getQueryForm().getQuery().setName("query name");
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());

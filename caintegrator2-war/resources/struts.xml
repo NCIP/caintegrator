@@ -343,13 +343,13 @@
             <result type="tiles">genePatternAnalysis</result>
             <result name="results" type="tiles">genePatternAnalysisResults</result>
             <result name="error" type="tiles">genePatternAnalysis</result>
-            <result name="input" type="tiles">genePatternAnalysis</result>
+            <result name="input" type="tiles">homepage</result>
         </action>
         
         <!-- Kaplan-Meier Actions -->
         <action name="initializeKmPlot" method="initializeKmPlot" class="kmPlotAnnotationBasedAction">
             <result type="tiles">kmPlot</result>
-            <result name="input" type="tiles">kmPlot</result>
+            <result name="input" type="tiles">homepage</result>
         </action>
 
         <!-- Annotation Based Kaplan-Meier Actions -->
