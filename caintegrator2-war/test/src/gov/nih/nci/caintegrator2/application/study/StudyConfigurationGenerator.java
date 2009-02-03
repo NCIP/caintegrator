@@ -139,6 +139,7 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
         studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
         if (studyConfiguration.getStudy() == null) {
             studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
+            studyConfiguration.getStudy().setStudyConfiguration(studyConfiguration);
         }
         StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
         studyConfiguration.getClinicalConfigurationCollection().clear();

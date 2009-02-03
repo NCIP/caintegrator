@@ -208,20 +208,19 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     @Override
     public void validate() {
-        super.validate();
-        if (OPEN_ACTION.equals(getSelectedAction())) {
-            validateHasStudy();
-        } else if (CONNECT_ACTION.equals(getSelectedAction())) {
+        if (getStudySubscription() == null) {
+            addActionError("Please select a study under \"My Studies\".");
+            return;
+        } else if (!getStudy().isDeployed()) {
+            addActionError("The study '"
+                    + getStudy().getShortTitleText()
+                    + "' is not yet deployed.");
+            return;
+        }
+        if (CONNECT_ACTION.equals(getSelectedAction())) {
             validateConnect();
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
             validateExecuteAnalysis();
-        }
-    }
-    
-    private void validateHasStudy() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study first under \"My Studies\".");
-            return;
         }
     }
     

@@ -14,13 +14,10 @@
         </tr>
         <tr>
             <td colspan="4" class="tableheader">
-                <select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1"
-                    style="margin-top: 10px; margin-left: 5px; width: 200px">
-                    <option>Clinical</option>
-                    <option>Gene Expression</option>
-                    <option>Image Series</option>
-                </select>
-            <ul class="btnrow" style="margin: -22px 0 0 200px; height: 32px">
+                <s:select name="queryForm.criteriaGroup.criterionTypeName" id="searchcriteriaadd1"
+                    list="queryForm.query.criteriaTypeOptions" theme="simple"
+                    cssStyle="margin-top: 10px; margin-left: 5px; width: 200px" />
+                <ul class="btnrow" style="margin: -22px 0 0 200px; height: 32px">
                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;"
                     onclick="document.manageQueryForm.selectedAction.value='addCriterionRow';document.manageQueryForm.submit();">
                     <span class="btn_img"><span class="add">Add</span></span>

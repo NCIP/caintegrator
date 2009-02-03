@@ -96,6 +96,8 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -123,6 +125,9 @@ public class GenePatternAnalysisActionTest {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         StudySubscription subscription = new StudySubscription();
         Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
         study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
@@ -228,6 +233,15 @@ public class GenePatternAnalysisActionTest {
         action.clearErrorsAndMessages();
         action.getAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.FLOAT);
         action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getCurrentStudy().getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
+        action.validate();
+        assertTrue(action.getActionErrors().size() == 1);
+        action.clearErrorsAndMessages();
+        ActionContext.getContext().getValueStack().setValue("studySubscription", null);
+        action.validate();
+        assertTrue(action.getActionErrors().size() == 1);
     }
 
 }

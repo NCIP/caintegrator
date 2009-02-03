@@ -99,6 +99,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -155,6 +157,9 @@ public class KMPlotAnnotationBasedActionTest {
     
     private Study createFakeStudy() {
         Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
         study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());

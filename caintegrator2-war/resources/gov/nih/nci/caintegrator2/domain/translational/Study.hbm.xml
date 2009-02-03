@@ -45,6 +45,9 @@
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition"/>
         </set>
-		<many-to-one name="defaultTimepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="DEFAULT_TIMEPOINT_ID" unique="true" lazy="proxy" cascade="all"/>
+        <many-to-one name="defaultTimepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="DEFAULT_TIMEPOINT_ID"
+            unique="true" lazy="proxy" cascade="all"/>
+        <one-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
+            property-ref="study"/>
 	</class>
 </hibernate-mapping>

@@ -449,5 +449,17 @@ public class StudyConfiguration implements PersistentObject {
         this.studyLogo = studyLogo;
     }
 
+    /**
+     * @return the boolean of whether the study has Genomic data 
+     */
+    public boolean hasGenomicDataSources() {
+        return !genomicDataSources.isEmpty();
+    }
 
+    /**
+     * @return the boolean of whether the study is deployed
+     */
+    public boolean isDeployed() {
+        return status.equals(Status.DEPLOYED);
+    }
 }
