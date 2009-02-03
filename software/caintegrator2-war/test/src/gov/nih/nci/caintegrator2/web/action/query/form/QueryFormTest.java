@@ -92,6 +92,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -149,6 +150,7 @@ public class QueryFormTest {
         study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
+        
         subscription.setStudy(study);
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
@@ -196,7 +198,20 @@ public class QueryFormTest {
         assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
         assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(0));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
-        assertEquals(2, queryForm.getQuery().getCriteriaTypeOptions().size());
+
+        
+        assertEquals(2, queryForm.getCriteriaTypeOptions().size());
+        queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        assertEquals(3, queryForm.getCriteriaTypeOptions().size());
+        queryForm.getQuery().getSubscription().getStudy().getImageSeriesAnnotationCollection().clear();
+        assertEquals(2, queryForm.getCriteriaTypeOptions().size());
+        testImageSeriesAnnotation = createDefinition("testImageSeriesAnnotation", AnnotationTypeEnum.STRING);
+        queryForm.getQuery().getSubscription().getStudy().getImageSeriesAnnotationCollection().add(testImageSeriesAnnotation);
+
+        queryForm.getQuery().setId(1L);
+        assertTrue(queryForm.isSavedQuery());
+        queryForm.getQuery().setId(null);
+        assertFalse(queryForm.isSavedQuery());
     }
 
     @Test
@@ -601,6 +616,6 @@ public class QueryFormTest {
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
-}
+    }
 
 }

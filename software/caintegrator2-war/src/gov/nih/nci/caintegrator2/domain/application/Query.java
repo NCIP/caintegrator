@@ -1,13 +1,9 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.action.query.form.CriterionRowTypeEnum;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * 
@@ -136,22 +132,6 @@ public class Query extends AbstractCaIntegrator2Object {
      */
     public void setColumnCollection(Collection<ResultColumn> columnCollection) {
         this.columnCollection = columnCollection;
-    }
-    
-    /**
-     * @return a list of criteria types
-     */
-    public List<String> getCriteriaTypeOptions() {
-        Study study = getSubscription().getStudy();
-        List<String> options = new ArrayList<String>();
-        options.add(CriterionRowTypeEnum.CLINICAL.getValue());
-        if (study.hasGenomicDataSources()) {
-            options.add(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
-        }
-        if (study.hasImageSeriesData()) {
-            options.add(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
-        }
-        return options;
     }
 
 }
