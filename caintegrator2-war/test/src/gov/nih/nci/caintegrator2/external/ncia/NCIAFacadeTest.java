@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.external.ncia;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -154,7 +156,9 @@ public class NCIAFacadeTest {
         NCIADicomJob job = new NCIADicomJob();
         job.setJobId("test");
         job.setServerConnection(new ServerConnectionProfile());
-        nciaFacade.retrieveDicomFiles(job);
+        assertNull(nciaFacade.retrieveDicomFiles(job));
+        job.getImageSeriesIDs().add("test");
+        assertNotNull(nciaFacade.retrieveDicomFiles(job));
         NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) nciaFacade;
         NCIADicomJobFactoryStub jobFactoryStub = (NCIADicomJobFactoryStub) nciaFacadeImpl.getNciaDicomJobFactory();
         assertTrue(jobFactoryStub.nciaDicomJobRunnerStub.retrieveDicomFilesCalled);

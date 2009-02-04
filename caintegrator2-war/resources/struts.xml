@@ -318,6 +318,7 @@
             <result name="nciaBasket" type="redirect">${displayableWorkspace.nciaBasket.nciaBasketUrl} </result>
             <result name="export" type="tiles">exportSearchResults</result>
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
+            <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
         </action>
         
         <action name="deleteQuery" method="deleteQuery" class="manageQueryAction">
@@ -326,7 +327,7 @@
         
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
             <result name="dicomFileResult" type="dicomFileResult"/>
-            <result name="error" type="tiles">dicomJob</result>
+            <result name="error" type="tiles">genericError</result>
         </action>
         
         <action name="selectQueryTab" class="selectQueryTabAction">

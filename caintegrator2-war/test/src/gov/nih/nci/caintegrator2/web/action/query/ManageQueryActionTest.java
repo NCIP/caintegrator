@@ -266,7 +266,7 @@ public class ManageQueryActionTest {
         assertEquals("dicomJobAjax", manageQueryAction.execute());
         assertTrue(studyManagementService.retrieveImageDataSourceCalled);
         // If we call it again, it should already be on the session so it should error out.
-        assertEquals("error", manageQueryAction.execute());
+        assertEquals("dicomJobCurrentlyRunning", manageQueryAction.execute());
         
         // Test select all on checkboxes
         manageQueryAction.setSelectedAction("selectAll");

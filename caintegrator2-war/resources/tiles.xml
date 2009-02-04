@@ -76,9 +76,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/login_tile.jsp" />
     </definition>
     
-    <definition name="dicomJob" extends="cssBaseDef">
+    <definition name="genericError" extends="cssBaseDef">
         <put-attribute name="leftNavMenu" value=""/>
-        <put-attribute name="content" value="/WEB-INF/jsp/tiles/dicomJob_tile.jsp" />
+        <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/loginHeader_tile.jsp" />
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/genericError_tile.jsp" />
     </definition>
     
     <definition name="dicomJobAjax" extends="cssBaseDef">

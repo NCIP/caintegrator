@@ -117,7 +117,7 @@ public class DicomRetrievalAjaxRunner implements Runnable {
                 }
                 updater.finish();
             } catch (ConnectionException e) {
-                updater.addErrorMessage("Error retrieving file from server: " 
+                updater.addErrorMessage("Image download service not available on server: : " 
                                         + dicomJob.getServerConnection().getUrl());
             }
         } else {
