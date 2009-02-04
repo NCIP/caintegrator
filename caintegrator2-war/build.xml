@@ -288,6 +288,20 @@
             <echo message="repository revision: ${svn.revision}  caI2 version: ${caintegrator2.version}" />            
             
     </target>
+                
+    <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">
+        <taskdef resource="svntask.properties" classpath="${svnant.jar}:${svnClientAdapter.jar}:${svnjavahl.jar}" />
+        <svn javahl="false">
+            <status path="${root.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
+        </svn>
+        <!--
+          Note that if you explicitly define caintegrator2.version it will take
+          precedence over the one obtained from SVN
+          -->
+        <propertyregex property="caintegrator2.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+        <echo message="found svn info: ${svn.url} ${svn.revision} ${caintegrator2.version}" />
+    </target>
+                
      
 
     
