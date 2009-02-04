@@ -125,13 +125,13 @@ public class DicomRetrievalAjaxUpdater implements IDicomRetrievalAjaxUpdater {
     
     private void initializeJobDescription() {
         if (!dicomJob.getImageSeriesIDs().isEmpty()) {
-            utilThis.setValue("imageSeriesStatus", "<h3>Image Series UIds</h3>", false);
+            utilThis.setValue("imageSeriesStatus", "<h3>Image Series UIDs</h3>", false);
             utilThis.addOptions("imageSeriesList", dicomJob.getImageSeriesIDs().
                                                    toArray(new String[dicomJob.getImageSeriesIDs().size()]));
         }
         
         if (!dicomJob.getImageStudyIDs().isEmpty()) {
-            utilThis.setValue("imageStudyStatus", "<h3>Image Study UIds</h3>");
+            utilThis.setValue("imageStudyStatus", "<h3>Image Study UIDs</h3>");
             utilThis.addOptions("imageStudyList", dicomJob.getImageStudyIDs().
                                                    toArray(new String[dicomJob.getImageStudyIDs().size()]));
         }
