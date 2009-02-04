@@ -104,11 +104,13 @@ public class NCIAFacadeTestIntegration {
     private static final Logger LOGGER = Logger.getLogger(NCIAFacadeTestIntegration.class);
     NCIAFacade nciaFacade;
     ServerConnectionProfile connection;
+    ServerConnectionProfile devConnection;
     
     @Before
     public void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIAFacadeTestIntegration.class); 
         connection = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        devConnection = (ServerConnectionProfile) context.getBean("nciaDevServerConnectionProfile");
         NCIAFacadeImpl nciaFacadeImpl = (NCIAFacadeImpl) context.getBean("nciaFacadeIntegration");
         nciaFacade = nciaFacadeImpl;
     }
@@ -130,20 +132,26 @@ public class NCIAFacadeTestIntegration {
 
     @Test
     public void testRetrieveDicomFiles() throws ConnectionException, IOException {
-        String seriesInstanceUID = "1.3.6.1.4.1.9328.50.1.3";
-        String seriesInstanceUID2 = "1.3.6.1.4.1.9328.50.1.7";
-        String studyInstanceUID = "1.3.6.1.4.1.9328.50.1.2";
+        String seriesInstanceUID = "2.16.124.113543.6003.2770482660.6726.18091.1680495542";
+        String studyInstanceUID = "2.16.124.113543.6003.1.857.80828.1120.9007593.726.1";
         NCIADicomJob job = new NCIADicomJob();
         job.getImageSeriesIDs().add(seriesInstanceUID);
-        job.getImageSeriesIDs().add(seriesInstanceUID2);
         job.getImageStudyIDs().add(studyInstanceUID);
-        job.setJobId("uniqueID");
-        job.setServerConnection(connection);
+        job.setServerConnection(devConnection); // for the new retrieval it uses functions currently only on dev.
+        job.setImageAggregationType(NCIAImageAggregationTypeEnum.IMAGESERIES);
         File retrievedZip = nciaFacade.retrieveDicomFiles(job);
         File expectedZip = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload" 
-                                     + File.separator + "uniqueID.zip");
-        expectedZip.deleteOnExit();
+                                     + File.separator + "DICOM_JOB_1" + File.separator + "nciaDicomFiles.zip");
+        retrievedZip.deleteOnExit();
         assertEquals(expectedZip.getCanonicalPath(), retrievedZip.getCanonicalPath());
+        
+        // Now test Image Study.
+        job.setImageAggregationType(NCIAImageAggregationTypeEnum.IMAGESTUDY);
+        File retrievedZip2 = nciaFacade.retrieveDicomFiles(job);
+        File expectedZip2 = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload" 
+                                     + File.separator + "DICOM_JOB_2" + File.separator + "nciaDicomFiles.zip");
+        retrievedZip2.deleteOnExit();
+        assertEquals(expectedZip2.getCanonicalPath(), retrievedZip2.getCanonicalPath());
     }
 
     // Test below is commented out because getting all projects for "RIDER" takes a very long time...

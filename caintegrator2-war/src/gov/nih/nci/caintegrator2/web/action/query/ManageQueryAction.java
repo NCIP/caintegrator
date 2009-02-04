@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -120,7 +119,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private static final String COLUMNS_TAB = "columns";
     private static final String SORTING_TAB = "sorting";
     private static final String SAVE_AS_TAB = "saveAs";
-    private static final Integer RANDOM_NUMBER_MAX = 10000;
     
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
@@ -313,13 +311,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
                 && getDisplayableWorkspace().getDicomJob().isCurrentlyRunning()) {
             addActionError("There is currently a Dicom retrieval job running on this session, " 
                             + "please wait for that to complete before running another.");
-            return ERROR;
+            return "dicomJobCurrentlyRunning";
         }
-        
         NCIADicomJob dicomJob = queryManagementService.createDicomJob(retrieveCheckedRows());
-        Random generator = new Random();
-        dicomJob.setJobId("DICOM_JOB_" + generator.nextInt(RANDOM_NUMBER_MAX) 
-                            + "_" + getWorkspace().getUsername());
         ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
         if (dataSource != null) {
             dicomJob.setServerConnection(dataSource.getServerProfile());

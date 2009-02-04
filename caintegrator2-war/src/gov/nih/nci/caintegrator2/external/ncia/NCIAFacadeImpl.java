@@ -185,6 +185,9 @@ public class NCIAFacadeImpl implements NCIAFacade {
      */
     public File retrieveDicomFiles(NCIADicomJob job) 
         throws ConnectionException {
+        if (!job.hasData()) {
+            return null;
+        }
         NCIADicomJobRunner jobRunner = nciaDicomJobFactory.createNCIADicomJobRunner(fileManager, job);
         return jobRunner.retrieveDicomFiles();
     }

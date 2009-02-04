@@ -11,12 +11,8 @@
     
     <!--ADD CONTENT HERE-->
     
-    <h1>DICOM Retrieval</h1>
+    <h1>Error</h1>
     <s:actionerror />
-    <s:url id="downloadDicomFile" action="downloadDicomFile"/>
-    <s:a href="%{downloadDicomFile}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="add">Download DICOM Files</span></span></s:a>
-        
-            
 </div>
 
 <div class="clear"><br /></div>
