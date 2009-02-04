@@ -290,7 +290,16 @@
     </target>
                 
     <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">
-        <taskdef resource="svntask.properties" classpath="${svnant.jar}:${svnClientAdapter.jar}:${svnjavahl.jar}" />
+        <property name="svnlib.dir" value="${software.dir}/target/bda-utils" />
+        <property name="svnant.jar" value="${svnlib.dir}/svnant-1.2.0-rc1.jar" />
+        <property name="svnClientAdapter.jar" value="${svnlib.dir}/svnClientAdapter-1.2.0-rc1.jar" />
+        <property name="svnjavahl.jar" value="${svnlib.dir}/svnjavahl-1.2.0-rc1.jar" />
+
+        <echo message="preparing now for svn tag extraction" />
+        <echo message="classpath is  ${svnant.jar} ${svnClientAdapter.jar} ${svnjavahl.jar}" />
+        <echo message="root directory is ${root.dir}" />
+            
+        
         <svn javahl="false">
             <status path="${root.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
         </svn>
