@@ -92,9 +92,12 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.directwebremoting.WebContextFactory;
@@ -118,6 +121,12 @@ public class DataElementSearchAjaxUpdaterTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+    }
+    
+    @Test
+    public void testGetIncludeSearchResult() throws ServletException, IOException {
+        String searchResultString = updater.getIncludeSearchResult();
+        assertTrue(searchResultString == null);
     }
 
     @Test
