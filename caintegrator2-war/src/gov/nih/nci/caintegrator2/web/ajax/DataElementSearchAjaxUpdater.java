@@ -92,9 +92,12 @@ import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.directwebremoting.WebContext;
@@ -118,7 +121,9 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     private static final String SELECT_IMAGING_DEFINITION_ACTION = ACTION_PREFIX + "/selectImagingDefinition.action?";
     private static final String SELECT_CLINICAL_DATA_ELEMENT_ACTION = ACTION_PREFIX + "/selectDataElement.action?";
     private static final String SELECT_IMAGING_DATA_ELEMENT_ACTION = 
-                                    ACTION_PREFIX + "/selectImagingDataElement.action?";
+        ACTION_PREFIX + "/selectImagingDataElement.action?";
+    private static final String SEARCH_RESULT_JSP =
+        "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
     private Long lastRunSearch;
     private Util utilThis;
     private StudyManagementService studyManagementService;
@@ -130,6 +135,14 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     private Thread caDsrSearchThread;
     private int currentlyRunningThreads = 0;
     private EntityTypeEnum type;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getIncludeSearchResult() throws ServletException, IOException {
+        WebContext wctx = WebContextFactory.get();
+        return wctx.forwardToString(SEARCH_RESULT_JSP);
+    }
     
     /**
      * {@inheritDoc}
@@ -172,19 +185,10 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
                 setCaDsrInProgress();
         }
     }
-    
-    private boolean inititalizeAndCheckTimeout() {
-        WebContext wctx = WebContextFactory.get();
-        workspace = (DisplayableUserWorkspace) wctx.getSession().getAttribute("displayableWorkspace");
-        utilThis = new Util(wctx.getScriptSession());
-        utilThis.setValue("errorMessages", "");
-        if (checkTimeout()) {
-            killRunningThreads();
-            return true;
-        }
-        return false;
-    }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     private void killRunningThreads() {
         if (annotationDefinitionSearchThread != null 
                 && annotationDefinitionSearchThread.isAlive()) {
@@ -197,6 +201,18 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
             caDsrSearchThread.interrupt();
         }
         currentlyRunningThreads = 0;
+    }
+    
+    private boolean inititalizeAndCheckTimeout() {
+        WebContext wctx = WebContextFactory.get();
+        workspace = (DisplayableUserWorkspace) wctx.getSession().getAttribute("displayableWorkspace");
+        utilThis = new Util(wctx.getScriptSession());
+        utilThis.setValue("errorMessages", "");
+        if (checkTimeout()) {
+            killRunningThreads();
+            return true;
+        }
+        return false;
     }
     
     private boolean checkTimeout() {
