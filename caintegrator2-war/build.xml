@@ -309,7 +309,7 @@
         
         <taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svnlib.classpath" />
         <svn javahl="false">
-            <info target="${root.dir}" />
+            <info target="${software.dir}" />
         </svn>
         <!--
           Note that if you explicitly define caintegrator2.version it will take
