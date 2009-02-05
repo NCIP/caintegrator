@@ -85,10 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 /**
  * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
 public interface IDataElementSearchAjaxUpdater {
+
+    /**
+     * Get the include search result jsp.
+     * 
+     * @return the search result jsp content
+     * @throws ServletException exception
+     * @throws IOException exception
+     */
+    String getIncludeSearchResult() throws ServletException, IOException;
     
     /**
      * Runs an asynchronous search on both the caDSR and the local repository for matching definitions
