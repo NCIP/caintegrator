@@ -278,26 +278,21 @@
             </exec>
     
             <!-- need ant-contrib.jar for this in lib dir of ant install -->
-            <propertyregex property="svn.revision" input="${svnlog.out}" select="\1" defaultValue="Unknown">
+            <propertyregex property="svn.info.rev" input="${svnlog.out}" select="\1" defaultValue="Unknown">
                 <regexp pattern="r([0-9]*)"/>
             </propertyregex>
             
             <echo message="Using svn revison tag: ${revision}." />
-            <propertyregex property="caintegrator2.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-            <echo message="svn url: ${svn.url}" />
-            <echo message="repository revision: ${svn.revision}  caI2 version: ${caintegrator2.version}" />            
+            <propertyregex property="caintegrator2.version" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+            <echo message="svn url: ${svn.info.url}" />
+            <echo message="repository revision: ${svn.info.rev}  caI2 version: ${caintegrator2.version}" />            
             
     </target>
                 
     <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">
         <property name="svnlib.dir" value="${software.dir}/target/bda-utils" />
-        <property name="svnant.jar" value="${svnlib.dir}/svnant-1.2.0-rc1.jar" />
-        <property name="svnClientAdapter.jar" value="${svnlib.dir}/svnClientAdapter-1.2.0-rc1.jar" />
-        <property name="svnjavahl.jar" value="${svnlib.dir}/svnjavahl-1.2.0-rc1.jar" />
 
-        <echo message="preparing now for svn tag extraction" />
-        <echo message="classpath is  ${svnant.jar}:${svnClientAdapter.jar}:${svnjavahl.jar}" />
-        <echo message="root directory is ${root.dir}" />
+        <echo message="svn info for directory: ${software.dir}" />
 
         <path id="svnlib.classpath">
             <fileset dir="${svnlib.dir}">
@@ -315,8 +310,11 @@
           Note that if you explicitly define caintegrator2.version it will take
           precedence over the one obtained from SVN
           -->
-        <propertyregex property="caintegrator2.version" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-        <echo message="found svn info. url:${svn.info.url} rev:${svn.info.rev} cai2 version:${caintegrator2.version}" />
+        <echo message="svn getinfo: cai2 version before:${caintegrator2.version}" />
+        <propertyregex property="caintegrator2.svntag" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+        <echo message="svn getinfo: url:${svn.info.url}" />
+        <echo message="svn getinfo: rev:${svn.info.rev}" />
+        <echo message="svn getinfo: cai2 version:${caintegrator2.svntag}" />
     </target>
                 
      
@@ -392,7 +390,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
@@ -400,8 +398,9 @@
             </fileset>    
             <filterset>
                 <filter token="caintegrator2.version" value="${caintegrator2.version}" />
-                <filter token="svn.url" value="${svn.url}"/>
-                <filter token="svn.revision" value="${svn.revision}"/>
+                <filter token="svn.url" value="${svn.info.url}"/>
+                <filter token="svn.revision" value="${svn.info.rev}"/>
+                <filter token="caintegrator2.svntag" value="${caintegrator2.svntag}"/>
             </filterset>
         </copy>
         
