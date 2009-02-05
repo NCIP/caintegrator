@@ -296,19 +296,27 @@
         <property name="svnjavahl.jar" value="${svnlib.dir}/svnjavahl-1.2.0-rc1.jar" />
 
         <echo message="preparing now for svn tag extraction" />
-        <echo message="classpath is  ${svnant.jar} ${svnClientAdapter.jar} ${svnjavahl.jar}" />
+        <echo message="classpath is  ${svnant.jar}:${svnClientAdapter.jar}:${svnjavahl.jar}" />
         <echo message="root directory is ${root.dir}" />
-            
+
+        <path id="svnlib.classpath">
+            <fileset dir="${svnlib.dir}">
+                <include name="svnant-1.2.0-rc1.jar" />
+                <include name="svnClientAdapter-1.2.0-rc1.jar" />
+                <include name="svnjavahl-1.2.0-rc1.jar" />
+            </fileset>
+        </path>        
         
+        <taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svnlib.classpath" />
         <svn javahl="false">
-            <status path="${root.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
+            <info target="${root.dir}" />
         </svn>
         <!--
           Note that if you explicitly define caintegrator2.version it will take
           precedence over the one obtained from SVN
           -->
-        <propertyregex property="caintegrator2.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-        <echo message="found svn info: ${svn.url} ${svn.revision} ${caintegrator2.version}" />
+        <propertyregex property="caintegrator2.version" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+        <echo message="found svn info. url:${svn.info.url} rev:${svn.info.rev} cai2 version:${caintegrator2.version}" />
     </target>
                 
      
