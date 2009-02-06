@@ -122,21 +122,18 @@ public class DataElementSearchAjaxUpdaterTest {
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
     }
-    
-    @Test
-    public void testGetIncludeSearchResult() throws ServletException, IOException {
-        String searchResultString = updater.getIncludeSearchResult();
-        assertTrue(searchResultString == null);
-    }
 
     @Test
-    public void testRunSearch() throws InterruptedException {
+    public void testRunSearch() throws InterruptedException, ServletException, IOException {
         String entityType = "subject";
         String studyConfId = "1";
         String fileColId = "1";
         String keywords = "test keywords";
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
+        String searchResultJsp = "searchResult.jsp";
+      
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
+        searchResultJsp = "";
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         while (true) {
             Thread.sleep(600);
             if (!updater.isCurrentlyRunning()) { // Need to verify all Threads are not running before proceeding.
@@ -148,7 +145,7 @@ public class DataElementSearchAjaxUpdaterTest {
         
         keywords = "exceptionTest";
         entityType = "image";
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         while (true) {
             Thread.sleep(600);
             if (!updater.isCurrentlyRunning()) { // Need to verify all Threads are not running before proceeding.
@@ -158,7 +155,7 @@ public class DataElementSearchAjaxUpdaterTest {
         
         entityType = "image";
         keywords = "null";
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         while (true) {
             Thread.sleep(600);
             if (!updater.isCurrentlyRunning()) { // Need to verify all Threads are not running before proceeding.
@@ -166,17 +163,18 @@ public class DataElementSearchAjaxUpdaterTest {
             }
         }
         keywords = null;
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
     }
 
     @Test
-    public void testInitializeJsp() throws InterruptedException {
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
         String entityType = "subject";
         String studyConfId = "1";
         String fileColId = "1";
         String keywords = "test keywords";
-        updater.runSearch(entityType, studyConfId, fileColId, keywords);
+        String searchResultJsp = "searchResult.jsp";
+        updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         Thread.sleep(600);
         assertTrue(updater.isCurrentlyRunning());
         updater.initializeJsp();
