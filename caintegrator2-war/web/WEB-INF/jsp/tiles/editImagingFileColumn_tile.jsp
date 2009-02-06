@@ -16,12 +16,6 @@
             DataElementSearchAjaxUpdater.getIncludeSearchResult(function(data) {
                 dwr.util.setValue("searchResult", data, { escapeHtml:false });
                 });
-            while (document.getElementById("annotationDefinitionTable") == null){
-                var i = 0;
-                while (i < 100) {
-                    i = i +1;
-                }
-            }
         }
 
         dwr.engine.setActiveReverseAjax(true);
