@@ -95,23 +95,18 @@ import javax.servlet.ServletException;
 public interface IDataElementSearchAjaxUpdater {
 
     /**
-     * Get the include search result jsp.
-     * 
-     * @return the search result jsp content
-     * @throws ServletException exception
-     * @throws IOException exception
-     */
-    String getIncludeSearchResult() throws ServletException, IOException;
-    
-    /**
      * Runs an asynchronous search on both the caDSR and the local repository for matching definitions
      * based on the keywords.
      * @param type - Corresponds to an EntityTypeEnum (currently only subject or image)
      * @param studyConfigurationId - ID of the study configuration.
      * @param fileColumnId - ID of the file column.
      * @param keywords - keywords to search on.
+     * @param searchResultJsp - the include search result jsp.
+     * @throws ServletException exception
+     * @throws IOException exception
      */
-    void runSearch(String type, String studyConfigurationId, String fileColumnId, String keywords);
+    void runSearch(String type, String studyConfigurationId, String fileColumnId, String keywords,
+            String searchResultJsp) throws ServletException, IOException;
     
     
     /**

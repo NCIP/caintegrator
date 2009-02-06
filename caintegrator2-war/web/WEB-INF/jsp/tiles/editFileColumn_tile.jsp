@@ -10,16 +10,16 @@
     <script type="text/javascript">
     
     initializeJsp();
+    
     function runSearch(studyConfigurationId, fileColumnId, keywords) {
+        var searchResultJsp = "";
         if (document.getElementById("annotationDefinitionTable") == null) {
-            DataElementSearchAjaxUpdater.getIncludeSearchResult(function(data) {
-                dwr.util.setValue("searchResult", data, { escapeHtml:false });
-                });
+            searchResultJsp = "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
         }
         
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.runSearch("subject", studyConfigurationId, fileColumnId, keywords);
-        
+        DataElementSearchAjaxUpdater.runSearch("subject", studyConfigurationId, fileColumnId,
+            keywords, searchResultJsp);
     }
     
     function initializeJsp() {

@@ -11,16 +11,16 @@
     initializeJsp();
     
     function runSearch(studyConfigurationId, fileColumnId, keywords) {
-        var annotationDefinitionTableElement = document.getElementById("annotationDefinitionTable");
-        if (annotationDefinitionTableElement == null) {
-            DataElementSearchAjaxUpdater.getIncludeSearchResult(function(data) {
-                dwr.util.setValue("searchResult", data, { escapeHtml:false });
-                });
+        var searchResultJsp = "";
+        if (document.getElementById("annotationDefinitionTable") == null) {
+            searchResultJsp = "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
         }
-
+        
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.runSearch("image", studyConfigurationId, fileColumnId, keywords);
-    }    
+        DataElementSearchAjaxUpdater.runSearch("subject", studyConfigurationId, fileColumnId,
+            keywords, searchResultJsp);
+    }
+  
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
         DataElementSearchAjaxUpdater.initializeJsp();
