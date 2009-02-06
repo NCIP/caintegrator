@@ -122,8 +122,6 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     private static final String SELECT_CLINICAL_DATA_ELEMENT_ACTION = ACTION_PREFIX + "/selectDataElement.action?";
     private static final String SELECT_IMAGING_DATA_ELEMENT_ACTION = 
         ACTION_PREFIX + "/selectImagingDataElement.action?";
-    private static final String SEARCH_RESULT_JSP =
-        "/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp";
     private Long lastRunSearch;
     private Util utilThis;
     private StudyManagementService studyManagementService;
@@ -138,17 +136,18 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     
     /**
      * {@inheritDoc}
+     * @throws IOException 
+     * @throws ServletException 
      */
-    public String getIncludeSearchResult() throws ServletException, IOException {
-        WebContext wctx = WebContextFactory.get();
-        return wctx.forwardToString(SEARCH_RESULT_JSP);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void runSearch(String entityType, String studyConfId, String fileColId, String keywords) {
+    public void runSearch(String entityType, String studyConfId, String fileColId, String keywords,
+            String searchResultJsp) throws ServletException, IOException {
         inititalizeAndCheckTimeout();
+        
+        if (!searchResultJsp.equalsIgnoreCase("")) {
+            WebContext wctx = WebContextFactory.get();
+            utilThis.setValue("searchResult", wctx.forwardToString(searchResultJsp), false);
+        }
+        
         if (!isCurrentlyRunning()) {
             this.studyConfigurationId = studyConfId;
             this.fileColumnId = fileColId;
