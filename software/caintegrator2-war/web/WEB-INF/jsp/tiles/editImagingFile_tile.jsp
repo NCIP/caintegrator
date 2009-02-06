@@ -16,7 +16,6 @@
     <s:hidden name="imagingSource.id" />
     <table class="data">
         <tr>
-            <th>Display in Browse</th>
             <th>Field Definition</th>
             <th>Field Header from File</th>
             <th colspan="3" />Data from File</th>
@@ -27,12 +26,7 @@
             </s:if>
             <s:else>
               <tr class="even">
-            </s:else>            
-                <td>
-                    <s:if test="%{fieldDescriptor != null}">
-                        <s:checkbox name="fieldDescriptor.shownInBrowse" theme="simple" />
-                    </s:if>
-                </td>
+            </s:else>
                 <td>
                     <s:if test="%{identifierColumn}">
                         Identifier
