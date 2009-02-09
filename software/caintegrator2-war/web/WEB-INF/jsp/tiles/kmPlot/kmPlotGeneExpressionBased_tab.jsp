@@ -1,13 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
             
-                   
+<s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
+    <s:hidden name="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" value="false" />
     
-    <!--Page Help-->
-    
-    <div class="pagehelp"><a href="#" class="help"></a></div>
-    
-    <!--/Page Help-->           
     <!-- Kaplan-Meier Inputs -->
     <h1>Gene Expression Based Kaplan-Meier Survival Plots</h1>
 
@@ -47,43 +44,34 @@
             </tr>
         </table>
         <br>
+        <div>
         <center>
-        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierGeneExpressionInputForm.action = 'resetGeneExpressionBasedKMPlot.action';document.kaplanMeierGeneExpressionInputForm.submit();"><span class="btn_img">Reset</span></s:a>
+        <button type="button" 
+                onclick="document.kaplanMeierGeneExpressionInputForm.resetSelected.value = 'true';
+                document.kaplanMeierGeneExpressionInputForm.action = 'resetGeneExpressionBasedKMPlot.action';
+                document.kaplanMeierGeneExpressionInputForm.submit();"> Reset 
+        </button>
         <s:if test="creatable">
-	        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierGeneExpressionInputForm.action = 'createGeneExpressionBasedKMPlot.action';document.kaplanMeierGeneExpressionInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
+            <button type="button" 
+                    onclick="document.kaplanMeierGeneExpressionInputForm.createPlotSelected.value = 'true';
+                    dojo.event.topic.publish('createGeneExpressionPlot');"> Create Plot 
+            </button>
         </s:if>
         </center>
-
+        </div>
     <!-- /Kaplan-Meier Inputs -->
     
-    <!-- Kaplan-Meier Graph -->
-    <s:set name="kmPlot" value="#session['kmPlot']" />
-    <s:if test="#kmPlot.geneExpressionBasedKmPlot != null">
-        <br>
-        <center>
-            <img src="retrieveGeneExpressionKMPlot.action"/>
-            <br>
-            
-            <strong>Log-rank P-value for significance of difference in survival between groups</strong>
-            <br>
-            <table cellspacing="10">
-            
-            <!-- Outter Map -->
-            <s:iterator value="allStringPValues">
-                <s:set name="group1Name" value="key"/>
-                <!-- Innter Map -->
-                <s:iterator value="value">
-                    <s:set name="group2Name" value="key"/>
-                    <tr>
-                        <td align="right"><s:property value="#group1Name"/></td>
-                        <td> vs. </td>
-                        <td align="left"> <s:property value="#group2Name"/> </td>
-                        <td> = </td> 
-                        <td> <s:property value="value"/> </td>
-                    </tr>
-                </s:iterator> <!-- End Innter Map -->
-            </s:iterator> <!-- End Outter Map -->
-            </table>
-        </center>
-    </s:if>
-    <!-- /Kaplan-Meier Graph -->
+    <s:url id="createGeneExpressionBasedKMPlot" action="createGeneExpressionBasedKMPlot"/>
+    
+    <br><br>
+    <center>
+    <s:div id="geneExpressionKmPlotDiv" 
+            theme="ajax" 
+            href="%{createGeneExpressionBasedKMPlot}" 
+            formId="kaplanMeierGeneExpressionInputForm" 
+            loadingText="<img src='images/ajax-loader-processing.gif'/>"
+            listenTopics="createGeneExpressionPlot" refreshOnShow="true" />
+        
+    </center>
+    
+</s:form>

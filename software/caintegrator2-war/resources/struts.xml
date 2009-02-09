@@ -375,8 +375,8 @@
         </action>
         
         <action name="createAnnotationBasedKMPlot" method="createPlot" class="kmPlotAnnotationBasedAction">
-            <result type="tiles">kmPlot</result>
-            <result name="input" type="tiles">kmPlot</result>
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBasedGraph_div.jsp</result>
         </action>
         
         <action name="retrieveAnnotationKMPlot" method="retrievePlot" class="kmPlotAnnotationBasedAction">
@@ -397,8 +397,8 @@
         </action>
         
        <action name="createGeneExpressionBasedKMPlot" method="createPlot" class="kmPlotGeneExpressionBasedAction">
-            <result type="tiles">kmPlot</result>
-            <result name="input" type="tiles">kmPlot</result>
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBasedGraph_div.jsp</result>
         </action>
         
         <action name="retrieveGeneExpressionKMPlot" method="retrievePlot" class="kmPlotGeneExpressionBasedAction">
@@ -419,8 +419,8 @@
         </action>
         
        <action name="createQueryBasedKMPlot" method="createPlot" class="kmPlotQueryBasedAction">
-            <result type="tiles">kmPlot</result>
-            <result name="input" type="tiles">kmPlot</result>
+            <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
         </action>
         
         <action name="retrieveQueryKMPlot" method="retrievePlot" class="kmPlotQueryBasedAction">

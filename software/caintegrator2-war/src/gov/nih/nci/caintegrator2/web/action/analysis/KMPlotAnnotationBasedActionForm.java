@@ -100,6 +100,7 @@ public class KMPlotAnnotationBasedActionForm {
     private String annotationTypeSelection;
     private String selectedAnnotationId;
     private Collection <String> selectedValuesIds = new HashSet<String>();
+    private boolean permissibleValuesNeedUpdate = false;
     
     
     // JSP Select List Options
@@ -204,6 +205,20 @@ public class KMPlotAnnotationBasedActionForm {
      */
     public void setPermissibleValues(Map<String, String> permissibleValues) {
         this.permissibleValues = permissibleValues;
+    }
+
+    /**
+     * @return the permissibleValuesNeedUpdate
+     */
+    public boolean isPermissibleValuesNeedUpdate() {
+        return permissibleValuesNeedUpdate;
+    }
+
+    /**
+     * @param permissibleValuesNeedUpdate the permissibleValuesNeedUpdate to set
+     */
+    public void setPermissibleValuesNeedUpdate(boolean permissibleValuesNeedUpdate) {
+        this.permissibleValuesNeedUpdate = permissibleValuesNeedUpdate;
     }
 
 }
