@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
@@ -192,8 +193,10 @@ public class KMPlotQueryBasedActionTest {
     }
 
     @Test
-    public void testCreatePlot() {
+    public void testCreatePlot() throws InterruptedException {
         setupActionVariables();
+        assertEquals(ActionSupport.SUCCESS, action.createPlot());
+        action.setCreatePlotSelected(true);
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
@@ -219,6 +222,22 @@ public class KMPlotQueryBasedActionTest {
         KMPlot plot = plotService.generatePlot(configuration);
         SessionHelper.setKmPlot(KMPlotTypeEnum.QUERY_BASED, plot);
         assertEquals("1.10", action.getAllStringPValues().get("group").get("group"));
+    }
+    
+    @Test
+    public void testReset() {
+        setupActionVariables();
+        assertFalse(action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().isEmpty());
+        action.reset();
+        assertFalse(action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().isEmpty());
+        action.setResetSelected(true);
+        action.reset();
+        assertTrue(action.getKmPlotForm().getQueryBasedForm().getSelectedQueries().isEmpty());
+    }
+    
+    @Test
+    public void testGetPlotUrl() {
+        assertEquals("/caintegrator2/retrieveQueryKMPlot.action?", action.getPlotUrl());
     }
     
     private SubjectGroup createGroup() {

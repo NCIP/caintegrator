@@ -106,7 +106,7 @@ import java.util.Set;
 public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
-
+    private static final String QUERY_PLOT_URL = "/caintegrator2/retrieveQueryKMPlot.action?";
     private KMQueryBasedParameters kmPlotParameters = new KMQueryBasedParameters();
     
     /**
@@ -195,9 +195,11 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
      * @return Struts return value.
      */
     public String reset() {
-        clearQueryBasedKmPlot();
-        getForm().clear();
-        kmPlotParameters.clear();
+        if (isResetSelected()) {
+            clearQueryBasedKmPlot();
+            getForm().clear();
+            kmPlotParameters.clear();
+        }
         return SUCCESS;
     }
 
@@ -213,22 +215,20 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
         setDisplayTab(QUERY_TAB);
         return SUCCESS;
     }
-
+    
     /**
-     * When the form is filled out and the user clicks "Create Plot" this calls the
-     * analysis service to generate a KMPlot object.
-     * @return Struts return value.
+     * {@inheritDoc}
      */
-    public String createPlot() {
-        if (!kmPlotParameters.validate()) {
-            for (String errorMessages : kmPlotParameters.getErrorMessages()) {
-                addActionError(errorMessages);
+    @Override
+    protected void runFirstCreatePlotThread() {
+        if (!isCreatePlotRunning()) {
+            setCreatePlotRunning(true);
+            if (kmPlotParameters.validate()) {
+                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+                SessionHelper.setKmPlot(KMPlotTypeEnum.QUERY_BASED, plot);
             }
-            return INPUT;
+            setCreatePlotRunning(false);
         }
-        KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-        SessionHelper.setKmPlot(KMPlotTypeEnum.QUERY_BASED, plot);
-        return SUCCESS;
     }
     
     /**
@@ -272,6 +272,26 @@ public class KMPlotQueryBasedAction extends AbstractKaplanMeierAction {
      */
     public void setKmPlotParameters(KMQueryBasedParameters kmPlotParameters) {
         this.kmPlotParameters = kmPlotParameters;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlotUrl() {
+        return QUERY_PLOT_URL;
+    }
+    
+    /**
+     * This is set only when the reset button on the JSP is pushed, so we know that a reset needs to occur.
+     * @param resetSelected T/F value.
+     */
+    public void setResetSelected(boolean resetSelected) {
+        getForm().setResetSelected(resetSelected);
+    }
+    
+    private boolean isResetSelected() {
+        return getForm().isResetSelected();
     }
 
 }

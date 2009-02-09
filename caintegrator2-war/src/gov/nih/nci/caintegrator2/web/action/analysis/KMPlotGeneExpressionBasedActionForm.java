@@ -98,8 +98,9 @@ public class KMPlotGeneExpressionBasedActionForm {
     private String overexpressedNumber;
     private String underexpressedNumber;
     private boolean initialized = false;
+    private boolean resetSelected = false;
     
-    
+
     /**
      * Clears all the variables to null.
      */
@@ -164,5 +165,19 @@ public class KMPlotGeneExpressionBasedActionForm {
      */
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
+    }
+    
+    /**
+     * @return the resetSelected
+     */
+    public boolean isResetSelected() {
+        return resetSelected;
+    }
+
+    /**
+     * @param resetSelected the resetSelected to set
+     */
+    public void setResetSelected(boolean resetSelected) {
+        this.resetSelected = resetSelected;
     }
 }

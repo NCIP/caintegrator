@@ -3,12 +3,9 @@
 
 
 <s:form name="kaplanMeierQueryInputForm" id="kaplanMeierQueryInputForm" theme="simple">
-    
-    <!--Page Help-->
-    
-    <div class="pagehelp"><a href="#" class="help"></a></div>
-    
-    <!--/Page Help-->           
+    <s:hidden name="createPlotSelected" value="false" />
+    <s:hidden name="resetSelected" value="false" />
+          
     <!-- Kaplan-Meier Inputs -->
     <h1>Query Based Kaplan-Meier Survival Plots</h1>
 
@@ -76,49 +73,39 @@
             </tr>
         </table>
         <br>
+        <div>
         <center>
-        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" onclick="document.kaplanMeierQueryInputForm.action = 'resetQueryBasedKMPlot.action';document.kaplanMeierQueryInputForm.submit();"><span class="btn_img">Reset</span></s:a>
+        <button type="button" 
+                onclick="document.kaplanMeierQueryInputForm.resetSelected.value = 'true';
+                document.kaplanMeierQueryInputForm.action = 'resetQueryBasedKMPlot.action';
+                document.kaplanMeierQueryInputForm.submit();"> Reset 
+        </button>
         <s:if test="creatable">
-	        <s:a href="#" cssClass="btn" cssStyle="margin:0 5px;" 
-	               onclick="selectAllOptions(document.getElementById('allQueries'));
-	                        selectAllOptions(document.getElementById('querySelections'));
-	                        document.kaplanMeierQueryInputForm.action = 'createQueryBasedKMPlot.action';
-	                        document.kaplanMeierQueryInputForm.submit();"><span class="btn_img">Create Plot</span></s:a>
+        
+            <button type="button" 
+                    onclick="selectAllOptions(document.getElementById('allQueries'));
+                    selectAllOptions(document.getElementById('querySelections'));
+                    document.kaplanMeierQueryInputForm.createPlotSelected.value = 'true';
+                    dojo.event.topic.publish('createQueryBasedKMPlot');"> Create Plot 
+            </button>
+            
         </s:if>
         </center>
+        </div>
+        
+    <s:url id="createQueryBasedKMPlot" action="createQueryBasedKMPlot"/>
+    
+    <br><br>
+    <center>
+    <s:div id="queryKmPlotDiv" 
+            theme="ajax" 
+            href="%{createQueryBasedKMPlot}" 
+            formId="kaplanMeierQueryInputForm" 
+            loadingText="<img src='images/ajax-loader-processing.gif'/>"
+            listenTopics="createQueryBasedKMPlot" refreshOnShow="true" />
+        
+    </center>
 
     <!-- /Kaplan-Meier Inputs -->
-    
-    <!-- Kaplan-Meier Graph -->
-    <s:set name="kmPlot" value="#session['kmPlot']" />
-    <s:if test="#kmPlot.queryBasedKmPlot != null">
-        <br>
-        <center>
-            <img src="retrieveQueryKMPlot.action"/>
-            <br>
-            
-            <strong>Log-rank P-value for significance of difference in survival between groups</strong>
-            <br>
-            <table cellspacing="10">
-            
-            <!-- Outter Map -->
-            <s:iterator value="allStringPValues">
-                <s:set name="group1Name" value="key"/>
-                <!-- Innter Map -->
-                <s:iterator value="value">
-                    <s:set name="group2Name" value="key"/>
-                    <tr>
-                        <td align="right"><s:property value="#group1Name"/></td>
-                        <td> vs. </td>
-                        <td align="left"> <s:property value="#group2Name"/> </td>
-                        <td> = </td> 
-                        <td> <s:property value="value"/> </td>
-                    </tr>
-                </s:iterator> <!-- End Innter Map -->
-            </s:iterator> <!-- End Outter Map -->
-            </table>
-        </center>
-    </s:if>
-    <!-- /Kaplan-Meier Graph -->
     
 </s:form>

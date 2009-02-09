@@ -101,7 +101,7 @@ import org.apache.commons.lang.math.NumberUtils;
 public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
     
     private static final long serialVersionUID = 1L;
-    
+    private static final String GENE_EXPRESSION_PLOT_URL = "/caintegrator2/retrieveGeneExpressionKMPlot.action?";
     private KMGeneExpressionBasedParameters kmPlotParameters = new KMGeneExpressionBasedParameters();
     
     /**
@@ -158,27 +158,36 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
      * @return Struts return value.
      */
     public String reset() {
-        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, null);
-        getForm().clear();
-        kmPlotParameters.clear();
+        if (isResetSelected()) {
+            SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, null);
+            getForm().clear();
+            kmPlotParameters.clear();
+        }
         return SUCCESS;
     }
     
+
     /**
-     * When the form is filled out and the user clicks "Create Plot" this calls the
-     * analysis service to generate a KMPlot object.
-     * @return Struts return value.
+     * {@inheritDoc}
      */
-    public String createPlot() {
-        if (!kmPlotParameters.validate()) {
-            for (String errorMessages : kmPlotParameters.getErrorMessages()) {
-                addActionError(errorMessages);
+    @Override
+    protected void runFirstCreatePlotThread() {
+        if (!isCreatePlotRunning()) {
+            setCreatePlotRunning(true);
+            if (kmPlotParameters.validate()) {
+                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+                SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, plot);
             }
-            return INPUT;
+            setCreatePlotRunning(false);
         }
-        KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-        SessionHelper.setKmPlot(KMPlotTypeEnum.GENE_EXPRESSION, plot);
-        return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlotUrl() {
+        return GENE_EXPRESSION_PLOT_URL;
     }
     
     /**
@@ -190,6 +199,18 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
             return retrieveAllStringPValues(SessionHelper.getGeneExpressionBasedKmPlot());
         }
         return new HashMap<String, Map<String, String>>();
+    }
+    
+    /**
+     * This is set only when the reset button on the JSP is pushed, so we know that a reset needs to occur.
+     * @param resetSelected T/F value.
+     */
+    public void setResetSelected(boolean resetSelected) {
+        getForm().setResetSelected(resetSelected);
+    }
+    
+    private boolean isResetSelected() {
+        return getForm().isResetSelected();
     }
 
     /**
