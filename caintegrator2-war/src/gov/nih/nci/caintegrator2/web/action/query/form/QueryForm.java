@@ -256,4 +256,14 @@ public class QueryForm {
         return options;
     }
 
+    /**
+     * Check if search result is genomic and all genes are going to be searched.
+     * @return boolean of potentially a large query
+     */
+    public boolean isPotentiallyLargeQuery() {
+        if (query != null && query.isGenomicResultType()) {
+            return criteriaGroup.hasNoGenomicCriterion();
+        }
+        return false;
+    }
 }
