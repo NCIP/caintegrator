@@ -111,8 +111,7 @@
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
-        <li><s:a href="#" cssClass="btn"
-            onclick="document.manageQueryForm.selectedAction.value='executeQuery';document.manageQueryForm.submit();">
+        <li><s:a href="#" cssClass="btn" onclick="runSearch()">
             <span class="btn_img"><span class="search">Run Search</span></span>
         </s:a></li>
         <li><span class="btn_img"><span class="search"><br>

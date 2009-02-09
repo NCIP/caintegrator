@@ -44,6 +44,24 @@
         }
     }
 
+    function runSearch() {
+        var isPotentiallyLargeQuery = '<s:property value="queryForm.isPotentialLargeQuery()"/>';
+        if (isPotentiallyLargeQuery == "true") {
+            if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
+                    + "Please confirm that you want to continue?")) {
+                executeQuery();
+            }
+        }
+        else {
+            executeQuery();
+        }
+    }
+    
+    function executeQuery() {
+        document.manageQueryForm.selectedAction.value="executeQuery";
+        document.manageQueryForm.submit();
+    }
+
 </script>
 
 

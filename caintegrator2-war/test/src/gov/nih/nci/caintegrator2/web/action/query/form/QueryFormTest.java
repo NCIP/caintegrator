@@ -618,4 +618,18 @@ public class QueryFormTest {
         assertFalse(validationAware.hasFieldErrors());
     }
 
+    @Test
+    public void testIsPotentialLargeQuery() {
+        assertFalse(queryForm.isPotentiallyLargeQuery());
+        queryForm.createQuery(subscription);
+        assertFalse(queryForm.isPotentiallyLargeQuery());
+        queryForm.getQuery().setResultType("genomic");
+        assertTrue(queryForm.isPotentiallyLargeQuery());
+        queryForm.getCriteriaGroup().setCriterionTypeName("Gene Expression");
+        queryForm.getCriteriaGroup().addCriterion();
+        queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new GeneNameCriterion());
+        assertFalse(queryForm.isPotentiallyLargeQuery());
+        queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new FoldChangeCriterion());
+        assertFalse(queryForm.isPotentiallyLargeQuery());
+    }
 }

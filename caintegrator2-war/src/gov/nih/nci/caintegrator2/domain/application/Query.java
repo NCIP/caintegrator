@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ public class Query extends AbstractCaIntegrator2Object {
     private String description;
     private String name;
     private String reporterType;
-    private String resultType;
+    private String resultType = "";
     private String visibility;
     
     private StudySubscription subscription;
@@ -132,6 +133,13 @@ public class Query extends AbstractCaIntegrator2Object {
      */
     public void setColumnCollection(Collection<ResultColumn> columnCollection) {
         this.columnCollection = columnCollection;
+    }
+
+    /**
+     * @return a  boolean of is a genomic result type
+     */
+    public boolean isGenomicResultType() {
+        return getResultType().equals(ResultTypeEnum.GENOMIC.getValue());
     }
 
 }
