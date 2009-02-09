@@ -133,6 +133,9 @@ public class DisplayableUserWorkspace {
     private NCIABasket nciaBasket = new NCIABasket();
     private NCIADicomJob dicomJob;
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
+    private boolean createPlotSelected = false;
+    private boolean createPlotRunning = false;
+    
     
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -371,6 +374,34 @@ public class DisplayableUserWorkspace {
      */
     public DataElementSearchObject getDataElementSearchObject() {
         return dataElementSearchObject;
+    }
+
+    /**
+     * @return the createPlotSelected
+     */
+    public boolean isCreatePlotSelected() {
+        return createPlotSelected;
+    }
+
+    /**
+     * @param createPlotSelected the createPlotSelected to set
+     */
+    public void setCreatePlotSelected(boolean createPlotSelected) {
+        this.createPlotSelected = createPlotSelected;
+    }
+
+    /**
+     * @return the createPlotRunning
+     */
+    public boolean isCreatePlotRunning() {
+        return createPlotRunning;
+    }
+
+    /**
+     * @param createPlotRunning the createPlotRunning to set
+     */
+    public void setCreatePlotRunning(boolean createPlotRunning) {
+        this.createPlotRunning = createPlotRunning;
     }
 
 }

@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -121,11 +122,14 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
      * Query Tab.
      */
     protected static final String QUERY_TAB = "queryTab";
+    
     private static final Double SMALLEST_TWO_DIGIT_DECIMAL = .01;
+    private static final Integer DELAY_TIME_BETWEEN_PLOT_CREATE = 25;
     private static final String KMPLOT_RESULT = "kmPlotResult";
     private StudyManagementService studyManagementService;
     private AnalysisService analysisService;
     private String displayTab;
+
 
     /**
      * {@inheritDoc}
@@ -163,6 +167,12 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
      * @return implementation subclass of AbstractKMParameter.
      */
     public abstract <T extends AbstractKMParameters> T getKmPlotParameters();
+    
+    /**
+     * The URL for the action which retrieves the KM Plot graph image for display.
+     * @return URL string.
+     */
+    public abstract String getPlotUrl();
     
     private void populateSurvivalValueDefinitions() {
         if (getStudy() != null 
@@ -267,6 +277,64 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
         DecimalFormat df = new DecimalFormat(pattern);
         return df.format(number);
     }
+    
+    /**
+     * This function figures out which kmPlot action it needs to forward to, and then adds the current
+     * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since 
+     * the graph will be drawn without a page refresh using AJAX.
+     * @return action URL to return to JSP.
+     */
+    public String retrieveKmPlotUrl() {
+        return getPlotUrl() + Calendar.getInstance().getTimeInMillis();
+    }
+    
+    /**
+     * When the form is filled out and the user clicks "Create Plot" this calls the
+     * analysis service to generate a KMPlot object.
+     * @return Struts return value.
+     * @throws InterruptedException thread interrupted.
+     */
+    public String createPlot() throws InterruptedException {
+        String returnString = SUCCESS;
+        if (isCreatePlotSelected()) { // createPlot() gets called everytime page loads, making sure variable is set
+            runFirstCreatePlotThread();
+            returnString = validateAndWaitSecondCreatePlotThread();
+        }
+        return returnString;
+    }
+    
+    /**
+     * Since createPlot creates 2 calls, this function is used to do the actual running
+     * of the service layer to generate the plot.
+     */
+    protected abstract void runFirstCreatePlotThread(); 
+    
+    /**
+     * This gets called by the CreatePlot function to add validation error messages and to see if it's the
+     * second call to CreatePlot().  There is a bug when using s:div inside an s:tabbedPanel where it will call
+     * the function two times, the work around is to have the second thread just wait until the first one is
+     * finished and return the same value (INPUT or SUCCESS).
+     * @return struts 2 return value.
+     * @throws InterruptedException if thread.wait doesn't work.
+     */
+    protected synchronized String validateAndWaitSecondCreatePlotThread() 
+        throws InterruptedException {
+        String returnString = SUCCESS;
+        AbstractKMParameters kmParameters = getKmPlotParameters();
+        if (!kmParameters.validate()) {
+            for (String errorMessages : kmParameters.getErrorMessages()) {
+                addActionError(errorMessages);
+            }
+            returnString = INPUT;
+        }
+        if (isCreatePlotRunning()) {
+            while (isCreatePlotRunning()) {
+                this.wait(DELAY_TIME_BETWEEN_PLOT_CREATE);
+            }
+            setCreatePlotSelected(false); // Second thread will set this to false, so both threads validate.
+        }
+        return returnString;
+    }
 
     /**
      * @return the studyManagementService
@@ -312,4 +380,33 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
     public void setDisplayTab(String displayTab) {
         this.displayTab = displayTab;
     }
+
+    /**
+     * @return the createPlotSelected
+     */
+    public boolean isCreatePlotSelected() {
+        return getDisplayableWorkspace().isCreatePlotSelected();
+    }
+
+    /**
+     * @param createPlotSelected the createPlotSelected to set
+     */
+    public void setCreatePlotSelected(boolean createPlotSelected) {
+        getDisplayableWorkspace().setCreatePlotSelected(createPlotSelected);
+    }
+    
+    /**
+     * @return the createPlotSelected
+     */
+    public boolean isCreatePlotRunning() {
+        return getDisplayableWorkspace().isCreatePlotRunning();
+    }
+
+    /**
+     * @param createPlotRunning the createPlotRunning to set
+     */
+    public void setCreatePlotRunning(boolean createPlotRunning) {
+        getDisplayableWorkspace().setCreatePlotRunning(createPlotRunning);
+    }
+    
 }

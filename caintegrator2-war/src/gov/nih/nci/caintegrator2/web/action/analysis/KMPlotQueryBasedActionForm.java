@@ -101,6 +101,7 @@ public class KMPlotQueryBasedActionForm {
     private List<String> unselectedQueryIDs = new ArrayList<String>();
     private boolean exclusiveGroups = false;
     private boolean addPatientsNotInQueriesGroup = false;
+    private boolean resetSelected = false;
     
     // JSP Select List Options
     private Map<String, Query> selectedQueries = new HashMap<String, Query>();
@@ -226,5 +227,23 @@ public class KMPlotQueryBasedActionForm {
      */
     public void setUnselectedQueries(Map<String, Query> unselectedQueries) {
         this.unselectedQueries = unselectedQueries;
+    }
+
+
+
+    /**
+     * @return the resetSelected
+     */
+    public boolean isResetSelected() {
+        return resetSelected;
+    }
+
+
+
+    /**
+     * @param resetSelected the resetSelected to set
+     */
+    public void setResetSelected(boolean resetSelected) {
+        this.resetSelected = resetSelected;
     }
 }

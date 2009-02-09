@@ -239,8 +239,10 @@ public class KMPlotAnnotationBasedActionTest {
     }
     
     @Test
-    public void testCreatePlot() {
+    public void testCreatePlot() throws InterruptedException {
         setupActionVariables();
+        assertEquals(ActionSupport.SUCCESS, action.createPlot());
+        action.setCreatePlotSelected(true);
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getKmPlotParameters().getSelectedValues().clear();
         action.getKmPlotParameters().getSelectedValues().add(val1);
@@ -274,6 +276,19 @@ public class KMPlotAnnotationBasedActionTest {
         KMPlot plot = plotService.generatePlot(configuration);
         SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
         assertEquals("1.10", action.getAllStringPValues().get("group").get("group"));
+    }
+    
+    @Test
+    public void testReset() {
+        setupActionVariables();
+        assertFalse(action.getKmPlotForm().getAnnotationBasedForm().getSelectedValuesIds().isEmpty());
+        action.reset();
+        assertTrue(action.getKmPlotForm().getAnnotationBasedForm().getSelectedValuesIds().isEmpty());
+    }
+    
+    @Test
+    public void testGetPlotUrl() {
+        assertEquals("/caintegrator2/retrieveAnnotationKMPlot.action?", action.getPlotUrl());
     }
     
     private SubjectGroup createGroup() {

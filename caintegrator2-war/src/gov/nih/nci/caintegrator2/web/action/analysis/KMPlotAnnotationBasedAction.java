@@ -112,9 +112,10 @@ import org.apache.commons.lang.StringUtils;
 public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private static final long serialVersionUID = 1L;
-
+    private static final String ANNOTATION_PLOT_URL = "/caintegrator2/retrieveAnnotationKMPlot.action?";
     private KMAnnotationBasedParameters kmPlotParameters = new KMAnnotationBasedParameters();
     
+
     /**
      * {@inheritDoc}
      */
@@ -289,14 +290,16 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
      * @return Struts return value.
      */
     public String updatePermissibleValues() {
-        loadAnnotationDefinitions();
-        if (kmPlotParameters.getSelectedAnnotation() == null) {
-            addActionError("Plesae select a valid annotation");
-            return INPUT;
+        if (isPermissibleValuesNeedUpdate()) {
+            loadAnnotationDefinitions();
+            if (kmPlotParameters.getSelectedAnnotation() == null) {
+                addActionError("Please select a valid annotation");
+                return INPUT;
+            }
+            getForm().clearPermissibleValues();
+            clearAnnotationBasedKmPlot();
+            loadPermissibleValues();
         }
-        getForm().clearPermissibleValues();
-        clearAnnotationBasedKmPlot();
-        loadPermissibleValues();
         return SUCCESS;
     }
 
@@ -307,25 +310,37 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
                     value.toString());
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void runFirstCreatePlotThread() {
+        setPermissibleValuesNeedUpdate(false);
+        if (!isCreatePlotRunning()) {
+            setCreatePlotRunning(true);
+            loadAnnotationDefinitions();
+            loadPermissibleValues();
+            if (kmPlotParameters.validate()) {
+                kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
+                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+                SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
+            }
+            setCreatePlotRunning(false);
+        }
+    }
     
     /**
-     * When the form is filled out and the user clicks "Create Plot" this calls the
-     * analysis service to generate a KMPlot object.
-     * @return Struts return value.
+     * This is set only when the dropdown on the JSP is selecting an annotation definition, so we know that
+     * a permissible value change needs to occur.
+     * @param needUpdate T/F value.
      */
-    public String createPlot() {
-        loadAnnotationDefinitions();
-        loadPermissibleValues();
-        if (!kmPlotParameters.validate()) {
-            for (String errorMessages : kmPlotParameters.getErrorMessages()) {
-                addActionError(errorMessages);
-            }
-            return INPUT;
-        }
-        kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
-        KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
-        return SUCCESS;
+    public void setPermissibleValuesNeedUpdate(boolean needUpdate) {
+        getForm().setPermissibleValuesNeedUpdate(needUpdate);
+    }
+    
+    private boolean isPermissibleValuesNeedUpdate() {
+        return getForm().isPermissibleValuesNeedUpdate();
     }
     
     /**
@@ -353,6 +368,13 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlotUrl() {
+        return ANNOTATION_PLOT_URL;
+    }
 
     /**
      * @return
