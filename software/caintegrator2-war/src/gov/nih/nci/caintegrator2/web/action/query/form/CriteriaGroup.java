@@ -253,4 +253,16 @@ public class CriteriaGroup {
             row.processCriteriaChanges();
         }
     }
+    
+    /**
+     * @return boolean of having no genomic criterion
+     */
+    public boolean hasNoGenomicCriterion() {
+        for (AbstractCriterionRow row : getRows()) {
+            if (row.getCriterion() instanceof AbstractGenomicCriterion) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
