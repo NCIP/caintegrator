@@ -95,6 +95,7 @@ import com.opensymphony.xwork2.ValidationAware;
 
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -133,6 +134,8 @@ public class QueryForm {
     private void initialize() {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
+            Cai2Util.loadCollection(study.getStudyConfiguration().getGenomicDataSources());
+            Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
             clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection());
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection());
             criteriaGroup = new CriteriaGroup(this);
