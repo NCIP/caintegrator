@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -116,7 +117,9 @@ public abstract class AbstractAnnotationCriterionHandler {
      * @return appropriate handler to return.
      */
     static AbstractAnnotationCriterionHandler create(AbstractAnnotationCriterion criterion) {
-        if (criterion instanceof StringComparisonCriterion) {
+        if (criterion instanceof IdentifierCriterion) {
+            return new IdentifierCriterionHandler((IdentifierCriterion) criterion);
+        } else if (criterion instanceof StringComparisonCriterion) {
             return new StringComparisonCriterionHandler((StringComparisonCriterion) criterion);
         } else if (criterion instanceof NumericComparisonCriterion) {
             return new NumericComparisonCriterionHandler((NumericComparisonCriterion) criterion);

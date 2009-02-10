@@ -195,8 +195,8 @@ public class QueryFormTest {
         assertNotNull(queryForm.getQuery());
         assertNotNull(queryForm.getCriteriaGroup());
         assertEquals(subscription, queryForm.getQuery().getSubscription());
-        assertEquals(5, queryForm.getClinicalAnnotations().getNames().size());
-        assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(0));
+        assertEquals(6, queryForm.getClinicalAnnotations().getNames().size());
+        assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(1));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
 
         
@@ -416,7 +416,7 @@ public class QueryFormTest {
         group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
         group.addCriterion();
         ImageSeriesCriterionRow imageSeriesCriterionRow = (ImageSeriesCriterionRow) group.getRows().get(1);
-        assertEquals(1, imageSeriesCriterionRow.getAvailableFieldNames().size());
+        assertEquals(2, imageSeriesCriterionRow.getAvailableFieldNames().size());
         assertTrue(imageSeriesCriterionRow.getAvailableFieldNames().contains("testImageSeriesAnnotation"));
         setFieldName(imageSeriesCriterionRow, "testImageSeriesAnnotation");
         assertEquals(group, imageSeriesCriterionRow.getGroup());
@@ -483,7 +483,7 @@ public class QueryFormTest {
     }
 
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(5, criterionRow.getAvailableFieldNames().size());
+        assertEquals(6, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());

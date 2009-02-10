@@ -85,14 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.ValidationAware;
-
 import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -102,6 +94,14 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ValidationAware;
 
 /**
  * Top-level UI element for query management.
@@ -136,8 +136,8 @@ public class QueryForm {
             Study study = getQuery().getSubscription().getStudy();
             Cai2Util.loadCollection(study.getStudyConfiguration().getGenomicDataSources());
             Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
-            clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection());
-            imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection());
+            clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection(), true);
+            imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
         } else {
