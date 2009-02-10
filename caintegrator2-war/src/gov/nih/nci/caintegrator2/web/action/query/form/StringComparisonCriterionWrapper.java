@@ -97,7 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 /**
  * Wraps access to a <code>StringComparisonCriterion</code>.
  */
-final class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrapper {
+class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrapper {
 
     private static final Map<CriterionOperatorEnum, WildCardTypeEnum> OPERATOR_TO_WILDCARD_MAP = 
         new HashMap<CriterionOperatorEnum, WildCardTypeEnum>();

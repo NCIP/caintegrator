@@ -85,46 +85,27 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 
 /**
- * Contains an ordered list of definition names and allows retrieval of the associated definition by name.
+ * Wraps access to a <code>IdentifierCriterion</code>.
  */
-class AnnotationDefinitionList {
+final class IdentifierCriterionWrapper extends StringComparisonCriterionWrapper {
     
-    private final List<String> names = new ArrayList<String>();
-    private final Map<String, AnnotationDefinition> nameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
-    
-    AnnotationDefinitionList(Collection<AnnotationDefinition> definitions, boolean addIdentifierToList) {
-        if (definitions == null) {
-            throw new IllegalArgumentException("Argument definitions was null.");
-        }
-        if (addIdentifierToList) {
-            names.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-            nameToDefinitionMap.put(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME, null);
-        }
-        for (AnnotationDefinition definition : definitions) {
-            names.add(definition.getDisplayName());
-            nameToDefinitionMap.put(definition.getDisplayName(), definition);
-            Cai2Util.loadCollection(definition.getPermissibleValueCollection());
-        }
-        Collections.sort(names);
+    public static final String IDENTIFIER_FIELD_NAME = "*Unique Identifier";
+
+    IdentifierCriterionWrapper(final IdentifierCriterion criterion, AbstractAnnotationCriterionRow row) {
+        super(criterion, row);
     }
 
-    List<String> getNames() {
-        return names;
+    @Override
+    String getFieldName() {
+        return IDENTIFIER_FIELD_NAME;
     }
     
-    AnnotationDefinition getDefinition(String name) {
-        return nameToDefinitionMap.get(name);
+    @Override
+    void setField(AnnotationDefinition field) {
+        // no-op
     }
-
 }

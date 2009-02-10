@@ -85,70 +85,24 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.junit.Test;
 
 
-/**
- * Criterion handler for StringComparisonCriterion.
- */
-@SuppressWarnings("PMD.CyclomaticComplexity")   // see translate() method
-public class StringComparisonCriterionHandler extends AbstractAnnotationCriterionHandler {
 
-    private final StringComparisonCriterion stringComparisonCriterion;
-    private String columnName = STRING_VALUE_COLUMN;
-    
-    /**
-     * @param criterion - The criterion object we are going to translate.
-     */
-    public StringComparisonCriterionHandler(StringComparisonCriterion criterion) {
-        stringComparisonCriterion = criterion;   
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
-    Criterion translate() {
-        if (stringComparisonCriterion.getWildCardType() != null) {
-            WildCardTypeEnum wildCardType = WildCardTypeEnum.
-                    getByValue(stringComparisonCriterion.getWildCardType());
-            switch(wildCardType) {
-            case WILDCARD_OFF:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            case WILDCARD_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.START);
-            case WILDCARD_BEFORE_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.END);
-            case WILDCARD_BEFORE_AND_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.ANYWHERE);
-            default:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            }
-        } else {
-            return Restrictions.like(columnName, 
-                                     stringComparisonCriterion.getStringValue());
-        }
-    }
-    
-    /**
-     * Sets the column name for the field to use that we are comparing the string value to.
-     * @param columnName columnName to use.
-     */
-    protected void setColumnName(String columnName) {
-        this.columnName = columnName;
+public class IdentifierCriterionHandlerTest {
+    @Test
+    public void testTranslate() {
+        IdentifierCriterion identifierCriterion = new IdentifierCriterion();
+        identifierCriterion.setStringValue("test");
+        identifierCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
+        Criterion crit = AbstractAnnotationCriterionHandler.create(identifierCriterion).translate();
+        assertNotNull(crit);
+        assertEquals("identifier like test%",crit.toString());
     }
 }

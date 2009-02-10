@@ -28,6 +28,9 @@
                 <!-- Attributes mapping for the StringComparisonCriterion class -->
                 <property name="stringValue" type="string" column="STRING_VALUE"/>
                 <property name="wildCardType" type="string" column="WILD_CARD_TYPE"/>
+                <joined-subclass name="IdentifierCriterion" table="IDENTIFIER_CRITERION" lazy="false">
+                    <key column="ID" />
+                </joined-subclass>
             </joined-subclass>
             <joined-subclass name="SelectedValueCriterion" table="SELECTED_VALUE_CRITERION" lazy="false">
                 <key column="ID" />
