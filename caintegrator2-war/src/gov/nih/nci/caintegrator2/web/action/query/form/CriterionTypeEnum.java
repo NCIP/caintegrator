@@ -90,6 +90,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
  */
 enum CriterionTypeEnum {
     
+    IDENTIFIER,
     STRING_COMPARISON,
     NUMERIC_COMPARISON,
     SELECTED_VALUE,

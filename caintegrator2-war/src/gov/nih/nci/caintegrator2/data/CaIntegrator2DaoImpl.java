@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -231,8 +232,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
             return new ArrayList<ImageSeries>();
+        } 
+        Criteria imageSeriesCrit = getCurrentSession().createCriteria(ImageSeries.class);
+        if (criterion instanceof IdentifierCriterion) {
+            imageSeriesCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
         } else {
-            Criteria imageSeriesCrit = getCurrentSession().createCriteria(ImageSeries.class);
             createAnnotationValuesCriteria(criterion, 
                                             imageSeriesCrit, 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
@@ -240,9 +244,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                         imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
                         createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
                         study);
-            
-            return imageSeriesCrit.list();
         }
+        
+        return imageSeriesCrit.list();
     }
 
     /**
@@ -271,14 +275,18 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
         if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT.getValue())) {
             return new ArrayList<StudySubjectAssignment>();
+        }
+        Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
+        if (criterion instanceof IdentifierCriterion) {
+            studySubjectAssignmentCrit.add(AbstractAnnotationCriterionHandler.create(criterion).translate());
         } else {
-            Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
             createAnnotationValuesCriteria(criterion, 
                                            studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
                                            ANNOTATION_VALUE_ASSOCIATION);
             createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
-            return studySubjectAssignmentCrit.list();
         }
+        return studySubjectAssignmentCrit.list();
+
     }
 
     /**

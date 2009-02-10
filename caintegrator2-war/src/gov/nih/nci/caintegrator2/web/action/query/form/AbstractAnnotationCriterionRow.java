@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
@@ -141,6 +142,9 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     }
 
     private CriterionTypeEnum getCriterionType(AnnotationDefinition field) {
+        if (field == null) { // Assumption that a null field is an Identifier.
+            return CriterionTypeEnum.IDENTIFIER;
+        }
         if (!field.getPermissibleValueCollection().isEmpty()) {
             return CriterionTypeEnum.SELECTED_VALUE;
         } else if (AnnotationTypeEnum.STRING.getValue().equals(field.getType())) {
@@ -165,9 +169,18 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         case SELECTED_VALUE:
             setAnnotationCriterionWrapper(createSelectedValueCriterionWrapper(field));
             break;
+        case IDENTIFIER:
+            setAnnotationCriterionWrapper(createIdentifierCriterionWrapper());
+            break;
         default:
             throw new IllegalStateException("Unsupported AnnotationType " + type);
         }
+    }
+    
+    private IdentifierCriterionWrapper createIdentifierCriterionWrapper() {
+        IdentifierCriterion criterion = new IdentifierCriterion();
+        criterion.setEntityType(getEntityType().getValue());
+        return new IdentifierCriterionWrapper(criterion, this);
     }
 
     private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationDefinition field) {
