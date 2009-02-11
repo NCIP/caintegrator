@@ -109,7 +109,8 @@ public class CaDSRFacadeStub implements CaDSRFacade {
         return Collections.emptyList();
     }
 
-    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
+    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId, Float dataElementVersion) 
+        throws ConnectionException {
         retrieveValueDomainForDataElementCalled = true;
         ValueDomain valueDomain = new ValueDomain();
         valueDomain.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());

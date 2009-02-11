@@ -128,7 +128,7 @@ public class CaDSRFacadeImplTest {
     
     @Test
     public void testRetrieveValueDomainForDataElement() throws ConnectionException {
-        ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1));
+        ValueDomain valueDomain = caDSRFacade.retrieveValueDomainForDataElement(Long.valueOf(1), null);
         assertEquals(AnnotationTypeEnum.NUMERIC.getValue(), valueDomain.getDataType());
         assertEquals(Long.valueOf(2),valueDomain.getPublicID());
         assertTrue(!valueDomain.getPermissibleValueCollection().isEmpty());

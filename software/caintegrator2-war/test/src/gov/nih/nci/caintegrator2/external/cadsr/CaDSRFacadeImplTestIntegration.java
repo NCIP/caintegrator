@@ -127,13 +127,13 @@ public class CaDSRFacadeImplTestIntegration {
     
     @Test
     public void testRetrieveValueDomainForDataElement() throws ConnectionException {
-        ValueDomain enumeratedStringValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_STRING_CDE_ID);
+        ValueDomain enumeratedStringValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_STRING_CDE_ID, null);
         assertTrue(enumeratedStringValueDomain.getPermissibleValueCollection().size() > 1);
         
-        ValueDomain enumeratedNumericValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_NUMERIC_CDE_ID);
+        ValueDomain enumeratedNumericValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_ENUMERATED_NUMERIC_CDE_ID, null);
         assertTrue(enumeratedNumericValueDomain.getPermissibleValueCollection().size() > 1);
         
-        ValueDomain nonEnumeratedDateValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_NON_ENUMERATED_DATE_CDE_ID);
+        ValueDomain nonEnumeratedDateValueDomain = caDSRFacade.retrieveValueDomainForDataElement(VALID_NON_ENUMERATED_DATE_CDE_ID, null);
         assertNotNull(nonEnumeratedDateValueDomain);
         assertNull(nonEnumeratedDateValueDomain.getPermissibleValueCollection());
         
