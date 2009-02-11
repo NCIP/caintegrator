@@ -471,6 +471,8 @@
         </action>
         
        <action name="createQueryBasedKMPlot" method="createPlot" class="kmPlotQueryBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
             <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBasedGraph_div.jsp</result>
         </action>

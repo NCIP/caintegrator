@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -135,6 +136,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
                                        Collection<SubjectGroup> subjectGroupCollection) {
         
         for (Query query : kmParameters.getQueries()) {
+            query.setResultType(ResultTypeEnum.CLINICAL.getValue());
             SubjectGroup group = retrieveGroup(query);
             subjectGroupCollection.add(group);
             group.setColor(getColor(subjectGroupCollection.size()));
