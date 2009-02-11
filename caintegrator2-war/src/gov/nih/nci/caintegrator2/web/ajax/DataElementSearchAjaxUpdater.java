@@ -283,7 +283,7 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
                                     + "&amp;fileColumn.id=" + fileColumnId
                                     + "&amp;dataElementIndex=" + counter + "\"> Select </a> | " 
                                     + "<a href=\"" + CaDSRFacade.CDE_URL 
-                                    + "?publicId=" + dataElement.getPublicID()
+                                    + "&amp;cdeId=" + dataElement.getPublicID()
                                     + "&amp;version=" + dataElement.getVersion() 
                                     + "\" target=\"_blank\"> View </a>";
             rowString[0][2] = String.valueOf(dataElement.getPublicID());

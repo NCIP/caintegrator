@@ -150,7 +150,8 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
      * {@inheritDoc}
      */
     @SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.CyclomaticComplexity" }) // Type checking and casting
-    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException {
+    public ValueDomain retrieveValueDomainForDataElement(Long dataElementId, Float dataElementVersion) 
+    throws ConnectionException {
         ValueDomain valueDomain = new ValueDomain();
         // Satish Patel informed me that the cadsrApi clears out the SecurityContext after they're done with it,
         // they are working on a fix but as a workaround I need to store the context and set it again after
@@ -162,6 +163,7 @@ public class CaDSRFacadeImpl implements CaDSRFacade {
             
             gov.nih.nci.cadsr.domain.DataElement cadsrDataElement = new gov.nih.nci.cadsr.domain.DataElement();
             cadsrDataElement.setPublicID(dataElementId);
+            cadsrDataElement.setVersion(dataElementVersion);
             List<Object> cadsrDataElements = cadsrApi.search(
                     gov.nih.nci.cadsr.domain.DataElement.class, cadsrDataElement);
             
