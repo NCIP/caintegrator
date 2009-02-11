@@ -159,7 +159,9 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
             StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
             if (!kmParameters.isExclusiveGroups() || !usedSubjects.contains(subjectAssignment)) {
                 SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-                group.getSurvivalData().add(subjectSurvivalData);
+                if (subjectSurvivalData != null) {
+                    group.getSurvivalData().add(subjectSurvivalData);
+                }
                 usedSubjects.add(subjectAssignment);
             }
         }
