@@ -185,8 +185,10 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
             StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
             if (!usedSubjects.contains(subjectAssignment)) {
                 SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-                group.getSurvivalData().add(subjectSurvivalData);
-                usedSubjects.add(subjectAssignment);
+                if (subjectSurvivalData != null) {
+                    group.getSurvivalData().add(subjectSurvivalData);
+                    usedSubjects.add(subjectAssignment);
+                }
             }
         }
     }
