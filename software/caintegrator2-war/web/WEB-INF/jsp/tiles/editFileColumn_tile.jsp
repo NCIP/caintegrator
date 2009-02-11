@@ -24,7 +24,7 @@
     
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.initializeJsp();
+        DataElementSearchAjaxUpdater.initializeJsp("/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp");
     }
     </script>
     

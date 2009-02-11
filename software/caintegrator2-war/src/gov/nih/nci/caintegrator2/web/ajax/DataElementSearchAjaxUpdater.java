@@ -169,9 +169,20 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
 
     /**
      * {@inheritDoc}
+     * @throws IOException 
+     * @throws ServletException 
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks for thread
-    public void initializeJsp() {
+    public void initializeJsp(String searchResultJsp) throws ServletException, IOException {
+        WebContext wctx = WebContextFactory.get();
+        workspace = (DisplayableUserWorkspace) wctx.getSession().getAttribute("displayableWorkspace");
+        if (workspace.getDataElementSearchObject().getKeywordsForSearch() != null) {
+            utilThis = new Util(wctx.getScriptSession());
+            utilThis.setValue("searchResult", wctx.forwardToString(searchResultJsp), false);
+            utilThis.setValue("errorMessages", "");
+            populateAnnotationDefinitionTable();
+            populateCaDsrTable();
+        }
         boolean killedThreads = inititalizeAndCheckTimeout();
         if (annotationDefinitionSearchThread != null 
                 && annotationDefinitionSearchThread.isAlive()
@@ -183,6 +194,28 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
                 && !killedThreads) {
                 setCaDsrInProgress();
         }
+    }
+    
+    private void populateAnnotationDefinitionTable() {
+        utilThis.removeAllRows(ANNOTATION_DEFINITION_TABLE);
+        List<AnnotationDefinition> definitions = workspace.getDataElementSearchObject().getSearchDefinitions();
+        if (definitions == null || definitions.isEmpty()) {
+            setTableRowMessage(ANNOTATION_DEFINITION_TABLE, "No Definitions Found!");
+        } else {
+            fillAnnotationDefinitionRows(definitions);
+        }
+        
+    }
+    
+    private void populateCaDsrTable() {
+        utilThis.removeAllRows(CADSR_TABLE);
+        List<CommonDataElement> dataElements = workspace.getDataElementSearchObject().getSearchCommonDataElements();
+        if (dataElements == null || dataElements.isEmpty()) {
+            setTableRowMessage(CADSR_TABLE, "No matches found in caDSR for your search.");
+        } else {
+            fillCaDsrRows(dataElements);
+        }
+        
     }
 
     /**
@@ -224,14 +257,9 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     }
 
     void updateAnnotationDefinitionTable(List<AnnotationDefinition> definitions) {
-        utilThis.removeAllRows(ANNOTATION_DEFINITION_TABLE);
         workspace.getDataElementSearchObject().getSearchDefinitions().clear();
         workspace.getDataElementSearchObject().getSearchDefinitions().addAll(definitions);
-        if (definitions == null || definitions.isEmpty()) {
-            setTableRowMessage(ANNOTATION_DEFINITION_TABLE, "No Definitions Found!");
-        } else {
-            fillAnnotationDefinitionRows(definitions);
-        }
+        populateAnnotationDefinitionTable();
     }
 
     private void fillAnnotationDefinitionRows(List<AnnotationDefinition> definitions) {
@@ -258,14 +286,9 @@ public class DataElementSearchAjaxUpdater implements IDataElementSearchAjaxUpdat
     }
     
     void updateCaDsrTable(List<CommonDataElement> dataElements) {
-        utilThis.removeAllRows(CADSR_TABLE);
         workspace.getDataElementSearchObject().getSearchCommonDataElements().clear();
         workspace.getDataElementSearchObject().getSearchCommonDataElements().addAll(dataElements);
-        if (dataElements == null || dataElements.isEmpty()) {
-            setTableRowMessage(CADSR_TABLE, "No matches found in caDSR for your search.");
-        } else {
-            fillCaDsrRows(dataElements);
-        }
+        populateCaDsrTable();
     }
 
 

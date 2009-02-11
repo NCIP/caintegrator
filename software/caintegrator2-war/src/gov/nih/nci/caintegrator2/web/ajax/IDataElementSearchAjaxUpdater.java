@@ -112,7 +112,10 @@ public interface IDataElementSearchAjaxUpdater {
     /**
      * Initializes the web context to this JSP so the update messages stream here, also checks to make sure
      * the threads aren't timed out and if they're still running in the background will let the user know this.
+     * @param searchResultJsp - the include search result jsp.
+     * @throws ServletException exception
+     * @throws IOException exception
      */
-    void initializeJsp();
+    void initializeJsp(String searchResultJsp) throws ServletException, IOException;
 
 }

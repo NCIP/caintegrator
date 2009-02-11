@@ -168,7 +168,7 @@ public class DataElementSearchAjaxUpdaterTest {
 
     @Test
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
-        updater.initializeJsp();
+        updater.initializeJsp("searchResult.jsp");
         String entityType = "subject";
         String studyConfId = "1";
         String fileColId = "1";
@@ -177,7 +177,7 @@ public class DataElementSearchAjaxUpdaterTest {
         updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         Thread.sleep(600);
         assertTrue(updater.isCurrentlyRunning());
-        updater.initializeJsp();
+        updater.initializeJsp("searchResult.jsp");
         assertTrue(updater.isCurrentlyRunning());
     }
     
