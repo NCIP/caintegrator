@@ -12,8 +12,60 @@
             <result-type name="redirect" class="org.apache.struts2.dispatcher.ServletRedirectResult"/>
         </result-types>
         
+        <interceptors>
+        <!-- This is the same as the paramsPrepareParams with the addition of excludeParams on the 
+            ParametersInterceptor for special cases, this is done because Struts 2 is parsing the
+            query string/post data and trying to "set" a value for each parameter it finds.  This gets
+            rid of those messages of this type:
+            "Error setting expression '_' with value '[Ljava.lang.String;@1491ddc'"
+            Also, be aware that if anything changes to the paramsPrepareParamsStack in future releases 
+            of struts2 that this needs to be updated as well to conform.  -->
+            <interceptor-stack name="cai2ParamsPrepareParamsStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="params">
+                     <!--
+                        Excludes:
+                        All dojo parameters 
+                        checkbox type parameters which begin with _ 
+                        the Displaytag d-#-X parameter(s) 
+                        all parameters that contain only numbers (kmPlot page has this)
+                     -->
+                     <param name="excludeParams">
+                        dojo\..*,_.*,d-\d+?-[sop],^\d+$
+                     </param>
+                 </interceptor-ref>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="params">
+                     <!--
+                        Excludes:
+                        All dojo parameters 
+                        checkbox type parameters which begin with _ 
+                        the Displaytag d-#-X parameter(s) 
+                        all parameters that contain only numbers (kmPlot page has this)
+                     -->
+                     <param name="excludeParams">
+                        dojo\..*,_.*,d-\d+?-[sop],^\d+$
+                     </param>
+                 </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
         
-        <default-interceptor-ref name="paramsPrepareParamsStack" />
+        <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
         
         <!--  Navigation Actions -->
         <action name="notYetImplemented" class="emptyAction">
