@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -156,7 +157,11 @@ class GenomicQueryHandler {
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
-            value.setValue(values.getValue(arrayData, reporter));
+            Float floatValue = values.getValue(arrayData, reporter);
+            if (floatValue != null) {
+                value.setValue(Float.valueOf(new DecimalFormat("0.00").
+                            format((double) floatValue)));
+            }
             row.getValueCollection().add(value);
         }
     }
