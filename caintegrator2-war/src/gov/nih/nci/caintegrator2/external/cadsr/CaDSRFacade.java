@@ -97,9 +97,12 @@ import java.util.List;
 public interface CaDSRFacade {
     
     /**
-     * URL for caDSR CDE from freestyle. 
+     * URL for caDSR CDE. 
      */
-    String CDE_URL = "http://freestyle.nci.nih.gov/freestyle/do/cdebrowser";
+    String CDE_URL = "https://cdebrowser.nci.nih.gov/CDEBrowser/search?dataElementDetails=9" 
+                      + "&PageId=DataElementsGroup"
+                      + "&queryDE=yes"
+                      + "&FirstTimer=yes";
 
     /**
      * To retrieve all candidate Data Elements given keywords.
@@ -114,9 +117,11 @@ public interface CaDSRFacade {
      * The reason it's disabled is because caDSR 4.0 is on Stage environment, when it is in production, this can
      * be activated to work by a simple spring configuration change of the URL.
      * @param dataElementId - Id from caDSR data element.
+     * @param dataElementVersion - Version of data element from caDSR.
      * @return - ValueDomain object associated with data element.
      * @throws ConnectionException - Error connecting to caDSR.
      */
-    ValueDomain retrieveValueDomainForDataElement(Long dataElementId) throws ConnectionException; 
+    ValueDomain retrieveValueDomainForDataElement(Long dataElementId, 
+                                                  Float dataElementVersion) throws ConnectionException; 
     
 }

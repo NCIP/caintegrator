@@ -117,6 +117,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Propagation;
@@ -498,7 +499,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private ValueDomain retrieveValueDomain(CommonDataElement dataElement)
             throws ConnectionException {
         ValueDomain valueDomain;
-        valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID());
+        String dataElementVersion = dataElement.getVersion(); 
+        valueDomain = caDSRFacade.retrieveValueDomainForDataElement(dataElement.getPublicID(), 
+                                                    NumberUtils.isNumber(dataElementVersion) 
+                                                    ? Float.valueOf(dataElementVersion) : null);
         dao.save(valueDomain);
         return valueDomain;
     }
