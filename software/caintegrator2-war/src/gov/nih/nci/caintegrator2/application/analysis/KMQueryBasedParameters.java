@@ -106,8 +106,10 @@ public class KMQueryBasedParameters extends AbstractKMParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (queries.size() < 2) {
-            getErrorMessages().add("Must select at least 2 queries to create plot.");
+        Integer queriesSize = queries.size();
+        queriesSize += isAddPatientsNotInQueriesGroup() ? 1 : 0;
+        if (queriesSize < 2) {
+            getErrorMessages().add("Must select at least two queries to create plot (or one query and checkbox #3)");
             isValid = false;
         }
         isValid = validateSurvivalValueDefinition(isValid);
