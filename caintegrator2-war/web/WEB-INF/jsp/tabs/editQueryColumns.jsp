@@ -34,13 +34,15 @@
             
             <h3>Subject Annotations</h3>
             <ul class="checklist">
-                <s:checkboxlist cssClass="checklist" 
+                <s:checkboxlist 
+                    id="subjectColumnsId"
+                    cssClass="checklist" 
                     name="queryForm.resultConfiguration.subjectColumns.values"
                     list="queryForm.resultConfiguration.subjectColumns.options" 
                     listKey="key" 
                     listValue="displayValue"
                     theme="cai2simple" 
-                    value="queryForm.resultConfiguration.subjectColumns.preselectValues" />
+                    value="queryForm.resultConfiguration.subjectColumns.values" />
             </ul>
             <ul>
                 <s:if test="!queryForm.resultConfiguration.subjectColumns.isEmpty()">
@@ -54,12 +56,15 @@
         <div class="checklistwrapper">
         <h3>Image Annotations</h3>
         <ul class="checklist">
-            <s:checkboxlist cssClass="checklist" name="queryForm.resultConfiguration.imageSeriesColumns.values"
+            <s:checkboxlist 
+                id="imageSeriesColumnsId"
+                cssClass="checklist" 
+                name="queryForm.resultConfiguration.imageSeriesColumns.values"
                 list="queryForm.resultConfiguration.imageSeriesColumns.options" 
                 listKey="key" 
                 listValue="displayValue"
                 theme="cai2simple" 
-                value="queryForm.resultConfiguration.imageSeriesColumns.preselectValues" />
+                value="queryForm.resultConfiguration.imageSeriesColumns.values" />
         </ul>
         
         <ul>
