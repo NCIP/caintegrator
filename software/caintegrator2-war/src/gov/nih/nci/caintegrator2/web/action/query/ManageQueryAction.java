@@ -271,7 +271,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         getQueryForm().processCriteriaChanges();
     }
     
-    private void updateSorting() {
+    /**
+     * Updates the sorting columns for the sorting tab.
+     */
+    protected void updateSorting() {
         getQueryForm().getResultConfiguration().reindexColumns();
     }
 
@@ -371,7 +374,10 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return SUCCESS;
     }
 
-    private void ensureQueryIsLoaded() {
+    /**
+     * Ensures the query is loaded.
+     */
+    protected void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
             getQueryForm().setQuery(getQueryById());
         }

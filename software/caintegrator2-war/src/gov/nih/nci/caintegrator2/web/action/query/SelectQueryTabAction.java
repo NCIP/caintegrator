@@ -85,12 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 /**
  * 
  */
-public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
+public class SelectQueryTabAction extends ManageQueryAction {
     private static final long serialVersionUID = 1L;
 
     private static final int DEFAULT_PAGE_SIZE = 20;
@@ -102,6 +101,10 @@ public class SelectQueryTabAction extends AbstractCaIntegrator2Action {
      */
     @Override
     public String execute() {
+        if ("selectedTabSorting".equals(selectedAction)) {
+            ensureQueryIsLoaded();
+            updateSorting();
+        }
         return selectedAction;
     }
 
