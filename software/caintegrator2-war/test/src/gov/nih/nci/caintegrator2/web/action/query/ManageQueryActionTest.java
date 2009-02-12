@@ -181,15 +181,6 @@ public class ManageQueryActionTest {
         manageQueryAction.getQueryForm().getResultConfiguration().setResultType(ResultTypeEnum.GENOMIC.getValue());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);
-
-        // test preselect column values
-        String[] selectColumnValues = {"Age", "Gender"};
-        manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().setValues(selectColumnValues);
-        assertEquals(Action.SUCCESS, manageQueryAction.execute());
-        assertEquals(0, manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().getPreselectValues().length);
-        assertEquals(0, manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().getOptions().size());
-        assertTrue(manageQueryAction.getQueryForm().getResultConfiguration().getSubjectColumns().isEmpty());
-        
         
         // test save query
         manageQueryAction.setSelectedAction("saveQuery");
