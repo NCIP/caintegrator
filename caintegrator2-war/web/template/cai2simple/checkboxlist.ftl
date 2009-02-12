@@ -35,6 +35,7 @@
             <#assign itemValue = stack.findString('top')/>
         </#if>
 <#assign itemKeyStr=itemKey.toString() />
+<input id="${parameters.name?html}-${itemCount}_hidden" type="hidden" value="" name="${parameters.name?html}"/>
 <input type="checkbox" name="${parameters.name?html}" value="${itemKeyStr?html}" id="${parameters.name?html}-${itemCount}"<#rt/>
         <#if tag.contains(parameters.nameValue, itemKey)>
  checked="checked"<#rt/>
