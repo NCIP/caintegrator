@@ -260,6 +260,11 @@ class DataRetrievalHelper {
     private Platform getPlatform(Hybridization hybridization) throws DataRetrievalException {
         Hybridization loadedHybridization = getLoadedCaArrayObject(hybridization);
         ArrayDesign arrayDesign = getLoadedCaArrayObject(loadedHybridization.getArray()).getDesign();
+        if (arrayDesign == null) {
+            throw new DataRetrievalException(
+                    "There is no array design associated with the array for the hybridization "
+                    + loadedHybridization.getName() + ", unable to load array data");
+        }
         Platform platform = dao.getPlatform(arrayDesign.getName());
         if (platform == null) {
             throw new DataRetrievalException("The platform named " + arrayDesign.getName() 
