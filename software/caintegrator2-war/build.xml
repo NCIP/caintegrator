@@ -318,8 +318,11 @@
         <echo message="svn getinfo: cai2 version:${caintegrator2.svntag}" />
     </target>
                 
-     
-
+    <target name="cleanbdautil" description="prepare for info and delete bda util">
+        <delete includeEmptyDirs="true">
+          <fileset dir="${user.home}/.ivy2-bda-utils" includes="**/*" />
+        </delete>  
+    </target>
     
     <!-- ******************************************************************* -->
     <!-- ** EXTERNAL DEPENDENCY PROPERTIES                                ** -->
