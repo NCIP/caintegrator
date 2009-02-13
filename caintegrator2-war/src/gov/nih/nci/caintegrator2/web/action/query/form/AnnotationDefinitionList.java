@@ -102,6 +102,7 @@ import java.util.Map;
 class AnnotationDefinitionList {
     
     private final List<String> names = new ArrayList<String>();
+    private final List<String> noDateNames = new ArrayList<String>();
     private final Map<String, AnnotationDefinition> nameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
     
     AnnotationDefinitionList(Collection<AnnotationDefinition> definitions, boolean addIdentifierToList) {
@@ -115,16 +116,22 @@ class AnnotationDefinitionList {
         for (AnnotationDefinition definition : definitions) {
             // TODO Need to implement the date type operator then will put it back in the query mechanism.
             if (!AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(definition.getType())) {
-                names.add(definition.getDisplayName());
-                nameToDefinitionMap.put(definition.getDisplayName(), definition);
-                Cai2Util.loadCollection(definition.getPermissibleValueCollection());
+                noDateNames.add(definition.getDisplayName());
             }
+            names.add(definition.getDisplayName());
+            nameToDefinitionMap.put(definition.getDisplayName(), definition);
+            Cai2Util.loadCollection(definition.getPermissibleValueCollection());
         }
         Collections.sort(names);
+        Collections.sort(noDateNames);
     }
 
     List<String> getNames() {
         return names;
+    }
+
+    List<String> getNoDateNames() {
+        return noDateNames;
     }
     
     AnnotationDefinition getDefinition(String name) {
