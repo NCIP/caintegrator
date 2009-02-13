@@ -394,7 +394,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
