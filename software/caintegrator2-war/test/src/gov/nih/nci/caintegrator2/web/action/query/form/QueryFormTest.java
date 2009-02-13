@@ -416,7 +416,8 @@ public class QueryFormTest {
         group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
         group.addCriterion();
         ImageSeriesCriterionRow imageSeriesCriterionRow = (ImageSeriesCriterionRow) group.getRows().get(1);
-        assertEquals(2, imageSeriesCriterionRow.getAvailableFieldNames().size());
+        // TODO - Equal to 1 instead of 2 because we exclude the date type.
+        assertEquals(1, imageSeriesCriterionRow.getAvailableFieldNames().size());
         assertTrue(imageSeriesCriterionRow.getAvailableFieldNames().contains("testImageSeriesAnnotation"));
         setFieldName(imageSeriesCriterionRow, "testImageSeriesAnnotation");
         assertEquals(group, imageSeriesCriterionRow.getGroup());
@@ -483,7 +484,8 @@ public class QueryFormTest {
     }
 
     private void checkNewCriterionRow(CriteriaGroup group, ClinicalCriterionRow criterionRow) {
-        assertEquals(6, criterionRow.getAvailableFieldNames().size());
+        // TODO - Equal to 5 instead of 6 because we exclude the date type.
+        assertEquals(5, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("stringClinicalAnnotation1"));
         assertEquals(group, criterionRow.getGroup());
         assertEquals(0 , criterionRow.getParameters().size());
