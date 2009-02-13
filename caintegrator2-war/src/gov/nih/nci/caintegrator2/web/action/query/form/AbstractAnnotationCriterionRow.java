@@ -240,7 +240,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
      */
     @Override
     public List<String> getAvailableFieldNames() {
-        return getAnnotationDefinitionList().getNames();
+        return getAnnotationDefinitionList().getNoDateNames();
     }
 
     @Override
