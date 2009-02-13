@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
@@ -112,9 +113,12 @@ class AnnotationDefinitionList {
             nameToDefinitionMap.put(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME, null);
         }
         for (AnnotationDefinition definition : definitions) {
-            names.add(definition.getDisplayName());
-            nameToDefinitionMap.put(definition.getDisplayName(), definition);
-            Cai2Util.loadCollection(definition.getPermissibleValueCollection());
+            // TODO Need to implement the date type operator then will put it back in the query mechanism.
+            if (!AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(definition.getType())) {
+                names.add(definition.getDisplayName());
+                nameToDefinitionMap.put(definition.getDisplayName(), definition);
+                Cai2Util.loadCollection(definition.getPermissibleValueCollection());
+            }
         }
         Collections.sort(names);
     }
