@@ -39,8 +39,7 @@
     
     function deleteQuery () {
         if (confirm('This query will be permanently deleted.')) {
-            document.manageQueryForm.selectedAction.value='deleteQuery';
-            document.manageQueryForm.submit();
+            submitForm("deleteQuery");
         }
     }
 
@@ -49,18 +48,42 @@
         if (isPotentiallyLargeQuery == "true") {
             if (confirm("This query includes all genes and will potentially take many minutes to complete.\n"
                     + "Please confirm that you want to continue?")) {
-                executeQuery();
+                submitForm("executeQuery");
             }
         }
         else {
-            executeQuery();
+            submitForm("executeQuery");
         }
     }
     
-    function executeQuery() {
-        document.manageQueryForm.selectedAction.value="executeQuery";
+    function saveQuery(saveType) {
+        var orgName = '<s:property value="queryForm.getOrgQueryName()"/>';
+        var newName = document.getElementById("saveName").value;
+        if (saveType == "save") {
+            if (orgName != "" && orgName != newName) {
+                if (confirm("You are about to save and rename '" + orgName + "' to '" + newName + "'.\n"
+                            + "If you want to save this query to a new query, please use the 'Save As' button.")) {
+                    submitForm("saveQuery");
+                }
+            }
+            else {
+                submitForm("saveQuery");
+            }
+        }
+        else if (saveType == "saveAs") {
+            if (orgName == newName) {
+                alert ("You need to enter a new name to save as.");
+                return false;
+            }
+            submitForm("saveAsQuery");
+        }
+    }
+    
+    function submitForm(selectAction) {
+        document.manageQueryForm.selectedAction.value = selectAction;
         document.manageQueryForm.submit();
     }
+    
     
 </script>
 

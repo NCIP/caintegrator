@@ -113,6 +113,7 @@ public class QueryForm {
     private AnnotationDefinitionList imageSeriesAnnotations;
     private CriteriaGroup criteriaGroup;
     private ResultConfiguration resultConfiguration;
+    private String orgQueryName = "";
     
     /**
      * Configures a new query.
@@ -146,6 +147,7 @@ public class QueryForm {
             clinicalAnnotations = null;
             imageSeriesAnnotations = null;
         }
+        orgQueryName = "";
     }
 
     /**
@@ -268,5 +270,19 @@ public class QueryForm {
             return criteriaGroup.hasNoGenomicCriterion();
         }
         return false;
+    }
+
+    /**
+     * @return the orgQueryName
+     */
+    public String getOrgQueryName() {
+        return orgQueryName;
+    }
+
+    /**
+     * @param orgQueryName the orgSaveName to set
+     */
+    public void setOrgQueryName(String orgQueryName) {
+        this.orgQueryName = orgQueryName;
     }
 }

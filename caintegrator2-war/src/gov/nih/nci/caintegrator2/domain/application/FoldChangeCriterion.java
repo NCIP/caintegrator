@@ -8,7 +8,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 /**
  * 
  */
-public class FoldChangeCriterion extends AbstractGenomicCriterion {
+public class FoldChangeCriterion extends AbstractGenomicCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     
@@ -84,6 +84,23 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion {
      */
     public void setFoldsDown(Float foldsDown) {
         this.foldsDown = foldsDown;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected FoldChangeCriterion clone() throws CloneNotSupportedException {
+        FoldChangeCriterion clone = (FoldChangeCriterion) super.clone();
+        clone.setCompareToSamples(cloneCompareToSamples());
+        return clone;
+    }
+    
+    private Set<Sample> cloneCompareToSamples() throws CloneNotSupportedException {
+        Set<Sample> clone = new HashSet<Sample>();
+        for (Sample sample : compareToSamples) {
+            clone.add(sample);
+        }
+        return clone;
     }
 
 }

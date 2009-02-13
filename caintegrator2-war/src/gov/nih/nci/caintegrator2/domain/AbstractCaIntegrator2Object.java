@@ -90,7 +90,7 @@ import java.io.Serializable;
 /**
  * Base class for all domain objects.
  */
-public abstract class AbstractCaIntegrator2Object implements Serializable {
+public abstract class AbstractCaIntegrator2Object implements Serializable, Cloneable {
 
     private Long id;
     
@@ -135,5 +135,12 @@ public abstract class AbstractCaIntegrator2Object implements Serializable {
         this.id = id;
     }
 
-    
+    /**
+     * {@inheritDoc}
+     */
+    protected AbstractCaIntegrator2Object clone() throws CloneNotSupportedException {
+        AbstractCaIntegrator2Object clone = (AbstractCaIntegrator2Object) super.clone();
+        clone.setId(null);
+        return clone;
+    }
 }

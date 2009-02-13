@@ -196,6 +196,18 @@ public class ManageQueryActionTest {
         assertFalse(manageQueryAction.hasErrors());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
+        queryManagementService.saveCalled = false;
+        
+        // test save as query
+        manageQueryAction.setSelectedAction("saveAsQuery");
+        manageQueryAction.prepare();
+        manageQueryAction.getQueryForm().getQuery().setId(1L);
+        manageQueryAction.validate();
+        assertFalse(manageQueryAction.hasErrors());
+        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
+        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
+        assertEquals(Action.SUCCESS, manageQueryAction.execute());
+        assertTrue(queryManagementService.saveCalled);
         
         // test - addition of criteria rows
         manageQueryAction.setSelectedAction("addCriterionRow");

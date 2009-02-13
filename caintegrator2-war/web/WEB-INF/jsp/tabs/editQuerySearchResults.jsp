@@ -8,7 +8,7 @@
     <div class="tableheader">
         <label>Results per Page:</label>
         <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
-        <s:a href="#" onclick="document.manageQueryForm.selectedAction.value='updateResultsPerPage';document.manageQueryForm.submit();">
+        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
             <span class="btn_img">Apply</span>
         </s:a>
     </div>

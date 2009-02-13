@@ -180,6 +180,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             validateExecuteQuery(); 
         } else if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
+        } else if ("saveAsQuery".equals(selectedAction)) {
+            validateSaveQuery();
         } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
         } 
@@ -226,6 +228,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();
+        } else if ("saveAsQuery".equals(selectedAction)) {
+            returnValue = saveAsQuery();
         } else if ("deleteQuery".equals(selectedAction)) {
             returnValue = deleteQuery();
         } else if ("updateCriteria".equals(selectedAction)) {
@@ -380,6 +384,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     protected void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
             getQueryForm().setQuery(getQueryById());
+            getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         }
     }
 
@@ -405,6 +410,30 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         }
         queryManagementService.save(query);
         getWorkspaceService().saveUserWorkspace(getWorkspace());
+        getQueryForm().setOrgQueryName(query.getName());
+        return SUCCESS;
+    }
+    
+    /**
+     * Save the current saved query as a new query.
+     * 
+     * @return the Struts result.
+     */
+    public String saveAsQuery() {
+        updateSorting();
+        Query query;
+        try {
+            query = getQuery().clone();
+        } catch (CloneNotSupportedException e) {
+            addActionError("Error cloning the Query.");
+            return ERROR;
+        }
+        queryManagementService.save(query);
+        setQueryId(query.getId());
+        getStudySubscription().getQueryCollection().add(query);
+        getWorkspaceService().saveUserWorkspace(getWorkspace());
+        getQueryForm().setQuery(getQueryById());
+        getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
         return SUCCESS;
     }
 
