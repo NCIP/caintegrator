@@ -8,7 +8,7 @@
 
         <tr>
             <td class="label"><label for="searchname">Search Name:</label></td>
-            <td class="value"><s:textfield label="Search Name" name="queryForm.query.name" theme="simple" /></td>
+            <td class="value"><s:textfield id="saveName" label="Search Name" name="queryForm.query.name" theme="simple" /></td>
         </tr>
         <tr>
             <td class="label"><label for="searchdesc">Search Description:</label></td>
@@ -36,10 +36,15 @@
     <del class="btnwrapper">
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn"
-            onclick="document.manageQueryForm.selectedAction.value='saveQuery';document.manageQueryForm.submit();">
+            onclick="saveQuery('save')">
             <span class="btn_img"><span class="save">Save</span></span>
         </s:a></li>
         <s:if test="queryForm.isSavedQuery()">
+            <li>
+                <s:a href="#" cssClass="btn"
+                    onclick="saveQuery('saveAs')">
+                    <span class="btn_img"><span class="save">Save As</span></span>
+            </s:a></li>
             <li>
                 <s:a href="#" cssClass="btn"
                     onclick="deleteQuery()">

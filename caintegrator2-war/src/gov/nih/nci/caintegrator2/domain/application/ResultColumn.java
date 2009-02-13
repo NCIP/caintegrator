@@ -6,7 +6,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 /**
  * 
  */
-public class ResultColumn extends AbstractCaIntegrator2Object {
+public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     
@@ -86,4 +86,11 @@ public class ResultColumn extends AbstractCaIntegrator2Object {
         this.annotationDefinition = annotationDefinition;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected ResultColumn clone() throws CloneNotSupportedException {
+        return (ResultColumn) super.clone();
+        
+    }
 }
