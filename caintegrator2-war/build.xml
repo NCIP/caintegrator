@@ -289,21 +289,22 @@
             
     </target>
                 
-    <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">
+    <target name="svn:getinfo2" description="obtain subversion revision info" unless="nosvn">        
         <property name="svnlib.dir" value="${software.dir}/target/bda-utils" />
 
         <echo message="svn info for directory: ${software.dir}" />
 
         <path id="svnlib.classpath">
             <fileset dir="${svnlib.dir}">
-                <include name="svnant-1.2.0-rc1.jar" />
-                <include name="svnClientAdapter-1.2.0-rc1.jar" />
-                <include name="svnjavahl-1.2.0-rc1.jar" />
+                <include name="svnant-1.2.1.jar" />
+                <include name="svnClientAdapter-1.2.1.jar" />
+                <include name="svnjavahl-1.2.1.jar" />
             </fileset>
         </path>        
         
-        <taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svnlib.classpath" />
-        <svn javahl="false">
+        <taskdef name="svn" classpathref="svnlib.classpath" classname="org.tigris.subversion.svnant.SvnTask" />
+       
+        <svn>
             <info target="${software.dir}" />
         </svn>
         <!--
@@ -390,7 +391,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
