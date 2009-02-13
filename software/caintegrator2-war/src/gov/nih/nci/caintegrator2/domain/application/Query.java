@@ -9,7 +9,7 @@ import java.util.HashSet;
 /**
  * 
  */
-public class Query extends AbstractCaIntegrator2Object {
+public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     
     private static final long serialVersionUID = 1L;
     
@@ -140,6 +140,24 @@ public class Query extends AbstractCaIntegrator2Object {
      */
     public boolean isGenomicResultType() {
         return getResultType().equals(ResultTypeEnum.GENOMIC.getValue());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Query clone() throws CloneNotSupportedException {
+        Query clone = (Query) super.clone();
+        clone.setCompoundCriterion((CompoundCriterion) compoundCriterion.clone());
+        clone.setColumnCollection(cloneColumnCollection());
+        return clone;
+    }
+    
+    private Collection<ResultColumn> cloneColumnCollection() throws CloneNotSupportedException {
+        Collection<ResultColumn> clone = new HashSet<ResultColumn>();
+        for (ResultColumn resultColumn : columnCollection) {
+            clone.add(resultColumn.clone());
+        }
+        return clone;
     }
 
 }

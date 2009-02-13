@@ -105,6 +105,7 @@ public class QueryManagementServiceStub implements QueryManagementService {
     public boolean executeGenomicDataQueryCalled;
 
     public void save(Query query) {
+        query.setId(1L);
         saveCalled = true;
     }
 

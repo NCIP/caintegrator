@@ -5,7 +5,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 /**
  * 
  */
-public class AbstractAnnotationCriterion extends AbstractCriterion {
+public class AbstractAnnotationCriterion extends AbstractCriterion implements Cloneable {
     
     private static final long serialVersionUID = 1L;
     
@@ -38,6 +38,14 @@ public class AbstractAnnotationCriterion extends AbstractCriterion {
      */
     public void setAnnotationDefinition(AnnotationDefinition annotationDefinition) {
         this.annotationDefinition = annotationDefinition;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected AbstractAnnotationCriterion clone() throws CloneNotSupportedException {
+        return (AbstractAnnotationCriterion) super.clone();
     }
 
 }
