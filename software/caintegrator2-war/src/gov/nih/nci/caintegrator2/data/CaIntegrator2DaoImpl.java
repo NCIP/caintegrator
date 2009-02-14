@@ -240,11 +240,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             createAnnotationValuesCriteria(criterion, 
                                             imageSeriesCrit, 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
-            createStudySubjectAssignmentCriteria(
-                        imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
-                        createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
-                        study);
         }
+        createStudySubjectAssignmentCriteria(
+                imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
+                createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
+                study);
         
         return imageSeriesCrit.list();
     }
@@ -283,8 +283,8 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             createAnnotationValuesCriteria(criterion, 
                                            studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
                                            ANNOTATION_VALUE_ASSOCIATION);
-            createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         }
+        createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         return studySubjectAssignmentCrit.list();
 
     }
