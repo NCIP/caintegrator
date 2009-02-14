@@ -111,6 +111,7 @@ class AnnotationDefinitionList {
         }
         if (addIdentifierToList) {
             names.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
+            noDateNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
             nameToDefinitionMap.put(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME, null);
         }
         for (AnnotationDefinition definition : definitions) {
