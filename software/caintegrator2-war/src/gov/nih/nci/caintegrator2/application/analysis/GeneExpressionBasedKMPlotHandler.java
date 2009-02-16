@@ -144,18 +144,18 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     private void retrieveSubjectGroups(StudySubscription subscription, 
                                        Collection<SubjectGroup> subjectGroupCollection) {
         // Up Regulated
-        SubjectGroup upRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " > " 
+        SubjectGroup upRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
                                                                 + kmParameters.getOverexpressedFoldChangeNumber() 
-                                                                + "-fold overexpressed",
+                                                                + "-fold Overexpressed",
                                                                 RegulationTypeEnum.UP,
                                                                 subscription);
         subjectGroupCollection.add(upRegulatedGroup);
         upRegulatedGroup.setColor(getColor(subjectGroupCollection.size()));
         
         // Down Regulated
-        SubjectGroup downRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " < " 
+        SubjectGroup downRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
                                                         + kmParameters.getUnderexpressedFoldChangeNumber() 
-                                                        + "-fold underexpressed",
+                                                        + "-fold Underexpressed",
                                                         RegulationTypeEnum.DOWN,
                                                         subscription);
         subjectGroupCollection.add(downRegulatedGroup);
