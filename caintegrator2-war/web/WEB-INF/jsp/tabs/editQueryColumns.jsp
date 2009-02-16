@@ -5,7 +5,7 @@
     <h2 class="resultsColumnsTabHeader">Select Results Type:</h2>
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
-            onchange="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
+            onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
             list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()" 
             listKey="key"
             listValue="value"/><br>
