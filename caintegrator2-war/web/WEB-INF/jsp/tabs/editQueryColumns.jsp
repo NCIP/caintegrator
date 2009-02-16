@@ -82,7 +82,7 @@
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn"
             onclick="runSearch()">
-            <span class="btn_img"><span class="search">Run Search</span></span>
+            <span class="btn_img"><span class="search">Run Query</span></span>
         </s:a></li>
     </ul>
     </del>
