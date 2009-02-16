@@ -119,7 +119,7 @@
                 <s:div href="%{criteriaUrl}" id="criteria" label="Criteria" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
                 <s:div href="%{columnsUrl}" id="columns" label="Columns" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
                 <s:div href="%{sortingUrl}" id="sorting" label="Sorting" theme="ajax" formId="manageQueryForm" refreshOnShow="true" />
-                <s:div href="%{searchResultsUrl}" id="searchResults" label="Search Results" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
+                <s:div href="%{searchResultsUrl}" id="searchResults" label="Query Results" theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
                 <s:div href="%{saveAsUrl}" id="saveAs" label="Save as..." theme="ajax" formId="manageQueryForm" formFilter="filterParam"/>
 
             </s:tabbedPanel>
