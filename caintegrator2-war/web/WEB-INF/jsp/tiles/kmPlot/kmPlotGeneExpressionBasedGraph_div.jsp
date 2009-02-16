@@ -23,11 +23,11 @@
                 <s:iterator value="value">
                     <s:set name="group2Name" value="key"/>
                     <tr>
-                        <td align="right"><s:property value="#group1Name"/></td>
-                        <td> vs. </td>
-                        <td align="left"> <s:property value="#group2Name"/> </td>
-                        <td> = </td> 
-                        <td> <s:property value="value"/> </td>
+                        <td align="right" style="padding:0px 5px 0px 5px;"><s:property value="#group1Name"/></td>
+                        <td style="padding:0px 5px 0px 5px;"> vs. </td>
+                        <td align="left" style="padding:0px 5px 0px 5px;"> <s:property value="#group2Name"/> </td>
+                        <td style="padding:0px 5px 0px 5px;"> = </td> 
+                        <td style="padding:0px 5px 0px 5px;"> <s:property value="value"/> </td>
                     </tr>
                 </s:iterator> <!-- End Innter Map -->
             </s:iterator> <!-- End Outter Map -->
