@@ -22,7 +22,7 @@
                 </td>
                 <td class="value_inline">
                     <s:select name="kmPlotForm.annotationBasedForm.annotationTypeSelection" 
-                              list="#{'subject':'Subject', 'sample':'Sample', 'imageSeries':'Image Series'}"
+                              list="#{'subject':'Subject', 'imageSeries':'Image Series'}"
                               headerKey="invalidSelection"
                               headerValue="Select Annotation Type"
                               onchange="document.kaplanMeierAnnotationInputForm.action = 'kmPlotUpdateAnnotationDefinitions.action';document.kaplanMeierAnnotationInputForm.submit();"
