@@ -1,6 +1,10 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
+<style type="text/css">
+    div#queryResultsDiv{height:400px; overflow:scroll;}
+</style>
+
 <!--Search Results-->
 <s:div theme="xhtml">
     <h2>Query Results for: <s:property value="query.name" /></h2>
@@ -12,8 +16,8 @@
             <span class="btn_img">Apply</span>
         </s:a>
     </div>
-
-    <br>
+    
+    <div id="queryResultsDiv" >
     <table class="data">
 
         <s:if test='%{query.resultType.equals("genomic")}'>
@@ -95,7 +99,7 @@
 
         </s:else>
     </table>
-
+    </div>
     <!--Buttons-->
 
     <div class="actionsrow">
