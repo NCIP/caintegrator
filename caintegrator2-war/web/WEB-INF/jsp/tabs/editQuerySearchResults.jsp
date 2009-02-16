@@ -3,7 +3,7 @@
 
 <!--Search Results-->
 <s:div theme="xhtml">
-    <h2>Search Results for: <s:property value="query.name" /></h2>
+    <h2>Query Results for: <s:property value="query.name" /></h2>
 
     <div class="tableheader">
         <label>Results per Page:</label>

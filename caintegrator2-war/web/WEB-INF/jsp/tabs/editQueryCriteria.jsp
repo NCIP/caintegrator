@@ -2,7 +2,7 @@
 
 <!--Search Criteria-->
 
-    <h2>Define Search Criteria</h2>
+    <h2>Define Query Criteria</h2>
 
     <s:hidden name="selectedAction" value="" />
     <s:hidden name="rowNumber" />
@@ -112,7 +112,7 @@
     <del class="btnwrapper">
     <ul class="btnrow">
         <li><s:a href="#" cssClass="btn" onclick="runSearch()">
-            <span class="btn_img"><span class="search">Run Search</span></span>
+            <span class="btn_img"><span class="search">Run Query</span></span>
         </s:a></li>
         <li><span class="btn_img"><span class="search"><br>
         </span></span></li>
