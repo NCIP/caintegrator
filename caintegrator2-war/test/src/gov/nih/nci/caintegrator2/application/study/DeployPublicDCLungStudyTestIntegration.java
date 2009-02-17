@@ -157,7 +157,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     int getExpectedControlSampleCount() {
-        return 0;
+        return 4;
     }
 
     @Override
@@ -204,7 +204,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected File getControlSamplesFile() {
-        return null;
+        return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE;
     }
 
     @Override
