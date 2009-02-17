@@ -147,7 +147,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     int getExpectedSampleCount() {
-        return 439;
+        return 443;
     }
 
     @Override
