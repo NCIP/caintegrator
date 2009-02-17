@@ -135,7 +135,16 @@ public class AddPlatformAction extends AbstractCaIntegrator2Action {
      */
     @Override
     public void validate() {
+        if (platformFile == null) {
+            setFieldError("File is required");
+        } else if (platformFile.length() == 0) {
+            setFieldError("File is empty");
+        }
         prepareValueStack();
+    }
+    
+    private void setFieldError(String errorMessage) {
+        addFieldError("platformFile", errorMessage);
     }
     
     /**
