@@ -29,7 +29,7 @@
     
     <!--Page Help-->
     
-    <div class="pagehelp"><a href="#" class="help"></a></div>
+    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
     
     <!--/Page Help-->           
     <s:actionerror />
