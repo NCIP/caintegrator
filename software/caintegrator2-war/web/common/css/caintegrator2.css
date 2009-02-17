@@ -135,8 +135,9 @@ LEGEND INPUT, LEGEND SELECT
 
 .pagehelp
 { float:right;  margin-top:1.4em; width:7em; text-align:right; margin-right:50px }
-.pagehelp A.help
-{ text-decoration:none; background:url("../../images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
+.pagehelp A.help, SPAN.help
+{ text-decoration:none; background:url("/caintegrator2/images/ico_help.gif") no-repeat; line-height:1.5em; padding:0 10px 4px 19px; }
+
 
 
 /* Navigation */

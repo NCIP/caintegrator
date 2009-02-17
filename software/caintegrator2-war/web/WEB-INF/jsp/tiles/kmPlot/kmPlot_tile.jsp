@@ -7,7 +7,7 @@
 
 <div id="content"><!--Page Help-->
 
-        <div class="pagehelp"><a href="#" class="help"></a></div>
+        <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
         <h1>Kaplan-Meier Survival Plots</h1>
         <s:actionerror/>
         
