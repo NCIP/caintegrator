@@ -275,10 +275,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         getQueryForm().processCriteriaChanges();
     }
     
-    /**
-     * Updates the sorting columns for the sorting tab.
-     */
-    protected void updateSorting() {
+    private void updateSorting() {
         getQueryForm().getResultConfiguration().reindexColumns();
     }
 
@@ -378,10 +375,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         return SUCCESS;
     }
 
-    /**
-     * Ensures the query is loaded.
-     */
-    protected void ensureQueryIsLoaded() {
+    private void ensureQueryIsLoaded() {
         if (getQueryForm().getQuery() == null) {
             getQueryForm().setQuery(getQueryById());
             getQueryForm().setOrgQueryName(getQueryForm().getQuery().getName());
