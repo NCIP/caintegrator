@@ -1,4 +1,4 @@
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
 
 import java.util.HashMap;

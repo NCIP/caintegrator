@@ -85,14 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.opensymphony.xwork2.ValidationAware;
 
@@ -190,11 +188,10 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
      * {@inheritDoc}
      */
     public CriterionOperatorEnum getOperator() {
-        if (StringUtils.isEmpty(criterion.getNumericComparisonOperator())) {
+        if (criterion.getNumericComparisonOperator() == null) {
             return null;
         } else {
-            return NUMERIC_COMPARISON_TO_OPERATOR_MAP.get(
-                    NumericComparisonOperatorEnum.getByValue(criterion.getNumericComparisonOperator()));
+            return NUMERIC_COMPARISON_TO_OPERATOR_MAP.get(criterion.getNumericComparisonOperator());
         }
     }
 
@@ -205,7 +202,7 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
         if (operator == null) {
             criterion.setNumericComparisonOperator(null);
         } else {
-            criterion.setNumericComparisonOperator(OPERATOR_TO_NUMERIC_COMPARISON_MAP.get(operator).getValue());
+            criterion.setNumericComparisonOperator(OPERATOR_TO_NUMERIC_COMPARISON_MAP.get(operator));
         }
     }
     

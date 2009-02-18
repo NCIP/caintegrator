@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
@@ -116,8 +116,7 @@ public class StringComparisonCriterionHandler extends AbstractAnnotationCriterio
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
     Criterion translate() {
         if (stringComparisonCriterion.getWildCardType() != null) {
-            WildCardTypeEnum wildCardType = WildCardTypeEnum.
-                    getByValue(stringComparisonCriterion.getWildCardType());
+            WildCardTypeEnum wildCardType = stringComparisonCriterion.getWildCardType();
             switch(wildCardType) {
             case WILDCARD_OFF:
                 return Restrictions.like(columnName, 

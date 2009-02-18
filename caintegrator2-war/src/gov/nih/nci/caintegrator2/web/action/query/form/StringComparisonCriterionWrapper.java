@@ -85,14 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wraps access to a <code>StringComparisonCriterion</code>.
@@ -159,10 +157,10 @@ class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrappe
      * {@inheritDoc}
      */
     public CriterionOperatorEnum getOperator() {
-        if (StringUtils.isEmpty(criterion.getWildCardType())) {
+        if (criterion.getWildCardType() == null) {
             return null;
         } else {
-            return WILDCARD_TO_OPERATOR_MAP.get(WildCardTypeEnum.getByValue(criterion.getWildCardType()));
+            return WILDCARD_TO_OPERATOR_MAP.get(criterion.getWildCardType());
         }
     }
 
@@ -174,7 +172,7 @@ class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrappe
         if (operator == null) {
             criterion.setWildCardType(null);
         } else {
-            criterion.setWildCardType(OPERATOR_TO_WILDCARD_MAP.get(operator).getValue());
+            criterion.setWildCardType(OPERATOR_TO_WILDCARD_MAP.get(operator));
         }
     }
     

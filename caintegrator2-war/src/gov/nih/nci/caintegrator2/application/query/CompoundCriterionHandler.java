@@ -86,19 +86,19 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -229,9 +229,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
                                           Set<ResultRow> newRows) {
         Set<ResultRow> combinedResults = new HashSet<ResultRow>();
         if (compoundCriterion.getBooleanOperator() != null) {
-           BooleanOperatorEnum booleanOperator = BooleanOperatorEnum.
-                               getByValue(compoundCriterion.getBooleanOperator());
-           switch(booleanOperator) {
+           switch(compoundCriterion.getBooleanOperator()) {
            case AND:
                combinedResults = combineResultsForAndOperator(currentValidRows, newRows);
            break;
@@ -287,7 +285,7 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
 
     private Set<AbstractReporter> getCombinedReporterMatches(Set<AbstractReporter> reporters,
             Set<AbstractReporter> reporterMatches) {
-        BooleanOperatorEnum operator = BooleanOperatorEnum.getByValue(compoundCriterion.getBooleanOperator());
+        BooleanOperatorEnum operator = compoundCriterion.getBooleanOperator();
         if (reporters == null) {
             return reporterMatches;
         } else if (BooleanOperatorEnum.AND.equals(operator)) {

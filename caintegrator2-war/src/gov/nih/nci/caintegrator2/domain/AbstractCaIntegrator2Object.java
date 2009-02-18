@@ -124,14 +124,14 @@ public abstract class AbstractCaIntegrator2Object implements Serializable, Clone
     /**
      * @return the id
      */
-    public final Long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public final void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -85,21 +85,20 @@
  */
 package gov.nih.nci.caintegrator2.external;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * Profile for connecting.
  */
-public class ServerConnectionProfile implements PersistentObject {
+public class ServerConnectionProfile extends AbstractCaIntegrator2Object {
     
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private String hostname;
     private int port;
     private String url;
     private String username;
     private String password;
-    private String protocolID;
+    
     /**
      * @return the hostname
      */
@@ -168,51 +167,6 @@ public class ServerConnectionProfile implements PersistentObject {
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
-    }
-
-    /**
-     * @return the protocolID
-     */
-    public String getProtocolID() {
-        return protocolID;
-    }
-
-    /**
-     * @param protocolID the protocolID to set
-     */
-    public void setProtocolID(String protocolID) {
-        this.protocolID = protocolID;
     }
 
 }

@@ -1,44 +1,29 @@
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Possible entity type values for <code>AbstractAnnotationCriterion.entityType</code>.
+ * Sorting type for <code>ResultColumn.sortType</code>.
  */
-public enum EntityTypeEnum {
+public enum SortTypeEnum {
 
     /**
-     * Subject type.
+     * Ascending.
      */
-    SUBJECT("subject"),
+    ASCENDING("ascending"),
 
     /**
-     * Sample type.
+     * Descending.
      */
-    SAMPLE("sample"),
+    DESCENDING("descending");
     
-    /**
-     * Image Series type.
-     */
-    IMAGESERIES("imageSeries"),
-    
-    /**
-     * Image type.
-     */
-    IMAGE("image"),
-    
-    /**
-     * Gene Expression Type.
-     */
-    GENEEXPRESSION("geneExpression");
-    
-    private static Map<String, EntityTypeEnum> valueToTypeMap = new HashMap<String, EntityTypeEnum>();
+    private static Map<String, SortTypeEnum> valueToTypeMap = new HashMap<String, SortTypeEnum>();
 
     private String value;
     
-    private EntityTypeEnum(String value) {
+    private SortTypeEnum(String value) {
         this.value = value;
     }
 
@@ -56,9 +41,9 @@ public enum EntityTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, EntityTypeEnum> getValueToTypeMap() {
+    private static Map<String, SortTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (EntityTypeEnum type : values()) {
+            for (SortTypeEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -66,13 +51,13 @@ public enum EntityTypeEnum {
     }
     
     /**
-     * Returns the <code>EntityTypeEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>SortTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static EntityTypeEnum getByValue(String value) {
+    public static SortTypeEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

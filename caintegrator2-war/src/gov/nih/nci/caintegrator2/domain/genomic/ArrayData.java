@@ -1,6 +1,5 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -93,7 +92,7 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      * @return the reporter type.
      */
     public ReporterTypeEnum getReporterType() {
-        return ReporterTypeEnum.getByValue(getReporterSet().getReporterType());
+        return getReporterSet().getReporterType();
     }
 
 }

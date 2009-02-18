@@ -96,12 +96,12 @@ import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
 import java.util.ArrayList;
@@ -180,7 +180,7 @@ public class AnalysisFormTest {
         List<Query> queries = new ArrayList<Query>();
         query.setId(1L);
         query.setName("Test");
-        query.setResultType(ResultTypeEnum.GENOMIC.getValue());
+        query.setResultType(ResultTypeEnum.GENOMIC);
         queries.add(query);
         formParameter3.getForm().setGenomicQueries(queries);
         studySubscription.setQueryCollection(new HashSet<Query>());

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -208,10 +209,10 @@ public class ResultRowComparatorTest {
         row5ValueCollection.add(row5col2Value);
         
         col1.setSortOrder(1);
-        col1.setSortType(SortTypeEnum.ASCENDING.getValue());
+        col1.setSortType(SortTypeEnum.ASCENDING);
         
         col2.setSortOrder(2);
-        col2.setSortType(SortTypeEnum.DESCENDING.getValue());
+        col2.setSortType(SortTypeEnum.DESCENDING);
         
         List <ResultColumn> sortColumns = new ArrayList<ResultColumn>();
         sortColumns.add(col1);
@@ -227,7 +228,7 @@ public class ResultRowComparatorTest {
 
         // Test2 is col1.sortType null (should default to ascending), col2.sortType ascending.
         col1.setSortType(null);
-        col2.setSortType(SortTypeEnum.ASCENDING.getValue());
+        col2.setSortType(SortTypeEnum.ASCENDING);
         assertNull(col1.getSortType());
         List <ResultRow> sortedRows2 = ResultRowComparator.sort(rowCollection, sortColumns);
         assertEquals(Long.valueOf(1), sortedRows2.get(0).getId());
@@ -236,7 +237,7 @@ public class ResultRowComparatorTest {
         assertEquals(Long.valueOf(2), sortedRows2.get(3).getId());
         assertEquals(Long.valueOf(4), sortedRows2.get(4).getId());
         // Test to make sure that column's default to Ascending sort types.
-        assertEquals(SortTypeEnum.ASCENDING.getValue(), col1.getSortType());
+        assertEquals(SortTypeEnum.ASCENDING, col1.getSortType());
         
     }
 

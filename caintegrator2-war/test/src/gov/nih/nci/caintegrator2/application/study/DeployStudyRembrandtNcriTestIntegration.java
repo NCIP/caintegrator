@@ -102,7 +102,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InterruptedException {
         deployStudy();
     }
     
@@ -137,17 +137,17 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
-    int getExpectedSampleCount() {
+    protected int getExpectedSampleCount() {
         return 3;
     }
 
     @Override
-    int getExpectedMappedSampleCount() {
+    protected int getExpectedMappedSampleCount() {
         return 2;
     }
 
     @Override
-    int getExpectedControlSampleCount() {
+    protected int getExpectedControlSampleCount() {
         return 1;
     }
 
@@ -158,7 +158,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     protected String getNCIAServerUrl() {
-        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
+        return "http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
     }
     
     @Override
@@ -176,7 +176,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
     }
 
-    File getImageAnnotationFile() {
+    protected File getImageAnnotationFile() {
         return TestDataFiles.REMBRANDT_NCRI_IMAGE_ANNOTATION_FILE;
     }
 
@@ -200,12 +200,12 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
-    File getPlatformAnnotationFile() {
+    protected File getPlatformAnnotationFile() {
         return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
     }
 
     @Override
-    String getPlatformName() {
+    protected String getPlatformName() {
         return "HG-U133_Plus_2";
     }
     
@@ -225,12 +225,12 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
-    int getExpectedNumberOfGeneReporters() {
+    protected int getExpectedNumberOfGeneReporters() {
         return 20886;
     }
 
     @Override
-    int getExpectedNumberProbeSets() {
+    protected int getExpectedNumberProbeSets() {
         return 54675;
     }
 

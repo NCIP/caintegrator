@@ -85,20 +85,25 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
  * <code>AnnotationDefinition</code>.
  */
-public class AnnotationFieldDescriptor implements PersistentObject {
-    private Long id;
+public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
+
+    private static final long serialVersionUID = 1L;
     private String name;
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
     private Boolean shownInBrowse = false;
+    private Set<AbstractAnnotationValue> annotationValues = new HashSet<AbstractAnnotationValue>();
 
     /**
      * @return the name
@@ -143,36 +148,6 @@ public class AnnotationFieldDescriptor implements PersistentObject {
     }
 
     /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
-    }
-
-    /**
      * @return the shownInBrowse
      */
     public Boolean getShownInBrowse() {
@@ -184,6 +159,18 @@ public class AnnotationFieldDescriptor implements PersistentObject {
      */
     public void setShownInBrowse(Boolean shownInBrowse) {
         this.shownInBrowse = shownInBrowse;
+    }
+
+    /**
+     * @return the annotationValues
+     */
+    public Set<AbstractAnnotationValue> getAnnotationValues() {
+        return annotationValues;
+    }
+
+    @SuppressWarnings("unused") // Used by Hibernate
+    private void setAnnotationValues(Set<AbstractAnnotationValue> annotationValues) {
+        this.annotationValues = annotationValues;
     }
 
 }

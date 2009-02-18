@@ -99,6 +99,7 @@ public class ValidationException extends Exception {
     }
 
     ValidationException(String invalidMessage) {
+        super(invalidMessage);
         this.result = new ValidationResult();
         this.result.setInvalidMessage(invalidMessage);
     }

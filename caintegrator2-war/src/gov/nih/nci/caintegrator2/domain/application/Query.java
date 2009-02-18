@@ -1,7 +1,7 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,8 +15,8 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     
     private String description;
     private String name;
-    private String reporterType;
-    private String resultType = "";
+    private ReporterTypeEnum reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
+    private ResultTypeEnum resultType = ResultTypeEnum.CLINICAL;
     private String visibility;
     
     private StudySubscription subscription;
@@ -49,34 +49,6 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-    
-    /**
-     * @return the reporterType
-     */
-    public String getReporterType() {
-        return reporterType;
-    }
-    
-    /**
-     * @param reporterType the reporterType to set
-     */
-    public void setReporterType(String reporterType) {
-        this.reporterType = reporterType;
-    }
-    
-    /**
-     * @return the resultType
-     */
-    public String getResultType() {
-        return resultType;
-    }
-    
-    /**
-     * @param resultType the resultType to set
-     */
-    public void setResultType(String resultType) {
-        this.resultType = resultType;
     }
     
     /**
@@ -139,9 +111,37 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      * @return a  boolean of is a genomic result type
      */
     public boolean isGenomicResultType() {
-        return getResultType().equals(ResultTypeEnum.GENOMIC.getValue());
+        return getResultType().equals(ResultTypeEnum.GENOMIC);
     }
-    
+
+    /**
+     * @return the reporterType
+     */
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
+    }
+
+    /**
+     * @return the resultType
+     */
+    public ResultTypeEnum getResultType() {
+        return resultType;
+    }
+
+    /**
+     * @param resultType the resultType to set
+     */
+    public void setResultType(ResultTypeEnum resultType) {
+        this.resultType = resultType;
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -1,29 +1,29 @@
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Sorting type for <code>ResultColumn.sortType</code>.
+ * Possible boolean operators <code>CompoundCriterion.entityType</code>.
  */
-public enum SortTypeEnum {
+public enum BooleanOperatorEnum {
 
     /**
-     * Ascending.
+     * Boolean and.
      */
-    ASCENDING("ascending"),
+    AND("and"),
 
     /**
-     * Descending.
+     * Boolean or.
      */
-    DESCENDING("descending");
+    OR("or");
     
-    private static Map<String, SortTypeEnum> valueToTypeMap = new HashMap<String, SortTypeEnum>();
+    private static Map<String, BooleanOperatorEnum> valueToTypeMap = new HashMap<String, BooleanOperatorEnum>();
 
     private String value;
     
-    private SortTypeEnum(String value) {
+    private BooleanOperatorEnum(String value) {
         this.value = value;
     }
 
@@ -41,9 +41,9 @@ public enum SortTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, SortTypeEnum> getValueToTypeMap() {
+    private static Map<String, BooleanOperatorEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (SortTypeEnum type : values()) {
+            for (BooleanOperatorEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -51,13 +51,13 @@ public enum SortTypeEnum {
     }
     
     /**
-     * Returns the <code>SortTypeEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>BooleanOperatorEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static SortTypeEnum getByValue(String value) {
+    public static BooleanOperatorEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

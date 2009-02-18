@@ -85,28 +85,28 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -213,9 +213,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Now need to create the criterion items and see if we can retrieve back the proper values.
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
         criterion.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples = dao.findMatchingSamples(criterion, study);
         
         assertEquals(4, matchingSamples.size());
@@ -223,9 +223,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Try a different number combination to test a different operator
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(11.0);
-        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL.getValue());
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
         criterion2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        criterion2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion2.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples2 = dao.findMatchingSamples(criterion2, study);
         
         assertEquals(3, matchingSamples2.size());
@@ -235,7 +235,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Collection<AbstractPermissibleValue> permissibleValues1 = new HashSet<AbstractPermissibleValue>();
         permissibleValues1.add(studyHelper.getPermval1());
         criterion3.setValueCollection(permissibleValues1);
-        criterion3.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion3.setEntityType(EntityTypeEnum.SAMPLE);
         criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples3 = dao.findMatchingSamples(criterion3, study);
         
@@ -246,7 +246,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Collection<AbstractPermissibleValue> permissibleValues2 = new HashSet<AbstractPermissibleValue>();
         permissibleValues2.add(studyHelper.getPermval2());
         criterion4.setValueCollection(permissibleValues2);
-        criterion4.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion4.setEntityType(EntityTypeEnum.SAMPLE);
         criterion4.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<SampleAcquisition> matchingSamples4 = dao.findMatchingSamples(criterion4, study);
         
@@ -256,9 +256,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Try using a different Annotation Definition and verify that it returns 0 from that.
         NumericComparisonCriterion criterion5 = new NumericComparisonCriterion();
         criterion5.setNumericValue(13.0);
-        criterion5.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion5.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
         criterion5.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
-        criterion5.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion5.setEntityType(EntityTypeEnum.SAMPLE);
         List<SampleAcquisition> matchingSamples5 = dao.findMatchingSamples(criterion5, study);
         
         assertEquals(0, matchingSamples5.size());
@@ -273,7 +273,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string1");
-        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
         List<ImageSeries> matchingImageSeries = dao.findMatchingImageSeries(criterion1, study);
         
@@ -282,8 +282,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Try a wildcard search now.
         StringComparisonCriterion criterion2 = new StringComparisonCriterion();
         criterion2.setStringValue("string");
-        criterion2.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
-        criterion2.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING.getValue());
+        criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
+        criterion2.setWildCardType(WildCardTypeEnum.WILDCARD_AFTER_STRING);
         criterion2.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
         List<ImageSeries> matchingImageSeries2 = dao.findMatchingImageSeries(criterion2, study);
         
@@ -292,7 +292,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Change only the annotation definition and see if it returns 0.
         StringComparisonCriterion criterion3 = new StringComparisonCriterion();
         criterion3.setStringValue("string1");
-        criterion3.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion3.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion3.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<ImageSeries> matchingImageSeries3 = dao.findMatchingImageSeries(criterion3, study);
         assertEquals(0, matchingImageSeries3.size());
@@ -306,8 +306,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         
         NumericComparisonCriterion criterion1 = new NumericComparisonCriterion();
         criterion1.setNumericValue(2.0);
-        criterion1.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
-        criterion1.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion1.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
+        criterion1.setEntityType(EntityTypeEnum.SUBJECT);
         criterion1.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
         List<StudySubjectAssignment> matchingStudySubjectAssignments = dao.findMatchingSubjects(criterion1, study);
         
@@ -316,8 +316,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Change only the annotation definition and see if it returns 0.
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(2.0);
-        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
-        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT);
         criterion2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         List<StudySubjectAssignment> matchingStudySubjectAssignments2 = dao.findMatchingSubjects(criterion2, study);
         
@@ -331,7 +331,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         gene.setSymbol("TEST");
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
-        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
         reporterSet.getArrayDataCollection().add(arrayData);
@@ -354,8 +354,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study2 = new Study();
         ReporterSet reporterSet1 = new ReporterSet();
         ReporterSet reporterSet2 = new ReporterSet();
-        reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
-        reporterSet2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        reporterSet1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        reporterSet2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         matrix1.setReporterSet(reporterSet1);
         matrix2.setReporterSet(reporterSet2);
         matrix3.setReporterSet(reporterSet1);

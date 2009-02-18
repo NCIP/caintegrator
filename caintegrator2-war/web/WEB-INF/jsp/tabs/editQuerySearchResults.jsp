@@ -23,11 +23,11 @@
             <span class="btn_img">Apply</span>
         </s:a>
     </div>
-    
+
     <div id="queryResultsDiv" >
     <table class="data">
 
-        <s:if test='%{query.resultType.equals("genomic")}'>
+        <s:if test='%{query.resultType.value.equals("genomic")}'>
             <tr>
                 <td />
                 <td />

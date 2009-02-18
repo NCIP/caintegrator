@@ -9,22 +9,8 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
     
     private static final long serialVersionUID = 1L;
     
-    private String entityType;
+    private EntityTypeEnum entityType;
     private AnnotationDefinition annotationDefinition;
-    
-    /**
-     * @return the entityType
-     */
-    public String getEntityType() {
-        return entityType;
-    }
-    
-    /**
-     * @param entityType the entityType to set
-     */
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
     
     /**
      * @return the annotationDefinition
@@ -38,6 +24,20 @@ public class AbstractAnnotationCriterion extends AbstractCriterion implements Cl
      */
     public void setAnnotationDefinition(AnnotationDefinition annotationDefinition) {
         this.annotationDefinition = annotationDefinition;
+    }
+
+    /**
+     * @return the entityType
+     */
+    public EntityTypeEnum getEntityType() {
+        return entityType;
+    }
+
+    /**
+     * @param entityType the entityType to set
+     */
+    public void setEntityType(EntityTypeEnum entityType) {
+        this.entityType = entityType;
     }
 
     /**

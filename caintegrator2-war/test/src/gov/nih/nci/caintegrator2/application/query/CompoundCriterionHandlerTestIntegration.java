@@ -86,12 +86,12 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -133,21 +133,21 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         entityTypesInQuery.add(EntityTypeEnum.IMAGESERIES);
         entityTypesInQuery.add(EntityTypeEnum.SAMPLE);
         entityTypesInQuery.add(EntityTypeEnum.SUBJECT);
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.AND);
         CompoundCriterionHandler compoundCriterionHandler1 = CompoundCriterionHandler.create(compoundCriterion1);
         
         assertEquals(1, compoundCriterionHandler1.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR);
         assertEquals(10, compoundCriterionHandler1.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
         // Try compoundCriterion2.
         CompoundCriterion compoundCriterion2 = studyHelper.createCompoundCriterion2();
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.AND);
         CompoundCriterionHandler compoundCriterionHandler2 = CompoundCriterionHandler.create(compoundCriterion2);
         assertEquals(0, compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
 
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR);
         assertEquals(11, compoundCriterionHandler2.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
         // Try to combine criterion 1 and criterion 2 into a new compoundCriterion.
@@ -156,17 +156,17 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
         compoundCriterion3.getCriterionCollection().add(compoundCriterion1);
         compoundCriterion3.getCriterionCollection().add(compoundCriterion2);
         // 6 results for 1
-        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion1.setBooleanOperator(BooleanOperatorEnum.OR);
         // 4 results for 2
-        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion2.setBooleanOperator(BooleanOperatorEnum.OR);
         
         // If we AND them together we should get 7 results
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.AND);
         CompoundCriterionHandler compoundCriterionHandler3 = CompoundCriterionHandler.create(compoundCriterion3);
         assertEquals(7, compoundCriterionHandler3.getMatches(dao, arrayDataService, query, entityTypesInQuery).size());
         
         // If we OR them together we should get 7 results, all 5 subjects, plus 2 more samples for subject1.
-        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion3.setBooleanOperator(BooleanOperatorEnum.OR);
         Set<ResultRow> mostComplexRows = compoundCriterionHandler3.getMatches(dao, arrayDataService, query, entityTypesInQuery);
         assertEquals(14, mostComplexRows.size());
         
