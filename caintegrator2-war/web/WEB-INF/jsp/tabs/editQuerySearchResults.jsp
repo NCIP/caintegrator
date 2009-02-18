@@ -7,7 +7,14 @@
 
 <!--Search Results-->
 <s:div theme="xhtml">
-    <h2>Query Results for: <s:property value="query.name" /></h2>
+    <h2>Query Results for: 
+        <s:if test="query != null && query.name != null && query.name.length() > 0">
+            <s:property value="query.name" />
+        </s:if>
+        <s:else>
+            Unsaved Query
+        </s:else>        
+    </h2>
 
     <div class="tableheader">
         <label>Results per Page:</label>
