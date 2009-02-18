@@ -85,21 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 
 /**
  * Contains configuration information for file based annotation of <code>ImageSeries</code>.
  */
-public class ImageAnnotationConfiguration implements PersistentObject {
+public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private StudyConfiguration studyConfiguration;
     private AnnotationFile annotationFile;
     
-    //abstract ImagingSourceType getType();
-    //public abstract String getDescription();
     /**
      * Creates a new instance.
      */
@@ -111,48 +108,10 @@ public class ImageAnnotationConfiguration implements PersistentObject {
         return getAnnotationFile().validate();
     }
     
-    /**
-     * @return Type
-     */
-    public ImagingSourceType getType() {
-        return ImagingSourceType.DELIMITED_TEXT;
-    }
-    
     ImageAnnotationConfiguration(AnnotationFile annotationFile, StudyConfiguration studyConfiguration) {
         this.annotationFile = annotationFile;
         this.studyConfiguration = studyConfiguration;
         studyConfiguration.getImageAnnotationConfigurations().add(this);
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
     }
 
     /**

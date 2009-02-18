@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -114,8 +114,7 @@ public class NumericComparisonCriterionHandler extends AbstractAnnotationCriteri
     @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
     Criterion translate() {
         if (numericComparisonCriterion.getNumericComparisonOperator() != null) {
-            NumericComparisonOperatorEnum operator = NumericComparisonOperatorEnum.
-                        getByValue(numericComparisonCriterion.getNumericComparisonOperator());
+            NumericComparisonOperatorEnum operator = numericComparisonCriterion.getNumericComparisonOperator();
             switch(operator) {
             case EQUAL:
                 return Restrictions.eq(NUMERIC_VALUE_COLUMN, numericComparisonCriterion.getNumericValue());

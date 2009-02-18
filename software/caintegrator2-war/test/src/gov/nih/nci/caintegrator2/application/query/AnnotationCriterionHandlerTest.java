@@ -87,9 +87,9 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -118,18 +118,18 @@ public class AnnotationCriterionHandlerTest {
         query.setSubscription(subscription);
         
         AbstractAnnotationCriterion abstractAnnotationCriterion = new AbstractAnnotationCriterion();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SAMPLE);
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(abstractAnnotationCriterion);
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSamplesCalled);
         
         daoStub.clear();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         
         daoStub.clear();
-        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        abstractAnnotationCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingSubjectsCalled);
     }

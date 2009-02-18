@@ -87,9 +87,8 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
@@ -97,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -105,8 +105,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Handler that returns samples matching the given fold change criterion.
@@ -130,7 +128,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) {
         Study study = query.getSubscription().getStudy();
-        ReporterTypeEnum reporterType = getReporterType(query);
+        ReporterTypeEnum reporterType = query.getReporterType();
         configureCompareToSamples(study);
         Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
         ArrayDataMatrix matrix = getArrayDataMatrix(dao, query, reporterType);
@@ -146,14 +144,6 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
             return matrixes.get(0);
         } else {
             return null;
-        }
-    }
-
-    private ReporterTypeEnum getReporterType(Query query) {
-        if (!StringUtils.isBlank(query.getReporterType())) {
-            return ReporterTypeEnum.getByValue(query.getReporterType());
-        } else {
-            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
         }
     }
 

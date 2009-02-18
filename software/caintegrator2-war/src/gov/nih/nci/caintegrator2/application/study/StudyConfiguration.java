@@ -85,8 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -107,9 +106,9 @@ import java.util.Set;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-public class StudyConfiguration implements PersistentObject {
+public class StudyConfiguration extends AbstractCaIntegrator2Object {
     
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private Visibility visibility;
     private Status status = Status.NOT_DEPLOYED;
     private Study study = new Study();
@@ -131,24 +130,6 @@ public class StudyConfiguration implements PersistentObject {
      */
     public StudyConfiguration() {
         super();
-    }
-
-    /**
-     * Returns the id.
-     *
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets the id.
-     *
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
     }
 
     /**
@@ -321,23 +302,6 @@ public class StudyConfiguration implements PersistentObject {
         for (Timepoint timepoint : getStudy().getTimepointCollection()) {
             nameToTimepointMap.put(timepoint.getName(), timepoint);
         }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
     }
 
     /**

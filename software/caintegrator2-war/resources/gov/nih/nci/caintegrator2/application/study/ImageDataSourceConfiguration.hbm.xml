@@ -17,11 +17,11 @@
         <many-to-one name="serverProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" column="SERVER_CONNECTION_PROFILE_ID"
             lazy="proxy" cascade="all" />
                    
-        <list name="imageSeriesAcquisitions" table="IMAGE_DATA_SOURCE_CONFIGURATION_ACQUISITIONS" lazy="true" cascade="all">
+        <list name="imageSeriesAcquisitions" lazy="true" cascade="all">
             <cache usage="read-write" />
             <key column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" />
-            <index column="LIST_INDEX"/>
-            <many-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition" column="IMAGE_SERIES_ACQUISITION_ID"/>
+            <list-index column="IMAGE_DATA_SOURCE_CONFIGURATION_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition" />
         </list>
             
         <property name="trialDataProvenance" type="string" column="TRIAL_DATA_PROVENANCE"/>

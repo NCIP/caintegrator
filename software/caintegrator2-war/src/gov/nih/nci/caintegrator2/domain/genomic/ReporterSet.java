@@ -12,24 +12,10 @@ public class ReporterSet extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private String reporterType;
+    private ReporterTypeEnum reporterType;
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
     private Platform platform;
-    
-    /**
-     * @return the reporterType
-     */
-    public String getReporterType() {
-        return reporterType;
-    }
-    
-    /**
-     * @param reporterType the reporterType to set
-     */
-    public void setReporterType(String reporterType) {
-        this.reporterType = reporterType;
-    }
     
     /**
      * @return the platform
@@ -73,6 +59,20 @@ public class ReporterSet extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // Required by Hibernate
     private void setReporters(Set<AbstractReporter> reporters) {
         this.reporters = reporters;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
     }
 
 }

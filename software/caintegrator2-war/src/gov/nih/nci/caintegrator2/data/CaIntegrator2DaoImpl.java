@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -96,12 +94,14 @@ import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -230,7 +230,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<ImageSeries> findMatchingImageSeries(AbstractAnnotationCriterion criterion, Study study) {
-        if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES.getValue())) {
+        if (!criterion.getEntityType().equals(EntityTypeEnum.IMAGESERIES)) {
             return new ArrayList<ImageSeries>();
         } 
         Criteria imageSeriesCrit = getCurrentSession().createCriteria(ImageSeries.class);
@@ -241,10 +241,10 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                             imageSeriesCrit, 
                                            ANNOTATION_VALUE_COLLECTION_ASSOCIATION);
         }
-        createStudySubjectAssignmentCriteria(
-                imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
-                createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
-                study);
+            createStudySubjectAssignmentCriteria(
+                        imageSeriesCrit.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION).
+                        createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION), 
+                        study);
         
         return imageSeriesCrit.list();
     }
@@ -254,7 +254,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<SampleAcquisition> findMatchingSamples(AbstractAnnotationCriterion criterion, Study study) {
-        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE.getValue())) {
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SAMPLE)) {
             return new ArrayList<SampleAcquisition>();
         } else {
             Criteria sampleAcquisitionCrit = getCurrentSession().createCriteria(SampleAcquisition.class);
@@ -273,7 +273,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<StudySubjectAssignment> findMatchingSubjects(AbstractAnnotationCriterion criterion, Study study) {
-        if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT.getValue())) {
+        if (!criterion.getEntityType().equals(EntityTypeEnum.SUBJECT)) {
             return new ArrayList<StudySubjectAssignment>();
         }
         Criteria studySubjectAssignmentCrit = getCurrentSession().createCriteria(StudySubjectAssignment.class);
@@ -284,7 +284,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
                                            studySubjectAssignmentCrit.createCriteria("subjectAnnotationCollection"), 
                                            ANNOTATION_VALUE_ASSOCIATION);
         }
-        createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
+            createStudySubjectAssignmentCriteria(studySubjectAssignmentCrit, study);
         return studySubjectAssignmentCrit.list();
 
     }
@@ -299,7 +299,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Criteria criteria = getCurrentSession().createCriteria(GeneExpressionReporter.class);
         criteria.createCriteria("gene").add(Restrictions.like("symbol", geneSymbol));
         Criteria reporterCriteria = criteria.createCriteria("reporterSet");
-        reporterCriteria.add(Restrictions.eq("reporterType", reporterType.getValue()));
+        reporterCriteria.add(Restrictions.eq("reporterType", reporterType));
         reporterCriteria.createCriteria("arrayDataCollection").add(Restrictions.eq("study", study));
         reporters.addAll((List<GeneExpressionReporter>) criteria.list());
         return reporters;
@@ -377,7 +377,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         Query query = getCurrentSession().createQuery("from ArrayDataMatrix where study = :study "
                 + "and reporterSet.reporterType = :reporterType");
         query.setEntity("study", study);
-        query.setString("reporterType", reporterType.getValue());
+        query.setParameter("reporterType", reporterType);
         return query.list();
     }
 

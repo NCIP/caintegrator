@@ -1,40 +1,44 @@
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Possible wild card type values for <code>StringComparisonCriterion.wildCardType</code>.
+ * Possible entity type values for <code>AbstractAnnotationCriterion.entityType</code>.
  */
-public enum WildCardTypeEnum {
+public enum EntityTypeEnum {
 
     /**
-     * No Wild Card.
+     * Subject type.
      */
-    WILDCARD_OFF("wildCardOff"),
+    SUBJECT("subject"),
 
     /**
-     * Wild Card after the given string.
+     * Sample type.
      */
-    WILDCARD_BEFORE_STRING("wildCardBeforeString"),
+    SAMPLE("sample"),
     
     /**
-     * Wild Card before the given string.
+     * Image Series type.
      */
-    WILDCARD_AFTER_STRING("wildCardAfterString"),
+    IMAGESERIES("imageSeries"),
     
     /**
-     * Wild Card before and after the given string.
+     * Image type.
      */
-    WILDCARD_BEFORE_AND_AFTER_STRING("wildCardBeforeAndAfterString");
+    IMAGE("image"),
     
-    private static Map<String, WildCardTypeEnum> valueToTypeMap = 
-                                        new HashMap<String, WildCardTypeEnum>();
+    /**
+     * Gene Expression Type.
+     */
+    GENEEXPRESSION("geneExpression");
+    
+    private static Map<String, EntityTypeEnum> valueToTypeMap = new HashMap<String, EntityTypeEnum>();
 
     private String value;
     
-    private WildCardTypeEnum(String value) {
+    private EntityTypeEnum(String value) {
         this.value = value;
     }
 
@@ -52,9 +56,9 @@ public enum WildCardTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, WildCardTypeEnum> getValueToTypeMap() {
+    private static Map<String, EntityTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (WildCardTypeEnum type : values()) {
+            for (EntityTypeEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -62,13 +66,13 @@ public enum WildCardTypeEnum {
     }
     
     /**
-     * Returns the <code>WildCardTypeEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>EntityTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static WildCardTypeEnum getByValue(String value) {
+    public static EntityTypeEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

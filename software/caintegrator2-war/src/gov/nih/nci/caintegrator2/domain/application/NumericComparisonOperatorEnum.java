@@ -1,29 +1,50 @@
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Possible boolean operators <code>CompoundCriterion.entityType</code>.
+ * Possible entity type values for <code>NumericComparisonCriterion.numericComparisonOperator</code>.
  */
-public enum BooleanOperatorEnum {
+public enum NumericComparisonOperatorEnum {
 
     /**
-     * Boolean and.
+     * Greater Than.
      */
-    AND("and"),
+    GREATER(">"),
 
     /**
-     * Boolean or.
+     * Greater Than or Equal To.
      */
-    OR("or");
+    GREATEROREQUAL(">="),
     
-    private static Map<String, BooleanOperatorEnum> valueToTypeMap = new HashMap<String, BooleanOperatorEnum>();
+    /**
+     * Equal To.
+     */
+    EQUAL("=="),
+    
+    /**
+     * Less Than.
+     */
+    LESS("<"),
+    
+    /**
+     * Less Than or Equal To.
+     */
+    LESSOREQUAL("<="),
+    
+    /**
+     * Not Equal.
+     */
+    NOTEQUAL("!=");
+    
+    private static Map<String, NumericComparisonOperatorEnum> valueToTypeMap = 
+                                        new HashMap<String, NumericComparisonOperatorEnum>();
 
     private String value;
     
-    private BooleanOperatorEnum(String value) {
+    private NumericComparisonOperatorEnum(String value) {
         this.value = value;
     }
 
@@ -41,9 +62,9 @@ public enum BooleanOperatorEnum {
         this.value = value;
     }
 
-    private static Map<String, BooleanOperatorEnum> getValueToTypeMap() {
+    private static Map<String, NumericComparisonOperatorEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (BooleanOperatorEnum type : values()) {
+            for (NumericComparisonOperatorEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -51,13 +72,13 @@ public enum BooleanOperatorEnum {
     }
     
     /**
-     * Returns the <code>BooleanOperatorEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>NumericComparisonOperatorEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static BooleanOperatorEnum getByValue(String value) {
+    public static NumericComparisonOperatorEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

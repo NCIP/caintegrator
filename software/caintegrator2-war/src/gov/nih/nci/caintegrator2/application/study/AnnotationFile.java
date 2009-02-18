@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
@@ -118,8 +117,9 @@ import au.com.bytecode.opencsv.CSVReader;
  * Represents a CSV annotation text file.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity")   // switch statement and argument checking
-public class AnnotationFile implements PersistentObject {
-    private Long id;
+public class AnnotationFile extends AbstractCaIntegrator2Object {
+
+    private static final long serialVersionUID = 1L;
     private String path;
     private List<FileColumn> columns = new ArrayList<FileColumn>();
     private FileColumn identifierColumn;
@@ -391,20 +391,6 @@ public class AnnotationFile implements PersistentObject {
         setIdentifierColumn(getColumns().get(index));
     }
 
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     void loadAnnontation(AbstractAnnotationHandler handler) throws ValidationException {
         handler.addDefinitionsToStudy(getAnnotationDefinitions());
         positionAtData();
@@ -464,6 +450,7 @@ public class AnnotationFile implements PersistentObject {
         StringAnnotationValue annotationValue = new StringAnnotationValue();
         annotationValue.setStringValue(value);
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
 
@@ -476,6 +463,7 @@ public class AnnotationFile implements PersistentObject {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
     
@@ -500,6 +488,7 @@ public class AnnotationFile implements PersistentObject {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
+        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
 
@@ -518,23 +507,6 @@ public class AnnotationFile implements PersistentObject {
             + "' with value = '" + value + "'. The two formats allowed are MM-dd-yyyy and MM/dd/yyyy ";
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
-    }
-
     boolean isLoadable() {
         if (getIdentifierColumn() == null) {
             return false;

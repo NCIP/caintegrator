@@ -86,11 +86,11 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -122,9 +122,9 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
 
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
         criterion.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
-        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         AnnotationCriterionHandler annotationCriterionHandler = new AnnotationCriterionHandler(criterion);
         assertEquals(4, annotationCriterionHandler.getMatches(dao, arrayDataService, query, new HashSet<EntityTypeEnum>()).size());

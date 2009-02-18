@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class ColumnSelectionList {
     private final OptionList<AnnotationDefinition> columnList;
     private final EntityTypeEnum entityType;
     private final ResultConfiguration resultConfiguration;
-
+    
     ColumnSelectionList(ResultConfiguration resultConfiguration,
             Collection<AnnotationDefinition> annotationDefinitions, EntityTypeEnum entityType) {
         this.resultConfiguration = resultConfiguration;
@@ -153,7 +153,7 @@ public class ColumnSelectionList {
     public String[] getValues() {
         List<String> columnNames = new ArrayList<String>();
         for (ResultColumn column : resultConfiguration.getQuery().getColumnCollection()) {
-            if (entityType.getValue().equals(column.getEntityType())) {
+            if (entityType.equals(column.getEntityType())) {
                 columnNames.add(column.getAnnotationDefinition().getDisplayName());
             }
         }
@@ -176,7 +176,7 @@ public class ColumnSelectionList {
             Set<AnnotationDefinition> selectedColumns) {
         for (AnnotationDefinition annotationDefinition : selectedColumns) {
             ResultColumn column = new ResultColumn();
-            column.setEntityType(entityType.getValue());
+            column.setEntityType(entityType);
             column.setAnnotationDefinition(annotationDefinition);
             column.setColumnIndex(columnCollection.size());
             columnCollection.add(column);
@@ -188,7 +188,7 @@ public class ColumnSelectionList {
         Iterator<ResultColumn> columnIterator = columnCollection.iterator();
         while (columnIterator.hasNext()) {
             ResultColumn nextColumn = columnIterator.next();
-            if (entityType.getValue().equals(nextColumn.getEntityType())) {
+            if (entityType.equals(nextColumn.getEntityType())) {
                 if (selectedColumns.contains(nextColumn.getAnnotationDefinition())) {
                     selectedColumns.remove(nextColumn.getAnnotationDefinition());
                 } else {

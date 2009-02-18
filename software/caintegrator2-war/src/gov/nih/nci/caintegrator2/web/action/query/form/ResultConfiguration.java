@@ -92,11 +92,11 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 /**
@@ -124,15 +124,23 @@ public class ResultConfiguration {
      * @return the resultType
      */
     public String getResultType() {
-        return getQuery().getResultType();
+        if (getQuery().getResultType() == null) {
+            return "";
+        } else {
+            return getQuery().getResultType().getValue();
+        }
     }
 
     /**
      * @param resultType the resultType to set
      */
     public void setResultType(String resultType) {
-        getQuery().setResultType(resultType);
-        if (ResultTypeEnum.GENOMIC.getValue().equals(resultType)) {
+        if (StringUtils.isBlank(resultType)) {
+            getQuery().setResultType(null);
+        } else {
+            getQuery().setResultType(ResultTypeEnum.getByValue(resultType));
+        }
+        if (ResultTypeEnum.GENOMIC.equals(getQuery().getResultType())) {
             getQuery().getColumnCollection().clear();
             if (StringUtils.isBlank(getReporterType())) {
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
@@ -144,14 +152,22 @@ public class ResultConfiguration {
      * @return the reporterType
      */
     public String getReporterType() {
-        return getQuery().getReporterType();
+        if (getQuery().getReporterType() != null) {
+            return getQuery().getReporterType().getValue();
+        } else {
+            return "";
+        }
     }
 
     /**
      * @param reporterType the reporterType to set
      */
     public void setReporterType(String reporterType) {
-        getQuery().setReporterType(reporterType);
+        if (StringUtils.isBlank(reporterType)) {
+            getQuery().setReporterType(null);
+        } else {
+            getQuery().setReporterType(ReporterTypeEnum.getByValue(reporterType));
+        }
     }
 
     /**

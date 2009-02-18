@@ -20,5 +20,12 @@
         
 		<many-to-one name="definition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID"
 		    lazy="proxy" cascade="save-update,merge" />
+            
+        <set name="annotationValues" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="ANNOTATION_FIELD_DESCRIPTOR_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue"/>
+        </set>
+            
 	</class>
 </hibernate-mapping>

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.HashSet;
 
@@ -126,7 +127,7 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
         for (int x=0; x<3; x++) {
             query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject());
         }
-        query.setReporterType(getUniqueString());
+        query.setReporterType(getNewEnumValue(query.getReporterType(), ReporterTypeEnum.values()));
         CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion);
         query.setCompoundCriterion(compoundCriterion);
 

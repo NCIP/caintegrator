@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,7 +134,7 @@ final class ResultRowComparator implements Comparator <ResultRow> {
     static List<ResultRow> sort(Collection<ResultRow> rowsToSort, List<ResultColumn> sortColumns) {
         for (ResultColumn col : sortColumns) {
             if (col.getSortType() == null) {  // Check sort types and if not there assume it's ascending.
-                col.setSortType(SortTypeEnum.ASCENDING.getValue());
+                col.setSortType(SortTypeEnum.ASCENDING);
             }
         }
         List<ResultRow> rowsList = Arrays.asList(rowsToSort.toArray(new ResultRow[rowsToSort.size()]));
@@ -156,7 +157,7 @@ final class ResultRowComparator implements Comparator <ResultRow> {
         ResultValue resultValue2 = getResultValueFromRowColumn(row2, currentColumn);
         int order = compareResultValues(resultValue1, 
                                         resultValue2, 
-                                        SortTypeEnum.getByValue(currentColumn.getSortType()));
+                                        currentColumn.getSortType());
         if (order == 0 && sortColumnsIterator.hasNext()) { // Tie-breaker check, goes to next sort column
             List <ResultColumn> newColumns = new ArrayList<ResultColumn>();
             newColumns.addAll(sortColumns);

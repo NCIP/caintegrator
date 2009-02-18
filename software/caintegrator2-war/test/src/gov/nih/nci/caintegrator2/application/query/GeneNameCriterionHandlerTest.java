@@ -87,9 +87,9 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

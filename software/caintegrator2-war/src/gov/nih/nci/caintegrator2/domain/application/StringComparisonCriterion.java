@@ -8,7 +8,7 @@ public class StringComparisonCriterion extends AbstractAnnotationCriterion {
     private static final long serialVersionUID = 1L;
     
     private String stringValue;
-    private String wildCardType;
+    private WildCardTypeEnum wildCardType;
     
     /**
      * @return the stringValue
@@ -23,18 +23,18 @@ public class StringComparisonCriterion extends AbstractAnnotationCriterion {
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
     }
-    
+
     /**
      * @return the wildCardType
      */
-    public String getWildCardType() {
+    public WildCardTypeEnum getWildCardType() {
         return wildCardType;
     }
-    
+
     /**
      * @param wildCardType the wildCardType to set
      */
-    public void setWildCardType(String wildCardType) {
+    public void setWildCardType(WildCardTypeEnum wildCardType) {
         this.wildCardType = wildCardType;
     }
 

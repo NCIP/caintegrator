@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 /**
  * 
  */
@@ -119,9 +121,9 @@ public final class ResultColumnGenerator extends AbstractTestDataGenerator<Resul
     @Override
     public void setValues(ResultColumn rc) {
         rc.setSortOrder(getUniqueInt());
-        rc.setSortType(getUniqueString());
+        rc.setSortType(getNewEnumValue(rc.getSortType(), SortTypeEnum.values()));
         rc.setColumnIndex(getUniqueInt());
-        rc.setEntityType(getUniqueString());
+        rc.setEntityType(getNewEnumValue(rc.getEntityType(), EntityTypeEnum.values()));
     }
 
 }

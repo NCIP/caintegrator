@@ -6,7 +6,7 @@
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
             onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
-            list="@gov.nih.nci.caintegrator2.application.query.ResultTypeEnum@getValueToDisplayableMap()" 
+            list="@gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum@getValueToDisplayableMap()" 
             listKey="key"
             listValue="value"/><br>
         
@@ -17,7 +17,7 @@
         <div class="reporterTypeSelector">
         <b>Select Reporter Type: </b> 
             <s:radio name="queryForm.resultConfiguration.reporterType"
-                list="@gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum@getValueToDisplayableMap()"
+                list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
                 listKey="key" 
                 listValue="value" />
         </div>

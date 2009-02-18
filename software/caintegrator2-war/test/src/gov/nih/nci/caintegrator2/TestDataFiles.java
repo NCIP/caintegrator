@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationFileTest;
-
 import java.io.File;
 
 public class TestDataFiles {
@@ -137,10 +135,12 @@ public class TestDataFiles {
     // Files for DC Lung Study (liu-00175 in caarray-stage)
     public static final String DC_LUNG_CLINICAL_FILE_PATH = "/dc_lung_clinical_data.csv";
     public static final String DC_LUNG_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping.csv";
+    public static final String DC_LUNG_SAMPLE_MAPPING_FULL_FILE_PATH = "/dc_lung_sample_mapping_full.csv";
     public static final String DC_LUNG_ANNOTATION_DEFINITIONS_FILE_PATH = "/dc_lung_annotation_definitions.csv";
 
     public static final File DC_LUNG_CLINICAL_FILE = getFile(DC_LUNG_CLINICAL_FILE_PATH);
     public static final File DC_LUNG_SAMPLE_MAPPING_FILE = getFile(DC_LUNG_SAMPLE_MAPPING_FILE_PATH);
+    public static final File DC_LUNG_SAMPLE_MAPPING_FULL_FILE = getFile(DC_LUNG_SAMPLE_MAPPING_FULL_FILE_PATH);
     public static final File DC_LUNG_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_ANNOTATION_DEFINITIONS_FILE_PATH);
     
     // Files for public DC Lung Study (liu-00133 in array-qa-vm.nci.nih.gov)
@@ -166,7 +166,7 @@ public class TestDataFiles {
     
 
     public static File getFile(String resourcePath) {
-        return new File(AnnotationFileTest.class.getResource(resourcePath).getFile());
+        return new File(TestDataFiles.class.getResource(resourcePath).getFile());
     }
 
 }

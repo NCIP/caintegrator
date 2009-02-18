@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
 
@@ -112,7 +113,7 @@ public final class StringComparisonCriterionGenerator extends AbstractTestDataGe
 
     @Override
     public void setValues(StringComparisonCriterion stringComparisonCriterion) {
-        stringComparisonCriterion.setEntityType("Subject");
+        stringComparisonCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         stringComparisonCriterion.setStringValue(getUniqueString());
 
     }

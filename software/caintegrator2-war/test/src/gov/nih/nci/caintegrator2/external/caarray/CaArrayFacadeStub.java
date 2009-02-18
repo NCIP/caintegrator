@@ -87,10 +87,10 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -116,7 +116,7 @@ public class CaArrayFacadeStub implements CaArrayFacade {
         ArrayDataValues values = new ArrayDataValues();
         values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
         ReporterSet reporterSet = new ReporterSet();
-        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         Platform platform = new Platform();
         platform.setReporterSets(new HashSet<ReporterSet>());
         platform.getReporterSets().add(reporterSet);

@@ -1,6 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Collections;
@@ -15,6 +15,7 @@ public class Sample extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String name;
+    private GenomicDataSourceConfiguration genomicDataSource;
     private SampleAcquisition sampleAcquisition;
     private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     private Set<Array> arrayCollection = new HashSet<Array>();
@@ -91,6 +92,20 @@ public class Sample extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // Required by Hibernate
     private void setArrayCollection(Set<Array> arrayCollection) {
         this.arrayCollection = arrayCollection;
+    }
+
+    /**
+     * @return the genomicDataSource
+     */
+    public GenomicDataSourceConfiguration getGenomicDataSource() {
+        return genomicDataSource;
+    }
+
+    /**
+     * @param genomicDataSource the genomicDataSource to set
+     */
+    public void setGenomicDataSource(GenomicDataSourceConfiguration genomicDataSource) {
+        this.genomicDataSource = genomicDataSource;
     }
 
 }

@@ -85,9 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,9 +94,9 @@ import java.util.List;
 /**
  * Represents a column in a <code>DelimitedTextFile</code>.
  */
-public class FileColumn implements Comparable<FileColumn>, PersistentObject {
+public class FileColumn extends AbstractCaIntegrator2Object implements Comparable<FileColumn> {
     
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private int position;
     private String name;
     private AnnotationFieldDescriptor fieldDescriptor;
@@ -162,37 +161,6 @@ public class FileColumn implements Comparable<FileColumn>, PersistentObject {
      */
     public void setFieldDescriptor(AnnotationFieldDescriptor fieldDescriptor) {
         this.fieldDescriptor = fieldDescriptor;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
     }
 
     /**

@@ -96,8 +96,10 @@ import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
@@ -364,6 +366,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
         genomicSource.setSamples(samples);
+        for (Sample sample : samples) {
+            sample.setGenomicDataSource(genomicSource);
+        }
         dao.save(studyConfiguration);
     }
 
@@ -594,8 +599,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             throws ConnectionException {
         studyConfiguration.getImageDataSources().add(imageSource);
         imageSource.setStudyConfiguration(studyConfiguration);
-        imageSource.getImageSeriesAcquisitions().addAll(getNciaFacade().getImageSeriesAcquisitions(
-                imageSource.getTrialDataProvenance(), imageSource.getServerProfile()));
+        List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
+                    imageSource.getTrialDataProvenance(), imageSource.getServerProfile());
+        imageSource.getImageSeriesAcquisitions().addAll(acquisitions);
+        for (ImageSeriesAcquisition acquisition : acquisitions) {
+            acquisition.setImageDataSource(imageSource);
+        }
         dao.save(studyConfiguration);
     }
 

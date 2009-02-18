@@ -11,9 +11,9 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     private static final long serialVersionUID = 1L;
     
     private Integer columnIndex;
-    private String entityType;
+    private EntityTypeEnum entityType;
     private Integer sortOrder;
-    private String sortType;
+    private SortTypeEnum sortType;
     private AnnotationDefinition annotationDefinition;
 
     /**
@@ -31,20 +31,6 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     }
     
     /**
-     * @return the entityType
-     */
-    public String getEntityType() {
-        return entityType;
-    }
-    
-    /**
-     * @param entityType the entityType to set
-     */
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-    
-    /**
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -59,20 +45,6 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
     }
     
     /**
-     * @return the sortType
-     */
-    public String getSortType() {
-        return sortType;
-    }
-    
-    /**
-     * @param sortType the sortType to set
-     */
-    public void setSortType(String sortType) {
-        this.sortType = sortType;
-    }
-    
-    /**
      * @return the annotationDefinition
      */
     public AnnotationDefinition getAnnotationDefinition() {
@@ -84,6 +56,34 @@ public class ResultColumn extends AbstractCaIntegrator2Object implements Cloneab
      */
     public void setAnnotationDefinition(AnnotationDefinition annotationDefinition) {
         this.annotationDefinition = annotationDefinition;
+    }
+
+    /**
+     * @return the sortType
+     */
+    public SortTypeEnum getSortType() {
+        return sortType;
+    }
+
+    /**
+     * @param sortType the sortType to set
+     */
+    public void setSortType(SortTypeEnum sortType) {
+        this.sortType = sortType;
+    }
+
+    /**
+     * @return the entityType
+     */
+    public EntityTypeEnum getEntityType() {
+        return entityType;
+    }
+
+    /**
+     * @param entityType the entityType to set
+     */
+    public void setEntityType(EntityTypeEnum entityType) {
+        this.entityType = entityType;
     }
 
     /**

@@ -85,10 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public class CriteriaGroup {
             return CriterionRowTypeEnum.GENE_EXPRESSION;
         } else if (criterion instanceof AbstractAnnotationCriterion) {
             AbstractAnnotationCriterion annotationCriterion = (AbstractAnnotationCriterion) criterion;
-            switch (EntityTypeEnum.getByValue(annotationCriterion.getEntityType())) {
+            switch (annotationCriterion.getEntityType()) {
             case IMAGESERIES:
                 return CriterionRowTypeEnum.IMAGE_SERIES;
             case SUBJECT:
@@ -156,14 +156,14 @@ public class CriteriaGroup {
      * @return the booleanOperator
      */
     public String getBooleanOperator() {
-        return compoundCriterion.getBooleanOperator();
+        return compoundCriterion.getBooleanOperator().getValue();
     }
 
     /**
      * @param booleanOperator the booleanOperator to set
      */
     public void setBooleanOperator(String booleanOperator) {
-        compoundCriterion.setBooleanOperator(booleanOperator);
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.getByValue(booleanOperator));
     }
 
     /**

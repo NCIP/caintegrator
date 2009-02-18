@@ -85,30 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * Represents a gif/jpg logo image.
  */
-public class StudyLogo implements PersistentObject {
+public class StudyLogo extends AbstractCaIntegrator2Object {
 
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private String fileName;
     private String path;
     private String fileType;
-    
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     /**
      * @return the fileName

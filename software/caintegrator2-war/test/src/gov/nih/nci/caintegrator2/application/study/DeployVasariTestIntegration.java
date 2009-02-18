@@ -137,17 +137,17 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    int getExpectedSampleCount() {
+    protected int getExpectedSampleCount() {
         return 96;
     }
 
     @Override
-    int getExpectedMappedSampleCount() {
+    protected int getExpectedMappedSampleCount() {
         return 68;
     }
 
     @Override
-    int getExpectedControlSampleCount() {
+    protected int getExpectedControlSampleCount() {
         return 28;
     }
 
@@ -176,7 +176,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
     }
 
-    File getImageAnnotationFile() {
+    protected File getImageAnnotationFile() {
         return TestDataFiles.VASARI_IMAGE_ANNOTATION_FILE;
     }
 
@@ -201,12 +201,12 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    File getPlatformAnnotationFile() {
+    protected File getPlatformAnnotationFile() {
         return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
     }
 
     @Override
-    String getPlatformName() {
+    protected String getPlatformName() {
         return "HG-U133_Plus_2";
     }
 
@@ -226,12 +226,12 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    int getExpectedNumberOfGeneReporters() {
+    protected int getExpectedNumberOfGeneReporters() {
         return 20886;
     }
 
     @Override
-    int getExpectedNumberProbeSets() {
+    protected int getExpectedNumberProbeSets() {
         return 54675;
     }
 
