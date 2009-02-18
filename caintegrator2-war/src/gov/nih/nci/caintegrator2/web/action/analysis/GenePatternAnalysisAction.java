@@ -90,10 +90,10 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.net.MalformedURLException;
@@ -196,7 +196,7 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     private List<Query> getGenomicQueries() {
         List<Query> queries = new ArrayList<Query>();
         for (Query query : getStudySubscription().getQueryCollection()) {
-            if (ResultTypeEnum.GENOMIC.equals(ResultTypeEnum.getByValue(query.getResultType()))) {
+            if (ResultTypeEnum.GENOMIC.equals(query.getResultType())) {
                 queries.add(query);
             }
         }

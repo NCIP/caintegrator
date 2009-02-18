@@ -90,24 +90,25 @@ import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.query.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -126,7 +127,7 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
+public abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private final Logger logger = Logger.getLogger(getClass());
     private long startTime;
@@ -215,9 +216,9 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         return dao.getPlatform(getPlatformName());
     }
 
-    abstract String getPlatformName();
+    protected abstract String getPlatformName();
     
-    abstract File getPlatformAnnotationFile();
+    protected abstract File getPlatformAnnotationFile();
 
     protected boolean getLoadDesign() {
         return true;
@@ -258,7 +259,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         return true;
     }
 
-    abstract File getImageAnnotationFile();
+    protected abstract File getImageAnnotationFile();
 
     private void mapImages() throws ValidationException, IOException {
         if (getMapImages()) {
@@ -294,23 +295,23 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         }
     }
 
-    abstract int getExpectedNumberOfGeneReporters();
+    protected abstract int getExpectedNumberOfGeneReporters();
 
-    abstract int getExpectedNumberProbeSets();
+    protected abstract int getExpectedNumberProbeSets();
     
     protected boolean getLoadSamples() {
         return true;
     }
 
-    abstract int getExpectedSampleCount();
+    protected abstract int getExpectedSampleCount();
 
-    abstract int getExpectedMappedSampleCount();
+    protected abstract int getExpectedMappedSampleCount();
 
-    abstract int getExpectedControlSampleCount();
+    protected abstract int getExpectedControlSampleCount();
 
     private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
         for (ArrayData arrayData : arrayDatas) {
-            if (type.getValue().equals(arrayData.getMatrix().getReporterSet().getReporterType())) {
+            if (type.equals(arrayData.getMatrix().getReporterSet().getReporterType())) {
                 return arrayData.getMatrix();
             }
         }
@@ -323,6 +324,8 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname(getCaArrayHostname());
             genomicSource.getServerProfile().setPort(8080);
+            genomicSource.getServerProfile().setUsername(getCaArrayUsername());
+            genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
@@ -446,7 +449,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
     private void checkClinicalQuery() {
         logStart();
         Query query = createQuery();
-        query.setResultType(ResultTypeEnum.CLINICAL.getValue());
+        query.setResultType(ResultTypeEnum.CLINICAL);
         logEnd();
     }
 
@@ -454,8 +457,8 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         if (getLoadSamples() && getLoadDesign()) {
             logStart();
             Query query = createQuery();
-            query.setResultType(ResultTypeEnum.GENOMIC.getValue());
-            query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+            query.setResultType(ResultTypeEnum.GENOMIC);
+            query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             GeneNameCriterion geneCriterion = new GeneNameCriterion();
             geneCriterion.setGeneSymbol("EGFR");
             query.getCompoundCriterion().getCriterionCollection().add(geneCriterion);
@@ -473,7 +476,7 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
         Query query = new Query();
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setSubscription(new StudySubscription());
         query.getSubscription().setStudy(studyConfiguration.getStudy());
@@ -492,6 +495,14 @@ abstract class AbstractDeployStudyTestIntegration extends AbstractTransactionalS
      */
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
+    }
+
+    protected String getCaArrayUsername() {
+        return null;
+    }
+
+    protected String getCaArrayPassword() {
+        return null;
     }
 
 }

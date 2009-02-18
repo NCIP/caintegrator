@@ -146,17 +146,17 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    int getExpectedSampleCount() {
+    protected int getExpectedSampleCount() {
         return 443;
     }
 
     @Override
-    int getExpectedMappedSampleCount() {
+    protected int getExpectedMappedSampleCount() {
         return 439;
     }
 
     @Override
-    int getExpectedControlSampleCount() {
+    protected int getExpectedControlSampleCount() {
         return 4;
     }
 
@@ -189,7 +189,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
         return TestDataFiles.DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE;
     }
 
-    File getImageAnnotationFile() {
+    protected File getImageAnnotationFile() {
         return null;
     }
 
@@ -213,12 +213,12 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    File getPlatformAnnotationFile() {
+    protected File getPlatformAnnotationFile() {
         return TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE;
     }
 
     @Override
-    String getPlatformName() {
+    protected String getPlatformName() {
         return "HG-U133A";
     }
     
@@ -238,12 +238,12 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    int getExpectedNumberOfGeneReporters() {
+    protected int getExpectedNumberOfGeneReporters() {
         return 13266;
     }
 
     @Override
-    int getExpectedNumberProbeSets() {
+    protected int getExpectedNumberProbeSets() {
         return 22283;
     }
 

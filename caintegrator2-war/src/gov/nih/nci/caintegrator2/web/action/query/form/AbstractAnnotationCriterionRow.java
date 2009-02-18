@@ -86,13 +86,13 @@
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
@@ -179,14 +179,14 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     
     private IdentifierCriterionWrapper createIdentifierCriterionWrapper() {
         IdentifierCriterion criterion = new IdentifierCriterion();
-        criterion.setEntityType(getEntityType().getValue());
+        criterion.setEntityType(getEntityType());
         return new IdentifierCriterionWrapper(criterion, this);
     }
 
     private SelectedValueCriterionWrapper createSelectedValueCriterionWrapper(AnnotationDefinition field) {
         SelectedValueCriterion criterion = new SelectedValueCriterion();
         criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType().getValue());
+        criterion.setEntityType(getEntityType());
         criterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
         return new SelectedValueCriterionWrapper(criterion, this);
     }
@@ -194,15 +194,15 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
     private StringComparisonCriterionWrapper createStringComparisonCriterionWrapper(AnnotationDefinition field) {
         StringComparisonCriterion criterion = new StringComparisonCriterion();
         criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType().getValue());
+        criterion.setEntityType(getEntityType());
         return new StringComparisonCriterionWrapper(criterion, this);
     }
 
     private NumericComparisonCriterionWrapper createNumericCriterionWrapper(AnnotationDefinition field) {
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setAnnotationDefinition(field);
-        criterion.setEntityType(getEntityType().getValue());
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL.getValue());
+        criterion.setEntityType(getEntityType());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.EQUAL);
         return new NumericComparisonCriterionWrapper(criterion, this);
     }
 

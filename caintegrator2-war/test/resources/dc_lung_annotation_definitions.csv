@@ -1,6 +1,8 @@
 DC_STUDY_ID,string,
 MICROARRAY,string,
 SITE,string,HLM
+TESTTYPE,string,Test 1;Test 2;Train
+IN_DC_STUDY,numeric,
 GENDER,string,Male;Female
 AGE_AT_DIAGNOSIS,numeric,
 RACE,string,White(01);Black or African American(03)
@@ -22,5 +24,6 @@ PATHOLOGIC_T_STAGE,string,"T0, ACCORDING TO AJCC CRITERIA,T2, ACCORDING TO AJCC 
 MEDIAN_INTENSITY_UNNORMALIZED,numeric,
 PCT_ARRAY_OUTLIER,numeric,
 PCT_SINGLE_OUTLIER,numeric,
-LABORATORY_BATCH,numeric,
+WARNING,string,
+LABORATORY_BATCH,string,
 Histologic grade,string,POORLY DIFFERENTIATED;Moderate Differentiation;WELL DIFFERENTIATED

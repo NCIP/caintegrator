@@ -86,8 +86,6 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
@@ -97,12 +95,15 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SortTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -143,19 +144,19 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         
         column1.setAnnotationDefinition(studyHelper.getImageSeriesAnnotationDefinition());
         column1.setColumnIndex(0);
-        column1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        column1.setEntityType(EntityTypeEnum.IMAGESERIES);
         
         column2.setAnnotationDefinition(studyHelper.getSampleAnnotationDefinition());
         column2.setColumnIndex(1);
-        column2.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        column2.setEntityType(EntityTypeEnum.SAMPLE);
         column2.setSortOrder(2);
-        column2.setSortType(SortTypeEnum.ASCENDING.getValue());
+        column2.setSortType(SortTypeEnum.ASCENDING);
         
         column3.setAnnotationDefinition(studyHelper.getSubjectAnnotationDefinition());
         column3.setColumnIndex(2);
-        column3.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        column3.setEntityType(EntityTypeEnum.SUBJECT);
         column3.setSortOrder(1);
-        column3.setSortType(SortTypeEnum.DESCENDING.getValue());
+        column3.setSortType(SortTypeEnum.DESCENDING);
         
         Collection<ResultColumn> columnCollection = new HashSet<ResultColumn>();
         columnCollection.add(column1);
@@ -163,7 +164,7 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
         columnCollection.add(column3);
         
         CompoundCriterion compoundCriterion = studyHelper.createCompoundCriterion1();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR.getValue());
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
         
         Query query = studyHelper.createQuery(compoundCriterion, columnCollection, studySubscription);
         
@@ -218,23 +219,23 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
             ResultColumn karnofskyColumn = new ResultColumn();
             
             genderColumn.setAnnotationDefinition(genderDefinition);
-            genderColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            genderColumn.setEntityType(EntityTypeEnum.SUBJECT);
             genderColumn.setColumnIndex(0);
             
             raceColumn.setAnnotationDefinition(raceDefinition);
-            raceColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            raceColumn.setEntityType(EntityTypeEnum.SUBJECT);
             raceColumn.setColumnIndex(1);
             raceColumn.setSortOrder(1);
             
             karnofskyColumn.setAnnotationDefinition(karnofskyDefinition);
-            karnofskyColumn.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            karnofskyColumn.setEntityType(EntityTypeEnum.SUBJECT);
             karnofskyColumn.setColumnIndex(2);
             karnofskyColumn.setSortOrder(2);
-            karnofskyColumn.setSortType(SortTypeEnum.DESCENDING.getValue());
+            karnofskyColumn.setSortType(SortTypeEnum.DESCENDING);
             
             StringComparisonCriterion maleCriterion = new StringComparisonCriterion();
             maleCriterion.setStringValue("F");
-            maleCriterion.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+            maleCriterion.setEntityType(EntityTypeEnum.SUBJECT);
             maleCriterion.setAnnotationDefinition(genderDefinition);
             
             List<ResultColumn> columnCollection = new ArrayList<ResultColumn>();

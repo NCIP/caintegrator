@@ -85,14 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * Uniquely identifies a sample in caArray.
  */
-public class SampleIdentifier implements PersistentObject {
-    private Long id;
+public class SampleIdentifier extends AbstractCaIntegrator2Object {
+    
+    private static final long serialVersionUID = 1L;
     private String experimentIdentifier;
     private String sampleName;
     
@@ -122,37 +122,6 @@ public class SampleIdentifier implements PersistentObject {
      */
     public void setSampleName(String sampleName) {
         this.sampleName = sampleName;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
     }
 
 }

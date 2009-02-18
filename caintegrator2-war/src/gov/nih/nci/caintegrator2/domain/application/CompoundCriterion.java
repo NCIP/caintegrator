@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -10,22 +11,8 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     
-    private String booleanOperator;
+    private BooleanOperatorEnum booleanOperator;
     private Collection<AbstractCriterion> criterionCollection;
-    
-    /**
-     * @return the booleanOperator
-     */
-    public String getBooleanOperator() {
-        return booleanOperator;
-    }
-    
-    /**
-     * @param booleanOperator the booleanOperator to set
-     */
-    public void setBooleanOperator(String booleanOperator) {
-        this.booleanOperator = booleanOperator;
-    }
     
     /**
      * @return the criterionCollection
@@ -39,6 +26,20 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
      */
     public void setCriterionCollection(Collection<AbstractCriterion> criterionCollection) {
         this.criterionCollection = criterionCollection;
+    }
+
+    /**
+     * @return the booleanOperator
+     */
+    public BooleanOperatorEnum getBooleanOperator() {
+        return booleanOperator;
+    }
+
+    /**
+     * @param booleanOperator the booleanOperator to set
+     */
+    public void setBooleanOperator(BooleanOperatorEnum booleanOperator) {
+        this.booleanOperator = booleanOperator;
     }
 
     /**

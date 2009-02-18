@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
  * Provides useful methods for working with <code>Platforms</code> and they objects they contain.
@@ -160,7 +161,7 @@ public class PlatformHelper {
      */
     public ReporterSet getReporterSet(ReporterTypeEnum type) {
         for (ReporterSet reporterSet : platform.getReporterSets()) {
-            if (type.getValue().equals(reporterSet.getReporterType())) {
+            if (type.equals(reporterSet.getReporterType())) {
                 return reporterSet;
             }
         }

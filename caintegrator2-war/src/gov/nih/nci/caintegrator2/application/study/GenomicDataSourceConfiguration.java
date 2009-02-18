@@ -85,22 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.common.PersistentObject;
-import gov.nih.nci.caintegrator2.common.PersistentObjectHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Records sample and array data retrieval information.
  */
-public class GenomicDataSourceConfiguration implements PersistentObject {
+public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object {
     
-    private Long id;
+    private static final long serialVersionUID = 1L;
     private StudyConfiguration studyConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
@@ -143,37 +142,6 @@ public class GenomicDataSourceConfiguration implements PersistentObject {
     @SuppressWarnings("unused")
     private void setSampleIdentifiers(List<SampleIdentifier> sampleIdentifiers) {
         this.sampleIdentifiers = sampleIdentifiers;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        return PersistentObjectHelper.equals(this, o);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return PersistentObjectHelper.hashCode(this);
     }
 
     /**

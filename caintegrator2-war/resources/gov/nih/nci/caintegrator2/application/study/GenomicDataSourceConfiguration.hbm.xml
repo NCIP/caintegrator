@@ -22,15 +22,15 @@
         <list name="sampleIdentifiers" lazy="true" inverse="true">
             <cache usage="read-write" />
             <key column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" />
-            <index column="LIST_INDEX"/>
+            <list-index column="LIST_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier"/>
         </list>
         
-        <list name="samples" table="GENOMIC_DATA_SOURCE_SAMPLES" lazy="true" cascade="all">
+        <list name="samples" lazy="true" cascade="all">
             <cache usage="read-write" />
             <key column="GENOMIC_DATA_SOURCE_ID" />
-            <index column="LIST_INDEX"/>
-            <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID"/>
+            <list-index column="GENOMIC_DATA_SOURCE_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" />
         </list>
         
         

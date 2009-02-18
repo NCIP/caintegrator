@@ -7,6 +7,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
 import java.util.HashSet;
@@ -56,7 +57,7 @@ public class ArrayDesignChecker {
 
     private static ReporterSet getReporterSet(ReporterTypeEnum type, Platform platform) {
         for (ReporterSet reporterSet : platform.getReporterSets()) {
-            if (type.getValue().equals(reporterSet.getReporterType())) {
+            if (type.equals(reporterSet.getReporterType())) {
                 return reporterSet;
             }
         }

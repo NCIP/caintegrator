@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.imaging;
 
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
@@ -15,6 +16,7 @@ public class ImageSeriesAcquisition extends AbstractCaIntegrator2Object {
     
     private String identifier;
     private String nciaTrialIdentifier;
+    private ImageDataSourceConfiguration imageDataSource;
     private Collection<ImageSeries> seriesCollection;
     private StudySubjectAssignment assignment;
     private Timepoint timepoint;
@@ -87,6 +89,20 @@ public class ImageSeriesAcquisition extends AbstractCaIntegrator2Object {
      */
     public void setTimepoint(Timepoint timepoint) {
         this.timepoint = timepoint;
+    }
+
+    /**
+     * @return the imageDataSource
+     */
+    public ImageDataSourceConfiguration getImageDataSource() {
+        return imageDataSource;
+    }
+
+    /**
+     * @param imageDataSource the imageDataSource to set
+     */
+    public void setImageDataSource(ImageDataSourceConfiguration imageDataSource) {
+        this.imageDataSource = imageDataSource;
     }
 
 }

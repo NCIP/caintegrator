@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
@@ -164,7 +165,7 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
 
     @Override
     public void setValues(CompoundCriterion compoundCriterion) {
-        compoundCriterion.setBooleanOperator("=");
+        compoundCriterion.setBooleanOperator(getNewEnumValue(compoundCriterion.getBooleanOperator(), BooleanOperatorEnum.values()));
         
         Collection<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         StringComparisonCriterion scc = new StringComparisonCriterion();

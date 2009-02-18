@@ -85,9 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
@@ -139,7 +139,7 @@ public class ResultHandlerImpl implements ResultHandler {
                  valueList.add(null);
             }
             for (ResultColumn column : columns) {
-                EntityTypeEnum entityType = EntityTypeEnum.getByValue(column.getEntityType());
+                EntityTypeEnum entityType = column.getEntityType();
                 ResultValue resultValue = new ResultValue();
                 resultValue.setColumn(column);
                 resultValue.setValue(null);

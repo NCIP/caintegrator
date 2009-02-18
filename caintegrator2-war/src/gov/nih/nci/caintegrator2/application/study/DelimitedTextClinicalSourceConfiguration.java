@@ -94,6 +94,7 @@ import java.util.Set;
 @SuppressWarnings("PMD.CyclomaticComplexity")   // see method createAnnotationValue
 public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSourceConfiguration {
     
+    private static final long serialVersionUID = 1L;
     private AnnotationFile annotationFile;
 
     /**

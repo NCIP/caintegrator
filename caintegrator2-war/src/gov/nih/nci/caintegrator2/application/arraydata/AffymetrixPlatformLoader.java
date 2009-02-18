@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
 import java.io.FileReader;
@@ -165,11 +166,11 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
         ReporterSet geneReporters = new ReporterSet();
         geneReporters.setPlatform(platform);
-        geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue());
+        geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         platform.getReporterSets().add(geneReporters);
         ReporterSet probeSetReporters = new ReporterSet();
         probeSetReporters.setPlatform(platform);
-        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
+        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         platform.getReporterSets().add(probeSetReporters);
         try {
             annotationFileReader = new CSVReader(new FileReader(getAnnotationFile()));

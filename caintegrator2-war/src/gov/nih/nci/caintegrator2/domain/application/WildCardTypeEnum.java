@@ -1,50 +1,40 @@
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.domain.application;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Possible entity type values for <code>NumericComparisonCriterion.numericComparisonOperator</code>.
+ * Possible wild card type values for <code>StringComparisonCriterion.wildCardType</code>.
  */
-public enum NumericComparisonOperatorEnum {
+public enum WildCardTypeEnum {
 
     /**
-     * Greater Than.
+     * No Wild Card.
      */
-    GREATER(">"),
+    WILDCARD_OFF("wildCardOff"),
 
     /**
-     * Greater Than or Equal To.
+     * Wild Card after the given string.
      */
-    GREATEROREQUAL(">="),
+    WILDCARD_BEFORE_STRING("wildCardBeforeString"),
     
     /**
-     * Equal To.
+     * Wild Card before the given string.
      */
-    EQUAL("=="),
+    WILDCARD_AFTER_STRING("wildCardAfterString"),
     
     /**
-     * Less Than.
+     * Wild Card before and after the given string.
      */
-    LESS("<"),
+    WILDCARD_BEFORE_AND_AFTER_STRING("wildCardBeforeAndAfterString");
     
-    /**
-     * Less Than or Equal To.
-     */
-    LESSOREQUAL("<="),
-    
-    /**
-     * Not Equal.
-     */
-    NOTEQUAL("!=");
-    
-    private static Map<String, NumericComparisonOperatorEnum> valueToTypeMap = 
-                                        new HashMap<String, NumericComparisonOperatorEnum>();
+    private static Map<String, WildCardTypeEnum> valueToTypeMap = 
+                                        new HashMap<String, WildCardTypeEnum>();
 
     private String value;
     
-    private NumericComparisonOperatorEnum(String value) {
+    private WildCardTypeEnum(String value) {
         this.value = value;
     }
 
@@ -62,9 +52,9 @@ public enum NumericComparisonOperatorEnum {
         this.value = value;
     }
 
-    private static Map<String, NumericComparisonOperatorEnum> getValueToTypeMap() {
+    private static Map<String, WildCardTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (NumericComparisonOperatorEnum type : values()) {
+            for (WildCardTypeEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -72,13 +62,13 @@ public enum NumericComparisonOperatorEnum {
     }
     
     /**
-     * Returns the <code>NumericComparisonOperatorEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>WildCardTypeEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static NumericComparisonOperatorEnum getByValue(String value) {
+    public static WildCardTypeEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

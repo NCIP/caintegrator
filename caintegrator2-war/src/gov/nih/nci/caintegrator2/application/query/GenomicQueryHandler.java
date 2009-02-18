@@ -87,11 +87,10 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
@@ -102,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -114,8 +114,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Runs queries that return <code>GenomicDataQueryResults</code>.
@@ -213,20 +211,11 @@ class GenomicQueryHandler {
     }
 
     private Collection<ArrayData> getControlArrayDatas() {
-        ReporterTypeEnum reporterType = getReporterType();
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
         for (Sample sample : getFoldChangeCriterion().getCompareToSamples()) {
-            arrayDatas.addAll(sample.getArrayDatas(reporterType));
+            arrayDatas.addAll(sample.getArrayDatas(query.getReporterType()));
         }
         return arrayDatas;
-    }
-
-    private ReporterTypeEnum getReporterType() {
-        if (!StringUtils.isBlank(query.getReporterType())) {
-            return ReporterTypeEnum.getByValue(query.getReporterType());
-        } else {
-            return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
-        }
     }
 
     private boolean isFoldChangeQuery() {
@@ -265,9 +254,9 @@ class GenomicQueryHandler {
             samplesOnly.add(EntityTypeEnum.SAMPLE);
             Set<ResultRow> rows = criterionHandler.getMatches(dao, 
                     arrayDataService, query, samplesOnly);
-            return getArrayDatas(rows, ReporterTypeEnum.getByValue(query.getReporterType()));
+            return getArrayDatas(rows, query.getReporterType());
         } else {
-            return getAllArrayDatas(ReporterTypeEnum.getByValue(query.getReporterType()));
+            return getAllArrayDatas(query.getReporterType());
         }
     }
 
@@ -286,7 +275,7 @@ class GenomicQueryHandler {
             ReporterTypeEnum reporterType) {
         for (ArrayData arrayData : candidateArrayDatas) {
             if (arrayData.getReporterSet() != null 
-                    && reporterType.equals(ReporterTypeEnum.getByValue(arrayData.getReporterSet().getReporterType()))) {
+                    && reporterType.equals(arrayData.getReporterSet().getReporterType())) {
                 matchingArrayDatas.add(arrayData);
             }
         }
@@ -305,15 +294,14 @@ class GenomicQueryHandler {
     }
 
     private List<ArrayDataMatrix> getDataMatrixes() {
-        return dao.getArrayDataMatrixes(query.getSubscription().getStudy(), 
-                ReporterTypeEnum.getByValue(query.getReporterType()));
+        return dao.getArrayDataMatrixes(query.getSubscription().getStudy(), query.getReporterType());
     }
 
     private Collection<AbstractReporter> getMatchingReporters() {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (criterionHandler.hasReporterCriterion()) {
             return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
-                    ReporterTypeEnum.getByValue(query.getReporterType()));
+                    query.getReporterType());
         } else {
             return getAllReporters();
         }

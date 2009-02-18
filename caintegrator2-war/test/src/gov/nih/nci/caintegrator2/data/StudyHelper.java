@@ -86,9 +86,6 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.application.study.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.application.study.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -98,8 +95,11 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
@@ -462,25 +462,25 @@ public class StudyHelper {
         // Sample criterion (will return 3 Subjects: #1,#2,#3), but it will return #1 twice.
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(12.0);
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL.getValue());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESSOREQUAL);
         criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
-        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
-        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
         
         // Clinical criterion (Will return 4 subjects: #2, #3, #4, #5)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(2.0);
-        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL.getValue());
-        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATEROREQUAL);
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT);
         criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
 
         CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         compoundCriterion.getCriterionCollection().add(criterion1);
@@ -493,25 +493,25 @@ public class StudyHelper {
         // Sample criterion (will return 2 Subjects: #1, #5)
         NumericComparisonCriterion criterion = new NumericComparisonCriterion();
         criterion.setNumericValue(13.0);
-        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER.getValue());
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.GREATER);
         criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
-        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         // Image Series criterion (Will return 1 subject: #3)
         StringComparisonCriterion criterion1 = new StringComparisonCriterion();
         criterion1.setStringValue("string3");
-        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES.getValue());
+        criterion1.setEntityType(EntityTypeEnum.IMAGESERIES);
         criterion1.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
         
         // Clinical criterion (Will return 3 subjects: #1, #2, #3)
         NumericComparisonCriterion criterion2 = new NumericComparisonCriterion();
         criterion2.setNumericValue(4.0);
-        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS.getValue());
-        criterion2.setEntityType(EntityTypeEnum.SUBJECT.getValue());
+        criterion2.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
+        criterion2.setEntityType(EntityTypeEnum.SUBJECT);
         criterion2.setAnnotationDefinition(getSubjectAnnotationDefinition());
         
         CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         compoundCriterion.getCriterionCollection().add(criterion1);
@@ -527,11 +527,11 @@ public class StudyHelper {
         criterion.setAnnotationDefinition(sampleAnnotationDefinition);
         
         criterion.setAnnotationDefinition(getSampleAnnotationDefinition());
-        criterion.setEntityType(EntityTypeEnum.SAMPLE.getValue());
+        criterion.setEntityType(EntityTypeEnum.SAMPLE);
         
         
         CompoundCriterion compoundCriterion = new CompoundCriterion();
-        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND.getValue());
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
         return compoundCriterion;

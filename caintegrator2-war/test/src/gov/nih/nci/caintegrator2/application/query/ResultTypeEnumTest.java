@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 
 import org.junit.Test;
 

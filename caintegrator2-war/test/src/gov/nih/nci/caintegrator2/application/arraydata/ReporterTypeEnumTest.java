@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import org.junit.Test;
 

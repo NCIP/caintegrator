@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.application">
-   <typedef name="RegulationTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
-       <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum</param> 
+    <typedef name="RegulationTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum</param> 
+    </typedef> 
+    <typedef name="BooleanOperatorEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum</param> 
+    </typedef> 
+    <typedef name="WildCardTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum</param> 
+    </typedef> 
+    <typedef name="EntityTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum</param> 
     </typedef> 
     <class name="AbstractCriterion" table="ABSTRACT_CRITERION" lazy="false" polymorphism="explicit">
         <cache usage="read-write" />
@@ -14,7 +23,7 @@
         <joined-subclass name="AbstractAnnotationCriterion" table="ABSTRACT_ANNOTATION_CRITERION" lazy="false">
             <key column="ID" />
             <!-- Attributes mapping for the AbstractAnnotationCriterion class -->
-            <property name="entityType" type="string" column="ENTITY_TYPE"/>
+            <property name="entityType" type="EntityTypeEnum" column="ENTITY_TYPE"/>
             <!-- Associations mapping for the AbstractAnnotationCriterion class -->
             <many-to-one name="annotationDefinition" class="gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition" column="ANNOTATION_DEFINITION_ID" lazy="proxy" cascade="none" />
             <joined-subclass name="NumericComparisonCriterion" table="NUMERIC_COMPARISON_CRITERION" lazy="false">
@@ -27,7 +36,7 @@
                 <key column="ID" />
                 <!-- Attributes mapping for the StringComparisonCriterion class -->
                 <property name="stringValue" type="string" column="STRING_VALUE"/>
-                <property name="wildCardType" type="string" column="WILD_CARD_TYPE"/>
+                <property name="wildCardType" type="WildCardTypeEnum" column="WILD_CARD_TYPE"/>
                 <joined-subclass name="IdentifierCriterion" table="IDENTIFIER_CRITERION" lazy="false">
                     <key column="ID" />
                 </joined-subclass>
@@ -45,7 +54,7 @@
         <joined-subclass name="CompoundCriterion" table="COMPOUND_CRITERION" lazy="false">
             <key column="ID" />
             <!-- Attributes mapping for the CompoundCriterion class -->
-            <property name="booleanOperator" type="string" column="BOOLEAN_OPERATOR"/>
+            <property name="booleanOperator" type="BooleanOperatorEnum" column="BOOLEAN_OPERATOR"/>
             <!-- Associations mapping for the CompoundCriterion class -->
             <set name="criterionCollection" lazy="true" cascade="all" >
                 <cache usage="read-write" />
