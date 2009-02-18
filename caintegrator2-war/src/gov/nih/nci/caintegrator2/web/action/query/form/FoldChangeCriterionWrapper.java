@@ -192,7 +192,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
             public void validate(String formFieldName, String value, ValidationAware action) {
                 if (StringUtils.isBlank(value)) {
-                    action.addActionError("A value is required for Gene Sybmol");
+                    action.addActionError("A value is required for Gene Symbol");
                 }
             }
 
