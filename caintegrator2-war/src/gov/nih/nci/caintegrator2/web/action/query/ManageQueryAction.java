@@ -119,10 +119,12 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     private static final String COLUMNS_TAB = "columns";
     private static final String SORTING_TAB = "sorting";
     private static final String SAVE_AS_TAB = "saveAs";
+
+    private static final String EXECUTE_QUERY = "executeQuery";
     
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
-    private String selectedAction = "executeQuery";
+    private String selectedAction = EXECUTE_QUERY;
     private String displayTab;
     private int rowNumber;
     private Long queryId = null;
@@ -176,7 +178,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             return;
         } else if ("selectedTabSearchResults".equals(selectedAction)) {
             return;
-        } else if ("executeQuery".equals(selectedAction)) {
+        } else if (EXECUTE_QUERY.equals(selectedAction)) {
             validateExecuteQuery(); 
         } else if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
@@ -184,7 +186,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             validateSaveQuery();
         } else if ("addCriterionRow".equals(selectedAction)) {
             validateAddCriterionRow();
-        } 
+        }
     }
     
     private void validateAddCriterionRow() {
@@ -209,7 +211,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     @Override
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // Checking action type.
-    public String execute()  {
+    public String execute() {
         
         String returnValue = ERROR;
 
@@ -224,7 +226,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("addCriterionRow".equals(selectedAction)) {
             setQueryResult(null);
             returnValue = addCriterionRow();
-        } else if ("executeQuery".equals(selectedAction)) {
+        } else if (EXECUTE_QUERY.equals(selectedAction)) {
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();

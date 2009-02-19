@@ -89,6 +89,8 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
@@ -151,6 +153,8 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
             return CriterionTypeEnum.STRING_COMPARISON;
         } else if (AnnotationTypeEnum.NUMERIC.getValue().equals(field.getType())) {
             return CriterionTypeEnum.NUMERIC_COMPARISON;
+        } else if (AnnotationTypeEnum.DATE.getValue().equals(field.getType())) {
+            return CriterionTypeEnum.DATE_COMPARISON;
         } else {
             throw new IllegalArgumentException("Unsupported type " + field.getType());
         }
@@ -165,6 +169,9 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
             break;
         case STRING_COMPARISON:
             setAnnotationCriterionWrapper(createStringComparisonCriterionWrapper(field));
+            break;
+        case DATE_COMPARISON:
+            setAnnotationCriterionWrapper(createDateCriterionWrapper(field));
             break;
         case SELECTED_VALUE:
             setAnnotationCriterionWrapper(createSelectedValueCriterionWrapper(field));
@@ -206,6 +213,14 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         return new NumericComparisonCriterionWrapper(criterion, this);
     }
 
+    private DateComparisonCriterionWrapper createDateCriterionWrapper(AnnotationDefinition field) {
+        DateComparisonCriterion criterion = new DateComparisonCriterion();
+        criterion.setAnnotationDefinition(field);
+        criterion.setEntityType(getEntityType());
+        criterion.setDateComparisonOperator(DateComparisonOperatorEnum.EQUAL);
+        return new DateComparisonCriterionWrapper(criterion, this);
+    }
+
     abstract AnnotationDefinitionList getAnnotationDefinitionList();
 
     /**
@@ -240,7 +255,7 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
      */
     @Override
     public List<String> getAvailableFieldNames() {
-        return getAnnotationDefinitionList().getNoDateNames();
+        return getAnnotationDefinitionList().getNames();
     }
 
     @Override
@@ -255,6 +270,9 @@ public abstract class AbstractAnnotationCriterionRow extends AbstractCriterionRo
         } else if (criterion instanceof NumericComparisonCriterion) {
             NumericComparisonCriterion numericComparisonCriterion = (NumericComparisonCriterion) criterion;
             return new NumericComparisonCriterionWrapper(numericComparisonCriterion, this);
+        } else if (criterion instanceof DateComparisonCriterion) {
+            DateComparisonCriterion dateComparisonCriterion = (DateComparisonCriterion) criterion;
+            return new DateComparisonCriterionWrapper(dateComparisonCriterion, this);
         } else if (criterion instanceof SelectedValueCriterion) {
             SelectedValueCriterion selectedValueCriterion = (SelectedValueCriterion) criterion;
             return new SelectedValueCriterionWrapper(selectedValueCriterion, this);

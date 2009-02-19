@@ -1,7 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.annotation;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 
 /**
  * 
@@ -31,8 +30,7 @@ public class DatePermissibleValue extends AbstractPermissibleValue {
      */
     @Override
     public String toString() {
-        final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-        return formatter.format(dateValue);
+        return DateUtil.toString(dateValue);
     }
 
 }

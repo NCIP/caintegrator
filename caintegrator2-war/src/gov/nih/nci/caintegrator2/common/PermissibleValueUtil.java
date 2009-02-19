@@ -96,13 +96,11 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -258,13 +256,7 @@ public final class PermissibleValueUtil {
     private static void addDateValue(Collection<AbstractPermissibleValue> abstractPermissibleValues,
             String displayString) throws ParseException {
         DatePermissibleValue newPermissibleValue = new DatePermissibleValue();
-        if (displayString.contains("-")) {
-            final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            newPermissibleValue.setDateValue((Date) formatter.parse(displayString));
-        } else {
-            final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-            newPermissibleValue.setDateValue((Date) formatter.parse(displayString));
-        }
+        newPermissibleValue.setDateValue(DateUtil.createDate(displayString));
         abstractPermissibleValues.add(newPermissibleValue);
     }
     
