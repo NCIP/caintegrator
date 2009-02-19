@@ -160,6 +160,9 @@ class GenePatternHelper {
         boolean precededByGct = false;
         boolean hasGct = false;
         for (ParameterInfo parameterInfo : task.getParameterInfoArray()) {
+            if (!isParameterValid(parameterInfo)) {
+                return false;
+            }
             if (isInputFileParameter(parameterInfo)) {
                 if (getFileFormats(parameterInfo).contains(GENE_CLUSTER_TEXT_EXTENSION)) {
                     precededByGct = true;
@@ -168,7 +171,6 @@ class GenePatternHelper {
                 } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION) && !precededByGct) {
                     return false;
                 } else if (getFileFormats(parameterInfo).contains(CLASS_EXTENSION) && precededByGct) {
-                    precededByGct = false;
                     continue;
                 } else {
                     return false;
@@ -176,6 +178,20 @@ class GenePatternHelper {
             }
         }
         return hasGct;
+    }
+    
+    private boolean isParameterValid(ParameterInfo parameterInfo) {
+        if (INTEGER_TYPE.equals(getAttributeValue(parameterInfo, TYPE_ATTRIBUTE))
+            && !StringUtils.isEmpty(parameterInfo.getValue())) {
+            String[] choiceEntries = parameterInfo.getValue().split(";");
+            for (String choiceEntry : choiceEntries) {
+                String[] parts = choiceEntry.split("=", 2);
+                if (parts.length >= 1 && !StringUtils.isNumeric(parts[0])) {
+                        return false;
+               }
+            }
+        }
+        return true;
     }
     
     private Set<String> getFileFormats(ParameterInfo parameterInfo) {
