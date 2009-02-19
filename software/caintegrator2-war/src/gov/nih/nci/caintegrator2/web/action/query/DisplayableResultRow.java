@@ -94,10 +94,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -108,7 +106,6 @@ public class DisplayableResultRow {
 
     private final List<String> values = new ArrayList<String>();
     private final ResultRow resultRow;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
     private boolean checkedRow = true;
     
     DisplayableResultRow(ResultRow resultRow, Map<String, Integer> columnLocations) {
@@ -142,7 +139,7 @@ public class DisplayableResultRow {
             }
         } else if (value.getValue() instanceof DateAnnotationValue) {
             if (((DateAnnotationValue) value.getValue()).getDateValue() != null) {
-                returnString = dateFormat.format(((DateAnnotationValue) value.getValue()).getDateValue());
+                returnString = ((DateAnnotationValue) value.getValue()).toString();
             }
         } else {
             throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());

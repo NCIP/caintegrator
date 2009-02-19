@@ -19,7 +19,7 @@
                     cssStyle="margin-top: 10px; margin-left: 5px; width: 200px" />
                 <ul class="btnrow" style="margin: -22px 0 0 200px; height: 32px">
                 <li><s:a href="#" cssClass="btn" cssStyle="margin:0 5px;"
-                    onclick="document.manageQueryForm.selectedAction.value='addCriterionRow';document.manageQueryForm.submit();">
+                    onclick="submitForm('addCriterionRow')">
                     <span class="btn_img"><span class="add">Add</span></span>
                 </s:a></li>
             </ul>
@@ -40,7 +40,7 @@
                             list="availableFieldNames"
                             value="fieldName"
                             label="Criterion" 
-                            onchange="this.form.selectedAction.value = 'updateCriteria'; this.form.submit();"
+                            onchange="submitForm('updateCriteria')"
                             theme="simple" />
                     </td>
                     <td class="value_inline">
@@ -53,7 +53,7 @@
                                             <s:select name="%{formFieldName}.operator" 
                                                 list="availableOperators"
                                                 value="operator" 
-                                                onchange="this.form.selectedAction.value = 'updateCriteria'; this.form.submit();"
+                                                onchange="submitForm('updateCriteria')"
                                                 theme="simple" />
                                         </s:if>
                                     </td>
@@ -70,7 +70,7 @@
                                                 listKey="key"
                                                 listValue="displayValue"
                                                 value="value"
-                                                onchange="if (%{updateFormOnChange}) {this.form.selectedAction.value = 'updateCriteria'; this.form.submit();}"
+                                                onchange="if (%{updateFormOnChange}) {submitForm('updateCriteria')"
                                                 theme="simple" />
                                         </s:elseif>
                                         <s:elseif test="fieldType == 'multiselect'">
@@ -89,7 +89,7 @@
                         </table>
                     </td>
                     <td class="action_inline"><a href="#" class="remove"
-                        onclick="document.manageQueryForm.selectedAction.value='remove'; document.manageQueryForm.rowNumber.value = ${listRow};document.manageQueryForm.submit();"><span
+                        onclick="document.manageQueryForm.rowNumber.value = ${listRow};submitForm('remove');"><span
                         class="remove">Remove</span></a></td>
                 </tr>
             </s:iterator>

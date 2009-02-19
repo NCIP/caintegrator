@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,74 +83,50 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.common;
+package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
-import org.junit.Test;
+import org.apache.log4j.Logger;
 
-/**
- * 
- */
-public class AnnotationValueUtilTest {
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationValueUtil#getDisplayString(gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue)}.
-     * @throws ParseException 
-     */
-    @Test
-    public void testGetDisplayString() throws ParseException {
-        StringAnnotationValue val1 = new StringAnnotationValue();
-        val1.setStringValue("ABC");
-        assertTrue("ABC".equalsIgnoreCase(val1.toString()));
-        
-        NumericAnnotationValue val2 = new NumericAnnotationValue();
-        val2.setNumericValue(Double.valueOf(123.0));
-        assertTrue("123.0".equalsIgnoreCase(val2.toString()));
-        
-        DateAnnotationValue val3 = new DateAnnotationValue();
-        final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-        Date date = (Date)formatter.parse("10-11-2008");  
-        val3.setDateValue(date);
-        assertTrue(val3.toString().equalsIgnoreCase("10/11/2008"));
-        
-        DateAnnotationValue val4 = new DateAnnotationValue();
-        final SimpleDateFormat formatter2 = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-        date = (Date)formatter2.parse("10/11/2008");  
-        val4.setDateValue(date);
-        assertTrue(val4.toString().equalsIgnoreCase("10/11/2008"));
+public final class DateAnnotationValueGenerator extends AbstractTestDataGenerator<DateAnnotationValue> {
+
+    public static final DateAnnotationValueGenerator INSTANCE = new DateAnnotationValueGenerator();
+    private static final Logger LOGGER = Logger.getLogger(DateAnnotationValueGenerator.class);
+    
+    private DateAnnotationValueGenerator() { 
+        super();
+    }
+    @Override
+    public void compareFields(DateAnnotationValue original, DateAnnotationValue retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        assertTrue(DateUtil.equal(original.getDateValue(), retrieved.getDateValue()));
+        if(retrieved.getBoundedValue() instanceof DatePermissibleValue) {
+            DatePermissibleValueGenerator.INSTANCE.compare((DatePermissibleValue)original.getBoundedValue(), (DatePermissibleValue)retrieved.getBoundedValue());
+        }  else {
+            LOGGER.error("**** getValue() should have cast to a DateAnnotationValue object");
+        }
     }
 
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.common.AnnotationValueUtil#getDistinctAnnotationValue(java.util.Collection)}.
-     */
-    @Test
-    public void testGetAdditionalValue() {
-        Collection <AbstractAnnotationValue> annotationValueCollection = new HashSet<AbstractAnnotationValue>();
-        NumericAnnotationValue val1 = new NumericAnnotationValue();
-        val1.setNumericValue(Double.valueOf(123));
-        annotationValueCollection.add(val1);
-        val1 = new NumericAnnotationValue();
-        val1.setNumericValue(Double.valueOf(123));
-        annotationValueCollection.add(val1);
-        assertTrue(annotationValueCollection.size() == 2);
-        Set<String> filterList = new HashSet<String>();
-        List<String> dataValues = new ArrayList<String>();
-        assertTrue(AnnotationValueUtil.getAdditionalValue(annotationValueCollection, dataValues, filterList).size() == 1);
+    @Override
+    public DateAnnotationValue createPersistentObject() {
+        return new DateAnnotationValue();
+    }
+
+    @Override
+    public void setValues(DateAnnotationValue dateAnnotationValue) {
+        
+        dateAnnotationValue.setDateValue(new Date());
+        dateAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());
+        dateAnnotationValue.setBoundedValue(DatePermissibleValueGenerator.INSTANCE.createPersistentObject());
+        
     }
 
 }

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
@@ -96,6 +97,7 @@ import org.hibernate.criterion.Criterion;
 /**
  * Abstract class that handles translating caIntegrator2 Criterion into Hibernate Criterion.
  */
+@SuppressWarnings({ "PMD.CyclomaticComplexity" })
 public abstract class AbstractAnnotationCriterionHandler {
     
     /**
@@ -107,7 +109,7 @@ public abstract class AbstractAnnotationCriterionHandler {
      */
     public static final String STRING_VALUE_COLUMN = "stringValue";
     /**
-     * Date Value (Currently Unused, but maybe in the future?).
+     * Date Value.
      */
     public static final String DATE_VALUE_COLUMN = "dateValue";
     
@@ -116,6 +118,7 @@ public abstract class AbstractAnnotationCriterionHandler {
      * @param criterion is the criterion of interest to be translated.
      * @return appropriate handler to return.
      */
+    @SuppressWarnings({ "PMD.CyclomaticComplexity" })
     static AbstractAnnotationCriterionHandler create(AbstractAnnotationCriterion criterion) {
         if (criterion instanceof IdentifierCriterion) {
             return new IdentifierCriterionHandler((IdentifierCriterion) criterion);
@@ -123,6 +126,8 @@ public abstract class AbstractAnnotationCriterionHandler {
             return new StringComparisonCriterionHandler((StringComparisonCriterion) criterion);
         } else if (criterion instanceof NumericComparisonCriterion) {
             return new NumericComparisonCriterionHandler((NumericComparisonCriterion) criterion);
+        } else if (criterion instanceof DateComparisonCriterion) {
+            return new DateComparisonCriterionHandler((DateComparisonCriterion) criterion);
         } else if (criterion instanceof SelectedValueCriterion) {
             return new SelectedValueCriterionHandler((SelectedValueCriterion) criterion);
         } else {

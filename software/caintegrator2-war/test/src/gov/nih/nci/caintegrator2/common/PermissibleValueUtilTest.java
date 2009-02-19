@@ -102,13 +102,11 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.junit.Test;
@@ -133,10 +131,9 @@ public class PermissibleValueUtilTest {
         assertTrue("123.0".equalsIgnoreCase(val2.toString()));
         
         DatePermissibleValue val3 = new DatePermissibleValue();
-        final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-        Date date = (Date)formatter.parse("10-11-2008");  
+        Date date = DateUtil.createDate("10-11-2008");  
         val3.setDateValue(date);
-        assertTrue(val3.toString().equalsIgnoreCase("10-11-2008"));
+        assertTrue(val3.toString().equalsIgnoreCase("10/11/2008"));
     }
 
     /**
@@ -194,14 +191,14 @@ public class PermissibleValueUtilTest {
         // Test DatePermissibleValue
         permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         stringValues = new ArrayList<String>();
-        stringValues.add("11-10-2008");
-        stringValues.add("05/28/2008");
+        stringValues.add(getDisplayDate("11-10-2008"));
+        stringValues.add(getDisplayDate("05/28/2008"));
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, stringValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
         List<String> stringValues4 = new ArrayList<String>();
-        stringValues4.add("11-10-2008");
+        stringValues4.add(getDisplayDate("11-10-2008"));
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, stringValues4);
         assertTrue(permissibleValueCollection.size() == 2);
@@ -244,14 +241,14 @@ public class PermissibleValueUtilTest {
         // Test NumericPermissibleValue
         permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         annotationValues = new ArrayList<String>();
-        annotationValues.add("01-15-1995");
-        annotationValues.add("12-01-2007");
+        annotationValues.add(getDisplayDate("01-15-1995"));
+        annotationValues.add(getDisplayDate("12-01-2007"));
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, annotationValues);
         assertTrue(permissibleValueCollection.size() == 2);
         
         removePermissibleValues = new ArrayList<String>();
-        removePermissibleValues.add("12-01-2007");
+        removePermissibleValues.add(DateUtil.toString(DateUtil.createDate("12-01-2007")));
         PermissibleValueUtil.removeValue(permissibleValueCollection, removePermissibleValues);
         assertTrue(permissibleValueCollection.size() == 1);
     }
@@ -281,8 +278,8 @@ public class PermissibleValueUtilTest {
         // Test DatePermissibleValue
         permissibleValueCollection = createDatePermissible();
         newStringValues = new ArrayList<String>();
-        newStringValues.add("01-15-1995");
-        newStringValues.add("11-02-2008");
+        newStringValues.add(getDisplayDate("01-15-1995"));
+        newStringValues.add(getDisplayDate("11-02-2008"));
         PermissibleValueUtil.update(AnnotationTypeEnum.STRING.getValue(),
                 permissibleValueCollection, newStringValues);
         assertTrue(permissibleValueCollection.size() == 2);
@@ -392,11 +389,15 @@ public class PermissibleValueUtilTest {
     private Collection<AbstractPermissibleValue> createDatePermissible() throws ParseException {
         Collection<AbstractPermissibleValue> permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
         List<String> stringValues = new ArrayList<String>();
-        stringValues.add("01-15-1995");
-        stringValues.add("02-01-1987");
-        stringValues.add("12-15-2007");
+        stringValues.add(getDisplayDate("01-15-1995"));
+        stringValues.add(getDisplayDate("02-01-1987"));
+        stringValues.add(getDisplayDate("12-15-2007"));
         PermissibleValueUtil.addNewValue(AnnotationTypeEnum.DATE.getValue(),
                 permissibleValueCollection, stringValues);
         return permissibleValueCollection;
+    }
+    
+    private String getDisplayDate(String date) throws ParseException {
+        return DateUtil.toString(DateUtil.createDate(date));
     }
 }

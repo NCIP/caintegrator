@@ -108,13 +108,11 @@ import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -224,8 +222,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
 
     private String getStringValue(AbstractAnnotationValue value) {
         if (value instanceof DateAnnotationValue) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-            return format.format(((DateAnnotationValue) value).getDateValue());
+            return ((DateAnnotationValue) value).toString();
         } else if (value instanceof NumericAnnotationValue) {
             return ((NumericAnnotationValue) value).getNumericValue().toString();
         } else if (value instanceof StringAnnotationValue) {
