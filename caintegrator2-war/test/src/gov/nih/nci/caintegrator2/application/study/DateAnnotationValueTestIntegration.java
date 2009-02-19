@@ -83,19 +83,16 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query.form;
+package gov.nih.nci.caintegrator2.application.study;
 
-/**
- * Criterion type.
- */
-enum CriterionTypeEnum {
-    
-    IDENTIFIER,
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    DATE_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
+
+public class DateAnnotationValueTestIntegration extends AbstractHibernateMappingTestIntegration<DateAnnotationValue>  {
+
+    @Override
+    protected AbstractTestDataGenerator<DateAnnotationValue> getDataGenerator() {
+        return DateAnnotationValueGenerator.INSTANCE;
+    }
 
 }

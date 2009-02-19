@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
@@ -102,7 +101,6 @@ import java.util.Map;
 class AnnotationDefinitionList {
     
     private final List<String> names = new ArrayList<String>();
-    private final List<String> noDateNames = new ArrayList<String>();
     private final Map<String, AnnotationDefinition> nameToDefinitionMap = new HashMap<String, AnnotationDefinition>();
     
     AnnotationDefinitionList(Collection<AnnotationDefinition> definitions, boolean addIdentifierToList) {
@@ -111,28 +109,18 @@ class AnnotationDefinitionList {
         }
         if (addIdentifierToList) {
             names.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
-            noDateNames.add(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME);
             nameToDefinitionMap.put(IdentifierCriterionWrapper.IDENTIFIER_FIELD_NAME, null);
         }
         for (AnnotationDefinition definition : definitions) {
-            // TODO Need to implement the date type operator then will put it back in the query mechanism.
-            if (!AnnotationTypeEnum.DATE.getValue().equalsIgnoreCase(definition.getType())) {
-                noDateNames.add(definition.getDisplayName());
-            }
             names.add(definition.getDisplayName());
             nameToDefinitionMap.put(definition.getDisplayName(), definition);
             Cai2Util.loadCollection(definition.getPermissibleValueCollection());
         }
         Collections.sort(names);
-        Collections.sort(noDateNames);
     }
 
     List<String> getNames() {
         return names;
-    }
-
-    List<String> getNoDateNames() {
-        return noDateNames;
     }
     
     AnnotationDefinition getDefinition(String name) {

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Possible entity type values for <code>NumericComparisonCriterion.numericComparisonOperator</code>.
+ * Possible entity type values for <code>DateComparisonCriterion.dateComparisonOperator</code>.
  */
-public enum NumericComparisonOperatorEnum {
+public enum DateComparisonOperatorEnum {
 
     /**
      * Greater Than.
@@ -39,12 +39,12 @@ public enum NumericComparisonOperatorEnum {
      */
     NOTEQUAL("!=");
     
-    private static Map<String, NumericComparisonOperatorEnum> valueToTypeMap = 
-                                        new HashMap<String, NumericComparisonOperatorEnum>();
+    private static Map<String, DateComparisonOperatorEnum> valueToTypeMap = 
+                                        new HashMap<String, DateComparisonOperatorEnum>();
 
     private String value;
     
-    private NumericComparisonOperatorEnum(String value) {
+    private DateComparisonOperatorEnum(String value) {
         this.value = value;
     }
 
@@ -56,22 +56,15 @@ public enum NumericComparisonOperatorEnum {
     }
 
     /**
-     * @return the value
-     */
-    public String valueOf() {
-        return value;
-    }
-
-    /**
      * @param value the value to set
      */
     public void setValue(String value) {
         this.value = value;
     }
 
-    private static Map<String, NumericComparisonOperatorEnum> getValueToTypeMap() {
+    private static Map<String, DateComparisonOperatorEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (NumericComparisonOperatorEnum type : values()) {
+            for (DateComparisonOperatorEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -79,13 +72,13 @@ public enum NumericComparisonOperatorEnum {
     }
     
     /**
-     * Returns the <code>NumericComparisonOperatorEnum</code> corresponding to the given value. Returns null
+     * Returns the <code>DateComparisonOperatorEnum</code> corresponding to the given value. Returns null
      * for null value.
      * 
      * @param value the value to match
      * @return the matching type.
      */
-    public static NumericComparisonOperatorEnum getByValue(String value) {
+    public static DateComparisonOperatorEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

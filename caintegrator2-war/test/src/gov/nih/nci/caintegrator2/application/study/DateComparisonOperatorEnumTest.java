@@ -83,19 +83,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query.form;
+package gov.nih.nci.caintegrator2.application.study;
 
-/**
- * Criterion type.
- */
-enum CriterionTypeEnum {
-    
-    IDENTIFIER,
-    STRING_COMPARISON,
-    NUMERIC_COMPARISON,
-    DATE_COMPARISON,
-    SELECTED_VALUE,
-    GENE_NAME,
-    FOLD_CHANGE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import gov.nih.nci.caintegrator2.domain.application.DateComparisonOperatorEnum;
+
+import org.junit.Test;
+
+public class DateComparisonOperatorEnumTest {
+
+    @Test
+    public void testGetByValue() {
+        assertEquals(DateComparisonOperatorEnum.EQUAL, DateComparisonOperatorEnum.getByValue("=="));
+        assertNull(DateComparisonOperatorEnum.getByValue(null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        DateComparisonOperatorEnum.checkType("no match");
+    }
 
 }

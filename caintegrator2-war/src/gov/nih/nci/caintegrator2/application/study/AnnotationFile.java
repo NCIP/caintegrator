@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -98,14 +99,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -470,12 +469,8 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
     private Date getDateValue(String value) throws ParseException {
         if (StringUtils.isBlank(value)) {
             return null;
-        } else if (value.contains("-")) {
-            final SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
-            return format.parse(value);
         } else {
-            final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-            return format.parse(value);
+            return DateUtil.createDate(value);
         }
     }
 
