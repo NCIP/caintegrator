@@ -26,10 +26,13 @@
         <div>
             <a href="index.jsp"><img src="images/logo_caintegrator2.gif" alt="Logo: caIntegrator2" /></a>
         </div>
-        <div id="versioninfo">
+        <s:set name="holdsvnurl" value="#application['svnUrl']"/>
+        <s:set name="holdsvntag" value="#application['caintegrator2Svntag']"/>
+        <s:div id="versioninfo" title="caINTEGRATOR2, SVNTAG: %{holdsvntag}, SVNURL: %{holdsvnurl}">
             version: <s:property value="#application['caintegrator2Version']"/>,
+            build: <s:property value="#application['caintegrator2Svntag']"/>,
             revision: <s:property value="#application['svnRevision']"/>            
-        </div>
+        </s:div>
     </div> 
 
     <div id="userarea_wrapper">
