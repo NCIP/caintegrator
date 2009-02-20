@@ -13,14 +13,14 @@
     <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>
     <s:form action="saveImagingSource">
     <s:hidden name="studyConfiguration.id" />
-    <s:hidden name="imagingSource.id" />
+    <s:hidden name="imageAnnotationConfiguration.id" />
     <table class="data">
         <tr>
             <th>Field Definition</th>
             <th>Field Header from File</th>
             <th colspan="3" />Data from File</th>
         </tr>
-        <s:iterator value="imagingSource.annotationFile.columns" status="status">
+        <s:iterator value="imageAnnotationConfiguration.annotationFile.columns" status="status">
             <s:if test="#status.odd == true">
               <tr class="odd">
             </s:if>
@@ -39,7 +39,7 @@
                     </s:elseif>
                     <s:url id="editImagingFileColumn" action="editImagingFileColumn">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imagingSource.id" value="imagingSource.id" />
+                        <s:param name="imageAnnotationConfiguration.id" value="imageAnnotationConfiguration.id" />
                         <s:param name="fileColumn.id" value="id" />
                     </s:url>
                     <br>

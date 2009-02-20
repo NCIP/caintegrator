@@ -21,17 +21,17 @@
     </tr>
     <tr>
         <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="imagingSource.id" />
+        <s:hidden name="imageAnnotationConfiguration.id" />
         <s:textfield label=" NCIA Server Grid URL " name="hostname" />
-        <s:textfield label=" NCIA Username " name="imageSource.serverProfile.username" />
-        <s:password label=" NCIA Password " name="imageSource.serverProfile.password" />
+        <s:textfield label=" NCIA Username " name="imageSourceConfiguration.serverProfile.username" />
+        <s:password label=" NCIA Password " name="imageSourceConfiguration.serverProfile.password" />
         <s:textfield label=" Protocol Id " name="protocolId" />
         
     </tr>
       
     <tr>
         <th colspan="3">
-    		<s:file name="imagingFile" label="Image Series Annotation File" />
+    		<s:file name="imageAnnotationFile" label="Image Series Annotation File" />
     		<s:file name="imageClinicalMappingFile" label="Clinical/Imaging Mapping File" />
         	<s:submit value="Add" align="center" />
         </th>    

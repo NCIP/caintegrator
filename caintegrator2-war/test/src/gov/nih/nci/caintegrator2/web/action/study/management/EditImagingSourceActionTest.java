@@ -119,7 +119,7 @@ public class EditImagingSourceActionTest {
 
     @Test
     public void testPrepare() {
-        action.getImagingSource().setId(1L);
+        action.getImageAnnotationConfiguration().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
     }

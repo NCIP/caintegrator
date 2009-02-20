@@ -108,7 +108,11 @@ import com.opensymphony.xwork2.ActionContext;
          action.setSelectedAction("selectSortingTab");
          assertEquals("selectSortingTab", action.getSelectedAction());
          assertEquals("selectSortingTab", action.execute());
+         action.setSelectedAction("selectSortingTab,Dummy");
+         assertEquals("selectSortingTab", action.getSelectedAction());
          assertEquals(20, action.getPageSize());
+         action.setQueryId(1L);
+         assertEquals(1, action.getQueryId().longValue());
      }
 
  }

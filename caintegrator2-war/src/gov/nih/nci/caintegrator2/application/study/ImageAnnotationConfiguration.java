@@ -147,9 +147,7 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * Indicates if the source has been configured and is prepared for loading.
-     * 
-     * @return whether source may be loaded.
+     * {@inheritDoc}
      */
     public boolean isLoadable() {
         return getAnnotationFile().isLoadable();
@@ -158,19 +156,18 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     ImageSeries getImageSeries(String identifier) {
         return getStudyConfiguration().getImageSeries(identifier);
     }
-    
+
     /**
-     * Indicates if the source has been already loaded or not.
-     * @return whether source is already loaded.
+     * {@inheritDoc}
      */
     public boolean isCurrentlyLoaded() {
         return Boolean.valueOf(getAnnotationFile().getCurrentlyLoaded());
     }
 
-/**
- * @return Description
- */
-public String getDescription() {
+    /**
+     * @return Description
+     */
+    public String getDescription() {
         return getAnnotationFile().getFile().getName();
     }
 }

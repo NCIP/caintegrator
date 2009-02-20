@@ -173,19 +173,16 @@ public class DelimitedTextClinicalSourceConfiguration extends AbstractClinicalSo
     public List<AnnotationFieldDescriptor> getAnnotationDescriptors() {
         return getAnnotationFile().getDescriptors();
     }
-    
+
     /**
-     * Indicates if the source has been configured and is prepared for loading.
-     * 
-     * @return whether source may be loaded.
+     * {@inheritDoc}
      */
     public boolean isLoadable() {
         return getAnnotationFile().isLoadable();
     }
-    
+
     /**
-     * Indicates if the source has been already loaded or not.
-     * @return whether source is already loaded.
+     * {@inheritDoc}
      */
     public boolean isCurrentlyLoaded() {
         return Boolean.valueOf(getAnnotationFile().getCurrentlyLoaded());

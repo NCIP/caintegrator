@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
@@ -103,6 +104,7 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
     @Override
     @SuppressWarnings("PMD.CyclomaticComplexity") // Exception catching from caArrayFacade
     public String execute() {
+        getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
         if (getGenomicSource().getId() == null) {
             try {
                 getStudyManagementService().addGenomicSource(getStudyConfiguration(), getGenomicSource());
