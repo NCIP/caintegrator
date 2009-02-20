@@ -5,7 +5,9 @@
     
     <!--Page Help-->
     
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('welcome_help')" class="help">
+    (draft)</a>
+    </div>
     
     <!--/Page Help-->           
     

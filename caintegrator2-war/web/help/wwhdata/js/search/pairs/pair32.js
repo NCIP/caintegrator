@@ -1,0 +1,21 @@
+function FileData_Pairs(x)
+{
+x.t("searching","caintegrator2");
+x.t("study","manage");
+x.t("tab-delimited","text");
+x.t("text","file");
+x.t("complete","result");
+x.t("results","searching");
+x.t("results","xporting");
+x.t("results","expore");
+x.t("queries","exporting");
+x.t("xporting","query");
+x.t("expore","either");
+x.t("exporting","query");
+x.t("query","results");
+x.t("result","subset");
+x.t("subset","tab-delimited");
+x.t("manage","queries");
+x.t("either","complete");
+x.t("caintegrator2","study");
+}

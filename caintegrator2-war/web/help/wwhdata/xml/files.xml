@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpBook version="5.0" name="caIntegrator2" context="caIntegrator2" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
+  <CommonWordsToSkip minlen="3">
+    a about after all also am an and another any are as at
+    be because been before being between both but by
+    came can come copyright corp corporation could
+    did do does
+    each etc
+    for from
+    get goes got
+    had has have he her here him himself his how
+    if in inc into is it its
+    let like
+    make many me might more most much must my
+    never nor not now
+    of off on one only or other our out over own
+    reserved rights
+    said same see set shall she should since so some still such
+    take than that the their them then there these they this those though through to too
+    under us use
+    very
+    was way we well were what when where which while who why will with would
+    yes yet you your
+   </CommonWordsToSkip>
+  <ScoringPrefs>
+    <meta name="keywords" weight="100" />
+    <meta name="description" weight="50" />
+    <meta name="summary" weight="50" />
+    <title weight="20" />
+    <h1 weight="15" />
+    <h2 weight="10" />
+    <caption weight="10" />
+    <h3 weight="7" />
+    <th weight="5" />
+    <h4 weight="5" />
+    <h5 weight="4" />
+    <h6 weight="3" />
+    <h7 weight="2" />
+  </ScoringPrefs>
+  <DocumentInfo>
+    <Document title="Welcome to caIntegrator2 Online Help" href="Welcome.1.1.html" />
+    <Document title="Getting Started with caIntegrator2" href="Getting_Started.2.1.html" />
+    <Document title="About caIntegrator2" href="Getting_Started.2.2.html" />
+    <Document title="Using Online Help" href="Getting_Started.2.3.html" />
+    <Document title="Logging In" href="Getting_Started.2.4.html" />
+    <Document title="Using the caIntegrator2 Workspace" href="Getting_Started.2.5.html" />
+    <Document title="caIntegrator2 Functions" href="Getting_Started.2.6.html" />
+    <Document title="Logging Out" href="Getting_Started.2.7.html" />
+    <Document title="To log out of caIntegrator2, click the logout link in the upper right-hand corner. Application Support" href="Getting_Started.2.8.html" />
+    <Document title="Creating a New Study" href="CreatingNewStudy.3.1.html" />
+    <Document title="Creating a Study – Overview" href="CreatingNewStudy.3.2.html" />
+    <Document title="Source Data Preparation" href="CreatingNewStudy.3.3.html" />
+    <Document title="Configuring and Deploying Study" href="CreatingNewStudy.3.4.html" />
+    <Document title="Creating/Editing a Study" href="CreatingNewStudy.3.5.html" />
+    <Document title="Adding Clinical Data" href="CreatingNewStudy.3.6.html" />
+    <Document title="Assigning An Identifier or Annotation" href="CreatingNewStudy.3.7.html" />
+    <Document title="Searching for Annotation Definitions" href="CreatingNewStudy.3.8.html" />
+    <Document title="Editing Survival Values" href="CreatingNewStudy.3.9.html" />
+    <Document title="Adding Genomic Data" href="CreatingNewStudy.3.10.html" />
+    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.11.html" />
+    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.12.html" />
+    <Document title="Adding Imaging Data" href="CreatingNewStudy.3.13.html" />
+    <Document title="Deploying the Study" href="CreatingNewStudy.3.14.html" />
+    <Document title="Managing a Study" href="CreatingNewStudy.3.15.html" />
+    <Document title="Managing Platforms" href="CreatingNewStudy.3.16.html" />
+    <Document title="Searching a caIntegrator2 Study" href="SearchingWithinAStudy.4.1.html" />
+    <Document title="Creating a New StudySearch Overview" href="SearchingWithinAStudy.4.2.html" />
+    <Document title="Launching a Search" href="SearchingWithinAStudy.4.3.html" />
+    <Document title="Columns and Sorting Tabs" href="SearchingWithinAStudy.4.4.html" />
+    <Document title="Sorting Data" href="SearchingWithinAStudy.4.5.html" />
+    <Document title="Manage Queries" href="SearchingWithinAStudy.4.6.html" />
+    <Document title="Editing a Query" href="SearchingWithinAStudy.4.7.html" />
+    <Document title="Exporting Query Results" href="SearchingWithinAStudy.4.8.html" />
+    <Document title="Viewing Results" href="View%20Results.5.1.html" />
+    <Document title="Results Overview" href="View%20Results.5.2.html" />
+    <Document title="Viewing Search Results" href="View%20Results.5.3.html" />
+    <Document title="Browse Clinical Data Results" href="View%20Results.5.4.html" />
+    <Document title="Browse Imaging Data Results" href="View%20Results.5.5.html" />
+    <Document title="Browse Genomic Data Results" href="View%20Results.5.6.html" />
+    <Document title="Working With Search Results" href="View%20Results.5.7.html" />
+    <Document title="Gene Expression Query Results" href="View%20Results.5.8.html" />
+    <Document title="Viewing imaging results" href="View%20Results.5.9.html" />
+    <Document title="Exporting Data" href="View%20Results.5.10.html" />
+    <Document title="Viewing Image Data" href="View%20Results.5.11.html" />
+    <Document title="Curate Shared Annotation" href="View%20Results.5.12.html" />
+    <Document title="Using I-SPY Report Icons" href="View%20Results.5.13.html" />
+    <Document title="Search Results" href="View%20Results.5.14.html" />
+    <Document title="Clinical Reports" href="View%20Results.5.15.html" />
+    <Document title="Creating a PatientDID List from a Clinical or p53 Report" href="View%20Results.5.16.html" />
+    <Document title="Accessing an NCIA Image from a Clinical Report" href="View%20Results.5.17.html" />
+    <Document title="IHC Level of Expression Search Results" href="View%20Results.5.18.html" />
+    <Document title="IHC Loss of Expression Search Results" href="View%20Results.5.19.html" />
+    <Document title="p53 Search Results" href="View%20Results.5.20.html" />
+    <Document title="High Order Analysis Results" href="View%20Results.5.21.html" />
+    <Document title="Class Comparison Report" href="View%20Results.5.22.html" />
+    <Document title="Creating a Gene List (Select Genes toolbar)" href="View%20Results.5.23.html" />
+    <Document title="Resorting Column Results" href="View%20Results.5.24.html" />
+    <Document title="Showing Additional Information" href="View%20Results.5.25.html" />
+    <Document title="Principal Component Analysis Plot" href="View%20Results.5.26.html" />
+    <Document title="Selecting Samples of Interest in a Plot" href="View%20Results.5.27.html" />
+    <Document title="Hierarchical Clustering Report" href="View%20Results.5.28.html" />
+    <Document title="Correlation Scatter Plot" href="View%20Results.5.29.html" />
+    <Document title="Categorical Plot Analysis" href="View%20Results.5.30.html" />
+    <Document title="GenePattern Analysis Reports" href="View%20Results.5.31.html" />
+    <Document title="Analyzing Studies" href="PerformingAnalysis.6.1.html" />
+    <Document title="Performing Data Analysis" href="PerformingAnalysis.6.2.html" />
+    <Document title="Creating Kaplan-Meier Plots" href="PerformingAnalysis.6.3.html" />
+    <Document title="KM Plot for Annotations" href="PerformingAnalysis.6.4.html" />
+    <Document title="KM Plot for Gene Expression" href="PerformingAnalysis.6.5.html" />
+    <Document title="KM Plot for Queries" href="PerformingAnalysis.6.6.html" />
+    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.7.html" />
+    <Document title="Glossary" href="Glossary.7.1.html" />
+    <Document title="Data Import Configurations" href="appdx%20data%20import.8.1.html" />
+    <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.8.2.html" />
+    <Document title="Annotation Field Configuration" href="appdx%20data%20import.8.3.html" />
+    <Document title="Sample Data Configuration" href="appdx%20data%20import.8.4.html" />
+    <Document title="Genomic Data Configuration" href="appdx%20data%20import.8.5.html" />
+    <Document title="Imaging Data Configuration" href="appdx%20data%20import.8.6.html" />
+    <Document title="Index" href="Index.9.1.html" />
+  </DocumentInfo>
+  <TopicMap>
+    <Topic name="login_help" href="Getting_Started.2.4.html#1115560" />
+    <Topic name="welcome_help" href="Getting_Started.2.5.html#1127723" />
+    <Topic name="Logging_out" href="Getting_Started.2.7.html#1128246" />
+    <Topic name="edit_study_help" href="CreatingNewStudy.3.5.html#1073921" />
+    <Topic name="define_fields_help" href="CreatingNewStudy.3.6.html#1075197" />
+    <Topic name="assign_annotations_help" href="CreatingNewStudy.3.7.html#1082187" />
+    <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.3.8.html#1082197" />
+    <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.10.html#1076975" />
+    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.11.html#1081247" />
+    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.13.html#1075831" />
+    <Topic name="manage_study_help" href="CreatingNewStudy.3.15.html#1076280" />
+    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.16.html#1078043" />
+    <Topic name="search_columns_help" href="SearchingWithinAStudy.4.4.html#1074610" />
+    <Topic name="View_results_overview" href="View%20Results.5.2.html#1067499" />
+    <Topic name="search_results_help" href="View%20Results.5.3.html#1159852" />
+    <Topic name="Clinical_report" href="View%20Results.5.15.html#1114045" />
+    <Topic name="IHC_LOE_results" href="View%20Results.5.18.html#1115260" />
+    <Topic name="IHC_Loss_results" href="View%20Results.5.19.html#1121283" />
+    <Topic name="p53_job_result" href="View%20Results.5.20.html#1149890" />
+    <Topic name="Class_comparison_report" href="View%20Results.5.22.html#1082972" />
+    <Topic name="PCA_report" href="View%20Results.5.26.html#1082922" />
+    <Topic name="HCA_report" href="View%20Results.5.28.html#1088992" />
+    <Topic name="Correlation_analysis_report" href="View%20Results.5.29.html#1123266" />
+    <Topic name="Explanatory_data_analysis_plot" href="View%20Results.5.30.html#1121178" />
+    <Topic name="Genepattern_job_result" href="View%20Results.5.31.html#1148118" />
+    <Topic name="genepattern_Jobresults_tooltip" href="View%20Results.5.31.html#1149428" />
+    <Topic name="genepattern_Modules_tooltip" href="View%20Results.5.31.html#1149430" />
+    <Topic name="KM_annotation_help" href="PerformingAnalysis.6.4.html#1073490" />
+    <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.5.html#1073503" />
+    <Topic name="KM_queries_help" href="PerformingAnalysis.6.6.html#1073512" />
+    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.7.html#1073419" />
+  </TopicMap>
+</WebWorksHelpBook>
