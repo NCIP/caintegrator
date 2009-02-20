@@ -1,11 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div id="content"><!--Page Help-->
+<div id="content">
 
-<div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
-
-<!--/Page Help-->
+    <!--Page Help-->
+    
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('manage_study_help')" class="help">
+    (draft)</a>
+    </div>
+    
+    <!--/Page Help--> 
 
 <h1>Manage Studies</h1>
 <s:form>

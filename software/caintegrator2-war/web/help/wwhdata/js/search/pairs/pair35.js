@@ -1,0 +1,21 @@
+function FileData_Pairs(x)
+{
+x.t("fold-change","option");
+x.t("statistically","correlated");
+x.t("down","regulation");
+x.t("correlated","down");
+x.t("results","results");
+x.t("results","overview");
+x.t("results","search");
+x.t("results","viewing");
+x.t("overview","viewing");
+x.t("gene","fold-change");
+x.t("search","results");
+x.t("search","clinical");
+x.t("viewing","results");
+x.t("viewing","search");
+x.t("regulation","particular");
+x.t("particular","gene");
+x.t("clinical","attributes");
+x.t("attributes","statistically");
+}

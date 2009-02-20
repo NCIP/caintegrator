@@ -1,0 +1,27 @@
+function FileData_Pairs(x)
+{
+x.t("searching","caintegrator2");
+x.t("study","launching");
+x.t("columns","display");
+x.t("right","list");
+x.t("launching","search");
+x.t("left","right");
+x.t("sort","multiple");
+x.t("sort","based");
+x.t("multiple","column");
+x.t("list","order");
+x.t("specified","columns");
+x.t("search","sorting");
+x.t("display","sort");
+x.t("headers","left");
+x.t("sorting","data");
+x.t("data","searching");
+x.t("data","sort");
+x.t("data","sorting");
+x.t("data","column");
+x.t("column","specified");
+x.t("column","headers");
+x.t("based","data");
+x.t("order","columns");
+x.t("caintegrator2","study");
+}
