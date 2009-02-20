@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 
 /**
@@ -128,6 +129,7 @@ public class LoadClinicalSourceAction extends AbstractClinicalSourceAction {
      */
     public String delete() {
         try {
+            getStudyConfiguration().setStatus(Status.NOT_DEPLOYED);
             getStudyManagementService().delete(getStudyConfiguration(), getClinicalSource());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());

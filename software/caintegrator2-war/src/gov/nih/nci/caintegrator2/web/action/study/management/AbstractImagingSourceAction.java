@@ -94,19 +94,21 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
  */
 public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
 
-    private ImageAnnotationConfiguration imagingSource = new ImageAnnotationConfiguration();
+    private ImageAnnotationConfiguration imageAnnotationConfiguration = new ImageAnnotationConfiguration();
    
-    private ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
+    private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
     /**
      * {@inheritDoc}
      */
     public void prepare() {
         super.prepare();
-        if (getImageSource().getId() != null) {
-            setImageSource(getStudyManagementService().getRefreshedStudyEntity(getImageSource()));
+        if (getImageSourceConfiguration().getId() != null) {
+            setImageSourceConfiguration(
+                    getStudyManagementService().getRefreshedStudyEntity(getImageSourceConfiguration()));
         }
-        if (getImagingSource().getId() != null) {
-            setImagingSource(getStudyManagementService().getRefreshedStudyEntity(getImagingSource()));
+        if (getImageAnnotationConfiguration().getId() != null) {
+            setImageAnnotationConfiguration(
+                    getStudyManagementService().getRefreshedStudyEntity(getImageAnnotationConfiguration()));
         }
         
     }
@@ -115,28 +117,28 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
     /**
      * @return the imageSource
      */
-    public ImageDataSourceConfiguration getImageSource() {
-        return imageSource;
+    public ImageDataSourceConfiguration getImageSourceConfiguration() {
+        return imageSourceConfiguration;
     }
 
     /**
-     * @param imageSource the imageSource to set
+     * @param imageSourceConfiguration the imageSource to set
      */
-    public void setImageSource(ImageDataSourceConfiguration imageSource) {
-        this.imageSource = imageSource;
+    public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
+        this.imageSourceConfiguration = imageSourceConfiguration;
     }
 
     /**
-     * @return the imagingSource
+     * @return the imageConfiguration
      */
-    public ImageAnnotationConfiguration getImagingSource() {
-        return imagingSource;
+    public ImageAnnotationConfiguration getImageAnnotationConfiguration() {
+        return imageAnnotationConfiguration;
     }
     /**
-     * @param imagingSource the imagingSource to set
+     * @param imageAnnotationConfiguration the imagingSource to set
      */
-    public void setImagingSource(ImageAnnotationConfiguration imagingSource) {
-        this.imagingSource = imagingSource;
+    public void setImageAnnotationConfiguration(ImageAnnotationConfiguration imageAnnotationConfiguration) {
+        this.imageAnnotationConfiguration = imageAnnotationConfiguration;
     }
 
 

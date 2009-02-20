@@ -138,5 +138,18 @@ public abstract class AbstractClinicalSourceConfiguration extends AbstractCaInte
     private void setStudyConfiguration(StudyConfiguration studyConfiguration) {
         this.studyConfiguration = studyConfiguration;
     }
+    
+    /**
+     * Indicates if the source has been configured and is prepared for loading.
+     * 
+     * @return whether source may be loaded.
+     */
+    public abstract boolean isLoadable();
+    
+    /**
+     * Indicates if the source has been already loaded or not.
+     * @return whether source is already loaded.
+     */
+    public abstract boolean isCurrentlyLoaded();
 
 }
