@@ -1,0 +1,20 @@
+function FileData_Pairs(x)
+{
+x.t("searching","studies");
+x.t("searching","caintegrator2");
+x.t("study","searching");
+x.t("study","section");
+x.t("within","caintegrator2");
+x.t("describes","processes");
+x.t("browse","tools");
+x.t("studies","within");
+x.t("search","browse");
+x.t("processes","searching");
+x.t("section","describes");
+x.t("section","include");
+x.t("tools","topics");
+x.t("topics","section");
+x.t("using","search");
+x.t("caintegrator2","study");
+x.t("caintegrator2","using");
+}
