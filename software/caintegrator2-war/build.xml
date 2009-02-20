@@ -299,22 +299,23 @@
                 <include name="svnant-1.2.1.jar" />
                 <include name="svnClientAdapter-1.2.1.jar" />
                 <include name="svnjavahl-1.2.1.jar" />
+                <include name="svnkit-1.2.1.jar" />
             </fileset>
         </path>        
         
         <taskdef name="svn" classpathref="svnlib.classpath" classname="org.tigris.subversion.svnant.SvnTask" />
        
-        <svn>
+        <svn javahl="false" svnkit="true">
             <info target="${software.dir}" />
         </svn>
         <!--
           Note that if you explicitly define caintegrator2.version it will take
           precedence over the one obtained from SVN
           -->
-        <echo message="svn getinfo: cai2 version before:${caintegrator2.version}" />
+        <echo message="svn getinfo: cai2 version: ${caintegrator2.version}" />
         <propertyregex property="caintegrator2.svntag" input="${svn.info.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
-        <echo message="svn getinfo: url:${svn.info.url}" />
-        <echo message="svn getinfo: rev:${svn.info.rev}" />
+        <echo message="svn getinfo: url: ${svn.info.url}" />
+        <echo message="svn getinfo: rev: ${svn.info.rev}" />
         <echo message="svn getinfo: cai2 version:${caintegrator2.svntag}" />
     </target>
                 
@@ -396,7 +397,7 @@
     
     <property name="web-inf.working.dir" location="${caintegrator2.war.target.dir}" />
     
-    <target name="caintegrator2.war" depends="svn:getinfo,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
+    <target name="caintegrator2.war" depends="svn:getinfo2,ivy:setup-runtime,compile:caintegrator2.war,caintegrator2.csm.xml.deploy,hibernate.cfg.xml.deploy">
         
         <copy todir="${web-inf.working.dir}" filtering="true" overwrite="true">
             <fileset dir="${caintegrator2.war.web.src.dir}/WEB-INF">
