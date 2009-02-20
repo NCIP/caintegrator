@@ -424,6 +424,23 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study is deployed
      */
     public boolean isDeployed() {
-        return status.equals(Status.DEPLOYED);
+        return Status.DEPLOYED.equals(status);
+    }
+
+    /**
+     * @return the boolean of whether the study is deployable
+     */
+    public boolean isDeployable() {
+        return (Status.NOT_DEPLOYED.equals(status)
+                && hasOneLoadedClinical());
+    }
+    
+    private boolean hasOneLoadedClinical() {
+        for (AbstractClinicalSourceConfiguration clinicalConfiguration : clinicalConfigurationCollection) {
+            if (clinicalConfiguration.isCurrentlyLoaded()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

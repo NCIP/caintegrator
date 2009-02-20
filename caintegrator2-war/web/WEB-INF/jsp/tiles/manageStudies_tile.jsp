@@ -17,6 +17,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
         <s:iterator value="studyConfigurations" status="status">
@@ -28,6 +29,7 @@
             </s:else>            
                 <td><s:property value="study.shortTitleText" /></td>
                 <td><s:property value="study.longTitleText" /></td>
+                <td><s:property value="status.value" /></td>
                 <td>
                     <s:url id="editUrl" action="editStudy">
                         <s:param name="studyConfiguration.id" value="id" />

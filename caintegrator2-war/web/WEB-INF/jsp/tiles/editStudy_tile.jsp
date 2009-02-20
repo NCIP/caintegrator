@@ -33,10 +33,16 @@
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId"/>
         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" />
+        <s:textfield label="Status" name="studyConfiguration.status.value" />
         
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">
-            <s:submit action="deployStudy" value="Save and Deploy" />
+            <s:if test="%{studyConfiguration.deployable}">
+                <s:submit action="deployStudy" value="Save and Deploy" />
+            </s:if>
+            <s:else>
+                <s:submit disabled="true" action="deployStudy" value="Save and Deploy" />
+            </s:else>
         </s:if>
     </s:form>
     <br>
@@ -80,11 +86,11 @@
                             Definition Incomplete
                 </s:if>
                 <s:else>
-                    <s:if test="%{!currentlyLoaded}">
-                            Not Loaded
+                    <s:if test="%{currentlyLoaded}">
+                            Loaded
                     </s:if>
                     <s:else>
-                            Loaded
+                            Not Loaded
                     </s:else>
                 </s:else>  
             </td>
@@ -213,23 +219,28 @@
             <td><s:property value="type" /></td>
             <td><s:property value="description" /></td>
             <td>
-                <s:if test="%{!currentlyLoaded}">
-                            Not Loaded
+                <s:if test="%{!loadable}">
+                            Definition Incomplete
                 </s:if>
                 <s:else>
+                    <s:if test="%{currentlyLoaded}">
                             Loaded
+                    </s:if>
+                    <s:else>
+                            Not Loaded
+                    </s:else>
                 </s:else>  
             </td>
             <td>
                 <s:url id="editImagingSource" action="editImagingSource">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="imagingSource.id" value="id" />
+                    <s:param name="imageAnnotationConfiguration.id" value="id" />
                 </s:url> 
                 <s:a href="%{editImagingSource}">Edit</s:a> 
                 <s:if test="%{loadable}" > |
                     <s:url id="loadImagingSource" action="loadImagingSource">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imagingSourceConfiguration.id" value="id" />
+                        <s:param name="imageSourceConfiguration.id" value="id" />
                     </s:url> 
                     <s:a href="%{loadImagingSource}">
                     

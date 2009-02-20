@@ -101,10 +101,12 @@ import java.io.IOException;
 public class AddImageFileAction extends AbstractImagingSourceAction {
 
     private static final long serialVersionUID = 1L;
-    private File imagingFile;
+    private File imageAnnotationFile;
     private File imageClinicalMappingFile;
-    private String imagingFileContentType;
-    private String imagingFileFileName;
+    private String imageAnnotationFileContentType;
+    private String imageAnnotationFileFileName;
+    private String imageClinicalMappingFileContentType;
+    private String imageClinicalMappingFileFileName;
     private String hostname;
     private String username;
     private String password;
@@ -124,17 +126,18 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     @Override
     public String execute() {
         try {
-            ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
-            imageSource.getServerProfile().setUrl(getHostname());
-            imageSource.setTrialDataProvenance(getProtocolId());
-            imageSource.setStudyConfiguration(this.getStudyConfiguration());
-            setImageSource(imageSource);
-            getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSource());
-            if (imagingFile !=  null) {
-            ImageAnnotationConfiguration imageAnnotationSource = 
-                        getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(), getImagingFile(), 
-                getImagingFileFileName());
-            setImagingSource(imageAnnotationSource);
+            ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
+            imageSourceConfiguration.getServerProfile().setUrl(getHostname());
+            imageSourceConfiguration.setTrialDataProvenance(getProtocolId());
+            imageSourceConfiguration.setStudyConfiguration(this.getStudyConfiguration());
+            setImageSourceConfiguration(imageSourceConfiguration);
+            getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSourceConfiguration());
+            if (imageAnnotationFile !=  null) {
+                ImageAnnotationConfiguration imageAnnotationConfiguration = 
+                        getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(),
+                                getImageAnnotationFile(), 
+                getImageAnnotationFileFileName());
+                setImageAnnotationConfiguration(imageAnnotationConfiguration);
             }
             getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
                     getImageClinicalMappingFile()); 
@@ -165,43 +168,43 @@ public void validate() {
 /**
  * @return the Imaging File
  */
-public File getImagingFile() {
-    return imagingFile;
+public File getImageAnnotationFile() {
+    return imageAnnotationFile;
 }
 
 /**
- * @param imagingFile the imagingFile to set
+ * @param imageAnnotationFile the imageAnnotationFile to set
  */
-public void setImagingFile(File imagingFile) {
- this.imagingFile = imagingFile;
+public void setImageAnnotationFile(File imageAnnotationFile) {
+ this.imageAnnotationFile = imageAnnotationFile;
 }
 
 /**
  * @return ImagingFileFileName
  */
-public String getImagingFileFileName() {
-    return imagingFileFileName;
+public String getImageAnnotationFileFileName() {
+    return imageAnnotationFileFileName;
 }
 
 /**
- * @param imagingFileFileName the ImagingFileFileName to set
+ * @param imageAnnotationFileFileName the ImagingFileFileName to set
  */
-public void setImagingFileFileName(String imagingFileFileName) {
-    this.imagingFileFileName = imagingFileFileName;
+public void setImageAnnotationFileFileName(String imageAnnotationFileFileName) {
+    this.imageAnnotationFileFileName = imageAnnotationFileFileName;
 }
 
 /**
  * @return ImagingFileContentType
  */
-public String getImagingFileContentType() {
-    return imagingFileContentType;
+public String getImageAnnotationFileContentType() {
+    return imageAnnotationFileContentType;
 }
 
 /**
- * @param imagingFileContentType the ImagingFileContentType to set
+ * @param imageAnnotationFileContentType the ImagingFileContentType to set
  */
-public void setImagingFileContentType(String imagingFileContentType) {
-    this.imagingFileContentType = imagingFileContentType;
+public void setImageAnnotationFileContentType(String imageAnnotationFileContentType) {
+    this.imageAnnotationFileContentType = imageAnnotationFileContentType;
 }
 
 
@@ -273,6 +276,34 @@ public File getImageClinicalMappingFile() {
  */
 public void setImageClinicalMappingFile(File imageClinicalMappingFile) {
     this.imageClinicalMappingFile = imageClinicalMappingFile;
+}
+
+/**
+ * @return the imageClinicalMappingFileContentType
+ */
+public String getImageClinicalMappingFileContentType() {
+    return imageClinicalMappingFileContentType;
+}
+
+/**
+ * @param imageClinicalMappingFileContentType the imageClinicalMappingFileContentType to set
+ */
+public void setImageClinicalMappingFileContentType(String imageClinicalMappingFileContentType) {
+    this.imageClinicalMappingFileContentType = imageClinicalMappingFileContentType;
+}
+
+/**
+ * @return the imageClinicalMappingFileFileName
+ */
+public String getImageClinicalMappingFileFileName() {
+    return imageClinicalMappingFileFileName;
+}
+
+/**
+ * @param imageClinicalMappingFileFileName the imageClinicalMappingFileFileName to set
+ */
+public void setImageClinicalMappingFileFileName(String imageClinicalMappingFileFileName) {
+    this.imageClinicalMappingFileFileName = imageClinicalMappingFileFileName;
 }
 
 }

@@ -129,30 +129,30 @@ public class AddImageFileActionTest {
         action.validate();
         assertTrue(action.hasFieldErrors());
         
-        action.setImagingFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.hasFieldErrors());
 
-        action.setImagingFile(TestDataFiles.VALID_FILE);
-        assertNull(action.getImagingFileContentType());
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        assertNull(action.getImageAnnotationFileContentType());
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.hasFieldErrors());         
 
         // test with INvalid input files
-        action.setImagingFile(TestDataFiles.VALID_FILE);
-        action.setImagingFileContentType("Microsoft Office Excel Comma Separated Values File");
-        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImagingFileContentType());
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageAnnotationFileContentType("Microsoft Office Excel Comma Separated Values File");
+        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImageAnnotationFileContentType());
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.hasFieldErrors());         
 
         // test with valid input files
-        action.setImagingFile(TestDataFiles.VALID_FILE);
-        action.setImagingFileContentType("Microsoft Office Excel Comma Separated Values File");
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageAnnotationFileContentType("Microsoft Office Excel Comma Separated Values File");
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
-        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImagingFileContentType());
+        assertEquals("Microsoft Office Excel Comma Separated Values File",action.getImageAnnotationFileContentType());
         action.clearErrorsAndMessages();
         action.validate();
         assertFalse(action.hasFieldErrors());
@@ -161,15 +161,16 @@ public class AddImageFileActionTest {
 
     @Test
     public void testExecute() {
-        action.setImagingFile(TestDataFiles.VALID_FILE);
-        action.setImagingFileFileName(TestDataFiles.VALID_FILE.getName());
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
         assertEquals(Action.SUCCESS, action.execute());
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertTrue(studyManagementServiceStub.addImageAnnotationFileCalled);
         assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
-        action.setImagingFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
         assertEquals(Action.INPUT, action.execute());
-        action.setImagingFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
         assertEquals(Action.ERROR, action.execute());
+        
     }
 }
