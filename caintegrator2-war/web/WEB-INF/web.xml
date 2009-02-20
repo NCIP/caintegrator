@@ -26,6 +26,10 @@
         <param-name>svnRevision</param-name>
         <param-value>@svn.revision@</param-value>
     </context-param>
+    <context-param>
+        <param-name>caintegrator2Svntag</param-name>
+        <param-value>@caintegrator2.svntag@</param-value>
+    </context-param>
     
     <!-- Export Filter (for exporting data results) -->
     <filter>
