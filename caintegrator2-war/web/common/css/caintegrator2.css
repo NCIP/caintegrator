@@ -98,8 +98,8 @@ LEGEND INPUT, LEGEND SELECT
     font-family:arial,helvetica,sans-serif;
     font-size:75%;
     color:#BFD5D5;
-    float:right;
-    padding:4px 0 0 0px; }
+    float:left;
+    padding:4px 0 0 10px; }
 #userarea_wrapper
 { background:#475b82 url("../../images/bg_user.jpg") no-repeat left 0; height:30px; width:46em; margin-top:10px; padding:8px 0 0 12px; float:right; color:#bfd5d5; font-size:92%; font-weight:bold; }
 #user
@@ -501,6 +501,8 @@ TD.title
 { vertical-align:middle; padding-left:5px; }
 TD.btnrow
 { vertical-align:middle; border-top:1px dotted #dcdcdc; text-align:center  }
+.readonly
+{ background-color: #D0D0D0; }
 
 
 /* Control.Tabs - Primary */
