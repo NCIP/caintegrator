@@ -109,6 +109,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Hibernate;
 
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
@@ -279,7 +280,7 @@ public final class Cai2Util {
      * @param collection the collection to load.
      */
     public static void loadCollection(Collection<? extends Object> collection) {
-        collection.isEmpty();
+        Hibernate.initialize(collection);
     }
     
     /**
