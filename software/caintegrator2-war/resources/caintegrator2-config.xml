@@ -227,7 +227,7 @@
     </bean>
     
     <bean id="defineSurvivalDefinitionAction"
-        scope="session"
+        scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DefineSurvivalDefinitionAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
