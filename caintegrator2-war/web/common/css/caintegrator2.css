@@ -402,7 +402,7 @@ TR.even
 /* TABLE.data tr.over, TABLE.data tr:hover
 {background:#ffffcf url("../../images/bg_row_hilite.gif") repeat-x top; cursor:pointer } */
 TABLE.data TH A
-{ color:#000; text-decoration:underline !important;}
+{ color:#333333; border-bottom: 1px ridge rgb(0, 0, 0); text-decoration: none; }
 TABLE.data TABLE
 { border:1px solid #ccc; width:100% }
 TABLE.data TABLE TD
