@@ -124,6 +124,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
+    private NCIABasket nciaBasket;
     private String selectedAction = EXECUTE_QUERY;
     private String displayTab;
     private int rowNumber;
@@ -301,8 +302,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String forwardToNciaBasket() {
-        NCIABasket basket = queryManagementService.createNciaBasket(retrieveCheckedRows());
-        getDisplayableWorkspace().setNciaBasket(basket);
+        nciaBasket = queryManagementService.createNciaBasket(retrieveCheckedRows());
         return "nciaBasket";
     }
 
@@ -561,5 +561,27 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         if (getQueryResult() != null) {
             getQueryResult().setPageSize(pageSize);
         }
+    }
+
+    /**
+     * @return the nciaBasket
+     */
+    public NCIABasket getNciaBasket() {
+        return nciaBasket;
+    }
+
+    /**
+     * @return the nciaBasket
+     */
+    public String getNciaBasketUrl() {
+        return "https://" + getNciaServer() + "/ncia/externalDataBasketDisplay.jsf";
+    }
+    
+    private String getNciaServer() {
+        ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
+        if (dataSource.getServerProfile().getUrl() != null) {
+            return dataSource.getServerProfile().getUrl().split("/")[2];
+        }
+        return null;
     }
 }
