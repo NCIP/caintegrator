@@ -33,7 +33,14 @@
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId"/>
         <s:textarea label="Study Description" name="studyConfiguration.study.longTitleText" cols="40" rows="4" />
-        <s:textfield label="Status" name="studyConfiguration.status.value" />
+        <tr>
+            <td class="tdLabel" align="right">
+                <label class="label">Status:</label>
+            </td>
+            <td>
+                <s:property value="studyConfiguration.status.value"/>
+            </td>
+        </tr>
         
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">
