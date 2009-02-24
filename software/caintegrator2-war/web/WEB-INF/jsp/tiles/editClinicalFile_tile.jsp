@@ -4,10 +4,12 @@
 <div id="content">                      
     
     <!--Page Help-->
-    
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
-    
-    <!--/Page Help-->           
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('define_fields_help')" class="help">
+   (draft)</a>
+    </div>
+
+    <!--/Page Help-->          
     
     <h1>Define Fields for Clinical Data</h1>
     <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>

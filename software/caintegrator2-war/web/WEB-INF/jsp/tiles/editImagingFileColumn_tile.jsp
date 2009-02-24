@@ -28,10 +28,13 @@
     </script>
     
     <!--Page Help-->
-    
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
-    
-    <!--/Page Help-->           
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('')" class="help">
+   (draft)</a>
+    </div>
+
+    <!--/Page Help-->
+                 
     <s:actionerror />
     <h1>Assign Annotation Definition for Imaging Column: <s:property value="fileColumn.name" /></h1>
 

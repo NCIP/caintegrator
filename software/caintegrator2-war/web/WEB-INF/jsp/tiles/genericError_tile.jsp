@@ -5,9 +5,11 @@
 
     <!--Page Help-->
 
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('')" class="help">
+   (draft)</a>
+    </div>
 
-    <!--/Page Help-->           
+    <!--/Page Help-->        
     
     <!--ADD CONTENT HERE-->
     
