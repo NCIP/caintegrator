@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
@@ -130,7 +129,6 @@ public class DisplayableUserWorkspace {
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private DisplayableQueryResult queryResult;
     private GenomicDataQueryResult genomicDataQueryResult;
-    private NCIABasket nciaBasket = new NCIABasket();
     private NCIADicomJob dicomJob;
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
     private boolean createPlotSelected = false;
@@ -332,20 +330,6 @@ public class DisplayableUserWorkspace {
         };
         Collections.sort(queries, nameComparator);
         return queries;
-    }
-
-    /**
-     * @return the nciaBasket
-     */
-    public NCIABasket getNciaBasket() {
-        return nciaBasket;
-    }
-
-    /**
-     * @param nciaBasket the nciaBasket to set
-     */
-    public void setNciaBasket(NCIABasket nciaBasket) {
-        this.nciaBasket = nciaBasket;
     }
 
     /**

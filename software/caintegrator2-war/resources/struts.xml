@@ -367,7 +367,7 @@
             <result type="tiles">manageQuery</result>
             <result name="input" type="tiles">manageQuery</result>
             <result name="error" type="tiles">manageQuery</result>
-            <result name="nciaBasket" type="redirect">${displayableWorkspace.nciaBasket.nciaBasketUrl} </result>
+            <result name="nciaBasket">/WEB-INF/jsp/tiles/nciaBasket.jsp</result>
             <result name="export" type="tiles">exportSearchResults</result>
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
             <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
