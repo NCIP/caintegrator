@@ -1,9 +1,13 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div id="content"><!--Page Help-->
+<div id="content">
 
-<div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
+<!--Page Help-->
+
+<div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('manage_platforms_help')" class="help">
+(draft)</a>
+</div>
 
 <!--/Page Help-->
 

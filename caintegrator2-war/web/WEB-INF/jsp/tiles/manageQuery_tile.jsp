@@ -88,9 +88,16 @@
 </script>
 
 
-<div id="content"><!--Page Help-->
+<div id="content">
 
-        <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
+        <!--Page Help-->
+
+        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
+       (draft)</a>
+        </div>
+
+        <!--/Page Help-->
+
         <h1>Search <s:property value="study.shortTitleText"/></h1>
         <s:actionerror/>
         
