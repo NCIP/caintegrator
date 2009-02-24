@@ -95,7 +95,7 @@ import java.util.Set;
 public class NCIABasket implements NCIAImageAggregator {
     private final Set <String> imageSeriesIDs = new HashSet<String>();
     private final Set <String> imageStudyIDs = new HashSet<String>();
-    private static final String NCIA_BASKET_URL = "https://imaging.nci.nih.gov/ncia/basket/";
+    private final Set <String> imagePatientIDs = new HashSet<String>();
     private NCIAImageAggregationTypeEnum imageAggregationType;
     
     /**
@@ -104,6 +104,7 @@ public class NCIABasket implements NCIAImageAggregator {
     public Set<String> getImageSeriesIDs() {
         return imageSeriesIDs;
     }
+    
     /**
      * @return the imageStudyIDs
      */
@@ -112,27 +113,12 @@ public class NCIABasket implements NCIAImageAggregator {
     }
     
     /**
-     * Constructs the NCIA url dynamically.
-     * @return URL to NCIA basket.
+     * @return the imagePatientIDs
      */
-    public String getNciaBasketUrl() {
-        StringBuffer url = new StringBuffer();
-        url.append(NCIA_BASKET_URL);
-        if (!getImageSeriesIDs().isEmpty()) {
-            url.append("imageSeries=");
-            for (String imageSeriesId : getImageSeriesIDs()) {
-                url.append(imageSeriesId);
-                url.append(',');
-            }
-        } else if (!getImageStudyIDs().isEmpty()) {
-            url.append("imageStudy=");
-            for (String imageStudyId : getImageStudyIDs()) {
-                url.append(imageStudyId);
-                url.append(',');
-            }
-        } 
-        return url.toString();
+    public Set<String> getImagePatientIDs() {
+        return imagePatientIDs;
     }
+    
     /**
      * @return the imageAggregationType
      */

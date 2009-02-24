@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -262,7 +261,8 @@ public class ManageQueryActionTest {
         manageQueryAction.validate();
         
         assertEquals("nciaBasket", manageQueryAction.execute());
-        assertNotNull(displayableUserWorkspace.getNciaBasket().getNciaBasketUrl());
+        
+        assertEquals("https://" + null + "/ncia/externalDataBasketDisplay.jsf", manageQueryAction.getNciaBasketUrl());
         
         // Test retrieve DICOM images
         manageQueryAction.setSelectedAction("retrieveDicomImages");
