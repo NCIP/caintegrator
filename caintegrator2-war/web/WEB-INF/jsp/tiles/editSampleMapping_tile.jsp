@@ -4,20 +4,22 @@
 <div id="content">                      
     
     <!--Page Help-->
-    
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
-    
-    <!--/Page Help-->           
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('edit_sample_mappings_help')" class="help">
+   (draft)</a>
+    </div>
+
+    <!--/Page Help-->         
     
     <h1>Edit Sample Mappings</h1>
     <s:form action="saveSampleMapping" method="post" enctype="multipart/form-data">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="genomicSource.id" />
-        <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" />
-        <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" />
-        <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" />
-        <s:password label="caArray Password" name="genomicSource.serverProfile.password" readonly="true" />
-        <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" />
+        <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
+        <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
+        <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" />
+        <s:password label="caArray Password" name="genomicSource.serverProfile.password" readonly="true" cssClass="readonly" />
+        <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
         <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" />
         <s:submit value="Upload Mapping File" />
         <s:file name="controlSampleFile" label="Control Samples File" />

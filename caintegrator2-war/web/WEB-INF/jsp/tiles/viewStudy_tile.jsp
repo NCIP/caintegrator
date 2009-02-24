@@ -4,10 +4,12 @@
 <div id="content">                      
     
     <!--Page Help-->
-    
-    <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
-    
-    <!--/Page Help-->           
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('view_study_help')" class="help">
+   (draft)</a>
+    </div>
+
+    <!--/Page Help-->       
     
     <h1>Content of Study: <s:property value="study.shortTitleText" /></h1>
    

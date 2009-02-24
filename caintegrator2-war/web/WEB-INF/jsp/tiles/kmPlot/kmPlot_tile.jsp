@@ -5,9 +5,16 @@
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div id="content"><!--Page Help-->
+<div id="content">
 
-        <div class="pagehelp"><span class="help"><a href="#">&nbsp;</a></span></div>
+        <!--Page Help-->
+
+        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('KM_annotation_help')" class="help">
+       (draft)</a>
+        </div>
+
+        <!--/Page Help-->
+        
         <h1>Kaplan-Meier Survival Plots</h1>
         <s:actionerror/>
         
