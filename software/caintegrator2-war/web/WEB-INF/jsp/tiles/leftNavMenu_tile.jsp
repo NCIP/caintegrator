@@ -46,7 +46,7 @@
                                         <s:param name="queryId" value="id" />
                                     </s:url>
                                                                         
-                                    <li><s:a href="%{queryUrl}" cssClass="queries">
+                                    <li><s:a href="%{queryUrl}" cssClass="queries" title="Description: %{description}">
                                          <s:if test="id == openQueryId">
                                             <strong><s:property value="name"/></strong>
                                           </s:if>
