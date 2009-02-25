@@ -394,7 +394,7 @@ TABLE.data TH.order1 A
 TABLE.data TH.order2 A
 {background: url(../images/arrow_up.gif) no-repeat right; padding-right:16px; }
 TR.odd
-{ background:#f9f9f9 }
+{ background:#dcdcdc }
 TABLE.data TR.odd TD
 { border-right:1px solid #dcdcdc; }
 TR.even

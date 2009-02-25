@@ -28,10 +28,9 @@
     
     <table class="data">
         <tr>
-            <th colspan="2">Unmapped Samples</th>
+            <th>Unmapped Samples</th>
         </tr>
         <tr>
-            <th>Sample ID</th>
             <th>Sample Name</th>
         </tr>
         <s:iterator value="genomicSource.unmappedSamples" status="status">
@@ -41,18 +40,16 @@
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="id" /></td>
-            <td><s:property value="name" /></td>
+            <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
             </tr>
         </s:iterator>
    </table>
     
     <table class="data">
         <tr>
-            <th colspan="3">Samples Mapped to Subjects</th>
+            <th colspan="2">Samples Mapped to Subjects</th>
         </tr>
         <tr>
-            <th>Sample ID</th>
             <th>Sample Name</th>
             <th>Subject Identifier</th>
         </tr>
@@ -63,8 +60,7 @@
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="id" /></td>
-            <td><s:property value="name" /></td>
+            <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
             <td><s:property value="sampleAcquisition.assignment.identifier" /></td>
             </tr>
         </s:iterator>
@@ -75,7 +71,6 @@
             <th colspan="2">Control Samples</th>
         </tr>
         <tr>
-            <th>Sample ID</th>
             <th>Sample Name</th>
         </tr>
         <s:iterator value="genomicSource.controlSamples" status="status">
@@ -85,8 +80,7 @@
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="id" /></td>
-            <td><s:property value="name" /></td>
+            <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
             </tr>
         </s:iterator>
    </table>
