@@ -85,9 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -104,7 +101,7 @@ import java.util.Map;
 @SuppressWarnings("PMD.CyclomaticComplexity")
 public class DisplayableResultRow {
 
-    private final List<String> values = new ArrayList<String>();
+    private final List<DisplayableResultValue> values = new ArrayList<DisplayableResultValue>();
     private final ResultRow resultRow;
     private boolean checkedRow = true;
     
@@ -115,42 +112,22 @@ public class DisplayableResultRow {
     
     private void loadValues(Map<String, Integer> columnLocations) {
         for (int i = 0; i < columnLocations.size(); i++) {
-            values.add("");
+            values.add(new DisplayableResultValue());
         }
         for (ResultValue value : resultRow.getValueCollection()) {
+            DisplayableResultValue valueWrapper = new DisplayableResultValue(value);
             values.set(columnLocations.get(
                                            value.getColumn().
                                            getAnnotationDefinition().
                                            getDisplayName()),
-                                           getStringValue(value));
+                                           valueWrapper);
         }
-    }
-
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private String getStringValue(ResultValue value) {
-        String returnString = "";
-        if (value == null || value.getValue() == null) {
-            return returnString;
-        } else if (value.getValue() instanceof StringAnnotationValue) {
-            returnString = ((StringAnnotationValue) value.getValue()).getStringValue();
-        } else if (value.getValue() instanceof NumericAnnotationValue) {
-            if (((NumericAnnotationValue) value.getValue()).getNumericValue() != null) {
-                returnString = ((NumericAnnotationValue) value.getValue()).getNumericValue().toString();
-            }
-        } else if (value.getValue() instanceof DateAnnotationValue) {
-            if (((DateAnnotationValue) value.getValue()).getDateValue() != null) {
-                returnString = ((DateAnnotationValue) value.getValue()).toString();
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported value type " + value.getValue().getClass().getName());
-        }
-        return returnString;
     }
     
     /**
      * @return the values
      */
-    public List<String> getValues() {
+    public List<DisplayableResultValue> getValues() {
         return values;
     }
     

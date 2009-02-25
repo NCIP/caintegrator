@@ -97,15 +97,23 @@
                 </s:if>
 
                 <s:iterator value="queryResult.headers" status="status" id="column">
-                    <display:column title="${column}" sortable="true">
-                        <s:property
-                            value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).values.get(#status.count - 1)}" />
-                    </display:column>
+                    <s:set id="curValue" name="curValue" value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).values.get(#status.count - 1)}" />
+                        <s:if test="#curValue.dateType">
+                            <s:set id="dateValue" name="dateValue" value="#curValue.dateValue" />
+                            <display:column title="${column}" sortable="true" decorator="gov.nih.nci.caintegrator2.application.query.DateFormatColumnDecorator" >
+                                ${dateValue}
+                            </display:column>
+                        </s:if>
+                        <s:else>
+                            <display:column title="${column}" sortable="true" >
+                                ${curValue}
+                            </display:column>
+                        </s:else>
                 </s:iterator>
             </display:table>
 
         </s:else>
-    </table>
+    </table>    
     </div>
     <!--Buttons-->
 

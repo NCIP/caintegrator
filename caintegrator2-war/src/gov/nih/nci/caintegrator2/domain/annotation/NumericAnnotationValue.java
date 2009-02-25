@@ -28,7 +28,7 @@ public class NumericAnnotationValue extends AbstractAnnotationValue {
      */
     @Override
     public String toString() {
-        return numericValue.toString();
+        return numericValue != null ? numericValue.toString() : "";
     }
 
 }
