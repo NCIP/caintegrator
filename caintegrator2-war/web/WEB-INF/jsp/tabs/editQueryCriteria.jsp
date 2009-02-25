@@ -70,7 +70,7 @@
                                                 listKey="key"
                                                 listValue="displayValue"
                                                 value="value"
-                                                onchange="if (%{updateFormOnChange}) {submitForm('updateCriteria')"
+                                                onchange="if (%{updateFormOnChange}) {submitForm('updateCriteria')}"
                                                 theme="simple" />
                                         </s:elseif>
                                         <s:elseif test="fieldType == 'multiselect'">
