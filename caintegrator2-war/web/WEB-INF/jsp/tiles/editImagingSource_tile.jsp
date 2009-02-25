@@ -12,8 +12,9 @@
     <!--/Page Help-->
     
     <h1>Edit Imaging Data Source</h1>
-    <h2>Enter a NCIA Data Source</h2>
-    <h2>Enter Image Annotation Data From file</h2>  
+    <h2>Enter a NCIA Data Source and Image Mapping Data From file</h2>
+    <br>
+ 
     <table>
     <s:form action="addImagingFile" method="post" enctype="multipart/form-data" >  <!-- action="saveImagingSource" -->
     <tr>
