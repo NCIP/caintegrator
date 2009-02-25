@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/nlog4j-1.2.25.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.1.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/displaytag-1.2.jar" sourcepath="software/lib/src/displaytag-1.2-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/servlet-2.3.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-beans-1.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-sdkQuery4-processor-1.2.jar"/>

@@ -32,7 +32,7 @@ public class DateAnnotationValue extends AbstractAnnotationValue {
      */
     @Override
     public String toString() {
-        return DateUtil.toString(dateValue);
+        return dateValue != null ? DateUtil.toString(dateValue) : "";
     }
 
 }

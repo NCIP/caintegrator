@@ -9,10 +9,9 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 public class ResultValue extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
-    
     private AbstractAnnotationValue value;
     private ResultColumn column;
-    
+
     /**
      * @return the value
      */
@@ -40,5 +39,11 @@ public class ResultValue extends AbstractCaIntegrator2Object {
     public void setColumn(ResultColumn column) {
         this.column = column;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        return value != null ? value.toString() : "";
+    }
 }
