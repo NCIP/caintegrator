@@ -124,6 +124,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public QueryResult execute(Query query) {
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
         return queryTranslator.execute();
@@ -132,6 +133,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
         GenomicQueryHandler handler = new GenomicQueryHandler(query, dao, arrayDataService);
         return handler.execute();
