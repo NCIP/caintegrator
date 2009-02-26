@@ -120,7 +120,7 @@
     <div class="actionsrow">
     <del class="btnwrapper">
     <ul class="btnrow">
-        <s:if test="!queryForm.resultConfiguration.imageSeriesColumns.isEmpty()">
+        <s:if test="queryForm.hasImageDataSources()">
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
                 <span class="btn_img"><span class="add">Forward To NCIA</span></span>
