@@ -152,8 +152,10 @@ class ResultRowFactory {
         for (SampleAcquisition sampleAcquisition : sampleAcquisitions) {
             ResultRow row = new ResultRow();
             StudySubjectAssignment studySubjectAssignment = sampleAcquisition.getAssignment();
-            row.setSampleAcquisition(sampleAcquisition);
             row.setSubjectAssignment(studySubjectAssignment);
+            if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
+                row.setSampleAcquisition(sampleAcquisition);
+            }
             if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
                 Timepoint sampleAcquisitionTimepoint = sampleAcquisition.getTimepoint();
                 addImageSeriesRows(rows, row, studySubjectAssignment, sampleAcquisitionTimepoint);
