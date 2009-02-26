@@ -115,9 +115,9 @@ public class NCIASearchServiceTestIntegration {
 
         searchService = nciaServiceClient.createNCIASearchService(profile);
 
-        assertNotNull(searchService.retrieveAllTrialDataProvenanceProjects());
+        assertNotNull(searchService.retrieveAllCollectionNameProjects());
 
-        List<Patient> patients = searchService.retrievePatientCollectionFromDataProvenanceProject("RIDER"); 
+        List<Patient> patients = searchService.retrievePatientCollectionFromCollectionNameProject("RIDER"); 
         assertNotNull(patients);
         
         List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());

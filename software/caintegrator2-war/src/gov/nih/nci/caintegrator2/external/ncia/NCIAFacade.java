@@ -98,23 +98,23 @@ import java.util.List;
 public interface NCIAFacade {
 
     /**
-     * Retrieves all TrialDataProvenances Projects from NCIA for a given NCIA Grid ServerConnectionProfile.
+     * Retrieves all CollectionNames Projects from NCIA for a given NCIA Grid ServerConnectionProfile.
      * @param profile contains connection information for the NCIA server
-     * @return - All TrialDataProvenance Projects that exist in this instance of NCIA.
+     * @return - All CollectionName Projects that exist in this instance of NCIA.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<String> getAllTrialDataProvenanceProjects(ServerConnectionProfile profile) 
+    List<String> getAllCollectionNameProjects(ServerConnectionProfile profile) 
         throws ConnectionException;
     
     /**
      * Retrieves the list of ImageStudys from NCIAGridService and converts them to our 
      * ImageSeriesAcquisition object.
-     * @param trialDataProvenanceProject - Project for the TrialDataProvenance
+     * @param collectionNameProject - Project for the CollectionName
      * @param profile contains connection information for the NCIA server
      * @return ImageStudy will be ImageSeriesAcquisition after it gets mapped.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
+    List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject, 
             ServerConnectionProfile profile) throws ConnectionException;
     
     /**

@@ -582,13 +582,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
+    public ImageAnnotationConfiguration addImageAnnotationFile(
+            ImageDataSourceConfiguration imageDataSourceConfiguration,
             File inputFile, String filename) throws ValidationException, IOException {
-        File permanentFile = getFileManager().storeStudyFile(inputFile, filename, studyConfiguration);
+        File permanentFile = getFileManager().storeStudyFile(inputFile, filename,
+                imageDataSourceConfiguration.getStudyConfiguration());
         AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            new ImageAnnotationConfiguration(annotationFile, studyConfiguration);
-        dao.save(studyConfiguration);
+            new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
+        dao.save(imageAnnotationConfiguration);
         return imageAnnotationConfiguration;
     }
 
@@ -600,7 +602,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.getImageDataSources().add(imageSource);
         imageSource.setStudyConfiguration(studyConfiguration);
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
-                    imageSource.getTrialDataProvenance(), imageSource.getServerProfile());
+                    imageSource.getCollectionName(), imageSource.getServerProfile());
         imageSource.getImageSeriesAcquisitions().addAll(acquisitions);
         for (ImageSeriesAcquisition acquisition : acquisitions) {
             acquisition.setImageDataSource(imageSource);
@@ -612,9 +614,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     public void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
-        for (ImageAnnotationConfiguration configuration 
-                : studyConfiguration.getImageAnnotationConfigurations()) {
-            configuration.loadAnnontation();
+        for (ImageDataSourceConfiguration configuration 
+                : studyConfiguration.getImageDataSources()) {
+            if (configuration.getImageAnnotationConfiguration() != null) {
+                configuration.getImageAnnotationConfiguration().loadAnnontation();
+            }
         }
         save(studyConfiguration);
     }

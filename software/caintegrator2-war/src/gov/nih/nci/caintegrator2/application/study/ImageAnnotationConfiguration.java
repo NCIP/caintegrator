@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
-    private StudyConfiguration studyConfiguration;
+    private ImageDataSourceConfiguration imageDataSourceConfiguration;
     private AnnotationFile annotationFile;
     
     /**
@@ -108,10 +108,10 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
         return getAnnotationFile().validate();
     }
     
-    ImageAnnotationConfiguration(AnnotationFile annotationFile, StudyConfiguration studyConfiguration) {
+    ImageAnnotationConfiguration(AnnotationFile annotationFile,
+            ImageDataSourceConfiguration imageDataSourceConfiguration) {
         this.annotationFile = annotationFile;
-        this.studyConfiguration = studyConfiguration;
-        studyConfiguration.getImageAnnotationConfigurations().add(this);
+        this.imageDataSourceConfiguration = imageDataSourceConfiguration;
     }
 
     /**
@@ -128,20 +128,6 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
         this.annotationFile = annotationFile;
     }
 
-    /**
-     * @return the studyConfiguration
-     */
-    public StudyConfiguration getStudyConfiguration() {
-        return studyConfiguration;
-    }
-
-    /**
-     * @param studyConfiguration the studyConfiguration to set
-     */
-    public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
-        this.studyConfiguration = studyConfiguration;
-    }
-
     void loadAnnontation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new ImageAnnotationHandler(this));
     }
@@ -154,7 +140,7 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
     }
 
     ImageSeries getImageSeries(String identifier) {
-        return getStudyConfiguration().getImageSeries(identifier);
+        return getImageDataSourceConfiguration().getStudyConfiguration().getImageSeries(identifier);
     }
 
     /**
@@ -169,5 +155,19 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
      */
     public String getDescription() {
         return getAnnotationFile().getFile().getName();
+    }
+
+    /**
+     * @return the imageDataSourceConfiguration
+     */
+    public ImageDataSourceConfiguration getImageDataSourceConfiguration() {
+        return imageDataSourceConfiguration;
+    }
+
+    /**
+     * @param imageDataSourceConfiguration the imageDataSourceConfiguration to set
+     */
+    public void setImageDataSourceConfiguration(ImageDataSourceConfiguration imageDataSourceConfiguration) {
+        this.imageDataSourceConfiguration = imageDataSourceConfiguration;
     }
 }

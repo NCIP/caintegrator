@@ -120,12 +120,6 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
             ImageDataSourceConfiguration config2 = retrieved.getImageDataSources().get(i);
             ImageDataSourceConfigurationGenerator.INSTANCE.compare(config1, config2);
         }
-        assertEquals(original.getImageAnnotationConfigurations().size(), retrieved.getImageAnnotationConfigurations().size());
-        for (int i = 0; i < original.getImageAnnotationConfigurations().size(); i++) {
-            ImageAnnotationConfiguration config1 = original.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfiguration config2 = retrieved.getImageAnnotationConfigurations().get(i);
-            ImageAnnotationConfigurationGenerator.INSTANCE.compare(config1, config2);
-        }
     }
 
     @Override

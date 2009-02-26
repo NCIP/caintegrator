@@ -136,13 +136,15 @@ public class ImageAnnotationHandler extends AbstractAnnotationHandler {
     @Override
     void handleAnnotationValue(AbstractAnnotationValue annotationValue, String timepointValue) {
         handleAnnotationValue(annotationValue);
-        Timepoint timepoint = imageAnnotationConfiguration.getStudyConfiguration().getOrCreateTimepoint(timepointValue);
+        Timepoint timepoint = imageAnnotationConfiguration.getImageDataSourceConfiguration()
+            .getStudyConfiguration().getOrCreateTimepoint(timepointValue);
         currentImageSeries.getImageStudy().setTimepoint(timepoint);
     }
 
     @Override
     void addDefinitionsToStudy(Set<AnnotationDefinition> annotationDefinitions) {
-        Study study = imageAnnotationConfiguration.getStudyConfiguration().getStudy();
+        Study study = imageAnnotationConfiguration.getImageDataSourceConfiguration()
+            .getStudyConfiguration().getStudy();
         if (study.getImageSeriesAnnotationCollection() == null) {
             study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         }

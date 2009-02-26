@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -170,9 +171,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         loadSamples();
         mapSamples();
         loadControlSamples();
-        loadImages();
+        ImageDataSourceConfiguration imageSource = loadImages();
         mapImages();
-        loadImageAnnotation();
+        loadImageAnnotation(imageSource);
         deploy();
         checkArrayData();
         checkQueries();
@@ -226,15 +227,19 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected String getNCIAServerUrl();
     
-    private void loadImages() throws ConnectionException {
+    private ImageDataSourceConfiguration loadImages() throws ConnectionException {
         if (getLoadImages()) {
             logStart();
             ImageDataSourceConfiguration imageSource = new ImageDataSourceConfiguration();
             imageSource.getServerProfile().setUrl(getNCIAServerUrl());
-            imageSource.setTrialDataProvenance(getNCIATrialId());
+            imageSource.getServerProfile().setHostname(Cai2Util.getHostNameFromUrl(getNCIAServerUrl()));
+            imageSource.setCollectionName(getNCIATrialId());
+            imageSource.setMappingFileName(getImageAnnotationFile().getName());
             service.addImageSource(studyConfiguration, imageSource);
             logEnd();
+            return imageSource;
         }
+        return null;
     }
 
     protected boolean getLoadImages() {
@@ -243,12 +248,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected String getNCIATrialId();
 
-    private void loadImageAnnotation() throws ValidationException, IOException {
+    private void loadImageAnnotation(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getLoadImageAnnotation()) {
             logStart();
             ImageAnnotationConfiguration imageAnnotationConfiguration = 
-                service.addImageAnnotationFile(studyConfiguration, getImageAnnotationFile(), 
+                service.addImageAnnotationFile(imageSource, getImageAnnotationFile(), 
                         getImageAnnotationFile().getName());
+            imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
             service.loadImageAnnotation(studyConfiguration);
             logEnd();

@@ -25,10 +25,10 @@
     <tr>
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imageAnnotationConfiguration.id" />
-        <s:textfield label=" NCIA Server Grid URL " name="hostname" />
+        <s:textfield label=" NCIA Server Grid URL " name="url" />
         <s:textfield label=" NCIA Username " name="imageSourceConfiguration.serverProfile.username" />
         <s:password label=" NCIA Password " name="imageSourceConfiguration.serverProfile.password" />
-        <s:textfield label=" Protocol Id " name="protocolId" />
+        <s:textfield label=" Collection Name " name="collectionName" />
         
     </tr>
       

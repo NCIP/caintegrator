@@ -222,7 +222,7 @@ public interface StudyManagementService {
      * Adds an image series annotation file to the study. The file given will be copied to permanent storage 
      * allowing the file provided as an argument to be removed after completion of this method.
      * 
-     * @param studyConfiguration add the annotation file to this study
+     * @param imageDataSourceConfiguration add the annotation file to this image data source
      * @param annotationFile annotation file to add.
      * @param filename the name with which the annotation file should be stored 
      *        (allows for the use of files with temp names as input)
@@ -230,7 +230,7 @@ public interface StudyManagementService {
      * @throws ValidationException if the file was not a valid annotation file.
      * @throws IOException if the annotation file couldn't be copied to permanent storage.
      */
-    ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration, 
+    ImageAnnotationConfiguration addImageAnnotationFile(ImageDataSourceConfiguration imageDataSourceConfiguration, 
             File annotationFile, String filename) throws ValidationException, IOException;
 
     /**

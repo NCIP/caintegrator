@@ -109,6 +109,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
 
 /**
@@ -329,6 +330,25 @@ public final class Cai2Util {
             out.closeEntry();
             in.close();
         }
-    } 
+    }
+    
+    /**
+     * Extract the host name from the url.
+     * 
+     * @param url
+     *            the url
+     * @return the host name
+     */
+    public static String getHostNameFromUrl(String url) {
+        if (StringUtils.isEmpty(url)) {
+            return null;
+        } else {
+            try {
+                return url.split("/")[2];
+            } catch (Exception e) {
+                return null; // Error parsing url.
+            }
+        }
+    }
 
 }

@@ -210,63 +210,79 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="4">Imaging Data Sources</th>
+            <th colspan="5">Imaging Data Sources</th>
         </tr>
         <tr>
-            <th>Type</th>
-            <th>Description</th>
+            <th>Host Name</th>
+            <th>Collection Name</th>
+            <th>File Description</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
-        <s:iterator value="studyConfiguration.imageAnnotationConfigurations" status="status">
+        <s:iterator value="studyConfiguration.imageDataSources" status="status">
             <s:if test="#status.odd == true">
              <tr class="odd">
             </s:if>
             <s:else>
               <tr class="even">
             </s:else>            
-            <td><s:property value="type" /></td>
-            <td><s:property value="description" /></td>
+            <td><s:property value="serverProfile.hostname" /></td>
+            <td><s:property value="collectionName" /></td>
             <td>
-                <s:if test="%{!loadable}">
-                            Definition Incomplete
+                <i>Annotation:</i> 
+                <s:if test="%{imageAnnotationConfiguration != null}">
+                    <s:property value="imageAnnotationConfiguration.annotationFile.file.name" />
                 </s:if>
                 <s:else>
-                    <s:if test="%{currentlyLoaded}">
-                            Loaded
-                    </s:if>
-                    <s:else>
-                            Not Loaded
-                    </s:else>
-                </s:else>  
+                    None
+                </s:else>
+                <br><i>Mapping:</i> <s:property value="mappingFileName" />
             </td>
             <td>
-                <s:url id="editImagingSource" action="editImagingSource">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="imageAnnotationConfiguration.id" value="id" />
-                </s:url> 
-                <s:a href="%{editImagingSource}">Edit</s:a> 
-                <s:if test="%{loadable}" > |
-                    <s:url id="loadImagingSource" action="loadImagingSource">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imageSourceConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{loadImagingSource}">
-                    
-                        <s:if test="%{!currentlyLoaded}">
-                            Load All Imaging
+                <s:if test="%{imageAnnotationConfiguration != null}">
+                    <s:if test="%{!imageAnnotationConfiguration.loadable}">
+                            Definition Incomplete
+                    </s:if>
+                    <s:else>
+                        <s:if test="%{imageAnnotationConfiguration.currentlyLoaded}">
+                            Loaded
                         </s:if>
                         <s:else>
-                            Reload All Imaging
+                            Not Loaded
                         </s:else>
-                    
-                    </s:a> 
+                    </s:else>
+                </s:if>
+                <s:else>
+                    Loaded
+                </s:else>
+            </td>
+            <td>
+                <s:if test="%{imageAnnotationConfiguration != null}">
+                    <s:url id="editImagingSource" action="editImagingSource">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="imageAnnotationConfiguration.id" value="imageAnnotationConfiguration.id" />
+                    </s:url> 
+                    <s:a href="%{editImagingSource}">Edit</s:a> 
+                    <s:if test="%{imageAnnotationConfiguration.loadable}" > |
+                        <s:url id="loadImagingSource" action="loadImagingSource">
+                            <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                            <s:param name="imageSourceConfiguration.id" value="id" />
+                        </s:url> 
+                        <s:a href="%{loadImagingSource}">
+                            <s:if test="%{!imageAnnotationConfiguration.currentlyLoaded}">
+                                Load All Imaging
+                            </s:if>
+                            <s:else>
+                                Reload All Imaging
+                            </s:else>
+                        </s:a> 
+                    </s:if>
                 </s:if>
             </td>
         </tr>
         </s:iterator>
         <tr>
-            <th colspan="4"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
+            <th colspan="5"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
         </tr>
     </table>
     </s:form>
