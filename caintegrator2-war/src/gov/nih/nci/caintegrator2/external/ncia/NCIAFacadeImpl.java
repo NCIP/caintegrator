@@ -115,22 +115,22 @@ public class NCIAFacadeImpl implements NCIAFacade {
     /**
      * {@inheritDoc}
      */
-    public List<String> getAllTrialDataProvenanceProjects(ServerConnectionProfile profile) 
+    public List<String> getAllCollectionNameProjects(ServerConnectionProfile profile) 
     throws ConnectionException {
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
-        return client.retrieveAllTrialDataProvenanceProjects();
+        return client.retrieveAllCollectionNameProjects();
     }
     
     /**
      * {@inheritDoc}
      */
-    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject, 
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject, 
             ServerConnectionProfile profile) throws ConnectionException {
-        LOGGER.info("Retrieving ImageSeriesAcquisitions for " + trialDataProvenanceProject);
+        LOGGER.info("Retrieving ImageSeriesAcquisitions for " + collectionNameProject);
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
         List<Patient> patientCollection = 
-            client.retrievePatientCollectionFromDataProvenanceProject(trialDataProvenanceProject);
+            client.retrievePatientCollectionFromCollectionNameProject(collectionNameProject);
         for (Patient patient : patientCollection) {
             imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
         }

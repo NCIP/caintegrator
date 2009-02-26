@@ -115,8 +115,6 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
         new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
-    private List<ImageAnnotationConfiguration> imageAnnotationConfigurations = 
-        new ArrayList<ImageAnnotationConfiguration>();
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
     private StudyLogo studyLogo;
 
@@ -315,21 +313,6 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
             }
         }
         return samples;
-    }
-
-    /**
-     * @return the imageAnnotationConfigurations
-     */
-    public List<ImageAnnotationConfiguration> getImageAnnotationConfigurations() {
-        return imageAnnotationConfigurations;
-    }
-
-    /**
-     * @param imageAnnotationConfigurations the imageAnnotationConfigurations to set
-     */
-    @SuppressWarnings("unused")
-    private void setImageAnnotationConfigurations(List<ImageAnnotationConfiguration> imageAnnotationConfigurations) {
-        this.imageAnnotationConfigurations = imageAnnotationConfigurations;
     }
 
     /**

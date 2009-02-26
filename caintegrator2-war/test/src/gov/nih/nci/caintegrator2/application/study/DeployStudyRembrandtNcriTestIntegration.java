@@ -158,7 +158,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     protected String getNCIAServerUrl() {
-        return "http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
+        return "http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService";
     }
     
     @Override

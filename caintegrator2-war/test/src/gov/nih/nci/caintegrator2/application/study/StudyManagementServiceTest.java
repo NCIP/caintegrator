@@ -441,24 +441,27 @@ public class StudyManagementServiceTest {
     }
 
     @Test
-    public void testAddImageAnnotationFile() throws ValidationException, IOException {
+    public void testAddImageAnnotationFile() throws ValidationException, IOException, ConnectionException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            studyManagementService.addImageAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
-        assertTrue(studyConfiguration.getImageAnnotationConfigurations().contains(imageAnnotationConfiguration));
-        assertEquals(1, studyConfiguration.getImageAnnotationConfigurations().size());
-        assertTrue(studyConfiguration.getImageAnnotationConfigurations().contains(imageAnnotationConfiguration));
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         assertEquals(4, imageAnnotationConfiguration.getAnnotationFile().getColumns().size());
         assertTrue(daoStub.saveCalled);
     }
 
     @Test
-    public void testAddImageSource() throws ConnectionException {
+    public void testAddImageSource() throws ConnectionException, ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
         studyManagementService.addImageSource(studyConfiguration, imageDataSourceConfiguration);
-        imageDataSourceConfiguration.setId(Long.valueOf(1));        
+        imageDataSourceConfiguration.setId(Long.valueOf(1));
+        ImageAnnotationConfiguration imageAnnotationConfiguration = 
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+        imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
+        assertEquals(4, imageDataSourceConfiguration.getImageAnnotationConfiguration().getAnnotationFile().getColumns().size());
         assertTrue(studyConfiguration.getImageDataSources().contains(imageDataSourceConfiguration));
         assertTrue(daoStub.saveCalled);
         assertFalse(imageDataSourceConfiguration.getImageSeriesAcquisitions().isEmpty());
@@ -481,7 +484,7 @@ public class StudyManagementServiceTest {
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
-            studyManagementService.addImageAnnotationFile(studyConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
+            studyManagementService.addImageAnnotationFile(imageDataSourceConfiguration, TestDataFiles.VALID_FILE, TestDataFiles.VALID_FILE.getName());
         imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
         AnnotationDefinition definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.NUMERIC.getValue());
@@ -492,6 +495,7 @@ public class StudyManagementServiceTest {
         definition = new AnnotationDefinition();
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
+        imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
         studyManagementService.loadImageAnnotation(studyConfiguration); 
         assertEquals(3, series1.getAnnotationCollection().size());
         assertEquals(3, series2.getAnnotationCollection().size());

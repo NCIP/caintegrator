@@ -574,14 +574,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the nciaBasket
      */
     public String getNciaBasketUrl() {
-        return "https://" + getNciaServer() + "/ncia/externalDataBasketDisplay.jsf";
-    }
-    
-    private String getNciaServer() {
         ImageDataSourceConfiguration dataSource = studyManagementService.retrieveImageDataSource(getStudy());
-        if (dataSource.getServerProfile().getUrl() != null) {
-            return dataSource.getServerProfile().getUrl().split("/")[2];
-        }
-        return null;
+       return "https://" + dataSource.getServerProfile().getHostname() + "/ncia/externalDataBasketDisplay.jsf";
     }
 }

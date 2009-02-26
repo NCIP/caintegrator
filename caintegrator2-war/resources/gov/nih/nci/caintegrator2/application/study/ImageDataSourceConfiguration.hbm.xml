@@ -14,7 +14,14 @@
             insert="false"
             update="false"/>
         
-        <many-to-one name="serverProfile" class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile" column="SERVER_CONNECTION_PROFILE_ID"
+        <many-to-one name="imageAnnotationConfiguration" 
+            class="gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration" 
+            column="IMAGE_ANNOTATION_CONFIGURATION_ID"
+            unique="true" not-null="false" lazy="proxy" cascade="all" />
+        
+        <many-to-one name="serverProfile"
+            class="gov.nih.nci.caintegrator2.external.ServerConnectionProfile"
+            column="SERVER_CONNECTION_PROFILE_ID"
             lazy="proxy" cascade="all" />
                    
         <list name="imageSeriesAcquisitions" lazy="true" cascade="all">
@@ -24,7 +31,8 @@
             <one-to-many class="gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition" />
         </list>
             
-        <property name="trialDataProvenance" type="string" column="TRIAL_DATA_PROVENANCE"/>
+        <property name="collectionName" type="string" column="COLLECTION_NAME"/>
+        <property name="mappingFileName" type="string" column="MAPPING_FILE_NAME"/>
         
 	</class>
 </hibernate-mapping>

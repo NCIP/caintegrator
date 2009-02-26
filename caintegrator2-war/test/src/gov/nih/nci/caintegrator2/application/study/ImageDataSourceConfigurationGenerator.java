@@ -96,7 +96,7 @@ public class ImageDataSourceConfigurationGenerator extends AbstractTestDataGener
     @Override
     public void compareFields(ImageDataSourceConfiguration original, ImageDataSourceConfiguration retrieved) {
         assertEquals(original.getStudyConfiguration(), retrieved.getStudyConfiguration());
-        assertEquals(original.getTrialDataProvenance(), retrieved.getTrialDataProvenance());
+        assertEquals(original.getCollectionName(), retrieved.getCollectionName());
         assertEquals(original.getImageSeriesAcquisitions().size(), retrieved.getImageSeriesAcquisitions().size());
         for (int i = 0; i < original.getImageSeriesAcquisitions().size(); i++) {
             ImageSeriesAcquisitionGenerator.INSTANCE.compare(original.getImageSeriesAcquisitions().get(i), retrieved.getImageSeriesAcquisitions().get(i));
@@ -111,7 +111,7 @@ public class ImageDataSourceConfigurationGenerator extends AbstractTestDataGener
 
     @Override
     public void setValues(ImageDataSourceConfiguration config) {
-        config.setTrialDataProvenance(getUniqueString());
+        config.setCollectionName(getUniqueString());
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile());
         config.getImageSeriesAcquisitions().clear();
         for (int i = 0; i < 3; i++) {

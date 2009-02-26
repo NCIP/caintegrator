@@ -8,14 +8,13 @@
 			<generator class="native" />
 		</id>
         
-        <many-to-one name="studyConfiguration" 
-            class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration" 
-            column="STUDY_CONFIGURATION_ID"
-            not-null="true"
-            insert="false"
-            update="false"/>
+        <many-to-one name="imageDataSourceConfiguration" 
+            class="gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration" 
+            column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" lazy="proxy" cascade="all" />
         
-        <many-to-one name="annotationFile" class="gov.nih.nci.caintegrator2.application.study.AnnotationFile" column="ANNOTATION_FILE_ID" lazy="proxy" cascade="all"/>        
+        <many-to-one name="annotationFile"
+            class="gov.nih.nci.caintegrator2.application.study.AnnotationFile"
+            column="ANNOTATION_FILE_ID" lazy="proxy" cascade="all"/>        
         
 	</class>
 </hibernate-mapping>
