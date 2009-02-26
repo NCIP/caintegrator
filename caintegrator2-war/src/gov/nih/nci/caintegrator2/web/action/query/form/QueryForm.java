@@ -135,8 +135,6 @@ public class QueryForm {
     private void initialize() {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
-            Cai2Util.loadCollection(study.getStudyConfiguration().getGenomicDataSources());
-            Cai2Util.loadCollection(study.getStudyConfiguration().getImageDataSources());
             Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
             clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection(), true);
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
@@ -285,5 +283,12 @@ public class QueryForm {
      */
     public void setOrgQueryName(String orgQueryName) {
         this.orgQueryName = orgQueryName;
+    }
+    
+    /**
+     * @return boolean of has image mapping data
+     */
+    public boolean hasImageDataSources() {
+        return query.getSubscription().getStudy().hasImageDataSources();
     }
 }

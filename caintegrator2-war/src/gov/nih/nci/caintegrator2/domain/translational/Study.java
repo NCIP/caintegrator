@@ -244,6 +244,14 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the boolean of whether the study has Image data 
+     */
+    public boolean hasImageDataSources() {
+        return studyConfiguration != null
+            && studyConfiguration.hasImageDataSources();
+    }
+
+    /**
      * @return the boolean of whether the study has ImageSeries data 
      */
     public boolean hasImageSeriesData() {

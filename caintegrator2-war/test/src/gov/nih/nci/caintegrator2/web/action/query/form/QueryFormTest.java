@@ -617,6 +617,8 @@ public class QueryFormTest {
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
+        
+        assertFalse(queryForm.hasImageDataSources());
     }
 
     @Test
