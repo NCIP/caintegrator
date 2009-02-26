@@ -198,7 +198,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null checks
     private void handleCheckedRowForImageStudy(NCIAImageAggregator imageAggregator, DisplayableResultRow row) {
         StudySubjectAssignment studySubjectAssignment = row.getSubjectAssignment();
-        if (studySubjectAssignment != null && studySubjectAssignment != null) {
+        if (studySubjectAssignment != null) {
             studySubjectAssignment = dao.get(row.getSubjectAssignment().getId(), StudySubjectAssignment.class);
         }
         if (studySubjectAssignment != null 
