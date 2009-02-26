@@ -61,8 +61,8 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     /**
      * {@inheritDoc}
      */
-    public List<String> retrieveAllTrialDataProvenanceProjects() throws ConnectionException {
-        List<String> trialDataProvenanceProjectsCollection = new ArrayList<String>();
+    public List<String> retrieveAllCollectionNameProjects() throws ConnectionException {
+        List<String> collectionNameProjectsCollection = new ArrayList<String>();
         final CQLQuery query = new CQLQuery();
         Object target = new Object();
         target.setName("gov.nih.nci.ncia.domain.TrialDataProvenance");
@@ -79,20 +79,20 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
             while (iter2.hasNext()) {
                 TargetAttribute[] obj = (TargetAttribute[]) iter2.next();
                 //LOGGER.info(obj[0].getValue());
-                trialDataProvenanceProjectsCollection.add(obj[0].getValue());
+                collectionNameProjectsCollection.add(obj[0].getValue());
             }
         } 
-        return trialDataProvenanceProjectsCollection;
+        return collectionNameProjectsCollection;
     }
     
     /**
      * {@inheritDoc}
      */
-    public List<Patient> retrievePatientCollectionFromDataProvenanceProject(String provenanceProject) 
+    public List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject) 
     throws ConnectionException {
         List<Patient> patientsCollection = new ArrayList<Patient>();
 
-        Attribute att = retrieveAttribute("project", Predicate.EQUAL_TO, provenanceProject);
+        Attribute att = retrieveAttribute("project", Predicate.EQUAL_TO, collectionNameProject);
 
         Association assoc = retrieveAssociation("gov.nih.nci.ncia.domain.TrialDataProvenance", "dataProvenance", att);
 

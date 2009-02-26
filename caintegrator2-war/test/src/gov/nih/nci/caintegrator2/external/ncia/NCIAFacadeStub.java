@@ -106,14 +106,14 @@ public class NCIAFacadeStub implements NCIAFacade {
     /**
      * {@inheritDoc}
      */
-    public List<String> getAllTrialDataProvenanceProjects(ServerConnectionProfile profile) throws ConnectionException {
+    public List<String> getAllCollectionNameProjects(ServerConnectionProfile profile) throws ConnectionException {
         return Collections.emptyList();
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String trialDataProvenanceProject,
+    public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject,
             ServerConnectionProfile profile) throws ConnectionException {
         List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>();
         acquisitions.add(new ImageSeriesAcquisition());

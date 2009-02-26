@@ -90,6 +90,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.io.File;
@@ -107,10 +108,10 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     private String imageAnnotationFileFileName;
     private String imageClinicalMappingFileContentType;
     private String imageClinicalMappingFileFileName;
-    private String hostname;
+    private String url;
     private String username;
     private String password;
-    private String protocolId;
+    private String collectionName;
 
     /**
      * {@inheritDoc}
@@ -126,18 +127,14 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
     @Override
     public String execute() {
         try {
-            ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
-            imageSourceConfiguration.getServerProfile().setUrl(getHostname());
-            imageSourceConfiguration.setTrialDataProvenance(getProtocolId());
-            imageSourceConfiguration.setStudyConfiguration(this.getStudyConfiguration());
-            setImageSourceConfiguration(imageSourceConfiguration);
+            buildDataSourceConfiguration();
             getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSourceConfiguration());
             if (imageAnnotationFile !=  null) {
                 ImageAnnotationConfiguration imageAnnotationConfiguration = 
-                        getStudyManagementService().addImageAnnotationFile(getStudyConfiguration(),
-                                getImageAnnotationFile(), 
-                getImageAnnotationFileFileName());
+                        getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
+                                getImageAnnotationFile(), getImageAnnotationFileFileName());
                 setImageAnnotationConfiguration(imageAnnotationConfiguration);
+                getImageSourceConfiguration().setImageAnnotationConfiguration(getImageAnnotationConfiguration());
             }
             getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
                     getImageClinicalMappingFile()); 
@@ -153,11 +150,21 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
         }
     }
     
+    private void buildDataSourceConfiguration() {
+        ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
+
+        imageSourceConfiguration.getServerProfile().setUrl(getUrl());
+        imageSourceConfiguration.getServerProfile().setHostname(Cai2Util.getHostNameFromUrl(getUrl()));
+        imageSourceConfiguration.setCollectionName(getCollectionName());
+        imageSourceConfiguration.setMappingFileName(getImageClinicalMappingFileFileName());
+        setImageSourceConfiguration(imageSourceConfiguration);
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
-public void validate() {
+    public void validate() {
         if (imageClinicalMappingFile == null) {
             addFieldError("imageClinicalMappingFile", "Image to Clinical Mapping File is required");
         }
@@ -237,31 +244,31 @@ public void setPassword(String password) {
 }
 
 /**
- * @return the protocolId
+ * @return the collectionName
  */
-public String getProtocolId() {
-    return protocolId;
+public String getCollectionName() {
+    return collectionName;
 }
 
 /**
- * @param protocolId the protocolId to set
+ * @param collectionName the collectionName to set
  */
-public void setProtocolId(String protocolId) {
-    this.protocolId = protocolId;
+public void setCollectionName(String collectionName) {
+    this.collectionName = collectionName;
 }
 
 /**
- * @return the hostname
+ * @return the url
  */
-public String getHostname() {
-    return hostname;
+public String getUrl() {
+    return url;
 }
 
 /**
- * @param hostname the hostname to set
+ * @param url the url to set
  */
-public void setHostname(String hostname) {
-    this.hostname = hostname;
+public void setUrl(String url) {
+    this.url = url;
 }
 
 /**

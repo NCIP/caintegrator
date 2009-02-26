@@ -139,7 +139,7 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
         }
 
         
-        public List<Patient> retrievePatientCollectionFromDataProvenanceProject(String provenanceProject)
+        public List<Patient> retrievePatientCollectionFromCollectionNameProject(String provenanceProject)
                 throws ConnectionException {
             Patient p = new Patient();
             p.setPatientId("PATIENTID");
@@ -150,7 +150,7 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
         }
 
         
-        public List<String> retrieveAllTrialDataProvenanceProjects() throws ConnectionException {
+        public List<String> retrieveAllCollectionNameProjects() throws ConnectionException {
             List<String> projects = new ArrayList<String>();
             projects.add("Project1");
             projects.add("Project2");

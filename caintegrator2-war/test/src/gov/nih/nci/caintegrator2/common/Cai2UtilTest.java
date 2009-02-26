@@ -243,4 +243,15 @@ public class Cai2UtilTest {
         assertFalse(tempDirectory.exists());
         zippedDirectory.deleteOnExit();
     }
+    
+    @Test
+    public void testGetHostNameFromUrl() {
+        String url = "https://imaging-dev.nci.nih.gov/ncia/externalDataBasketDisplay.jsf";
+        assertEquals("imaging-dev.nci.nih.gov", Cai2Util.getHostNameFromUrl(url));
+        assertNull(Cai2Util.getHostNameFromUrl(null));
+        assertNull(Cai2Util.getHostNameFromUrl(""));
+        assertNull(Cai2Util.getHostNameFromUrl("abc"));
+
+        
+    }
 }

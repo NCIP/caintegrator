@@ -99,9 +99,11 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
     private StudyConfiguration studyConfiguration;
+    private ImageAnnotationConfiguration imageAnnotationConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
-    private String trialDataProvenance;
+    private String collectionName;
+    private String mappingFileName;
     
     /**
      * @return the studyConfiguration
@@ -133,17 +135,17 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the trialDataProvenance
+     * @return the collectionName
      */
-    public String getTrialDataProvenance() {
-        return trialDataProvenance;
+    public String getCollectionName() {
+        return collectionName;
     }
 
     /**
-     * @param trialDataProvenance the trialDataProvenance to set
+     * @param collectionName the collectionName to set
      */
-    public void setTrialDataProvenance(String trialDataProvenance) {
-        this.trialDataProvenance = trialDataProvenance;
+    public void setCollectionName(String collectionName) {
+        this.collectionName = collectionName;
     }
 
     /**
@@ -159,6 +161,34 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused")
     private void setImageSeriesAcquisitions(List<ImageSeriesAcquisition> imageSeriesAcquisitions) {
         this.imageSeriesAcquisitions = imageSeriesAcquisitions;
+    }
+
+    /**
+     * @return the mappingFileName
+     */
+    public String getMappingFileName() {
+        return mappingFileName;
+    }
+
+    /**
+     * @param mappingFileName the fileName to set
+     */
+    public void setMappingFileName(String mappingFileName) {
+        this.mappingFileName = mappingFileName;
+    }
+
+    /**
+     * @return the imageAnnotationConfiguration
+     */
+    public ImageAnnotationConfiguration getImageAnnotationConfiguration() {
+        return imageAnnotationConfiguration;
+    }
+
+    /**
+     * @param imageAnnotationConfiguration the imageAnnotationConfiguration to set
+     */
+    public void setImageAnnotationConfiguration(ImageAnnotationConfiguration imageAnnotationConfiguration) {
+        this.imageAnnotationConfiguration = imageAnnotationConfiguration;
     }
 
 }

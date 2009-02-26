@@ -36,13 +36,6 @@
             <one-to-many class="gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration"/>
         </list>
     
-        <list name="imageAnnotationConfigurations" lazy="true" cascade="all">
-            <cache usage="read-write" />
-            <key column="STUDY_CONFIGURATION_ID" not-null="true"/>
-            <list-index column="LIST_INDEX"/>
-            <one-to-many class="gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration"/>
-        </list>
-    
         <list name="imageDataSources" lazy="true" cascade="all">
             <cache usage="read-write" />
             <key column="STUDY_CONFIGURATION_ID" not-null="true"/>

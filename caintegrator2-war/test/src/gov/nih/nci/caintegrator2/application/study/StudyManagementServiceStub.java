@@ -260,7 +260,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
     }
     
-    public ImageAnnotationConfiguration addImageAnnotationFile(StudyConfiguration studyConfiguration,
+    public ImageAnnotationConfiguration addImageAnnotationFile(ImageDataSourceConfiguration imageDataSourceConfiguration,
             File annotationFile, String filename) throws ValidationException, IOException {
         if (TestDataFiles.INVALID_FILE_MISSING_VALUE.equals(annotationFile)) {
             throw new ValidationException(new ValidationResult());

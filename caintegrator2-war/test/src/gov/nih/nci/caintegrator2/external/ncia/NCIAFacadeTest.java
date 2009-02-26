@@ -121,10 +121,10 @@ public class NCIAFacadeTest {
 
 
     @Test
-    public void testGetAllTrialDataProvenanceProjects() throws ConnectionException {
+    public void testGetAllCollectionNameProjects() throws ConnectionException {
         List<String> allProjects;
         
-        allProjects = nciaFacade.getAllTrialDataProvenanceProjects(connection);
+        allProjects = nciaFacade.getAllCollectionNameProjects(connection);
         if (!allProjects.isEmpty()) {
             LOGGER.info("Retrieve Projects PASSED - " + allProjects.size() + " projects found.");
             assertEquals("Project1", allProjects.get(0));
@@ -139,10 +139,10 @@ public class NCIAFacadeTest {
 
     @Test
     public void testGetImageSeriesAcquisition() throws ConnectionException {
-        String trialDataProvenanceProject = "RIDER";
+        String collectionNameProject = "RIDER";
         List<ImageSeriesAcquisition> imageStudies;
         
-        imageStudies = nciaFacade.getImageSeriesAcquisitions(trialDataProvenanceProject, connection);
+        imageStudies = nciaFacade.getImageSeriesAcquisitions(collectionNameProject, connection);
         if (!imageStudies.isEmpty()){
             LOGGER.info("Retrieve ImageSeriesAcquisition PASSED - " + imageStudies.size() + " were found.");
         } else {

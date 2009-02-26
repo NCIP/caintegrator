@@ -99,19 +99,19 @@ import java.util.List;
 public interface NCIASearchService {
 
     /**
-     * Retrieves a list of all different Projects from the TrialDataProvenance object.
+     * Retrieves a list of all different Projects from the CollectionName object.
      * @return List of Projects in String format.
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<String> retrieveAllTrialDataProvenanceProjects() throws ConnectionException;
+    List<String> retrieveAllCollectionNameProjects() throws ConnectionException;
 
     /**
      * Retrieves a list of all Patients given an Project.
-     * @param provenanceProject project to find the patients of.
+     * @param collectionNameProject project to find the patients of.
      * @return List of Patients
      * @throws ConnectionException if there's a problem connecting to the NCIA server.
      */
-    List<Patient> retrievePatientCollectionFromDataProvenanceProject(String provenanceProject)
+    List<Patient> retrievePatientCollectionFromCollectionNameProject(String collectionNameProject)
             throws ConnectionException;
 
     /**
