@@ -394,11 +394,11 @@ TABLE.data TH.order1 A
 TABLE.data TH.order2 A
 {background: url(../images/arrow_up.gif) no-repeat right; padding-right:16px; }
 TR.odd
-{ background:#dcdcdc }
+{ background:#ffffff }
 TABLE.data TR.odd TD
-{ border-right:1px solid #dcdcdc; }
+{ border-right:1px solid #ffffff; }
 TR.even
-{ background:#fff }
+{ background:#dcdcdc }
 /* TABLE.data tr.over, TABLE.data tr:hover
 {background:#ffffcf url("../../images/bg_row_hilite.gif") repeat-x top; cursor:pointer } */
 TABLE.data TH A
