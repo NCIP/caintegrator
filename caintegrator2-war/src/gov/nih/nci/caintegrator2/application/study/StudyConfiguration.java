@@ -404,6 +404,13 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the boolean of whether the study has Image data 
+     */
+    public boolean hasImageDataSources() {
+        return !imageDataSources.isEmpty();
+    }
+
+    /**
      * @return the boolean of whether the study is deployed
      */
     public boolean isDeployed() {
