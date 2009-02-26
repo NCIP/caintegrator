@@ -136,6 +136,7 @@ public class QueryForm {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
             Cai2Util.loadCollection(study.getStudyConfiguration().getGenomicDataSources());
+            Cai2Util.loadCollection(study.getStudyConfiguration().getImageDataSources());
             Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
             clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection(), true);
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);

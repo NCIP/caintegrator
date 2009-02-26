@@ -234,7 +234,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             imageSource.getServerProfile().setUrl(getNCIAServerUrl());
             imageSource.getServerProfile().setHostname(Cai2Util.getHostNameFromUrl(getNCIAServerUrl()));
             imageSource.setCollectionName(getNCIATrialId());
-            imageSource.setMappingFileName(getImageAnnotationFile().getName());
+            imageSource.setMappingFileName(getImageMappingFile().getName());
             service.addImageSource(studyConfiguration, imageSource);
             logEnd();
             return imageSource;
