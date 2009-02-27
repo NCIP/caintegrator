@@ -449,7 +449,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
         StringAnnotationValue annotationValue = new StringAnnotationValue();
         annotationValue.setStringValue(value);
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
-        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
 
@@ -462,7 +461,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
-        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
     
@@ -483,7 +481,6 @@ public class AnnotationFile extends AbstractCaIntegrator2Object {
             throwValidationException(createFormatErrorMsg(annotationDescriptor, value));
         }
         annotationValue.setAnnotationDefinition(annotationDescriptor.getDefinition());
-        annotationDescriptor.getAnnotationValues().add(annotationValue);
         return annotationValue;
     }
 
