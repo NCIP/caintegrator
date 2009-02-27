@@ -86,11 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Contains the information about a particular annotation field prior to association to an 
@@ -103,7 +99,6 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
     private AnnotationFieldType type;
     private AnnotationDefinition definition;
     private Boolean shownInBrowse = false;
-    private Set<AbstractAnnotationValue> annotationValues = new HashSet<AbstractAnnotationValue>();
 
     /**
      * @return the name
@@ -159,18 +154,6 @@ public class AnnotationFieldDescriptor extends AbstractCaIntegrator2Object {
      */
     public void setShownInBrowse(Boolean shownInBrowse) {
         this.shownInBrowse = shownInBrowse;
-    }
-
-    /**
-     * @return the annotationValues
-     */
-    public Set<AbstractAnnotationValue> getAnnotationValues() {
-        return annotationValues;
-    }
-
-    @SuppressWarnings("unused") // Used by Hibernate
-    private void setAnnotationValues(Set<AbstractAnnotationValue> annotationValues) {
-        this.annotationValues = annotationValues;
     }
 
 }
