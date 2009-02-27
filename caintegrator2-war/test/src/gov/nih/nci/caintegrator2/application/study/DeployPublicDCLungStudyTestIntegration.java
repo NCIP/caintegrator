@@ -137,22 +137,22 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected String getCaArrayHostname() {
-        return "array-qa-vm.nci.nih.gov";
+        return "array-stage.nci.nih.gov";
     }
 
     @Override
     protected String getCaArrayId() {
-        return "liu-00133";
+        return "liu-00216";
     }
 
     @Override
     protected int getExpectedSampleCount() {
-        return 443;
+        return 101;
     }
 
     @Override
     protected int getExpectedMappedSampleCount() {
-        return 439;
+        return 101;
     }
 
     @Override
