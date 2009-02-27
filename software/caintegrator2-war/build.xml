@@ -867,23 +867,6 @@
              </batchtest>
          </junit>
     </target>
-
-    <target name="deploy:dc-lung" depends="test:compile:caintegrator2.war.test.classes,
-        caintegrator2.war,
-        hibernate.cfg.xml.test,
-        database:reinitialize">
-        <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
-             <classpath>
-                 <pathelement path="${caintegrator2.war.test.dependencies.path}" />
-             </classpath>
-             <formatter type="xml" />
-             <batchtest todir="${caintegrator2.war.target.dir}/junit">
-                 <fileset dir="${caintegrator2.war.test.src.dir}">
-                     <include name="**/DeployDCLungStudyTestIntegration.java" />
-                 </fileset>
-             </batchtest>
-         </junit>
-    </target>
     
     <target name="deploy:dc-lung-public" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,

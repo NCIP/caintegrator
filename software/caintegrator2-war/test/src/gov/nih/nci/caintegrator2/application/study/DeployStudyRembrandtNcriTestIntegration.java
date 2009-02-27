@@ -168,7 +168,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     protected String getStudyName() {
-        return "Rembrandt with NCRI Study";
+        return "Rembrandt with NCRI";
     }
 
     @Override
