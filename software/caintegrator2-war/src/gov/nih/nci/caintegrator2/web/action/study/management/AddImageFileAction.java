@@ -133,8 +133,7 @@ public class AddImageFileAction extends AbstractImagingSourceAction {
                 ImageAnnotationConfiguration imageAnnotationConfiguration = 
                         getStudyManagementService().addImageAnnotationFile(getImageSourceConfiguration(),
                                 getImageAnnotationFile(), getImageAnnotationFileFileName());
-                setImageAnnotationConfiguration(imageAnnotationConfiguration);
-                getImageSourceConfiguration().setImageAnnotationConfiguration(getImageAnnotationConfiguration());
+                getImageSourceConfiguration().setImageAnnotationConfiguration(imageAnnotationConfiguration);
             }
             getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
                     getImageClinicalMappingFile()); 
