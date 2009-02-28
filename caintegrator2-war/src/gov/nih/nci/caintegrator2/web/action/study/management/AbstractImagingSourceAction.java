@@ -86,7 +86,6 @@
 
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 
 /**
@@ -94,8 +93,6 @@ import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
  */
 public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
 
-    private ImageAnnotationConfiguration imageAnnotationConfiguration = new ImageAnnotationConfiguration();
-   
     private ImageDataSourceConfiguration imageSourceConfiguration = new ImageDataSourceConfiguration();
     /**
      * {@inheritDoc}
@@ -106,11 +103,6 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
             setImageSourceConfiguration(
                     getStudyManagementService().getRefreshedStudyEntity(getImageSourceConfiguration()));
         }
-        if (getImageAnnotationConfiguration().getId() != null) {
-            setImageAnnotationConfiguration(
-                    getStudyManagementService().getRefreshedStudyEntity(getImageAnnotationConfiguration()));
-        }
-        
     }
 
 
@@ -127,20 +119,4 @@ public abstract class AbstractImagingSourceAction extends AbstractStudyAction {
     public void setImageSourceConfiguration(ImageDataSourceConfiguration imageSourceConfiguration) {
         this.imageSourceConfiguration = imageSourceConfiguration;
     }
-
-    /**
-     * @return the imageConfiguration
-     */
-    public ImageAnnotationConfiguration getImageAnnotationConfiguration() {
-        return imageAnnotationConfiguration;
-    }
-    /**
-     * @param imageAnnotationConfiguration the imagingSource to set
-     */
-    public void setImageAnnotationConfiguration(ImageAnnotationConfiguration imageAnnotationConfiguration) {
-        this.imageAnnotationConfiguration = imageAnnotationConfiguration;
-    }
-
-
-
 }

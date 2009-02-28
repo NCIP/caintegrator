@@ -24,7 +24,7 @@
     </tr>
     <tr>
         <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="imageAnnotationConfiguration.id" />
+        <s:hidden name="imageSourceConfiguration.id" />
         <s:textfield label=" NCIA Server Grid URL " name="url" />
         <s:textfield label=" NCIA Username " name="imageSourceConfiguration.serverProfile.username" />
         <s:password label=" NCIA Password " name="imageSourceConfiguration.serverProfile.password" />

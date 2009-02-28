@@ -253,7 +253,7 @@
             <result type="redirectAction">
                 <param name="actionName">editImagingSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageAnnotationConfiguration.id">${imageAnnotationConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
             </result>
             <result name="input" type="tiles">editImagingFileColumn</result>
             <result name="error" type="tiles">editImagingFileColumn</result>
@@ -273,7 +273,7 @@
             <result type="redirectAction">
                 <param name="actionName">editImagingSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageAnnotationConfiguration.id">${imageAnnotationConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
             </result>
             <result name="input" type="tiles">editImagingFileColumn</result>
             <result name="error" type="tiles">editImagingFileColumn</result>
@@ -294,7 +294,7 @@
             <result type="redirectAction">
                 <param name="actionName">editImagingSource</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
-                <param name="imageAnnotationConfiguration.id">${imageAnnotationConfiguration.id}</param>
+                <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
             </result>
             <result name="input" type="tiles">editImagingFileColumn</result>
             <result name="error" type="tiles">editImagingFileColumn</result>

@@ -230,8 +230,8 @@
             <td><s:property value="collectionName" /></td>
             <td>
                 <i>Annotation:</i> 
-                <s:if test="%{imageAnnotationConfiguration != null}">
-                    <s:property value="imageAnnotationConfiguration.annotationFile.file.name" />
+                <s:if test="%{imageSourceConfiguration.imageAnnotationConfiguration != null}">
+                    <s:property value="imageSourceConfiguration.imageAnnotationConfiguration.annotationFile.file.name" />
                 </s:if>
                 <s:else>
                     None
@@ -239,12 +239,12 @@
                 <br><i>Mapping:</i> <s:property value="mappingFileName" />
             </td>
             <td>
-                <s:if test="%{imageAnnotationConfiguration != null}">
-                    <s:if test="%{!imageAnnotationConfiguration.loadable}">
+                <s:if test="%{imageSourceConfiguration.imageAnnotationConfiguration != null}">
+                    <s:if test="%{!imageSourceConfiguration.imageAnnotationConfiguration.loadable}">
                             Definition Incomplete
                     </s:if>
                     <s:else>
-                        <s:if test="%{imageAnnotationConfiguration.currentlyLoaded}">
+                        <s:if test="%{imageSourceConfiguration.imageAnnotationConfiguration.currentlyLoaded}">
                             Loaded
                         </s:if>
                         <s:else>
@@ -257,19 +257,19 @@
                 </s:else>
             </td>
             <td>
-                <s:if test="%{imageAnnotationConfiguration != null}">
+                <s:if test="%{imageSourceConfiguration.imageAnnotationConfiguration != null}">
                     <s:url id="editImagingSource" action="editImagingSource">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imageAnnotationConfiguration.id" value="imageAnnotationConfiguration.id" />
+                        <s:param name="imageSourceConfiguration.id" value="imageSourceConfiguration.id" />
                     </s:url> 
                     <s:a href="%{editImagingSource}">Edit</s:a> 
-                    <s:if test="%{imageAnnotationConfiguration.loadable}" > |
+                    <s:if test="%{imageSourceConfiguration.imageAnnotationConfiguration.loadable}" > |
                         <s:url id="loadImagingSource" action="loadImagingSource">
                             <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                             <s:param name="imageSourceConfiguration.id" value="id" />
                         </s:url> 
                         <s:a href="%{loadImagingSource}">
-                            <s:if test="%{!imageAnnotationConfiguration.currentlyLoaded}">
+                            <s:if test="%{!imageSourceConfiguration.imageAnnotationConfiguration.currentlyLoaded}">
                                 Load All Imaging
                             </s:if>
                             <s:else>
