@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query.form;
 
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -135,7 +134,6 @@ public class QueryForm {
     private void initialize() {
         if (query != null) {
             Study study = getQuery().getSubscription().getStudy();
-            Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
             clinicalAnnotations = new AnnotationDefinitionList(study.getSubjectAnnotationCollection(), true);
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
             criteriaGroup = new CriteriaGroup(this);

@@ -40,7 +40,7 @@
 
     <s:form action="saveImagingColumnType">
         <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="imageAnnotationConfiguration.id" />
+        <s:hidden name="imageSourceConfiguration.id" />
         <s:hidden name="fileColumn.id" />
     
         <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
@@ -48,7 +48,7 @@
         
     <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
         <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="imageAnnotationConfiguration.id" />
+        <s:hidden name="imageSourceConfiguration.id" />
         <s:hidden name="fileColumn.id" />
         <s:if test="%{columnTypeAnnotation}">
             <s:if test="%{fileColumn.fieldDescriptor.definition != null}">
@@ -101,7 +101,7 @@
         <h1>Search For an Imaging Annotation Definition: </h1>
         <s:form theme="simple">
             <s:hidden id="searchFormStudyConfigurationId" name="studyConfiguration.id" />
-            <s:hidden name="imageAnnotationConfiguration.id" />
+            <s:hidden name="imageSourceConfiguration.id" />
             <s:hidden id="searchFormFileColumnId" name="fileColumn.id" />
             <tr>
                 <td>

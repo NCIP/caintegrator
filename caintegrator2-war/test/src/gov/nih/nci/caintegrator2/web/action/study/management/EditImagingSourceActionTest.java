@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
 import org.junit.Before;
@@ -119,7 +120,9 @@ public class EditImagingSourceActionTest {
 
     @Test
     public void testPrepare() {
-        action.getImageAnnotationConfiguration().setId(1L);
+        action.getImageSourceConfiguration().setImageAnnotationConfiguration(new ImageAnnotationConfiguration());
+        action.getImageSourceConfiguration().setId(1L);
+        action.getImageSourceConfiguration().getImageAnnotationConfiguration().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
     }
