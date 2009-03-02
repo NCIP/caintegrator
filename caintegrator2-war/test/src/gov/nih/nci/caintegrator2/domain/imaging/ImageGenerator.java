@@ -86,7 +86,11 @@
 package gov.nih.nci.caintegrator2.domain.imaging;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 public final class ImageGenerator extends AbstractTestDataGenerator<Image> {
 
@@ -116,7 +120,7 @@ public final class ImageGenerator extends AbstractTestDataGenerator<Image> {
      * {@inheritDoc}
      */
     @Override
-    public void setValues(Image image) {
+    public void setValues(Image image, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         image.setIdentifier(getUniqueString());
     }
 

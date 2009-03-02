@@ -86,6 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.Set;
 
 
 public final class FileColumnGenerator extends AbstractTestDataGenerator <FileColumn> {
@@ -114,13 +117,13 @@ public final class FileColumnGenerator extends AbstractTestDataGenerator <FileCo
 
 
     @Override
-    public void setValues(FileColumn column) {
+    public void setValues(FileColumn column, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         column.setName(getUniqueString());
         column.setPosition(getUniqueInt());
         if (column.getFieldDescriptor() == null) {
             column.setFieldDescriptor(AnnotationFieldDescriptorGenerator.INSTANCE.createPersistentObject());
             }
-        AnnotationFieldDescriptorGenerator.INSTANCE.setValues(column.getFieldDescriptor());
+        AnnotationFieldDescriptorGenerator.INSTANCE.setValues(column.getFieldDescriptor(), nonCascadedObjects);
 
     }
 

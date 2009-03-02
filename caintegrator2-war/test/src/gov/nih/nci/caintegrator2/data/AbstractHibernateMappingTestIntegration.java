@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -111,24 +115,31 @@ public abstract class AbstractHibernateMappingTestIntegration<T> extends Abstrac
     @SuppressWarnings("unchecked")
     @Test
     public void testMapping() {
+        Set<AbstractCaIntegrator2Object> nonCascadedObjects = new HashSet<AbstractCaIntegrator2Object>();
         dataGenerator = getDataGenerator();
         T original = createPersistentObject();
-        setValues(original);
+        setValues(original, nonCascadedObjects);
         assertNull(getId(original));
-        saveObject(original);
+        saveObject(original, nonCascadedObjects);
         Long id = getId(original);
         assertNotNull(id);
         T retrieved = (T) getCaIntegrator2Dao().get(id, original.getClass());
         compare(original, retrieved);
-        setValues(retrieved);
-        saveObject(retrieved);
+        setValues(retrieved, nonCascadedObjects);
+        saveObject(retrieved, nonCascadedObjects);
         T retrieved2 = (T) getCaIntegrator2Dao().get(id, original.getClass());
         compare(retrieved, retrieved2);
     }
 
     abstract protected AbstractTestDataGenerator<T> getDataGenerator();
 
-    private void saveObject(T object) {
+    private void saveObject(T object, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        for (AbstractCaIntegrator2Object nonCascadedObject : nonCascadedObjects) {
+            if (nonCascadedObject.getId() == null) {
+                getSessionFactory().getCurrentSession().saveOrUpdate(nonCascadedObject);
+            }
+        }
+        nonCascadedObjects.clear();
         getCaIntegrator2Dao().save(object);
         getSessionFactory().getCurrentSession().flush();
         getSessionFactory().getCurrentSession().clear();
@@ -138,8 +149,8 @@ public abstract class AbstractHibernateMappingTestIntegration<T> extends Abstrac
         dataGenerator.compareFields(original, retrieved);
     }
 
-    private void setValues(T object) {
-        dataGenerator.setValues(object);
+    private void setValues(T object, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        dataGenerator.setValues(object, nonCascadedObjects);
     }
 
     private T createPersistentObject() {

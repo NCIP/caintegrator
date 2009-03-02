@@ -86,7 +86,11 @@
 package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 /**
@@ -115,7 +119,7 @@ public final class GenomicDataResultColumnGenerator extends AbstractTestDataGene
 
 
     @Override
-    public void setValues(GenomicDataResultColumn rc) {
+    public void setValues(GenomicDataResultColumn rc, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         rc.setColumnIndex(getUniqueInt());
         rc.setSampleAcquisition(new SampleAcquisition());
     }

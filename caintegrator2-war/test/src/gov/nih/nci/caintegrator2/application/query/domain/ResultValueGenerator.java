@@ -86,8 +86,12 @@
 package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.application.study.NumericAnnotationValueGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
@@ -121,12 +125,12 @@ public final class ResultValueGenerator extends AbstractTestDataGenerator<Result
 
 
     @Override
-    public void setValues(ResultValue resultValue) {
+    public void setValues(ResultValue resultValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         NumericAnnotationValue nav = new NumericAnnotationValue();
-        NumericAnnotationValueGenerator.INSTANCE.setValues(nav);
+        NumericAnnotationValueGenerator.INSTANCE.setValues(nav, nonCascadedObjects);
         resultValue.setValue(nav);
         ResultColumn col = new ResultColumn();
-        ResultColumnGenerator.INSTANCE.setValues(col);
+        ResultColumnGenerator.INSTANCE.setValues(col, nonCascadedObjects);
         resultValue.setColumn(col);
         
 

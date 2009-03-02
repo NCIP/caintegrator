@@ -86,7 +86,11 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 
 public final class ReporterSetGenerator extends AbstractTestDataGenerator<ReporterSet> {
@@ -116,7 +120,7 @@ public final class ReporterSetGenerator extends AbstractTestDataGenerator<Report
 
 
     @Override
-    public void setValues(ReporterSet reporterSet) {
+    public void setValues(ReporterSet reporterSet, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         if (reporterSet.getReporters() != null) {
             for (AbstractReporter reporter : reporterSet.getReporters()) {
                 reporter.setReporterSet(null);
@@ -125,7 +129,7 @@ public final class ReporterSetGenerator extends AbstractTestDataGenerator<Report
         reporterSet.getReporters().clear();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setReporterSet(reporterSet);
-        GeneExpressionReporterGenerator.INSTANCE.setValues(reporter);
+        GeneExpressionReporterGenerator.INSTANCE.setValues(reporter, null);
         reporterSet.getReporters().add(reporter);
         
 

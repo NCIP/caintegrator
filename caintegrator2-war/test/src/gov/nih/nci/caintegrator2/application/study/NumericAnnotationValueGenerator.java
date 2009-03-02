@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
@@ -118,7 +122,7 @@ public final class NumericAnnotationValueGenerator extends AbstractTestDataGener
     }
 
     @Override
-    public void setValues(NumericAnnotationValue numericAnnotationValue) {
+    public void setValues(NumericAnnotationValue numericAnnotationValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         
         numericAnnotationValue.setNumericValue(Double.valueOf(getUniqueInt()));
         numericAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());

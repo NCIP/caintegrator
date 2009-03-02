@@ -87,12 +87,14 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -120,15 +122,15 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
     }
 
     @Override
-    public void setValues(Query query) {
+    public void setValues(Query query, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         query.setDescription(getUniqueString());
         CompoundCriterion compoundCriterion = new CompoundCriterion();
         query.setColumnCollection(new HashSet<ResultColumn>());
         for (int x=0; x<3; x++) {
-            query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject());
+            query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
         query.setReporterType(getNewEnumValue(query.getReporterType(), ReporterTypeEnum.values()));
-        CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion);
+        CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion, nonCascadedObjects);
         query.setCompoundCriterion(compoundCriterion);
 
     }
