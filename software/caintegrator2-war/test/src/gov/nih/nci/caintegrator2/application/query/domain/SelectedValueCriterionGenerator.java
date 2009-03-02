@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.application.study.DatePermissibleValueGenerator;
 import gov.nih.nci.caintegrator2.application.study.NumericPermissibleValueGenerator;
 import gov.nih.nci.caintegrator2.application.study.StringPermissibleValueGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
@@ -98,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Gets called by the QueryResultTestIntegration through the CompoundCriterionGenerator.
@@ -122,16 +124,16 @@ public final class SelectedValueCriterionGenerator extends AbstractTestDataGener
     }
 
     @Override
-    public void setValues(SelectedValueCriterion selectedValueCriterion) {
+    public void setValues(SelectedValueCriterion selectedValueCriterion, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         selectedValueCriterion.setEntityType(EntityTypeEnum.SUBJECT);
         selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
 
         NumericPermissibleValue numVal = NumericPermissibleValueGenerator.INSTANCE.createPersistentObject();
-        NumericPermissibleValueGenerator.INSTANCE.setValues(numVal);
+        NumericPermissibleValueGenerator.INSTANCE.setValues(numVal, nonCascadedObjects);
         StringPermissibleValue stringVal = StringPermissibleValueGenerator.INSTANCE.createPersistentObject();
-        StringPermissibleValueGenerator.INSTANCE.setValues(stringVal);
+        StringPermissibleValueGenerator.INSTANCE.setValues(stringVal, nonCascadedObjects);
         DatePermissibleValue dateVal = DatePermissibleValueGenerator.INSTANCE.createPersistentObject();
-        DatePermissibleValueGenerator.INSTANCE.setValues(dateVal);
+        DatePermissibleValueGenerator.INSTANCE.setValues(dateVal, nonCascadedObjects);
         
         selectedValueCriterion.getValueCollection().add(numVal);
         selectedValueCriterion.getValueCollection().add(stringVal);

@@ -86,9 +86,11 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 
 import java.util.Date;
+import java.util.Set;
 
 
 public final class DatePermissibleValueGenerator extends AbstractTestDataGenerator<DatePermissibleValue> {
@@ -110,7 +112,7 @@ public final class DatePermissibleValueGenerator extends AbstractTestDataGenerat
     }
 
     @Override
-    public void setValues(DatePermissibleValue datePermissibleValue) {
+    public void setValues(DatePermissibleValue datePermissibleValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         datePermissibleValue.setDateValue(new Date());
         
     }

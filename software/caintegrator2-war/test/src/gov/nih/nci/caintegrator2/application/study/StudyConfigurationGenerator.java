@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
+
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.StudyTestDataGenerator;
 
 @SuppressWarnings("PMD")
@@ -128,31 +132,31 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
     }
 
     @Override
-    public void setValues(StudyConfiguration studyConfiguration) {
+    public void setValues(StudyConfiguration studyConfiguration, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         studyConfiguration.setStatus(getNewEnumValue(studyConfiguration.getStatus(), Status.values()));
         studyConfiguration.setVisibility(getNewEnumValue(studyConfiguration.getVisibility(), Visibility.values()));
         if (studyConfiguration.getStudy() == null) {
             studyConfiguration.setStudy(StudyTestDataGenerator.INSTANCE.createPersistentObject());
             studyConfiguration.getStudy().setStudyConfiguration(studyConfiguration);
         }
-        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy());
+        StudyTestDataGenerator.INSTANCE.setValues(studyConfiguration.getStudy(), nonCascadedObjects);
         studyConfiguration.getClinicalConfigurationCollection().clear();
         for (int i = 0; i < 3; i++) {
             DelimitedTextClinicalSourceConfiguration config = new DelimitedTextClinicalSourceConfiguration(null, studyConfiguration);
-            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config);
+            DelimitedTextClinicalSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
         studyConfiguration.getGenomicDataSources().clear();
         for (int i = 0; i < 3; i++) {
             GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
             studyConfiguration.getGenomicDataSources().add(config);
             config.setStudyConfiguration(studyConfiguration);
-            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config);
+            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
         for (int i = 0; i < 3; i++) {
             ImageDataSourceConfiguration config = new ImageDataSourceConfiguration();
             studyConfiguration.getImageDataSources().add(config);
             config.setStudyConfiguration(studyConfiguration);
-            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config);
+            ImageDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
     }
 

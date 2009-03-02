@@ -87,7 +87,11 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static gov.nih.nci.caintegrator2.TestDataFiles.VALID_FILE;
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * 
@@ -126,13 +130,13 @@ public final class AnnotationFileGenerator extends AbstractTestDataGenerator<Ann
 
 
     @Override
-    public void setValues(AnnotationFile annotationFile) {
+    public void setValues(AnnotationFile annotationFile, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         annotationFile.setIdentifierColumnIndex(0);
         annotationFile.getColumns().clear();
         annotationFile.getColumns().add(new FileColumn(annotationFile));
         annotationFile.getColumns().add(new FileColumn(annotationFile));
         for(FileColumn column : annotationFile.getColumns()) {
-            FileColumnGenerator.INSTANCE.setValues(column);
+            FileColumnGenerator.INSTANCE.setValues(column, nonCascadedObjects);
         }
     }
 

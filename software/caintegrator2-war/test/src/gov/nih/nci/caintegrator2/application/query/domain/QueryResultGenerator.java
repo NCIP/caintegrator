@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 public final class QueryResultGenerator extends AbstractTestDataGenerator<QueryResult> {
@@ -118,11 +120,10 @@ public final class QueryResultGenerator extends AbstractTestDataGenerator<QueryR
 
 
     @Override
-    public void setValues(QueryResult queryResult) {
+    public void setValues(QueryResult queryResult, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         Query query = new Query();
-        QueryGenerator.INSTANCE.setValues(query);
+        QueryGenerator.INSTANCE.setValues(query, nonCascadedObjects);
         queryResult.setQuery(query);
-        
         queryResult.setRowCollection(new HashSet<ResultRow>());
         for (int i = 0; i < 3; i++) {
             queryResult.getRowCollection().add(ResultRowGenerator.INSTANCE.createPersistentObject());

@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
 
@@ -110,12 +114,12 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     }
 
     @Override
-    public void setValues(GenomicDataSourceConfiguration config) {
+    public void setValues(GenomicDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setExperimentIdentifier(getUniqueString());
-        ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile());
+        ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
         config.getSamples().clear();
         for (int i = 0; i < 3; i++) {
-            config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+            config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
     }
 

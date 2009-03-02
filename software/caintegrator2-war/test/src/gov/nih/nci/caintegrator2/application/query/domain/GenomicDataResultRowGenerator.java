@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerator<GenomicDataResultRow> {
@@ -117,7 +119,7 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
 
 
     @Override
-    public void setValues(GenomicDataResultRow resultRow) {
+    public void setValues(GenomicDataResultRow resultRow, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         resultRow.setRowIndex(getUniqueInt());
         resultRow.setValueCollection(new HashSet<GenomicDataResultValue>());
         for (int i = 0; i < 3; i++) {

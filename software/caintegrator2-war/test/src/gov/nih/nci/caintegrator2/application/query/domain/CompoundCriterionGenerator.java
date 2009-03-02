@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -97,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 /**
  * This generator gets called by the test QueryResultTestIntegration, through the QueryGenerator.
  */
@@ -164,24 +166,24 @@ public final class CompoundCriterionGenerator extends AbstractTestDataGenerator<
     }
 
     @Override
-    public void setValues(CompoundCriterion compoundCriterion) {
+    public void setValues(CompoundCriterion compoundCriterion, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         compoundCriterion.setBooleanOperator(getNewEnumValue(compoundCriterion.getBooleanOperator(), BooleanOperatorEnum.values()));
         
         Collection<AbstractCriterion> abstractCriterionCollection = new HashSet<AbstractCriterion>();
         StringComparisonCriterion scc = new StringComparisonCriterion();
-        StringComparisonCriterionGenerator.INSTANCE.setValues(scc);
+        StringComparisonCriterionGenerator.INSTANCE.setValues(scc, nonCascadedObjects);
         abstractCriterionCollection.add(scc);
         
         NumericComparisonCriterion ncc = new NumericComparisonCriterion();
-        NumericComparisonCriterionGenerator.INSTANCE.setValues(ncc);
+        NumericComparisonCriterionGenerator.INSTANCE.setValues(ncc, nonCascadedObjects);
         abstractCriterionCollection.add(ncc);
         
         SelectedValueCriterion svc = new SelectedValueCriterion();
-        SelectedValueCriterionGenerator.INSTANCE.setValues(svc);
+        SelectedValueCriterionGenerator.INSTANCE.setValues(svc, nonCascadedObjects);
         abstractCriterionCollection.add(svc);
         
         FoldChangeCriterion fc = new FoldChangeCriterion();
-        FoldChangeCriterionGenerator.INSTANCE.setValues(fc);
+        FoldChangeCriterionGenerator.INSTANCE.setValues(fc, nonCascadedObjects);
         abstractCriterionCollection.add(fc);
         
         compoundCriterion.setCriterionCollection(abstractCriterionCollection);

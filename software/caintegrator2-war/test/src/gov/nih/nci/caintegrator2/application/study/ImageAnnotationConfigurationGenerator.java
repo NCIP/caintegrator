@@ -85,6 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.Set;
+
 public class ImageAnnotationConfigurationGenerator extends AbstractTestDataGenerator<ImageAnnotationConfiguration> {
 
     public static final ImageAnnotationConfigurationGenerator INSTANCE = new ImageAnnotationConfigurationGenerator();
@@ -100,11 +104,11 @@ public class ImageAnnotationConfigurationGenerator extends AbstractTestDataGener
     }
 
     @Override
-    public void setValues(ImageAnnotationConfiguration config) {
+    public void setValues(ImageAnnotationConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         if (config.getAnnotationFile() == null) {
             config.setAnnotationFile(AnnotationFileGenerator.INSTANCE.createPersistentObject());
         }
-        AnnotationFileGenerator.INSTANCE.setValues(config.getAnnotationFile());        
+        AnnotationFileGenerator.INSTANCE.setValues(config.getAnnotationFile(), nonCascadedObjects);        
     }
 
 

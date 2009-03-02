@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisitionGenerator;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
 
@@ -110,12 +114,12 @@ public class ImageDataSourceConfigurationGenerator extends AbstractTestDataGener
     }
 
     @Override
-    public void setValues(ImageDataSourceConfiguration config) {
+    public void setValues(ImageDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setCollectionName(getUniqueString());
-        ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile());
+        ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
         config.getImageSeriesAcquisitions().clear();
         for (int i = 0; i < 3; i++) {
-            config.getImageSeriesAcquisitions().add(ImageSeriesAcquisitionGenerator.INSTANCE.createPopulatedPersistentObject());            
+            config.getImageSeriesAcquisitions().add(ImageSeriesAcquisitionGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));            
         }
     }
 

@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -121,7 +123,7 @@ public final class DateAnnotationValueGenerator extends AbstractTestDataGenerato
     }
 
     @Override
-    public void setValues(DateAnnotationValue dateAnnotationValue) {
+    public void setValues(DateAnnotationValue dateAnnotationValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         
         dateAnnotationValue.setDateValue(new Date());
         dateAnnotationValue.setAnnotationDefinition(new AnnotationDefinition());

@@ -86,6 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.Set;
 
 public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGenerator <AnnotationFieldDescriptor> {
 
@@ -112,7 +115,7 @@ public final class AnnotationFieldDescriptorGenerator extends AbstractTestDataGe
 
 
     @Override
-    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor) {
+    public void setValues(AnnotationFieldDescriptor annotationFieldDescriptor, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         annotationFieldDescriptor.setName(getUniqueString());
         annotationFieldDescriptor.setType(getNewEnumValue(annotationFieldDescriptor.getType(), AnnotationFieldType.values()));
 

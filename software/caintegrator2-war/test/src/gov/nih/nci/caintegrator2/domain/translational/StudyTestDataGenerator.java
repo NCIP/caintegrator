@@ -86,7 +86,11 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 
 public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
@@ -110,12 +114,12 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     }
 
     @Override
-    public void setValues(Study study) {
+    public void setValues(Study study, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         study.setShortTitleText(getUniqueString());
         study.setLongTitleText(getUniqueString());
         study.getControlSampleCollection().clear();
         for (int i = 0; i < 3; i++) {
-            study.getControlSampleCollection().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+            study.getControlSampleCollection().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
     }
 
