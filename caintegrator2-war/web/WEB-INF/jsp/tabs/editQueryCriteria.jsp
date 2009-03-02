@@ -2,7 +2,14 @@
 
 <!--Search Criteria-->
 
-    <h2>Define Query Criteria</h2>
+    <h2>Define Query Criteria for:
+        <s:if test="query != null && query.name != null && query.name.length() > 0">
+            <s:property value="query.name" />
+        </s:if>
+        <s:else>
+            Unsaved Query
+        </s:else>
+    </h2>
 
     <s:hidden name="selectedAction" value="" />
     <s:hidden name="rowNumber" />

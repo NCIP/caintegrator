@@ -179,7 +179,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             return;
         } else if ("selectedTabSearchResults".equals(selectedAction)) {
             return;
-        } else if (EXECUTE_QUERY.equals(selectedAction)) {
+        } else if (EXECUTE_QUERY.equals(selectedAction)
+                || "loadQuery".equals(selectedAction)) {
             validateExecuteQuery(); 
         } else if ("saveQuery".equals(selectedAction)) {
             validateSaveQuery();
@@ -266,6 +267,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("retrieveDicomImages".equals(selectedAction)) {
             displayTab = RESULTS_TAB;
             returnValue = createDicomJob();
+        } else if ("loadQuery".equals(selectedAction)) {
+            displayTab = CRITERIA_TAB;
+            returnValue = SUCCESS;
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
