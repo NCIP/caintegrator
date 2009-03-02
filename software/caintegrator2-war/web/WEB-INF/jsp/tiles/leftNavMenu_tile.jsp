@@ -42,19 +42,27 @@
                         <li><a href="#">My Queries</a>
                             <ul>                                
                                 <s:iterator value="displayableWorkspace.userQueries">
-                                    <s:url id="queryUrl" action="manageQuery" includeParams="none">
+                                    <s:url id="runQueryUrl" action="manageQuery" includeParams="none">
                                         <s:param name="queryId" value="id" />
                                     </s:url>
-                                                                        
-                                    <li><s:a href="%{queryUrl}" cssClass="queries" title="Description: %{description}">
-                                         <s:if test="id == openQueryId">
+                                    <s:url id="editQueryUrl" action="manageQuery" includeParams="all">
+                                        <s:param name="selectedAction" value="%{'loadQuery'}" />
+                                        <s:param name="queryId" value="id" />
+                                    </s:url>
+                          
+                                    <li>
+                                        <s:a href="%{runQueryUrl}" cssClass="queries"
+                                            title="Description: %{description}">run</s:a>|
+                                        <s:a href="%{editQueryUrl}" cssClass="queries"
+                                            title="Description: %{description}">edit</s:a>
+                                        <s:if test="id == openQueryId">
                                             <strong><s:property value="name"/></strong>
-                                          </s:if>
-                                          <s:else>
+                                        </s:if>
+                                        <s:else>
                                             <s:property value="name"/>
-                                          </s:else>
-                                        </s:a>
+                                        </s:else>
                                     </li>
+                                    
                                 </s:iterator>
                                 
                             </ul>
