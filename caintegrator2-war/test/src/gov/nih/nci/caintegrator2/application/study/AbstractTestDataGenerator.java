@@ -85,10 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Base class for test data generators. These provide support for creating test objects and comparing two test objects. These were
@@ -105,7 +108,7 @@ import java.util.Iterator;
 public abstract class AbstractTestDataGenerator<T> {
     
     private static int uniqueInt;
-
+    
     public final void compare(T original, T retrieved) {
         if (original == null) {
             assertNull(retrieved);
@@ -128,13 +131,13 @@ public abstract class AbstractTestDataGenerator<T> {
 
     public abstract void compareFields(T original, T retrieved);
 
-    public abstract void setValues(T object);
+    public abstract void setValues(T object, Set<AbstractCaIntegrator2Object> nonCascadedObjects);
 
     public abstract T createPersistentObject();
 
-    public T createPopulatedPersistentObject() {
+    public T createPopulatedPersistentObject(Set <AbstractCaIntegrator2Object> nonCascadedObjects) {
         T object = createPersistentObject();
-        setValues(object);
+        setValues(object, nonCascadedObjects);
         return object;
     }
 

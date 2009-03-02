@@ -86,9 +86,14 @@
 package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
 
 /**
@@ -117,12 +122,14 @@ public final class FoldChangeCriterionGenerator extends AbstractTestDataGenerato
     }
 
     @Override
-    public void setValues(FoldChangeCriterion foldChangeCriterion) {
+    public void setValues(FoldChangeCriterion foldChangeCriterion, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         foldChangeCriterion.setFoldsUp(Float.valueOf(getUniqueInt()));
         foldChangeCriterion.setFoldsDown(Float.valueOf(getUniqueInt()));
         foldChangeCriterion.getCompareToSamples().clear();
         for (int i = 0; i < 3; i++) {
-            foldChangeCriterion.getCompareToSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject());
+            Sample sample = SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+            nonCascadedObjects.add(sample);
+            foldChangeCriterion.getCompareToSamples().add(sample);
         }
         foldChangeCriterion.setRegulationType(getNewEnumValue(foldChangeCriterion.getRegulationType(), RegulationTypeEnum.values()));
     }

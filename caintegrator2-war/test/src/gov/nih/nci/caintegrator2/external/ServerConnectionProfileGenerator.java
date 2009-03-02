@@ -85,7 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.external;
 
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import static org.junit.Assert.assertEquals;
 
@@ -108,7 +111,7 @@ public class ServerConnectionProfileGenerator extends AbstractTestDataGenerator<
     }
 
     @Override
-    public void setValues(ServerConnectionProfile profile) {
+    public void setValues(ServerConnectionProfile profile, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         profile.setHostname(getUniqueString());
         profile.setPassword(getUniqueString());
         profile.setPort(getUniqueInt());

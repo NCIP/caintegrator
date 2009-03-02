@@ -86,7 +86,11 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 
 public final class GeneExpressionReporterGenerator extends AbstractTestDataGenerator<GeneExpressionReporter> {
@@ -108,7 +112,7 @@ public final class GeneExpressionReporterGenerator extends AbstractTestDataGener
     }
 
     @Override
-    public void setValues(GeneExpressionReporter geneExpressionReporter) {
+    public void setValues(GeneExpressionReporter geneExpressionReporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         
         geneExpressionReporter.setGene(new Gene());
         geneExpressionReporter.setName(getUniqueString());

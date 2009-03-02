@@ -86,6 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.*;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.Set;
 
 public final class DelimitedTextClinicalSourceConfigurationGenerator extends AbstractTestDataGenerator<DelimitedTextClinicalSourceConfiguration> {
     
@@ -107,11 +110,11 @@ public final class DelimitedTextClinicalSourceConfigurationGenerator extends Abs
     }
 
     @Override
-    public void setValues(DelimitedTextClinicalSourceConfiguration configuration) {        
+    public void setValues(DelimitedTextClinicalSourceConfiguration configuration, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {        
         if (configuration.getAnnotationFile() == null) {
             configuration.setAnnotationFile(AnnotationFileGenerator.INSTANCE.createPersistentObject());
         }
-        AnnotationFileGenerator.INSTANCE.setValues(configuration.getAnnotationFile());        
+        AnnotationFileGenerator.INSTANCE.setValues(configuration.getAnnotationFile(), nonCascadedObjects);        
     }
 
 }

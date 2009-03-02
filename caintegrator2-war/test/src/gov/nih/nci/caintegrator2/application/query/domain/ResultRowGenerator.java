@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query.domain;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -94,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRow> {
@@ -125,7 +127,7 @@ public final class ResultRowGenerator extends AbstractTestDataGenerator<ResultRo
 
 
     @Override
-    public void setValues(ResultRow resultRow) {
+    public void setValues(ResultRow resultRow, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         resultRow.setRowIndex(getUniqueInt());
         resultRow.setValueCollection(new HashSet<ResultValue>());
         for (int i = 0; i < 3; i++) {

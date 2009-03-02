@@ -86,6 +86,10 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 
 
@@ -111,7 +115,7 @@ public final class NumericPermissibleValueGenerator extends AbstractTestDataGene
     }
 
     @Override
-    public void setValues(NumericPermissibleValue numericPermissibleValue) {
+    public void setValues(NumericPermissibleValue numericPermissibleValue, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         numericPermissibleValue.setHighValue(Double.valueOf(getUniqueInt()));
         numericPermissibleValue.setIsRangeValue(getUniqueInt());
         numericPermissibleValue.setLowValue(Double.valueOf(getUniqueInt()));
