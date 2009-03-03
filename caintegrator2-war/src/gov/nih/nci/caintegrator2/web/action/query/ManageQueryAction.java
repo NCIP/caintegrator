@@ -229,6 +229,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             setQueryResult(null);
             returnValue = addCriterionRow();
         } else if (EXECUTE_QUERY.equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
             returnValue = executeQuery();
         } else if ("saveQuery".equals(selectedAction)) {
             returnValue = saveQuery();
@@ -269,7 +270,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             returnValue = createDicomJob();
         } else if ("loadQuery".equals(selectedAction)) {
             displayTab = CRITERIA_TAB;
-            returnValue = SUCCESS;
+            returnValue = executeQuery();
         } else {
             addActionError("Unknown action '" + selectedAction + "'");
             returnValue = ERROR; 
@@ -377,7 +378,6 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             loadAllImages(result);
             setQueryResult(new DisplayableQueryResult(result));
         }
-        displayTab = RESULTS_TAB;
         return SUCCESS;
     }
 
