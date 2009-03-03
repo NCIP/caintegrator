@@ -115,8 +115,10 @@ class ResultRowFactory {
         for (ImageSeries imageSeries : imageSeriesCollection) {
             ResultRow row = new ResultRow();
             StudySubjectAssignment studySubjectAssignment = imageSeries.getImageStudy().getAssignment();
-            row.setImageSeries(imageSeries);
             row.setSubjectAssignment(studySubjectAssignment);
+            if (entityTypes.contains(EntityTypeEnum.IMAGESERIES)) {
+                row.setImageSeries(imageSeries);
+            }
             if (entityTypes.contains(EntityTypeEnum.SAMPLE)) {
                 Timepoint imageSeriesTimepoint = imageSeries.getImageStudy().getTimepoint();
                 addSampleRows(rows, row, studySubjectAssignment, imageSeriesTimepoint);
