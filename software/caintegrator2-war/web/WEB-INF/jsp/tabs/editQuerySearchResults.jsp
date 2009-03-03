@@ -30,7 +30,9 @@
         <s:if test='%{query.resultType.value.equals("genomic")}'>
             <tr>
                 <td />
-                <td />
+                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                    <td />
+                </s:if>
                 <th>Patient ID</th>
                 <s:iterator value="genomicDataQueryResult.columnCollection">
                     <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
@@ -38,7 +40,9 @@
             </tr>
             <tr>
                 <td />
-                <td />
+                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                    <td />
+                </s:if>
                 <th>Sample ID</th>
                 <s:iterator value="genomicDataQueryResult.columnCollection">
                     <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
@@ -47,7 +51,9 @@
             <tr />
             <tr>
                 <th>Gene Name</th>
-                <th>Probe Set</th>
+                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                    <th>Probe Set</th>
+                </s:if>
             </tr>
             <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
                 <s:if test="#status.odd == true">
@@ -57,7 +63,9 @@
                     <tr class="even">
                 </s:else>
                 <td><b><s:property value="reporter.gene.symbol" /></b></td>
-                <td><b><s:property value="reporter.name" /></b></td>
+                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                    <td><b><s:property value="reporter.name" /></b></td>
+                </s:if>
                 <td /><s:iterator value="valueCollection">
                     <td><s:property value="value" /></td>
                 </s:iterator>
