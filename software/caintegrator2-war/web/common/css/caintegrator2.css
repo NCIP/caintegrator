@@ -187,6 +187,10 @@ LEGEND INPUT, LEGEND SELECT
 { background:url("../../images/ico_list.gif") no-repeat 6px 0;  }
 #leftnav UL.menu LI.treenav UL.pde LI LI LI A.Searches:hover, #leftnav UL.menu LI.treenav UL.pde LI LI LI A.lists:hover
 { color:#455681; }
+#leftnav UL.menu LI.treenav UL.pde A.queryAction
+{ font-size:92%; text-decoration:none; color:#666; }
+#leftnav UL.menu LI.treenav UL.pde A.queries
+{ font-weight:normal; }
 
 
 /* The class to hide nested ULs */
