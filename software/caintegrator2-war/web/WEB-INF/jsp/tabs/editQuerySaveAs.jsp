@@ -16,17 +16,6 @@
                 theme="simple" /></td>
 
         </tr>
-        <tr>
-            <td class="label"><input type="checkbox" name="columpref" id="columnpref" /></td>
-            <td class="value"><label for="columnpref">Make Column selections my defaults for future
-            queries</label></td>
-        </tr>
-        <tr>
-            <td class="label"><input type="checkbox" name="sortpref" id="sortpref" /></td>
-            <td class="value"><label for="sortpref">Make Sort Order selections my defaults for future
-            queries</label></td>
-
-        </tr>
 
     </table>
 
