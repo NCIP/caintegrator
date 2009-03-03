@@ -45,22 +45,25 @@
                                     <s:url id="runQueryUrl" action="manageQuery" includeParams="none">
                                         <s:param name="queryId" value="id" />
                                     </s:url>
-                                    <s:url id="editQueryUrl" action="manageQuery" includeParams="all">
+                                    <s:url id="editQueryUrl" action="manageQuery" includeParams="none">
                                         <s:param name="selectedAction" value="%{'loadQuery'}" />
                                         <s:param name="queryId" value="id" />
                                     </s:url>
                           
                                     <li>
-                                        <s:a href="%{runQueryUrl}" cssClass="queries"
+                                        <s:a href="%{runQueryUrl}" cssClass="queryAction"
                                             title="Description: %{description}">run</s:a>|
-                                        <s:a href="%{editQueryUrl}" cssClass="queries"
+                                        <s:a href="%{editQueryUrl}" cssClass="queryAction"
                                             title="Description: %{description}">edit</s:a>
-                                        <s:if test="id == openQueryId">
-                                            <strong><s:property value="name"/></strong>
-                                        </s:if>
-                                        <s:else>
-                                            <s:property value="name"/>
-                                        </s:else>
+                                        <s:a href="%{runQueryUrl}" cssClass="queries"
+                                            title="Description: %{description}">
+                                            <s:if test="id == openQueryId">
+                                                <strong><s:property value="name"/></strong>
+                                            </s:if>
+                                            <s:else>
+                                                <s:property value="name"/>
+                                            </s:else>
+                                        </s:a>
                                     </li>
                                     
                                 </s:iterator>
