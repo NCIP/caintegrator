@@ -107,7 +107,6 @@ public final class GenomicDataResultColumnGenerator extends AbstractTestDataGene
     @Override
     public void compareFields(GenomicDataResultColumn original, GenomicDataResultColumn retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getColumnIndex(), retrieved.getColumnIndex());
         assertEquals(original.getSampleAcquisition(), retrieved.getSampleAcquisition());
     }
 
@@ -120,7 +119,6 @@ public final class GenomicDataResultColumnGenerator extends AbstractTestDataGene
 
     @Override
     public void setValues(GenomicDataResultColumn rc, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        rc.setColumnIndex(getUniqueInt());
         rc.setSampleAcquisition(new SampleAcquisition());
     }
 

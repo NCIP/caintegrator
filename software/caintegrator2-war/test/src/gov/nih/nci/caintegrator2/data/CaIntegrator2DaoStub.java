@@ -363,7 +363,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType,
+    public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbol, ReporterTypeEnum reporterType,
             Study study) {
         findGeneExpressionReportersCalled = true;
         return Collections.emptySet();

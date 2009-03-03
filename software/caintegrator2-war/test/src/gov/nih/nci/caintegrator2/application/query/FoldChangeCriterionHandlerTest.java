@@ -158,6 +158,7 @@ public class FoldChangeCriterionHandlerTest {
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
         criterion.setFoldsUp(1.0f);
+        criterion.setGeneSymbol("Tester");
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
         Set<ResultRow> rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
@@ -183,6 +184,7 @@ public class FoldChangeCriterionHandlerTest {
     @Test
     public void testGetReporterMatches() {        
         FoldChangeCriterion criterion = new FoldChangeCriterion();
+        criterion.setGeneSymbol("tester");
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
         assertEquals(1, handler.getReporterMatches(daoStub, study, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).size());
     }
@@ -197,7 +199,7 @@ public class FoldChangeCriterionHandlerTest {
         }
 
         @Override
-        public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol,
+        public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study) {
             Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
             reporters.add(reporter);

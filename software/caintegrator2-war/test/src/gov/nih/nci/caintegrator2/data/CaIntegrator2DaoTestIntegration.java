@@ -116,6 +116,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -342,7 +343,9 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         dao.save(study);
         dao.save(arrayData);
         dao.save(gene);
-        assertEquals(1, dao.findGeneExpressionReporters("TEST", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
+        Set<String> geneSymbols = new HashSet<String>();
+        geneSymbols.add("TEST");
+        assertEquals(1, dao.findGeneExpressionReporters(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
     }
     
     @Test

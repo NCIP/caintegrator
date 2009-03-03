@@ -293,11 +293,11 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType, 
-            Study study) {
+    public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols, 
+            ReporterTypeEnum reporterType, Study study) {
         Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
         Criteria criteria = getCurrentSession().createCriteria(GeneExpressionReporter.class);
-        criteria.createCriteria("gene").add(Restrictions.like("symbol", geneSymbol));
+        criteria.createCriteria("gene").add(Restrictions.in("symbol", geneSymbols));
         Criteria reporterCriteria = criteria.createCriteria("reporterSet");
         reporterCriteria.add(Restrictions.eq("reporterType", reporterType));
         reporterCriteria.createCriteria("arrayDataCollection").add(Restrictions.eq("study", study));
