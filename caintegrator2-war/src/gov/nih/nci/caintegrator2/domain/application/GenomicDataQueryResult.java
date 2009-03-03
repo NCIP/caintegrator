@@ -2,7 +2,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -11,21 +11,21 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private Collection<GenomicDataResultRow> rowCollection;
+    private List<GenomicDataResultRow> rowCollection;
     private Query query;
-    private Collection<GenomicDataResultColumn> columnCollection;
+    private List<GenomicDataResultColumn> columnCollection;
     
     /**
      * @return the rowCollection
      */
-    public Collection<GenomicDataResultRow> getRowCollection() {
+    public List<GenomicDataResultRow> getRowCollection() {
         return rowCollection;
     }
     
     /**
      * @param rowCollection the rowCollection to set
      */
-    public void setRowCollection(Collection<GenomicDataResultRow> rowCollection) {
+    public void setRowCollection(List<GenomicDataResultRow> rowCollection) {
         this.rowCollection = rowCollection;
     }
     
@@ -46,14 +46,14 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     /**
      * @return the columnCollection
      */
-    public Collection<GenomicDataResultColumn> getColumnCollection() {
+    public List<GenomicDataResultColumn> getColumnCollection() {
         return columnCollection;
     }
     
     /**
      * @param columnCollection the columnCollection to set
      */
-    public void setColumnCollection(Collection<GenomicDataResultColumn> columnCollection) {
+    public void setColumnCollection(List<GenomicDataResultColumn> columnCollection) {
         this.columnCollection = columnCollection;
     }
 

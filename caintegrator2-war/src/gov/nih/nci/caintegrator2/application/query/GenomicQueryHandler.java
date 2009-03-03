@@ -173,12 +173,10 @@ class GenomicQueryHandler {
     }
 
     private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
-        int index = 0;
         for (AbstractReporter reporter : values.getAllReporters()) {
             GenomicDataResultRow row = new GenomicDataResultRow();
             row.setValueCollection(new ArrayList<GenomicDataResultValue>());
             row.setReporter(reporter);
-            row.setRowIndex(index++);
             result.getRowCollection().add(row);
         }
     }

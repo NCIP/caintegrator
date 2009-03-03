@@ -107,7 +107,6 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
     @Override
     public void compareFields(GenomicDataResultRow original, GenomicDataResultRow retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getRowIndex(), retrieved.getRowIndex());
         assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
     }
 
@@ -120,7 +119,6 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
 
     @Override
     public void setValues(GenomicDataResultRow resultRow, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        resultRow.setRowIndex(getUniqueInt());
         resultRow.setValueCollection(new HashSet<GenomicDataResultValue>());
         for (int i = 0; i < 3; i++) {
             resultRow.getValueCollection().add(GenomicDataResultValueGenerator.INSTANCE.createPersistentObject());

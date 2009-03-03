@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.query;
 
 
+import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -99,6 +100,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -372,6 +374,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
             GenomicDataQueryResult genomicResult = 
                 queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
+            if (genomicResult.getRowCollection() != null) {
+                Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
+            }
             setGenomicDataQueryResult(genomicResult);
         } else {
             QueryResult result = queryManagementService.execute(getQueryForm().getQuery());

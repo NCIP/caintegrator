@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -128,7 +129,9 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
             throw new IllegalArgumentException("ReporterType is not set.");
         }
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.addAll(dao.findGeneExpressionReporters(criterion.getGeneSymbol(), reporterType, study));
+        Set<String> geneSymbols = new HashSet<String>();
+        geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
+        reporters.addAll(dao.findGeneExpressionReporters(geneSymbols, reporterType, study));
         return reporters;
     }
 

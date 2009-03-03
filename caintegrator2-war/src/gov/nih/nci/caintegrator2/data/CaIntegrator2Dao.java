@@ -207,12 +207,12 @@ public interface CaIntegrator2Dao {
     /**
      * Returns the gene expression reporters that match the parameters given.
      * 
-     * @param geneSymbol finds expression reporters for genes that match the symbol.
+     * @param geneSymbols finds expression reporters for genes that match the symbol.
      * @param reporterType return only reporters of this type
      * @param study restrict the search to the given study.
      * @return the list of matches.
      */
-    Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol, ReporterTypeEnum reporterType, 
+    Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols, ReporterTypeEnum reporterType, 
             Study study);
 
     
