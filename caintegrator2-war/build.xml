@@ -482,6 +482,15 @@
             classpath="${caintegrator2.war.test.dependencies.path}" />
     </target>
     
+    <target name="test:nondeploy-integration" depends="test:compile:caintegrator2.war.test.classes,
+        test:instrument:integration:caintegrator2.war,
+        hibernate.cfg.xml.test">
+        <run-nondeploy-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
+            xml.output.dir="${caintegrator2.war.target.dir}/junit" 
+            instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
+            classpath="${caintegrator2.war.test.dependencies.path}" />
+    </target>
+    
     <target name="test:instrument:unit:caintegrator2.war" depends="compile:caintegrator2.war,ivy:setup-test">
          <cobertura-instrument todir="${caintegrator2.war.instrumented.unit.classes.dir}" datafile="${cobertura.file}">
              <fileset  dir="${caintegrator2.war.java.classes.dir}">
@@ -946,6 +955,38 @@
                     <fileset dir="@{test.src.dir}">
                         <include name="**/*TestIntegration.java" />
                         <exclude name="**/Abstract*TestIntegration.java" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="run-nondeploy-integration-junit-tests">
+        <attribute name="test.src.dir" />
+        <attribute name="xml.output.dir" />
+        <attribute name="classpath" default="" />
+        <attribute name="instrumented.classes" default="" />
+
+        <sequential>
+            <mkdir dir="@{xml.output.dir}" />
+            <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.file}" />
+                <sysproperty key="server.hostname" value="${jboss.server.hostname}" />
+                <sysproperty key="server.port" value="${jboss.server.port}" />
+                <sysproperty key="server.jndi.port" value="${jboss.server.jndi.port}" />
+                <sysproperty key="selenium.server.port" value="${selenium.server.port}" />
+
+                <classpath>
+                    <pathelement path="@{instrumented.classes}" />
+                    <pathelement path="@{classpath}" />
+                    <path refid="cobertura.classpath" />
+                </classpath>
+                <formatter type="xml" />
+                <batchtest todir="@{xml.output.dir}">
+                    <fileset dir="@{test.src.dir}">
+                        <include name="**/*TestIntegration.java" />
+                        <exclude name="**/Abstract*TestIntegration.java" />
+                        <exclude name="**/Deploy*TestIntegration.java" />
                     </fileset>
                 </batchtest>
             </junit>
