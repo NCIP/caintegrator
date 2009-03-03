@@ -288,7 +288,7 @@ public class QueryManagementServiceImplTest {
         }
 
         @Override
-        public Set<GeneExpressionReporter> findGeneExpressionReporters(String geneSymbol,
+        public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study) {
             Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
             reporters.add(reporter );

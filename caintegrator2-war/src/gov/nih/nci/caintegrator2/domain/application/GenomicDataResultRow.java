@@ -12,24 +12,9 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private Integer rowIndex;
     private AbstractReporter reporter;
     private Collection<GenomicDataResultValue> valueCollection;
-    
-    /**
-     * @return the rowIndex
-     */
-    public Integer getRowIndex() {
-        return rowIndex;
-    }
-    
-    /**
-     * @param rowIndex the rowIndex to set
-     */
-    public void setRowIndex(Integer rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-    
+
     /**
      * @return the reporter
      */

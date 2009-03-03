@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -222,7 +223,9 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.addAll(dao.findGeneExpressionReporters(criterion.getGeneSymbol(), reporterType, study));
+        Set<String> geneSymbols = new HashSet<String>();
+        geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
+        reporters.addAll(dao.findGeneExpressionReporters(geneSymbols, reporterType, study));
         return reporters;
     }
 

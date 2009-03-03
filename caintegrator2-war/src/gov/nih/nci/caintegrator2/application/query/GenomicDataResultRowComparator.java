@@ -83,53 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query.domain;
+package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
-import java.util.ArrayList;
-import java.util.Set;
-
-
-public final class GenomicDataQueryResultGenerator extends AbstractTestDataGenerator<GenomicDataQueryResult> {
-
-    public static final GenomicDataQueryResultGenerator INSTANCE = new GenomicDataQueryResultGenerator();
-    
-    private GenomicDataQueryResultGenerator() {
-        super();
-    }
-
-    @Override
-    public void compareFields(GenomicDataQueryResult original, GenomicDataQueryResult retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        QueryGenerator.INSTANCE.compareFields(original.getQuery(), retrieved.getQuery());
-        assertEquals(original.getRowCollection().size(), retrieved.getRowCollection().size());
-        assertEquals(original.getRowCollection().size(), 3);
-    }
+import java.util.Comparator;
 
 
-    @Override
-    public GenomicDataQueryResult createPersistentObject() {
-        return new GenomicDataQueryResult();
-    }
+/**
+ * A comparator class for Genomic Result Rows, currently sorts based on Gene Name and then Reporter name.
+ */
+public class GenomicDataResultRowComparator implements Comparator <GenomicDataResultRow> {
 
+    private static final Integer EQUAL = 0;
 
-    @Override
-    public void setValues(GenomicDataQueryResult queryResult, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        Query query = new Query();
-        QueryGenerator.INSTANCE.setValues(query, nonCascadedObjects);
-        queryResult.setQuery(query);
-        queryResult.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        for (int i = 0; i < 3; i++) {
-            queryResult.getRowCollection().add(GenomicDataResultRowGenerator.INSTANCE.createPersistentObject());
+    /**
+     * {@inheritDoc}
+     */
+    public int compare(GenomicDataResultRow row1, GenomicDataResultRow row2) {
+        Integer order = EQUAL;
+        if (row1.getReporter() instanceof GeneExpressionReporter) {
+            order = sortGeneExpressionReporters(row1, row2);
         }
+        return order;
+    }
 
+    private int sortGeneExpressionReporters(GenomicDataResultRow row1, GenomicDataResultRow row2) {
+        int order = EQUAL;
+        if (row2.getReporter() instanceof GeneExpressionReporter) {
+            String symbol1 = ((GeneExpressionReporter) row1.getReporter()).getGene().getSymbol();
+            String symbol2 = ((GeneExpressionReporter) row2.getReporter()).getGene().getSymbol();
+            order = symbol1.compareTo(symbol2);
+            if (EQUAL.equals(order)) {
+                order = sortReporterNames(row1, row2);
+            }
+        }
+        return order;
+    }
+    
+    private int sortReporterNames(GenomicDataResultRow row1, GenomicDataResultRow row2) {
+        String reporterName1 = row1.getReporter().getName();
+        String reporterName2 = row2.getReporter().getName();
+        return reporterName1.compareTo(reporterName2);
     }
 
 }
-

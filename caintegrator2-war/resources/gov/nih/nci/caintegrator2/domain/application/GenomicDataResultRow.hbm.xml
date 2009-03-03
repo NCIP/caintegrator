@@ -6,8 +6,6 @@
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
-		<!-- Attributes mapping for the GenomicDataResultRow class -->
-		<property name="rowIndex" type="integer" column="ROW_INDEX"/>
 		<!-- Associations mapping for the GenomicDataResultRow class -->
 		<set name="valueCollection" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />
