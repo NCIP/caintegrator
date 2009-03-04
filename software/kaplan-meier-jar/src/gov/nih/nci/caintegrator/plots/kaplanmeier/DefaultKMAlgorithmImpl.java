@@ -35,7 +35,8 @@ public class DefaultKMAlgorithmImpl implements KMAlgorithm {
         float surv = 1;
         float prevSurvTime = 0;
         float curSurvTime = 0;
-        int d = 0;
+        int d = 0; // Num Dead
+        int c = 0; // Num Censored
         int r = samples.size();
         int left = samples.size();
         ArrayList<XYCoordinate> points = new ArrayList<XYCoordinate>();
@@ -44,29 +45,34 @@ public class DefaultKMAlgorithmImpl implements KMAlgorithm {
             curSurvTime = samples.get(i).getSurvivalLength();
             logger.debug("Survival survivalLength: " + curSurvTime + "\tcensor:" + (samples.get(i)).getCensor());
             if (curSurvTime > prevSurvTime) {
+                if (c>0) {
+                    points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), true));
+                }
                 if (d>0) {
                     points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), false));
                     surv = surv * (r-d)/r;
                     points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), false));
-                } else {
-                    points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), true));
-                }
+                } 
                 prevSurvTime = curSurvTime;
                 d = 0;
+                c = 0;
                 r = left;
             }
-            if ((samples.get(i)).getCensor()) {
+            if ((samples.get(i)).getCensor()) { // Dead
                 d++;
+            } else { // Censored
+                c++;
             }
             left--;
+        }
+        if (c>0) {
+            points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), true));
         }
         if (d>0) {
             points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), false));
             surv = surv * (r-d)/r;
             points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), false));
-        } else {
-            points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), true));
-        }
+        } 
         return points;
     }
     
