@@ -85,16 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import java.util.List;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
@@ -102,6 +98,11 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+
+import java.util.List;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the QueryManagementService interface.
@@ -126,6 +127,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      */
     @Transactional(readOnly = true)
     public QueryResult execute(Query query) {
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
         return queryTranslator.execute();
     }
