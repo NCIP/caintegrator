@@ -49,6 +49,7 @@
                         label="%{name}" 
                         name="analysisForm.parameters[%{#status.index}].value" 
                         list="choices" 
+                        required="required"
                         value="%{value}" />
                 </s:elseif>
             </s:iterator>
