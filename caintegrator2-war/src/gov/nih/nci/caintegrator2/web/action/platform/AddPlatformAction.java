@@ -90,7 +90,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +110,7 @@ import org.springframework.jms.core.MessageCreator;
 /**
  * Provides functionality to list and add array designs.
  */
-public class AddPlatformAction extends AbstractCaIntegrator2Action {
+public class AddPlatformAction extends AbstractStudyManagementAction {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(AddPlatformAction.class);

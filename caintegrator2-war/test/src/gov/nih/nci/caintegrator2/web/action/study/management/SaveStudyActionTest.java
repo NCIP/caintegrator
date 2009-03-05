@@ -124,7 +124,6 @@ public class SaveStudyActionTest {
     public void testExecute() { 
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         SecurityContextHolder.getContext().setAuthentication(null);
-        action.prepare();
         assertEquals(Action.ERROR, action.execute());
         // Must add authentication to pass the action.
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
