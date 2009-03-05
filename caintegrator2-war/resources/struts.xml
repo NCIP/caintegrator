@@ -392,7 +392,7 @@
             <result type="tiles">genePatternAnalysis</result>
             <result name="results" type="tiles">genePatternAnalysisResults</result>
             <result name="error" type="tiles">genePatternAnalysis</result>
-            <result name="input" type="tiles">homepage</result>
+            <result name="input" type="tiles">genePatternAnalysis</result>
         </action>
         
         <!-- Kaplan-Meier Actions -->

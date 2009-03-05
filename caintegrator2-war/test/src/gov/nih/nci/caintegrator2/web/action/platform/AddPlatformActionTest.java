@@ -85,20 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.web.action.platform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import javax.jms.Destination;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AddPlatformActionTest {
@@ -109,6 +115,11 @@ public class AddPlatformActionTest {
     
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        action.setWorkspaceService(workspaceService);
         action.setArrayDataService(arrayDataServiceStub);        
         action.setFileManager(fileManagerStub);
     }
@@ -123,6 +134,20 @@ public class AddPlatformActionTest {
             } 
         });
         assertEquals(ActionSupport.SUCCESS, action.execute());
+    }
+    
+    @Test
+    public void testValidation() {
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
     }
 
     @Test
