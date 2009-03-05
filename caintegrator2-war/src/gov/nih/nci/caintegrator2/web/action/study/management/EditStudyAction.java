@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 
@@ -101,14 +100,6 @@ public class EditStudyAction extends AbstractStudyAction {
      */
     @Override
     public String execute() {
-        for (StudySubscription subscription  
-                : getDisplayableWorkspace().getUserWorkspace().getSubscriptionCollection()) {
-            if ((this.getStudyConfiguration().getStudy().getId() != null) 
-                    && (this.getStudyConfiguration().getStudy().getId().equals(subscription.getId()))) {
-                    setStudySubscription(subscription);
-            }
-        }
-
         return SUCCESS;
     }
     

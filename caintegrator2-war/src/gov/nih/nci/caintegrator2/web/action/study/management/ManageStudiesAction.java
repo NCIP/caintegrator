@@ -86,20 +86,17 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import java.util.List;
 
 /**
  * Action used to review studies owned by a Study Manager.
  */
-public class ManageStudiesAction extends AbstractCaIntegrator2Action {
+public class ManageStudiesAction extends AbstractStudyAction {
     
     private static final long serialVersionUID = 1L;
-    
-    private StudyManagementService studyManagementService;
+
     private List<StudyConfiguration> studyConfigurations;
     
     /**
@@ -123,20 +120,6 @@ public class ManageStudiesAction extends AbstractCaIntegrator2Action {
      */
     public void setStudyConfigurations(List<StudyConfiguration> studyConfigurations) {
         this.studyConfigurations = studyConfigurations;
-    }
-
-    /**
-     * @return the studyManagementService
-     */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
     }
 
 }
