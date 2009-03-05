@@ -87,14 +87,14 @@ package gov.nih.nci.caintegrator2.web.action.platform;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
 
 import java.util.List;
 
 /**
  * Provides functionality to list and add array designs.
  */
-public class ManagePlatformsAction extends AbstractCaIntegrator2Action {
+public class ManagePlatformsAction extends AbstractStudyManagementAction {
 
     private static final long serialVersionUID = 1L;
     private ArrayDataService arrayDataService;

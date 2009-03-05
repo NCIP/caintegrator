@@ -5,11 +5,12 @@
 <div id="leftnav">
     
     <!--Study Logo-->
-    
-    <div id="study_logo">
-        <s:set name="logo" id="logo" value="%{displayableWorkspace.logoUrl}"/>
-        <img src="${logo}" alt="Study Logo" height="72" width="200"/>
-    </div>
+    <s:if test="currentStudy != null">
+	    <div id="study_logo">
+	        <s:set name="logo" id="logo" value="%{displayableWorkspace.logoUrl}"/>
+	        <img src="${logo}" alt="Study Logo" height="72" width="200"/>
+	    </div>
+    </s:if>
     
     <!--/Study Logo-->
     
@@ -20,6 +21,7 @@
     
     <ul class="menu">
         <s:set name="sessionHelper" value="#session['sessionHelper']" />
+        <s:if test="currentStudy != null">
         <li class="stdnav">
             <div><s:property value="currentStudy.shortTitleText"/></div>
             <ul>
@@ -79,7 +81,7 @@
                 </li>
             </ul>
         </li>
-        
+
         <!--/Tree Control-->
         
         <li class="stdnav"><div>Analysis Tools</div>
@@ -93,6 +95,8 @@
                 </li>
             </ul>
         </li>
+        </s:if>
+        
         <s:if test="#sessionHelper.studyManager">
             <li class="stdnav"><div>Study Management</div>
                 <ul>

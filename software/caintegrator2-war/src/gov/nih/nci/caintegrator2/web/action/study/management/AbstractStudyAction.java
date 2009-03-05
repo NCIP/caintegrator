@@ -87,14 +87,13 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
 import com.opensymphony.xwork2.ModelDriven;
 
 /**
  * Base class for actions that require retrieval of persistent <code>StudyConfigurations</code>.
  */
-public abstract class AbstractStudyAction extends AbstractCaIntegrator2Action 
+public abstract class AbstractStudyAction extends AbstractStudyManagementAction 
 implements ModelDriven<StudyConfiguration> {
     
     private StudyConfiguration studyConfiguration = new StudyConfiguration();
