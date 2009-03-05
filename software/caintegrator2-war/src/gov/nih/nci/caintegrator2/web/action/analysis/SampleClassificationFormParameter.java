@@ -167,19 +167,27 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
      * @return the available choices
      */
     public Collection<String> getChoices() {
-        return getForm().getClassificationAnnotationNames();
+        List<String> choices = new ArrayList<String>();
+        if (!isRequired()) {
+            choices.add("");
+        }
+        choices.addAll(getForm().getClassificationAnnotationNames());
+        return choices;
     }
 
     @Override
     void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
-        Query query = createClassificationQuery(studySubscription);
-        QueryResult result = queryManagementService.execute(query);
-        Map<Sample, String> sampleToClassificationNameMap = getSampleToClassificationNameMap(result);
-        List<Sample> samples = getSamplesToClassify();
-        SampleClassificationParameterValue parameterValue = (SampleClassificationParameterValue) getParameterValue();
+        SampleClassificationParameterValue parameterValue =
+            (SampleClassificationParameterValue) getParameterValue();
         parameterValue.clear();
-        for (Sample sample : samples) {
-            parameterValue.classify(sample, sampleToClassificationNameMap.get(sample));
+        if (classificationAnnotation != null) {
+            Query query = createClassificationQuery(studySubscription);
+            QueryResult result = queryManagementService.execute(query);
+            Map<Sample, String> sampleToClassificationNameMap = getSampleToClassificationNameMap(result);
+            List<Sample> samples = getSamplesToClassify();
+            for (Sample sample : samples) {
+                parameterValue.classify(sample, sampleToClassificationNameMap.get(sample));
+            }
         }
     }
 

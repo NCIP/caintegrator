@@ -327,11 +327,13 @@ class GenePatternHelper {
 
     private void handleSampleClassification(SampleClassificationParameterValue parameterValue, 
             ParameterInfo genePatternParameter) {
-        File clsFile = 
-            new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".cls");
-        clsFile.deleteOnExit();
-        ClassificationsToClsConverter.writeAsCls(parameterValue, clsFile.getAbsolutePath());
-        genePatternParameter.setValue(clsFile.getAbsolutePath());
+        if (!parameterValue.getClassifications().isEmpty()) {
+            File clsFile = 
+                new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".cls");
+            clsFile.deleteOnExit();
+            ClassificationsToClsConverter.writeAsCls(parameterValue, clsFile.getAbsolutePath());
+            genePatternParameter.setValue(clsFile.getAbsolutePath());
+        }
     }
 
     private void handleGenomicData(GenomicDataParameterValue parameterValue, ParameterInfo genePatternParameter) {

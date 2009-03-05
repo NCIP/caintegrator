@@ -108,7 +108,9 @@ public class TestArrayDesignFiles {
     public static final String HG_U95B_CDF_PATH = "/arraydesign/affymetrix/HG_U95B.CDF";
     public static final String HG_U95C_CDF_PATH = "/arraydesign/affymetrix/HG_U95C.CDF";
     public static final String HG_U95D_CDF_PATH = "/arraydesign/affymetrix/HG_U95D.CDF";
+    public static final String EMPTY_PATH = "/arraydesign/affymetrix/emptyfile.csv";
 
+    public static final File EMPTY_FILE = getFile(EMPTY_PATH);
     public static final File HG_U133A_CDF_FILE = getFile(HG_U133A_CDF_PATH);
     public static final File HG_U133A_ANNOTATION_FILE = getFile(HG_U133A_ANNOTATION_PATH);
     public static final File HG_U133_PLUS_2_CDF_FILE = getFile(HG_U133_PLUS_2_CDF_PATH);
