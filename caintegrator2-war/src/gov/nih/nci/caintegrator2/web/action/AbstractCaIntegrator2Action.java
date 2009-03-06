@@ -128,12 +128,24 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     protected boolean isFileUpload() {
         return false;
     }
+    
+    /**
+     * Override this method to return true for actions that are "management" type actions.
+     * @return false if it's not a management action (default), true otherwise (in overrides).
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isManagementAction() {
+        return false;
+    }
 
     /**
      * refresh data on the value stack.
      */
     protected final void prepareValueStack() {
         SessionHelper.getInstance().refresh(getWorkspaceService());
+        if (isManagementAction()) {
+            setStudySubscription(null);
+        }
     }
    
     

@@ -96,9 +96,9 @@ public abstract class AbstractStudyManagementAction extends AbstractCaIntegrator
     /**
      * {@inheritDoc}
      */
-    public void prepare() {
-        super.prepare();
-        setStudySubscription(null);
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")     // PMD mistakenly flagging as empty method
+    protected boolean isManagementAction() {
+        return true;
     }
 
 }
