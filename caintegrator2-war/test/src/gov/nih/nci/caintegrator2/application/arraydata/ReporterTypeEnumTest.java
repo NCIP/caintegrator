@@ -106,7 +106,7 @@ public class ReporterTypeEnumTest {
     @Test
     public void testGetValueToDisplayableMap() {
         assertEquals("Gene", ReporterTypeEnum.getValueToDisplayableMap().get(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue()));
-        assertEquals("Probe Set", ReporterTypeEnum.getValueToDisplayableMap().get(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue()));
+        assertEquals("Reporter Id", ReporterTypeEnum.getValueToDisplayableMap().get(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue()));
     }
 
 }
