@@ -92,11 +92,12 @@ import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -117,7 +118,19 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
             Set<EntityTypeEnum> entityTypes) {
-        return Collections.emptySet();
+        Study study = query.getSubscription().getStudy();
+        ReporterTypeEnum reporterType = query.getReporterType();
+        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
+        Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
+        for (AbstractReporter reporter : reporters) {
+            for (ArrayData arrayData : reporter.getReporterSet().getArrayDataCollection()) {
+                if (arrayData.getSample().getSampleAcquisition() != null) {
+                    sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
+                }
+            }
+        }
+        ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
+        return rowFactory.getSampleRows(sampleAcquisitions);
     }
 
     /**
@@ -140,7 +153,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     boolean isEntityMatchHandler() {
-        return false;
+        return true;
     }
 
     /**
@@ -157,7 +170,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
 
     @Override
     boolean hasEntityCriterion() {
-        return false;
+        return true;
     }
 
     @Override
