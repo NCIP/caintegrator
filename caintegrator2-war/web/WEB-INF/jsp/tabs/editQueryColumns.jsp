@@ -21,7 +21,7 @@
                 listKey="key" 
                 listValue="value" />
         </div>
-        <div class="selectorNote">Probe Set - will display all probe sets.<br>
+        <div class="selectorNote">Reporter Id - will display all reporter ids.<br>
                 Gene - will display an average value for each gene.</div>    
     </s:if>
     </div>
