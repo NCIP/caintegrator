@@ -85,33 +85,102 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class GeneNameCriterionHandlerTest {
+    
+    private static final String GENE_NAME = "egfr";
+    private static final Long ASSIGNMENT_ID = Long.valueOf(1);
+    private CaIntegrator2DaoStub daoStub = new DaoStub();
+    private Query query;
+    private Study study;
+    private ArrayDataMatrix matrix;
+    private Gene gene;
+    GeneExpressionReporter reporter = new GeneExpressionReporter();
+    
+    @Before
+    public void setUp() {
+        daoStub.clear();       
+        matrix = new ArrayDataMatrix();
+        matrix.setReporterSet(new ReporterSet());
+        matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        gene = new Gene();
+        gene.setSymbol(GENE_NAME);
+        reporter.setGene(gene);
+        reporter.setReporterSet(matrix.getReporterSet());
+  
+        study = new Study();
+        query = new Query();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        query.setSubscription(subscription);
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        study.getAssignmentCollection().add(assignment);
+        SampleAcquisition acquisition = new SampleAcquisition();
+        Sample sample = new Sample();
+        ArrayData arrayData = new ArrayData();
+        arrayData.setMatrix(matrix);
+        arrayData.setReporterSet(matrix.getReporterSet());
+        arrayData.setSample(sample);
+        ArrayData arrayData2 = new ArrayData();
+        arrayData2.setSample(new Sample());
+        matrix.getReporterSet().getArrayDataCollection().add(arrayData);
+        matrix.getReporterSet().getArrayDataCollection().add(arrayData2);
+        sample.setSampleAcquisition(acquisition);
+        sample.getArrayDataCollection().add(arrayData);
+        acquisition.setSample(sample);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
+        assignment.setId(ASSIGNMENT_ID);
+        acquisition.setAssignment(assignment);
+    }
 
     @Test
     public void testGetMatches() {
-        assertTrue(GeneNameCriterionHandler.create(null).getMatches(null, null, null, null).isEmpty());
+        GeneNameCriterion criterion = new GeneNameCriterion();
+        criterion.setGeneSymbol(GENE_NAME);
+        GeneNameCriterionHandler handler = GeneNameCriterionHandler.create(criterion);
+        Set<ResultRow> rows = handler.getMatches(daoStub, null, query, new HashSet<EntityTypeEnum>());
+        ResultRow row = rows.iterator().next();
+        assertEquals(ASSIGNMENT_ID, row.getSubjectAssignment().getId());
+        assertNull(row.getSampleAcquisition());
     }
 
     @Test
     public void testGetReporterMatches() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class); 
-        CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
-        daoStub.clear();       
-
         GeneNameCriterion criterion = new GeneNameCriterion();
-        criterion.setGeneSymbol("TEST");
+        criterion.setGeneSymbol(GENE_NAME);
         GeneNameCriterionHandler handler = GeneNameCriterionHandler.create(criterion);
-        handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        Set<AbstractReporter> reporters = 
+                handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        GeneExpressionReporter reporter = (GeneExpressionReporter) reporters.iterator().next();
+        assertEquals(GENE_NAME, reporter.getGene().getSymbol());
         assertTrue(daoStub.findGeneExpressionReportersCalled);
     }
     
@@ -128,12 +197,32 @@ public class GeneNameCriterionHandlerTest {
 
     @Test
     public void testIsEntityMatchHandler() {
-        assertFalse(GeneNameCriterionHandler.create(null).isEntityMatchHandler());
+        assertTrue(GeneNameCriterionHandler.create(null).isEntityMatchHandler());
     }
 
     @Test
     public void testHasEntityCriterion() {
-        assertFalse(GeneNameCriterionHandler.create(null).hasEntityCriterion());
+        assertTrue(GeneNameCriterionHandler.create(null).hasEntityCriterion());
+    }
+    
+    private class DaoStub extends CaIntegrator2DaoStub {
+
+        @Override
+        public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
+            List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
+            matrixes.add(matrix);
+            return matrixes;
+        }
+
+        @Override
+        public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
+                ReporterTypeEnum reporterType, Study study) {
+            Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+            reporters.add(reporter);
+            findGeneExpressionReportersCalled = true;
+            return reporters;
+        }
+        
     }
 
 }
