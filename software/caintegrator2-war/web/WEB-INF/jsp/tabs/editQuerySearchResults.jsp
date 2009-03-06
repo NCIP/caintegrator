@@ -52,7 +52,7 @@
             <tr>
                 <th>Gene Name</th>
                 <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
-                    <th>Probe Set</th>
+                    <th>Reporter Id</th>
                 </s:if>
             </tr>
             <s:iterator value="genomicDataQueryResult.rowCollection" status="status">

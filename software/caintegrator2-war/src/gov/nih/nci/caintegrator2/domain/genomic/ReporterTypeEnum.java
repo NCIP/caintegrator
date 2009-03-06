@@ -59,7 +59,7 @@ public enum ReporterTypeEnum {
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue(), "Probe Set");
+        map.put(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue(), "Reporter Id");
         map.put(ReporterTypeEnum.GENE_EXPRESSION_GENE.getValue(), "Gene");
         return map;
     }
