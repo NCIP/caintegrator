@@ -91,6 +91,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
@@ -134,6 +135,7 @@ public class QueryManagementServiceImplTest {
     private QueryManagementServiceImpl queryManagementService;
     private CaIntegrator2DaoStub dao;
     private Query query;
+    private GeneExpressionReporter reporter;
     
     @Before
     public void setup() {
@@ -189,7 +191,7 @@ public class QueryManagementServiceImplTest {
         study.getAssignmentCollection().add(assignment);
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         Gene gene = new Gene();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter = new GeneExpressionReporter();
         ReporterSet reporterSet = new ReporterSet();
         reporter.setReporterSet(reporterSet);
         reporterSet.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -198,6 +200,8 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         ArrayDataMatrix matrix = new ArrayDataMatrix();
         matrix.setReporterSet(reporterSet);
+        reporterSet.getArrayDataCollection().add(arrayData);
+        reporterSet.getArrayDataCollection().add(arrayData2);
         matrix.getReporterSet().getReporters().add(reporter);
         reporter.setReporterSet(reporterSet);
         matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -218,6 +222,7 @@ public class QueryManagementServiceImplTest {
         foldChangeCriterion.setGeneSymbol("GENE");
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP);
         query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
         foldChangeCriterion.setFoldsDown(1.0f);
@@ -237,6 +242,15 @@ public class QueryManagementServiceImplTest {
     public void testSave() {
        queryManagementService.save(query);
        assertTrue(dao.saveCalled);
+       query.setId(Long.valueOf(1));
+       queryManagementService.save(query);
+       assertTrue(dao.mergeCalled);
+    }
+    
+    @Test
+    public void testDelete() {
+       queryManagementService.delete(query);
+       assertTrue(dao.deleteCalled);
     }
     
     @Test
@@ -275,11 +289,10 @@ public class QueryManagementServiceImplTest {
         assertTrue(!nciaBasket.getImageStudyIDs().isEmpty());
     }
 
-    private static class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
+    private class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
 
         ArrayDataMatrix matrix;
-        private GeneExpressionReporter reporter = new GeneExpressionReporter();
-
+        
         @Override
         public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
             List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
