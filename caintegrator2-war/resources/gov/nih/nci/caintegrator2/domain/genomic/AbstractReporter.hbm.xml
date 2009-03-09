@@ -7,9 +7,15 @@
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the AbstractReporter class -->
-		<property name="name" type="string" column="NAME"/>
+        <property name="name" type="string" column="NAME"/>
+        <property name="index" type="integer" column="REPORTER_INDEX" not-null="true"/>
 		<!-- Associations mapping for the AbstractReporter class -->
-		<many-to-one name="reporterSet" class="gov.nih.nci.caintegrator2.domain.genomic.ReporterSet" column="REPORTER_SET_ID" lazy="proxy" cascade="save-update,merge" />
+		<many-to-one name="reporterList" 
+            class="gov.nih.nci.caintegrator2.domain.genomic.ReporterList" 
+            column="REPORTER_LIST_ID" 
+            not-null="true"
+            lazy="proxy" 
+            cascade="save-update,merge" />
 		<joined-subclass name="GeneExpressionReporter" table="GENE_EXPRESSION_REPORTER" lazy="false">
 			<key column="ID" />
 			<!-- Associations mapping for the GeneExpressionReporter class -->

@@ -47,7 +47,7 @@ public class ArrayDataServiceTest {
         Platform platform = ArrayDesignChecker.checkLoadArrayDesign(cdfFile, annotationFile, service);
         assertTrue(daoStub.saveCalled);
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        Collection<AbstractReporter> geneReporters = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
+        Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         assertEquals(4562, geneReporters.size());
         for (AbstractReporter abstractReporter : geneReporters) {
             GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;

@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
@@ -144,9 +144,9 @@ public class PlatformHelper {
 
     private Map<String, AbstractReporter> createReporterMap(ReporterTypeEnum type) {
         Map<String, AbstractReporter> reporterMap = new HashMap<String, AbstractReporter>();
-        ReporterSet reporterSet = getReporterSet(type);
-        if (reporterSet != null) {
-            for (AbstractReporter reporter : reporterSet.getReporters()) {
+        ReporterList reporterList = getReporterList(type);
+        if (reporterList != null) {
+            for (AbstractReporter reporter : reporterList.getReporters()) {
                 reporterMap.put(reporter.getName(), reporter);
             }
         }
@@ -159,10 +159,10 @@ public class PlatformHelper {
      * @param type return set of this type
      * @return the set.
      */
-    public ReporterSet getReporterSet(ReporterTypeEnum type) {
-        for (ReporterSet reporterSet : platform.getReporterSets()) {
-            if (type.equals(reporterSet.getReporterType())) {
-                return reporterSet;
+    public ReporterList getReporterList(ReporterTypeEnum type) {
+        for (ReporterList reporterList : platform.getReporterLists()) {
+            if (type.equals(reporterList.getReporterType())) {
+                return reporterList;
             }
         }
         return null;
@@ -192,7 +192,7 @@ public class PlatformHelper {
 
     private Map<Gene, Collection<AbstractReporter>> createGeneReporterMap(ReporterTypeEnum type) {
         Map<Gene, Collection<AbstractReporter>> geneToReporterMap = new HashMap<Gene, Collection<AbstractReporter>>();
-        for (AbstractReporter reporter : getReporterSet(type).getReporters()) {
+        for (AbstractReporter reporter : getReporterList(type).getReporters()) {
             GeneExpressionReporter geneExpressionReporter = (GeneExpressionReporter) reporter;
             addToGeneToReporterMap(geneExpressionReporter, geneToReporterMap);
         }

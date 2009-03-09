@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class ArrayDesignChecker {
     }
 
     private static void checkGeneReporters(Platform platform) {
-        ReporterSet geneReporters = getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE, platform);
+        ReporterList geneReporters = getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE, platform);
         assertEquals(platform, geneReporters.getPlatform());
         Set<String> geneSymbols = new HashSet<String>();
         for (AbstractReporter abstractReporter : geneReporters.getReporters()) {
@@ -46,7 +46,7 @@ public class ArrayDesignChecker {
     }
 
     private static void checkProbeSetReporters(Platform platform, AffymetrixCdfReader cdfReader) {
-        ReporterSet probeSetReporters = getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, platform);
+        ReporterList probeSetReporters = getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, platform);
         assertEquals(platform, probeSetReporters.getPlatform());
         assertEquals(cdfReader.getCdfData().getHeader().getNumProbeSets(), probeSetReporters.getReporters().size());
         for (AbstractReporter abstractReporter : probeSetReporters.getReporters()) {
@@ -55,10 +55,10 @@ public class ArrayDesignChecker {
         }
     }
 
-    private static ReporterSet getReporterSet(ReporterTypeEnum type, Platform platform) {
-        for (ReporterSet reporterSet : platform.getReporterSets()) {
-            if (type.equals(reporterSet.getReporterType())) {
-                return reporterSet;
+    private static ReporterList getReporterList(ReporterTypeEnum type, Platform platform) {
+        for (ReporterList reporterList : platform.getReporterLists()) {
+            if (type.equals(reporterList.getReporterType())) {
+                return reporterList;
             }
         }
         return null;
@@ -68,7 +68,7 @@ public class ArrayDesignChecker {
         assertNotNull(platform);
         assertEquals(cdfReader.getCdfData().getChipType(), platform.getName());
         assertEquals("Affymetrix", platform.getVendor());
-        assertEquals(2, platform.getReporterSets().size());
+        assertEquals(2, platform.getReporterLists().size());
     }
 
 }

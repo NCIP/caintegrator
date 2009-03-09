@@ -85,18 +85,53 @@
  */
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
+import static org.junit.Assert.assertEquals;
 
-/**
- * 
- */
-public class ReporterSetTestIntegration extends AbstractHibernateMappingTestIntegration<ReporterSet> {
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+
+public final class ReporterListGenerator extends AbstractTestDataGenerator<ReporterList> {
+
+    public static final ReporterListGenerator INSTANCE = new ReporterListGenerator();
+    
+    private ReporterListGenerator() {
+        super();
+    }
+
+    @Override
+    public void compareFields(ReporterList original, ReporterList retrieved) {
+        assertEquals(original.getId(), retrieved.getId());
+        GeneExpressionReporter[] origReporters=new GeneExpressionReporter[1];  
+        original.getReporters().toArray(origReporters);
+        GeneExpressionReporter[] retReporters=new GeneExpressionReporter[1];
+        retrieved.getReporters().toArray(retReporters);
+        
+        GeneExpressionReporterGenerator.INSTANCE.compare(origReporters[0], retReporters[0]);
+    }
 
 
     @Override
-    protected AbstractTestDataGenerator<ReporterSet> getDataGenerator() {
-        return ReporterSetGenerator.INSTANCE;
+    public ReporterList createPersistentObject() {
+        return new ReporterList();
+    }
+
+
+    @Override
+    public void setValues(ReporterList reporterList, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        if (reporterList.getReporters() != null) {
+            for (AbstractReporter reporter : reporterList.getReporters()) {
+                reporter.setReporterList(null);
+            }
+        }
+        reporterList.getReporters().clear();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.setIndex(0);
+        reporter.setReporterList(reporterList);
+        GeneExpressionReporterGenerator.INSTANCE.setValues(reporter, nonCascadedObjects);
+        reporterList.getReporters().add(reporter);
     }
 
 }

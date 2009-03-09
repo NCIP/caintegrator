@@ -5,7 +5,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 /**
  * 
  */
-public class Gene extends AbstractCaIntegrator2Object {
+public class Gene extends AbstractCaIntegrator2Object implements Comparable<Gene> {
 
     private static final long serialVersionUID = 1L;
     
@@ -113,6 +113,13 @@ public class Gene extends AbstractCaIntegrator2Object {
      */
     public void setUnigeneclusterID(String unigeneclusterID) {
         this.unigeneclusterID = unigeneclusterID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(Gene gene) {
+        return symbol.compareTo(gene.getSymbol());
     }
 
 }
