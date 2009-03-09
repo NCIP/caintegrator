@@ -100,9 +100,11 @@ public class DateUtilTest {
 
     @Test
     public void testCreateDate() throws ParseException {
-        String dateString = "01/01/1970";
+        String dateString = "01/02/1970";
         Date date = DateUtil.createDate(dateString);
-        assertTrue("01/01/1970".equalsIgnoreCase(DateUtil.toString(date)));
+        assertTrue("01/02/1970".equalsIgnoreCase(DateUtil.toString(date)));
+        assertTrue("1970/01/02".equalsIgnoreCase(DateUtil.toStringForComparison(date)));
+        
     }
 
 }

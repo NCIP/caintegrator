@@ -89,11 +89,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
-import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -217,7 +213,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         Map<Sample, String> classificationMap = new HashMap<Sample, String>();
         for (ResultRow row : result.getRowCollection()) {
             ResultValue resultValue = row.getValueCollection().iterator().next();
-            String classificationName = getStringValue(resultValue.getValue());
+            String classificationName = resultValue.getValue().toString();
             if (StringUtils.isBlank(classificationName)) {
                 classificationName = "none";
             }
@@ -226,18 +222,6 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
             }
         }
         return classificationMap;
-    }
-
-    private String getStringValue(AbstractAnnotationValue value) {
-        if (value instanceof DateAnnotationValue) {
-            return ((DateAnnotationValue) value).toString();
-        } else if (value instanceof NumericAnnotationValue) {
-            return ((NumericAnnotationValue) value).getNumericValue().toString();
-        } else if (value instanceof StringAnnotationValue) {
-            return ((StringAnnotationValue) value).getStringValue();
-        } else {
-            return "";
-        }
     }
 
     private Query createClassificationQuery(StudySubscription studySubscription) {
