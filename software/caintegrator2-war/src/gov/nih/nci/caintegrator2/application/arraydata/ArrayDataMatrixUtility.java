@@ -119,7 +119,7 @@ public final class ArrayDataMatrixUtility {
     public static void merge(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
         if (fromArrayDataMatrix != null && toArrayDataMatrix != null) {
             mergeStudy(fromArrayDataMatrix, toArrayDataMatrix);
-            mergeReporterSet(fromArrayDataMatrix, toArrayDataMatrix);
+            mergeReporterList(fromArrayDataMatrix, toArrayDataMatrix);
             mergeDatas(fromArrayDataMatrix, toArrayDataMatrix);
         }
     }
@@ -141,12 +141,12 @@ public final class ArrayDataMatrixUtility {
         }
     }
 
-    private static void mergeReporterSet(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
-        if (toArrayDataMatrix.getReporterSet() == null) {
-            toArrayDataMatrix.setReporterSet(fromArrayDataMatrix.getReporterSet());
-        } else if (fromArrayDataMatrix.getReporterSet() != null 
-                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getReporterSet())) {
-            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated with different ReporterSets");
+    private static void mergeReporterList(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
+        if (toArrayDataMatrix.getReporterList() == null) {
+            toArrayDataMatrix.setReporterList(fromArrayDataMatrix.getReporterList());
+        } else if (fromArrayDataMatrix.getReporterList() != null 
+                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getReporterList())) {
+            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated with different ReporterLists");
         }
     }
     

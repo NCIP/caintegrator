@@ -137,9 +137,9 @@ class GenomicDataHelper {
             ArrayDataValues probeSetValues) {
         ArrayDataValues geneValues = createArrayDataValues(studyConfiguration);
         PlatformHelper platformHelper = 
-            new PlatformHelper(probeSetValues.getArrayDataMatrix().getReporterSet().getPlatform());
-        geneValues.getArrayDataMatrix().setReporterSet(
-                platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE));
+            new PlatformHelper(probeSetValues.getArrayDataMatrix().getReporterList().getPlatform());
+        geneValues.getArrayDataMatrix().setReporterList(
+                platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE));
         for (ArrayData arrayData : probeSetValues.getAllArrayDatas()) {
             loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper);
         }
@@ -156,7 +156,7 @@ class GenomicDataHelper {
     private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
             PlatformHelper platformHelper) {
         Collection<AbstractReporter> geneReporters = 
-            platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
+            platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         for (AbstractReporter geneReporter : geneReporters) {
             Collection<AbstractReporter> probeSetReporters = 
                 platformHelper.getReportersForGene(((GeneExpressionReporter) geneReporter).getGene(), 
@@ -185,7 +185,8 @@ class GenomicDataHelper {
         arrayData.getSample().getArrayDataCollection().add(arrayData);
         arrayData.setMatrix(arrayDataMatrix);
         arrayData.setStudy(arrayDataMatrix.getStudy());
-        arrayData.setReporterSet(arrayDataMatrix.getReporterSet());
+        arrayData.setReporterList(arrayDataMatrix.getReporterList());
+        arrayDataMatrix.getReporterList().getArrayDatas().add(arrayData);
         arrayDataMatrix.getSampleDataCollection().add(arrayData);
         dao.save(arrayData);
         return arrayData;

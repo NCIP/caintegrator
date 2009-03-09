@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Annotation of allowed values for <code>ReporterSet.type</code>.
+ * Annotation of allowed values for <code>ReporterList.type</code>.
  */
 public enum ReporterTypeEnum {
 

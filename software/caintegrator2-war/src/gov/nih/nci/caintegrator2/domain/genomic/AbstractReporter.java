@@ -5,12 +5,13 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 /**
  * 
  */
-public class AbstractReporter extends AbstractCaIntegrator2Object {
+public abstract class AbstractReporter extends AbstractCaIntegrator2Object implements Comparable<AbstractReporter> {
 
     private static final long serialVersionUID = 1L;
     
     private String name;
-    private ReporterSet reporterSet;
+    private Integer index;
+    private ReporterList reporterList;
     
     /**
      * @return the name
@@ -27,17 +28,31 @@ public class AbstractReporter extends AbstractCaIntegrator2Object {
     }
     
     /**
-     * @return the reporterSet
+     * @return the reporterList
      */
-    public ReporterSet getReporterSet() {
-        return reporterSet;
+    public ReporterList getReporterList() {
+        return reporterList;
     }
     
     /**
-     * @param reporterSet the reporterSet to set
+     * @param reporterList the reporterList to set
      */
-    public void setReporterSet(ReporterSet reporterSet) {
-        this.reporterSet = reporterSet;
+    public void setReporterList(ReporterList reporterList) {
+        this.reporterList = reporterList;
+    }
+
+    /**
+     * @return the index
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    /**
+     * @param index the index to set
+     */
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
 }

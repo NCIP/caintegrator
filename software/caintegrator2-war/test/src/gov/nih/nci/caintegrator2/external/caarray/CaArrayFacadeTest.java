@@ -112,7 +112,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -120,7 +120,6 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -204,15 +203,14 @@ public class CaArrayFacadeTest {
 
         private Platform createTestPlatform() {
             Platform platform = new Platform();
-            platform.setReporterSets(new HashSet<ReporterSet>());
-            ReporterSet reporters = new ReporterSet();
+            ReporterList reporters = new ReporterList();
             reporters.setId(1L);
             reporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            platform.getReporterSets().add(reporters);
+            platform.getReporterLists().add(reporters);
             reporters.getReporters().add(reporter1);
             reporters.getReporters().add(reporter2);
-            reporter1.setReporterSet(reporters);
-            reporter2.setReporterSet(reporters);
+            reporter1.setReporterList(reporters);
+            reporter2.setReporterList(reporters);
             return  platform;
         }
         

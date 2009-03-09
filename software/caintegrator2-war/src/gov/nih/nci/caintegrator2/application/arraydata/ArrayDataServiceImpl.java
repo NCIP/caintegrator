@@ -123,7 +123,7 @@ public class ArrayDataServiceImpl implements ArrayDataService {
 
     private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        reporters.addAll(arrayDataMatrix.getReporterSet().getReporters());
+        reporters.addAll(arrayDataMatrix.getReporterList().getReporters());
         return reporters;
     }
 

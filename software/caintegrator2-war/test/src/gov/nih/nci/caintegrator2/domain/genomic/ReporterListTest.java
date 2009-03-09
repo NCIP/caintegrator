@@ -83,99 +83,54 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.junit.Test;
 
 /**
- * Handler that matches genes based on the Symbol name.
+ * 
  */
-final class GeneNameCriterionHandler extends AbstractCriterionHandler {
+public class ReporterListTest {
 
-    private final GeneNameCriterion criterion;
-
-    private GeneNameCriterionHandler(GeneNameCriterion criterion) {
-        this.criterion = criterion;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
-            Set<EntityTypeEnum> entityTypes) {
-        Study study = query.getSubscription().getStudy();
-        ReporterTypeEnum reporterType = query.getReporterType();
-        Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
-        Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
-        for (AbstractReporter reporter : reporters) {
-            for (ArrayData arrayData : reporter.getReporterList().getArrayDatas()) {
-                if (arrayData.getSample().getSampleAcquisition() != null) {
-                    sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
-                }
-            }
-        }
-        ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
-        return rowFactory.getSampleRows(sampleAcquisitions);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    Set<AbstractReporter> getReporterMatches(CaIntegrator2Dao dao, Study study, ReporterTypeEnum reporterType) {
-        if (reporterType == null) {
-            throw new IllegalArgumentException("ReporterType is not set.");
-        }
-        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        Set<String> geneSymbols = new HashSet<String>();
-        geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
-        reporters.addAll(dao.findGeneExpressionReporters(geneSymbols, reporterType, study));
-        return reporters;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    boolean isEntityMatchHandler() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    boolean isReporterMatchHandler() {
-        return true;
-    }
-
-    public static GeneNameCriterionHandler create(GeneNameCriterion criterion) {
-        return new GeneNameCriterionHandler(criterion);
-    }
-
-    @Override
-    boolean hasEntityCriterion() {
-        return true;
-    }
-
-    @Override
-    boolean hasReporterCriterion() {
-        return true;
+    @Test
+    public void testSortAndLoadReporterIndexes() {
+        Gene gene1 = new Gene();
+        gene1.setSymbol("AAAA");
+        Gene gene2 = new Gene();
+        gene2.setSymbol("BBBB");
+        GeneExpressionReporter reporter1 = new GeneExpressionReporter();
+        reporter1.setGene(gene1);
+        reporter1.setName("reporter1");
+        GeneExpressionReporter reporter2 = new GeneExpressionReporter();
+        reporter2.setGene(gene1);
+        reporter2.setName("reporter2");
+        GeneExpressionReporter reporter3 = new GeneExpressionReporter();
+        reporter3.setGene(gene2);
+        reporter3.setName("reporter3");
+        GeneExpressionReporter reporter4 = new GeneExpressionReporter();
+        reporter4.setName("reporter4");
+        GeneExpressionReporter reporter5 = new GeneExpressionReporter();
+        reporter5.setName("reporter5");
+        
+        ReporterList reporterList = new ReporterList();
+        reporterList.getReporters().add(reporter5);
+        reporterList.getReporters().add(reporter3);
+        reporterList.getReporters().add(reporter4);
+        reporterList.getReporters().add(reporter2);
+        reporterList.getReporters().add(reporter1);
+        reporterList.sortAndLoadReporterIndexes();
+        assertEquals(reporter1, reporterList.getReporters().get(0));
+        assertEquals(0, (int) reporterList.getReporters().get(0).getIndex());
+        assertEquals(reporter2, reporterList.getReporters().get(1));
+        assertEquals(1, (int) reporterList.getReporters().get(1).getIndex());
+        assertEquals(reporter3, reporterList.getReporters().get(2));
+        assertEquals(2, (int) reporterList.getReporters().get(2).getIndex());
+        assertEquals(reporter4, reporterList.getReporters().get(3));
+        assertEquals(3, (int) reporterList.getReporters().get(3).getIndex());
+        assertEquals(reporter5, reporterList.getReporters().get(4));
+        assertEquals(4, (int) reporterList.getReporters().get(4).getIndex());
     }
 
 }

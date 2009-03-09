@@ -2,20 +2,23 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * 
  */
-public class ReporterSet extends AbstractCaIntegrator2Object {
+public class ReporterList extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
     private ReporterTypeEnum reporterType;
-    private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
-    private Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+    private List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
     private Platform platform;
+    private Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
     
     /**
      * @return the platform
@@ -32,24 +35,9 @@ public class ReporterSet extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the arrayDataCollection
-     */
-    public Set<ArrayData> getArrayDataCollection() {
-        return arrayDataCollection;
-    }
-
-    /**
-     * @param arrayDataCollection the arrayDataCollection to set
-     */
-    @SuppressWarnings("unused") // Required by Hibernate
-    private void setArrayDataCollection(Set<ArrayData> arrayDataCollection) {
-        this.arrayDataCollection = arrayDataCollection;
-    }
-
-    /**
      * @return the reporters
      */
-    public Set<AbstractReporter> getReporters() {
+    public List<AbstractReporter> getReporters() {
         return reporters;
     }
 
@@ -57,7 +45,7 @@ public class ReporterSet extends AbstractCaIntegrator2Object {
      * @param reporters the reporters to set
      */
     @SuppressWarnings("unused") // Required by Hibernate
-    private void setReporters(Set<AbstractReporter> reporters) {
+    private void setReporters(List<AbstractReporter> reporters) {
         this.reporters = reporters;
     }
 
@@ -73,6 +61,31 @@ public class ReporterSet extends AbstractCaIntegrator2Object {
      */
     public void setReporterType(ReporterTypeEnum reporterType) {
         this.reporterType = reporterType;
+    }
+    
+    /**
+     * Sets the index field for the contained reporters in natural sort order.
+     */
+    public void sortAndLoadReporterIndexes() {
+        Collections.sort(reporters);
+        for (int i = 0; i < reporters.size(); i++) {
+            reporters.get(i).setIndex(i);
+        }
+    }
+
+    /**
+     * @return the arrayDatas
+     */
+    public Set<ArrayData> getArrayDatas() {
+        return arrayDatas;
+    }
+
+    /**
+     * @param arrayDatas the arrayDatas to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setArrayDatas(Set<ArrayData> arrayDatas) {
+        this.arrayDatas = arrayDatas;
     }
 
 }

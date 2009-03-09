@@ -110,7 +110,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -240,10 +240,10 @@ class DataRetrievalHelper {
             ArrayData arrayData) {
         arrayDataMatrix.getSampleDataCollection().add(arrayData);
         arrayData.setMatrix(arrayDataMatrix);
-        ReporterSet reporterSet = platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        if (arrayDataMatrix.getReporterSet() == null) {
-            arrayDataMatrix.setReporterSet(reporterSet);
-        } else if (!arrayDataMatrix.getReporterSet().equals(reporterSet)) {
+        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        if (arrayDataMatrix.getReporterList() == null) {
+            arrayDataMatrix.setReporterList(reporterList);
+        } else if (!arrayDataMatrix.getReporterList().equals(reporterList)) {
             throw new IllegalStateException("Illegal attempt to load data from different platforms");
         }
     }
@@ -283,7 +283,8 @@ class DataRetrievalHelper {
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
-        arrayData.setReporterSet(platformHelper.getReporterSet(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
+        arrayData.setReporterList(platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
+        platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).getArrayDatas().add(arrayData);
         array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);

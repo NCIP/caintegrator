@@ -85,54 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.data.AbstractHibernateMappingTestIntegration;
 
-
-public final class ReporterSetGenerator extends AbstractTestDataGenerator<ReporterSet> {
-
-    public static final ReporterSetGenerator INSTANCE = new ReporterSetGenerator();
-    
-    private ReporterSetGenerator() {
-        super();
-    }
-
-    @Override
-    public void compareFields(ReporterSet original, ReporterSet retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        GeneExpressionReporter[] origReporters=new GeneExpressionReporter[1];  
-        original.getReporters().toArray(origReporters);
-        GeneExpressionReporter[] retReporters=new GeneExpressionReporter[1];
-        retrieved.getReporters().toArray(retReporters);
-        
-        GeneExpressionReporterGenerator.INSTANCE.compare(origReporters[0], retReporters[0]);
-    }
+/**
+ * 
+ */
+public class ReporterListTestIntegration extends AbstractHibernateMappingTestIntegration<ReporterList> {
 
 
     @Override
-    public ReporterSet createPersistentObject() {
-        return new ReporterSet();
-    }
-
-
-    @Override
-    public void setValues(ReporterSet reporterSet, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        if (reporterSet.getReporters() != null) {
-            for (AbstractReporter reporter : reporterSet.getReporters()) {
-                reporter.setReporterSet(null);
-            }
-        }
-        reporterSet.getReporters().clear();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporter.setReporterSet(reporterSet);
-        GeneExpressionReporterGenerator.INSTANCE.setValues(reporter, null);
-        reporterSet.getReporters().add(reporter);
-        
-
+    protected AbstractTestDataGenerator<ReporterList> getDataGenerator() {
+        return ReporterListGenerator.INSTANCE;
     }
 
 }
