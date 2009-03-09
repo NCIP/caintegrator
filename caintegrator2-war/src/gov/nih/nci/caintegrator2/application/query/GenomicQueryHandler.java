@@ -272,8 +272,8 @@ class GenomicQueryHandler {
             Collection<ArrayData> candidateArrayDatas,
             ReporterTypeEnum reporterType) {
         for (ArrayData arrayData : candidateArrayDatas) {
-            if (arrayData.getReporterSet() != null 
-                    && reporterType.equals(arrayData.getReporterSet().getReporterType())) {
+            if (arrayData.getReporterList() != null 
+                    && reporterType.equals(arrayData.getReporterList().getReporterType())) {
                 matchingArrayDatas.add(arrayData);
             }
         }
@@ -308,7 +308,7 @@ class GenomicQueryHandler {
     private Collection<AbstractReporter> getAllReporters() {
         HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (ArrayDataMatrix matrix : getDataMatrixes()) {
-            reporters.addAll(matrix.getReporterSet().getReporters());
+            reporters.addAll(matrix.getReporterList().getReporters());
         }
         return reporters;
     }

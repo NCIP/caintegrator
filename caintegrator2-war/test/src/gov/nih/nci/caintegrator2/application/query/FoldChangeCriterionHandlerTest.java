@@ -99,7 +99,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -128,8 +128,8 @@ public class FoldChangeCriterionHandlerTest {
     @Before
     public void setUp() {
         matrix = new ArrayDataMatrix();
-        matrix.setReporterSet(new ReporterSet());
-        matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        matrix.setReporterList(new ReporterList());
+        matrix.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         reporter.setGene(gene);
         
@@ -145,7 +145,8 @@ public class FoldChangeCriterionHandlerTest {
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
         arrayData.setMatrix(matrix);
-        arrayData.setReporterSet(matrix.getReporterSet());
+        arrayData.setReporterList(matrix.getReporterList());
+        matrix.getReporterList().getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
         sample.setSampleAcquisition(acquisition);
         sample.getArrayDataCollection().add(arrayData);

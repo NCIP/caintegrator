@@ -99,7 +99,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -129,12 +129,12 @@ public class GeneNameCriterionHandlerTest {
     public void setUp() {
         daoStub.clear();       
         matrix = new ArrayDataMatrix();
-        matrix.setReporterSet(new ReporterSet());
-        matrix.getReporterSet().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        matrix.setReporterList(new ReporterList());
+        matrix.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         gene.setSymbol(GENE_NAME);
         reporter.setGene(gene);
-        reporter.setReporterSet(matrix.getReporterSet());
+        reporter.setReporterList(matrix.getReporterList());
   
         study = new Study();
         query = new Query();
@@ -147,12 +147,13 @@ public class GeneNameCriterionHandlerTest {
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
         arrayData.setMatrix(matrix);
-        arrayData.setReporterSet(matrix.getReporterSet());
+        arrayData.setReporterList(matrix.getReporterList());
+        matrix.getReporterList().getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setSample(new Sample());
-        matrix.getReporterSet().getArrayDataCollection().add(arrayData);
-        matrix.getReporterSet().getArrayDataCollection().add(arrayData2);
+        matrix.getReporterList().getArrayDatas().add(arrayData);
+        matrix.getReporterList().getArrayDatas().add(arrayData2);
         sample.setSampleAcquisition(acquisition);
         sample.getArrayDataCollection().add(arrayData);
         acquisition.setSample(sample);

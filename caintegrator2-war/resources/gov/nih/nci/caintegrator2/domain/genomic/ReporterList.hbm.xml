@@ -4,25 +4,25 @@
     <typedef name="ReporterTypeEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum</param> 
     </typedef> 
-	<class name="ReporterSet" table="REPORTER_SET" lazy="false" polymorphism="explicit">
+	<class name="ReporterList" table="REPORTER_LIST" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
-		<!-- Attributes mapping for the ReporterSet class -->
+		<!-- Attributes mapping for the ReporterList class -->
 		<property name="reporterType" type="ReporterTypeEnum" column="REPORTER_TYPE"/>
-		<!-- Associations mapping for the ReporterSet class -->
-		<set name="reporters" lazy="true" cascade="save-update,merge" inverse="true">
+		<!-- Associations mapping for the ReporterList class -->
+		<list name="reporters" lazy="true" cascade="all-delete-orphan" inverse="true">
 			<cache usage="read-write" />
-			<key column="REPORTER_SET_ID" />
-			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter"/>
-		</set>
-	    <set name="arrayDataCollection" lazy="true" cascade="save-update,merge" inverse="true">
+			<key column="REPORTER_LIST_ID" />
+            <list-index column="REPORTER_INDEX" />
+			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter" />
+		</list>
+        <set name="arrayDatas" lazy="true" cascade="save-update,merge" inverse="true">
             <cache usage="read-write" />
-            <key column="REPORTER_SET_ID" />
+            <key column="REPORTER_LIST_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData"/>
         </set>
-		
 		<many-to-one name="platform" class="gov.nih.nci.caintegrator2.domain.genomic.Platform" column="PLATFORM_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

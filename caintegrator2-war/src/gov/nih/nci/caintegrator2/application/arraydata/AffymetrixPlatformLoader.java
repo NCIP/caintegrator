@@ -89,14 +89,13 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -158,25 +157,26 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private Platform createPlatform() {
         Platform platform = new Platform();
-        platform.setReporterSets(new HashSet<ReporterSet>());
         platform.setVendor("Affymetrix");
         return platform;
     }
 
     private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
-        ReporterSet geneReporters = new ReporterSet();
+        ReporterList geneReporters = new ReporterList();
         geneReporters.setPlatform(platform);
         geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterSets().add(geneReporters);
-        ReporterSet probeSetReporters = new ReporterSet();
+        platform.getReporterLists().add(geneReporters);
+        ReporterList probeSetReporters = new ReporterList();
         probeSetReporters.setPlatform(platform);
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        platform.getReporterSets().add(probeSetReporters);
+        platform.getReporterLists().add(probeSetReporters);
         try {
             annotationFileReader = new CSVReader(new FileReader(getAnnotationFile()));
             loadHeaders();
             platform.setName(getHeaderValue(PLATFORM_NAME_HEADER));
             loadAnnotations(geneReporters, probeSetReporters, dao);
+            probeSetReporters.sortAndLoadReporterIndexes();
+            geneReporters.sortAndLoadReporterIndexes();
         } catch (IOException e) {
             throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFile().getName(), e);
         }
@@ -223,7 +223,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         return fields.length > 0 && PROBE_SET_ID_HEADER.equals(fields[0]);
     }
 
-    private void loadAnnotations(ReporterSet geneReporters, ReporterSet probeSetReporters, CaIntegrator2Dao dao) 
+    private void loadAnnotations(ReporterList geneReporters, ReporterList probeSetReporters, CaIntegrator2Dao dao) 
     throws IOException {
         String[] fields;
         while ((fields = annotationFileReader.readNext()) != null) {
@@ -231,7 +231,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         }
     }
     
-    private void loadAnnotations(String[] fields, ReporterSet geneReporters, ReporterSet probeSetReporters, 
+    private void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
             CaIntegrator2Dao dao) {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
         Gene gene = symbolToGeneMap.get(symbol.toUpperCase(Locale.getDefault()));
@@ -243,11 +243,11 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         handleProbeSet(probeSetName, gene, probeSetReporters);
     }
 
-    private void addGeneReporter(ReporterSet geneReporters, Gene gene) {
+    private void addGeneReporter(ReporterList geneReporters, Gene gene) {
         GeneExpressionReporter geneReporter = new GeneExpressionReporter();
         geneReporter.setGene(gene);
         geneReporter.setName(gene.getSymbol());
-        geneReporter.setReporterSet(geneReporters);
+        geneReporter.setReporterList(geneReporters);
         geneReporters.getReporters().add(geneReporter);
     }
 
@@ -274,11 +274,11 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         return fields[headerToIndexMap.get(header)];
     }
 
-    private void handleProbeSet(String probeSetName, Gene gene, ReporterSet probeSetReporters) {
+    private void handleProbeSet(String probeSetName, Gene gene, ReporterList probeSetReporters) {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
         reporter.setGene(gene);
-        reporter.setReporterSet(probeSetReporters);
+        reporter.setReporterList(probeSetReporters);
         probeSetReporters.getReporters().add(reporter);
     }
 

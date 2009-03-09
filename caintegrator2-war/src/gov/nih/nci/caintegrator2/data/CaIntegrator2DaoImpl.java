@@ -97,10 +97,12 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -295,16 +297,26 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
     public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols, 
             ReporterTypeEnum reporterType, Study study) {
+        Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType);
+        if (studyReporterLists.isEmpty()) {
+            return Collections.emptySet();
+        }
         Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
         Criteria criteria = getCurrentSession().createCriteria(GeneExpressionReporter.class);
         criteria.createCriteria("gene").add(Restrictions.in("symbol", geneSymbols));
-        Criteria reporterCriteria = criteria.createCriteria("reporterSet");
-        reporterCriteria.add(Restrictions.eq("reporterType", reporterType));
-        reporterCriteria.createCriteria("arrayDataCollection").add(Restrictions.eq("study", study));
+        criteria.add(Restrictions.in("reporterList", studyReporterLists));
         reporters.addAll((List<GeneExpressionReporter>) criteria.list());
         return reporters;
     }
-    
+
+    private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType) {
+        Set<ReporterList> reporterLists = new HashSet<ReporterList>();
+        for (ArrayData arrayData : study.getArrayDatas(reporterType)) {
+            reporterLists.add(arrayData.getReporterList());
+        }
+        return reporterLists;
+    }
+
     /**
      * This function adds the values criteria for getting back the correct annotation values.
      * @param criterion - The main criterion object for the values we want.
@@ -375,7 +387,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
         Query query = getCurrentSession().createQuery("from ArrayDataMatrix where study = :study "
-                + "and reporterSet.reporterType = :reporterType");
+                + "and reporterList.reporterType = :reporterType");
         query.setEntity("study", study);
         query.setParameter("reporterType", reporterType);
         return query.list();

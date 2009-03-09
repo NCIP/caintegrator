@@ -10,24 +10,24 @@ public class ArrayData extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private ReporterSet reporterSet;
+    private ReporterList reporterList;
     private Sample sample;
     private ArrayDataMatrix matrix;
     private Study study;
     private Array array;
     
     /**
-     * @return the reporterSet
+     * @return the reporterList
      */
-    public ReporterSet getReporterSet() {
-        return reporterSet;
+    public ReporterList getReporterList() {
+        return reporterList;
     }
     
     /**
-     * @param reporterSet the reporterSet to set
+     * @param reporterList the reporterList to set
      */
-    public void setReporterSet(ReporterSet reporterSet) {
-        this.reporterSet = reporterSet;
+    public void setReporterList(ReporterList reporterList) {
+        this.reporterList = reporterList;
     }
     
     /**
@@ -92,7 +92,7 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      * @return the reporter type.
      */
     public ReporterTypeEnum getReporterType() {
-        return getReporterSet().getReporterType();
+        return getReporterList().getReporterType();
     }
 
 }

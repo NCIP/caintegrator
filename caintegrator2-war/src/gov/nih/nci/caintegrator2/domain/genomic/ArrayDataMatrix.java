@@ -12,22 +12,22 @@ public class ArrayDataMatrix extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
     
-    private ReporterSet reporterSet;
+    private ReporterList reporterList;
     private Collection<ArrayData> sampleDataCollection;
     private Study study;
     
     /**
-     * @return the reporterSet
+     * @return the reporterList
      */
-    public ReporterSet getReporterSet() {
-        return reporterSet;
+    public ReporterList getReporterList() {
+        return reporterList;
     }
     
     /**
-     * @param reporterSet the reporterSet to set
+     * @param reporterList the reporterList to set
      */
-    public void setReporterSet(ReporterSet reporterSet) {
-        this.reporterSet = reporterSet;
+    public void setReporterList(ReporterList reporterList) {
+        this.reporterList = reporterList;
     }
     
     /**

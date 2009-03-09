@@ -317,7 +317,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
         for (ArrayData arrayData : arrayDatas) {
-            if (type.equals(arrayData.getMatrix().getReporterSet().getReporterType())) {
+            if (type.equals(arrayData.getMatrix().getReporterList().getReporterType())) {
                 return arrayData.getMatrix();
             }
         }
