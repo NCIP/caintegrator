@@ -128,9 +128,18 @@ public final class DateUtil {
      * 
      * @param date1 first date
      * @param date2 second date
-     * @return boolean of string comparation
+     * @return boolean of string comparison
      */
     public static boolean equal(Date date1, Date date2) {
         return DateUtil.toString(date1).equalsIgnoreCase(DateUtil.toString(date2));
+    }
+
+    /**
+     * @param date the Date object
+     * @return string date in "yyyy/MM/dd" format
+     */
+    public static String toStringForComparison(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        return formatter.format(date);
     }
 }

@@ -204,6 +204,8 @@ public class AnalysisFormTest {
         assertTrue(formParameter2.getChoices().contains("2"));
         assertEquals(2, formParameter3.getChoices().size());
         assertTrue(formParameter3.getChoices().contains("All Genomic Data"));
+        assertEquals("select", formParameter4.getDisplayType());
+        assertEquals(2, formParameter4.getChoices().size());
     }
     
     @Test
@@ -216,6 +218,8 @@ public class AnalysisFormTest {
         formParameter2.setValue("1");
         assertEquals("1", formParameter2.getParameterValue().getValueAsString());
         assertEquals("1", form.getInvocation().getParameterValue(parameterValue2.getParameter()).getValueAsString());
+        assertEquals("1", formParameter2.getValue());
+        assertEquals("1", formParameter2.getValue());
         assertEquals("All Genomic Data", formParameter3.getValue());
         formParameter3.setValue("Test");
         assertEquals("Test", formParameter3.getValue());

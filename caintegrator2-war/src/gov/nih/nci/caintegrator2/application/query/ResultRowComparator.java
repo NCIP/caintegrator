@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -194,8 +195,7 @@ final class ResultRowComparator implements Comparator <ResultRow> {
         } else if (value1 instanceof StringAnnotationValue) {
             return handleStringValues((StringAnnotationValue) value1, (StringAnnotationValue) value2, sortType);
         } else if (value1 instanceof DateAnnotationValue) {
-            // TODO : Do this later.
-            return EQUAL;
+            return handleDateValues((DateAnnotationValue) value1, (DateAnnotationValue) value2, sortType);
         } else {
             // throw an error.
             return 0;
@@ -218,6 +218,21 @@ final class ResultRowComparator implements Comparator <ResultRow> {
             }
             // Must be equal.
             return EQUAL * getSortOrder(sortType);
+        } else {
+            return handleNullValues(val1null, val2null, sortType);
+        }
+    }
+
+    @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // Checking null values
+    private int handleDateValues(DateAnnotationValue value1, 
+                                 DateAnnotationValue value2,
+                                 SortTypeEnum sortType) {
+        boolean val1null = value1.getDateValue() == null ? true : false;
+        boolean val2null = value2.getDateValue() == null ? true : false;
+
+        if (!val1null && !val2null) {
+            return DateUtil.toStringForComparison(value1.getDateValue()).compareTo(
+                DateUtil.toStringForComparison(value2.getDateValue()));
         } else {
             return handleNullValues(val1null, val2null, sortType);
         }
