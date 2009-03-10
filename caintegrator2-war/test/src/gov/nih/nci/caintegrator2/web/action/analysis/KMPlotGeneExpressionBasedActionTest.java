@@ -151,7 +151,6 @@ public class KMPlotGeneExpressionBasedActionTest {
     
     private Study createFakeStudy() {
         Study study = new Study();
-        study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);

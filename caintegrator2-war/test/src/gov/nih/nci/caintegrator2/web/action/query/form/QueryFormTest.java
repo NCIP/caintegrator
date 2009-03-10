@@ -148,9 +148,6 @@ public class QueryFormTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
-        study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
         
         subscription.setStudy(study);
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);

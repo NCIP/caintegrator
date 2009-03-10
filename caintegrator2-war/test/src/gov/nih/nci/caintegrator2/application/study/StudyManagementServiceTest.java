@@ -155,8 +155,7 @@ public class StudyManagementServiceTest {
     @Test
     public void testDelete() throws ValidationException {
         StudyConfiguration configTest = new StudyConfiguration();
-        configTest.getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-
+        
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
         studyManagementService.delete(configTest, clinicalSource);
         assertTrue(daoStub.deleteCalled);

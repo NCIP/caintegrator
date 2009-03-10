@@ -145,9 +145,6 @@ public class ImageAnnotationHandler extends AbstractAnnotationHandler {
     void addDefinitionsToStudy(Set<AnnotationDefinition> annotationDefinitions) {
         Study study = imageAnnotationConfiguration.getImageDataSourceConfiguration()
             .getStudyConfiguration().getStudy();
-        if (study.getImageSeriesAnnotationCollection() == null) {
-            study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-        }
         for (AnnotationDefinition definition : annotationDefinitions) {
             if (!study.getImageSeriesAnnotationCollection().contains(definition)) {
                 study.getImageSeriesAnnotationCollection().add(definition);

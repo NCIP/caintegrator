@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -156,8 +155,6 @@ public class ManageQueryActionTest {
         study.setStudyConfiguration(studyConfiguration);
         studySubscription.setStudy(study);
         studySubscription.setId(id);
-        studySubscription.getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        studySubscription.getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         studySubscription.setQueryCollection(new HashSet<Query>());
         SessionHelper.getInstance().getDisplayableUserWorkspace().getUserWorkspace().getSubscriptionCollection().add(studySubscription);
         return studySubscription;
@@ -203,8 +200,6 @@ public class ManageQueryActionTest {
         manageQueryAction.getQueryForm().getQuery().setId(1L);
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
-        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.saveCalled);
         
@@ -230,8 +225,6 @@ public class ManageQueryActionTest {
         manageQueryAction.getQueryForm().getQuery().setId(1L);
         manageQueryAction.validate();
         assertFalse(manageQueryAction.hasErrors());
-        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        manageQueryAction.getQueryForm().getQuery().getSubscription().getStudy().setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertTrue(queryManagementService.deleteCalled);
         
