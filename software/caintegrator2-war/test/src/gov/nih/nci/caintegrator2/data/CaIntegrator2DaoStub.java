@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
@@ -98,11 +99,13 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -143,6 +146,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
     public boolean refreshCalled;
+    public boolean retrieveNumberImagesInStudyCalled;
+    public boolean retrievePlatformsForGenomicSourceCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -184,6 +189,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformsCalled = false;
         setFlushModeCalled = false;
         refreshCalled = false;
+        retrieveNumberImagesInStudyCalled = false;
+        retrievePlatformsForGenomicSourceCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -375,6 +382,35 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public void refresh(Object persistentObject) {
         refreshCalled = true;
         
+    }
+
+    public int retrieveNumberImagesInStudy(Study study) {
+        int numberImages = 0;
+        for (StudySubjectAssignment subject : study.getAssignmentCollection()) {
+            for (ImageSeriesAcquisition imageAcquisition : subject.getImageStudyCollection()) {
+                for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
+                    if (imageSeries != null && imageSeries.getImageCollection() != null) {
+                        numberImages += imageSeries.getImageCollection().size();
+                    }
+                }
+            }
+        }
+        retrieveNumberImagesInStudyCalled = true;
+        return numberImages;
+    }
+
+
+    public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+        Set<Platform> platforms = new HashSet<Platform>(); 
+        for (Sample sample : genomicSource.getSamples()) {
+            for (Array array : sample.getArrayCollection()) {
+                platforms.add(array.getPlatform());
+            }
+        }
+        List<Platform> platformList = new ArrayList<Platform>();
+        platformList.addAll(platforms);
+        retrievePlatformsForGenomicSourceCalled = true;
+        return platformList;
     }
 
 }

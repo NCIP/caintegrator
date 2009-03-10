@@ -3,6 +3,14 @@
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
     <!-- Actions -->
+    
+    <bean id="studySummaryAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.StudySummaryAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
 
     <bean id="browseStudyAction"
         singleton="false"

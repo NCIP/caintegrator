@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 /**
  * Provides <code>UserWorkspace</code> access and management functionality.
@@ -121,4 +122,11 @@ public interface WorkspaceService {
      * @param workspace - object that needs to be updated.
      */
     void saveUserWorkspace(UserWorkspace workspace);
+    
+    /**
+     * Creates a <code> DisplayableStudySummary </code> from the given Study. 
+     * @param study - object to use.
+     * @return - DisplayableStudySummary object created from the study.
+     */
+    DisplayableStudySummary createDisplayableStudySummary(Study study);
 }

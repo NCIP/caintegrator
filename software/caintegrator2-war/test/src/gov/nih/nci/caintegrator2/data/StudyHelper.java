@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -106,7 +108,11 @@ import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -114,6 +120,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Subject;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -253,6 +260,16 @@ public class StudyHelper {
         
         ImageSeries imageSeries5 = new ImageSeries();
         imageSeries5.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
+        
+        Image image1 = new Image();
+        image1.setSeries(imageSeries1);
+        imageSeries1.setImageCollection(new HashSet<Image>());
+        imageSeries1.getImageCollection().add(image1);
+        
+        Image image2 = new Image();
+        image2.setSeries(imageSeries2);
+        imageSeries2.setImageCollection(new HashSet<Image>());
+        imageSeries2.getImageCollection().add(image2);
         
         /**
          * Add the 5 SubjectAnnotations
@@ -456,6 +473,34 @@ public class StudyHelper {
         ssaCollection.add(studySubjectAssignment5);
         
         return studySubscription;
+    }
+    
+    public Study populateAndRetrieveStudyWithSourceConfigurations() {
+        Study study = populateAndRetrieveStudy().getStudy();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setExperimentIdentifier("experimentIdentifier");
+        ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
+        genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
+        List<Sample> samples = new ArrayList<Sample>();
+        Platform platform1 = new Platform();
+        Platform platform2 = new Platform();
+        Array array1 = new Array();
+        Array array2 = new Array();
+        array1.setPlatform(platform1);
+        array2.setPlatform(platform2);
+        Sample sample1 = new Sample();
+        sample1.getArrayCollection().add(array1);
+        sample1.getArrayCollection().add(array2);
+        samples.add(sample1);
+        Sample sample2 = new Sample();
+        sample2.getArrayCollection().add(array1);
+        samples.add(sample2);
+        genomicDataSourceConfiguration.setSamples(samples);
+        return study;
     }
     
     public CompoundCriterion createCompoundCriterion1() {    

@@ -87,8 +87,15 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
+import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -98,11 +105,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class WorkspaceServiceTest {
     
     private WorkspaceService workspaceService;
+    private CaIntegrator2DaoStub daoStub;
 
     @Before
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
         workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
+        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
     }
 
     @Test
@@ -123,6 +132,33 @@ public class WorkspaceServiceTest {
         assertEquals(1, workspace.getSubscriptionCollection().size());
         workspaceService.unsubscribe(workspace, study);
         assertEquals(0, workspace.getSubscriptionCollection().size());
+    }
+    
+    @Test
+    public void testCreateDisplayableStudySummary() {
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
+        DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
+        assertNotNull(summary);
+        assertTrue(daoStub.retrieveNumberImagesInStudyCalled);
+        assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
+        assertEquals(2, summary.getNumberImages());
+        assertEquals(1, summary.getNumberSubjectAnnotationColumns());
+        assertEquals(5, summary.getNumberSubjects());
+        assertEquals(study.getShortTitleText(), summary.getStudyName());
+        assertEquals(study.getLongTitleText(), summary.getStudyDescription());
+        List<DisplayableGenomicSource> genomicSources = summary.getGenomicDataSources();
+        assertEquals(1, genomicSources.size());
+        DisplayableGenomicSource genomicSource = genomicSources.get(0);
+        assertEquals(2, genomicSource.getPlatforms().size());
+        assertEquals(2, genomicSource.getNumberSamples());
+        assertEquals(0, genomicSource.getNumberControlSamples());
+        assertEquals("experimentIdentifier", genomicSource.getExperimentName());
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testCreateDisplayableStudySummaryInvalid() {
+        workspaceService.createDisplayableStudySummary(null);
     }
 
 }

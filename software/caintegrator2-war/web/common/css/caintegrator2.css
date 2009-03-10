@@ -376,6 +376,15 @@ TABLE.login TD.value
 .fadebox H3 .selected
 { color:#000 }
 
+/* Summary Table */
+TABLE.study_summary
+{ width:50%; font-size:92%; background:#fff; border-bottom:1px solid #ccc }
+TABLE.study_summary TH
+{ background:#475b82 url("../../images/bg_appheader.gif") repeat-x 0 -10px; color:#fff; border:1px solid #475b82 }
+TABLE.study_summary TR
+{ background:#d9e3ec }
+TABLE.study_summary TABLE TD
+{ border:1px solid #ccc; }
 
 /* Data Tables */
 

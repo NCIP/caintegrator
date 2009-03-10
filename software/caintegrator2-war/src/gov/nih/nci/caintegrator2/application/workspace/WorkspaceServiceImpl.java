@@ -85,13 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
+import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
+import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,6 +188,36 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }
         }
         return false;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    public DisplayableStudySummary createDisplayableStudySummary(Study study) {
+        DisplayableStudySummary studySummary = new DisplayableStudySummary(study);
+        if (studySummary.isImagingStudy()) {
+            studySummary.setNumberImages(dao.retrieveNumberImagesInStudy(study));
+        }
+        if (studySummary.isGenomicStudy()) {
+            addGenomicData(studySummary);
+        }
+        return studySummary;
+    }
+
+
+    private void addGenomicData(DisplayableStudySummary studySummary) {
+        for (GenomicDataSourceConfiguration genomicConfig  
+                : studySummary.getStudy().getStudyConfiguration().getGenomicDataSources()) {
+            DisplayableGenomicSource displayableGenomicSource = new DisplayableGenomicSource(genomicConfig);
+            List<Platform> platforms = dao.retrievePlatformsForGenomicSource(genomicConfig);
+            if (platforms != null && !platforms.isEmpty()) {
+                displayableGenomicSource.getPlatforms().addAll(platforms);
+            }
+            studySummary.getGenomicDataSources().add(displayableGenomicSource);
+        }
+        
     }
 
 }
