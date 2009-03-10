@@ -9,7 +9,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,20 +16,21 @@ import java.util.Set;
 /**
  * 
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals") // for the word "unused"
 public class Study extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
 
     private String longTitleText;
     private String shortTitleText;
-    private Collection<Timepoint> timepointCollection;
-    private Collection<SurvivalValueDefinition> survivalValueDefinitionCollection;
+    private Set<Timepoint> timepointCollection = new HashSet<Timepoint>();
+    private Set<SurvivalValueDefinition> survivalValueDefinitionCollection = new HashSet<SurvivalValueDefinition>();
     private Set<Sample> controlSampleCollection = new HashSet<Sample>();
-    private Collection<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
+    private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
-    private Collection<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
+    private Set<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Timepoint defaultTimepoint;
-    private Collection<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
+    private Set<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
     private StudyConfiguration studyConfiguration;
 
     /**
@@ -80,7 +80,7 @@ public class Study extends AbstractCaIntegrator2Object {
     /**
      * @return the timepointCollection
      */
-    public Collection<Timepoint> getTimepointCollection() {
+    public Set<Timepoint> getTimepointCollection() {
         return timepointCollection;
     }
 
@@ -88,14 +88,15 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param timepointCollection
      *            the timepointCollection to set
      */
-    public void setTimepointCollection(Collection<Timepoint> timepointCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setTimepointCollection(Set<Timepoint> timepointCollection) {
         this.timepointCollection = timepointCollection;
     }
 
     /**
      * @return the survivalValueDefinitionCollection
      */
-    public Collection<SurvivalValueDefinition> getSurvivalValueDefinitionCollection() {
+    public Set<SurvivalValueDefinition> getSurvivalValueDefinitionCollection() {
         return survivalValueDefinitionCollection;
     }
 
@@ -103,15 +104,16 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param survivalValueDefinitionCollection
      *            the survivalValueDefinitionCollection to set
      */
-    public void setSurvivalValueDefinitionCollection(
-            Collection<SurvivalValueDefinition> survivalValueDefinitionCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setSurvivalValueDefinitionCollection(
+            Set<SurvivalValueDefinition> survivalValueDefinitionCollection) {
         this.survivalValueDefinitionCollection = survivalValueDefinitionCollection;
     }
 
     /**
      * @return the imageSeriesAnnotationCollection
      */
-    public Collection<AnnotationDefinition> getImageSeriesAnnotationCollection() {
+    public Set<AnnotationDefinition> getImageSeriesAnnotationCollection() {
         return imageSeriesAnnotationCollection;
     }
 
@@ -119,14 +121,15 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param imageSeriesAnnotationCollection
      *            the imageSeriesAnnotationCollection to set
      */
-    public void setImageSeriesAnnotationCollection(Collection<AnnotationDefinition> imageSeriesAnnotationCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setImageSeriesAnnotationCollection(Set<AnnotationDefinition> imageSeriesAnnotationCollection) {
         this.imageSeriesAnnotationCollection = imageSeriesAnnotationCollection;
     }
 
     /**
      * @return the subjectAnnotationCollection
      */
-    public Collection<AnnotationDefinition> getSubjectAnnotationCollection() {
+    public Set<AnnotationDefinition> getSubjectAnnotationCollection() {
         return subjectAnnotationCollection;
     }
 
@@ -134,7 +137,8 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param subjectAnnotationCollection
      *            the subjectAnnotationCollection to set
      */
-    public void setSubjectAnnotationCollection(Collection<AnnotationDefinition> subjectAnnotationCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setSubjectAnnotationCollection(Set<AnnotationDefinition> subjectAnnotationCollection) {
         this.subjectAnnotationCollection = subjectAnnotationCollection;
     }
 
@@ -156,7 +160,7 @@ public class Study extends AbstractCaIntegrator2Object {
     /**
      * @return the sampleAnnotationCollection
      */
-    public Collection<AnnotationDefinition> getSampleAnnotationCollection() {
+    public Set<AnnotationDefinition> getSampleAnnotationCollection() {
         return sampleAnnotationCollection;
     }
 
@@ -164,7 +168,8 @@ public class Study extends AbstractCaIntegrator2Object {
      * @param sampleAnnotationCollection
      *            the sampleAnnotationCollection to set
      */
-    public void setSampleAnnotationCollection(Collection<AnnotationDefinition> sampleAnnotationCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setSampleAnnotationCollection(Set<AnnotationDefinition> sampleAnnotationCollection) {
         this.sampleAnnotationCollection = sampleAnnotationCollection;
     }
 

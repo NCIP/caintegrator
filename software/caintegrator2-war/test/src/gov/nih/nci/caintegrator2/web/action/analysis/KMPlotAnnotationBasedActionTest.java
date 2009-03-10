@@ -160,10 +160,6 @@ public class KMPlotAnnotationBasedActionTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
-        study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-        study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
         subjectDef1.setId(Long.valueOf(1));
         subjectDef1.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
@@ -178,7 +174,6 @@ public class KMPlotAnnotationBasedActionTest {
         subjectDef2.setId(Long.valueOf(2));
         study.getSubjectAnnotationCollection().add(subjectDef1);
         study.getSubjectAnnotationCollection().add(subjectDef2);
-        study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
         study.getSurvivalValueDefinitionCollection().add(survivalValue);

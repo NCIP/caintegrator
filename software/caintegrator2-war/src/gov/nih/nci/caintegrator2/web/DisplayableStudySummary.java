@@ -165,6 +165,14 @@ public class DisplayableStudySummary {
     }
     
     /**
+     * Returns if study is deployed or not.
+     * @return T/F value.
+     */
+    public boolean isDeployed() {
+        return study.isDeployed();
+    }
+    
+    /**
      * @return the study
      */
     public Study getStudy() {

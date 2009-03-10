@@ -174,18 +174,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                         "PMD.ExcessiveMethodLength", 
                         "PMD.NPathComplexity" })   // multiple simple null checks
     private void configureNew(Study study) {
-        if (study.getImageSeriesAnnotationCollection() == null) {
-            study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-        }
-        if (study.getSampleAnnotationCollection() == null) {
-            study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
-        }
-        if (study.getSubjectAnnotationCollection() == null) {
-            study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        }
-        if (study.getTimepointCollection() == null) {
-            study.setTimepointCollection(new HashSet<Timepoint>());
-        }
         if (study.getDefaultTimepoint() == null) {
             Timepoint defaultTimepoint = new Timepoint();
             String studyTitle = "";
@@ -197,9 +185,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             defaultTimepoint.setDescription("Default Timepoint For Study '" + studyTitle + "'");
             defaultTimepoint.setName("Default");
             study.setDefaultTimepoint(defaultTimepoint);
-        }
-        if (study.getSurvivalValueDefinitionCollection() == null) {
-            study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         }
     }
 
@@ -663,9 +648,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         descriptor.setDefinition(annotationDefinition);
         switch(entityType) {
             case SUBJECT:
-                if (study.getSubjectAnnotationCollection() == null) {
-                    study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-                }
                 study.getSubjectAnnotationCollection().add(annotationDefinition);
                 if (annotationDefinitionToRemove != null) {
                     moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
@@ -673,9 +655,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 }
                 break;
             case IMAGESERIES:
-                if (study.getImageSeriesAnnotationCollection() == null) {
-                    study.setImageSeriesAnnotationCollection(new HashSet<AnnotationDefinition>());
-                }
                 study.getImageSeriesAnnotationCollection().add(annotationDefinition);
                 if (annotationDefinitionToRemove != null) {
                     moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);
@@ -683,9 +662,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 }
                 break;
             case SAMPLE:
-                if (study.getSampleAnnotationCollection() == null) {
-                    study.setSampleAnnotationCollection(new HashSet<AnnotationDefinition>());
-                }
                 study.getSampleAnnotationCollection().add(annotationDefinition);
                 if (annotationDefinitionToRemove != null) {
                     moveValuesToNewDefinition(study, annotationDefinition, annotationDefinitionToRemove);

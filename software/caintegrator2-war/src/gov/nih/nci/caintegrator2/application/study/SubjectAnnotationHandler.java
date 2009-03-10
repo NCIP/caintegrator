@@ -85,15 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
+
+import java.util.Set;
 
 /**
  * Loads annotation into <code>StudySubjectAssignments</code>.
@@ -143,9 +142,7 @@ class SubjectAnnotationHandler extends AbstractAnnotationHandler {
     @Override
     void addDefinitionsToStudy(Set<AnnotationDefinition> annotationDefinitions) {
         Study study = sourceConfiguration.getStudyConfiguration().getStudy();
-        if (study.getSubjectAnnotationCollection() == null) {
-            study.setSubjectAnnotationCollection(new HashSet<AnnotationDefinition>());
-        }
+        
         for (AnnotationDefinition definition : annotationDefinitions) {
             if (!study.getSubjectAnnotationCollection().contains(definition)) {
                 study.getSubjectAnnotationCollection().add(definition);
