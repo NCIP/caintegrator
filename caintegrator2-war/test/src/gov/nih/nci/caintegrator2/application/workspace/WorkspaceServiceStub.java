@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 /**
  * Stubbed implementation of WorkspaceService for testing.
@@ -102,12 +103,14 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean unSubscribeCalled;
     public boolean saveUserWorspaceCalled;
     public boolean refreshAnnotationDefinitionsCalled;
+    public boolean createDisplayableStudySummaryCalled;
     
     public void clear() {
         subscribeCalled = false;
         unSubscribeCalled = false;
         saveUserWorspaceCalled = false;
         refreshAnnotationDefinitionsCalled = false;
+        createDisplayableStudySummaryCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -151,5 +154,10 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void refreshAnnotationDefinitions() {
         refreshAnnotationDefinitionsCalled = true;
+    }
+    
+    public DisplayableStudySummary createDisplayableStudySummary(Study study) {
+        createDisplayableStudySummaryCalled = true;
+        return new DisplayableStudySummary(study);
     }
 }

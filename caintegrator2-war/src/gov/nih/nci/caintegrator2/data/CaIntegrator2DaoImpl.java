@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.MatchScoreComparator;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -97,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -105,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -316,7 +319,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return reporterLists;
     }
-
+    
     /**
      * This function adds the values criteria for getting back the correct annotation values.
      * @param criterion - The main criterion object for the values we want.
@@ -490,6 +493,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         return (List<T>) abstractAnnotationValueCriteria.list();
         
     }
+    
 
     /**
      * Adds the criteria to the AnnotationValue object which will associate it to the given Study.
@@ -526,6 +530,33 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         default:
             throw new IllegalStateException("Unknown Entity Type.");
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public int retrieveNumberImagesInStudy(Study study) {
+        Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
+        imageCriteria.createCriteria("series")
+                     .createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION)
+                     .createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION)
+                     .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+        imageCriteria.setProjection(Projections.rowCount());
+        return (Integer) imageCriteria.list().get(0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource) {
+        Criteria arrayCriteria = getCurrentSession().createCriteria(Array.class);
+        arrayCriteria.setProjection(Projections.distinct(Projections.property("platform")))
+                     .createCriteria("sampleCollection")
+                     .add(Restrictions.eq("genomicDataSource", genomicSource));
+                     
+        return (List<Platform>) arrayCriteria.list();
     }
     
     /**

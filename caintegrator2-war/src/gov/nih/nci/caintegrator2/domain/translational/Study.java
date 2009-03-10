@@ -26,11 +26,11 @@ public class Study extends AbstractCaIntegrator2Object {
     private Collection<Timepoint> timepointCollection;
     private Collection<SurvivalValueDefinition> survivalValueDefinitionCollection;
     private Set<Sample> controlSampleCollection = new HashSet<Sample>();
-    private Collection<AnnotationDefinition> imageSeriesAnnotationCollection;
+    private Collection<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
-    private Collection<AnnotationDefinition> subjectAnnotationCollection;
+    private Collection<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Timepoint defaultTimepoint;
-    private Collection<AnnotationDefinition> sampleAnnotationCollection;
+    private Collection<AnnotationDefinition> sampleAnnotationCollection = new HashSet<AnnotationDefinition>();
     private StudyConfiguration studyConfiguration;
 
     /**

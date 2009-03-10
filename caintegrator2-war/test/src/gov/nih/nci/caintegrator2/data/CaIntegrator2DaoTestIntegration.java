@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -556,6 +557,25 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(imageDataSource, dao.retrieveImagingDataSourceForStudy(study));
     }
     
+    @Test
+    public void testRetrieveNumberImagesInStudy() {
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudy().getStudy();
+        dao.save(study);
+        int numImages = dao.retrieveNumberImagesInStudy(study);
+        assertEquals(2, numImages);
+    }
+    
+    @Test
+    public void testRetrievePlatformsForGenomicSource() {
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
+        dao.save(study.getStudyConfiguration());
+        dao.save(study);
+        List<Platform> platforms = dao.retrievePlatformsForGenomicSource(
+                    study.getStudyConfiguration().getGenomicDataSources().get(0));
+        assertEquals(2, platforms.size());
+    }
     
     /**
      * @param caIntegrator2Dao the caIntegrator2Dao to set
