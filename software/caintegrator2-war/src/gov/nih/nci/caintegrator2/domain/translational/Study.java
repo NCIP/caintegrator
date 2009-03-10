@@ -265,6 +265,14 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
+     * @return the boolean of whether the study has Control Samples
+     */
+    public boolean hasControlSamples() {
+        return controlSampleCollection != null 
+            && !controlSampleCollection.isEmpty();
+    }
+
+    /**
      * @return the boolean of whether the study is deployed 
      */
     public boolean isDeployed() {
