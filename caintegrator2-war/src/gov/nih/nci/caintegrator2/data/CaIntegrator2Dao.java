@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.data;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
@@ -308,6 +309,20 @@ public interface CaIntegrator2Dao {
      * @return imaging source for study.
      */
     ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study);
+    
+    /**
+     * For a given study, finds the number of images associated with it.
+     * @param study to retrieve number of images.
+     * @return number of images in study.
+     */
+    int retrieveNumberImagesInStudy(Study study);
+    
+    /**
+     * For a given genomic source, retrieves all distinct platforms.
+     * @param genomicSource - source of interest.
+     * @return Platforms for that source.
+     */
+    List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource);
     
     /**
      * Returns all platforms ordered by name.
