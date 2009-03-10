@@ -153,7 +153,6 @@ public class KMPlotQueryBasedActionTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
-        study.setSurvivalValueDefinitionCollection(new HashSet<SurvivalValueDefinition>());
         SurvivalValueDefinition survivalValue = new SurvivalValueDefinition();
         survivalValue.setId(Long.valueOf(1));
         study.getSurvivalValueDefinitionCollection().add(survivalValue);

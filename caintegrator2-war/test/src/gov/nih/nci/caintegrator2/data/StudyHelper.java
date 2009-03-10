@@ -170,10 +170,10 @@ public class StudyHelper {
         subjectDefinitions.add(subjectAnnotationDefinition);
         
         // Setup everything to use the same definition collection for simplicity.
-        myStudy.setSampleAnnotationCollection(sampleDefinitions);
-        myStudy.setImageSeriesAnnotationCollection(imageSeriesDefinitions);
-        myStudy.setSubjectAnnotationCollection(subjectDefinitions);
-
+        myStudy.getSampleAnnotationCollection().addAll(sampleDefinitions);
+        myStudy.getImageSeriesAnnotationCollection().addAll(imageSeriesDefinitions);
+        myStudy.getSubjectAnnotationCollection().addAll(subjectDefinitions);
+        
         Subject subject1 = new Subject();
         Subject subject2 = new Subject();
         Subject subject3 = new Subject();
