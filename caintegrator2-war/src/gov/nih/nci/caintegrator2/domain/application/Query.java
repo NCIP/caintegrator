@@ -1,7 +1,10 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -77,6 +80,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
      */
     public void setSubscription(StudySubscription subscription) {
         this.subscription = subscription;
+        preloadCollections();
+    }
+    
+    /**
+     * Lazy load all needed collections in the study and study configuration.
+     */
+    private void preloadCollections() {
+        Study study = subscription.getStudy();
+        StudyConfiguration studyConfiguration = study.getStudyConfiguration();
+        Cai2Util.loadCollection(study.getImageSeriesAnnotationCollection());
+        Cai2Util.loadCollection(study.getControlSampleCollection());
+        Cai2Util.loadCollection(studyConfiguration.getClinicalConfigurationCollection());
+        Cai2Util.loadCollection(studyConfiguration.getGenomicDataSources());
+        Cai2Util.loadCollection(studyConfiguration.getImageDataSources());
     }
     
     /**

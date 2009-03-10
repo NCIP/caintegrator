@@ -89,7 +89,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -98,11 +98,6 @@ import org.apache.commons.lang.StringUtils;
  * Contains and manages a gene expression criterion.
  */
 public class GeneExpressionCriterionRow extends AbstractCriterionRow {
-    
-    private static final List<String> FIELD_NAMES = Arrays.asList(new String[] {
-            GeneNameCriterionWrapper.FIELD_NAME, 
-            FoldChangeCriterionWrapper.FOLD_CHANGE
-    });
     
     private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
 
@@ -115,7 +110,16 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
      */
     @Override
     public List<String> getAvailableFieldNames() {
-        return FIELD_NAMES;
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
+        if (hasControlSamples()) {
+            fieldNames.add(FoldChangeCriterionWrapper.FOLD_CHANGE);
+        }
+        return fieldNames;
+    }
+    
+    private boolean hasControlSamples() {
+        return getGroup().getForm().getQuery().getSubscription().getStudy().hasControlSamples();
     }
 
     /**
