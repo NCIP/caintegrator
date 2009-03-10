@@ -113,6 +113,7 @@ import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -358,9 +359,15 @@ public class QueryFormTest {
         assertEquals(3, group.getRows().size());
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(2);
+        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
+        assertFalse(criterionRow.getAvailableFieldNames().contains("Fold Change"));
+        
+        subscription.getStudy().getControlSampleCollection().add(new Sample());
         assertEquals(2, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Fold Change"));
+        
         assertEquals(group, criterionRow.getGroup());
         setFieldName(criterionRow, "Gene Name");
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
