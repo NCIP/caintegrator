@@ -52,10 +52,16 @@
                                         <s:param name="queryId" value="id" />
                                     </s:url>
                           
-                                    <li style="padding: 0px 0px 10px 0px">
-                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 120px;">
-                                            <div style="float: left; width: 75px; white-space: normal;">
-                                                <s:a href="%{runQueryUrl}" cssClass="queries" title="Description: %{description}">
+                                    <li style="padding: 0px 0px 25px 0px">
+                                        <div style="margin-bottom: 5px; white-space: nowrap; width: 164px;">
+                                            <div style="float: left; white-space: nowrap; width: 32px;">
+                                                <s:a href="%{runQueryUrl}" cssClass="searches" cssStyle="background:transparent url('/caintegrator2/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Run query: %{name}">&nbsp;</s:a>
+                                                <s:a href="%{editQueryUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 8px 5px 8px;"
+                                                    title="Edit query: %{name}">&nbsp;</s:a>
+                                            </div>
+                                            <div style="float: right; width: 110px; white-space: normal; padding: 0px 0px 0px 0px;">
+                                                <s:a href="%{runQueryUrl}" cssClass="queries" cssStyle="padding: 0px 0px 0px 0px;" title="Description: %{description}">
                                                     <s:if test="id == openQueryId">
                                                         <strong><s:property value="name"/></strong>
                                                     </s:if>
@@ -63,12 +69,6 @@
                                                         <s:property value="name"/>
                                                     </s:else>
                                                 </s:a>
-                                            </div>
-                                            <div style="float: right; white-space: nowrap; width: 20px;">
-                                            <s:a href="%{runQueryUrl}" cssClass="searches" cssStyle="background:transparent url('/caintegrator2/images/ico_search.gif') no-repeat scroll 0 0; padding:0px 9px 5px 9px;"
-                                                title="Run query: %{name}">&nbsp;</s:a>
-                                            <s:a href="%{editQueryUrl}" cssClass="queryAction" cssStyle="background:transparent url('/caintegrator2/images/ico_edit.gif') no-repeat scroll 0 0; padding:0px 9px 5px 9px;"
-                                                title="Edit query: %{name}">&nbsp;</s:a>
                                             </div>
                                         </div>
                                     </li>
