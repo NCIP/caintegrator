@@ -17,43 +17,54 @@
                         
     <h1>Welcome to <strong> <s:property value="studySummary.studyName" /></strong> Powered by caIntegrator2</h1>
     
-    <div class="box">
-        <h2>About <s:property value="studySummary.studyName" /> </h2>
-        <p> <strong>Deployment Status: </strong> 
-	            <s:if test="studySummary.deployed">
-	                Deployed.
-	            </s:if>
-	            <s:else>
-	                Not Deployed.
-	            </s:else>
-            <br>
-            <strong>Description:</strong> <s:property value="studySummary.studyDescription" />
-        </p>
-
-    </div>
-    
     <s:if test="studySummary.deployed">
     <table class="study_summary">
+            <tr>
+            <th colspan="4">Overview</th>
+        </tr>
+        <tr>
+            <td align="right">Name:</td>
+            <td colspan="3"><b><s:property value="studySummary.studyName" /></b></td>
+        </tr>
+        <tr>
+            <td align="right">Description: </td>
+            <td colspan="3" class="wrap"><b><s:property value="studySummary.studyDescription" /></b></td>
+        </tr>
+        <tr>
+            <td align="right">Deployment Status: </td>
+            <td><b>
+                <s:if test="studySummary.deployed">
+                    Deployed.
+                </s:if>
+                <s:else>
+                    Not Deployed.
+                </s:else> 
+                </b>           
+            </td>
+            <td />  
+            <td />
+        </tr>
+    
         <tr>
             <th colspan="4">Clinical Data</th>
         </tr>
         <tr>
-            <td align="right" style="padding:0px 15px 0px 15px;"><b>Number of Subjects</b></td>
-            <td> <s:property value="studySummary.numberSubjects"/> </td>
+            <td align="right">Number of Subjects:</td>
+            <td> <b><s:property value="studySummary.numberSubjects"/> </b> </td>
             <td />  
             <td />
         </tr>
         
         <tr>
-            <td align="right" style="padding:0px 15px 0px 15px;"><b>Number of Annotation Columns</b></td>
-            <td> <s:property value="studySummary.numberSubjectAnnotationColumns"/> </td>
+            <td align="right">Number of Annotation Columns:</td>
+            <td> <b><s:property value="studySummary.numberSubjectAnnotationColumns"/> </b></td>
             <td />  
             <td />
         </tr>
         
         <tr>
-	        <td align="right" style="padding:0px 15px 0px 15px;">
-	        <b> Suvival Definitions </b>
+	        <td align="right">
+	         Suvival Definitions:
 	        </td>
 	        
 	        <s:if test="%{studySummary.study.survivalValueDefinitionCollection.empty}">
@@ -70,21 +81,21 @@
         <s:iterator value="%{studySummary.study.survivalValueDefinitionCollection}" status="survivalValueDefinitionStatus">
         <tr>
             <td />
-            <td style="padding:0px 15px 0px 15px;"><b><i><s:property value="name"/></i></b></td>    
-            <td> Start </td>
-            <td> <s:property value="survivalStartDate.displayName"/> </td>
+            <td><b><i><s:property value="name"/></i></b></td>    
+            <td> Start: </td>
+            <td> <b><s:property value="survivalStartDate.displayName"/> </b></td>
         </tr>
         <tr>
             <td />
             <td />
-            <td> Death </td>
-            <td> <s:property value="deathDate.displayName"/> </td>
+            <td> Death: </td>
+            <td> <b><s:property value="deathDate.displayName"/> </b></td>
         </tr>
         <tr>
             <td />
             <td />
-            <td> Last Followup </td>
-            <td> <s:property value="lastFollowupDate.displayName"/> </td>
+            <td> Last Followup: </td>
+            <td> <b><s:property value="lastFollowupDate.displayName"/> </b></td>
         </tr>
         </s:iterator>
         </s:else>
@@ -93,14 +104,21 @@
                 <th colspan="4">Genomic Data</th>
             </tr>
             <s:iterator value="%{studySummary.genomicDataSources}" status="genomicDataSourceStatus">
+
             <tr>
-                <td align="right" style="padding:0px 15px 0px 15px;"><b>Array</b></td>
+                <td align="right">Hostname:</td>
+                <td> <b><s:property value="hostName"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td align="right">Experiment:</td>
                 <td> 
-                    Experiment Name: <s:property value="experimentName"/>
+                    Name: <b><s:property value="experimentName"/></b>
                     <br>
-                    Platforms: 
+                    Array Platforms: 
                         <s:iterator value="%{platforms}" status="platformStatus">
-                            <s:property value="name"/> 
+                            <b><s:property value="name"/> </b>
                         </s:iterator>
                 </td>
                 <td />
@@ -108,25 +126,26 @@
             </tr>
             
             <tr>
-	            <td align="right" style="padding:0px 15px 0px 15px;"><b>Number of Samples</b></td>
-	            <td> <s:property value="numberSamples"/> </td>
+	            <td align="right">Number of Samples:</td>
+	            <td> <b><s:property value="numberSamples"/> </b></td>
 	            <td />
 	            <td />
             </tr>
             <tr>
-                <td align="right" style="padding:0px 15px 0px 15px;"><b>Number of Control Samples</b></td>
-                <td> <s:property value="numberControlSamples"/> </td>
+                <td align="right">Number of Control Samples:</td>
+                <td> <b><s:property value="numberControlSamples"/> </b></td>
                 <td />
                 <td />
             </tr>
             <tr>
-                <td align="right" style="padding:0px 15px 0px 15px;"><b>Control Samples Set</b></td>
-                <td> <s:if test="%{numberControlSamples > 0}" >
+                <td align="right">Control Samples Set:</td>
+                <td> <b> <s:if test="%{numberControlSamples > 0}" >
                         Yes
                      </s:if>
                      <s:else>
                         Not Configured.
-                     </s:else>  
+                     </s:else> 
+                     </b> 
                 </td>
                 <td />
                 <td />
@@ -139,8 +158,8 @@
 	            <th colspan="4">Imaging Data</th>
 	        </tr>
 	        <tr>
-                <td align="right" style="padding:0px 15px 0px 15px;"><b>Number of Images</b></td>
-                <td> <s:property value="studySummary.numberImages"/> </td>
+                <td align="right">Number of Images:</td>
+                <td> <b><s:property value="studySummary.numberImages"/></b> </td>
                 <td />
                 <td />
             </tr>
