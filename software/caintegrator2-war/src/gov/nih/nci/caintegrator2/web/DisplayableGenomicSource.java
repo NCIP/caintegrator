@@ -155,6 +155,12 @@ public class DisplayableGenomicSource {
     public List<Platform> getPlatforms() {
         return platforms;
     }
-    
+
+    /**
+     * @return the hostname
+     */
+    public String getHostName() {
+        return genomicDataSourceConfiguration.getServerProfile().getHostname();
+    }
 
 }

@@ -100,6 +100,8 @@ LEGEND
 { padding:0 0 0 10px }
 #study_logo IMG
 { display:block; padding-bottom:10px }
+.study_summary_rows
+{ background:#d9e3ec }
 #contentwrapper
 { float:left; width:100%; }
 #content

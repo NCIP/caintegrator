@@ -86,8 +86,10 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -147,13 +149,19 @@ public class WorkspaceServiceTest {
         assertEquals(5, summary.getNumberSubjects());
         assertEquals(study.getShortTitleText(), summary.getStudyName());
         assertEquals(study.getLongTitleText(), summary.getStudyDescription());
+        assertTrue(summary.isGenomicStudy());
+        assertTrue(summary.isImagingStudy());
         List<DisplayableGenomicSource> genomicSources = summary.getGenomicDataSources();
         assertEquals(1, genomicSources.size());
         DisplayableGenomicSource genomicSource = genomicSources.get(0);
         assertEquals(2, genomicSource.getPlatforms().size());
         assertEquals(2, genomicSource.getNumberSamples());
         assertEquals(0, genomicSource.getNumberControlSamples());
+        assertFalse(genomicSource.isControlSamplesSet());
         assertEquals("experimentIdentifier", genomicSource.getExperimentName());
+        assertNotNull(genomicSource.getGenomicDataSourceConfiguration());
+        //currently the genomic data source hostname is not populated in our test data
+        assertNull(genomicSource.getHostName());
     }
     
     @Test(expected=IllegalArgumentException.class)
