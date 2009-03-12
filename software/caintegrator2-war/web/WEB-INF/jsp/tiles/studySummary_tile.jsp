@@ -15,7 +15,7 @@
     <!--ADD CONTENT HERE-->
     <s:actionerror/>
                         
-    <h1>Welcome to <strong> <s:property value="studySummary.studyName" /></strong> Powered by caIntegrator2</h1>
+    <h1>Welcome to <strong> <s:property value="studySummary.studyName" /></strong></h1>
     
     <s:if test="studySummary.deployed">
     <table class="study_summary">
