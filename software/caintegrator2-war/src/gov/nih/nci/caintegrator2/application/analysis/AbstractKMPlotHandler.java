@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.awt.Color;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -198,33 +197,6 @@ abstract class AbstractKMPlotHandler {
             return null;
         }
         return censor;
-    }
-
-    protected Color getColor(int colorNumber) {
-        switch(colorNumber) {
-            case 1:
-                return Color.GREEN;
-            case 2:
-                return Color.BLUE;
-            case 3:
-                return Color.RED;
-            case 4:
-                return Color.CYAN;
-            case 5:
-                return Color.DARK_GRAY;
-            case 6:
-                return Color.YELLOW;
-            case 7:
-                return Color.LIGHT_GRAY;
-            case 8:
-                return Color.MAGENTA;
-            case 9:
-                return Color.ORANGE;
-            case 10:
-                return Color.PINK;
-            default:
-                return Color.BLACK;
-        }
     }
     
     protected Integer monthsBetween(Calendar startDate, Calendar endDate) {

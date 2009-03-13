@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -348,6 +349,38 @@ public final class Cai2Util {
             } catch (Exception e) {
                 return null; // Error parsing url.
             }
+        }
+    }
+    
+    /**
+     * Used by classes to retrieve a color based on a number (1-10 are different colors, anything else is black).
+     * @param colorNumber - number to use.
+     * @return - Color object for that number.
+     */
+    public static Color getColor(int colorNumber) {
+        switch(colorNumber) {
+            case 1:
+                return Color.GREEN;
+            case 2:
+                return Color.BLUE;
+            case 3:
+                return Color.RED;
+            case 4:
+                return Color.CYAN;
+            case 5:
+                return Color.DARK_GRAY;
+            case 6:
+                return Color.YELLOW;
+            case 7:
+                return Color.LIGHT_GRAY;
+            case 8:
+                return Color.MAGENTA;
+            case 9:
+                return Color.ORANGE;
+            case 10:
+                return Color.PINK;
+            default:
+                return Color.BLACK;
         }
     }
 

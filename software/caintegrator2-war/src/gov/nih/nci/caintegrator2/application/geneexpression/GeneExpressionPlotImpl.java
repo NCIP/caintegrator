@@ -83,105 +83,99 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
-import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
-import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.log4j.Logger;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 
 /**
- * KM Plot Handler for Query Based KM Plots.
+ * 
  */
-class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
+public class GeneExpressionPlotImpl implements GeneExpressionPlot {
+    
+    private static final int DEFAULT_WIDTH = 800;
+    private static final int DEFAULT_HEIGHT = 500;
+    
+    private static final Logger LOGGER = Logger.getLogger(GeneExpressionPlotImpl.class);
+    
+    private JFreeChart plotChart;
+    private GeneExpressionPlotConfiguration configuration;
+    private int width = DEFAULT_WIDTH;
+    private int height = DEFAULT_HEIGHT;
 
-    private final KMQueryBasedParameters kmParameters;
-    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
-    
-    QueryBasedKMPlotHandler(CaIntegrator2Dao dao, 
-                                 SurvivalValueDefinition survivalValueDefinition, 
-                                 QueryManagementService queryManagementService, 
-                                 KMQueryBasedParameters kmParameters) {
-        super(dao, survivalValueDefinition, queryManagementService);
-        this.kmParameters = kmParameters;
-    }
-    
+
     /**
      * {@inheritDoc}
      */
-    @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
-        validateSurvivalValueDefinition();
-        KMPlotConfiguration configuration = new KMPlotConfiguration();
-        Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(subscription, subjectGroupCollection);
-        filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
-        return kmPlotService.generatePlot(configuration);
-    }
-
-    private void retrieveSubjectGroups(StudySubscription subscription, 
-                                       Collection<SubjectGroup> subjectGroupCollection) {
-        
-        for (Query query : kmParameters.getQueries()) {
-            query.setResultType(ResultTypeEnum.CLINICAL);
-            SubjectGroup group = retrieveGroup(query);
-            subjectGroupCollection.add(group);
-            group.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
-        }
-        if (kmParameters.isAddPatientsNotInQueriesGroup()) {
-            SubjectGroup otherSubjectsGroup = retrieveOtherSubjectGroup(subscription);
-            subjectGroupCollection.add(otherSubjectsGroup);
-            otherSubjectsGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
+    public void writePlotImage(OutputStream out) {
+        BufferedImage bufferedImage = getPlotChart().createBufferedImage(width, height);
+        try {
+            ChartUtilities.writeBufferedImageAsPNG(out, bufferedImage);
+        } catch (IOException e) {
+            LOGGER.warn("Couldn't write GeneExpressionPlot image", e);
         }
     }
     
-    private SubjectGroup retrieveGroup(Query query) {
-        SubjectGroup group = new SubjectGroup();
-        group.setName(query.getName());
-        Collection<ResultRow> rows = getQueryManagementService().execute(query).getRowCollection();
-        assignRowsToGroup(group, rows);
-        return group;
+    /**
+     * @return the configuration
+     */
+    public GeneExpressionPlotConfiguration getConfiguration() {
+        return configuration;
     }
 
-    private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
-        for (ResultRow row : rows) {
-            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
-            if (!kmParameters.isExclusiveGroups() || !usedSubjects.contains(subjectAssignment)) {
-                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-                if (subjectSurvivalData != null) {
-                    group.getSurvivalData().add(subjectSurvivalData);
-                }
-                usedSubjects.add(subjectAssignment);
-            }
-        }
+    /**
+     * @param configuration the configuration to set
+     */
+    public void setConfiguration(GeneExpressionPlotConfiguration configuration) {
+        this.configuration = configuration;
     }
 
-    private SubjectGroup retrieveOtherSubjectGroup(StudySubscription subscription) {
-        SubjectGroup otherSubjectsGroup = new SubjectGroup();
-        otherSubjectsGroup.setName("All Others");
-        for (StudySubjectAssignment assignment : subscription.getStudy().getAssignmentCollection()) {
-            if (!usedSubjects.contains(assignment)) {
-                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(assignment);
-                if (subjectSurvivalData != null) {
-                    otherSubjectsGroup.getSurvivalData().add(subjectSurvivalData);
-                }
-                usedSubjects.add(assignment);
-            }
-        }
-        return otherSubjectsGroup;
+    /**
+     * @return the plotChart
+     */
+    public JFreeChart getPlotChart() {
+        return plotChart;
     }
+
+    /**
+     * @param plotChart the plotChart to set
+     */
+    public void setPlotChart(JFreeChart plotChart) {
+        this.plotChart = plotChart;
+    }
+
+    /**
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * @param width the width to set
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * @param height the height to set
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
 }
