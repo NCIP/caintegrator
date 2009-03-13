@@ -17,5 +17,9 @@
     <artifact name="nccore" type="jar" conf="master, compile, runtime" />
   </publications>
     <dependencies>
+    <dependency org="ucar" 
+          name="nlog4j" 
+          rev="1.2.25"
+          conf="runtime->master"/>
     </dependencies>
 </ivy-module>
