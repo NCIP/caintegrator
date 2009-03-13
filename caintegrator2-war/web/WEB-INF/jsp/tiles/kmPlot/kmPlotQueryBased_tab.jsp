@@ -7,7 +7,7 @@
     <s:hidden name="resetSelected" value="false" />
           
     <!-- Kaplan-Meier Inputs -->
-    <h1>Query Based Kaplan-Meier Survival Plots</h1>
+    <h2>Query Based Kaplan-Meier Survival Plots</h2>
 
         <table class="data">
             <tr>

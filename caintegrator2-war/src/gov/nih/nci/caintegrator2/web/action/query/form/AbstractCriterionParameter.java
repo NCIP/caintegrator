@@ -113,6 +113,7 @@ public abstract class AbstractCriterionParameter {
     public static final String MULTI_SELECT = "multiselect";
     
     private String label = "";
+    private String title = "";
     private List<String> availableOperators = new ArrayList<String>();
     private OperatorHandler operatorHandler;
     private final String formFieldName;
@@ -149,6 +150,18 @@ public abstract class AbstractCriterionParameter {
     void setLabel(String label) {
         this.label = label;
     }
+    
+    /**
+     * Returns a string that is used as a displayable title for the operand.
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    void setTitle(String title) {
+        this.title = title;
+    }    
 
     /**
      * Returns a string that indicates how to display the operand.
