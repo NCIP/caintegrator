@@ -86,26 +86,88 @@
 package gov.nih.nci.caintegrator2.web.action.platform;
 
 import static org.junit.Assert.*;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 
+import java.util.HashMap;
+
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.file.FileManagerStub;
+
+import javax.jms.Destination;
+
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.jms.JmsException;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ManagePlatformsActionTest {
 
     ManagePlatformsAction action = new ManagePlatformsAction();
     ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
+    FileManagerStub fileManagerStub = new FileManagerStub();
     
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
+        WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        action.setWorkspaceService(workspaceService);
         action.setArrayDataService(arrayDataServiceStub);        
+        action.setFileManager(fileManagerStub);
     }
     
     @Test
     public void testExecute() {
         assertEquals(ActionSupport.SUCCESS, action.execute());
+    }
+    
+    @Test
+    public void testAddPlatform() {
+        action.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setJmsTemplate(new JmsTemplate() {
+            @Override
+            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
+                assertNotNull(messageCreator);
+            } 
+        });
+        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+        
+        action.setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        action.setJmsTemplate(new JmsTemplate() {
+            @Override
+            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
+                assertNotNull(messageCreator);
+            } 
+        });
+        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+    }
+    
+    @Test
+    public void testValidation() {
+        action.setSelectedAction("managePlatforms");
+        action.validate();
+        action.setSelectedAction("addPlatform");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
     }
 
     @Test
@@ -114,3 +176,4 @@ public class ManagePlatformsActionTest {
     }
 
 }
+

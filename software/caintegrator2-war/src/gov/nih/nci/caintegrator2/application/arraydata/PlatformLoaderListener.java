@@ -115,7 +115,7 @@ public class PlatformLoaderListener implements MessageListener {
                         + objectMessage.getObject().getClass().getName());
                 return;
             }
-            AbstractPlatformSource source = (AffymetrixPlatformSource) objectMessage.getObject();
+            AbstractPlatformSource source = (AbstractPlatformSource) objectMessage.getObject();
             getArrayDataService().loadArrayDesign(source);
         } catch (JMSException e) {
             LOGGER.error("Couldn't load design", e);

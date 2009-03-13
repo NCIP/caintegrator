@@ -93,20 +93,14 @@ import java.io.File;
 public class AffymetrixPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
-    private final File annotationFile;
-    private boolean deleteFileOnCompletion;
-    
+
     /**
      * Creates a new instance.
      * 
      * @param annotationFile the CSV annotation file.
      */
     public AffymetrixPlatformSource(File annotationFile) {
-        super();
-        if (annotationFile == null || !annotationFile.exists()) {
-            throw new IllegalArgumentException("Annotation file must exist.");
-        }
-        this.annotationFile = annotationFile;
+        super(annotationFile);
     }
 
     @Override
@@ -119,28 +113,7 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
      */
     @Override
     public String toString() {
-        return "Affymetrix CSV annotation file: " + annotationFile.getName();
-    }
-
-    /**
-     * @return the deleteFileOnCompletion
-     */
-    public boolean getDeleteFileOnCompletion() {
-        return deleteFileOnCompletion;
-    }
-
-    /**
-     * @param deleteFileOnCompletion the deleteFileOnCompletion to set
-     */
-    public void setDeleteFileOnCompletion(boolean deleteFileOnCompletion) {
-        this.deleteFileOnCompletion = deleteFileOnCompletion;
-    }
-
-    /**
-     * @return the annotationFile
-     */
-    File getAnnotationFile() {
-        return annotationFile;
+        return "Affymetrix CSV annotation file: " + getAnnotationFile().getName();
     }
 
 

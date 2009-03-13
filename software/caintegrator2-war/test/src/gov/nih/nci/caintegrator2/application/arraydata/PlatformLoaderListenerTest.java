@@ -1,6 +1,8 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 
 import javax.jms.JMSException;
@@ -33,6 +35,11 @@ public class PlatformLoaderListenerTest {
         testMessage.setObject(new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE));
         listener.onMessage(testMessage);
         assertTrue(arrayDataServiceStub.loadArrayDesignCalled);
+        try{
+            new AffymetrixPlatformSource(null);
+        } catch (IllegalArgumentException e){
+            assertEquals("Annotation file must exist.", e.getMessage());
+        }
     }
 
 }

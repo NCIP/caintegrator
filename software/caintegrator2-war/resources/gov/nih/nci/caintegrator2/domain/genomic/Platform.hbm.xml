@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+
+    <!-- Create typedef's for the enums -->
+    <typedef name="Vendor" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum</param> 
+    </typedef> 
+
 	<class name="Platform" table="PLATFORM" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
@@ -8,7 +14,7 @@
 		</id>
 		<!-- Attributes mapping for the Platform class -->
 		<property name="name" type="string" column="NAME"/>
-		<property name="vendor" type="string" column="VENDOR"/>
+		<property name="vendor" type="Vendor" column="VENDOR"/>
 		<!-- Associations mapping for the Platform class -->
 		<set name="reporterLists" lazy="true" cascade="save-update,merge" >
 			<cache usage="read-write" />

@@ -1,5 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class Platform extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String name;
-    private String vendor;
+    private PlatformVendorEnum vendor;
     private Set<ReporterList> reporterLists = new HashSet<ReporterList>();
     
     /**
@@ -33,14 +34,14 @@ public class Platform extends AbstractCaIntegrator2Object {
     /**
      * @return the vendor
      */
-    public String getVendor() {
+    public PlatformVendorEnum getVendor() {
         return vendor;
     }
     
     /**
      * @param vendor the vendor to set
      */
-    public void setVendor(String vendor) {
+    public void setVendor(PlatformVendorEnum vendor) {
         this.vendor = vendor;
     }
     

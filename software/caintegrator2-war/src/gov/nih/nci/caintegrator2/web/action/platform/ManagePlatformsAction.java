@@ -85,11 +85,29 @@
  */
 package gov.nih.nci.caintegrator2.web.action.platform;
 
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 /**
  * Provides functionality to list and add array designs.
@@ -97,13 +115,106 @@ import java.util.List;
 public class ManagePlatformsAction extends AbstractStudyManagementAction {
 
     private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(ManagePlatformsAction.class);
     private ArrayDataService arrayDataService;
+    private FileManager fileManager;
+    private File platformFile;
+    private String platformFileContentType;
+    private String platformFileFileName;
+    private JmsTemplate jmsTemplate;
+    private Queue queue;
+    private String platformVendor;
+    private String selectedAction;
+
+    private static final String ADD_ACTION = "addPlatform";
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isFileUpload() {
+        return ADD_ACTION.equalsIgnoreCase(selectedAction);
+    }
     
     /**
      * @return the Struts result.
      */
     public String execute() {
         return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (ADD_ACTION.equalsIgnoreCase(selectedAction)) {
+            if (platformFile == null) {
+                setFieldError("File is required");
+            } else if (platformFile.length() == 0) {
+                setFieldError("File is empty");
+            }
+            prepareValueStack();
+        } else {
+            super.validate();
+        }
+    }
+    
+    private void setFieldError(String errorMessage) {
+        addFieldError("platformFile", errorMessage);
+    }
+    
+    /**
+     * @return the Struts result.
+     */
+    public String addPlatform() {
+        try {
+            AbstractPlatformSource source;
+            switch (PlatformVendorEnum.getByValue(platformVendor)) {
+            case AFFYMETRIX:
+                source = new AffymetrixPlatformSource(getPlatformFileCopy());
+                break;
+                
+            case AGILENT:
+                source = new AgilentPlatformSource(getPlatformFileCopy());
+                break;
+
+            default:
+                addActionError("Invalid platform vendor: " + platformVendor);
+                return ERROR;
+            }
+            source.setDeleteFileOnCompletion(true);
+            sendPlatformMessage(source);
+            return SUCCESS;
+        } catch (IOException e) {
+            LOGGER.error("Couldn't copy uploaded file", e);
+            addActionError("Please contact the system administrator. Couldn't copy the uploaded file: " 
+                    + e.getMessage());
+            return ERROR;
+        }
+    }
+    
+    /**
+     * Creates a copy of the uploaded file, as the original is deleted as soon as the action completes.
+     * 
+     * @return the copied file
+     * @throws IOException if the file couldn't be copied
+     */
+    private File getPlatformFileCopy() throws IOException {
+        File copy = new File(getFileManager().getNewTemporaryDirectory("platform"), getPlatformFile().getName());
+        FileUtils.copyFile(getPlatformFile(), copy);
+        return copy;
+    }
+
+    private void sendPlatformMessage(final AbstractPlatformSource source) {
+        MessageCreator creator = new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+                ObjectMessage message = session.createObjectMessage();
+                message.setObject(source);
+                return message;
+            }
+        };
+        getJmsTemplate().send(getQueue(), creator);
     }
     
     /**
@@ -125,6 +236,118 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
+    }
+
+    /**
+     * @return the platformFile
+     */
+    public File getPlatformFile() {
+        return platformFile;
+    }
+
+    /**
+     * @param platformFile the platformFile to set
+     */
+    public void setPlatformFile(File platformFile) {
+        this.platformFile = platformFile;
+    }
+
+    /**
+     * @return the platformFileContentType
+     */
+    public String getPlatformFileContentType() {
+        return platformFileContentType;
+    }
+
+    /**
+     * @param platformFileContentType the platformFileContentType to set
+     */
+    public void setPlatformFileContentType(String platformFileContentType) {
+        this.platformFileContentType = platformFileContentType;
+    }
+
+    /**
+     * @return the platformFileFileName
+     */
+    public String getPlatformFileFileName() {
+        return platformFileFileName;
+    }
+
+    /**
+     * @param platformFileFileName the platformFileFileName to set
+     */
+    public void setPlatformFileFileName(String platformFileFileName) {
+        this.platformFileFileName = platformFileFileName;
+    }
+
+    /**
+     * @return the jmsTemplate
+     */
+    public JmsTemplate getJmsTemplate() {
+        return jmsTemplate;
+    }
+
+    /**
+     * @param jmsTemplate the jmsTemplate to set
+     */
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    /**
+     * @return the queue
+     */
+    public Queue getQueue() {
+        return queue;
+    }
+
+    /**
+     * @param queue the queue to set
+     */
+    public void setQueue(Queue queue) {
+        this.queue = queue;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+    
+    /**
+     * @return the selectedAction
+     */
+    public String getSelectedAction() {
+        return selectedAction;
+    }
+
+    /**
+     * @param selectedAction the selectedAction to set
+     */
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    /**
+     * @return the platformVendor
+     */
+    public String getPlatformVendor() {
+        return platformVendor;
+    }
+
+    /**
+     * @param platformVendor the platformVendor to set
+     */
+    public void setPlatformVendor(String platformVendor) {
+        this.platformVendor = platformVendor;
     }
 
 }
