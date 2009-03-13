@@ -485,10 +485,14 @@
                
         <!-- Platform Actions -->
         <action name="managePlatforms" class="managePlatformsAction">
+            <param name="selectedAction">managePlatforms</param>
             <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+            <result name="input" type="tiles">managePlatforms</result>
         </action>
         
-        <action name="addPlatform" class="addPlatformAction">
+        <action name="addPlatform" class="managePlatformsAction" method="addPlatform">
+            <param name="selectedAction">addPlatform</param>
             <result type="tiles">managePlatforms</result>
             <result name="error" type="tiles">managePlatforms</result>
             <result name="input" type="tiles">managePlatforms</result>

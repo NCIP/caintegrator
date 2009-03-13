@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class ArrayDesignChecker {
 
-    public static Platform checkLoadArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAffymetrixArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
         AffymetrixPlatformSource source = new AffymetrixPlatformSource(annotationFile);
@@ -31,14 +31,26 @@ public class ArrayDesignChecker {
         return platform;
     }
 
+    public static Platform checkLoadAgilentArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
+    throws PlatformLoadingException {
+        //AgilentCdfReader cdfReader = AgilentCdfReader.create(cdfFile);
+        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile);
+        Platform platform = service.loadArrayDesign(source);
+        if (platform.getId() == null) {
+            platform.setId(1L);
+        }
+        //checkPlatform(platform, cdfReader);
+        //checkProbeSetReporters(platform, cdfReader);
+        checkGeneReporters(platform);
+        return platform;
+    }
+
     private static void checkGeneReporters(Platform platform) {
         ReporterList geneReporters = getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE, platform);
         assertEquals(platform, geneReporters.getPlatform());
         Set<String> geneSymbols = new HashSet<String>();
         for (AbstractReporter abstractReporter : geneReporters.getReporters()) {
             GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
-            assertFalse(StringUtils.isBlank(reporter.getName()));
-            assertNotNull(reporter.getGene());
             assertEquals(reporter.getName(), reporter.getGene().getSymbol());
             geneSymbols.add(reporter.getGene().getSymbol());
         }
@@ -67,7 +79,7 @@ public class ArrayDesignChecker {
     private static void checkPlatform(Platform platform, AffymetrixCdfReader cdfReader) {
         assertNotNull(platform);
         assertEquals(cdfReader.getCdfData().getChipType(), platform.getName());
-        assertEquals("Affymetrix", platform.getVendor());
+        assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
         assertEquals(2, platform.getReporterLists().size());
     }
 

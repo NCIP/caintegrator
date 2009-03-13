@@ -16,7 +16,10 @@
     <table class="data">
         <tr>
             <th colspan="2">
-                <s:file name="platformFile" label="Affymetrix Annotation File" />
+                <s:select name="platformVendor" label="Vendor"
+                    list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()" />
+                <s:file name="platformFile" label="Annotation File" />
+                <s:hidden name="selectedAction" value="addPlatform" />
                 <s:submit value="Add" align="center" />
             </th>    
         </tr>

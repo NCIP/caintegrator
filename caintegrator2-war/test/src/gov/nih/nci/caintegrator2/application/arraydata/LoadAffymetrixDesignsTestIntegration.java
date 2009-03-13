@@ -25,17 +25,17 @@ public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalS
 
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE, TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133A_CDF_FILE, TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U133B_CDF_FILE, TestArrayDesignFiles.HG_U133B_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U95AV2_CDF_FILE, TestArrayDesignFiles.HG_U95AV2_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U95B_CDF_FILE, TestArrayDesignFiles.HG_U95B_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U95C_CDF_FILE, TestArrayDesignFiles.HG_U95C_ANNOTATION_FILE);
-        checkLoadArrayDesign(TestArrayDesignFiles.HG_U95D_CDF_FILE, TestArrayDesignFiles.HG_U95D_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE, TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133A_CDF_FILE, TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133B_CDF_FILE, TestArrayDesignFiles.HG_U133B_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95AV2_CDF_FILE, TestArrayDesignFiles.HG_U95AV2_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95B_CDF_FILE, TestArrayDesignFiles.HG_U95B_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95C_CDF_FILE, TestArrayDesignFiles.HG_U95C_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95D_CDF_FILE, TestArrayDesignFiles.HG_U95D_ANNOTATION_FILE);
     }
 
-    private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        ArrayDesignChecker.checkLoadArrayDesign(cdfFile, annotationFile, arrayDataService);
+    private void checkLoadAffymetrixArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
+        ArrayDesignChecker.checkLoadAffymetrixArrayDesign(cdfFile, annotationFile, arrayDataService);
     }
 
     /**
