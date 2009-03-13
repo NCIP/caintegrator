@@ -83,105 +83,78 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
-import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
-import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * KM Plot Handler for Query Based KM Plots.
+ * Implementation of the GeneExpressionPlotService interface.
  */
-class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
+public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService {
+    private static final double LOWER_MARGIN = .02;
+    private static final double CATEGORY_MARGIN = .20; 
+    private static final double UPPER_MARGIN = .02;
+    private static final double ITEM_MARGIN = .01;
 
-    private final KMQueryBasedParameters kmParameters;
-    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
-    
-    QueryBasedKMPlotHandler(CaIntegrator2Dao dao, 
-                                 SurvivalValueDefinition survivalValueDefinition, 
-                                 QueryManagementService queryManagementService, 
-                                 KMQueryBasedParameters kmParameters) {
-        super(dao, survivalValueDefinition, queryManagementService);
-        this.kmParameters = kmParameters;
-    }
-    
     /**
      * {@inheritDoc}
      */
-    @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
-        validateSurvivalValueDefinition();
-        KMPlotConfiguration configuration = new KMPlotConfiguration();
-        Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
-        retrieveSubjectGroups(subscription, subjectGroupCollection);
-        filterGroupsWithoutSurvivalData(configuration, subjectGroupCollection);
-        return kmPlotService.generatePlot(configuration);
+    public GeneExpressionPlotGroup generatePlots(GeneExpressionPlotConfiguration configuration) {
+        GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();
+        GeneExpressionPlot meanPlot = createMeanTypePlot(configuration);
+        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEAN, meanPlot);
+        return plotGroup;
     }
 
-    private void retrieveSubjectGroups(StudySubscription subscription, 
-                                       Collection<SubjectGroup> subjectGroupCollection) {
+    private GeneExpressionPlot createMeanTypePlot(GeneExpressionPlotConfiguration configuration) {
+        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
+        plot.setConfiguration(configuration);
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
+            String columnKey = sampleGroup.getName();
+            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
+                String rowKey = reporterGroup.getName();
+                for (Double value : reporterGroup.getGeneExpressionValues()) {
+                    dataset.addValue(value, rowKey, columnKey);
+                }
+            }
+        }
+        JFreeChart meanChart = createChart(dataset, "Groups", "Mean Expression Intensity");
+        cusomtizeChart(meanChart);
         
-        for (Query query : kmParameters.getQueries()) {
-            query.setResultType(ResultTypeEnum.CLINICAL);
-            SubjectGroup group = retrieveGroup(query);
-            subjectGroupCollection.add(group);
-            group.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
-        }
-        if (kmParameters.isAddPatientsNotInQueriesGroup()) {
-            SubjectGroup otherSubjectsGroup = retrieveOtherSubjectGroup(subscription);
-            subjectGroupCollection.add(otherSubjectsGroup);
-            otherSubjectsGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
-        }
-    }
-    
-    private SubjectGroup retrieveGroup(Query query) {
-        SubjectGroup group = new SubjectGroup();
-        group.setName(query.getName());
-        Collection<ResultRow> rows = getQueryManagementService().execute(query).getRowCollection();
-        assignRowsToGroup(group, rows);
-        return group;
+        plot.setPlotChart(meanChart);
+        return plot;
     }
 
-    private void assignRowsToGroup(SubjectGroup group, Collection<ResultRow> rows) {
-        for (ResultRow row : rows) {
-            StudySubjectAssignment subjectAssignment = row.getSubjectAssignment();
-            if (!kmParameters.isExclusiveGroups() || !usedSubjects.contains(subjectAssignment)) {
-                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(subjectAssignment);
-                if (subjectSurvivalData != null) {
-                    group.getSurvivalData().add(subjectSurvivalData);
-                }
-                usedSubjects.add(subjectAssignment);
-            }
-        }
+    private JFreeChart createChart(DefaultCategoryDataset dataset, String domainAxisLabel, String rangeAxisLabel) {
+        JFreeChart meanChart = ChartFactory.createBarChart(
+                null, 
+                domainAxisLabel, 
+                rangeAxisLabel, 
+                dataset,
+                PlotOrientation.VERTICAL, // orientation
+                true, // include legend
+                true, // tooltips
+                false // URLs
+                );
+        return meanChart;
     }
 
-    private SubjectGroup retrieveOtherSubjectGroup(StudySubscription subscription) {
-        SubjectGroup otherSubjectsGroup = new SubjectGroup();
-        otherSubjectsGroup.setName("All Others");
-        for (StudySubjectAssignment assignment : subscription.getStudy().getAssignmentCollection()) {
-            if (!usedSubjects.contains(assignment)) {
-                SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(assignment);
-                if (subjectSurvivalData != null) {
-                    otherSubjectsGroup.getSurvivalData().add(subjectSurvivalData);
-                }
-                usedSubjects.add(assignment);
-            }
-        }
-        return otherSubjectsGroup;
+    private void cusomtizeChart(JFreeChart meanChart) {
+        CategoryAxis meanAxis = meanChart.getCategoryPlot().getDomainAxis();
+        meanAxis.setLowerMargin(LOWER_MARGIN);
+        meanAxis.setCategoryMargin(CATEGORY_MARGIN);
+        meanAxis.setUpperMargin(UPPER_MARGIN);
+        BarRenderer meanRenderer = (BarRenderer) meanChart.getCategoryPlot().getRenderer();
+        meanRenderer.setItemMargin(ITEM_MARGIN);
+        meanRenderer.setDrawBarOutline(true);
+        meanChart.removeLegend();
     }
+
+
 }

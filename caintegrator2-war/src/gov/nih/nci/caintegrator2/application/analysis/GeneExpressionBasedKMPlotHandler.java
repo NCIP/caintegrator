@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -150,7 +151,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
                                                                 RegulationTypeEnum.UP,
                                                                 subscription);
         subjectGroupCollection.add(upRegulatedGroup);
-        upRegulatedGroup.setColor(getColor(subjectGroupCollection.size()));
+        upRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Down Regulated
         SubjectGroup downRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
@@ -159,14 +160,14 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
                                                         RegulationTypeEnum.DOWN,
                                                         subscription);
         subjectGroupCollection.add(downRegulatedGroup);
-        downRegulatedGroup.setColor(getColor(subjectGroupCollection.size()));
+        downRegulatedGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         
         // Intermediate
         SubjectGroup intermediateGroup = retrieveGroup("Intermediate",
                                                         RegulationTypeEnum.UNCHANGED,
                                                         subscription);
         subjectGroupCollection.add(intermediateGroup);
-        intermediateGroup.setColor(getColor(subjectGroupCollection.size()));
+        intermediateGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
     }
     
     private SubjectGroup retrieveGroup(String groupName, RegulationTypeEnum regulationType, 

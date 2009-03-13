@@ -184,7 +184,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
             subjectGroup.setName(plotGroupValue.toString());
             subjectGroupPermissibleValue.put(subjectGroup, plotGroupValue);
             subjectGroupCollection.add(subjectGroup);
-            subjectGroup.setColor(getColor(subjectGroupCollection.size()));
+            subjectGroup.setColor(Cai2Util.getColor(subjectGroupCollection.size()));
         }
     }
 
