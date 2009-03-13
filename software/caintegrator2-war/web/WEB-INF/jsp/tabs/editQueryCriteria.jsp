@@ -69,7 +69,8 @@
                                             <s:textfield name="%{formFieldName}.value"
                                                 size="30"
                                                 cssClass="keyword"
-                                                theme="simple" />
+                                                theme="simple"
+                                                title="%{title}" />
                                         </s:if>
                                         <s:elseif test="fieldType == 'select'">
                                             <s:select name="%{formFieldName}.value"

@@ -6,34 +6,48 @@
     <s:hidden name="resetSelected" value="false" />
     
     <!-- Kaplan-Meier Inputs -->
-    <h1>Gene Expression Based Kaplan-Meier Survival Plots</h1>
+    <h2>Gene Expression Based Kaplan-Meier Survival Plots</h2>
 
         <table class="data">
             <tr>
-                <td class="value_inline">
-                    1.) Gene Symbol:  <s:textfield name="kmPlotForm.geneExpressionBasedForm.geneSymbol" theme="simple"/>                
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                1.)
+                </td>
+                <td class="value_inline" style="min-width: 5px; width: 150px;">
+                    Gene Symbol:  <br>
+                    <div style="font-size: 75%; color: #666666;"></div>
+                </td>
+                <td class="value_inline"><s:textfield name="kmPlotForm.geneExpressionBasedForm.geneSymbol" theme="simple" />                
 		        </td>
 	        </tr>
 	        
 	        <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                2.)
+                </td>
 		        <td class="value_inline">
-                    2.) Overexpressed >= <s:textfield name="kmPlotForm.geneExpressionBasedForm.overexpressedNumber" size="4" theme="simple"/> fold
+                    Overexpressed >= <br>
+                </td>
+                <td class="value_inline"><s:textfield name="kmPlotForm.geneExpressionBasedForm.overexpressedNumber" size="4" theme="simple"/> fold
                 </td> 
             </tr>
             <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                3.)
+                </td>
                 <td class="value_inline">
-                    3.) Underexpressed >= <s:textfield name="kmPlotForm.geneExpressionBasedForm.underexpressedNumber" size="4" theme="simple"/> fold
+                    Underexpressed >= <br>
+                </td>
+                <td class="value_inline">
+                    <s:textfield name="kmPlotForm.geneExpressionBasedForm.underexpressedNumber" size="4" theme="simple"/> fold
                 </td>
             </tr>
-        </table>
-        <table class="data">
             <tr>
-	            <th/>
-	            <th> Survival Value </th>
-            </tr>
-            <tr>
-                <td class="value_inline">
-                    4.) Select Survival Measure:
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                    4.)
+                </td>
+                <td class="value_inline" style="min-width: 5px; width: 150px;">
+                    Select Survival Value:<br>
                 </td>
                 <td class="value_inline">
                 <s:select name="kmPlotForm.survivalValueDefinitionId" 

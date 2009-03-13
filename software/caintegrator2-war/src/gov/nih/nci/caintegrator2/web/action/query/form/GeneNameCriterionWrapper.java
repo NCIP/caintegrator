@@ -110,7 +110,8 @@ class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private TextFieldParameter createGeneNameParameter() {
         String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
-        valueParameter.setLabel("equals");
+        valueParameter.setLabel("in list (comma separated: EGFR, BRCA1, etc. )");
+        valueParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
         ValueHandler valueHandler = new ValueHandlerAdapter() {
             /**
              * {@inheritDoc}
