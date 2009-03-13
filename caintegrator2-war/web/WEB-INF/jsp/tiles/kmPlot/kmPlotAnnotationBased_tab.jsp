@@ -7,7 +7,7 @@
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
        
     <!-- Kaplan-Meier Inputs -->
-    <h1>Annotation Based Kaplan-Meier Survival Plots</h1>
+    <h2>Annotation Based Kaplan-Meier Survival Plots</h2>
     
         <table class="data">
             <tr>

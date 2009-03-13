@@ -103,7 +103,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     private static final float DEFAULT_FOLDS = 2.0f;
     private static final Float DEFAULT_FOLDS_UNCHANGED_DOWN = 0.8f;
     private static final Float DEFAULT_FOLDS_UNCHANGED_UP = 1.2f;
-    private static final String SYMBOL_LABEL = "Gene Symbol";
+    private static final String SYMBOL_LABEL = "Gene Symbol(s) (comma separated list)";
     private static final String REGULATION_TYPE_LABEL = "Regulation Type";
     static final String FOLD_CHANGE = "Fold Change";
 
@@ -184,6 +184,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         TextFieldParameter geneSymbolParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
         geneSymbolParameter.setLabel(SYMBOL_LABEL);
+        geneSymbolParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
         ValueHandler geneSymbolHandler = new ValueHandlerAdapter() {
             
             public boolean isValid(String value) {
