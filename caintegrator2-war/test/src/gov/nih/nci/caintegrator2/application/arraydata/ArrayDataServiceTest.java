@@ -40,15 +40,32 @@ public class ArrayDataServiceTest {
 
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
-        checkLoadArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
+        checkLoadAgilentArrayDesign(null, TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
     }
 
-    private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        Platform platform = ArrayDesignChecker.checkLoadArrayDesign(cdfFile, annotationFile, service);
+    private void checkLoadAffymetrixArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
+        Platform platform = ArrayDesignChecker.checkLoadAffymetrixArrayDesign(cdfFile, annotationFile, service);
         assertTrue(daoStub.saveCalled);
         PlatformHelper platformHelper = new PlatformHelper(platform);
         Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         assertEquals(4562, geneReporters.size());
+        for (AbstractReporter abstractReporter : geneReporters) {
+            GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
+            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            for (AbstractReporter probeSetReporter : probeSets) {
+                GeneExpressionReporter probeSet = (GeneExpressionReporter) probeSetReporter;
+                assertTrue(geneReporter.getGene() == probeSet.getGene());
+            }
+        }
+    }
+
+    private void checkLoadAgilentArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException {
+        Platform platform = ArrayDesignChecker.checkLoadAgilentArrayDesign(cdfFile, annotationFile, service);
+        assertTrue(daoStub.saveCalled);
+        PlatformHelper platformHelper = new PlatformHelper(platform);
+        Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
+        assertEquals(16711, geneReporters.size());
         for (AbstractReporter abstractReporter : geneReporters) {
             GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
             Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);

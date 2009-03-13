@@ -137,28 +137,16 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
      */
     @Override
     Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
-        Platform platform = createPlatform();
+        Platform platform = createPlatform(PlatformVendorEnum.AFFYMETRIX);
         try {
             handleAnnotationFile(platform, dao);
             dao.save(platform);
         } finally {
             releaseResources();
-            cleanUp();
+            cleanUp(source);
         }
         return platform;
 
-    }
-
-    private void cleanUp() {
-        if (source.getDeleteFileOnCompletion()) {
-            getAnnotationFile().delete();
-        }
-    }
-
-    private Platform createPlatform() {
-        Platform platform = new Platform();
-        platform.setVendor("Affymetrix");
-        return platform;
     }
 
     private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {

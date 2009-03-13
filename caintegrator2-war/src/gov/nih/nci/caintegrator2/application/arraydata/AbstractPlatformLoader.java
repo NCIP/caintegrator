@@ -94,5 +94,16 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 abstract class AbstractPlatformLoader {
 
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
-    
+
+    protected Platform createPlatform(PlatformVendorEnum platformVendor) {
+        Platform platform = new Platform();
+        platform.setVendor(platformVendor);
+        return platform;
+    }
+
+    protected void cleanUp(AbstractPlatformSource source) {
+        if (source.getDeleteFileOnCompletion()) {
+            source.getAnnotationFile().delete();
+        }
+    }
 }

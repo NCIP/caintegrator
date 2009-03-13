@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -92,6 +93,41 @@ import java.io.Serializable;
  */
 public abstract class AbstractPlatformSource implements Serializable {
 
+    private boolean deleteFileOnCompletion;
+    private final File annotationFile;
     abstract AbstractPlatformLoader getLoader();
+
+    /**
+     * Creates a new instance.
+     * 
+     * @param annotationFile the CSV annotation file.
+     */
+    public AbstractPlatformSource(File annotationFile) {
+        super();
+        if (annotationFile == null || !annotationFile.exists()) {
+            throw new IllegalArgumentException("Annotation file must exist.");
+        }
+        this.annotationFile = annotationFile;
+    }
+    /**
+     * @return the deleteFileOnCompletion
+     */
+    public boolean getDeleteFileOnCompletion() {
+        return deleteFileOnCompletion;
+    }
+
+    /**
+     * @param deleteFileOnCompletion the deleteFileOnCompletion to set
+     */
+    public void setDeleteFileOnCompletion(boolean deleteFileOnCompletion) {
+        this.deleteFileOnCompletion = deleteFileOnCompletion;
+    }
+
+    /**
+     * @return the annotationFile
+     */
+    protected File getAnnotationFile() {
+        return annotationFile;
+    }
     
 }
