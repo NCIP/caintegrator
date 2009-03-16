@@ -90,6 +90,9 @@
                     <s:url id="kmPlotUrl" includeParams="none" action="initializeKmPlot" />
                     <a href="${ kmPlotUrl }">Generate KM Plot</a></li>
                 <li>
+                    <s:url id="gePlotUrl" includeParams="none" action="initializeGePlot" />
+                    <a href="${ gePlotUrl }">Generate Gene Expression Plot</a></li>
+                <li>
                     <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />
                     <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
                 </li>

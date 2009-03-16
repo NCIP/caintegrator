@@ -83,87 +83,85 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlot;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import java.io.IOException;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+import javax.servlet.http.HttpServletResponse;
 
-    public void save(Query query) {
-        saveCalled = true;
-    }
+import org.apache.struts2.ServletActionContext;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
+
+/**
+ * Struts2 result type for a GE Plot graph.
+ */
+public class GEPlotResult implements Result {
+
+    private static final long serialVersionUID = 1L;
+    private String plotType;
+    private String calculationType;
 
     /**
      * {@inheritDoc}
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
+    public void execute(ActionInvocation invocation) throws IOException {
+        if (PlotTypeEnum.checkType(plotType)) {
+            GeneExpressionPlotGroup gePlots = retrieveGePlots();
+            GeneExpressionPlot gePlot = gePlots.getPlot(PlotCalculationTypeEnum.getByValue(calculationType));
+            if (gePlot != null) {
+                HttpServletResponse response = ServletActionContext.getResponse();
+                gePlot.writePlotImage(response.getOutputStream());
+                response.setContentType("image/png");
+                response.getOutputStream().flush();
+            }
         }
-        QR.setQuery(query);
-        return QR;
+        
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
+    private GeneExpressionPlotGroup retrieveGePlots() {
+        if (PlotTypeEnum.ANNOTATION_BASED.equals(PlotTypeEnum.getByValue(plotType))) {
+            return SessionHelper.getAnnotationBasedGePlots();
+        }
         return null;
     }
 
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
 
-        return null;
+    /**
+     * @return the plotType
+     */
+    public String getPlotType() {
+        return plotType;
     }
-    
+
+
+    /**
+     * @param plotType the plotType to set
+     */
+    public void setPlotType(String plotType) {
+        this.plotType = plotType;
+    }
+
+
+    /**
+     * @return the calculationType
+     */
+    public String getCalculationType() {
+        return calculationType;
+    }
+
+
+    /**
+     * @param calculationType the calculationType to set
+     */
+    public void setCalculationType(String calculationType) {
+        this.calculationType = calculationType;
+    }
 }

@@ -83,87 +83,91 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
+
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+/**
+ * GE Plot Handler for Annotation Based GE Plots.
+ */
+class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
+    private final GEPlotAnnotationBasedParameters parameters;
+        
+    AnnotationBasedGEPlotHandler(CaIntegrator2Dao dao, 
+                                 QueryManagementService queryManagementService, 
+                                 GEPlotAnnotationBasedParameters parameters) {
+        super(dao, queryManagementService);
+        this.parameters = parameters;
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
+    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
+                                               StudySubscription subscription) {
+        List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
+        for (AbstractPermissibleValue permissibleValue : parameters.getSelectedValues()) {
+            GenomicDataQueryResult result = retrieveGenomicResults(parameters.getSelectedAnnotation(), 
+                                                                   parameters.getEntityType(), 
+                                                                   parameters.getGeneSymbol(), 
+                                                                   permissibleValue, 
+                                                                   subscription);
+            genomicResults.add(result);
         }
-        QR.setQuery(query);
-        return QR;
+        
+        GeneExpressionPlotConfiguration configuration = 
+                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        return gePlotService.generatePlots(configuration);
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
     
+    private GenomicDataQueryResult retrieveGenomicResults(AnnotationDefinition groupAnnotationField,
+                                                 EntityTypeEnum entityType,
+                                                 String geneName,
+                                                 AbstractPermissibleValue permissibleValue,
+                                                 StudySubscription subscription) {
+        Query query = new Query();
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGeneSymbol(geneName);
+        SelectedValueCriterion selectedValueCriterion = new SelectedValueCriterion();
+        selectedValueCriterion.setAnnotationDefinition(groupAnnotationField);
+        selectedValueCriterion.setEntityType(entityType);
+        selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
+        selectedValueCriterion.getValueCollection().add(permissibleValue);
+        query.setName(permissibleValue.toString());
+        
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
+        query.getCompoundCriterion().getCriterionCollection().add(selectedValueCriterion);
+        query.setResultType(ResultTypeEnum.GENOMIC);
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET); // PROBE SET for now, let user choose later.
+        query.setSubscription(subscription);
+        return getQueryManagementService().executeGenomicDataQuery(query);
+    }
+
 }

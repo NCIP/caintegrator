@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
@@ -293,6 +294,18 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public KMPlotForm getKmPlotForm() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getKmPlotForm();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * 
+     * @return the gePlotForm object.
+     */
+    public GEPlotForm getGePlotForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getGePlotForm();
         } else {
             return null;
         }

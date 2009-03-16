@@ -92,10 +92,15 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -119,18 +124,21 @@ public class AnalysisServiceTest {
     // KMPlot Items
     private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
     private CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
-    private QueryManagementServiceForKMPlotStub queryManagementServiceStub = new QueryManagementServiceForKMPlotStub();
+    private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub = 
+                        new QueryManagementServiceForKMPlotStub();
     
     @Before
     public void setUp() {
         AnalysisServiceImpl serviceImpl = new AnalysisServiceImpl();
         KMPlotServiceCaIntegratorImpl kmPlotService = new KMPlotServiceCaIntegratorImpl();
         kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
+        GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         caIntegratorPlotServiceStub.clear();
         serviceImpl.setGenePatternClient(genePatternClientStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
-        serviceImpl.setQueryManagementService(queryManagementServiceStub);
+        serviceImpl.setGePlotService(gePlotService);
+        serviceImpl.setQueryManagementService(queryManagementServiceForKmPlotStub);
         service = serviceImpl;
     }
 
@@ -213,7 +221,7 @@ public class AnalysisServiceTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.ANNOTATION_BASED;
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
         KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
         annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
         annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
@@ -230,7 +238,7 @@ public class AnalysisServiceTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.GENE_EXPRESSION;
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.GENE_EXPRESSION;
         KMGeneExpressionBasedParameters geneExpressionParameters = new KMGeneExpressionBasedParameters();
         geneExpressionParameters.setGeneSymbol("EGFR");
         geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
@@ -247,7 +255,7 @@ public class AnalysisServiceTest {
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
-        queryManagementServiceStub.kmPlotType = KMPlotTypeEnum.QUERY_BASED;
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
         KMQueryBasedParameters queryBasedParameters = new KMQueryBasedParameters();
         queryBasedParameters.setExclusiveGroups(true);
         queryBasedParameters.setAddPatientsNotInQueriesGroup(true);
@@ -264,6 +272,31 @@ public class AnalysisServiceTest {
         assertTrue(queryBasedParameters.validate());
         runKMPlotTest(studyCreator, subscription, queryBasedParameters);
         assertEquals(ResultTypeEnum.CLINICAL, query1.getResultType());
+    }
+    
+    private void runGEPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractGEPlotParameters annotationParameters) {
+        GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, annotationParameters);
+        
+        assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
+
+    }
+    
+    @Test
+    public void testCreateAnnotationBasedGEPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
+        GEPlotAnnotationBasedParameters annotationParameters = new GEPlotAnnotationBasedParameters();
+        annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
+        annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
+        annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
+        annotationParameters.setGeneSymbol("egfr");
+
+        assertTrue(annotationParameters.validate());
+        runGEPlotTest(studyCreator, subscription, annotationParameters);
+        
     }
     
     
