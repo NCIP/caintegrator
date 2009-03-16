@@ -83,87 +83,51 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import java.io.IOException;
+import java.util.HashMap;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.struts2.ServletActionContext;
+import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletResponse;
 
-    public void save(Query query) {
-        saveCalled = true;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.mock.MockActionInvocation;
+
+public class GEPlotResultTest {
+
+    @Test
+    public void testExecute() throws IOException {
+        ServletActionContext.setResponse(new MockHttpServletResponse());
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        GeneExpressionPlotStub meanBasedGePlot = new GeneExpressionPlotStub();
+        meanBasedGePlot.clear();
+        GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();
+        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEAN, meanBasedGePlot);
+        SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plotGroup);
+        GEPlotResult result = new GEPlotResult();
+        result.setCalculationType(PlotCalculationTypeEnum.MEAN.getValue());
+        result.setPlotType(PlotTypeEnum.ANNOTATION_BASED.getValue());
+        result.execute(new MockActionInvocation());
+        assertTrue(meanBasedGePlot.writePlotImageCalled);
+        meanBasedGePlot.clear();
+        result.setCalculationType("Invalid Type");
+        result.execute(new MockActionInvocation());
+        assertFalse(meanBasedGePlot.writePlotImageCalled);
+        result.setPlotType("Invalid Plot Type");
+        result.execute(new MockActionInvocation());
+        assertFalse(meanBasedGePlot.writePlotImageCalled);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-    
 }

@@ -83,87 +83,70 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+/**
+ * Abstract class representing a handler for Gene Expression plot creation.
+ */
+public abstract class AbstractGEPlotHandler {
+    
+    private final CaIntegrator2Dao dao;
+    private final QueryManagementService queryManagementService;
+    
+    /**
+     * Constructor.
+     * @param dao to call database.
+     * @param queryManagementService for query execution.
+     */
+    protected AbstractGEPlotHandler(CaIntegrator2Dao dao, QueryManagementService queryManagementService) {
+        this.dao = dao;
+        this.queryManagementService = queryManagementService;
+    }
+    
+    /**
+     * Creates the GeneExpressionPlotHandler based on Parameters.
+     * @param dao to call database.
+     * @param queryManagementService for query creation.
+     * @param parameters used to determine type of handler to create.
+     * @return handler.
+     */
+    public static AbstractGEPlotHandler createGeneExpressionPlotHandler(CaIntegrator2Dao dao,
+                                                                        QueryManagementService queryManagementService,
+                                                                        AbstractGEPlotParameters parameters) {
+        if (parameters instanceof GEPlotAnnotationBasedParameters) {
+            return new AnnotationBasedGEPlotHandler(dao, queryManagementService, 
+                                                   (GEPlotAnnotationBasedParameters) parameters);
+        }
+        throw new IllegalArgumentException("Unknown Parameter Type");  
+    }
+    
+    /**
+     * Creates the GeneExpressionPlotGroup for the parameters.
+     * @param gePlotService creates the plots. 
+     * @param subscription that user is currently using.
+     * @return plot group.
+     */
+    public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
+                                                        StudySubscription subscription);
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the queryManagementService
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
+    public QueryManagementService getQueryManagementService() {
+        return queryManagementService;
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-    
 }

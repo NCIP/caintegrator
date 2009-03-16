@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caArray
+ * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caArray Software License (the License) is between NCI and You. You (or 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caArray Software to (i) use, install, access, operate, 
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caArray Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator Software and any 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator2 Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,11 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotMapper;
+import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotMapper;
 
 import java.util.Map;
 
@@ -109,6 +111,7 @@ public final class SessionHelper {
     private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
     private static final String KM_PLOT_SESSION_KEY = "kmPlot";
+    private static final String GE_PLOT_SESSION_KEY = "gePlot";
     private boolean studyManager = false;
     
     private SessionHelper() {
@@ -224,7 +227,7 @@ public final class SessionHelper {
      * @param kmPlot the kmPlot to set on the ValueStack.
      */
     @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
-    public static void setKmPlot(KMPlotTypeEnum plotType, KMPlot kmPlot) {
+    public static void setKmPlot(PlotTypeEnum plotType, KMPlot kmPlot) {
         if (getSession().get(KM_PLOT_SESSION_KEY) == null) {
             getSession().put(KM_PLOT_SESSION_KEY, new KMPlotMapper());
         }
@@ -277,6 +280,41 @@ public final class SessionHelper {
             mapper.clear();
         }
     }
+    
+    /**
+     * Uses a GEPlotMapper object to store multiple GEPlots on the value stack, based on
+     * one per plot type.
+     * @param plotType the plot type to add the plot to.
+     * @param gePlots the gePlots to set on the ValueStack.
+     */
+    @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
+    public static void setGePlots(PlotTypeEnum plotType, GeneExpressionPlotGroup gePlots) {
+        if (getSession().get(GE_PLOT_SESSION_KEY) == null) {
+            getSession().put(GE_PLOT_SESSION_KEY, new GEPlotMapper());
+        }
+        GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
+        map.getGePlotMap().put(plotType, gePlots);
+    }
 
+    /**
+     * 
+     * @return the kmPlot on the ValueStack.
+     */
+    public static GeneExpressionPlotGroup getAnnotationBasedGePlots() {
+        GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getAnnotationBasedGePlot();
+        }
+        return null;
+    }
 
+    /**
+     * Clears all plots off the session.
+     */
+    public static void clearGePlots() {
+        GEPlotMapper mapper = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
+        if (mapper != null) {
+            mapper.clear();
+        }
+    }
 }

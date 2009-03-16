@@ -83,87 +83,50 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import java.util.HashMap;
+import java.util.Map;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
-    }
+/**
+ * Object that is used to store GE Plots on the session, based on a maximum of one per plot type.
+ */
+public class GEPlotMapper {
+    
+    private final Map<PlotTypeEnum, GeneExpressionPlotGroup> gePlotMap = 
+                        new HashMap<PlotTypeEnum, GeneExpressionPlotGroup>();
 
     /**
-     * {@inheritDoc}
+     * Clears the map of KM Plots.
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
     public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
+        gePlotMap.clear();
     }
     
+    /**
+     * @return the kmPlotMap
+     */
+    public Map<PlotTypeEnum, GeneExpressionPlotGroup> getGePlotMap() {
+        return gePlotMap;
+    }
+    
+    /**
+     * Returns the Annotation Based GeneExpressionPlotGroup.
+     * @return GeneExpressionPlotGroup object.
+     */
+    public GeneExpressionPlotGroup getAnnotationBasedGePlot() {
+        return gePlotMap.get(PlotTypeEnum.ANNOTATION_BASED);
+    }
+    
+    /**
+     * Returns the Query based GeneExpressionPlotGroup.
+     * @return GeneExpressionPlotGroup object.
+     */
+    public GeneExpressionPlotGroup getQueryBasedGePlot() {
+        return gePlotMap.get(PlotTypeEnum.QUERY_BASED);
+    }
+
 }

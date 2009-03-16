@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStu
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
@@ -269,7 +269,7 @@ public class KMPlotAnnotationBasedActionTest {
         SubjectGroup group2 = createGroup();
         configuration.getGroups().add(group2);
         KMPlot plot = plotService.generatePlot(configuration);
-        SessionHelper.setKmPlot(KMPlotTypeEnum.ANNOTATION_BASED, plot);
+        SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, plot);
         assertEquals("1.10", action.getAllStringPValues().get("group").get("group"));
     }
     

@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
@@ -99,9 +101,11 @@ import java.util.List;
 public class AnalysisServiceStub implements AnalysisService {
     
     public boolean createKMPlotCalled;
+    public boolean createGEPlotCalled;
     
     public void clear() {
         createKMPlotCalled = false;
+        createGEPlotCalled = false;
     }
 
     /**
@@ -142,6 +146,13 @@ public class AnalysisServiceStub implements AnalysisService {
         createKMPlotCalled = true;
         KMPlotServiceStub kmPlotService = new KMPlotServiceStub();
         return kmPlotService.generatePlot(new KMPlotConfiguration());
+    }
+
+    
+    public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
+            AbstractGEPlotParameters plotParameters) {
+        createGEPlotCalled = true;
+        return null;
     }
 
 }
