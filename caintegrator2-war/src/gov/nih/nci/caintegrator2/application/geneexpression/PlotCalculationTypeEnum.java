@@ -69,7 +69,9 @@ public enum PlotCalculationTypeEnum {
      * @return the matching type.
      */
     public static PlotCalculationTypeEnum getByValue(String value) {
-        checkType(value);
+        if (!checkType(value)) {
+            return null;
+        }
         return getValueToTypeMap().get(value);
     }
 
@@ -77,10 +79,12 @@ public enum PlotCalculationTypeEnum {
      * Checks to see that the value given is a legal <code>AssayType</code> value.
      * 
      * @param value the value to check;
+     * @return T/F value if it exists.
      */
-    public static void checkType(String value) {
-        if (value != null && !getValueToTypeMap().containsKey(value)) {
-            throw new IllegalArgumentException("No matching type for " + value);
+    public static boolean checkType(String value) {
+        if (value == null || !getValueToTypeMap().containsKey(value)) {
+            return false;
         }
+        return true;
     }
 }

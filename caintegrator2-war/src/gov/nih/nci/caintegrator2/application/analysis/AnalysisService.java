@@ -89,6 +89,8 @@ import java.net.URL;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -125,5 +127,15 @@ public interface AnalysisService {
      * @return the plot object.
      */
     KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters);
+
+    /**
+     * Creates the GeneExpressionPlotGroup which is a group of plots based on the input parameters, the plot
+     * types are Mean, median, log2 intensity, and box-whisker log2 intensity.
+     * @param studySubscription the study subscription that the user wants to create the plot for.
+     * @param plotParameters input parameters for the plots.
+     * @return the plot group object.
+     */
+    GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription, 
+                                                     AbstractGEPlotParameters plotParameters);
     
 }

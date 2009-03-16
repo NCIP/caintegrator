@@ -8,6 +8,7 @@
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
             <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotResult"/>
+            <result-type name="gePlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotResult"/>
             <result-type name="dicomFileResult" class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomFileResult"/>
             <result-type name="redirect" class="org.apache.struts2.dispatcher.ServletRedirectResult"/>
         </result-types>
@@ -480,6 +481,45 @@
         <action name="retrieveQueryKMPlot" method="retrievePlot" class="kmPlotQueryBasedAction">
             <result name="kmPlotResult" type="kmPlotResult"> 
                 <param name="type">queryBased</param>
+            </result>
+        </action>
+        
+        <!-- GeneExpression Plot Actions -->
+        <action name="initializeGePlot" method="initializeGePlot" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">homepage</result>
+        </action>
+
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        <action name="gePlotAnnotationBasedInput" method="input" class="gePlotAnnotationBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
+        </action>
+        
+        <action name="gePlotUpdateAnnotationDefinitions" method="updateAnnotationDefinitions" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="gePlotUpdatePermissibleValues" method="updatePermissibleValues" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>        
+         </action>
+         
+        <action name="resetAnnotationBasedGEPlot" method="reset" class="gePlotAnnotationBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createAnnotationBasedGEPlot" method="createPlot" class="gePlotAnnotationBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">mean</param>
             </result>
         </action>
                

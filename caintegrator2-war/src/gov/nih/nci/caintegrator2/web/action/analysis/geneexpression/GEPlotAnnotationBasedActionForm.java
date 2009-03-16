@@ -83,87 +83,158 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+/**
+ * Form used to store input values for Annotation Based GE Plots. 
+ */
+public class GEPlotAnnotationBasedActionForm {
+    
+    private String annotationTypeSelection;
+    private String selectedAnnotationId;
+    private Collection <String> selectedValuesIds = new HashSet<String>();
+    private boolean permissibleValuesNeedUpdate = false;
+    private String geneSymbol;
+    
+    
+    // JSP Select List Options
+    private Map<String, AnnotationDefinition> annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+    private Map<String, String> permissibleValues = new HashMap<String, String>();
+    
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
 
-    public void save(Query query) {
-        saveCalled = true;
+    /**
+     * Clears all the variables to null.
+     */
+    public void clear() {
+        annotationTypeSelection = null;
+        selectedAnnotationId = null;
+        selectedValuesIds = new HashSet<String>();
+        geneSymbol = null;
+        clearAnnotationDefinitions();
+    }
+    
+    /**
+     * Clears the annotation definitions.
+     */
+    public void clearAnnotationDefinitions() {
+        annotationDefinitions = new HashMap<String, AnnotationDefinition>();
+        setSelectedAnnotationId(null);
+        clearPermissibleValues();
+    }
+    
+    /**
+     * Clears the permissible values.
+     */
+    public void clearPermissibleValues() {
+        permissibleValues = new HashMap<String, String>();
+        getSelectedValuesIds().clear();
+    }
+    
+    /**
+     * @return the annotationTypeSelection
+     */
+    public String getAnnotationTypeSelection() {
+        return annotationTypeSelection;
     }
 
     /**
-     * {@inheritDoc}
+     * @param annotationTypeSelection the annotationTypeSelection to set
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
+    public void setAnnotationTypeSelection(String annotationTypeSelection) {
+        this.annotationTypeSelection = annotationTypeSelection;
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
+    /**
+     * @return the selectedAnnotationId
+     */
+    public String getSelectedAnnotationId() {
+        return selectedAnnotationId;
     }
 
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
+    /**
+     * @param selectedAnnotationId the selectedAnnotationId to set
+     */
+    public void setSelectedAnnotationId(String selectedAnnotationId) {
+        this.selectedAnnotationId = selectedAnnotationId;
     }
 
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
+    /**
+     * @return the selectedValuesIds
+     */
+    public Collection<String> getSelectedValuesIds() {
+        return selectedValuesIds;
     }
 
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
 
-        return null;
+    /**
+     * @param selectedValuesIds the selectedValuesIds to set
+     */
+    public void setSelectedValuesIds(Collection<String> selectedValuesIds) {
+        this.selectedValuesIds = selectedValuesIds;
     }
-    
+
+    /**
+     * @return the annotationDefinitions
+     */
+    public Map<String, AnnotationDefinition> getAnnotationDefinitions() {
+        return annotationDefinitions;
+    }
+
+    /**
+     * @param annotationDefinitions the annotationDefinitions to set
+     */
+    public void setAnnotationDefinitions(Map<String, AnnotationDefinition> annotationDefinitions) {
+        this.annotationDefinitions = annotationDefinitions;
+    }
+
+    /**
+     * @return the permissibleValues
+     */
+    public Map<String, String> getPermissibleValues() {
+        return permissibleValues;
+    }
+
+    /**
+     * @param permissibleValues the permissibleValues to set
+     */
+    public void setPermissibleValues(Map<String, String> permissibleValues) {
+        this.permissibleValues = permissibleValues;
+    }
+
+    /**
+     * @return the permissibleValuesNeedUpdate
+     */
+    public boolean isPermissibleValuesNeedUpdate() {
+        return permissibleValuesNeedUpdate;
+    }
+
+    /**
+     * @param permissibleValuesNeedUpdate the permissibleValuesNeedUpdate to set
+     */
+    public void setPermissibleValuesNeedUpdate(boolean permissibleValuesNeedUpdate) {
+        this.permissibleValuesNeedUpdate = permissibleValuesNeedUpdate;
+    }
+
+    /**
+     * @return the geneSymbol
+     */
+    public String getGeneSymbol() {
+        return geneSymbol;
+    }
+
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
+    }
+
 }

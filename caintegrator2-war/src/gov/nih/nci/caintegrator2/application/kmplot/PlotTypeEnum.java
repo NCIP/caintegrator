@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Kaplan Meier Plot types.
+ * Plot types.
  */
-public enum KMPlotTypeEnum {
+public enum PlotTypeEnum {
 
     /**
      * Annotation Based.
@@ -23,11 +23,11 @@ public enum KMPlotTypeEnum {
      */
     QUERY_BASED("queryBased");
     
-    private static Map<String, KMPlotTypeEnum> valueToTypeMap = new HashMap<String, KMPlotTypeEnum>();
+    private static Map<String, PlotTypeEnum> valueToTypeMap = new HashMap<String, PlotTypeEnum>();
 
     private String value;
     
-    private KMPlotTypeEnum(String value) {
+    private PlotTypeEnum(String value) {
         setValue(value);
     }
 
@@ -42,9 +42,9 @@ public enum KMPlotTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, KMPlotTypeEnum> getValueToTypeMap() {
+    private static Map<String, PlotTypeEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (KMPlotTypeEnum type : values()) {
+            for (PlotTypeEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -60,9 +60,9 @@ public enum KMPlotTypeEnum {
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(KMPlotTypeEnum.ANNOTATION_BASED.getValue(), "Annotation Based");
-        map.put(KMPlotTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression Based");
-        map.put(KMPlotTypeEnum.QUERY_BASED.getValue(), "Query Based");
+        map.put(PlotTypeEnum.ANNOTATION_BASED.getValue(), "Annotation Based");
+        map.put(PlotTypeEnum.GENE_EXPRESSION.getValue(), "Gene Expression Based");
+        map.put(PlotTypeEnum.QUERY_BASED.getValue(), "Query Based");
         return map;
     }
     
@@ -73,7 +73,7 @@ public enum KMPlotTypeEnum {
      * @param value the value to match
      * @return the matching type.
      */
-    public static KMPlotTypeEnum getByValue(String value) {
+    public static PlotTypeEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

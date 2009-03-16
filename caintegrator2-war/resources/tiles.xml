@@ -139,6 +139,10 @@
     <definition name="kmPlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />
     </definition>
+    
+    <definition name="gePlot" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/gePlot/gePlot_tile.jsp" />
+    </definition>
 
     <!-- Platform pages -->
     <definition name="managePlatforms" extends="cssBaseDef">

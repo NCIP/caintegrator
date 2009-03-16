@@ -83,11 +83,11 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 
-import gov.nih.nci.caintegrator2.application.analysis.KMAnnotationBasedParameters;
-import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -101,19 +101,18 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Action dealing with Kaplan-Meier Annotaion Based plotting.
+ * Action dealing with Gene Expression Annotation Based plotting.
  */
 @SuppressWarnings("PMD.CyclomaticComplexity") // See retrieveFormSelectedValues()
-public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
+public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private static final long serialVersionUID = 1L;
-    private static final String ANNOTATION_PLOT_URL = "/caintegrator2/retrieveAnnotationKMPlot.action?";
-    private KMAnnotationBasedParameters kmPlotParameters = new KMAnnotationBasedParameters();
+    private static final String ANNOTATION_PLOT_URL = "/caintegrator2/retrieveAnnotationGEPlot.action?";
+    private GEPlotAnnotationBasedParameters plotParameters = new GEPlotAnnotationBasedParameters();
     
 
     /**
@@ -129,9 +128,10 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     
     
     private void retrieveFormValues() {
+        plotParameters.setGeneSymbol(getGePlotForm().getAnnotationBasedForm().getGeneSymbol());
         if (getForm().getSelectedAnnotationId() != null 
                 && !StringUtils.isEmpty(getForm().getSelectedAnnotationId())) {
-               kmPlotParameters.getSelectedAnnotation().setId(
+                plotParameters.getSelectedAnnotation().setId(
                        Long.valueOf(getForm().getSelectedAnnotationId()));
            }
        retrieveFormSelectedValues();
@@ -141,10 +141,10 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     private void retrieveFormSelectedValues() {
         if (!getForm().getSelectedValuesIds().isEmpty()) {
             refreshSelectedAnnotationInstance();
-            kmPlotParameters.getSelectedValues().clear();
+            plotParameters.getSelectedValues().clear();
             
             AnnotationTypeEnum permissibleValuesType = AnnotationTypeEnum.getByValue(
-                                        kmPlotParameters.getSelectedAnnotation().getType());
+                    plotParameters.getSelectedAnnotation().getType());
             for (String id : getForm().getSelectedValuesIds()) {
                 AbstractPermissibleValue value = null;
                 switch(permissibleValuesType) {
@@ -162,7 +162,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
                     return;
                 }
                 value.setId(Long.valueOf(id));
-                kmPlotParameters.getSelectedValues().add(value);
+                plotParameters.getSelectedValues().add(value);
             }
         }
     }
@@ -173,37 +173,37 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     }
     
     private void refreshSelectedAnnotationInstance() {
-        if (kmPlotParameters.getSelectedAnnotation().getId() != null) {
-            kmPlotParameters.setSelectedAnnotation(getStudyManagementService().
-                        getRefreshedStudyEntity(kmPlotParameters.getSelectedAnnotation()));
+        if (plotParameters.getSelectedAnnotation().getId() != null) {
+            plotParameters.setSelectedAnnotation(getStudyManagementService().
+                        getRefreshedStudyEntity(plotParameters.getSelectedAnnotation()));
         }
     }
     
     private void refreshSelectedAnnotationValuesInstance() {
-        if (!kmPlotParameters.getSelectedValues().isEmpty()) {
+        if (!plotParameters.getSelectedValues().isEmpty()) {
             Collection <AbstractPermissibleValue> newValues = new HashSet<AbstractPermissibleValue>();
-            for (AbstractPermissibleValue value : kmPlotParameters.getSelectedValues()) {
+            for (AbstractPermissibleValue value : plotParameters.getSelectedValues()) {
                 AbstractPermissibleValue newValue = getStudyManagementService().getRefreshedStudyEntity(value);
                 newValues.add(newValue);
             }
-            kmPlotParameters.getSelectedValues().clear();
-            kmPlotParameters.getSelectedValues().addAll(newValues);
+            plotParameters.getSelectedValues().clear();
+            plotParameters.getSelectedValues().addAll(newValues);
         }
     }
     
     /**
-     * Clears all input values and km plots on the session.
+     * Clears all input values and geneExpression plots on the session.
      * @return Struts return value.
      */
     public String reset() {
-        clearAnnotationBasedKmPlot();
+        clearAnnotationBasedGePlot();
         getForm().clear();
-        kmPlotParameters.clear();
+        plotParameters.clear();
         return SUCCESS;
     }
 
-    private void clearAnnotationBasedKmPlot() {
-        SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, null);
+    private void clearAnnotationBasedGePlot() {
+        SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
     }
 
     /**
@@ -224,7 +224,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
         if (!validateAnnotationType()) {
             return INPUT;
         }
-        clearAnnotationBasedKmPlot();
+        clearAnnotationBasedGePlot();
         getForm().clearPermissibleValues();
         if (!loadAnnotationDefinitions()) {
             return INPUT;
@@ -292,12 +292,12 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     public String updatePermissibleValues() {
         if (isPermissibleValuesNeedUpdate()) {
             loadAnnotationDefinitions();
-            if (kmPlotParameters.getSelectedAnnotation() == null) {
+            if (plotParameters.getSelectedAnnotation() == null) {
                 addActionError("Please select a valid annotation");
                 return INPUT;
             }
             getForm().clearPermissibleValues();
-            clearAnnotationBasedKmPlot();
+            clearAnnotationBasedGePlot();
             loadPermissibleValues();
         }
         return SUCCESS;
@@ -305,7 +305,7 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
 
     private void loadPermissibleValues() {
         for (AbstractPermissibleValue value 
-              : kmPlotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
+              : plotParameters.getSelectedAnnotation().getPermissibleValueCollection()) {
             getForm().getPermissibleValues().put(value.getId().toString(), 
                     value.toString());
         }
@@ -321,10 +321,11 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
             setCreatePlotRunning(true);
             loadAnnotationDefinitions();
             loadPermissibleValues();
-            if (kmPlotParameters.validate()) {
-                kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
-                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-                SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, plot);
+            if (plotParameters.validate()) {
+                plotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
+                GeneExpressionPlotGroup plots = getAnalysisService().
+                                createGeneExpressionPlot(getStudySubscription(), plotParameters);
+                SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
             }
             setCreatePlotRunning(false);
         }
@@ -347,22 +348,10 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Map<String, String>> getAllStringPValues() {
-        if (SessionHelper.getAnnotationBasedKmPlot() != null) {
-            return retrieveAllStringPValues(SessionHelper.getAnnotationBasedKmPlot());
-        }
-        return new HashMap<String, Map<String, String>>();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isCreatable() {
         if (getForm().getSelectedAnnotationId() != null 
             && !"-1".equals(getForm().getSelectedAnnotationId())
-            && getForm().getAnnotationTypeSelection() != null 
-            && getKmPlotForm().getSurvivalValueDefinitionId() != null) {
+            && getForm().getAnnotationTypeSelection() != null) {
             return true;
         }
         return false;
@@ -379,24 +368,26 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
     /**
      * @return
      */
-    private KMPlotAnnotationBasedActionForm getForm() {
-        return getKmPlotForm().getAnnotationBasedForm();
+    private GEPlotAnnotationBasedActionForm getForm() {
+        return getGePlotForm().getAnnotationBasedForm();
     }
 
+
     /**
-     * @return the kmPlotParameters
+     * @return the plotParameters
      */
     @SuppressWarnings("unchecked")
     @Override
-    public KMAnnotationBasedParameters getKmPlotParameters() {
-        return kmPlotParameters;
+    public GEPlotAnnotationBasedParameters getPlotParameters() {
+        return plotParameters;
     }
 
+
     /**
-     * @param kmPlotParameters the kmPlotParameters to set
+     * @param plotParameters the plotParameters to set
      */
-    public void setKmPlotParameters(KMAnnotationBasedParameters kmPlotParameters) {
-        this.kmPlotParameters = kmPlotParameters;
+    public void setPlotParameters(GEPlotAnnotationBasedParameters plotParameters) {
+        this.plotParameters = plotParameters;
     }
 
 }

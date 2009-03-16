@@ -83,87 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+/**
+ * Abstract class that represents input parameters for a GeneExpression plot.
+ */
+public abstract class AbstractGEPlotParameters {
+    private String geneSymbol;
+    private final List<String> errorMessages = new ArrayList<String>();
+    
+    /**
+     * Validates that all parameters are set.
+     * @return T/F value.
+     */
+    public abstract boolean validate();
+    
+    /**
+     * Clears all values.
+     */
+    public abstract void clear();
+    
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
+    /**
+     * @return the errorMessages
+     */
+    public List<String> getErrorMessages() {
+        return errorMessages;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the geneSymbol
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
+    public String getGeneSymbol() {
+        return geneSymbol;
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
     }
 
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-    
 }

@@ -83,87 +83,91 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import java.util.Collection;
+import java.util.HashSet;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
+import org.apache.commons.lang.StringUtils;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
+/**
+ * Parameters used for creating an Annotation Based Gene Expression plot. 
+ */
+public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
 
-    public void save(Query query) {
-        saveCalled = true;
+    private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
+    private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
+    private EntityTypeEnum entityType;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        getErrorMessages().clear();
+        boolean isValid = true;
+        if (StringUtils.isBlank(getGeneSymbol())) {
+            getErrorMessages().add("Must enter a gene symbol");
+            isValid = false;
+        }
+        if (getSelectedAnnotation() == null) {
+            getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
+            isValid = false;
+        }
+        if (getSelectedValues().size() < 2) {
+            getErrorMessages().add("Must select at least 2 grouping values");
+            isValid = false;
+        }
+        return isValid;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
-        }
-        QR.setQuery(query);
-        return QR;
-    }
-
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
+    @Override
     public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
+        setSelectedAnnotation(new AnnotationDefinition());
+        getSelectedValues().clear();
     }
     
+    /**
+     * @return the selectedAnnotation
+     */
+    public AnnotationDefinition getSelectedAnnotation() {
+        return selectedAnnotation;
+    }
+
+    /**
+     * @param selectedAnnotation the selectedAnnotation to set
+     */
+    public void setSelectedAnnotation(AnnotationDefinition selectedAnnotation) {
+        this.selectedAnnotation = selectedAnnotation;
+    }
+
+    /**
+     * @return the selectedValues
+     */
+    public Collection<AbstractPermissibleValue> getSelectedValues() {
+        return selectedValues;
+    }
+
+    /**
+     * @return the entityType
+     */
+    public EntityTypeEnum getEntityType() {
+        return entityType;
+    }
+
+    /**
+     * @param entityType the entityType to set
+     */
+    public void setEntityType(EntityTypeEnum entityType) {
+        this.entityType = entityType;
+    }
+
 }

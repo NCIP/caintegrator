@@ -87,6 +87,10 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -106,6 +110,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private GenePatternClient genePatternClient;
     private CaIntegrator2Dao dao;
     private KMPlotService kmPlotService;
+    private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
     
     /**
@@ -167,6 +172,17 @@ public class AnalysisServiceImpl implements AnalysisService {
         return kmPlotHandler.createPlot(kmPlotService, subscription);
 
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
+            AbstractGEPlotParameters plotParameters) {
+        AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
+                dao, queryManagementService, plotParameters);
+        
+        return gePlotHandler.createPlots(gePlotService, studySubscription);
+    }
 
 
     /**
@@ -211,5 +227,22 @@ public class AnalysisServiceImpl implements AnalysisService {
     public void setQueryManagementService(QueryManagementService queryManagementService) {
         this.queryManagementService = queryManagementService;
     }
+
+    /**
+     * @return the gePlotService
+     */
+    public GeneExpressionPlotService getGePlotService() {
+        return gePlotService;
+    }
+
+    /**
+     * @param gePlotService the gePlotService to set
+     */
+    public void setGePlotService(GeneExpressionPlotService gePlotService) {
+        this.gePlotService = gePlotService;
+    }
+
+    
+    
 
 }

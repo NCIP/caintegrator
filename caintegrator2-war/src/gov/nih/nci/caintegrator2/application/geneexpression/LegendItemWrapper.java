@@ -83,87 +83,55 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Color;
 
-import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import org.jfree.chart.LegendItem;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public PlotTypeEnum kmPlotType;
-    private KMPlotStudyCreator creator = new KMPlotStudyCreator();
-
-    public void save(Query query) {
-        saveCalled = true;
-    }
-
+/**
+ * Wraps a LegendItem to be able to print label and HTML hex color.
+ */
+public class LegendItemWrapper {
+    private static final int HEX_0XF = 0xf;
+    private final LegendItem legendItem;
+    
     /**
-     * {@inheritDoc}
+     * Constructor.
+     * @param legendItem object to wrap.
      */
-    public void delete(Query query) {
-        deleteCalled = true;
+    public LegendItemWrapper(LegendItem legendItem) {
+        this.legendItem = legendItem;
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        switch (kmPlotType) {
-        case ANNOTATION_BASED:
-            QR = creator.retrieveQueryResultForAnnotationBased(query);
-            break;
-        case GENE_EXPRESSION:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        case QUERY_BASED:
-            QR = creator.retrieveFakeQueryResults(query);
-            break;
-        default:
-            return null;
+    /**
+     * Label for legend.
+     * @return label.
+     */
+    public String getLabel() {
+        return legendItem.getLabel();
+    }
+    
+    /**
+     * Gets the HTML hex string for the color.
+     * @return hex string for color.
+     */
+    public String getColor() {
+        return c2hex((Color) legendItem.getFillPaint());
+    }
+    
+    private String c2hex(Color c) {
+        //http://rsb.info.nih.gov/ij/developer/source/index.html
+        final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        
+        int i = c.getRGB();
+        char[] buf7 = new char[7];
+        buf7[0] = '#';
+        for (int pos = 6; pos >= 1; pos--) {
+            buf7[pos] = hexDigits[i & HEX_0XF];
+            i >>>= 4;
         }
-        QR.setQuery(query);
-        return QR;
+        return new String(buf7);
     }
 
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        return result;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-
-        return null;
-    }
-    
 }
