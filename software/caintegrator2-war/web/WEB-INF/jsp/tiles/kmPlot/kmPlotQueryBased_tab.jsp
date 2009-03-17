@@ -11,10 +11,13 @@
 
         <table class="data">
             <tr>
-                <td class="value_inline">
-                    1.) Select Queries:
+                <td class="value_inline_index" >
+                    1.) 
                 </td>
                 <td class="value_inline">
+                    Select Queries:
+                </td>
+                <td class="optiontransferselect">
                     <s:optiontransferselect
                     id="allQueries"
                     doubleId="querySelections"
@@ -29,7 +32,9 @@
                     allowUpDownOnLeft="false"
                     allowUpDownOnRight="true"
                     leftTitle="All Available Queries"
-                    rightTitle="Query Groups"
+                    rightTitle="Selected Queries"
+                    rightUpLabel="    ^    "
+                    rightDownLabel="    v    "
                     addToRightLabel=" Add >"
                     addToLeftLabel=" < Remove "
                     allowSelectAll="false"
@@ -37,32 +42,34 @@
                     doubleSize="8"
                     multiple="true"
                     doubleMultiple="true"
-                    cssStyle="min-width:100px; vertical-align=middle;"
-                    buttonCssStyle="min-width:100px;"
+                    cssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
+                    doubleCssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
+                    buttonCssStyle="min-width:100px; vertical-align=middle;"
                     />
 		        </td>
 	        </tr>
-        </table>
-        <table class="data">
 	        <tr>
-		        <td class="value_inline">
-                    2.) <s:checkbox name="kmPlotForm.queryBasedForm.exclusiveGroups"/>Exclusive Subjects in Queries (Subjects in upper queries are removed from subsequent queries) 
+                <td class="value_inline_index" >
+                    2.) 
+                </td>
+		        <td colspan="2" class="value_inline">
+                    <s:checkbox name="kmPlotForm.queryBasedForm.exclusiveGroups"/>Exclusive Subjects in Queries (Subjects in upper queries are removed from subsequent queries) 
                 </td> 
             </tr>
             <tr>
-                <td class="value_inline">
-                    3.) <s:checkbox name="kmPlotForm.queryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in queries.
+                <td class="value_inline_index" >
+                    3.)
+                </td>
+                <td colspan="2" class="value_inline">
+                    <s:checkbox name="kmPlotForm.queryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries.
                 </td>
             </tr>
-        </table>
-        <table class="data">
             <tr>
-	            <th/>
-	            <th> Survival Value </th>
-            </tr>
-            <tr>
-                <td class="value_inline">
-                    4.) Select Survival Measure:
+                <td class="value_inline_index" >
+                    4.)
+                </td>
+                <td class="value_inline" >
+                    Select Survival Value:
                 </td>
                 <td class="value_inline">
                 <s:select name="kmPlotForm.survivalValueDefinitionId" 
