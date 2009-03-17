@@ -85,69 +85,79 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import java.util.HashSet;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.nc2.NetcdfFile;
 
 /**
- * Provides helper methods for working with <code>ArrayDataMatrixes</code>.
+ * Provides shared functionality for the reader and writer subclasses.
  */
-public final class ArrayDataMatrixUtility {
-
-    private ArrayDataMatrixUtility() {
-        super();
-    }
+abstract class AbstractNetCdfFileHandler {
     
-    /**
-     * Creates a new <code>ArrayDataMatrix</code> with collections initialized.
-     * 
-     * @return the matrix.
-     */
-    public static ArrayDataMatrix createMatrix() {
-        ArrayDataMatrix matrix = new ArrayDataMatrix();
-        matrix.setSampleDataCollection(new HashSet<ArrayData>());
-        return matrix;
+    static final String REPORTER_DIMENSION_NAME = "reporter_dimension";
+    static final String ARRAY_DATA_DIMENSION_NAME = "array_data_dimension";
+    static final String ARRAY_DATA_IDS_VARIABLE = "array_data_ids";
+    private final FileManager fileManager;
+    private Map<Long, Integer> arrayDataOffsets;
+
+    AbstractNetCdfFileHandler(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
-    /**
-     * Copies associations from one data matrix to another.
-     * 
-     * @param fromArrayDataMatrix copy from this matrix
-     * @param toArrayDataMatrix copy to this matrix
-     */
-    public static void merge(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
-        if (fromArrayDataMatrix != null && toArrayDataMatrix != null) {
-            mergeStudy(fromArrayDataMatrix, toArrayDataMatrix);
-            mergeReporterList(fromArrayDataMatrix, toArrayDataMatrix);
-            mergeDatas(fromArrayDataMatrix, toArrayDataMatrix);
+    DataType getDataType(ArrayDataType arrayDataType) {
+        if (Float.class.equals(arrayDataType.getTypeClass())) {
+            return DataType.FLOAT;
+        } else {
+            throw new ArrayDataStorageException("Unsupported data type: " + arrayDataType.getTypeClass().getName());
         }
     }
 
-    private static void mergeDatas(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
-        for (ArrayData arrayData : fromArrayDataMatrix.getSampleDataCollection()) {
-            arrayData.setMatrix(toArrayDataMatrix);
-            arrayData.setStudy(toArrayDataMatrix.getStudy());
-            toArrayDataMatrix.getSampleDataCollection().add(arrayData);
+    File getFile(ArrayDataValues values) {
+        Study study = getStudy(values);
+        ReporterList reporterList = getReporterList(values);
+        return getFile(study, reporterList);
+    }
+
+    File getFile(Study study, ReporterList reporterList) {
+        File studyDirectory = fileManager.getStudyDirectory(study);
+        return new File(studyDirectory, getFileName(reporterList));
+    }
+
+    private String getFileName(ReporterList reporterList) {
+        return "data" + reporterList.getId() + ".nc";
+    }
+
+    private ReporterList getReporterList(ArrayDataValues values) {
+        return values.getArrayDatas().iterator().next().getReporterList();
+    }
+
+    private Study getStudy(ArrayDataValues values) {
+        return values.getArrayDatas().iterator().next().getStudy();
+    }
+
+    private void loadArrayDataOffsets() throws IOException {
+        arrayDataOffsets = new HashMap<Long, Integer>();
+        Array ids = getNetCdfFile().findVariable(ARRAY_DATA_IDS_VARIABLE).read();
+        for (int i = 0; i < ids.getSize(); i++) {
+            arrayDataOffsets.put(ids.getLong(i), i);
         }
     }
 
-    private static void mergeStudy(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
-        if (toArrayDataMatrix.getStudy() == null) {
-            toArrayDataMatrix.setStudy(fromArrayDataMatrix.getStudy());
-        } else if (fromArrayDataMatrix.getStudy() != null 
-                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getStudy())) {
-            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated to different studies");
-        }
-    }
+    abstract NetcdfFile getNetCdfFile();
 
-    private static void mergeReporterList(ArrayDataMatrix fromArrayDataMatrix, ArrayDataMatrix toArrayDataMatrix) {
-        if (toArrayDataMatrix.getReporterList() == null) {
-            toArrayDataMatrix.setReporterList(fromArrayDataMatrix.getReporterList());
-        } else if (fromArrayDataMatrix.getReporterList() != null 
-                && !fromArrayDataMatrix.getStudy().equals(toArrayDataMatrix.getReporterList())) {
-            throw new IllegalArgumentException("Can't merge ArrayDataMatrixes associated with different ReporterLists");
+    Map<Long, Integer> getArrayDataOffsets() throws IOException {
+        if (arrayDataOffsets == null) {
+            loadArrayDataOffsets();
         }
+        return arrayDataOffsets;
     }
-    
 }

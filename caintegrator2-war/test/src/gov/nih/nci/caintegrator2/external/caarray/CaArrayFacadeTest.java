@@ -105,6 +105,7 @@ import gov.nih.nci.caarray.domain.sample.Extract;
 import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -179,10 +180,10 @@ public class CaArrayFacadeTest {
         genomicSource.getSamples().add(sample2);
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
         assertNotNull(values);
-        assertEquals(2, values.getAllArrayDatas().size());
-        for (ArrayData arrayData : values.getAllArrayDatas()) {
-            assertEquals((float) 1.1, (float) values.getValue(arrayData, reporter1), 0);
-            assertEquals((float) 2.2, (float) values.getValue(arrayData, reporter2), 0);
+        assertEquals(2, values.getArrayDatas().size());
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            assertEquals((float) 1.1, (float) values.getFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0);
         }
     }
 

@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -95,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -104,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -132,26 +132,18 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         ReporterTypeEnum reporterType = query.getReporterType();
         configureCompareToSamples(study);
         Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
-        ArrayDataMatrix matrix = getArrayDataMatrix(dao, query, reporterType);
-        ArrayDataValues values = 
-            arrayDataService.getFoldChangeValues(matrix,
-                    getCandidateArrayDatas(study, reporterType), reporters, getCompareToArrayDatas(reporterType));
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addReporters(reporters);
+        request.addArrayDatas(getCandidateArrayDatas(study, reporterType));
+        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        ArrayDataValues values = arrayDataService.getFoldChangeValues(request, getCompareToArrayDatas(reporterType));
         return getRows(values, entityTypes);
-    }
-
-    private ArrayDataMatrix getArrayDataMatrix(CaIntegrator2Dao dao, Query query, ReporterTypeEnum reporterType) {
-        List<ArrayDataMatrix> matrixes = dao.getArrayDataMatrixes(query.getSubscription().getStudy(), reporterType);
-        if (!matrixes.isEmpty()) {
-            return matrixes.get(0);
-        } else {
-            return null;
-        }
     }
 
     private Set<ResultRow> getRows(ArrayDataValues values, Set<EntityTypeEnum> entityTypes) {
         ResultRowFactory rowFactory = new ResultRowFactory(entityTypes);
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
-        for (ArrayData arrayData : values.getAllArrayDatas()) {
+        for (ArrayData arrayData : values.getArrayDatas()) {
             if (hasFoldChangeMatch(arrayData, values)) {
                 sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
             }
@@ -160,8 +152,8 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
     }
 
     private boolean hasFoldChangeMatch(ArrayData arrayData, ArrayDataValues values) {
-        for (AbstractReporter reporter : values.getAllReporters()) {
-            Float foldChangeValue = values.getValue(arrayData, reporter);
+        for (AbstractReporter reporter : values.getReporters()) {
+            Float foldChangeValue = values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
             if (isFoldChangeMatch(foldChangeValue)) {
                 return true;
             }

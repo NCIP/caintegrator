@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
@@ -73,6 +74,13 @@ public class SampleAcquisition extends AbstractCaIntegrator2Object {
      */
     public void setTimepoint(Timepoint timepoint) {
         this.timepoint = timepoint;
+    }
+
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return getAssignment().getStudy();
     }
 
 }

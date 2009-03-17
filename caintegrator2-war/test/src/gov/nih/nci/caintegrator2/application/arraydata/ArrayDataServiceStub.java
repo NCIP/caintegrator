@@ -87,13 +87,10 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class ArrayDataServiceStub implements ArrayDataService {
@@ -104,22 +101,13 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        Collection<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        arrayDatas.add(new ArrayData());
-        Collection<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        reporters.add(new GeneExpressionReporter());
-        return getData(arrayDataMatrix, arrayDatas, reporters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
-        ArrayDataValues values = new ArrayDataValues();
-        for (AbstractReporter reporter : reporters) {
-            for (ArrayData arrayData : arrayDatas) {
-                values.setValue(arrayData, reporter, (float) 1.23);
+    public ArrayDataValues getData(DataRetrievalRequest request) {
+        ArrayDataValues values = new ArrayDataValues(request.getReporters());
+        for (AbstractReporter reporter : request.getReporters()) {
+            for (ArrayData arrayData : request.getArrayDatas()) {
+                for (ArrayDataType type : request.getTypes()) {
+                    values.setFloatValue(arrayData, reporter, type, (float) 1.23);
+                }
             }
         }
         return values;
@@ -143,10 +131,9 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas) {
         getFoldChangeValuesCalled = true;
-        return getData(arrayDataMatrix, arrayDatas, reporters);
+        return getData(request);
     }
 
     /**

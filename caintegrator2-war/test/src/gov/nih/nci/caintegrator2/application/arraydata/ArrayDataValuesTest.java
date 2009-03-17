@@ -83,51 +83,75 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class CaArrayFacadeStub implements CaArrayFacade {
+import org.junit.Test;
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+public class ArrayDataValuesTest {
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetFloatValueNullType() {
+        ArrayDataValues values = createValues();
+        values.setFloatValue(new ArrayData(), values.getReporters().get(0), null, 0.0f);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetFloatValueNullData() {
+        ArrayDataValues values = createValues();
+        values.setFloatValue(null, values.getReporters().get(0), ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetFloatValueNullReporter() {
+        ArrayDataValues values = createValues();
+        values.setFloatValue(new ArrayData(), null, ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
+    }
+
+    @Test
+    public void testSetFloatValue() {
+        ArrayDataValues values = createValues();
+        AbstractReporter reporter1 = values.getReporters().get(0);
+        AbstractReporter reporter2 = values.getReporters().get(1);
+
+        ArrayData arrayData1 = new ArrayData();
+        ArrayData arrayData2 = new ArrayData();
+        values.setFloatValue(arrayData1, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 1.1f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 2.2f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 3.3f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 4.4f);
+        values.setFloatValue(arrayData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 5.5f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, 6.6f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 7.7f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, 8.8f);
+        
+        assertEquals(2, values.getArrayDatas().size());
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData2, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(5.5f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(6.6f, values.getFloatValue(arrayData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(7.7f, values.getFloatValue(arrayData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(8.8f, values.getFloatValue(arrayData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+    }
+    
+    private ArrayDataValues createValues() {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporters.add(reporter);
+        GeneExpressionReporter reporter1 = new GeneExpressionReporter();
+        GeneExpressionReporter reporter2 = new GeneExpressionReporter();
+        reporters.add(reporter1);
+        reporters.add(reporter2);
         ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
         return values;
     }
 

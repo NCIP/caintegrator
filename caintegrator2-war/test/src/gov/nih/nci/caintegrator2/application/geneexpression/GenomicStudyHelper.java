@@ -85,11 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandler;
@@ -103,7 +98,6 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -112,6 +106,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -146,6 +143,7 @@ public class GenomicStudyHelper {
         sample.setSampleAcquisition(acquisition);
         Array array = new Array();
         ArrayData arrayData = new ArrayData();
+        arrayData.setStudy(study);
         arrayData.setArray(array);
         array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
@@ -153,6 +151,7 @@ public class GenomicStudyHelper {
         sample.getArrayDataCollection().add(arrayData);
         sample.getArrayCollection().add(array);
         ArrayData arrayData2 = new ArrayData();
+        arrayData2.setStudy(study);
         arrayData2.setSample(sample);
         array.getArrayDataCollection().add(arrayData2);
         sample.getArrayDataCollection().add(arrayData2);        
@@ -170,36 +169,24 @@ public class GenomicStudyHelper {
         reporter.setGene(gene);
         geneNameCriterion.setGeneSymbol("GENE");
         query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
-        ArrayDataMatrix matrix = new ArrayDataMatrix();
-        matrix.setReporterList(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         reporterList.getArrayDatas().add(arrayData2);
-        matrix.getReporterList().getReporters().add(reporter);
+        reporterList.getReporters().add(reporter);
         reporter.setReporterList(reporterList);
         reporter.setName("Reporter1");
-        matrix.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        arrayData.setReporterList(matrix.getReporterList());
-        matrix.getReporterList().getArrayDatas().add(arrayData);
+        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        arrayData.setReporterList(reporterList);
+        reporterList.getArrayDatas().add(arrayData);
         arrayData2.setReporterList(new ReporterList());
         arrayData2.getReporterList().getArrayDatas().add(arrayData2);
         arrayData2.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        daoStub.matrix = matrix;
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         query.setName("Query1");
         return query;
     }
     
     private class GenomicDataTestDaoStub extends CaIntegrator2DaoStub  {
-
-        ArrayDataMatrix matrix;
         
-        @Override
-        public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
-            List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
-            matrixes.add(matrix);
-            return matrixes;
-        }
-
         @Override
         public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study) {

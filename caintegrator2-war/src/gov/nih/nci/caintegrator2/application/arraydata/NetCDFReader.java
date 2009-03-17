@@ -83,52 +83,126 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class CaArrayFacadeStub implements CaArrayFacade {
+import ucar.ma2.Array;
+import ucar.ma2.InvalidRangeException;
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.Variable;
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+/**
+ * Provides functionality to read NetCDF files.
+ */
+class NetCDFReader extends AbstractNetCdfFileHandler {
+
+    private final DataRetrievalRequest request;
+    private NetcdfFile reader;
+    private List<List<AbstractReporter>> sequentialReporterLists;
+
+    NetCDFReader(FileManager fileManager, DataRetrievalRequest request) {
+        super(fileManager);
+        this.request = request;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporters.add(reporter);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
-        return values;
+    ArrayDataValues retrieveValues() {
+        try {
+            ArrayDataValues values = new ArrayDataValues(request.getReporters());
+            openNetCdfFile(request.getStudy(), request.getReporters().get(0).getReporterList());
+            for (ArrayDataType type : request.getTypes()) {
+                loadValues(values, type);
+            }
+            closeNetCdfFile();
+            return values;
+        } catch (IOException e) {
+            throw new ArrayDataStorageException("Couldn't read data file", e);
+        } catch (InvalidRangeException e) {
+            throw new ArrayDataStorageException("Couldn't read data file", e);
+        }
+    }
+
+    private void openNetCdfFile(Study study, ReporterList reporterList) throws IOException {
+        reader = NetcdfFile.open(getFile(study, reporterList).getAbsolutePath());
+    }
+
+    private void closeNetCdfFile() throws IOException {
+        reader.close();
+    }
+
+    private void loadValues(ArrayDataValues values, ArrayDataType type) throws IOException, InvalidRangeException {
+        Variable variable = reader.findVariable(type.name());
+        for (ArrayData arrayData : request.getArrayDatas()) {
+            loadValues(values, variable, type, arrayData);
+        }
+    }
+
+    private void loadValues(ArrayDataValues values, Variable variable, ArrayDataType type, ArrayData arrayData) 
+    throws IOException, InvalidRangeException {
+        if (Float.class.equals(type.getTypeClass())) {
+            loadFloatValues(values, variable, type, arrayData);
+        } else {
+            throw new IllegalStateException("Unsupported data type " + type.getTypeClass().getName());
+        }
+    }
+
+    private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataType type, ArrayData arrayData) 
+    throws IOException, InvalidRangeException {
+        for (List<AbstractReporter> reporters : getSequentialReporterLists()) {
+            float[] floatValues = getFloatValues(variable, reporters, getArrayDataOffsets().get(arrayData.getId()));
+            values.setFloatValues(arrayData, reporters, type, floatValues);
+        }
+    }
+
+    private float[] getFloatValues(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex) 
+    throws IOException, InvalidRangeException {
+        return (float[]) getValuesArray(variable, reporters, arrayDataIndex).get1DJavaArray(Float.class);
+    }
+
+    private Array getValuesArray(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex) 
+    throws IOException, InvalidRangeException {
+        int[] origin = new int[2];
+        origin[0] = arrayDataIndex;
+        origin[1] = reporters.get(0).getIndex();
+        int[] size = new int[2];
+        size[0] = 1;
+        size[1] = reporters.size();
+        return variable.read(origin, size);
+    }
+
+    private List<List<AbstractReporter>> getSequentialReporterLists() {
+        List<AbstractReporter> allReporters = request.getReporters();
+        if (sequentialReporterLists == null) {
+            sequentialReporterLists = new ArrayList<List<AbstractReporter>>();
+            int startIndex = 0;
+            int endIndex = 0;
+            int currentReporterIndex;
+            int previousReporterIndex = request.getReporters().get(0).getIndex();
+            for (int i = 0; i < allReporters.size(); i++) {
+                endIndex = i;
+                currentReporterIndex = allReporters.get(i).getIndex();
+                if (currentReporterIndex - previousReporterIndex > 1) {
+                    sequentialReporterLists.add(allReporters.subList(startIndex, endIndex));
+                    startIndex = endIndex;
+                }
+                previousReporterIndex = currentReporterIndex;
+            }
+            sequentialReporterLists.add(allReporters.subList(startIndex, endIndex + 1));
+        }
+        return sequentialReporterLists;
+    }
+
+    @Override
+    NetcdfFile getNetCdfFile() {
+        return reader;
     }
 
 }

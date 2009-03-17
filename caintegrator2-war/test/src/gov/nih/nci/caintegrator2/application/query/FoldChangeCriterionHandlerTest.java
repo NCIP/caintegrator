@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -106,9 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -121,15 +118,13 @@ public class FoldChangeCriterionHandlerTest {
     private ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
     private Query query;
     private Study study;
-    private ArrayDataMatrix matrix;
     private Gene gene;
     GeneExpressionReporter reporter = new GeneExpressionReporter();
     
     @Before
     public void setUp() {
-        matrix = new ArrayDataMatrix();
-        matrix.setReporterList(new ReporterList());
-        matrix.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList = new ReporterList();
+        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         reporter.setGene(gene);
         
@@ -144,9 +139,9 @@ public class FoldChangeCriterionHandlerTest {
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
-        arrayData.setMatrix(matrix);
-        arrayData.setReporterList(matrix.getReporterList());
-        matrix.getReporterList().getArrayDatas().add(arrayData);
+        arrayData.setStudy(study);
+        arrayData.setReporterList(reporterList);
+        reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
         sample.setSampleAcquisition(acquisition);
         sample.getArrayDataCollection().add(arrayData);
@@ -191,13 +186,6 @@ public class FoldChangeCriterionHandlerTest {
     }
     
     private class DaoStub extends CaIntegrator2DaoStub {
-
-        @Override
-        public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
-            List<ArrayDataMatrix> matrixes = new ArrayList<ArrayDataMatrix>();
-            matrixes.add(matrix);
-            return matrixes;
-        }
 
         @Override
         public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,

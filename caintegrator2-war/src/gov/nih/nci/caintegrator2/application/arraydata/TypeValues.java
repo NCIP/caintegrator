@@ -83,52 +83,73 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class CaArrayFacadeStub implements CaArrayFacade {
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+
+/**
+ * Holds an array data matrix for a particular data type.
+ */
+class TypeValues {
+
+    private final ArrayDataType type;
+    private final ArrayDataValues arrayDataValues;
+    private final Map<ArrayData, Object> valuesMap = new HashMap<ArrayData, Object>();
+
+    TypeValues(ArrayDataType type, ArrayDataValues arrayDataValues) {
+        this.type = type;
+        this.arrayDataValues = arrayDataValues;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporters.add(reporter);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
+   void setFloatValue(ArrayData arrayData, AbstractReporter reporter, float value) {
+        float[] values = (float[]) getValues(arrayData);
+        values[arrayDataValues.getReporterIndex(reporter)] = value;
+    }
+
+   void setFloatValues(ArrayData arrayData, List<AbstractReporter> forReporters, float[] newValues) {
+       if (newValues.length == arrayDataValues.getReporters().size()) {
+           valuesMap.put(arrayData, newValues);
+       } else {
+           float[] values = (float[]) getValues(arrayData);
+           int destPosition = arrayDataValues.getReporterIndex(forReporters.get(0));
+           System.arraycopy(newValues, 0, values, destPosition, newValues.length);
+       }
+   }
+
+    private Object getValues(ArrayData arrayData) {
+        if (arrayData == null) {
+            throw new IllegalArgumentException("arrayData was null");
+        }
+        Object values = valuesMap.get(arrayData);
+        if (values == null) {
+            values = createArray();
+            valuesMap.put(arrayData, values);
+        }
         return values;
+    }
+
+    private Object createArray() {
+        if (type.getTypeClass().equals(Float.class)) {
+            return new float[arrayDataValues.getReporters().size()];
+        } else {
+            throw new IllegalStateException("Unsupported data type: " + type.getTypeClass());
+        }
+    }
+
+    float getFloatValue(ArrayData arrayData, int reporterIndex) {
+        float[] values = (float[]) getValues(arrayData);
+        return values[reporterIndex];
+    }
+
+    Set<ArrayData> getArrayDatas() {
+        return valuesMap.keySet();
     }
 
 }

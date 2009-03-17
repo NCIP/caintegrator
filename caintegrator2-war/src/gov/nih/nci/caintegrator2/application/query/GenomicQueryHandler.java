@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
@@ -100,7 +102,6 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -109,9 +110,9 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -139,7 +140,7 @@ class GenomicQueryHandler {
         GenomicDataQueryResult result = createNewResult();
         createResultRows(result, values);
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
-        for (ArrayData arrayData : values.getAllArrayDatas()) {
+        for (ArrayData arrayData : values.getArrayDatas()) {
             addToResult(values, result, reporterToRowMap, arrayData);
         }
         result.setQuery(query);
@@ -151,11 +152,11 @@ class GenomicQueryHandler {
         GenomicDataResultColumn column = new GenomicDataResultColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
         result.getColumnCollection().add(column);
-        for (AbstractReporter reporter : values.getAllReporters()) {
+        for (AbstractReporter reporter : values.getReporters()) {
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
-            Float floatValue = values.getValue(arrayData, reporter);
+            Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Float.valueOf(new DecimalFormat("0.00").
                             format((double) floatValue)));
@@ -173,7 +174,7 @@ class GenomicQueryHandler {
     }
 
     private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
-        for (AbstractReporter reporter : values.getAllReporters()) {
+        for (AbstractReporter reporter : values.getReporters()) {
             GenomicDataResultRow row = new GenomicDataResultRow();
             row.setValueCollection(new ArrayList<GenomicDataResultValue>());
             row.setReporter(reporter);
@@ -190,21 +191,19 @@ class GenomicQueryHandler {
 
     private ArrayDataValues getDataValues() {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
-        Collection<AbstractReporter> reporters = getMatchingReporters();
-        List<ArrayDataMatrix> matrixes = getDataMatrixes();
-        ArrayDataValues values = new ArrayDataValues();
-        for (ArrayDataMatrix matrix : matrixes) {
-            values.addValues(getDataValues(arrayDatas, reporters, matrix));               
-        }
-        return values;
+        Collection<AbstractReporter> reporters = getMatchingReporters(arrayDatas);
+        return getDataValues(arrayDatas, reporters);              
     }
 
-    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters,
-            ArrayDataMatrix matrix) {
+    private ArrayDataValues getDataValues(Collection<ArrayData> arrayDatas, Collection<AbstractReporter> reporters) {
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addReporters(reporters);
+        request.addArrayDatas(arrayDatas);
+        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
         if (isFoldChangeQuery()) {
-            return arrayDataService.getFoldChangeValues(matrix, arrayDatas, reporters, getControlArrayDatas());
+            return arrayDataService.getFoldChangeValues(request, getControlArrayDatas());
         } else {
-            return arrayDataService.getData(matrix, arrayDatas, reporters);
+            return arrayDataService.getData(request);
         }
     }
 
@@ -291,24 +290,22 @@ class GenomicQueryHandler {
         return arrayDatas;
     }
 
-    private List<ArrayDataMatrix> getDataMatrixes() {
-        return dao.getArrayDataMatrixes(query.getSubscription().getStudy(), query.getReporterType());
-    }
-
-    private Collection<AbstractReporter> getMatchingReporters() {
+    private Collection<AbstractReporter> getMatchingReporters(Collection<ArrayData> arrayDatas) {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
-        if (criterionHandler.hasReporterCriterion()) {
+        if (arrayDatas.isEmpty()) {
+            return Collections.emptySet();
+        } else if (criterionHandler.hasReporterCriterion()) {
             return criterionHandler.getReporterMatches(dao, query.getSubscription().getStudy(), 
                     query.getReporterType());
         } else {
-            return getAllReporters();
+            return getAllReporters(arrayDatas);
         }
     }
 
-    private Collection<AbstractReporter> getAllReporters() {
+    private Collection<AbstractReporter> getAllReporters(Collection<ArrayData> arrayDatas) {
         HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
-        for (ArrayDataMatrix matrix : getDataMatrixes()) {
-            reporters.addAll(matrix.getReporterList().getReporters());
+        for (ArrayData arrayData : arrayDatas) {
+            reporters.addAll(arrayData.getReporterList().getReporters());
         }
         return reporters;
     }

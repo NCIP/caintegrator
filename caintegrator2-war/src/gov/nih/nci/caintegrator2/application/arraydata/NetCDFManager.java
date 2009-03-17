@@ -83,52 +83,103 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-public class CaArrayFacadeStub implements CaArrayFacade {
+/**
+ * Provides read and write access to the underlying NetCDF array data store.
+ */
+public class NetCDFManager {
+    
+    private final FileManager fileManager;
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+    NetCDFManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     /**
-     * {@inheritDoc}
+     * Persists all the values in the given values object. The values object must correspond to
+     * arrays in a single experiment and values for a single <code>ReporterList</code>.
+     * 
+     * @param values values to store.
      */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporters.add(reporter);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
-        return values;
+    void storeValues(ArrayDataValues values) {
+        checkIsValid(values);
+        NetCDFWriter writer = new NetCDFWriter(values, fileManager);
+        writer.storeValues();
+    }
+
+    /**
+     * Retrieves the requested array data.
+     * 
+     * @param request encapsulated retrieval configuration.
+     * @return the requested data.
+     */
+    ArrayDataValues retrieveValues(DataRetrievalRequest request) {
+        if (request.hasEmptyParameter()) {
+            return new ArrayDataValues(request.getReporters());
+        }
+        NetCDFReader reader = new NetCDFReader(fileManager, request);
+        return reader.retrieveValues();
+    }
+
+    private void checkIsValid(ArrayDataValues values) {
+        checkNotEmpty(values);
+        checkSingleStudy(values);
+        checkReporterList(values);
+        checkArrayDatas(values);
+    }
+
+    private void checkArrayDatas(ArrayDataValues values) {
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            if (arrayData.getId() == null) {
+                throw new IllegalArgumentException("Unsaved ArrayData");
+            }
+            if (arrayData.getReporterList() == null) {
+                throw new IllegalArgumentException("ArrayData with id " + arrayData.getId() + " has no ReporterList");
+            }
+        }
+    }
+
+    private void checkSingleStudy(ArrayDataValues values) {
+        Set<Study> studies = new HashSet<Study>();
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            arrayData.checkHasStudy();
+            studies.add(arrayData.getStudy());
+        }
+        if (studies.size() != 1) {
+            throw new IllegalArgumentException("ArrayDatas are related to multiple studies.");
+        }
+        if (studies.iterator().next().getId() == null) {
+            throw new IllegalArgumentException("Study is unsaved.");
+        }
+    }
+
+    private void checkReporterList(ArrayDataValues values) {
+        Set<ReporterList> reporterLists = new HashSet<ReporterList>();
+        for (AbstractReporter reporter : values.getReporters()) {
+            reporterLists.add(reporter.getReporterList());
+        }
+        if (reporterLists.size() != 1) {
+            throw new IllegalArgumentException("Reporters are related to multiple ReporterLists.");
+        }
+        if (reporterLists.iterator().next().getId() == null) {
+            throw new IllegalArgumentException("ReporterList is unsaved.");
+        }
+    }
+
+    private void checkNotEmpty(ArrayDataValues values) {
+        if (values.getArrayDatas().isEmpty()) {
+            throw new IllegalArgumentException("No ArrayDatas in ArrayDataValues object");
+        }
     }
 
 }
