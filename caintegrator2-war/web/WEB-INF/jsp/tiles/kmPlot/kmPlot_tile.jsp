@@ -9,23 +9,26 @@
 
         <!--Page Help-->
 
-        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('GE_annotation_help')" class="help">
+        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('KM_annotation_help')" class="help">
        (draft)</a>
         </div>
 
         <!--/Page Help-->
         
-        <h1>Gene Expression Value Plots</h1>
+        <h1>Kaplan-Meier Survival Plots</h1>
         <s:actionerror/>
         
         <!--Tab Box-->
         
-        <s:url id="annotationBasedUrl" action="gePlotAnnotationBasedInput">
+        <s:url id="annotationBasedUrl" action="kmPlotAnnotationBasedInput">
             <s:param name="displayTab">annotationTab</s:param>
         </s:url>
         
+        <s:url id="geneExpressionBasedUrl" action="kmPlotGeneExpressionBasedInput">
+            <s:param name="displayTab">geneExpressionTab</s:param>
+        </s:url>
         
-         <s:url id="queryBasedUrl" action="gePlotQueryBasedInput">
+         <s:url id="queryBasedUrl" action="kmPlotQueryBasedInput">
             <s:param name="displayTab">queryTab</s:param>
         </s:url>
 
@@ -43,12 +46,15 @@ https://issues.apache.org/struts/browse/WW-1906?page=com.atlassian.jira.plugin.s
 				theme="ajax" refreshOnShow="true">
 			</div>
 		</div>
-		<!-- 
+		<div dojoType="ContentPane" label="For Gene Expression"
+			id="geneExpressionTab">
+			<div dojoType="struts:BindDiv" href="${geneExpressionBasedUrl}"
+				label="For Gene Expression" theme="ajax" refreshOnShow="true"></div>
+		</div>
 		<div dojoType="ContentPane" label="For Queries" id="queryTab">
 			<div dojoType="struts:BindDiv" href="${queryBasedUrl}" theme="ajax"
 				refreshOnShow="true" dojoType="ContentPane"></div>
 		</div>
-		 -->
 	</div>
 
 
