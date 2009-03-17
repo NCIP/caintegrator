@@ -104,7 +104,6 @@ public class GeneExpressionPlotImpl implements GeneExpressionPlot {
     private static final Logger LOGGER = Logger.getLogger(GeneExpressionPlotImpl.class);
     
     private JFreeChart plotChart;
-    private GeneExpressionPlotConfiguration configuration;
     private int width = DEFAULT_WIDTH;
     private int height = DEFAULT_HEIGHT;
 
@@ -119,20 +118,6 @@ public class GeneExpressionPlotImpl implements GeneExpressionPlot {
         } catch (IOException e) {
             LOGGER.warn("Couldn't write GeneExpressionPlot image", e);
         }
-    }
-    
-    /**
-     * @return the configuration
-     */
-    public GeneExpressionPlotConfiguration getConfiguration() {
-        return configuration;
-    }
-
-    /**
-     * @param configuration the configuration to set
-     */
-    public void setConfiguration(GeneExpressionPlotConfiguration configuration) {
-        this.configuration = configuration;
     }
 
     /**

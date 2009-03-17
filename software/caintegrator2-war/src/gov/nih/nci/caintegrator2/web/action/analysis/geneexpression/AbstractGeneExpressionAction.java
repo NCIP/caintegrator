@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
@@ -134,10 +135,16 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
     public abstract <T extends AbstractGEPlotParameters> T getPlotParameters();
     
     /**
-     * The URL for the action which retrieves the KM Plot graph image for display.
+     * The URL for the action which retrieves the GE Plot mean based graph image for display.
      * @return URL string.
      */
-    public abstract String getPlotUrl();
+    public abstract String getMeanPlotUrl();
+    
+    /**
+     * The URL for the action which retrieves the GE Plot median based graph image for display.
+     * @return URL string.
+     */
+    public abstract String getMedianPlotUrl();
     
     /**
      * {@inheritDoc}
@@ -177,13 +184,28 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
     public abstract boolean isCreatable();
     
     /**
-     * This function figures out which kmPlot action it needs to forward to, and then adds the current
+     * This function figures out which gePlot action it needs to forward to, and then adds the current
      * time to the end to be absolutely sure the image gets redrawn everytime (and not cached), since 
      * the graph will be drawn without a page refresh using AJAX.
+     * @param calculationType - the PlatCalculationTypeEnum to use for the plot.
      * @return action URL to return to JSP.
      */
-    public String retrieveGePlotUrl() {
-        return getPlotUrl() + Calendar.getInstance().getTimeInMillis();
+    public String retrieveGePlotUrl(String calculationType) {
+        String url =  "";
+        switch (PlotCalculationTypeEnum.getByValue(calculationType)) {
+        case MEAN:
+            url = getMeanPlotUrl();
+            break;
+        case MEDIAN:
+            url = getMedianPlotUrl();
+            break;
+        case BOX_WHISKER_LOG2_INTENSITY:
+            break;
+        case LOG2_INTENSITY:
+            break;
+        default:
+        }
+        return url + Calendar.getInstance().getTimeInMillis();
     }
     
     /**
