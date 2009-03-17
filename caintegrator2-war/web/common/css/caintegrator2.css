@@ -422,6 +422,12 @@ TABLE.data TABLE
 { border:1px solid #ccc; width:100% }
 TABLE.data TABLE TD
 { border:1px solid #ccc; }
+TABLE.data TD.optiontransferselect TABLE
+{ border: 0px; }
+TABLE.data TD.optiontransferselect TABLE TR TD
+{  padding:15px 7px 12px 0; min-width:100px; border: 0px; text-align:center; vertical-align:middle;}
+TABLE.data TD.optiontransferselect
+{  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; }
 TABLE.data TABLE TH
 { white-space:nowrap; background:#f4f6f8 url("../../images/bg_th.gif") repeat-x 0 10px; border:1px solid #a8b8ce; }
 TABLE.data TABLE TR.odd
@@ -566,6 +572,8 @@ TABLE.data TD.label_inline
 { width:100px; color:#808080; padding-top:18px; padding-left:7px; padding-right:5px; font-weight:bold; text-align:left; border-top:1px solid #ccc; border-bottom:0; border-right:0; }
 TABLE.data TD.value_inline
 {  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; }
+TABLE.data TD.value_inline_index
+{  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; min-width: 5px; width: 10px; padding-left: 10px; }
 TABLE.data TD.value_inline2
 {  padding:15px 7px 12px 0; min-width:100px; border-top:1px solid #ccc; border-bottom:0;  border-right:0; }
 TABLE.data TD.action_inline
