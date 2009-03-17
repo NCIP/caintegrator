@@ -88,7 +88,10 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -107,8 +110,8 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -285,18 +288,26 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getLoadSamples()) {
             logStart();
             Collection<ArrayData> arrayDatas = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection();
-            ArrayDataMatrix probeSetArrayDataMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            ArrayDataMatrix geneMatrix = getArrayDataMatrix(arrayDatas, ReporterTypeEnum.GENE_EXPRESSION_GENE);
-            assertEquals(studyConfiguration.getStudy(), probeSetArrayDataMatrix.getStudy());
-            assertEquals(getExpectedSampleCount(), probeSetArrayDataMatrix.getSampleDataCollection().size());
-            ArrayDataValues values = arrayDataService.getData(probeSetArrayDataMatrix);
-            assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
-            assertEquals(getExpectedNumberProbeSets(), values.getAllReporters().size());
-            assertEquals(studyConfiguration.getStudy(), geneMatrix.getStudy());
-            assertEquals(getExpectedSampleCount(), geneMatrix.getSampleDataCollection().size());
-            values = arrayDataService.getData(geneMatrix);
-            assertEquals(getExpectedSampleCount(), values.getAllArrayDatas().size());
-            assertEquals(getExpectedNumberOfGeneReporters(), values.getAllReporters().size());
+            for (ArrayData arrayData : arrayDatas) {
+                assertEquals(studyConfiguration.getStudy(), arrayData.getStudy());
+            }
+            PlatformHelper platformHelper = new PlatformHelper(design);
+            ReporterList probeSetReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            DataRetrievalRequest probeSetRequest = new DataRetrievalRequest();
+            probeSetRequest.addArrayDatas(probeSetReporterList.getArrayDatas());
+            probeSetRequest.addType(ArrayDataType.EXPRESSION_SIGNAL);
+            probeSetRequest.addReporters(probeSetReporterList.getReporters());
+            DataRetrievalRequest geneRequest = new DataRetrievalRequest();
+            ReporterList geneReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+            geneRequest.addArrayDatas(geneReporterList.getArrayDatas());
+            geneRequest.addType(ArrayDataType.EXPRESSION_SIGNAL);
+            geneRequest.addReporters(geneReporterList.getReporters());
+            ArrayDataValues values = arrayDataService.getData(probeSetRequest);
+            assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
+            assertEquals(getExpectedNumberProbeSets(), values.getReporters().size());
+            values = arrayDataService.getData(geneRequest);
+            assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
+            assertEquals(getExpectedNumberOfGeneReporters(), values.getReporters().size());
             logEnd();
         }
     }
@@ -314,15 +325,6 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     protected abstract int getExpectedMappedSampleCount();
 
     protected abstract int getExpectedControlSampleCount();
-
-    private ArrayDataMatrix getArrayDataMatrix(Collection<ArrayData> arrayDatas, ReporterTypeEnum type) {
-        for (ArrayData arrayData : arrayDatas) {
-            if (type.equals(arrayData.getMatrix().getReporterList().getReporterType())) {
-                return arrayData.getMatrix();
-            }
-        }
-        return null;
-    }
 
     private void loadSamples() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         if (getLoadSamples()) {

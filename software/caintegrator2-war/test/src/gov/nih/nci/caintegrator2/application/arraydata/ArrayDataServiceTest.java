@@ -7,19 +7,23 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +40,14 @@ public class ArrayDataServiceTest {
         service = (ArrayDataService) context.getBean("arrayDataService"); 
         daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
         daoStub.clear();                
+    }
+
+    @After
+    public void tearDown() {
+        File testFile = new File(new FileManagerStub().getStudyDirectory(null), "data1.nc");
+        if (testFile.exists()) {
+            testFile.delete();
+        }
     }
 
     @Test
@@ -59,7 +71,7 @@ public class ArrayDataServiceTest {
             }
         }
     }
-
+    
     private void checkLoadAgilentArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException {
         Platform platform = ArrayDesignChecker.checkLoadAgilentArrayDesign(cdfFile, annotationFile, service);
         assertTrue(daoStub.saveCalled);
@@ -77,30 +89,33 @@ public class ArrayDataServiceTest {
     }
     
     @Test
-    public void testGetFoldChangeValues() {
-        ((ArrayDataServiceImpl) service).setFileManager(new FoldChangeTestFileManagerStub());
-        ArrayDataValues values = new ArrayDataValues();
-        ArrayDataMatrix arrayDataMatrix = new ArrayDataMatrix();
-        arrayDataMatrix.setStudy(new Study());
-        arrayDataMatrix.getStudy().setId(1L);
-        arrayDataMatrix.setId(1L);
-        values.setArrayDataMatrix(arrayDataMatrix);
+    public void testGetFoldChangeValues() throws IOException {
+        ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
+        ReporterList reporterList = new ReporterList();
+        reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
         reporter1.setName("reporter1");
+        reporter1.setReporterList(reporterList);
+        reporter1.setIndex(0);
+        reporterList.getReporters().add(reporter1);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
         reporter2.setId(2L);
         reporter2.setName("reporter2");
-        ArrayData data1 = new ArrayData();
-        data1.setId(1L);
-        ArrayData data2 = new ArrayData();
-        data2.setId(2L);
-        ArrayData controlData1 = new ArrayData();
-        controlData1.setId(3L);
-        ArrayData controlData2 = new ArrayData();
-        controlData2.setId(4L);
-        ArrayData controlData3 = new ArrayData();
-        controlData3.setId(5L);
+        reporter2.setReporterList(reporterList);
+        reporter2.setIndex(1);
+        reporterList.getReporters().add(reporter2);
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        reporters.add(reporter1);
+        reporters.add(reporter2);
+        ArrayDataValues values = new ArrayDataValues(reporters);
+        Study study = new Study();
+        study.setId(1L);
+        ArrayData data1 = createArrayData(1L, study, reporterList);
+        ArrayData data2 = createArrayData(2L, study, reporterList);
+        ArrayData controlData1 = createArrayData(3L, study, reporterList);
+        ArrayData controlData2 = createArrayData(4L, study, reporterList);
+        ArrayData controlData3 = createArrayData(5L, study, reporterList);
         
         data1.setArray(new Array());
         data1.getArray().setName("data1");
@@ -115,54 +130,56 @@ public class ArrayDataServiceTest {
         
         List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
         List<ArrayData> controlArrayDatas = new ArrayList<ArrayData>();
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         arrayDatas.add(data1);
         arrayDatas.add(data2);
         controlArrayDatas.add(controlData1);
         controlArrayDatas.add(controlData2);
         controlArrayDatas.add(controlData3);
-        reporters.add(reporter1);
-        reporters.add(reporter2);
 
-        values.setValue(data1, reporter1, (float) 2.2);
-        values.setValue(data1, reporter2, (float) 4.4);
-        values.setValue(data2, reporter1, (float) 6.6);
-        values.setValue(data2, reporter2, (float) 8.8);
+        values.setFloatValue(data1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.2);
+        values.setFloatValue(data1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 4.4);
+        values.setFloatValue(data2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 6.6);
+        values.setFloatValue(data2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 8.8);
         
-        values.setValue(controlData1, reporter1, (float) 0.1);
-        values.setValue(controlData2, reporter1, (float) 2.0);
-        values.setValue(controlData3, reporter1, (float) 9.9);
+        values.setFloatValue(controlData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 0.1);
+        values.setFloatValue(controlData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.0);
+        values.setFloatValue(controlData3, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 9.9);
         
-        values.setValue(controlData1, reporter2, (float) 0.1);
-        values.setValue(controlData2, reporter2, (float) 2.0);
-        values.setValue(controlData3, reporter2, (float) 1.1);
+        values.setFloatValue(controlData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 0.1);
+        values.setFloatValue(controlData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.0);
+        values.setFloatValue(controlData3, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 1.1);
 
         service.save(values);
-        ArrayDataValues foldChangeValues = service.getFoldChangeValues(arrayDataMatrix, arrayDatas, reporters, controlArrayDatas);
-        assertEquals(2, foldChangeValues.getAllArrayDatas().size());
-        assertEquals(2, foldChangeValues.getAllReporters().size());
-        assertEquals(1.752, (float) foldChangeValues.getValue(data1, reporter1), 0.0001);
-        assertEquals(5.256, (float) foldChangeValues.getValue(data2, reporter1), 0.0001);
-        assertEquals(7.2886, (float) foldChangeValues.getValue(data1, reporter2), 0.0001);
-        assertEquals(14.5772, (float) foldChangeValues.getValue(data2, reporter2), 0.0001);
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addArrayDatas(arrayDatas);
+        request.addReporters(reporters);
+        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlArrayDatas);
+        assertEquals(2, foldChangeValues.getArrayDatas().size());
+        assertEquals(2, foldChangeValues.getReporters().size());
+        assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(5.256, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(7.2886, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
     }
-    
+
+    private ArrayData createArrayData(Long id, Study study, ReporterList reporterList) {
+        ArrayData arrayData = new ArrayData();
+        arrayData.setStudy(study);
+        arrayData.setId(id);
+        arrayData.setSample(new Sample());
+        arrayData.setArray(new Array());
+        arrayData.setReporterList(reporterList);
+        arrayData.getSample().setSampleAcquisition(new SampleAcquisition());
+        arrayData.getSample().getSampleAcquisition().setAssignment(new StudySubjectAssignment());
+        arrayData.getSample().getSampleAcquisition().getAssignment().setStudy(study);
+        return arrayData;
+    }
+
     @Test
     public void testGetPlatforms() {
         service.getPlatforms();
         assertTrue(daoStub.getPlatformsCalled);
-    }
-
-    private static class FoldChangeTestFileManagerStub extends FileManagerStub implements FileManager {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public File getStudyDirectory(Study study) {
-            return new File(System.getProperty("java.io.tmpdir"));
-        }
-        
     }
 
 }

@@ -12,7 +12,6 @@ public class ArrayData extends AbstractCaIntegrator2Object {
     
     private ReporterList reporterList;
     private Sample sample;
-    private ArrayDataMatrix matrix;
     private Study study;
     private Array array;
     
@@ -42,20 +41,6 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      */
     public void setSample(Sample sample) {
         this.sample = sample;
-    }
-    
-    /**
-     * @return the matrix
-     */
-    public ArrayDataMatrix getMatrix() {
-        return matrix;
-    }
-    
-    /**
-     * @param matrix the matrix to set
-     */
-    public void setMatrix(ArrayDataMatrix matrix) {
-        this.matrix = matrix;
     }
     
     /**
@@ -93,6 +78,15 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      */
     public ReporterTypeEnum getReporterType() {
         return getReporterList().getReporterType();
+    }
+
+    /**
+     * Validity check to ensure that this <code>ArrayData</code> object is associated with a <code>Study</code>.
+     */
+    public void checkHasStudy() {
+        if (getStudy() == null) {
+            throw new IllegalArgumentException("Null Study in ArrayData with id: " + getId());
+        }
     }
 
 }

@@ -85,168 +85,161 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Contains the actual numeric array data values. This will be an arbitrary subset (or perhaps
- * the entire contents) of a particular <code>ArrayDataMatrix</code>.
+ * Transports and provides access to genomic data values.
  */
 public class ArrayDataValues {
     
-    private ArrayDataMatrix arrayDataMatrix;
-    private final Set<ArrayData> allArrayDatas = new HashSet<ArrayData>();
-    
-    private final Map<AbstractReporter, Map<ArrayData, Float>> reporterArrayDataValueMap = 
-                            new HashMap<AbstractReporter, Map<ArrayData, Float>>();
-    
+    private final List<AbstractReporter> reporters;
+    private final Map<AbstractReporter, Integer> reporterIndexMap = new HashMap<AbstractReporter, Integer>();
+    private final Map<ArrayDataType, TypeValues> typeValuesMap = new HashMap<ArrayDataType, TypeValues>();
+
     /**
-     * Returns the array data value for a given reporter for a given array.
+     * Creates a new values object.
      * 
-     * @param arrayData get value for this array data
-     * @param reporter get value for this reporter.
-     * @return the array data value.
+     * @param reporters the values object will contain data for these reporters.
      */
-    public Float getValue(ArrayData arrayData, AbstractReporter reporter) {
-        if (reporterArrayDataValueMap.containsKey(reporter) 
-            && reporterArrayDataValueMap.get(reporter).containsKey(arrayData)) { 
-            return reporterArrayDataValueMap.get(reporter).get(arrayData);
-        } else {
-        // I think returning a 0 value might be wrong, maybe need to throw exception?
-            return Float.valueOf("0.0");
-        }
-    }
-    
-    /**
-     * Sets the array data value for a given reporter for a given array.
-     * 
-     * @param arrayData set value for this array
-     * @param reporter set value for this reporter.
-     * @param value the array data value.
-     */
-    public void setValue(ArrayData arrayData, AbstractReporter reporter, Float value) {
-        checkSetValueArguments(arrayData, reporter, value);
-        allArrayDatas.add(arrayData);
-        getArrayDataToValueMap(reporter).put(arrayData, value);
-        
+    public ArrayDataValues(List<AbstractReporter> reporters) {
+        this.reporters = reporters;
+        loadReporterIndexMap();
     }
 
-    private void checkSetValueArguments(ArrayData arrayData, AbstractReporter reporter, Float value) {
-        if (arrayData == null) {
-            throw new IllegalArgumentException("Argument arrayData was null");
+    private void loadReporterIndexMap() {
+        for (int i = 0; i < reporters.size(); i++) {
+            reporterIndexMap.put(reporters.get(i), i);
         }
+    }
+
+    /**
+     * @return the reporters
+     */
+    public List<AbstractReporter> getReporters() {
+        return Collections.unmodifiableList(reporters);
+    }
+    
+    /**
+     * Gets a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data value is associated to.
+     * @param reporter the reporter the data value is associated to.
+     * @param type the type of data
+     * @return the value to .
+     */
+    public float getFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataType type) {
+        return getFloatValue(arrayData, getReporterIndex(reporter), type);
+    }
+    
+    /**
+     * Gets a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data value is associated to.
+     * @param reporterIndex the index of the reporter the data value is associated to.
+     * @param type the type of data
+     * @return the value to .
+     */
+    public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataType type) {
+        return getTypeValues(type).getFloatValue(arrayData, reporterIndex);
+    }
+    
+    /**
+     * Sets a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data value is associated to.
+     * @param reporter the reporter the data value is associated to.
+     * @param type the type of data
+     * @param value the value to set.
+     */
+    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataType type, float value) {
+        getTypeValues(type).setFloatValue(arrayData, reporter, value);
+    }
+
+    /**
+     * Sets a single data point for a single reporter / array / type combination.
+     * 
+     * @param arrayData the array data the data values are associated to.
+     * @param forReporters the reporters the data values are associated to.
+     * @param type the type of data
+     * @param values the values to set.
+     */
+    public void setFloatValues(ArrayData arrayData, List<AbstractReporter> forReporters, ArrayDataType type,
+            float[] values) {
+        getTypeValues(type).setFloatValues(arrayData, forReporters, values);
+    }
+
+    private TypeValues getTypeValues(ArrayDataType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("type was null");
+        }
+        TypeValues typeValues = typeValuesMap.get(type);
+        if (typeValues == null) {
+            typeValues = new TypeValues(type, this);
+            typeValuesMap.put(type, typeValues);
+        }
+        return typeValues;
+    }
+
+    int getReporterIndex(AbstractReporter reporter) {
         if (reporter == null) {
-            throw new IllegalArgumentException("Argument reporter was null");
+            throw new IllegalArgumentException("reporter was null");
         }
-        if (value == null) {
-            throw new IllegalArgumentException("Argument value was null");
-        }
-    }
-
-    private Map<ArrayData, Float> getArrayDataToValueMap(AbstractReporter reporter) {
-        Map<ArrayData, Float> arrayDataValueMap;
-        if (reporterArrayDataValueMap.keySet().contains(reporter)) {
-            arrayDataValueMap = reporterArrayDataValueMap.get(reporter);
-        } else {
-            arrayDataValueMap = new HashMap<ArrayData, Float>();    
-            reporterArrayDataValueMap.put(reporter, arrayDataValueMap);
-        }
-        return arrayDataValueMap;
-    }
-
-    /**
-     * @return the arrayDataMatrix
-     */
-    public ArrayDataMatrix getArrayDataMatrix() {
-        return arrayDataMatrix;
-    }
-
-    /**
-     * @param arrayDataMatrix the arrayDataMatrix to set
-     */
-    public void setArrayDataMatrix(ArrayDataMatrix arrayDataMatrix) {
-        this.arrayDataMatrix = arrayDataMatrix;
-    }
-
-    Map<AbstractReporter, Map<ArrayData, Float>> getReporterArrayDataValueMap() {
-        return reporterArrayDataValueMap;
-    }
-
-
-    /**
-     * @return the allArrayDatas
-     */
-    public Set<ArrayData> getAllArrayDatas() {
-        return allArrayDatas;
-    }
-
-    /**
-     * Adds all of the values from the given values object to this one.
-     * 
-     * @param values add values from this values object.
-     */
-    public void addValues(ArrayDataValues values) {
-        copyArrayDatas(values.getAllArrayDatas());
-        copyDataValues(values);
-        if (arrayDataMatrix == null) {
-            arrayDataMatrix = values.getArrayDataMatrix();
-        } else {
-            ArrayDataMatrixUtility.merge(values.getArrayDataMatrix(), arrayDataMatrix);
-        }
-    }
-
-    private void copyArrayDatas(Set<ArrayData> copiedArrayDatas) {
-        for (ArrayData arrayData : copiedArrayDatas) {
-            arrayData.setMatrix(getArrayDataMatrix());
-        }
-    }
-
-    private void copyDataValues(ArrayDataValues values) {
-        for (AbstractReporter reporter : values.reporterArrayDataValueMap.keySet()) {
-            for (ArrayData arrayData : values.allArrayDatas) {
-                setValue(arrayData, reporter, values.getValue(arrayData, reporter));
-            }
-        }
+        return reporterIndexMap.get(reporter);
     }
     
     /**
-     * {@inheritDoc}
+     * Returns the data types in this values object.
+     * 
+     * @return the data types.
      */
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        for (ArrayData arrayData : allArrayDatas) {
-            sb.append(arrayData == null || arrayData.getArray() != null ? arrayData.getArray().getName() : "NULL");
-            sb.append(' ');
-        }
-        sb.append('\n');
-        for (AbstractReporter reporter : reporterArrayDataValueMap.keySet()) {
-            addReporterDetails(sb, reporter);
-        }
-        return sb.toString();
+    public Set<ArrayDataType> getTypes() {
+        return typeValuesMap.keySet();
     }
-
-    private void addReporterDetails(StringBuffer sb, AbstractReporter reporter) {
-        sb.append(reporter != null ? reporter.getName() : "NULL");
-        sb.append(' ');
-        for (ArrayData arrayData : allArrayDatas) {
-            sb.append(' ');
-            sb.append(reporterArrayDataValueMap.get(reporter).get(arrayData));
+    
+    /**
+     * Returns a set of all <code>ArrayDatas</code> that have data in this values object.
+     * 
+     * @return the arrays.
+     */
+    public Set<ArrayData> getArrayDatas() {
+        if (typeValuesMap.isEmpty()) {
+            return Collections.emptySet();
+        } else {
+            return typeValuesMap.values().iterator().next().getArrayDatas();
         }
-        sb.append('\n');
     }
 
     /**
-     * @return the allReporters
+     * @return the array datas in order by id.
      */
-    public Set<AbstractReporter> getAllReporters() {
-        return reporterArrayDataValueMap.keySet();
+    public List<ArrayData> getOrderedArrayDatas() {
+        List<ArrayData> arrayDatas = new ArrayList<ArrayData>();
+        arrayDatas.addAll(getArrayDatas());
+        Collections.sort(arrayDatas, AbstractCaIntegrator2Object.ID_COMPARATOR);
+        return arrayDatas;
+    }
+
+    /**
+     * Returns the <code>ReporterList</code> that data in this values object is assocated iwth.
+     * 
+     * @return the reporter list.
+     */
+    public ReporterList getReporterList() {
+        if (getReporters().isEmpty()) {
+            return null;
+        } else {
+            return getReporters().iterator().next().getReporterList();
+        }
     }
 
 }

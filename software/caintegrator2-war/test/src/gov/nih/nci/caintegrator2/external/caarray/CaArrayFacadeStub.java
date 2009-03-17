@@ -85,9 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -95,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,14 +114,20 @@ public class CaArrayFacadeStub implements CaArrayFacade {
      * {@inheritDoc}
      */
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporters.add(reporter);
+        ArrayDataValues values = new ArrayDataValues(reporters);
         ReporterList reporterList = new ReporterList();
+        reporter.setReporterList(reporterList);
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList.getReporters().addAll(reporters);
         Platform platform = new Platform();
         platform.getReporterLists().add(reporterList);
         reporterList.setPlatform(platform);
-        values.getArrayDataMatrix().setReporterList(reporterList);
+        ReporterList reporterList2 = new ReporterList();
+        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        platform.getReporterLists().add(reporterList2);
         return values;
     }
 

@@ -85,15 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -101,11 +101,14 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
 
+import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+
 /**
  * Helper class that retrieves data from caArray and loads it into a study.
  */
 class GenomicDataHelper {
 
+    private static final double FIFTIETH_PERCENTILE = 50;
     private final CaArrayFacade caArrayFacade;
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
@@ -117,77 +120,63 @@ class GenomicDataHelper {
     }
 
     void loadData(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException {
-        ArrayDataValues probeSetValues = createArrayDataValues(studyConfiguration);
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            probeSetValues.addValues(caArrayFacade.retrieveData(genomicSource));
+            ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
+            ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
+            arrayDataService.save(probeSetValues);
+            arrayDataService.save(geneValues);
         }
-        ArrayDataValues geneValues = createGeneArrayDataValues(studyConfiguration, probeSetValues);
-        arrayDataService.save(probeSetValues);
-        arrayDataService.save(geneValues);
     }
 
-    private ArrayDataValues createArrayDataValues(StudyConfiguration studyConfiguration) {
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
-        values.getArrayDataMatrix().setStudy(studyConfiguration.getStudy());
-        return values;
-    }
-    
-    private ArrayDataValues createGeneArrayDataValues(StudyConfiguration studyConfiguration, 
-            ArrayDataValues probeSetValues) {
-        ArrayDataValues geneValues = createArrayDataValues(studyConfiguration);
+    private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
         PlatformHelper platformHelper = 
-            new PlatformHelper(probeSetValues.getArrayDataMatrix().getReporterList().getPlatform());
-        geneValues.getArrayDataMatrix().setReporterList(
-                platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE));
-        for (ArrayData arrayData : probeSetValues.getAllArrayDatas()) {
-            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper);
+            new PlatformHelper(probeSetValues.getReporterList().getPlatform());
+        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        ArrayDataValues geneValues = 
+            new ArrayDataValues(reporterList.getReporters());
+        for (ArrayData arrayData : probeSetValues.getArrayDatas()) {
+            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterList);
         }
         return geneValues;
     }
 
     private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, 
             ArrayData arrayData,
-            PlatformHelper platformHelper) {
-        createGeneArrayData(geneValues.getArrayDataMatrix(), arrayData);
-        loadGeneValues(geneValues, probeSetValues, arrayData, platformHelper);
+            PlatformHelper platformHelper, ReporterList reporterList) {
+        ArrayData geneArrayData = createGeneArrayData(arrayData, reporterList);
+        loadGeneValues(geneValues, probeSetValues, arrayData, geneArrayData, platformHelper);
     }
 
     private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
-            PlatformHelper platformHelper) {
+            ArrayData geneArrayData, PlatformHelper platformHelper) {
         Collection<AbstractReporter> geneReporters = 
             platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         for (AbstractReporter geneReporter : geneReporters) {
             Collection<AbstractReporter> probeSetReporters = 
                 platformHelper.getReportersForGene(((GeneExpressionReporter) geneReporter).getGene(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            geneValues.setValue(arrayData, geneReporter, 
+            geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataType.EXPRESSION_SIGNAL,
                     computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
         }
     }
 
     private float computeGeneReporterValue(Collection<AbstractReporter> probeSetReporters, 
             ArrayDataValues probeSetValues, ArrayData arrayData) {
-        // TODO The value here is computed by simply taking the mean of the values for the probe sets. This is not a 
-        // valid algorithm for computing this value. Please work with Will Fitzhugh to replace this with a suitable 
-        // algorithm.
-        float sum = 0;
+        DescriptiveStatistics statistics = new DescriptiveStatistics();
         for (AbstractReporter reporter : probeSetReporters) {
-            sum += probeSetValues.getValue(arrayData, reporter);
+            statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL));
         }
-        return sum / probeSetReporters.size();
+        return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
     }
 
-    private ArrayData createGeneArrayData(ArrayDataMatrix arrayDataMatrix, ArrayData probeSetArrayData) {
+    private ArrayData createGeneArrayData(ArrayData probeSetArrayData, ReporterList reporterList) {
         ArrayData arrayData = new ArrayData();
+        arrayData.setStudy(probeSetArrayData.getStudy());
         arrayData.setArray(probeSetArrayData.getArray());
         arrayData.setSample(probeSetArrayData.getSample());
         arrayData.getSample().getArrayDataCollection().add(arrayData);
-        arrayData.setMatrix(arrayDataMatrix);
-        arrayData.setStudy(arrayDataMatrix.getStudy());
-        arrayData.setReporterList(arrayDataMatrix.getReporterList());
-        arrayDataMatrix.getReporterList().getArrayDatas().add(arrayData);
-        arrayDataMatrix.getSampleDataCollection().add(arrayData);
+        arrayData.setReporterList(reporterList);
+        reporterList.getArrayDatas().add(arrayData);
         dao.save(arrayData);
         return arrayData;
     }

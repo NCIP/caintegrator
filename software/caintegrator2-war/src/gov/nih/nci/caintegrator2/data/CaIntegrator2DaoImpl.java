@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -382,18 +381,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     
     private Session getCurrentSession() {
         return getHibernateTemplate().getSessionFactory().getCurrentSession();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
-    public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
-        Query query = getCurrentSession().createQuery("from ArrayDataMatrix where study = :study "
-                + "and reporterList.reporterType = :reporterType");
-        query.setEntity("study", study);
-        query.setParameter("reporterType", reporterType);
-        return query.list();
     }
 
     /**

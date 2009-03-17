@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
 import java.util.Collection;
@@ -104,37 +102,23 @@ public interface ArrayDataService {
      * @param values the data matrix values to store.
      */
     void save(ArrayDataValues values);
-    
+
     /**
-     * Retrieves all of the normalized data values associated with the given <code>ArrayDataMatrix</code>.
+     * Retrieves the requested array data.
      * 
-     * @param arrayDataMatrix retrieve data values for this data matrix.
-     * @return the values.
+     * @param request encapsulated retrieval configuration.
+     * @return the requested data.
      */
-    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix);
-    
-    /**
-     * Retrieves the normalized data values from the given arrays for the given reporters.
-     * 
-     * @param arrayDataMatrix retrieve data values for this data matrix.
-     * @param arrayDatas retrieve data values from these arrays
-     * @param reporters retrieve the values for these reporters only
-     * @return the values.
-     */
-    ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
-            Collection<AbstractReporter> reporters);
+    ArrayDataValues getData(DataRetrievalRequest request);
     
     /**
      * Retrieves the fold change values from the given arrays for the given reporters.
      * 
-     * @param arrayDataMatrix compute fold change values from this data matrix.
-     * @param arrayDatas compute fold change values from these arrays
-     * @param reporters compute the values for these reporters only
+     * @param request encapsulated retrieval configuration.
      * @param controlArrayDatas compute fold change values compared to these arrays
      * @return the fold change values.
      */
-    ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas);
+    ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas);
     
     /**
      * Loads the given array design into the system.
