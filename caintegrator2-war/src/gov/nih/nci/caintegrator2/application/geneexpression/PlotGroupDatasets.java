@@ -85,89 +85,65 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * Implementation of the GeneExpressionPlotService interface.
+ * Loads a <code>GeneExpressionPlotConfiguration</code> into the 4 different dataset types.
  */
-public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService {
-    private static final String DOMAIN_AXIS_LABEL = "Groups";
-    private static final double LOWER_MARGIN = .02;
-    private static final double CATEGORY_MARGIN = .20; 
-    private static final double UPPER_MARGIN = .02;
-    private static final double ITEM_MARGIN = .01;
-    private LegendItemCollection legendItems;
+public class PlotGroupDatasets {
     
-
+    private final DefaultCategoryDataset meanDataset = new DefaultCategoryDataset();
+    private final DefaultCategoryDataset medianDataset = new DefaultCategoryDataset();
+    
     /**
-     * {@inheritDoc}
+     * Loads the configuration into the different datasets.
+     * @param configuration configuration for the plot.
      */
-    public GeneExpressionPlotGroup generatePlots(GeneExpressionPlotConfiguration configuration) {
-        GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();
-        PlotGroupDatasets dataSets = new PlotGroupDatasets();
-        dataSets.load(configuration);
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEAN, 
-                                            createMeanTypePlot(dataSets.getMeanDataset()));
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEDIAN, 
-                                            createMedianTypePlot(dataSets.getMedianDataset()));
-        addLegendItemsToPlot(plotGroup);
-        return plotGroup;
-    }
-
-    private GeneExpressionPlot createMeanTypePlot(DefaultCategoryDataset meanDataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart meanChart = createChart(meanDataset, "Mean Expression Intensity");
-        legendItems = meanChart.getLegend().getSources()[0].getLegendItems();
-        cusomtizeChart(meanChart);
-        plot.setPlotChart(meanChart);
-        return plot;
-    }
-    
-    private GeneExpressionPlot createMedianTypePlot(DefaultCategoryDataset medianDataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart medianChart = createChart(medianDataset, "Median Expression Intensity");
-        cusomtizeChart(medianChart);
-        plot.setPlotChart(medianChart);
-        return plot;
-    }
-
-    private JFreeChart createChart(DefaultCategoryDataset dataset, String rangeAxisLabel) {
-        JFreeChart chart = ChartFactory.createBarChart(
-                null, 
-                DOMAIN_AXIS_LABEL, 
-                rangeAxisLabel, 
-                dataset,
-                PlotOrientation.VERTICAL, // orientation
-                true, // include legend
-                true, // tooltips
-                false // URLs
-                );
-        return chart;
-    }
-
-    private void cusomtizeChart(JFreeChart chart) {
-        CategoryAxis meanAxis = chart.getCategoryPlot().getDomainAxis();
-        meanAxis.setLowerMargin(LOWER_MARGIN);
-        meanAxis.setCategoryMargin(CATEGORY_MARGIN);
-        meanAxis.setUpperMargin(UPPER_MARGIN);
-        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
-        renderer.setItemMargin(ITEM_MARGIN);
-        renderer.setDrawBarOutline(true);
-        chart.removeLegend();
-    }
-
-
-    private void addLegendItemsToPlot(GeneExpressionPlotGroup plotGroup) {
-        if (legendItems != null) {
-            for (int x = 0; x < legendItems.getItemCount(); x++) {
-                plotGroup.getLegendItems().add(new LegendItemWrapper(legendItems.get(x)));
+    public void load(GeneExpressionPlotConfiguration configuration) {
+        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
+            String columnKey = sampleGroup.getName();
+            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
+                List <Double> rowValues = new ArrayList<Double>();
+                Double totalValue = 0.0;
+                String rowKey = reporterGroup.getName();
+                for (Double value : reporterGroup.getGeneExpressionValues()) {
+                    rowValues.add(value);
+                    totalValue += value;
+                }
+                meanDataset.addValue(totalValue / rowValues.size(), rowKey, columnKey);
+                medianDataset.addValue(median(rowValues), rowKey, columnKey);
             }
         }
     }
+    
+
+    private Double median(List<Double> list) {
+        Collections.sort(list);
+        int middle = list.size() / 2;
+        if (list.size() % 2 == 1) {
+            return list.get(middle);
+        } else {
+            return (list.get(middle - 1) + list.get(middle)) / 2.0;
+        }
+    }
+
+    /**
+     * @return the meanDataset
+     */
+    public DefaultCategoryDataset getMeanDataset() {
+        return meanDataset;
+    }
+
+    /**
+     * @return the medianDataset
+     */
+    public DefaultCategoryDataset getMedianDataset() {
+        return medianDataset;
+    }
+    
+
 }

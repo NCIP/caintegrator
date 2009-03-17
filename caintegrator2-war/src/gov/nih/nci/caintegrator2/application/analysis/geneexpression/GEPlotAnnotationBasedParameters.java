@@ -119,8 +119,8 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
             getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
             isValid = false;
         }
-        if (getSelectedValues().size() < 2) {
-            getErrorMessages().add("Must select at least 2 grouping values");
+        if (getSelectedValues().size() < 1) {
+            getErrorMessages().add("Must select at least 1 grouping value");
             isValid = false;
         }
         return isValid;
