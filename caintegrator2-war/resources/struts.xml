@@ -516,10 +516,17 @@
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
         </action>
         
-        <action name="retrieveAnnotationGEPlot" method="retrievePlot" class="gePlotAnnotationBasedAction">
+        <action name="retrieveAnnotationGEPlot_mean" method="retrievePlot" class="gePlotAnnotationBasedAction">
             <result name="gePlotResult" type="gePlotResult"> 
                 <param name="plotType">annotationBased</param>
                 <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_median" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">median</param>
             </result>
         </action>
                

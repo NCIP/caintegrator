@@ -111,7 +111,8 @@ import org.apache.commons.lang.StringUtils;
 public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
 
     private static final long serialVersionUID = 1L;
-    private static final String ANNOTATION_PLOT_URL = "/caintegrator2/retrieveAnnotationGEPlot.action?";
+    private static final String ANNOTATION_MEAN_PLOT_URL = "retrieveAnnotationGEPlot_mean.action?";
+    private static final String ANNOTATION_MEDIAN_PLOT_URL = "retrieveAnnotationGEPlot_median.action?";
     private GEPlotAnnotationBasedParameters plotParameters = new GEPlotAnnotationBasedParameters();
     
 
@@ -361,8 +362,16 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
      * {@inheritDoc}
      */
     @Override
-    public String getPlotUrl() {
-        return ANNOTATION_PLOT_URL;
+    public String getMeanPlotUrl() {
+        return ANNOTATION_MEAN_PLOT_URL;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getMedianPlotUrl() {
+        return ANNOTATION_MEDIAN_PLOT_URL;
     }
 
     /**

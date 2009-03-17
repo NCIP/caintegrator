@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
@@ -249,7 +250,10 @@ public class GEPlotAnnotationBasedActionTest {
     
     @Test
     public void testGetPlotUrl() {
-        assertEquals("/caintegrator2/retrieveAnnotationGEPlot.action?", action.getPlotUrl());
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEAN.getValue()).
+                                        contains("retrieveAnnotationGEPlot_mean.action?"));
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN.getValue()).
+                                        contains("retrieveAnnotationGEPlot_median.action?"));
     }
 
 
