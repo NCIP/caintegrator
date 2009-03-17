@@ -102,7 +102,6 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -346,6 +345,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Sample sample = new Sample();
         sampleAcquisition.setSample(sample);
         ArrayData arrayData = new ArrayData();
+        arrayData.setStudy(study);
         sample.getArrayDataCollection().add(arrayData);
         arrayData.setReporterList(reporterList);
         reporterList.getArrayDatas().add(arrayData);
@@ -354,38 +354,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Set<String> geneSymbols = new HashSet<String>();
         geneSymbols.add("TEST");
         assertEquals(1, dao.findGeneExpressionReporters(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
-    }
-    
-    @Test
-    public void testGetArrayDataMatrixes() {
-        ArrayDataMatrix matrix1 = new ArrayDataMatrix();
-        ArrayDataMatrix matrix2 = new ArrayDataMatrix();
-        ArrayDataMatrix matrix3 = new ArrayDataMatrix();
-        Study study1 = new Study();
-        Study study2 = new Study();
-        ReporterList reporterList1 = new ReporterList();
-        ReporterList reporterList2 = new ReporterList();
-        reporterList1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        matrix1.setReporterList(reporterList1);
-        matrix2.setReporterList(reporterList2);
-        matrix3.setReporterList(reporterList1);
-        matrix1.setStudy(study1);
-        matrix2.setStudy(study1);
-        matrix3.setStudy(study1);
-        dao.save(matrix1);
-        dao.save(matrix2);
-        dao.save(matrix3);
-        dao.save(study2);
-        dao.save(study1);
-        List<ArrayDataMatrix> retrieved = dao.getArrayDataMatrixes(study1, ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        assertEquals(2, retrieved.size());
-        assertTrue(retrieved.contains(matrix1) && retrieved.contains(matrix3));
-        retrieved = dao.getArrayDataMatrixes(study2, ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        assertEquals(0, retrieved.size());
-        retrieved = dao.getArrayDataMatrixes(study1, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        assertEquals(1, retrieved.size());
-        assertEquals(matrix2, retrieved.get(0));
     }
     
     @Test

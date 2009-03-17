@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -282,14 +281,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         Platform platform = new Platform();
         platform.setName(name);
         return platform;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<ArrayDataMatrix> getArrayDataMatrixes(Study study, ReporterTypeEnum reporterType) {
-        getArrayDataMatrixesCalled = true;
-        return Collections.emptyList();
     }
 
     /**

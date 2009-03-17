@@ -86,12 +86,22 @@
 package gov.nih.nci.caintegrator2.domain;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Base class for all domain objects.
  */
 public abstract class AbstractCaIntegrator2Object implements Serializable, Cloneable {
 
+    /**
+     * Comparator that orders objects by id.
+     */
+    public static final Comparator<AbstractCaIntegrator2Object> ID_COMPARATOR = 
+        new Comparator<AbstractCaIntegrator2Object>() {
+        public int compare(AbstractCaIntegrator2Object object1, AbstractCaIntegrator2Object object2) {
+            return (int) (object1.getId() - object2.getId());
+        }
+    };
     private Long id;
     
     /**

@@ -83,52 +83,34 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class CaArrayFacadeStub implements CaArrayFacade {
-
+/**
+ * Represents a quantitation type of microarray data.
+ */
+public enum ArrayDataType {
+    
     /**
-     * {@inheritDoc}
+     * Expression signal.
      */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+    EXPRESSION_SIGNAL(Float.class),
+    
+    /**
+     * Copy number log2ratio.
+     */
+    COPY_NUMBER_LOG2_RATIO(Float.class);
+    
+    private final Class<?> typeClass;
+
+    ArrayDataType(Class<?> typeClass) {
+        this.typeClass = typeClass;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the typeClass
      */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporters.add(reporter);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
-        return values;
+    public Class<?> getTypeClass() {
+        return typeClass;
     }
 
 }

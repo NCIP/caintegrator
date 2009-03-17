@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -106,6 +107,13 @@ public class Sample extends AbstractCaIntegrator2Object {
      */
     public void setGenomicDataSource(GenomicDataSourceConfiguration genomicDataSource) {
         this.genomicDataSource = genomicDataSource;
+    }
+
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return getSampleAcquisition().getStudy();
     }
 
 }

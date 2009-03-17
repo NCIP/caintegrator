@@ -85,17 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileReader;
-import gov.nih.nci.caintegrator2.application.arraydata.netcdf.NetcdfFileWriter;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -114,50 +108,22 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     private CaIntegrator2Dao dao;
     private FileManager fileManager;
 
-    /**
-     * {@inheritDoc}
-     */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix) {
-        return getData(arrayDataMatrix, arrayDataMatrix.getSampleDataCollection(), getReporters(arrayDataMatrix));
-    }
-
-    private List<AbstractReporter> getReporters(ArrayDataMatrix arrayDataMatrix) {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        reporters.addAll(arrayDataMatrix.getReporterList().getReporters());
-        return reporters;
-    }
 
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getData(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas, 
-            Collection<AbstractReporter> reporters) {
-        NetcdfFileReader reader = new NetcdfFileReader(getNetCdfFilename(arrayDataMatrix));
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(arrayDataMatrix);
-        for (ArrayData arrayData : arrayDatas) {
-            for (AbstractReporter reporter : reporters) {
-                values.setValue(arrayData, reporter, 
-                        reader.getArrayData(arrayData.getArray().getName(), reporter.getName()));
-            }
-        }
-        return values;
+    public ArrayDataValues getData(DataRetrievalRequest request) {
+        return new NetCDFManager(getFileManager()).retrieveValues(request);
     }
 
     /**
      * {@inheritDoc}
      */
     public void save(ArrayDataValues values) {
-        dao.save(values.getArrayDataMatrix());
-        NetcdfFileWriter writer = new NetcdfFileWriter(values, getNetCdfFilename(values.getArrayDataMatrix()));
-        writer.create();
-    }
-
-    private String getNetCdfFilename(ArrayDataMatrix arrayDataMatrix) {
-        String filename = "data" + arrayDataMatrix.getId() + ".nc";
-        File netCdfFile = 
-            new File(getFileManager().getStudyDirectory(arrayDataMatrix.getStudy()), filename);
-        return netCdfFile.getAbsolutePath();
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            dao.save(arrayData);
+        }
+        new NetCDFManager(getFileManager()).storeValues(values);
     }
 
     /**
@@ -209,10 +175,13 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public ArrayDataValues getFoldChangeValues(ArrayDataMatrix arrayDataMatrix, Collection<ArrayData> arrayDatas,
-            Collection<AbstractReporter> reporters, Collection<ArrayData> controlArrayDatas) {
-        ArrayDataValues values = getData(arrayDataMatrix, arrayDatas, reporters);
-        ArrayDataValues controlValues = getData(arrayDataMatrix, controlArrayDatas, reporters);
+    public ArrayDataValues getFoldChangeValues(DataRetrievalRequest request, Collection<ArrayData> controlArrayDatas) {
+        ArrayDataValues values = getData(request);
+        DataRetrievalRequest controlDataRequest = new DataRetrievalRequest();
+        controlDataRequest.addReporters(request.getReporters());
+        controlDataRequest.addArrayDatas(controlArrayDatas);
+        controlDataRequest.addTypes(request.getTypes());
+        ArrayDataValues controlValues = getData(controlDataRequest);
         return new FoldChangeCalculator(values, controlValues).calculate();
     }
 

@@ -95,16 +95,17 @@ class FoldChangeCalculator {
 
     private final ArrayDataValues values;
     private final ArrayDataValues controlValues;
-    private final ArrayDataValues foldChangeValues = new ArrayDataValues();
+    private final ArrayDataValues foldChangeValues;
     private static final double NATURAL_LOG_OF_2 = Math.log(2);
 
     FoldChangeCalculator(ArrayDataValues values, ArrayDataValues controlValues) {
         this.values = values;
         this.controlValues = controlValues;
+        foldChangeValues = new ArrayDataValues(values.getReporters());
     }
 
     ArrayDataValues calculate() {
-        for (AbstractReporter reporter : values.getAllReporters()) {
+        for (AbstractReporter reporter : values.getReporters()) {
             calculate(reporter);
         }
         return foldChangeValues;
@@ -112,19 +113,20 @@ class FoldChangeCalculator {
 
     private void calculate(AbstractReporter reporter) {
         double controlValue = getControlValue(reporter);
-        for (ArrayData arrayData : values.getAllArrayDatas()) {
-            float foldChange = (float) (values.getValue(arrayData, reporter) / controlValue);
-            foldChangeValues.setValue(arrayData, reporter, foldChange);
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            float foldChange = 
+                (float) (values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL) / controlValue);
+            foldChangeValues.setFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL, foldChange);
         }
     }
 
     private double getControlValue(AbstractReporter reporter) {
         double valueProduct = 1.0f;
-        for (ArrayData arrayData : controlValues.getAllArrayDatas()) {
-            valueProduct *= controlValues.getValue(arrayData, reporter);
+        for (ArrayData arrayData : controlValues.getArrayDatas()) {
+            valueProduct *= controlValues.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
         }
         double logSum = log2(valueProduct);
-        double logMean = logSum / controlValues.getAllArrayDatas().size();
+        double logMean = logSum / controlValues.getArrayDatas().size();
         return Math.pow(2, logMean);
     }
     

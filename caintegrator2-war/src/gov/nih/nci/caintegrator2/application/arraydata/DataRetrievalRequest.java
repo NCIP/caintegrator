@@ -83,52 +83,116 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class CaArrayFacadeStub implements CaArrayFacade {
+/**
+ * Describes array data to be retrieved.
+ */
+public class DataRetrievalRequest {
+    
+    private final Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
+    private final List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+    private final Set<ArrayDataType> types = new HashSet<ArrayDataType>();
+    private boolean reportersChanged;
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
-            throws ConnectionException {
-        return Collections.emptyList();
+    Set<ArrayData> getArrayDatas() {
+        return Collections.unmodifiableSet(arrayDatas);
     }
 
+    List<AbstractReporter> getReporters() {
+        if (reportersChanged) {
+            Collections.sort(reporters, AbstractReporter.INDEX_COMPARATOR);
+            reportersChanged = false;
+        }
+        return Collections.unmodifiableList(reporters);
+    }
+
+    Set<ArrayDataType> getTypes() {
+        return Collections.unmodifiableSet(types);
+    }
+    
     /**
-     * {@inheritDoc}
+     * Adds an <code>ArrayData</code> to the request.
+     * 
+     * @param arrayData the array data
      */
-    public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) throws ConnectionException {
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
+    public void addArrayData(ArrayData arrayData) {
+        arrayDatas.add(arrayData);
+    }
+    
+    /**
+     * Adds a collection of <code>ArrayDatas</code> to the request.
+     * 
+     * @param arrayDataCollection the array datas
+     */
+    public void addArrayDatas(Collection<ArrayData> arrayDataCollection) {
+        arrayDatas.addAll(arrayDataCollection);
+    }
+    
+    /**
+     * Adds an <code>ArrayDataType</code> to the request.
+     * 
+     * @param arrayDataType the array data
+     */
+    public void addType(ArrayDataType arrayDataType) {
+        types.add(arrayDataType);
+    }
+    
+    /**
+     * Adds a collection of <code>ArrayDataTypes</code> to the request.
+     * 
+     * @param arrayDataTypeCollection the array data types.
+     */
+    public void addTypes(Collection<ArrayDataType> arrayDataTypeCollection) {
+        types.addAll(arrayDataTypeCollection);
+    }
+    
+    /**
+     * Adds an <code>AbstractReporter</code> to the request.
+     * 
+     * @param reporter the array data
+     */
+    public void addReporter(AbstractReporter reporter) {
+        reportersChanged = true;
         reporters.add(reporter);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
-        Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
-        return values;
+    }
+    
+    /**
+     * Adds a collection of <code>AbstractReporters</code> to the request.
+     * 
+     * @param reporterCollection the array datas
+     */
+    public void addReporters(Collection<AbstractReporter> reporterCollection) {
+        reportersChanged = true;
+        reporters.addAll(reporterCollection);
+    }
+
+    boolean hasEmptyParameter() {
+        return arrayDatas.isEmpty() || reporters.isEmpty() || types.isEmpty();
+    }
+
+    private void checkHasStudy() {
+        if (arrayDatas.isEmpty()) {
+            throw new IllegalStateException("There are no ArrayDatas in the request.");
+        } else {
+            arrayDatas.iterator().next().checkHasStudy();
+        }
+    }
+    
+    Study getStudy() {
+        checkHasStudy();
+        return arrayDatas.iterator().next().getStudy();
     }
 
 }

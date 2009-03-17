@@ -100,7 +100,7 @@ import gov.nih.nci.caarray.domain.sample.Extract;
 import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataMatrixUtility;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -108,7 +108,6 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataMatrix;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -116,6 +115,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -206,22 +206,26 @@ class DataRetrievalHelper {
 
     private ArrayDataValues convertToArrayDataValues(DataSet dataSet) 
     throws ConnectionException, DataRetrievalException {
-        ArrayDataValues values = new ArrayDataValues();
-        values.setArrayDataMatrix(ArrayDataMatrixUtility.createMatrix());
+        if (dataSet.getHybridizationDataList().isEmpty()) {
+            return new ArrayDataValues(new ArrayList<AbstractReporter>());
+        }
+        PlatformHelper platformHelper = 
+            new PlatformHelper(getPlatform(dataSet.getHybridizationDataList().iterator().next().getHybridization()));
+        ArrayDataValues values = 
+            new ArrayDataValues(
+                    platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).getReporters());
         for (HybridizationData hybridizationData : dataSet.getHybridizationDataList()) {
             hybridizationData.setDataSet(dataSet);
-            loadArrayDataValues(hybridizationData, values);
+            loadArrayDataValues(hybridizationData, values, platformHelper);
         }
         return values;
     }
 
-    private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues) 
+    private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues, 
+            PlatformHelper platformHelper) 
     throws ConnectionException, DataRetrievalException {
-        PlatformHelper platformHelper = 
-            new PlatformHelper(getPlatform(hybridizationData.getHybridization()));
         ArrayData arrayData = createArrayData(hybridizationData.getHybridization(), platformHelper.getPlatform());
         loadArrayDataValues(hybridizationData, arrayDataValues, platformHelper, arrayData);
-        updateArrayDataMatrix(arrayDataValues.getArrayDataMatrix(), platformHelper, arrayData);
     }
 
     private void loadArrayDataValues(HybridizationData hybridizationData, ArrayDataValues arrayDataValues,
@@ -236,24 +240,11 @@ class DataRetrievalHelper {
         }
     }
 
-    private void updateArrayDataMatrix(ArrayDataMatrix arrayDataMatrix, PlatformHelper platformHelper, 
-            ArrayData arrayData) {
-        arrayDataMatrix.getSampleDataCollection().add(arrayData);
-        arrayData.setMatrix(arrayDataMatrix);
-        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        if (arrayDataMatrix.getReporterList() == null) {
-            arrayDataMatrix.setReporterList(reporterList);
-        } else if (!arrayDataMatrix.getReporterList().equals(reporterList)) {
-            throw new IllegalStateException("Illegal attempt to load data from different platforms");
-        }
-    }
-
-
     private void setValue(ArrayDataValues values, ArrayData arrayData, AbstractReporter reporter, float value) {
         if (reporter == null) {
             LOGGER.warn("Not including array data value due to missing reporter");
         } else {
-            values.setValue(arrayData, reporter, value);
+            values.setFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL, value);
         }
     }
 
@@ -283,8 +274,9 @@ class DataRetrievalHelper {
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
         arrayData.setArray(array);
-        arrayData.setReporterList(platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
-        platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).getArrayDatas().add(arrayData);
+        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        arrayData.setReporterList(reporterList);
+        reporterList.getArrayDatas().add(arrayData);
         array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
