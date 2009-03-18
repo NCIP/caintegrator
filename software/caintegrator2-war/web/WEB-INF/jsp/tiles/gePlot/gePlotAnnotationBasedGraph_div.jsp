@@ -10,16 +10,10 @@
             <s:set name="retrieveAnnotationGEPlot_median" id="retrieveAnnotationGEPlot_median" value="%{retrieveGePlotUrl('median')}"/>
             <s:set name="retrieveAnnotationGEPlot_log2" id="retrieveAnnotationGEPlot_log2" value="%{retrieveGePlotUrl('log2Intensity')}"/>
             <s:set name="retrieveAnnotationGEPlot_bw" id="retrieveAnnotationGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
-            
-            
-            Select Graph Calculation Type: 
-            <select name="calculationTypeSelection" onChange="javascript:document.getElementById('annotationBasedImage').src=this.options[this.selectedIndex].value;">
-                <OPTION value="${retrieveAnnotationGEPlot_mean}">Mean
-                <OPTION value="${retrieveAnnotationGEPlot_median}">Median
-                <OPTION value="${retrieveAnnotationGEPlot_log2}">Log2 Intensity
-                <OPTION value="${retrieveAnnotationGEPlot_bw}">Box-Whisker Log2 Intensity
-            </select>
-            
+            <b> Plot Type: </b> <a href="#" id="annotationTypeSelection1" style="background-color:yellow;" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_mean}', 'annotationTypeSelection', '1')">Mean</a> | 
+                                 <a href="#" id="annotationTypeSelection2" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_median}', 'annotationTypeSelection', '2')">Median</a> |
+                                 <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2 Intensity</a> |
+                                 <a href="#" id="annotationTypeSelection4" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_bw}', 'annotationTypeSelection', '4')">Box and Whisker Log2 Intensity</a>
             <br>
             <img id="annotationBasedImage" src="${retrieveAnnotationGEPlot_mean}" />
             <br>
