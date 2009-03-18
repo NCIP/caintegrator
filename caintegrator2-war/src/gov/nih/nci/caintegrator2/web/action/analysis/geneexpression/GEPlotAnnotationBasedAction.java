@@ -113,6 +113,8 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     private static final long serialVersionUID = 1L;
     private static final String ANNOTATION_MEAN_PLOT_URL = "retrieveAnnotationGEPlot_mean.action?";
     private static final String ANNOTATION_MEDIAN_PLOT_URL = "retrieveAnnotationGEPlot_median.action?";
+    private static final String ANNOTATION_LOG2_PLOT_URL = "retrieveAnnotationGEPlot_log2.action?";
+    private static final String ANNOTATION_BW_PLOT_URL = "retrieveAnnotationGEPlot_bw.action?";
     private GEPlotAnnotationBasedParameters plotParameters = new GEPlotAnnotationBasedParameters();
     
 
@@ -372,6 +374,22 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     @Override
     public String getMedianPlotUrl() {
         return ANNOTATION_MEDIAN_PLOT_URL;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLog2PlotUrl() {
+        return ANNOTATION_LOG2_PLOT_URL;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBoxWhiskerPlotUrl() {
+        return ANNOTATION_BW_PLOT_URL;
     }
 
     /**

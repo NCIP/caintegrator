@@ -147,6 +147,18 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
     public abstract String getMedianPlotUrl();
     
     /**
+     * The URL for the action which retrieves the GE Plot log2 based graph image for display.
+     * @return URL string.
+     */
+    public abstract String getLog2PlotUrl();
+    
+    /**
+     * The URL for the action which retrieves the GE Plot box-whisker based graph image for display.
+     * @return URL string.
+     */
+    public abstract String getBoxWhiskerPlotUrl();
+    
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -200,8 +212,10 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
             url = getMedianPlotUrl();
             break;
         case BOX_WHISKER_LOG2_INTENSITY:
+            url = getBoxWhiskerPlotUrl();
             break;
         case LOG2_INTENSITY:
+            url = getLog2PlotUrl();
             break;
         default:
         }

@@ -529,6 +529,20 @@
                 <param name="calculationType">median</param>
             </result>
         </action>
+        
+        <action name="retrieveAnnotationGEPlot_log2" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveAnnotationGEPlot_bw" method="retrievePlot" class="gePlotAnnotationBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">annotationBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
                
         <!-- Platform Actions -->
         <action name="managePlatforms" class="managePlatformsAction">
