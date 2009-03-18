@@ -81,7 +81,7 @@
     <!-- /Kaplan-Meier Inputs -->
     <s:url id="createAnnotationBasedGEPlot" action="createAnnotationBasedGEPlot"/>
     
-    <br><br>
+    <br>
     <center>
     <s:div id="annotationGePlotDiv" 
             theme="ajax" 

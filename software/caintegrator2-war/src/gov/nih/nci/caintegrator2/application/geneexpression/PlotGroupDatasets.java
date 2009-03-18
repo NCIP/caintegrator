@@ -85,51 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
+import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
 /**
- * Loads a <code>GeneExpressionPlotConfiguration</code> into the 4 different dataset types.
+ * Wrapper class for the 4 different JFreeChart dataset types.
  */
 public class PlotGroupDatasets {
     
     private final DefaultCategoryDataset meanDataset = new DefaultCategoryDataset();
     private final DefaultCategoryDataset medianDataset = new DefaultCategoryDataset();
-    
-    /**
-     * Loads the configuration into the different datasets.
-     * @param configuration configuration for the plot.
-     */
-    public void load(GeneExpressionPlotConfiguration configuration) {
-        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
-            String columnKey = sampleGroup.getName();
-            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
-                List <Double> rowValues = new ArrayList<Double>();
-                Double totalValue = 0.0;
-                String rowKey = reporterGroup.getName();
-                for (Double value : reporterGroup.getGeneExpressionValues()) {
-                    rowValues.add(value);
-                    totalValue += value;
-                }
-                meanDataset.addValue(totalValue / rowValues.size(), rowKey, columnKey);
-                medianDataset.addValue(median(rowValues), rowKey, columnKey);
-            }
-        }
-    }
-    
-
-    private Double median(List<Double> list) {
-        Collections.sort(list);
-        int middle = list.size() / 2;
-        if (list.size() % 2 == 1) {
-            return list.get(middle);
-        } else {
-            return (list.get(middle - 1) + list.get(middle)) / 2.0;
-        }
-    }
+    private final DefaultStatisticalCategoryDataset log2Dataset = new DefaultStatisticalCategoryDataset();
+    private final DefaultBoxAndWhiskerCategoryDataset bwDataset = new DefaultBoxAndWhiskerCategoryDataset();
 
     /**
      * @return the meanDataset
@@ -143,6 +111,20 @@ public class PlotGroupDatasets {
      */
     public DefaultCategoryDataset getMedianDataset() {
         return medianDataset;
+    }
+
+    /**
+     * @return the log2Dataset
+     */
+    public DefaultStatisticalCategoryDataset getLog2Dataset() {
+        return log2Dataset;
+    }
+
+    /**
+     * @return the bwDataset
+     */
+    public DefaultBoxAndWhiskerCategoryDataset getBwDataset() {
+        return bwDataset;
     }
     
 
