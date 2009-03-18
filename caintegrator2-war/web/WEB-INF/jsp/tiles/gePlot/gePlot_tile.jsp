@@ -5,6 +5,18 @@
 
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script language="javascript">
+
+     function setDynamicPlot(imageId, imageSrc, linkIdName, linkIdNumber) {
+        document.getElementById(imageId).src = imageSrc;
+        for (i = 1; i <= 4; i++) {
+            document.getElementById(linkIdName + i).style.backgroundColor = "white";
+        }
+        document.getElementById(linkIdName + linkIdNumber).style.backgroundColor="yellow";
+
+     }
+</script>
+
 <div id="content">
 
         <!--Page Help-->
