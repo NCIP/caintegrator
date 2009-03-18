@@ -113,10 +113,12 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.FileReader;
@@ -125,6 +127,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -143,6 +146,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private CaIntegrator2Dao dao;
     private ArrayDataService arrayDataService;
     private Platform design;
+    private FileManager fileManager;
     
     public AbstractDeployStudyTestIntegration() {
         setDefaultRollback(false);
@@ -168,6 +172,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
         service.save(studyConfiguration);
+        clearStudyDirectory(studyConfiguration.getStudy());
         loadAnnotationDefinitions();
         loadClinicalData();
         loadSurvivalValueDefinition();
@@ -180,6 +185,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         deploy();
         checkArrayData();
         checkQueries();
+    }
+
+    private void clearStudyDirectory(Study study) throws IOException {
+        File studyDirectory = fileManager.getStudyDirectory(study);
+        if (studyDirectory.exists()) {
+            FileUtils.cleanDirectory(studyDirectory);            
+        }
     }
 
     abstract protected String getStudyName();
@@ -511,6 +523,20 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     protected String getCaArrayPassword() {
         return null;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 }
