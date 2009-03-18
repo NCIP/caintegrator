@@ -5,15 +5,19 @@
      <!-- Gene Expression Graph -->
     <s:set name="gePlot" value="#session['gePlot']" />
     <s:if test="#gePlot.annotationBasedGePlot != null">
-        <br>
         <center>
             <s:set name="retrieveAnnotationGEPlot_mean" id="retrieveAnnotationGEPlot_mean" value="%{retrieveGePlotUrl('mean')}"/>
             <s:set name="retrieveAnnotationGEPlot_median" id="retrieveAnnotationGEPlot_median" value="%{retrieveGePlotUrl('median')}"/>
+            <s:set name="retrieveAnnotationGEPlot_log2" id="retrieveAnnotationGEPlot_log2" value="%{retrieveGePlotUrl('log2Intensity')}"/>
+            <s:set name="retrieveAnnotationGEPlot_bw" id="retrieveAnnotationGEPlot_bw" value="%{retrieveGePlotUrl('boxWhiskerLog2Intensity')}"/>
+            
             
             Select Graph Calculation Type: 
             <select name="calculationTypeSelection" onChange="javascript:document.getElementById('annotationBasedImage').src=this.options[this.selectedIndex].value;">
                 <OPTION value="${retrieveAnnotationGEPlot_mean}">Mean
                 <OPTION value="${retrieveAnnotationGEPlot_median}">Median
+                <OPTION value="${retrieveAnnotationGEPlot_log2}">Log2 Intensity
+                <OPTION value="${retrieveAnnotationGEPlot_bw}">Box-Whisker Log2 Intensity
             </select>
             
             <br>

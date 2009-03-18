@@ -85,136 +85,87 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
-import org.jfree.chart.renderer.category.StatisticalBarRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Implementation of the GeneExpressionPlotService interface.
+ * Factory utility class for generating a <code>PlotGroupDatasets</code> from a 
+ * <code>GeneExpressionPlotConfiguration</code>.
  */
-public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService {
-    private static final String DOMAIN_AXIS_LABEL = "Groups";
-    private static final double LOWER_MARGIN = .02;
-    private static final double CATEGORY_MARGIN = .20; 
-    private static final double UPPER_MARGIN = .02;
-    private static final double ITEM_MARGIN = .01;
-    private LegendItemCollection legendItems;
+public final class PlotGroupDatasetsFactory {
     
-
+    private PlotGroupDatasetsFactory() { }
+    
     /**
-     * {@inheritDoc}
+     * Creates the datasets from a plot configuration.
+     * @param configuration for the plot data sets.
+     * @return object containing the JFreeChart datasets.
      */
-    public GeneExpressionPlotGroup generatePlots(GeneExpressionPlotConfiguration configuration) {
-        GeneExpressionPlotGroup plotGroup = new GeneExpressionPlotGroup();
-        PlotGroupDatasets dataSets = PlotGroupDatasetsFactory.createDatasets(configuration);
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEAN, 
-                                            createMeanTypePlot(dataSets.getMeanDataset()));
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.MEDIAN, 
-                                            createMedianTypePlot(dataSets.getMedianDataset()));
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.LOG2_INTENSITY, 
-                                            createLog2TypePlot(dataSets.getLog2Dataset()));
-        plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY, 
-                                            createBoxWhiskerTypePlot(dataSets.getBwDataset()));
-        addLegendItemsToPlot(plotGroup);
-        return plotGroup;
-    }
-
-
-    private GeneExpressionPlot createMeanTypePlot(DefaultCategoryDataset meanDataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(meanDataset, "Mean Expression Intensity");
-        legendItems = chart.getLegend().getSources()[0].getLegendItems();
-        cusomtizeBarChart(chart);
-        plot.setPlotChart(chart);
-        return plot;
-    }
-    
-    private GeneExpressionPlot createMedianTypePlot(DefaultCategoryDataset medianDataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(medianDataset, "Median Expression Intensity");
-        cusomtizeBarChart(chart);
-        plot.setPlotChart(chart);
-        return plot;
-    }
-    
-    private GeneExpressionPlot createLog2TypePlot(DefaultStatisticalCategoryDataset log2Dataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(log2Dataset, "Log2 Expression Intensity");
-        chart.getCategoryPlot().setRenderer(cusomtizeStatisticalBarChart(chart));
-        plot.setPlotChart(chart);
-        return plot;
-    }
-
-    private GeneExpressionPlot createBoxWhiskerTypePlot(DefaultBoxAndWhiskerCategoryDataset bwDataset) {
-        GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
-        JFreeChart chart = createChart(bwDataset, "Log2 Expression Intensity");
-        chart.getCategoryPlot().setRenderer(cusomtizeBoxWhiskerChart(chart));
-        plot.setPlotChart(chart);
-        return plot;
-    }
-
-    private JFreeChart createChart(CategoryDataset dataset, String rangeAxisLabel) {
-        JFreeChart chart = ChartFactory.createBarChart(
-                null, 
-                DOMAIN_AXIS_LABEL, 
-                rangeAxisLabel, 
-                dataset,
-                PlotOrientation.VERTICAL, // orientation
-                true, // include legend
-                true, // tooltips
-                false // URLs
-                );
-        return chart;
-    }
-
-    private void cusomtizeBarChart(JFreeChart chart) {
-        customizeAxisMargin(chart);
-        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
-        renderer.setItemMargin(ITEM_MARGIN);
-        renderer.setDrawBarOutline(true);
-        chart.removeLegend();
-    }
-
-    
-    private StatisticalBarRenderer cusomtizeStatisticalBarChart(JFreeChart chart) {
-        customizeAxisMargin(chart);
-        StatisticalBarRenderer renderer = new StatisticalBarRenderer();
-        renderer.setItemMargin(ITEM_MARGIN);
-        renderer.setDrawBarOutline(true);
-        chart.removeLegend();
-        return renderer;
-    }
-    
-    private BoxAndWhiskerRenderer cusomtizeBoxWhiskerChart(JFreeChart chart) {
-        customizeAxisMargin(chart);
-        BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setItemMargin(ITEM_MARGIN);
-        chart.removeLegend();
-        return renderer;
-    }
-    
-    private void customizeAxisMargin(JFreeChart chart) {
-        CategoryAxis axis = chart.getCategoryPlot().getDomainAxis();
-        axis.setLowerMargin(LOWER_MARGIN);
-        axis.setCategoryMargin(CATEGORY_MARGIN);
-        axis.setUpperMargin(UPPER_MARGIN);
-    }
-
-
-    private void addLegendItemsToPlot(GeneExpressionPlotGroup plotGroup) {
-        if (legendItems != null) {
-            for (int x = 0; x < legendItems.getItemCount(); x++) {
-                plotGroup.getLegendItems().add(new LegendItemWrapper(legendItems.get(x)));
+    public static PlotGroupDatasets createDatasets(GeneExpressionPlotConfiguration configuration) {
+        PlotGroupDatasets datasets = new PlotGroupDatasets();
+        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
+            String columnKey = sampleGroup.getName();
+            for (PlotReporterGroup reporterGroup : sampleGroup.getReporterGroups()) {
+                List <Double> rowValues = new ArrayList<Double>();
+                List <Double> rowLog2Values = new ArrayList<Double>();
+                Double totalValue = 0.0;
+                Double totalLog2Value = 0.0;
+                String rowKey = reporterGroup.getName();
+                for (Double value : reporterGroup.getGeneExpressionValues()) {
+                    Double log2Value = log2Intensity(value);
+                    rowValues.add(value);
+                    rowLog2Values.add(log2Value);
+                    totalValue += value;
+                    totalLog2Value += log2Value;
+                }
+                if (!rowValues.isEmpty()) {
+                    updateDatasets(datasets, columnKey, rowKey, rowValues, totalValue);
+                    updateLog2Datasets(datasets, columnKey, rowKey, rowLog2Values, totalLog2Value);
+                }
             }
         }
+        return datasets;
     }
+    
+    private static void updateDatasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
+                                        List<Double> rowValues, Double totalValue) {
+        datasets.getMeanDataset().addValue(mean(totalValue, rowValues.size()), rowKey, columnKey);
+        datasets.getMedianDataset().addValue(median(rowValues), rowKey, columnKey);
+    }
+    
+    private static void updateLog2Datasets(PlotGroupDatasets datasets, String columnKey, String rowKey, 
+                                       List<Double> rowLog2Values, Double totalLog2Value) {
+        Double mean = mean(totalLog2Value, rowLog2Values.size());
+        datasets.getLog2Dataset().add(mean, standardDeviation(rowLog2Values, mean), rowKey, columnKey);
+        datasets.getBwDataset().add(rowLog2Values, rowKey, columnKey);   
+    }
+    
+    private static double log2Intensity(Double value) {
+        return Math.log(value / Math.log(2));
+    }
+
+    private static Double standardDeviation(List<Double> values, Double mean) {
+        Double totalSquaredDeviations = 0.0;
+        for (Double value : values) {
+            totalSquaredDeviations += Math.pow(value - mean, 2);
+        }
+        return Math.sqrt(mean(totalSquaredDeviations, values.size()));
+    }
+
+    private static Double mean(Double totalValue, int numValues) {
+        return numValues != 0 ? totalValue / numValues : 0;
+    }
+
+    private static Double median(List<Double> list) {
+        Collections.sort(list);
+        int middle = list.size() / 2;
+        if (list.size() % 2 == 1) {
+            return list.get(middle);
+        } else {
+            return (list.get(middle - 1) + list.get(middle)) / 2.0;
+        }
+    }
+    
+    
 }

@@ -254,6 +254,10 @@ public class GEPlotAnnotationBasedActionTest {
                                         contains("retrieveAnnotationGEPlot_mean.action?"));
         assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.MEDIAN.getValue()).
                                         contains("retrieveAnnotationGEPlot_median.action?"));
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.LOG2_INTENSITY.getValue()).
+                                        contains("retrieveAnnotationGEPlot_log2.action?"));
+        assertTrue(action.retrieveGePlotUrl(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY.getValue()).
+                                        contains("retrieveAnnotationGEPlot_bw.action?"));
     }
 
 
