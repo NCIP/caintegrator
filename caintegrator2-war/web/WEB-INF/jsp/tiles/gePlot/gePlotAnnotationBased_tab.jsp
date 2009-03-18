@@ -14,11 +14,11 @@
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 1.)
                 </td>
-                <td class="value_inline" style="min-width: 5px; width: 150px;">
-                    Gene Symbol:  <br>
+                <td class="value_inline" style="min-width: 5px; width: 190px;">
+                    Gene Symbol(s) (comma separated list):<br>
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
-                <td class="value_inline"><s:textfield name="gePlotForm.annotationBasedForm.geneSymbol" theme="simple" />                
+                <td class="value_inline"><s:textfield name="gePlotForm.annotationBasedForm.geneSymbol" theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>                
                 </td>
             </tr>
         </table>
