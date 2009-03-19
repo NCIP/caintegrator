@@ -176,6 +176,20 @@ public class DisplayableResultRow {
             return "";
         }
     }
+    
+    /**
+     * Currently this function is called to see if a checkbox for this row is necessary, and 
+     * the only reason it would be necessary is if the row is associated with an Image Series
+     * or Image Study.
+     * @return T/F value.
+     */
+    public boolean isImagingRow() {
+        if (resultRow.getImageSeries() != null 
+            || !resultRow.getSubjectAssignment().getImageStudyCollection().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @return the checkedRow
