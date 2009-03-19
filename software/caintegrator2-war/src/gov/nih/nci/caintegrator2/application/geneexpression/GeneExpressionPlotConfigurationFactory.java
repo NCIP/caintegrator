@@ -85,14 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
+import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Factory for generating GeneExpressionPlotConfiguration's from GenomicDataQueryResults.
@@ -109,32 +114,40 @@ public final class GeneExpressionPlotConfigurationFactory {
     public static GeneExpressionPlotConfiguration createPlotConfiguration(
                                             List<GenomicDataQueryResult> genomicResults) {
         GeneExpressionPlotConfiguration configuration = new GeneExpressionPlotConfiguration();
-        Map<String, PlotReporterGroup> reporterNameToGroupMap = new HashMap<String, PlotReporterGroup>();
-        addSampleGroups(genomicResults, configuration, reporterNameToGroupMap);
+        addSampleGroups(genomicResults, configuration);
         return configuration;
     }
 
 
     private static void addSampleGroups(List<GenomicDataQueryResult> genomicResults,
-            GeneExpressionPlotConfiguration configuration, Map<String, PlotReporterGroup> reporterNameToGroupMap) {
+            GeneExpressionPlotConfiguration configuration) {
+        PlotSampleGroup allSamplesGroup = new PlotSampleGroup();
+        configuration.getPlotSampleGroups().add(allSamplesGroup);
+        int numberSubjectsTotal = 0;
+        Map<String, PlotReporterGroup> reporterNameToGroupMap = new HashMap<String, PlotReporterGroup>();
         for (GenomicDataQueryResult genomicResult : genomicResults) {
             PlotSampleGroup sampleGroup = new PlotSampleGroup();
             sampleGroup.setName(genomicResult.getQuery().getName());
             configuration.getPlotSampleGroups().add(sampleGroup);
+            int numberSubjects = numberSubjectsInGenomicResult(genomicResult);
+            numberSubjectsTotal += numberSubjects;
+            sampleGroup.setNumberSubjects(numberSubjects);
             addReporterGroups(reporterNameToGroupMap, genomicResult, sampleGroup, configuration);
         }
+        configureAllSamplesGroup(configuration, allSamplesGroup, reporterNameToGroupMap, numberSubjectsTotal);
     }
 
-    private static void addReporterGroups(Map<String, PlotReporterGroup> reporterNameToGroupMap,
+    private static void addReporterGroups(Map<String, PlotReporterGroup> reporterNameToGroupMap, 
             GenomicDataQueryResult genomicResult, PlotSampleGroup sampleGroup, 
             GeneExpressionPlotConfiguration configuration) {
+        Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
         for (GenomicDataResultRow row : genomicResult.getRowCollection()) {
             if (!(row.getReporter() instanceof GeneExpressionReporter)) {
                 throw new NonGeneExpressionReporterException("Row reporter is not a GeneExpressionReporter.");
             }
             GeneExpressionReporter rowReporter = (GeneExpressionReporter) row.getReporter();
             configuration.getGeneNames().add(rowReporter.getGene().getSymbol());
-            String name = row.getReporter().getName();
+            String name = retrieveRowName(row, rowReporter);
             if (!reporterNameToGroupMap.containsKey(name)) {
                 configureNewReporterGroup(reporterNameToGroupMap, name);
             } 
@@ -142,6 +155,36 @@ public final class GeneExpressionPlotConfigurationFactory {
             sampleGroup.getReporterGroups().add(reporterGroup);
             for (GenomicDataResultValue value : row.getValueCollection()) {
                 reporterGroup.getGeneExpressionValues().add(Double.valueOf(value.getValue()));
+            }
+            reporterNameToGroupMap.get(name).getGeneExpressionValues().addAll(reporterGroup.getGeneExpressionValues());
+        }
+    }
+    
+    private static int numberSubjectsInGenomicResult(GenomicDataQueryResult genomicResult) {
+        Set <Long> uniqueSubjects = new HashSet<Long>();
+        for (GenomicDataResultColumn column : genomicResult.getColumnCollection()) {
+            uniqueSubjects.add(column.getSampleAcquisition().getAssignment().getId());
+        }
+        return uniqueSubjects.size();
+    }
+
+    private static String retrieveRowName(GenomicDataResultRow row, GeneExpressionReporter rowReporter) {
+        StringBuffer name = new StringBuffer(rowReporter.getGene().getSymbol());
+        if (!rowReporter.getGene().getSymbol().equals(row.getReporter().getName())) {
+            name.append(" - ");
+            name.append(row.getReporter().getName());
+        }
+        return name.toString();
+    }
+    
+    private static void configureAllSamplesGroup(GeneExpressionPlotConfiguration configuration, 
+            PlotSampleGroup allSamplesGroup, Map<String, PlotReporterGroup> reporterNameToGroupMap, 
+            int numberSubjects) {
+        allSamplesGroup.setName("All");
+        allSamplesGroup.setNumberSubjects(numberSubjects);
+        if (configuration.getPlotSampleGroups().size() > 1) {
+            for (PlotReporterGroup reporterGroup : configuration.getPlotSampleGroups().get(1).getReporterGroups()) {
+                allSamplesGroup.getReporterGroups().add(reporterNameToGroupMap.get(reporterGroup.getName()));
             }
         }
     }

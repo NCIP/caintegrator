@@ -98,6 +98,7 @@ public class GeneExpressionPlotGroup {
     private final Map<PlotCalculationTypeEnum, GeneExpressionPlot> geneExpressionPlots =
         new HashMap<PlotCalculationTypeEnum, GeneExpressionPlot>();
     private final List<LegendItemWrapper> legendItems = new ArrayList<LegendItemWrapper>();
+    private final Map<String, Integer> groupNameToNumberSubjectsMap = new HashMap<String, Integer>();
 
     /**
      * @return the geneExpressionPlots
@@ -120,5 +121,12 @@ public class GeneExpressionPlotGroup {
      */
     public List<LegendItemWrapper> getLegendItems() {
         return legendItems;
+    }
+
+    /**
+     * @return the groupNameToNumberSubjectsMap
+     */
+    public Map<String, Integer> getGroupNameToNumberSubjectsMap() {
+        return groupNameToNumberSubjectsMap;
     }
 }

@@ -125,9 +125,9 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         plotGroup.getGeneExpressionPlots().put(PlotCalculationTypeEnum.BOX_WHISKER_LOG2_INTENSITY, 
                                             createBoxWhiskerTypePlot(dataSets.getBwDataset()));
         addLegendItemsToPlot(plotGroup);
+        addPlotGroupSubjectCounts(configuration, plotGroup);
         return plotGroup;
     }
-
 
     private GeneExpressionPlot createMeanTypePlot(DefaultCategoryDataset meanDataset) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
@@ -215,6 +215,13 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
             for (int x = 0; x < legendItems.getItemCount(); x++) {
                 plotGroup.getLegendItems().add(new LegendItemWrapper(legendItems.get(x)));
             }
+        }
+    }
+    
+    private void addPlotGroupSubjectCounts(GeneExpressionPlotConfiguration configuration,
+            GeneExpressionPlotGroup plotGroup) {
+        for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
+            plotGroup.getGroupNameToNumberSubjectsMap().put(sampleGroup.getName(), sampleGroup.getNumberSubjects());
         }
     }
 }

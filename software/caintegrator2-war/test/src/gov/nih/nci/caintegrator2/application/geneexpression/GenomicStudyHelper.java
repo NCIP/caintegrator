@@ -138,6 +138,7 @@ public class GenomicStudyHelper {
         query.getSubscription().setStudy(new Study());
         Study study = query.getSubscription().getStudy();
         StudySubjectAssignment assignment = new StudySubjectAssignment();
+        assignment.setId(Long.valueOf(1));
         SampleAcquisition acquisition = new SampleAcquisition();
         Sample sample = new Sample();
         sample.setSampleAcquisition(acquisition);
@@ -159,9 +160,11 @@ public class GenomicStudyHelper {
         array.getSampleCollection().add(sample);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
+        acquisition.setAssignment(assignment);
         study.getAssignmentCollection().add(assignment);
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         Gene gene = new Gene();
+        gene.setSymbol("EGFR");
         reporter = new GeneExpressionReporter();
         ReporterList reporterList = new ReporterList();
         reporter.setReporterList(reporterList);
