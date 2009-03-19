@@ -94,6 +94,7 @@ import java.util.List;
 public class PlotSampleGroup {
 
     private String name;
+    private int numberSubjects;
     private List<PlotReporterGroup> reporterGroups = new ArrayList<PlotReporterGroup>();
     
     /**
@@ -119,6 +120,18 @@ public class PlotSampleGroup {
      */
     public void setReporterGroups(List<PlotReporterGroup> reporterGroups) {
         this.reporterGroups = reporterGroups;
+    }
+    /**
+     * @return the numberSubjects
+     */
+    public int getNumberSubjects() {
+        return numberSubjects;
+    }
+    /**
+     * @param numberSubjects the numberSubjects to set
+     */
+    public void setNumberSubjects(int numberSubjects) {
+        this.numberSubjects = numberSubjects;
     }
     
     

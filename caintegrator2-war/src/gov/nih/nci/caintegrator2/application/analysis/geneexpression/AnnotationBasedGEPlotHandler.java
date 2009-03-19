@@ -92,18 +92,15 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotSe
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,10 +127,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
                                                StudySubscription subscription) {
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (AbstractPermissibleValue permissibleValue : parameters.getSelectedValues()) {
-            GenomicDataQueryResult result = retrieveGenomicResults(parameters.getSelectedAnnotation(), 
-                                                                   parameters.getEntityType(), 
-                                                                   parameters.getGeneSymbol(), 
-                                                                   permissibleValue, 
+            GenomicDataQueryResult result = retrieveGenomicResults(permissibleValue, 
                                                                    subscription);
             genomicResults.add(result);
         }
@@ -144,17 +138,14 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
     }
 
     
-    private GenomicDataQueryResult retrieveGenomicResults(AnnotationDefinition groupAnnotationField,
-                                                 EntityTypeEnum entityType,
-                                                 String geneName,
-                                                 AbstractPermissibleValue permissibleValue,
-                                                 StudySubscription subscription) {
+    private GenomicDataQueryResult retrieveGenomicResults(AbstractPermissibleValue permissibleValue,
+                                                          StudySubscription subscription) {
         Query query = new Query();
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
-        geneNameCriterion.setGeneSymbol(geneName);
+        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         SelectedValueCriterion selectedValueCriterion = new SelectedValueCriterion();
-        selectedValueCriterion.setAnnotationDefinition(groupAnnotationField);
-        selectedValueCriterion.setEntityType(entityType);
+        selectedValueCriterion.setAnnotationDefinition(parameters.getSelectedAnnotation());
+        selectedValueCriterion.setEntityType(parameters.getEntityType());
         selectedValueCriterion.setValueCollection(new HashSet<AbstractPermissibleValue>());
         selectedValueCriterion.getValueCollection().add(permissibleValue);
         query.setName(permissibleValue.toString());
@@ -165,7 +156,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
         query.getCompoundCriterion().getCriterionCollection().add(selectedValueCriterion);
         query.setResultType(ResultTypeEnum.GENOMIC);
-        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET); // PROBE SET for now, let user choose later.
+        query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);
     }

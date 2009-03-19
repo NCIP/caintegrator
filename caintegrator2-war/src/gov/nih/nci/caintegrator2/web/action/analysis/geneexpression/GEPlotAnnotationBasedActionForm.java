@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -102,6 +103,7 @@ public class GEPlotAnnotationBasedActionForm {
     private Collection <String> selectedValuesIds = new HashSet<String>();
     private boolean permissibleValuesNeedUpdate = false;
     private String geneSymbol;
+    private String reporterType;
     
     
     // JSP Select List Options
@@ -118,6 +120,7 @@ public class GEPlotAnnotationBasedActionForm {
         selectedAnnotationId = null;
         selectedValuesIds = new HashSet<String>();
         geneSymbol = null;
+        reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
         clearAnnotationDefinitions();
     }
     
@@ -235,6 +238,20 @@ public class GEPlotAnnotationBasedActionForm {
      */
     public void setGeneSymbol(String geneSymbol) {
         this.geneSymbol = geneSymbol;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    public String getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(String reporterType) {
+        this.reporterType = reporterType;
     }
 
 }

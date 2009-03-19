@@ -24,6 +24,22 @@
         </table>
         <table class="data">
             <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                2.)
+                </td>
+                <td class="value_inline" style="min-width: 5px; width: 120px;">
+                    Select Reporter Type:
+                </td>
+                <td class="value_inline">
+	                <s:radio name="gePlotForm.annotationBasedForm.reporterType"
+	                list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
+	                listKey="key" 
+	                listValue="value" />                
+                </td>
+            </tr>
+        </table>
+        <table class="data">
+            <tr>
                 <th/>
                 <th> Annotation Type</th>
                 <th> Annotation </th>
@@ -31,7 +47,7 @@
             </tr>
             <tr>
                 <td class="value_inline" style="min-width: 5px; padding-left: 10px;">
-                    2.) Sample Groups:
+                    3.) Sample Groups:
                 </td>
                 <td class="value_inline">
                     <s:select name="gePlotForm.annotationBasedForm.annotationTypeSelection" 
