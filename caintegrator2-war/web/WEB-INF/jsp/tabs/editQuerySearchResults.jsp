@@ -84,7 +84,9 @@
                     title="Select <br> <font style='font-size:9px;text-decoration:underline;cursor:pointer;'><s:a href='#' cssStyle='text-decoration: underline;' onclick='selectAll()'> All</s:a> | <s:a href='#' onclick='selectNone()'>None</s:a> </font>" 
                     media="html"
                     sortable="false">
-                    <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].checkedRow"/>
+                    <s:if test="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imagingRow}">
+                        <s:checkbox theme="simple" name="queryResult.rows[%{#attr.queryResultRows_rowNum - 1}].checkedRow"/>
+                    </s:if>
                 </display:column>
                 <s:if test="queryResult.hasSubjects">
                     <display:column title="Subject Identifier" sortable="true">
