@@ -113,7 +113,11 @@ public class Sample extends AbstractCaIntegrator2Object {
      * @return the study
      */
     public Study getStudy() {
-        return getSampleAcquisition().getStudy();
+        if (getSampleAcquisition() != null) {
+            return getSampleAcquisition().getStudy();
+        } else {
+            return null;
+        }
     }
 
 }
