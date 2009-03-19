@@ -398,6 +398,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
             if (resultRow.getImageSeries() != null) {
                 resultRow.getImageSeries().getImageCollection().isEmpty();
             }
+            if (resultRow.getSubjectAssignment().getImageStudyCollection() != null) {
+                resultRow.getSubjectAssignment().getImageStudyCollection().isEmpty();
+            }
         }
     }
     

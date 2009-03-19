@@ -40,6 +40,7 @@ public class DisplayableQueryResultTest {
         assertTrue(result.getSelectAll());
         result.setSelectAll(false);
         assertFalse(result.getSelectAll());
+        assertTrue(result.getRows().get(0).isImagingRow());
     }
 
     public static DisplayableQueryResult getTestResult() {
