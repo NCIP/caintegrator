@@ -95,6 +95,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
@@ -104,6 +106,8 @@ import ucar.nc2.Variable;
  * Provides functionality to read NetCDF files.
  */
 class NetCDFReader extends AbstractNetCdfFileHandler {
+    
+    private static final Logger LOGGER = Logger.getLogger(NetCDFReader.class);
 
     private final DataRetrievalRequest request;
     private NetcdfFile reader;
@@ -157,9 +161,21 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
     private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataType type, ArrayData arrayData) 
     throws IOException, InvalidRangeException {
         for (List<AbstractReporter> reporters : getSequentialReporterLists()) {
-            float[] floatValues = getFloatValues(variable, reporters, getArrayDataOffsets().get(arrayData.getId()));
+            float[] floatValues = getFloatValues(variable, reporters, getArrayDataOffset(arrayData));
             values.setFloatValues(arrayData, reporters, type, floatValues);
         }
+    }
+
+    private Integer getArrayDataOffset(ArrayData arrayData) throws IOException {
+        Integer offset = getArrayDataOffsets().get(arrayData.getId());
+        if (offset == null) {
+            String message = "NetCDF file "
+                + getFile(request.getStudy(), request.getReporters().get(0).getReporterList()).getAbsolutePath()
+                + " doesn't contain data for ArrayData with id " + arrayData.getId();
+            LOGGER.error(message + ". ArrayData offsets: " + getArrayDataOffsets());
+            throw new ArrayDataStorageException(message);
+        }
+        return offset;
     }
 
     private float[] getFloatValues(Variable variable, List<AbstractReporter> reporters, Integer arrayDataIndex) 

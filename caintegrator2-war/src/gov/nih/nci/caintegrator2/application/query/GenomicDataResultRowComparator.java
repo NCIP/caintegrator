@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 
 import java.util.Comparator;
 
@@ -96,36 +95,11 @@ import java.util.Comparator;
  */
 public class GenomicDataResultRowComparator implements Comparator <GenomicDataResultRow> {
 
-    private static final Integer EQUAL = 0;
-
     /**
      * {@inheritDoc}
      */
     public int compare(GenomicDataResultRow row1, GenomicDataResultRow row2) {
-        Integer order = EQUAL;
-        if (row1.getReporter() instanceof GeneExpressionReporter) {
-            order = sortGeneExpressionReporters(row1, row2);
-        }
-        return order;
-    }
-
-    private int sortGeneExpressionReporters(GenomicDataResultRow row1, GenomicDataResultRow row2) {
-        int order = EQUAL;
-        if (row2.getReporter() instanceof GeneExpressionReporter) {
-            String symbol1 = ((GeneExpressionReporter) row1.getReporter()).getGene().getSymbol();
-            String symbol2 = ((GeneExpressionReporter) row2.getReporter()).getGene().getSymbol();
-            order = symbol1.compareTo(symbol2);
-            if (EQUAL.equals(order)) {
-                order = sortReporterNames(row1, row2);
-            }
-        }
-        return order;
-    }
-    
-    private int sortReporterNames(GenomicDataResultRow row1, GenomicDataResultRow row2) {
-        String reporterName1 = row1.getReporter().getName();
-        String reporterName2 = row2.getReporter().getName();
-        return reporterName1.compareTo(reporterName2);
+        return row1.getReporter().compareTo(row2.getReporter());
     }
 
 }
