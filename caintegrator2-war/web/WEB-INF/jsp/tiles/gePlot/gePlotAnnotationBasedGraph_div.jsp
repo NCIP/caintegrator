@@ -31,6 +31,14 @@
             </table>
         </s:iterator>
         </fieldset>
+        <br>
+        <fieldset style='display:table;width:400; border:1px solid gray; text-align:left; padding:5px;'>
+        <legend> Legend: Groups </legend>
+        <s:iterator value="#gePlot.annotationBasedGePlot.groupNameToNumberSubjectsMap" status="status">
+            <b><s:property value="key"/> = <s:property value="value"/></b><br>
+        </s:iterator>
+        </fieldset>
+
         </center>
     </s:if>
     <!-- /Kaplan-Meier Graph -->

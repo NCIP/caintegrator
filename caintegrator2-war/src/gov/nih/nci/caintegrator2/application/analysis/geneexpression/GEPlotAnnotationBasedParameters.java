@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -102,7 +103,7 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
     private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
     private EntityTypeEnum entityType;
-    
+    private ReporterTypeEnum reporterType;
     
     /**
      * {@inheritDoc}
@@ -168,6 +169,20 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
      */
     public void setEntityType(EntityTypeEnum entityType) {
         this.entityType = entityType;
+    }
+
+    /**
+     * @return the reporterType
+     */
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
+    }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
     }
 
 }

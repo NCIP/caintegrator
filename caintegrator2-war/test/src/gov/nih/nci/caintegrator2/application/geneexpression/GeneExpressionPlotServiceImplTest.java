@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.geneexpression;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class GeneExpressionPlotServiceImplTest {
         GeneExpressionPlotServiceImpl plotService = new GeneExpressionPlotServiceImpl();
         GeneExpressionPlotGroup plotGroup = plotService.generatePlots(configuration);
         assertNotNull(plotGroup.getPlot(PlotCalculationTypeEnum.MEAN));
+        assertEquals(Integer.valueOf(1), plotGroup.getGroupNameToNumberSubjectsMap().get(query.getName()));
         
     }
 

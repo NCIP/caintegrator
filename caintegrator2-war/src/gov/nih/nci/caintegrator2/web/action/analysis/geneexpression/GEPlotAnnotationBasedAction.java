@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.Collection;
@@ -132,6 +133,8 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     
     private void retrieveFormValues() {
         plotParameters.setGeneSymbol(getGePlotForm().getAnnotationBasedForm().getGeneSymbol());
+        plotParameters.setReporterType(ReporterTypeEnum.
+                        getByValue(getGePlotForm().getAnnotationBasedForm().getReporterType()));
         if (getForm().getSelectedAnnotationId() != null 
                 && !StringUtils.isEmpty(getForm().getSelectedAnnotationId())) {
                 plotParameters.getSelectedAnnotation().setId(
