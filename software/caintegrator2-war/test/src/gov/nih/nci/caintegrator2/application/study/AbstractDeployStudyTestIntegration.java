@@ -125,6 +125,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.FileUtils;
@@ -299,19 +300,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void checkArrayData() {
         if (getLoadSamples()) {
             logStart();
-            Collection<ArrayData> arrayDatas = studyConfiguration.getGenomicDataSources().get(0).getMappedSamples().get(0).getArrayDataCollection();
-            for (ArrayData arrayData : arrayDatas) {
-                assertEquals(studyConfiguration.getStudy(), arrayData.getStudy());
-            }
             PlatformHelper platformHelper = new PlatformHelper(design);
             ReporterList probeSetReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             DataRetrievalRequest probeSetRequest = new DataRetrievalRequest();
-            probeSetRequest.addArrayDatas(probeSetReporterList.getArrayDatas());
+            probeSetRequest.addArrayDatas(getStudyArrayDatas(probeSetReporterList.getArrayDatas()));
             probeSetRequest.addType(ArrayDataType.EXPRESSION_SIGNAL);
             probeSetRequest.addReporters(probeSetReporterList.getReporters());
             DataRetrievalRequest geneRequest = new DataRetrievalRequest();
             ReporterList geneReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-            geneRequest.addArrayDatas(geneReporterList.getArrayDatas());
+            geneRequest.addArrayDatas(getStudyArrayDatas(geneReporterList.getArrayDatas()));
             geneRequest.addType(ArrayDataType.EXPRESSION_SIGNAL);
             geneRequest.addReporters(geneReporterList.getReporters());
             ArrayDataValues values = arrayDataService.getData(probeSetRequest);
@@ -322,6 +319,16 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             assertEquals(getExpectedNumberOfGeneReporters(), values.getReporters().size());
             logEnd();
         }
+    }
+
+    private Set<ArrayData> getStudyArrayDatas(Set<ArrayData> arrayDatas) {
+        Set<ArrayData> studyArrayDatas = new HashSet<ArrayData>();
+        for (ArrayData arrayData : arrayDatas) {
+            if (studyConfiguration.getStudy().equals(arrayData.getStudy())) {
+                studyArrayDatas.add(arrayData);
+            }
+        } 
+        return studyArrayDatas;
     }
 
     protected abstract int getExpectedNumberOfGeneReporters();

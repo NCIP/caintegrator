@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -124,8 +125,9 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
         Set<SampleAcquisition> sampleAcquisitions = new HashSet<SampleAcquisition>();
         for (AbstractReporter reporter : reporters) {
             for (ArrayData arrayData : reporter.getReporterList().getArrayDatas()) {
-                if (arrayData.getSample().getSampleAcquisition() != null) {
-                    sampleAcquisitions.add(arrayData.getSample().getSampleAcquisition());
+                Sample sample = arrayData.getSample();
+                if (study.equals(arrayData.getStudy()) && sample.getSampleAcquisition() != null) {
+                    sampleAcquisitions.add(sample.getSampleAcquisition());
                 }
             }
         }
