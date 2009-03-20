@@ -85,48 +85,189 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
+
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Object that is used to store GE Plots on the session, based on a maximum of one per plot type.
+ * Action dealing with Gene Expression Genomic Query Based plotting.
  */
-public class GEPlotMapper {
+@SuppressWarnings("PMD.CyclomaticComplexity") // See Initialize
+public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction {
+
+    private static final long serialVersionUID = 1L;
+    private static final String GENOMIC_QUERY_MEAN_PLOT_URL = "retrieveGenomicQueryGEPlot_mean.action?";
+    private static final String GENOMIC_QUERY_MEDIAN_PLOT_URL = "retrieveGenomicQueryGEPlot_median.action?";
+    private static final String GENOMIC_QUERY_LOG2_PLOT_URL = "retrieveGenomicQueryGEPlot_log2.action?";
+    private static final String GENOMIC_QUERY_BW_PLOT_URL = "retrieveGenomicQueryGEPlot_bw.action?";
+    private final GEPlotGenomicQueryBasedParameters plotParameters = new GEPlotGenomicQueryBasedParameters();
+
     
-    private final Map<PlotTypeEnum, GeneExpressionPlotGroup> gePlotMap = 
-                        new HashMap<PlotTypeEnum, GeneExpressionPlotGroup>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        setDisplayTab(GENOMIC_QUERY_TAB);
+        retrieveFormValues();
+        refreshObjectInstances();
+        populateQueries();
+    }
+    
+    private void retrieveFormValues() {
+        plotParameters.setReporterType(ReporterTypeEnum.
+                getByValue(getGePlotForm().getGenomicQueryBasedForm().getReporterType()));
+        if (!StringUtils.isBlank(getForm().getSelectedQueryId())) {
+            Query query = new Query();
+            query.setId(Long.valueOf(getForm().getSelectedQueryId()));
+            plotParameters.setQuery(query);
+        }
+    }
+    
+    private void refreshObjectInstances() {
+        if (plotParameters.getQuery() != null) {
+            plotParameters.setQuery(getStudyManagementService().getRefreshedStudyEntity(plotParameters.getQuery()));
+        }
+    }
+    
+    private void populateQueries() {
+        initialize();
+    }
+
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and genomic query check.
+    private void initialize() {
+        if (getStudySubscription() != null 
+            && getStudySubscription().getQueryCollection() != null
+            && getGePlotForm().getGenomicQueryBasedForm().getQueries().isEmpty()) {
+            getGePlotForm().getGenomicQueryBasedForm().getQueries().clear();
+            for (Query query 
+                    : getStudySubscription().getQueryCollection()) {
+                if (ResultTypeEnum.GENOMIC.equals(query.getResultType())) {
+                    getGePlotForm().getGenomicQueryBasedForm().getQueries().
+                                                    put(query.getId().toString(), query);
+                }
+            }
+        }
+    }
+
 
     /**
-     * Clears the map of GE Plots.
+     * Clears all input values and ge plots on the session.
+     * @return Struts return value.
      */
-    public void clear() {
-        gePlotMap.clear();
-    }
-    
-    /**
-     * @return the gePlotMap
-     */
-    public Map<PlotTypeEnum, GeneExpressionPlotGroup> getGePlotMap() {
-        return gePlotMap;
-    }
-    
-    /**
-     * Returns the Annotation Based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
-     */
-    public GeneExpressionPlotGroup getAnnotationBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.ANNOTATION_BASED);
-    }
-    
-    /**
-     * Returns the Query based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
-     */
-    public GeneExpressionPlotGroup getGenomicQueryBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.GENOMIC_QUERY_BASED);
+    public String reset() {
+        if (isResetSelected()) {
+            clearGenomicQueryBasedGePlot();
+            getForm().clear();
+            plotParameters.clear();
+        }
+        return SUCCESS;
     }
 
+    private void clearGenomicQueryBasedGePlot() {
+        SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
+    }
+
+    /**
+     * Used to bring up the input form.
+     * @return Struts return value.
+     */
+    public String input() {
+        setDisplayTab(GENOMIC_QUERY_TAB);
+        return SUCCESS;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void runFirstCreatePlotThread() {
+        if (!isCreatePlotRunning()) {
+            setCreatePlotRunning(true);
+            if (getPlotParameters().validate()) {
+                GeneExpressionPlotGroup plots = getAnalysisService().
+                        createGeneExpressionPlot(getStudySubscription(), plotParameters);
+                SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, plots);
+            }
+            setCreatePlotRunning(false);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCreatable() {
+        return true;
+    }
+
+
+    /**
+     * @return
+     */
+    private GEPlotGenomicQueryBasedActionForm getForm() {
+        return getGePlotForm().getGenomicQueryBasedForm();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBoxWhiskerPlotUrl() {
+        return GENOMIC_QUERY_BW_PLOT_URL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLog2PlotUrl() {
+        return GENOMIC_QUERY_LOG2_PLOT_URL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getMeanPlotUrl() {
+        return GENOMIC_QUERY_MEAN_PLOT_URL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getMedianPlotUrl() {
+        return GENOMIC_QUERY_MEDIAN_PLOT_URL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public GEPlotGenomicQueryBasedParameters getPlotParameters() {
+        return plotParameters;
+    }
+    
+    /**
+     * This is set only when the reset button on the JSP is pushed, so we know that a reset needs to occur.
+     * @param resetSelected T/F value.
+     */
+    public void setResetSelected(boolean resetSelected) {
+        getForm().setResetSelected(resetSelected);
+    }
+    
+    private boolean isResetSelected() {
+        return getForm().isResetSelected();
+    }
+    
 }

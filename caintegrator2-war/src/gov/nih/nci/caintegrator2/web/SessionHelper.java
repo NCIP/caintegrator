@@ -298,12 +298,24 @@ public final class SessionHelper {
 
     /**
      * 
-     * @return the kmPlot on the ValueStack.
+     * @return the Annotation gePlots on the ValueStack.
      */
     public static GeneExpressionPlotGroup getAnnotationBasedGePlots() {
         GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
         if (map != null) {
             return map.getAnnotationBasedGePlot();
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @return the Annotation gePlots on the ValueStack.
+     */
+    public static GeneExpressionPlotGroup getGenomicQueryBasedGePlots() {
+        GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getGenomicQueryBasedGePlot();
         }
         return null;
     }

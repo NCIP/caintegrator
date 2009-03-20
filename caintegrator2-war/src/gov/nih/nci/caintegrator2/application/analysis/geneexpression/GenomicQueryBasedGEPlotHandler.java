@@ -83,50 +83,53 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Object that is used to store GE Plots on the session, based on a maximum of one per plot type.
+ * GE Plot Handler for Annotation Based GE Plots.
  */
-public class GEPlotMapper {
-    
-    private final Map<PlotTypeEnum, GeneExpressionPlotGroup> gePlotMap = 
-                        new HashMap<PlotTypeEnum, GeneExpressionPlotGroup>();
+class GenomicQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
 
-    /**
-     * Clears the map of GE Plots.
-     */
-    public void clear() {
-        gePlotMap.clear();
+    private final GEPlotGenomicQueryBasedParameters parameters;
+        
+    GenomicQueryBasedGEPlotHandler(CaIntegrator2Dao dao, 
+                                 QueryManagementService queryManagementService, 
+                                 GEPlotGenomicQueryBasedParameters parameters) {
+        super(dao, queryManagementService);
+        this.parameters = parameters;
     }
     
     /**
-     * @return the gePlotMap
+     * {@inheritDoc}
      */
-    public Map<PlotTypeEnum, GeneExpressionPlotGroup> getGePlotMap() {
-        return gePlotMap;
+    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
+                                               StudySubscription subscription) {
+        List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
+        genomicResults.add(retrieveGenomicResults(subscription));
+        GeneExpressionPlotConfiguration configuration = 
+                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        return gePlotService.generatePlots(configuration);
     }
+
     
-    /**
-     * Returns the Annotation Based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
-     */
-    public GeneExpressionPlotGroup getAnnotationBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.ANNOTATION_BASED);
-    }
-    
-    /**
-     * Returns the Query based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
-     */
-    public GeneExpressionPlotGroup getGenomicQueryBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.GENOMIC_QUERY_BASED);
+    private GenomicDataQueryResult retrieveGenomicResults(StudySubscription subscription) {
+        Query query = parameters.getQuery();
+        query.setReporterType(parameters.getReporterType());
+        query.setSubscription(subscription);
+        return getQueryManagementService().executeGenomicDataQuery(query);
     }
 
 }

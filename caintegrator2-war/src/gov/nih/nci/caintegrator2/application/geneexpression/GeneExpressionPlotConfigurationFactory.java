@@ -122,7 +122,9 @@ public final class GeneExpressionPlotConfigurationFactory {
     private static void addSampleGroups(List<GenomicDataQueryResult> genomicResults,
             GeneExpressionPlotConfiguration configuration) {
         PlotSampleGroup allSamplesGroup = new PlotSampleGroup();
-        configuration.getPlotSampleGroups().add(allSamplesGroup);
+        if (genomicResults.size() > 1) {
+            configuration.getPlotSampleGroups().add(allSamplesGroup);    
+        }
         int numberSubjectsTotal = 0;
         Map<String, PlotReporterGroup> reporterNameToGroupMap = new HashMap<String, PlotReporterGroup>();
         for (GenomicDataQueryResult genomicResult : genomicResults) {
@@ -180,9 +182,9 @@ public final class GeneExpressionPlotConfigurationFactory {
     private static void configureAllSamplesGroup(GeneExpressionPlotConfiguration configuration, 
             PlotSampleGroup allSamplesGroup, Map<String, PlotReporterGroup> reporterNameToGroupMap, 
             int numberSubjects) {
-        allSamplesGroup.setName("All");
-        allSamplesGroup.setNumberSubjects(numberSubjects);
         if (configuration.getPlotSampleGroups().size() > 1) {
+            allSamplesGroup.setName("All");
+            allSamplesGroup.setNumberSubjects(numberSubjects);
             for (PlotReporterGroup reporterGroup : configuration.getPlotSampleGroups().get(1).getReporterGroups()) {
                 allSamplesGroup.getReporterGroups().add(reporterNameToGroupMap.get(reporterGroup.getName()));
             }

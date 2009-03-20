@@ -21,7 +21,15 @@ public enum PlotTypeEnum {
     /**
      * Query Based.
      */
-    QUERY_BASED("queryBased");
+    QUERY_BASED("queryBased"),
+    /**
+     * Genomic Query Based.
+     */
+    GENOMIC_QUERY_BASED("genomicQueryBased"),
+    /**
+     * Clinical Query Based.
+     */
+    CLINICAL_QUERY_BASED("clinicalQueryBased");
     
     private static Map<String, PlotTypeEnum> valueToTypeMap = new HashMap<String, PlotTypeEnum>();
 

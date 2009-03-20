@@ -93,15 +93,16 @@ import gov.nih.nci.caintegrator2.web.SessionHelper;
  */
 public class GEPlotForm {
 
-    private GEPlotAnnotationBasedActionForm annotationBasedForm = new GEPlotAnnotationBasedActionForm();
+    private final GEPlotAnnotationBasedActionForm annotationBasedForm = new GEPlotAnnotationBasedActionForm();
+    private final GEPlotGenomicQueryBasedActionForm genomicQueryBasedForm = new GEPlotGenomicQueryBasedActionForm();
 
     /**
-     * Clears all forms and the KM Plots out of the session.
+     * Clears all forms and the GE Plots out of the session.
      */
     public void clear() {
         SessionHelper.clearGePlots();
         annotationBasedForm.clear();
-        
+        genomicQueryBasedForm.clear();
     }
     
     /**
@@ -110,12 +111,11 @@ public class GEPlotForm {
     public GEPlotAnnotationBasedActionForm getAnnotationBasedForm() {
         return annotationBasedForm;
     }
+
     /**
-     * @param annotationBasedForm the annotationBasedForm to set
+     * @return the genomicQueryBasedForm
      */
-    public void setAnnotationBasedForm(GEPlotAnnotationBasedActionForm annotationBasedForm) {
-        this.annotationBasedForm = annotationBasedForm;
+    public GEPlotGenomicQueryBasedActionForm getGenomicQueryBasedForm() {
+        return genomicQueryBasedForm;
     }
-
-
 }

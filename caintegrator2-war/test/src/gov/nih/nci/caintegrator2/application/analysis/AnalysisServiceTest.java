@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
@@ -94,6 +95,7 @@ import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -107,6 +109,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -297,6 +300,26 @@ public class AnalysisServiceTest {
         assertTrue(annotationParameters.validate());
         runGEPlotTest(studyCreator, subscription, annotationParameters);
         
+    }
+    
+    @Test
+    public void testCreateGenomicQueryBasedGEPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
+        GEPlotGenomicQueryBasedParameters genomicQueryParameters = new GEPlotGenomicQueryBasedParameters();
+        Query query1 = new Query();
+        query1.setId(Long.valueOf(1));
+        query1.setSubscription(subscription);
+        query1.setResultType(ResultTypeEnum.GENOMIC);
+        query1.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        assertFalse(genomicQueryParameters.validate());
+        genomicQueryParameters.setQuery(query1);
+        genomicQueryParameters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
+        assertEquals(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, query1.getReporterType());
     }
     
     

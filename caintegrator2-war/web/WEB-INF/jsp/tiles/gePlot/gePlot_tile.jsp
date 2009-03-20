@@ -37,8 +37,8 @@
         </s:url>
         
         
-         <s:url id="queryBasedUrl" action="gePlotQueryBasedInput">
-            <s:param name="displayTab">queryTab</s:param>
+         <s:url id="genomicQueryBasedUrl" action="gePlotGenomicQueryBasedInput">
+            <s:param name="displayTab">genomicQueryTab</s:param>
         </s:url>
 
       <s:set name="displayTab" id="displayTab" value="%{displayTab}"/>
@@ -55,12 +55,10 @@ https://issues.apache.org/struts/browse/WW-1906?page=com.atlassian.jira.plugin.s
 				theme="ajax" refreshOnShow="true">
 			</div>
 		</div>
-		<!-- 
-		<div dojoType="ContentPane" label="For Queries" id="queryTab">
-			<div dojoType="struts:BindDiv" href="${queryBasedUrl}" theme="ajax"
+		<div dojoType="ContentPane" label="For Genomic Queries" id="genomicQueryTab">
+			<div dojoType="struts:BindDiv" href="${genomicQueryBasedUrl}" theme="ajax"
 				refreshOnShow="true" dojoType="ContentPane"></div>
 		</div>
-		 -->
 	</div>
 
 

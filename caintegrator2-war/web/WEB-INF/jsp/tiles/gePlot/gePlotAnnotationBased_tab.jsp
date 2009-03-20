@@ -94,7 +94,7 @@
         </s:if>
         </center>
         </div>
-    <!-- /Kaplan-Meier Inputs -->
+    <!-- /Gene Expression Inputs -->
     <s:url id="createAnnotationBasedGEPlot" action="createAnnotationBasedGEPlot"/>
     
     <br>
