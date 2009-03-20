@@ -122,6 +122,9 @@ public abstract class AbstractGEPlotHandler {
         if (parameters instanceof GEPlotAnnotationBasedParameters) {
             return new AnnotationBasedGEPlotHandler(dao, queryManagementService, 
                                                    (GEPlotAnnotationBasedParameters) parameters);
+        } else if (parameters instanceof GEPlotGenomicQueryBasedParameters) {
+            return new GenomicQueryBasedGEPlotHandler(dao, queryManagementService,
+                                                    (GEPlotGenomicQueryBasedParameters) parameters);
         }
         throw new IllegalArgumentException("Unknown Parameter Type");  
     }

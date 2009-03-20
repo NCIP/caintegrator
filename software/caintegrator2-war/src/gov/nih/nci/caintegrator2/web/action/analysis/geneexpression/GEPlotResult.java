@@ -129,6 +129,8 @@ public class GEPlotResult implements Result {
     private GeneExpressionPlotGroup retrieveGePlots() {
         if (PlotTypeEnum.ANNOTATION_BASED.equals(PlotTypeEnum.getByValue(plotType))) {
             return SessionHelper.getAnnotationBasedGePlots();
+        } else if (PlotTypeEnum.GENOMIC_QUERY_BASED.equals(PlotTypeEnum.getByValue(plotType))) {
+            return SessionHelper.getGenomicQueryBasedGePlots();
         }
         return null;
     }

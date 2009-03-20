@@ -198,9 +198,7 @@ public class GEPlotAnnotationBasedActionTest {
     public void testUpdateAnnotationDefinitions() {
         // Invalid because thre's not an Annotation EntityType selected.
         assertEquals(ActionSupport.INPUT, action.updateAnnotationDefinitions());
-        GEPlotAnnotationBasedActionForm form = new GEPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
-        action.getGePlotForm().setAnnotationBasedForm(form);
+        action.getGePlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
         assertEquals(ActionSupport.SUCCESS, action.updateAnnotationDefinitions());
         assertEquals(1, action.getGePlotForm().getAnnotationBasedForm().getAnnotationDefinitions().size());
         assertTrue(action.getGePlotForm().getAnnotationBasedForm().getAnnotationDefinitions().containsKey("1"));
@@ -262,11 +260,9 @@ public class GEPlotAnnotationBasedActionTest {
 
 
     private void setupActionVariables() {
-        GEPlotAnnotationBasedActionForm form = new GEPlotAnnotationBasedActionForm();
-        form.setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
-        form.getSelectedValuesIds().add("1");
-        form.getSelectedValuesIds().add("2");
-        action.getGePlotForm().setAnnotationBasedForm(form);
+        action.getGePlotForm().getAnnotationBasedForm().setAnnotationTypeSelection(EntityTypeEnum.SUBJECT.getValue());
+        action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("1");
+        action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("2");
         AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
         selectedAnnotation.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         selectedAnnotation.getPermissibleValueCollection().add(val1);
