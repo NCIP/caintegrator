@@ -83,50 +83,68 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
-import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
-import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
-
-import java.util.HashMap;
-import java.util.Map;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
- * Object that is used to store GE Plots on the session, based on a maximum of one per plot type.
+ * Parameters used for creating an Genomic Query based Gene Expression plot. 
  */
-public class GEPlotMapper {
+public class GEPlotGenomicQueryBasedParameters extends AbstractGEPlotParameters {
+
+    private Query query;
+    private ReporterTypeEnum reporterType;
     
-    private final Map<PlotTypeEnum, GeneExpressionPlotGroup> gePlotMap = 
-                        new HashMap<PlotTypeEnum, GeneExpressionPlotGroup>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        getErrorMessages().clear();
+        boolean isValid = true;
+        if (query == null) {
+            getErrorMessages().add("Must select a query");
+            isValid = false;
+        }
+        return isValid;
+    }
 
     /**
-     * Clears the map of GE Plots.
+     * {@inheritDoc}
      */
+    @Override
     public void clear() {
-        gePlotMap.clear();
+        query = null;
+        reporterType = null;
     }
-    
+
     /**
-     * @return the gePlotMap
+     * @return the reporterType
      */
-    public Map<PlotTypeEnum, GeneExpressionPlotGroup> getGePlotMap() {
-        return gePlotMap;
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
     }
-    
+
     /**
-     * Returns the Annotation Based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
+     * @param reporterType the reporterType to set
      */
-    public GeneExpressionPlotGroup getAnnotationBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.ANNOTATION_BASED);
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
     }
-    
+
     /**
-     * Returns the Query based GeneExpressionPlotGroup.
-     * @return GeneExpressionPlotGroup object.
+     * @return the query
      */
-    public GeneExpressionPlotGroup getGenomicQueryBasedGePlot() {
-        return gePlotMap.get(PlotTypeEnum.GENOMIC_QUERY_BASED);
+    public Query getQuery() {
+        return query;
+    }
+
+    /**
+     * @param query the query to set
+     */
+    public void setQuery(Query query) {
+        this.query = query;
     }
 
 }

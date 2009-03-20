@@ -105,13 +105,13 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
      */
     protected static final String ANNOTATION_TAB = "annotationTab";
     /**
-     * Gene Expression Tab.
+     * Genomic Query Tab.
      */
-    protected static final String GENE_EXPRESSION_TAB = "geneExpressionTab";
+    protected static final String GENOMIC_QUERY_TAB = "genomicQueryTab";
     /**
-     * Query Tab.
+     * Clinical Query Tab.
      */
-    protected static final String QUERY_TAB = "queryTab";
+    protected static final String CLINICAL_QUERY_TAB = "clinicalQueryTab";
 
     private static final Integer DELAY_TIME_BETWEEN_PLOT_CREATE = 25;
     private static final String GEPLOT_RESULT = "gePlotResult";

@@ -41,6 +41,6 @@
 
         </center>
     </s:if>
-    <!-- /Kaplan-Meier Graph -->
+    <!-- /Gene Expression Graph -->
 
 

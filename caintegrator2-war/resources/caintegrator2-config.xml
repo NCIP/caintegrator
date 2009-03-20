@@ -385,6 +385,20 @@
         </property>
     </bean>   
     
+    <bean id="gePlotGenomicQueryBasedAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotGenomicQueryBasedAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+    </bean>   
+    
     <bean id="kmPlotGeneExpressionBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotGeneExpressionBasedAction">

@@ -543,6 +543,50 @@
                 <param name="calculationType">boxWhiskerLog2Intensity</param>
             </result>
         </action>
+        
+        <!-- Genomic Query based Gene Expression plots -->
+        <action name="gePlotGenomicQueryBasedInput" method="input" class="gePlotGenomicQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
+        </action>
+         
+        <action name="resetGenomicQueryBasedGEPlot" method="reset" class="gePlotGenomicQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createGenomicQueryBasedGEPlot" method="createPlot" class="gePlotGenomicQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_mean" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_median" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">median</param>
+            </result>
+        </action>
+
+        <action name="retrieveGenomicQueryGEPlot_log2" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveGenomicQueryGEPlot_bw" method="retrievePlot" class="gePlotGenomicQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">genomicQueryBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
                
         <!-- Platform Actions -->
         <action name="managePlatforms" class="managePlatformsAction">
