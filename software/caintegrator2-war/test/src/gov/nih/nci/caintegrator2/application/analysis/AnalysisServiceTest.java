@@ -95,6 +95,7 @@ import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
@@ -311,6 +312,7 @@ public class AnalysisServiceTest {
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
         GEPlotGenomicQueryBasedParameters genomicQueryParameters = new GEPlotGenomicQueryBasedParameters();
         Query query1 = new Query();
+        query1.setName("Query1");
         query1.setId(Long.valueOf(1));
         query1.setSubscription(subscription);
         query1.setResultType(ResultTypeEnum.GENOMIC);
@@ -320,6 +322,33 @@ public class AnalysisServiceTest {
         genomicQueryParameters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
         assertEquals(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, query1.getReporterType());
+    }
+    
+    @Test
+    public void testCreateClinicalQueryBasedGEPlot() {
+        KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
+        Study study = studyCreator.createKMPlotStudy();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setStudy(study);
+        queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
+        GEPlotClinicalQueryBasedParameters genomicQueryParameters = new GEPlotClinicalQueryBasedParameters();
+        genomicQueryParameters.setAddPatientsNotInQueriesGroup(true);
+        genomicQueryParameters.setExclusiveGroups(true);
+        Query query1 = new Query();
+        query1.setName("Query1");
+        query1.setId(Long.valueOf(1));
+        query1.setSubscription(subscription);
+        query1.setResultType(ResultTypeEnum.CLINICAL);
+        genomicQueryParameters.getQueries().add(query1);
+        Query query2 = new Query();
+        query2.setName("Query2");
+        query2.setId(Long.valueOf(2));
+        query2.setSubscription(subscription);
+        genomicQueryParameters.getQueries().add(query2);
+        assertFalse(genomicQueryParameters.validate());
+        genomicQueryParameters.setGeneSymbol("EGFR");
+        assertTrue(genomicQueryParameters.validate());
+        runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
     }
     
     

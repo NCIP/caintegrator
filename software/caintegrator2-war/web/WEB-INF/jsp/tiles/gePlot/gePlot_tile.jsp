@@ -37,8 +37,12 @@
         </s:url>
         
         
-         <s:url id="genomicQueryBasedUrl" action="gePlotGenomicQueryBasedInput">
+        <s:url id="genomicQueryBasedUrl" action="gePlotGenomicQueryBasedInput">
             <s:param name="displayTab">genomicQueryTab</s:param>
+        </s:url>
+        
+        <s:url id="clinicalQueryBasedUrl" action="gePlotClinicalQueryBasedInput">
+            <s:param name="displayTab">clinicalQueryTab</s:param>
         </s:url>
 
       <s:set name="displayTab" id="displayTab" value="%{displayTab}"/>
@@ -59,6 +63,10 @@ https://issues.apache.org/struts/browse/WW-1906?page=com.atlassian.jira.plugin.s
 			<div dojoType="struts:BindDiv" href="${genomicQueryBasedUrl}" theme="ajax"
 				refreshOnShow="true" dojoType="ContentPane"></div>
 		</div>
+		<div dojoType="ContentPane" label="For Clinical Queries" id="clinicalQueryTab">
+            <div dojoType="struts:BindDiv" href="${clinicalQueryBasedUrl}" theme="ajax"
+                refreshOnShow="true" dojoType="ContentPane"></div>
+        </div>
 	</div>
 
 

@@ -83,74 +83,102 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.apache.commons.lang.StringUtils;
 
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
- * Criterion handler for StringComparisonCriterion.
+ * Parameters used for creating an Clinical Query based Gene Expression plot. 
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")   // see translate() method
-public class StringComparisonCriterionHandler extends AbstractAnnotationCriterionHandler {
+public class GEPlotClinicalQueryBasedParameters extends AbstractGEPlotParameters {
 
-    private final StringComparisonCriterion stringComparisonCriterion;
-    private String columnName = STRING_VALUE_COLUMN;
+    private final List<Query> queries = new ArrayList<Query>();
+    private boolean exclusiveGroups = false;
+    private boolean addPatientsNotInQueriesGroup = false;
+    private ReporterTypeEnum reporterType;
     
     /**
-     * @param criterion - The criterion object we are going to translate.
+     * {@inheritDoc}
      */
-    public StringComparisonCriterionHandler(StringComparisonCriterion criterion) {
-        stringComparisonCriterion = criterion;   
+    @Override
+    public boolean validate() {
+        getErrorMessages().clear();
+        boolean isValid = true;
+        if (StringUtils.isBlank(getGeneSymbol())) {
+            getErrorMessages().add("Must enter a gene symbol");
+            isValid = false;
+        }
+        if (queries.isEmpty()) {
+            getErrorMessages().add("Must select at least one query.");
+            isValid = false;
+        }
+        return isValid;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // switch statement
-    Criterion translate() {
-        if (stringComparisonCriterion.getWildCardType() != null) {
-            WildCardTypeEnum wildCardType = stringComparisonCriterion.getWildCardType();
-            switch(wildCardType) {
-            case WILDCARD_OFF:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            case WILDCARD_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.START);
-            case WILDCARD_BEFORE_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.END);
-            case WILDCARD_BEFORE_AND_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.ANYWHERE);
-            case NOT_EQUAL_TO:
-                return Restrictions.ne(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            default:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            }
-        } else {
-            return Restrictions.like(columnName, 
-                                     stringComparisonCriterion.getStringValue());
-        }
+    public void clear() {
+        queries.clear();
+        reporterType = null;
+        exclusiveGroups = false;
+        addPatientsNotInQueriesGroup = false;
     }
-    
+
     /**
-     * Sets the column name for the field to use that we are comparing the string value to.
-     * @param columnName columnName to use.
+     * @return the reporterType
      */
-    protected void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public ReporterTypeEnum getReporterType() {
+        return reporterType;
     }
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(ReporterTypeEnum reporterType) {
+        this.reporterType = reporterType;
+    }
+
+    /**
+     * @return the exclusiveGroups
+     */
+    public boolean isExclusiveGroups() {
+        return exclusiveGroups;
+    }
+
+    /**
+     * @param exclusiveGroups the exclusiveGroups to set
+     */
+    public void setExclusiveGroups(boolean exclusiveGroups) {
+        this.exclusiveGroups = exclusiveGroups;
+    }
+
+    /**
+     * @return the addPatientsNotInQueriesGroup
+     */
+    public boolean isAddPatientsNotInQueriesGroup() {
+        return addPatientsNotInQueriesGroup;
+    }
+
+    /**
+     * @param addPatientsNotInQueriesGroup the addPatientsNotInQueriesGroup to set
+     */
+    public void setAddPatientsNotInQueriesGroup(boolean addPatientsNotInQueriesGroup) {
+        this.addPatientsNotInQueriesGroup = addPatientsNotInQueriesGroup;
+    }
+
+    /**
+     * @return the queries
+     */
+    public List<Query> getQueries() {
+        return queries;
+    }
+
 }

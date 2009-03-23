@@ -83,74 +83,208 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.data;
+package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
-import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Criterion handler for StringComparisonCriterion.
+ * Form used to store input values for Clinical Query Based GE Plots. 
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")   // see translate() method
-public class StringComparisonCriterionHandler extends AbstractAnnotationCriterionHandler {
-
-    private final StringComparisonCriterion stringComparisonCriterion;
-    private String columnName = STRING_VALUE_COLUMN;
+public class GEPlotClinicalQueryBasedActionForm {
     
+    private String geneSymbol;
+    private String reporterType;
+    private List<String> selectedQueryIDs = new ArrayList<String>();
+    private List<String> unselectedQueryIDs = new ArrayList<String>();
+    private boolean exclusiveGroups = false;
+    private boolean addPatientsNotInQueriesGroup = false;
+    private boolean resetSelected = false;
+    
+    // JSP Select List Options
+    private Map<String, Query> selectedQueries = new HashMap<String, Query>();
+    private Map<String, Query> unselectedQueries = new HashMap<String, Query>();
+    
+
+
     /**
-     * @param criterion - The criterion object we are going to translate.
+     * Clears all the variables to null.
      */
-    public StringComparisonCriterionHandler(StringComparisonCriterion criterion) {
-        stringComparisonCriterion = criterion;   
+    public void clear() {
+        geneSymbol = null;
+        reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
+        selectedQueryIDs = new ArrayList<String>();
+        unselectedQueryIDs = new ArrayList<String>();
+        exclusiveGroups = false;
+        addPatientsNotInQueriesGroup = false;
+        selectedQueries.clear();
+        unselectedQueries.clear();
     }
 
+
+
     /**
-     * {@inheritDoc}
+     * @return the selectedQueryIDs
      */
-    @Override
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // switch statement
-    Criterion translate() {
-        if (stringComparisonCriterion.getWildCardType() != null) {
-            WildCardTypeEnum wildCardType = stringComparisonCriterion.getWildCardType();
-            switch(wildCardType) {
-            case WILDCARD_OFF:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            case WILDCARD_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.START);
-            case WILDCARD_BEFORE_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.END);
-            case WILDCARD_BEFORE_AND_AFTER_STRING:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue(), 
-                                         MatchMode.ANYWHERE);
-            case NOT_EQUAL_TO:
-                return Restrictions.ne(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            default:
-                return Restrictions.like(columnName, 
-                                         stringComparisonCriterion.getStringValue());
-            }
-        } else {
-            return Restrictions.like(columnName, 
-                                     stringComparisonCriterion.getStringValue());
-        }
+    public List<String> getSelectedQueryIDs() {
+        return selectedQueryIDs;
     }
-    
+
+
+
     /**
-     * Sets the column name for the field to use that we are comparing the string value to.
-     * @param columnName columnName to use.
+     * @param selectedQueryIDs the selectedQueryIDs to set
      */
-    protected void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setSelectedQueryIDs(List<String> selectedQueryIDs) {
+        this.selectedQueryIDs = selectedQueryIDs;
+    }
+
+
+
+    /**
+     * @return the unselectedQueryIDs
+     */
+    public List<String> getUnselectedQueryIDs() {
+        return unselectedQueryIDs;
+    }
+
+
+
+    /**
+     * @param unselectedQueryIDs the unselectedQueryIDs to set
+     */
+    public void setUnselectedQueryIDs(List<String> unselectedQueryIDs) {
+        this.unselectedQueryIDs = unselectedQueryIDs;
+    }
+
+
+
+    /**
+     * @return the exclusiveGroups
+     */
+    public boolean isExclusiveGroups() {
+        return exclusiveGroups;
+    }
+
+
+
+    /**
+     * @param exclusiveGroups the exclusiveGroups to set
+     */
+    public void setExclusiveGroups(boolean exclusiveGroups) {
+        this.exclusiveGroups = exclusiveGroups;
+    }
+
+
+
+    /**
+     * @return the addPatientsNotInQueriesGroup
+     */
+    public boolean isAddPatientsNotInQueriesGroup() {
+        return addPatientsNotInQueriesGroup;
+    }
+
+
+
+    /**
+     * @param addPatientsNotInQueriesGroup the addPatientsNotInQueriesGroup to set
+     */
+    public void setAddPatientsNotInQueriesGroup(boolean addPatientsNotInQueriesGroup) {
+        this.addPatientsNotInQueriesGroup = addPatientsNotInQueriesGroup;
+    }
+
+
+
+    /**
+     * @return the selectedQueries
+     */
+    public Map<String, Query> getSelectedQueries() {
+        return selectedQueries;
+    }
+
+
+
+    /**
+     * @param selectedQueries the selectedQueries to set
+     */
+    public void setSelectedQueries(Map<String, Query> selectedQueries) {
+        this.selectedQueries = selectedQueries;
+    }
+
+
+
+    /**
+     * @return the unselectedQueries
+     */
+    public Map<String, Query> getUnselectedQueries() {
+        return unselectedQueries;
+    }
+
+
+
+    /**
+     * @param unselectedQueries the unselectedQueries to set
+     */
+    public void setUnselectedQueries(Map<String, Query> unselectedQueries) {
+        this.unselectedQueries = unselectedQueries;
+    }
+
+
+
+    /**
+     * @return the resetSelected
+     */
+    public boolean isResetSelected() {
+        return resetSelected;
+    }
+
+
+
+    /**
+     * @param resetSelected the resetSelected to set
+     */
+    public void setResetSelected(boolean resetSelected) {
+        this.resetSelected = resetSelected;
+    }
+
+
+
+    /**
+     * @return the geneSymbol
+     */
+    public String getGeneSymbol() {
+        return geneSymbol;
+    }
+
+
+
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
+    }
+
+
+
+    /**
+     * @return the reporterType
+     */
+    public String getReporterType() {
+        return reporterType;
+    }
+
+
+
+    /**
+     * @param reporterType the reporterType to set
+     */
+    public void setReporterType(String reporterType) {
+        this.reporterType = reporterType;
     }
 }

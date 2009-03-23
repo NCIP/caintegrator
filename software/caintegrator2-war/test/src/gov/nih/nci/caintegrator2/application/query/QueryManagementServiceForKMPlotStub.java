@@ -85,19 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.caintegrator2.application.analysis.KMPlotStudyCreator;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("PMD")
 public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
@@ -146,6 +153,25 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         GenomicDataQueryResult result = new GenomicDataQueryResult();
         result.setQuery(query);
         result.setRowCollection(new ArrayList<GenomicDataResultRow>());
+        GenomicDataResultRow row = new GenomicDataResultRow();
+        Set <GenomicDataResultValue> valueCollection = new HashSet<GenomicDataResultValue>();
+        GenomicDataResultValue value = new GenomicDataResultValue();
+        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        SampleAcquisition sampleAcquisition = new SampleAcquisition();
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        assignment.setId(Long.valueOf(1));
+        sampleAcquisition.setAssignment(assignment);
+        column.setSampleAcquisition(sampleAcquisition);
+        value.setColumn(column);
+        value.setValue(1f);
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        Gene gene = new Gene();
+        gene.setSymbol("EGFR");
+        reporter.setGene(gene);
+        row.setReporter(reporter);
+        valueCollection.add(value);
+        row.setValueCollection(valueCollection);
+        result.getRowCollection().add(row);
         result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
         return result;
     }

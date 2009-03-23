@@ -128,5 +128,13 @@ public class GEPlotMapper {
     public GeneExpressionPlotGroup getGenomicQueryBasedGePlot() {
         return gePlotMap.get(PlotTypeEnum.GENOMIC_QUERY_BASED);
     }
+    
+    /**
+     * Returns the Clinical Query based GeneExpressionPlotGroup.
+     * @return GeneExpressionPlotGroup object.
+     */
+    public GeneExpressionPlotGroup getClinicalQueryBasedGePlot() {
+        return gePlotMap.get(PlotTypeEnum.CLINICAL_QUERY_BASED);
+    }
 
 }
