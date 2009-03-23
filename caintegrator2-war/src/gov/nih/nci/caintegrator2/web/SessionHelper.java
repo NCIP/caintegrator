@@ -310,12 +310,24 @@ public final class SessionHelper {
     
     /**
      * 
-     * @return the Annotation gePlots on the ValueStack.
+     * @return the Genomic Query gePlots on the ValueStack.
      */
     public static GeneExpressionPlotGroup getGenomicQueryBasedGePlots() {
         GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
         if (map != null) {
             return map.getGenomicQueryBasedGePlot();
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @return the Clinical Query gePlots on the ValueStack.
+     */
+    public static GeneExpressionPlotGroup getClinicalQueryBasedGePlots() {
+        GEPlotMapper map = (GEPlotMapper) getSession().get(GE_PLOT_SESSION_KEY);
+        if (map != null) {
+            return map.getClinicalQueryBasedGePlot();
         }
         return null;
     }

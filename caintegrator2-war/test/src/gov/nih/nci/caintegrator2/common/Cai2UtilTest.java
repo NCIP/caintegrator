@@ -98,9 +98,14 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
 
@@ -251,7 +256,26 @@ public class Cai2UtilTest {
         assertNull(Cai2Util.getHostNameFromUrl(null));
         assertNull(Cai2Util.getHostNameFromUrl(""));
         assertNull(Cai2Util.getHostNameFromUrl("abc"));
-
+    }
+    
+    @Test
+    public void testIsCompoundCriterionGenomic() {
+        CompoundCriterion compoundCriterion1 = new CompoundCriterion();
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        CompoundCriterion compoundCriterion2 = new CompoundCriterion();
+        compoundCriterion2.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
+        compoundCriterion2.getCriterionCollection().add(new StringComparisonCriterion());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        assertFalse(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
+        compoundCriterion1.getCriterionCollection().add(new GeneNameCriterion());
+        assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
         
+        compoundCriterion1.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion1.getCriterionCollection().add(compoundCriterion2);
+        compoundCriterion1.getCriterionCollection().add(new StringComparisonCriterion());
+        assertFalse(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
+        compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
+        assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
     }
 }

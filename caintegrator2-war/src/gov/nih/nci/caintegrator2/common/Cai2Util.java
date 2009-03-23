@@ -94,6 +94,10 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
@@ -382,6 +386,27 @@ public final class Cai2Util {
             default:
                 return Color.BLACK;
         }
+    }
+    
+    /**
+     * Recursive function that goes through all criterion in a CompoundCriterion to determine
+     * if any of them are genomic based criterion.
+     * @param criterion input for the recursive function.
+     * @return T/F value.
+     */
+    public static boolean isCompoundCriterionGenomic(CompoundCriterion criterion) {
+        for (AbstractCriterion abstractCriterion : criterion.getCriterionCollection()) {
+            if (abstractCriterion instanceof CompoundCriterion) {
+                if (isCompoundCriterionGenomic((CompoundCriterion) abstractCriterion)) {
+                    return true;
+                }
+            } else if (abstractCriterion instanceof GeneNameCriterion) {
+                return true;
+            } else if (abstractCriterion instanceof FoldChangeCriterion) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

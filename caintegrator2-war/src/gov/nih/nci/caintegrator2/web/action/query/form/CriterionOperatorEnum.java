@@ -13,6 +13,11 @@ public enum CriterionOperatorEnum {
      * Equals.
      */
     EQUALS("equals"),
+    
+    /**
+     * Not Equal To.
+     */
+    NOT_EQUAL_TO("not equal to"),
 
     /**
      * Begins with.
@@ -56,7 +61,7 @@ public enum CriterionOperatorEnum {
     
     static final CriterionOperatorEnum[] EMPTY = new CriterionOperatorEnum[0];
     static final CriterionOperatorEnum[] STRING_OPERATORS = new CriterionOperatorEnum[] {
-        EQUALS, BEGINS_WITH, CONTAINS, ENDS_WITH
+        EQUALS, BEGINS_WITH, CONTAINS, ENDS_WITH, NOT_EQUAL_TO
     };
     static final CriterionOperatorEnum[] NUMERIC_OPERATORS = new CriterionOperatorEnum[] {
         EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LESS_THAN, LESS_THAN_OR_EQUAL_TO

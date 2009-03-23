@@ -85,74 +85,120 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfiguration;
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Abstract class representing a handler for Gene Expression plot creation.
+ * GE Plot Handler for Annotation Based GE Plots.
  */
-public abstract class AbstractGEPlotHandler {
-    
-    private final CaIntegrator2Dao dao;
-    private final QueryManagementService queryManagementService;
-    
-    /**
-     * Constructor.
-     * @param dao to call database.
-     * @param queryManagementService for query execution.
-     */
-    protected AbstractGEPlotHandler(CaIntegrator2Dao dao, QueryManagementService queryManagementService) {
-        this.dao = dao;
-        this.queryManagementService = queryManagementService;
-    }
-    
-    /**
-     * Creates the GeneExpressionPlotHandler based on Parameters.
-     * @param dao to call database.
-     * @param queryManagementService for query creation.
-     * @param parameters used to determine type of handler to create.
-     * @return handler.
-     */
-    public static AbstractGEPlotHandler createGeneExpressionPlotHandler(CaIntegrator2Dao dao,
-                                                                        QueryManagementService queryManagementService,
-                                                                        AbstractGEPlotParameters parameters) {
-        if (parameters instanceof GEPlotAnnotationBasedParameters) {
-            return new AnnotationBasedGEPlotHandler(dao, queryManagementService, 
-                                                   (GEPlotAnnotationBasedParameters) parameters);
-        } else if (parameters instanceof GEPlotGenomicQueryBasedParameters) {
-            return new GenomicQueryBasedGEPlotHandler(dao, queryManagementService,
-                                                    (GEPlotGenomicQueryBasedParameters) parameters);
-        } else if (parameters instanceof GEPlotClinicalQueryBasedParameters) {
-            return new ClinicalQueryBasedGEPlotHandler(dao, queryManagementService,
-                    (GEPlotClinicalQueryBasedParameters) parameters);
-}
-        throw new IllegalArgumentException("Unknown Parameter Type");  
-    }
-    
-    /**
-     * Creates the GeneExpressionPlotGroup for the parameters.
-     * @param gePlotService creates the plots. 
-     * @param subscription that user is currently using.
-     * @return plot group.
-     */
-    public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                                        StudySubscription subscription);
+class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
 
+    private final GEPlotClinicalQueryBasedParameters parameters;
+    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
+
+        
+    ClinicalQueryBasedGEPlotHandler(CaIntegrator2Dao dao, 
+                                 QueryManagementService queryManagementService, 
+                                 GEPlotClinicalQueryBasedParameters parameters) {
+        super(dao, queryManagementService);
+        this.parameters = parameters;
+    }
+    
     /**
-     * @return the dao
+     * {@inheritDoc}
      */
-    public CaIntegrator2Dao getDao() {
-        return dao;
+    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
+                                               StudySubscription subscription) {
+        List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
+        for (Query query : parameters.getQueries()) {
+            GenomicDataQueryResult queryResults = retrieveGenomicResultsForQuery(subscription, query, false);
+            fillUsedSubjects(queryResults);
+            genomicResults.add(queryResults);
+        }
+        if (parameters.isAddPatientsNotInQueriesGroup()) {
+            genomicResults.add(0, addAllOthersGroup(subscription));
+        }
+        GeneExpressionPlotConfiguration configuration = 
+                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        return gePlotService.generatePlots(configuration);
     }
 
-    /**
-     * @return the queryManagementService
-     */
-    public QueryManagementService getQueryManagementService() {
-        return queryManagementService;
+    private void fillUsedSubjects(GenomicDataQueryResult queryResults) {
+        if (parameters.isAddPatientsNotInQueriesGroup() || parameters.isExclusiveGroups()) {
+            for (GenomicDataResultRow row : queryResults.getRowCollection()) {
+                for (GenomicDataResultValue value : row.getValueCollection()) {
+                    usedSubjects.add(value.getColumn().getSampleAcquisition().getAssignment());
+                }
+            }
+        }
     }
 
+    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) {
+        Query query = new Query();
+        query.setName("All Others");
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        return retrieveGenomicResultsForQuery(subscription, query, true);
+    }
+    
+    private GenomicDataQueryResult retrieveGenomicResultsForQuery(StudySubscription subscription, 
+                                                                  Query query,
+                                                                  boolean isOthersGroup) {
+        CompoundCriterion newCompoundCriterion = new CompoundCriterion();
+        newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
+        newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());
+        newCompoundCriterion.getCriterionCollection().add(retrieveGeneNameCompoundCriterion(isOthersGroup));
+        query.setCompoundCriterion(newCompoundCriterion);
+        query.setReporterType(parameters.getReporterType());
+        query.setSubscription(subscription);
+        return getQueryManagementService().executeGenomicDataQuery(query);
+    }
+
+    private CompoundCriterion retrieveGeneNameCompoundCriterion(boolean isOthersGroup) {
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
+        CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
+        geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);
+        geneNameCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
+        if (parameters.isExclusiveGroups() || isOthersGroup) {
+            geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion());
+        }
+        return geneNameCompoundCriterion;
+    }
+    
+    private CompoundCriterion retrieveUsedSubjectsCriterion() {
+        CompoundCriterion idCriteria = new CompoundCriterion();
+        idCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
+        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        for (StudySubjectAssignment assignment : usedSubjects) {
+            IdentifierCriterion idCriterion = new IdentifierCriterion();
+            idCriterion.setStringValue(assignment.getIdentifier());
+            idCriterion.setWildCardType(WildCardTypeEnum.NOT_EQUAL_TO);
+            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+            idCriteria.getCriterionCollection().add(idCriterion);
+        }
+        return idCriteria;
+    }
 }
