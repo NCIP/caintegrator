@@ -15,7 +15,9 @@
                                  <a href="#" id="clinicalQueryTypeSelection3" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_log2}', 'clinicalQueryTypeSelection', '3')">Log2 Intensity</a> |
                                  <a href="#" id="clinicalQueryTypeSelection4" onclick="setDynamicPlot('clinicalQueryBasedImage', '${retrieveClinicalQueryGEPlot_bw}', 'clinicalQueryTypeSelection', '4')">Box and Whisker Log2 Intensity</a>
             <br>
+            <div style="overflow:scroll;">
             <img id="clinicalQueryBasedImage" src="${retrieveClinicalQueryGEPlot_mean}" />
+            </div>
             <br>
         
         <!-- Legend -->

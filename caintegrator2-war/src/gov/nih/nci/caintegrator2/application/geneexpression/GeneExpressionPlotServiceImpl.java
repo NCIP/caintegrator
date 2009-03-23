@@ -107,6 +107,8 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
     private static final double CATEGORY_MARGIN = .20; 
     private static final double UPPER_MARGIN = .02;
     private static final double ITEM_MARGIN = .01;
+    private static final int WIDTH_MULTIPLIER = 33;
+    private static final int MINIMUM_WIDTH = 300;
     private LegendItemCollection legendItems;
     
 
@@ -135,6 +137,7 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         legendItems = chart.getLegend().getSources()[0].getLegendItems();
         cusomtizeBarChart(chart);
         plot.setPlotChart(chart);
+        plot.setWidth(retrievePlotWidth(meanDataset));
         return plot;
     }
     
@@ -143,14 +146,16 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         JFreeChart chart = createChart(medianDataset, "Median Expression Intensity");
         cusomtizeBarChart(chart);
         plot.setPlotChart(chart);
+        plot.setWidth(retrievePlotWidth(medianDataset));
         return plot;
     }
-    
+
     private GeneExpressionPlot createLog2TypePlot(DefaultStatisticalCategoryDataset log2Dataset) {
         GeneExpressionPlotImpl plot = new GeneExpressionPlotImpl();
         JFreeChart chart = createChart(log2Dataset, "Log2 Expression Intensity");
         chart.getCategoryPlot().setRenderer(cusomtizeStatisticalBarChart(chart));
         plot.setPlotChart(chart);
+        plot.setWidth(retrievePlotWidth(log2Dataset));
         return plot;
     }
 
@@ -159,6 +164,7 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         JFreeChart chart = createChart(bwDataset, "Log2 Expression Intensity");
         chart.getCategoryPlot().setRenderer(cusomtizeBoxWhiskerChart(chart));
         plot.setPlotChart(chart);
+        plot.setWidth(retrievePlotWidth(bwDataset));
         return plot;
     }
 
@@ -223,5 +229,10 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         for (PlotSampleGroup sampleGroup : configuration.getPlotSampleGroups()) {
             plotGroup.getGroupNameToNumberSubjectsMap().put(sampleGroup.getName(), sampleGroup.getNumberSubjects());
         }
+    }
+    
+    private int retrievePlotWidth(CategoryDataset dataset) {
+        int width = dataset.getColumnCount() * dataset.getRowCount() * WIDTH_MULTIPLIER;
+        return width > MINIMUM_WIDTH ? width : MINIMUM_WIDTH;
     }
 }
