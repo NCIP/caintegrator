@@ -12,7 +12,7 @@ public class CompoundCriterion extends AbstractCriterion implements Cloneable {
     private static final long serialVersionUID = 1L;
     
     private BooleanOperatorEnum booleanOperator;
-    private Collection<AbstractCriterion> criterionCollection;
+    private Collection<AbstractCriterion> criterionCollection = new HashSet<AbstractCriterion>();
     
     /**
      * @return the criterionCollection

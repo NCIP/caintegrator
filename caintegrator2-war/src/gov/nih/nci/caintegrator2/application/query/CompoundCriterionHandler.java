@@ -288,6 +288,8 @@ final class CompoundCriterionHandler extends AbstractCriterionHandler {
         BooleanOperatorEnum operator = compoundCriterion.getBooleanOperator();
         if (reporters == null) {
             return reporterMatches;
+        } else if (reporterMatches == null) {
+            return reporters;
         } else if (BooleanOperatorEnum.AND.equals(operator)) {
             reporters.retainAll(reporterMatches);
         } else if (BooleanOperatorEnum.OR.equals(operator)) {

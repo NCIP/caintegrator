@@ -127,12 +127,16 @@ public class GEPlotResult implements Result {
     }
 
     private GeneExpressionPlotGroup retrieveGePlots() {
-        if (PlotTypeEnum.ANNOTATION_BASED.equals(PlotTypeEnum.getByValue(plotType))) {
+        switch (PlotTypeEnum.getByValue(plotType)) {
+        case ANNOTATION_BASED:
             return SessionHelper.getAnnotationBasedGePlots();
-        } else if (PlotTypeEnum.GENOMIC_QUERY_BASED.equals(PlotTypeEnum.getByValue(plotType))) {
+        case GENOMIC_QUERY_BASED:
             return SessionHelper.getGenomicQueryBasedGePlots();
+        case CLINICAL_QUERY_BASED:
+            return SessionHelper.getClinicalQueryBasedGePlots();
+        default:
+            return null;
         }
-        return null;
     }
 
 

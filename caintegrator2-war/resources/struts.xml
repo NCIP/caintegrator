@@ -587,6 +587,52 @@
                 <param name="calculationType">boxWhiskerLog2Intensity</param>
             </result>
         </action>
+        
+        <!-- Clinical Query based Gene Expression plots -->
+        <action name="gePlotClinicalQueryBasedInput" method="input" class="gePlotClinicalQueryBasedAction">
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
+        </action>
+         
+        <action name="resetClinicalQueryBasedGEPlot" method="reset" class="gePlotClinicalQueryBasedAction">
+            <result type="tiles">gePlot</result>
+            <result name="input" type="tiles">gePlot</result>
+        </action>
+        
+        <action name="createClinicalQueryBasedGEPlot" method="createPlot" class="gePlotClinicalQueryBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
+            <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBasedGraph_div.jsp</result>
+            <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBasedGraph_div.jsp</result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_mean" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">mean</param>
+            </result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_median" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">median</param>
+            </result>
+        </action>
+
+        <action name="retrieveClinicalQueryGEPlot_log2" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">log2Intensity</param>
+            </result>
+        </action>
+        
+        <action name="retrieveClinicalQueryGEPlot_bw" method="retrievePlot" class="gePlotClinicalQueryBasedAction">
+            <result name="gePlotResult" type="gePlotResult"> 
+                <param name="plotType">clinicalQueryBased</param>
+                <param name="calculationType">boxWhiskerLog2Intensity</param>
+            </result>
+        </action>
                
         <!-- Platform Actions -->
         <action name="managePlatforms" class="managePlatformsAction">

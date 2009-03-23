@@ -27,7 +27,12 @@ public enum WildCardTypeEnum {
     /**
      * Wild Card before and after the given string.
      */
-    WILDCARD_BEFORE_AND_AFTER_STRING("wildCardBeforeAndAfterString");
+    WILDCARD_BEFORE_AND_AFTER_STRING("wildCardBeforeAndAfterString"),
+    
+    /**
+     * Not equal to the given string. 
+     */
+    NOT_EQUAL_TO("notEqualTo");
     
     private static Map<String, WildCardTypeEnum> valueToTypeMap = 
                                         new HashMap<String, WildCardTypeEnum>();

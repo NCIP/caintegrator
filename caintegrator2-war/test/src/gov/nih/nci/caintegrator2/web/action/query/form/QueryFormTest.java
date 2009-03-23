@@ -511,7 +511,7 @@ public class QueryFormTest {
     private void checkSetNewRowToStringField(ClinicalCriterionRow criterionRow) {
         setFieldName(criterionRow, "stringClinicalAnnotation1");
         assertEquals("stringClinicalAnnotation1", criterionRow.getFieldName());
-        assertEquals(4 , criterionRow.getParameters().get(0).getAvailableOperators().size());
+        assertEquals(5 , criterionRow.getParameters().get(0).getAvailableOperators().size());
     }
 
     @SuppressWarnings("unchecked")

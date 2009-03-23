@@ -107,11 +107,13 @@ class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrappe
         OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.CONTAINS, WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING);
         OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.ENDS_WITH, WildCardTypeEnum.WILDCARD_BEFORE_STRING);
         OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.EQUALS, WildCardTypeEnum.WILDCARD_OFF);
+        OPERATOR_TO_WILDCARD_MAP.put(CriterionOperatorEnum.NOT_EQUAL_TO, WildCardTypeEnum.NOT_EQUAL_TO);
 
         WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_AFTER_STRING, CriterionOperatorEnum.BEGINS_WITH);
         WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_BEFORE_AND_AFTER_STRING, CriterionOperatorEnum.CONTAINS);
         WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_BEFORE_STRING, CriterionOperatorEnum.ENDS_WITH);
         WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.WILDCARD_OFF, CriterionOperatorEnum.EQUALS);
+        WILDCARD_TO_OPERATOR_MAP.put(WildCardTypeEnum.NOT_EQUAL_TO, CriterionOperatorEnum.NOT_EQUAL_TO);
     }
     
     private final StringComparisonCriterion criterion;

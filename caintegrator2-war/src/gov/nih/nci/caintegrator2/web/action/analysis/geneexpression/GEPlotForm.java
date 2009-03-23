@@ -95,6 +95,7 @@ public class GEPlotForm {
 
     private final GEPlotAnnotationBasedActionForm annotationBasedForm = new GEPlotAnnotationBasedActionForm();
     private final GEPlotGenomicQueryBasedActionForm genomicQueryBasedForm = new GEPlotGenomicQueryBasedActionForm();
+    private final GEPlotClinicalQueryBasedActionForm clinicalQueryBasedForm = new GEPlotClinicalQueryBasedActionForm();
 
     /**
      * Clears all forms and the GE Plots out of the session.
@@ -103,6 +104,7 @@ public class GEPlotForm {
         SessionHelper.clearGePlots();
         annotationBasedForm.clear();
         genomicQueryBasedForm.clear();
+        clinicalQueryBasedForm.clear();
     }
     
     /**
@@ -117,5 +119,12 @@ public class GEPlotForm {
      */
     public GEPlotGenomicQueryBasedActionForm getGenomicQueryBasedForm() {
         return genomicQueryBasedForm;
+    }
+
+    /**
+     * @return the clinicalQueryBasedForm
+     */
+    public GEPlotClinicalQueryBasedActionForm getClinicalQueryBasedForm() {
+        return clinicalQueryBasedForm;
     }
 }
