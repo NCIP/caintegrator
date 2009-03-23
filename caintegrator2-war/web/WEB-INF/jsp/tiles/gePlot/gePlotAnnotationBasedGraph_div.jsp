@@ -15,7 +15,9 @@
                                  <a href="#" id="annotationTypeSelection3" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_log2}', 'annotationTypeSelection', '3')">Log2 Intensity</a> |
                                  <a href="#" id="annotationTypeSelection4" onclick="setDynamicPlot('annotationBasedImage', '${retrieveAnnotationGEPlot_bw}', 'annotationTypeSelection', '4')">Box and Whisker Log2 Intensity</a>
             <br>
+            <div style="overflow:scroll;">
             <img id="annotationBasedImage" src="${retrieveAnnotationGEPlot_mean}" />
+            </div>
             <br>
         
         <!-- Legend -->
