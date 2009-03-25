@@ -1124,10 +1124,64 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via Selenium test for DC Lung</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Not Reported(98)</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Asian(05)</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Native Hawaiian or Other Pacific Islander(04)</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Black or African American(03)</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=White(01)</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Unknown(99)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[1]/a</td>
 	<td></td>
 </tr>
-<!---->
 <tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
