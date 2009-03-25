@@ -41,6 +41,18 @@
 	<td>createStudy_saveStudy</td>
 	<td></td>
 </tr>
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri logo.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// add clinical data-->
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
@@ -86,7 +98,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -253,7 +265,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -289,7 +301,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -309,7 +321,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -354,7 +366,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -374,7 +386,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -429,7 +441,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -459,7 +471,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -479,7 +491,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -564,7 +576,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -644,7 +656,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -699,7 +711,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -794,7 +806,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -914,7 +926,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -934,7 +946,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1014,7 +1026,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1213,6 +1225,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=3</td>
@@ -1258,6 +1275,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=dxf113</td>
@@ -1293,6 +1315,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateImagingFileColumn</td>
 	<td></td>
@@ -1316,6 +1343,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1368,6 +1400,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=Right</td>
@@ -1401,6 +1438,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt NCRI</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1443,21 +1485,10 @@
 	<td>link=Load All Imaging</td>
 	<td></td>
 </tr>
-<!--// add logo-->
-<tr>
-	<td>type</td>
-	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri logo.jpg</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addStudyLogo_addStudyLogo</td>
-	<td></td>
-</tr>
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>
-	<td>addStudyLogo_deployStudy</td>
+	<td>loadImagingSource_deployStudy</td>
 	<td></td>
 </tr>
 
