@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>http://localhost:8080/caintegrator2/createStudy.action</td>
+	<td>/caintegrator2/createStudy.action</td>
 	<td></td>
 </tr>
 <tr>
@@ -2038,6 +2038,16 @@
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
 	<td>liu-00216</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_password</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

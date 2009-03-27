@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
+<link rel="selenium.base" href="http://caintegrator2-qa.nci.nih.gov/" />
 <title>Manage Studies - Load Rembrandt NCRI</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>http://localhost:8080/caintegrator2/createStudy.action</td>
+	<td>/caintegrator2/createStudy.action</td>
 	<td></td>
 </tr>
 <tr>
@@ -1129,6 +1129,16 @@
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
 	<td>jagla-00034</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_password</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
