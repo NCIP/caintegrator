@@ -9,18 +9,17 @@
       <i t="caIntegrator2 Functions" l="6" />
     </i>
     <i t="Logging Out" l="7" />
-    <i t="To log out of caIntegrator2, click the logout link in the upper right-hand corner. Application Support" l="8" />
+    <i t="Application Support" l="8" />
   </i>
   <i t="Creating a New Study" l="9">
-    <i t="Creating a Study – Overview" l="10">
-      <i t="Source Data Preparation" l="11" />
-    </i>
-    <i t="Configuring and Deploying Study" l="12">
-      <i t="Creating/Editing a Study" l="13" />
-      <i t="Adding Clinical Data" l="14">
-        <i t="Assigning An Identifier or Annotation" l="15" />
-        <i t="Searching for Annotation Definitions" l="16" />
+    <i t="Creating a Study – Overview" l="10" />
+    <i t="Configuring and Deploying Study" l="11">
+      <i t="Creating/Editing a Study" l="12" />
+      <i t="Adding Clinical Data" l="13">
+        <i t="Assigning An Identifier or Annotation" l="14" />
+        <i t="Searching for Annotation Definitions" l="15" />
       </i>
+      <i t="Editing a Study" l="16" />
       <i t="Editing Survival Values" l="17" />
       <i t="Adding Genomic Data" l="18">
         <i t="Mapping Genomic Data to Clinical Data" l="19" />
@@ -35,74 +34,43 @@
     </i>
   </i>
   <i t="Searching a caIntegrator2 Study" l="25">
-    <i t="Creating a New StudySearch Overview" l="26" />
+    <i t="Search Overview" l="26" />
     <i t="Launching a Search" l="27">
       <i t="Columns and Sorting Tabs" l="28" />
-      <i t="Sorting Data" l="29" />
     </i>
-    <i t="Manage Queries" l="30">
-      <i t="Saving a Query" l="30#1075754" />
+    <i t="Managing Queries" l="29">
+      <i t="Saving a Query" l="30" />
       <i t="Editing a Query" l="31" />
       <i t="Exporting Query Results" l="32" />
     </i>
   </i>
-  <i t="Viewing Results" l="33">
-    <i t="Results Overview" l="34">
-      <i t="Viewing Search Results" l="35" />
-    </i>
-    <i t="Browse Clinical Data Results" l="36" />
-    <i t="Browse Imaging Data Results" l="37" />
-    <i t="Browse Genomic Data Results" l="38" />
-    <i t="Working With Search Results" l="39">
-      <i t="Gene Expression Query Results" l="40" />
-      <i t="Viewing imaging results" l="41" />
-      <i t="Exporting Data" l="42" />
-      <i t="Viewing Image Data" l="43" />
-      <i t="Curate Shared Annotation" l="44" />
-    </i>
-    <i t="Using I-SPY Report Icons" l="45" />
-    <i t="Search Results" l="46">
-      <i t="Clinical Reports" l="47">
-        <i t="Creating a PatientDID List from a Clinical or p53 Report" l="48" />
-        <i t="Accessing an NCIA Image from a Clinical Report" l="49" />
-      </i>
-      <i t="IHC Level of Expression Search Results" l="50" />
-      <i t="IHC Loss of Expression Search Results" l="51" />
-      <i t="p53 Search Results" l="52" />
-    </i>
-    <i t="High Order Analysis Results" l="53">
-      <i t="Class Comparison Report" l="54">
-        <i t="Creating a Gene List (Select Genes toolbar)" l="55" />
-        <i t="Resorting Column Results" l="56" />
-        <i t="Showing Additional Information" l="57" />
-      </i>
-      <i t="Principal Component Analysis Plot" l="58">
-        <i t="Selecting Samples of Interest in a Plot" l="59" />
-      </i>
-      <i t="Hierarchical Clustering Report" l="60" />
-      <i t="Correlation Scatter Plot" l="61" />
-      <i t="Categorical Plot Analysis" l="62" />
-      <i t="GenePattern Analysis Reports" l="63" />
+  <i t="Viewing Search Results" l="33">
+    <i t="Search Results Overview" l="34" />
+    <i t="Browsing Search Results" l="35">
+      <i t="Clinical and Imaging Data" l="35#1163763" />
+      <i t="Genomic Data" l="36" />
+      <i t="Imaging Data Results" l="37" />
+      <i t="Exporting Data" l="38" />
     </i>
   </i>
-  <i t="Analyzing Studies" l="64">
-    <i t="Data Analysis" l="64#1073170" />
-    <i t="Performing Data Analysis" l="65">
-      <i t="Creating Kaplan-Meier Plots" l="66">
-        <i t="KM Plot for Annotations" l="67" />
-        <i t="KM Plot for Gene Expression" l="68" />
-        <i t="KM Plot for Queries" l="69" />
+  <i t="Analyzing Studies" l="39">
+    <i t="Data Analysis" l="39#1073170" />
+    <i t="Performing Data Analysis" l="40">
+      <i t="Creating Kaplan-Meier Plots" l="41">
+        <i t="KM Plot for Annotations" l="42" />
+        <i t="KM Plot for Gene Expression" l="43" />
+        <i t="KM Plot for Queries" l="44" />
       </i>
-      <i t="Analyzing Data with GenePattern" l="70" />
+      <i t="Analyzing Data with GenePattern" l="45" />
     </i>
   </i>
-  <i t="Glossary" l="71" />
-  <i t="Data Import Configurations" l="72">
-    <i t="Subject Clinical Data Configuration" l="72#1073214" />
-    <i t="Delimited-Text Annotation Import" l="73" />
-    <i t="Annotation Field Configuration" l="74" />
-    <i t="Sample Data Configuration" l="75" />
-    <i t="Genomic Data Configuration" l="76" />
-    <i t="Imaging Data Configuration" l="77" />
+  <i t="Glossary" l="46" />
+  <i t="Data Import Configurations" l="47">
+    <i t="Subject Clinical Data Configuration" l="47#1073214" />
+    <i t="Delimited-Text Annotation Import" l="48" />
+    <i t="Annotation Field Configuration" l="49" />
+    <i t="Sample Data Configuration" l="50" />
+    <i t="Genomic Data Configuration" l="51" />
+    <i t="Imaging Data Configuration" l="52" />
   </i>
 </WebWorksHelpTOC>

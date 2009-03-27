@@ -28,11 +28,10 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1081247">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.4.html#1081247">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.10.html#1081247">Adding Genomic Data</a> &gt; Mapping Genomic Data to Clinical Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1081247">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1081247">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.10.html#1081247">Adding Genomic Data</a> &gt; Mapping Genomic Data to Clinical Data</div>
     <hr align="left" />
     <blockquote>
       <div class="Heading3"><a name="1081247">Mapping Genomic Data to Clinical Data</a></div>
-      <div class="Body_Text"><a name="1081111">&nbsp;</a></div>
       <div class="Body_Text"><a name="1082153">To map the samples from the caArray experiment to the patients in the clinical data you </a>uploaded, follow these steps:</div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1082146">
@@ -59,8 +58,24 @@
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1081182">The mapping file has only two columns</a>–one that shows that subject ID and one that has sample ID, providing caIntegrator2 with the information for mapping patients to samples.</div>
-      <div class="Body_Text_Indent_2"><a name="1081151">Unmapped samples continue to show at the top of the page. They were loaded </a>from caArray, but they are not in the mapping file. These are not used for integration. </div>
+      <div class="Body_Text_Indent_2"><a name="1081182">The mapping file has only two columns (typically without headers)</a>–one that shows the subject ID (designated in caIntegrator2 as the “Identifier) and one that has “Sample name” field from the linked caArray experiment,<span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> </span>with one subject per row. This provides caIntegrator2 with the information for mapping patients to caArray samples.<img id="1085177" class="Default" src="images/genomic%20mapping%20file.gif" width="557" height="182" style="display: block; float: none; left: 0.0; text-align: left; top: 0.0;" /></div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1085193">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1085193" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1085193">When you open the mapping file, make sure that the patient ID is used </a>for mapping.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent_2"><a name="1081151">Unmapped samples continue to show at the top of the caIntegrator2 page. They </a>were loaded from caArray, but they are not in the mapping file. These are not used for integration. </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1080250">
           <tr style="vertical-align: baseline;">
