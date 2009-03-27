@@ -1,13 +1,15 @@
 function FileData_Pairs(x)
 {
-x.t("working","search");
-x.t("results","working");
-x.t("results","viewing");
-x.t("search","results");
-x.t("viewing","results");
-x.t("viewing","image");
-x.t("data","viewing");
-x.t("data","case");
-x.t("image","data");
-x.t("case","content");
+x.t("kaplan-meier","plots");
+x.t("gene","expression");
+x.t("studies","performing");
+x.t("creating","kaplan-meier");
+x.t("analyzing","studies");
+x.t("performing","data");
+x.t("expression","analyzing");
+x.t("expression","plot");
+x.t("data","analysis");
+x.t("plots","plot");
+x.t("plot","gene");
+x.t("analysis","creating");
 }

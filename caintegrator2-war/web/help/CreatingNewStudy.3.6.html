@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <!-- MOTW-DISABLED saved from url=(0014)about:internet -->
-    <title>Adding Clinical Data</title>
+    <title>Assigning An Identifier or Annotation</title>
     <link rel="StyleSheet" href="css/CreatingNewStudy.css" type="text/css" media="all" />
     <link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all" />
     <script type="text/javascript" language="JavaScript1.2" src="wwhdata/common/context.js"></script>
@@ -28,52 +28,227 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1075197">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.4.html#1075197">Configuring and Deploying Study</a> &gt; Adding Clinical Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1082187">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1082187">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.5.html#1082187">Adding Clinical Data</a> &gt; Assigning An Identifier or Annotation</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading2"><a name="1075197">Adding Clinical Data</a></div>
-      <div class="Body_Text"><a name="1075152">The Edit Study page opens after you save a new study or click to edit an existing study.</a></div>
-      <div class="Body_Text"><a name="1076533">To add or edit clinical metadata in this page, follow these steps:</a></div>
+      <div class="Heading3"><a name="1082187">Assigning An Identifier or Annotation</a></div>
+      <div class="Body_Text_Indent_2"><a name="1081979">When you click </a><span style="font-weight: bold;">Change Assignment</span> on the Define Fields... page, the Assign Annotation Definition for Column dialog box opens. On this page you can change the column type and the field definition for the specific data field you selected.</div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083036">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1083036" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1083036">When you change an assignment, you must make sure the data types </a>match--numeric, etc.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076529">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075571">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_1_inner"><a name="1076529">To add clinical data, on the Edit Study page click the </a><span style="font-weight: bold;">Browse</span> button. Navigate to locate the file. Files must be in CSV file format.</div>
+              <div class="Numbered_List_1_inner"><a name="1075571">For the column (PatientID) that you choose to be the one and only Identifier </a>column, in the <span style="font-weight: bold;">Column Type</span> drop-down list, select <span style="font-weight: bold;">Identifier</span>.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1076514">In the Clinical Data Sources section, if a file has already been selected, its </a>information displays in the varying fields. </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081971">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1081971" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><span style="font-family: Arial;"><a name="1081971">When the definition becomes an identifier, the rest of the page </a></span><span style="font-family: Arial;">disappears, showing only the Identifier definition.</span>If you select <span style="font-weight: bold;">Annotation</span> after you have already selected <span style="font-weight: bold;">Identifier</span>, the rest of the page reappears.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1074231">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081993">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1074231">Click </a><span style="font-weight: bold;">Add Clinical Data File</span>.  This opens the Define Fields for Clinical Data page.  </div>
+              <div class="Numbered_List_inner"><a name="1081993">Click </a><span style="font-weight: bold;">Save</span> to save the identifier. This returns you to the Define Fields for Clinical Data page.</div>
             </td>
           </tr>
         </table>
       </div>
-      <div class="Body_Text_Indent_2"><a name="1076819">The page displays column headers and data values in the file you have </a>designated.</div>
-      <div class="Body_Text_Indent_2"><a name="1075276">The File Header column on the Define Fields... page displays current column </a>headers. You must designate one column in the file as a unique “identifier” column type. You must also review and define column annotation definitions for each column header in the file. Assigning the Identifier and the annotations are the MOST important steps in creating a new study in caIntegrator2.</div>
-      <div class="Body_Text_Indent_2"><a name="1081956">If someone has already used the same column  header in other files already in </a>caIntegrator2, a term such as “age” or “survival” appears in the <span style="font-weight: bold;">Field Definition</span> column above the blue <span style="font-weight: bold;">Change Assignment</span> link. If the area above the blue <span style="font-weight: bold;">Change Assignment</span> link is blank, it will be populated once you specify the field type. </div>
       <div class="Numbered_List_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081957">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081963">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3.	</div>
             </td>
             <td width="100%">
-              <div class="Numbered_List_inner"><a name="1081957">You must indicate the unique identifier of choice.  On the row showing the </a>column header (PatientID in the figure, but other examples are subject identifier, sample identifier, etc), click <span style="font-weight: bold;">Change Assignment</span> in the <span style="font-weight: bold;">Field Definition</span> column. </div>
+              <div class="Numbered_List_inner"><a name="1081963">After you have defined which field is the Identifier, you must ensure that ALL </a>other fields also have a field definition assignment. For those fields without a Field Definition assignment or for those whose Field Definition you want to review, click <span style="font-weight: bold;">Change Assignment</span>.</div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081978">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1081978">In the Assign Annotation Definition for Column: [column header] dialog box, </a>select <span style="font-weight: bold;">Annotation</span> in the drop-down list.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text_Indent"><a name="1076087">As you select the column type, you can work with column headers in one of four </a>ways in this dialog box.</div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076088">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1076088">You can accept existing default definitions (those that are inherent in the </a>data file you selected).</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076089">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1076089">You can create your own definitions manually.</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076090">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1076090">You can search for and use definitions in other caIntegrator2 studies. </a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1076097">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><a name="1076097">You can search for and use definitions in caDSR.</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075389">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1075389">If there is anything you want to change about the annotation definition of the </a>field such as its name, or if you want to view or edit its definition, click the <span style="font-weight: bold;">New</span> button under the <span style="font-weight: bold;">Column Type</span> field. The page expands, now including a Current Annotation Definition section.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_Indent_outer" style="margin-left: 50.25pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075611">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_Indent_inner" style="width: 25px; white-space: nowrap;">
+                <span style="left: -20px; position: relative; top: 15px;">
+                  <img src="note_NCI.gif" alt="*" id="bullet1075611" border="0" width="30" height="30" />
+                </span>
+              </div>
+            </td>
+            <td width="100%">
+              <div class="Note_Indent_inner"><a name="1075611">If the column header you are working with already has a designated </a>Field Definition, the Current Annotation Definition section of the Assign Annotation Definition for Column page is already visible when you open this dialog box. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075359">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">6.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1075359">You can enter a new name annotation, or any other information about the </a>annotation definition:</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <table id="1076628" class="Table_-_List" style="text-align: left;" cellspacing="2">
+        <caption></caption>
+        <tr>
+          <td id="tc1076630" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 110.232pt;">
+            <div class="Table_Header"><a name="1076630">Annotation Field</a></div>
+          </td>
+          <td id="tc1076632" style="background-color: WhiteSmoke; border-bottom-color: Black; border-bottom-style: solid; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 4pt; padding-left: 6pt; padding-right: 4pt; padding-top: 4pt; vertical-align: middle; width: 280.584pt;">
+            <div class="Table_Header"><a name="1076632">Field Description</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1076634" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1076634">Description</a></div>
+          </td>
+          <td id="tc1076636" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1076636">Enter any information not covered by other fields.</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1076638" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1076638">Keywords</a></div>
+          </td>
+          <td id="tc1076640" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1076640">Insert keyword(s) that can be used to find the study in a </a>search, separated by commas.</div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1076642" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1076642">Data Type</a></div>
+          </td>
+          <td id="tc1076644" style="background-color: White; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><a name="1076644">Enter a string (default), numeric, or date</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td id="tc1076646" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text" style="color: #000000; font-family: Arial; font-size: 10.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1076646">Permissible/Non-</a>permissible Values</div>
+          </td>
+          <td id="tc1082981" style="background-color: WhiteSmoke; border-bottom-color: #000000; border-bottom-style: none; border-bottom-width: 1px; border-left-color: #000000; border-left-style: none; border-left-width: 1px; border-right-color: #000000; border-right-style: none; border-right-width: 1px; border-top-color: #000000; border-top-style: none; border-top-width: 1px; padding-bottom: 6px; padding-left: 6px; padding-right: 6px; padding-top: 6px; vertical-align: top;">
+            <div class="Table_Text"><span style="font-weight: bold;"><a name="1077221">Note:</a></span> The first time you load a file, before you assign annotation definitions (<span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.5.html#1082974', '');">step 3 </a></span>), these panels may be blank. If  the column header for the data is already “recognizable” by caIntegrator2, the system makes a “guess” about the data type and assigns the values to the data type in the newly uploaded file. They will display in the Non-permissible values sections initially. Use the <span style="font-weight: bold;">Add</span> and <span style="font-weight: bold;">Remove</span> buttons to move the values shown from one list to the other, as appropriate.</div>
+            <div class="Table_Text"><a name="1080311">When you select or change annotation definitions by </a>selecting matching definitions (described in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.7.html#1082197', '');">Searching for Annotation Definitions</a></span>), this may add (or change) the list of non-permissible values in this section.</div>
+            <div class="Table_Text"><a name="1084485">If you leave all values for a field in the Non-permissible panel, </a>then when you do a study search, you can enter free text in the query criteria for this field.</div>
+            <div class="Table_Text"><a name="1084490">If there are items in the Permissible values list, then the </a>values for this annotation are restricted to only those values. When you perform a study search, you will select from a list of these values when querying this field. If there are no items in the permissible values list then the field is considered free to contain any value. </div>
+            <div class="Table_Text"><a name="1082981">To edit a field’s permissible values, you must change the </a>annotation definition. You can do this even after a study has been deployed.</div>
+          </td>
+        </tr>
+      </table>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics

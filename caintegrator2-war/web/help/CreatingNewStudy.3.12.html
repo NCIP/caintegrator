@@ -28,11 +28,11 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1080249">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.4.html#1080249">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.10.html#1080249">Adding Genomic Data</a> &gt; Uploading Control Samples </div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1080249">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1080249">Configuring and Deploying Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.10.html#1080249">Adding Genomic Data</a> &gt; Uploading Control Samples </div>
     <hr align="left" />
     <blockquote>
       <div class="Heading3"><a name="1080249">Uploading Control Samples </a></div>
-      <div class="Body_Text"><a name="1081202">The Control Samples file is used to calculate fold change data, to compare which </a>genes in the caArray experiment are more highly expressed in the “tumor” samples compared to the “normal” (or otherwise control) samples.</div>
+      <div class="Body_Text"><a name="1081202">The Control Samples file is used to calculate fold change data, which compares “tumor” </a>sample gene expression in the caArray experiment to the control samples to identify those that exhibit up or down regulation. Control samples can be the “normal” samples, but that is not necessarily the case.</div>
       <div class="Body_Text"><a name="1081271">To upload the control samples, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1081324">
@@ -71,12 +71,17 @@
           </tr>
         </table>
       </div>
-      <div class="Body_Text"><a name="1081589">&nbsp;</a></div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Adding Clinical Data", "caIntegrator2", "CreatingNewStudy.3.5.html#1075197");
+          WWHAddRelatedTopic("Adding Imaging Data", "caIntegrator2", "CreatingNewStudy.3.13.html#1075831");
+          WWHAddRelatedTopic("Managing Platforms", "caIntegrator2", "CreatingNewStudy.3.16.html#1078043");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

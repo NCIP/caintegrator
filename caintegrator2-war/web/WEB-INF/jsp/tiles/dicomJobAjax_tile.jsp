@@ -6,6 +6,15 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <div id="content">
+
+    <!--Page Help-->
+
+    <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('DICOM_retrieval_help')" class="help">
+   (draft)</a>
+    </div>
+
+    <!--/Page Help-->
+
     <h1>DICOM Retrieval</h1>
     
     <div id="errorMessages" style="color: red;"> </div>
