@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -282,9 +283,29 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     public AnalysisForm getAnalysisForm() {
         if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getAnalysisForm();
+            return getDisplayableWorkspace().getCurrentAnalysisJob().getAnalysisForm();
         } else {
             return null;
+        }
+    }
+    
+    /**
+     * @return the currentAnalysisJob.
+     */
+    public GenePatternAnalysisJob getCurrentAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentAnalysisJob();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Resets the current job.
+     */
+    protected void resetCurrentAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            getDisplayableWorkspace().setCurrentAnalysisJob(new GenePatternAnalysisJob());
         }
     }
 

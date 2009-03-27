@@ -169,7 +169,8 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
      * {@inheritDoc}
      */
     @Override
-    void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
+    public void configureForInvocation(StudySubscription studySubscription, 
+                                       QueryManagementService queryManagementService) {
         if (getSelectedQuery() == null) {
             setSelectedQuery(createAllDataQuery(studySubscription));
         } else {

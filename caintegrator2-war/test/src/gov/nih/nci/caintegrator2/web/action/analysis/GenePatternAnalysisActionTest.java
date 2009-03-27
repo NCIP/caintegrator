@@ -98,10 +98,12 @@ import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.ajax.GenePatternAjaxUpdater;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -134,6 +136,8 @@ public class GenePatternAnalysisActionTest {
         action = new GenePatternAnalysisAction();
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(new QueryManagementServiceStub());
+        action.setWorkspaceService(new WorkspaceServiceStub());
+        action.setAjaxUpdater(new GenePatternAjaxUpdater());
     }
     
     @Test
@@ -191,8 +195,7 @@ public class GenePatternAnalysisActionTest {
         genomicParameterValue.setParameter(genomicParameter);
         action.getAnalysisForm().getInvocation().setParameterValue(genomicParameter, genomicParameterValue);
         action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
-        assertEquals("results", action.execute());
-        assertEquals("http://localhost/resultUrl", action.getResultUrl());
+        assertEquals("status", action.execute());
     }
     
     @Test
@@ -208,6 +211,7 @@ public class GenePatternAnalysisActionTest {
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
         action.getAnalysisForm().setUrl("http://localhost/directory");
+        action.getCurrentAnalysisJob().setName("name");
         action.validate();
         assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();

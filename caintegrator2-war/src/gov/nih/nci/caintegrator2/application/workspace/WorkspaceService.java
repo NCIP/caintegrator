@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
@@ -122,6 +123,12 @@ public interface WorkspaceService {
      * @param workspace - object that needs to be updated.
      */
     void saveUserWorkspace(UserWorkspace workspace);
+    
+    /**
+     * Saves the current changes.
+     * @param job - object to be updated.
+     */
+    void saveGenePatternAnalysisJob(GenePatternAnalysisJob job);
     
     /**
      * Creates a <code> DisplayableStudySummary </code> from the given Study. 

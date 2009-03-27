@@ -177,7 +177,10 @@ public class AnalysisForm {
         return null;
     }
 
-    AnalysisMethodInvocation getInvocation() {
+    /**
+     * @return the invocation.
+     */
+    public AnalysisMethodInvocation getInvocation() {
         return invocation;
     }
 
@@ -258,7 +261,11 @@ public class AnalysisForm {
         server.setUsername(username);
     }
 
-    ServerConnectionProfile getServer() {
+    /**
+     * 
+     * @return the server.
+     */
+    public ServerConnectionProfile getServer() {
         return server;
     }
 

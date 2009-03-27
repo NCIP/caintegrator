@@ -86,13 +86,13 @@
 package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
@@ -125,7 +125,7 @@ public class DisplayableUserWorkspace {
     private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
-    private AnalysisForm analysisForm = new AnalysisForm();
+    private GenePatternAnalysisJob currentAnalysisJob = new GenePatternAnalysisJob();
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
@@ -142,7 +142,7 @@ public class DisplayableUserWorkspace {
      *
      * @param workspaceService service used to 
      */
-    void refresh(WorkspaceService workspaceService) {
+    public void refresh(WorkspaceService workspaceService) {
         setUserWorkspace(workspaceService.getWorkspace());
         if (getCurrentStudySubscriptionId() == null  && getUserWorkspace().getDefaultSubscription() != null) {
             currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
@@ -283,20 +283,6 @@ public class DisplayableUserWorkspace {
     }
 
     /**
-     * @return the analysisForm
-     */
-    public AnalysisForm getAnalysisForm() {
-        return analysisForm;
-    }
-
-    /**
-     * @param analysisForm the analysisForm to set
-     */
-    public void setAnalysisForm(AnalysisForm analysisForm) {
-        this.analysisForm = analysisForm;
-    }
-    
-    /**
      * Retrieves the Logo URL for the leftNavMenu.
      * @return - URL for the logo servlet.
      */
@@ -395,6 +381,20 @@ public class DisplayableUserWorkspace {
      */
     public void setCreatePlotRunning(boolean createPlotRunning) {
         this.createPlotRunning = createPlotRunning;
+    }
+
+    /**
+     * @return the currentAnalysisJob
+     */
+    public GenePatternAnalysisJob getCurrentAnalysisJob() {
+        return currentAnalysisJob;
+    }
+
+    /**
+     * @param currentAnalysisJob the currentAnalysisJob to set
+     */
+    public void setCurrentAnalysisJob(GenePatternAnalysisJob currentAnalysisJob) {
+        this.currentAnalysisJob = currentAnalysisJob;
     }
 
 }

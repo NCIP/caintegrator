@@ -85,154 +85,105 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.directwebremoting.WebContextFactory;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Stub for DWR's WebContextBuilder.
- */
-public class WebContextBuilderStub implements WebContextBuilder {
+import com.opensymphony.xwork2.ActionContext;
 
-    public WebContext get() {
-        return new WebContextStub();
+
+public class GenePatternAjaxUpdaterTest {
+
+    private GenePatternAjaxUpdater updater;
+    private DwrUtilFactory dwrUtilFactory;
+    private WorkspaceServiceGPJobStub workspaceService;
+    private AnalysisServiceStub analysisService;
+    private GenePatternAnalysisJob job;
+
+    @Before
+    public void setUp() throws Exception {
+        updater = new GenePatternAjaxUpdater();
+        dwrUtilFactory = new DwrUtilFactory();
+        workspaceService = new WorkspaceServiceGPJobStub();
+        analysisService = new AnalysisServiceStub();
+        analysisService.clear();
+        workspaceService.clear();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(dwrUtilFactory);
+        updater.setAnalysisService(analysisService);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        job = new GenePatternAnalysisJob();
+        job.setName("Job");
+        job.setStatus(GenePatternJobStatusEnum.SUBMITTED);
+        job.setCreationDate(new Date());
+        job.setId(Long.valueOf(1));
     }
 
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
+    @Test
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        updater.initializeJsp();
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
+        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
-
-    public void unset() {
-
+    
+    @Test
+    public void testRunJob() throws InterruptedException {
+        updater.runJob(job);
+        Thread.sleep(500);
+        assertTrue(analysisService.executeGenePatternJobCalled);
+        assertTrue(GenePatternJobStatusEnum.COMPLETED.equals(job.getStatus()));
     }
-
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
+    
+    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
+        @Override
+        public UserWorkspace getWorkspace() {
+            UserWorkspace workspace = new UserWorkspace();
+            workspace.setUsername("Test");
+            StudySubscription subscription = new StudySubscription();
+            subscription.setId(Long.valueOf(1));
+            subscription.setUserWorkspace(workspace);
+            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            workspace.getSubscriptionCollection().add(subscription);
+            job.setSubscription(subscription);
+            subscription.getAnalysisJobCollection().add(job);
+            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
+            subscription.getAnalysisJobCollection().add(job2);
+            job2.setSubscription(subscription);
+            job2.setCreationDate(new Date());
+            job2.setId(Long.valueOf(2));
+            job2.setName("Job2");
+            return workspace;
         }
     }
+    private final class PersistedJobStub implements PersistedJob {
+
+        public StudySubscription getSubscription() {
+            return null;
+        }
+        
+    }
+
 }

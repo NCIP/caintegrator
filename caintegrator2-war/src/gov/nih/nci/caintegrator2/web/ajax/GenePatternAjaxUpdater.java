@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,154 +85,128 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
+import org.apache.commons.lang.StringUtils;
+import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * Stub for DWR's WebContextBuilder.
+ * This is an object which is turned into an AJAX javascript file using the DWR framework.  
  */
-public class WebContextBuilderStub implements WebContextBuilder {
+public class GenePatternAjaxUpdater extends AbstractDwrAjaxUpdater implements IGenePatternAjaxUpdater {
+    
+    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
+    private static final String GENE_PATTERN_STATUS_TABLE = "genePatternStatusTable";
+    private static final String GP_JOB_NAME = "gpJobName_";
+    private static final String GP_JOB_STATUS = "gpJobStatus_";
+    private static final String GP_JOB_CREATION_DATE = "gpJobCreationDate_";
+    private static final String GP_JOB_URL = "gpJobUrl_";
+    private AnalysisService analysisService;
 
-    public WebContext get() {
-        return new WebContextStub();
-    }
-
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
-    }
-
-    public void unset() {
-
-    }
-
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
+    /**
+     * {@inheritDoc}
+     */
+    protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
+        int counter = 0;
+        List <GenePatternAnalysisJob> jobList = new ArrayList<GenePatternAnalysisJob>();
+        jobList.addAll(workspace.getCurrentStudySubscription().getAnalysisJobCollection());
+        Collections.sort(jobList);
+        for (GenePatternAnalysisJob job : jobList) {
+            retrieveDwrUtility(job).addRows(GENE_PATTERN_STATUS_TABLE, 
+                                            createRow(job), 
+                                            retrieveRowOptions(counter));
+            updateJobStatus(job);
+            counter++;
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void associateJobWithSession(DwrUtilFactory dwrUtilFactory, String username, Util util) {
+        dwrUtilFactory.associateGenePatternJobWithSession(username, util);
+    }
+
+    private String[][] createRow(GenePatternAnalysisJob job) {
+        String[][] rowString = new String[1][3];
+        String id = job.getId().toString();
+        String startSpan = "<span id=\"";
+        String endSpan = "\"> </span>";
+        rowString[0][0] = startSpan + GP_JOB_NAME + id + endSpan;
+        rowString[0][1] = startSpan + GP_JOB_STATUS + id + endSpan
+                            + startSpan + GP_JOB_URL + id + endSpan;
+        rowString[0][2] = startSpan + GP_JOB_CREATION_DATE + id + endSpan;
+        return rowString;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runJob(GenePatternAnalysisJob job) {
+        Thread jobRunner = new Thread(new GenePatternAjaxRunner(this, job));
+        jobRunner.start();
+    }
+    
+    /**
+     * Adds error to JSP.
+     * @param errorMessage .
+     * @param job to associate JSP script session to.
+     */
+    public void addError(String errorMessage, GenePatternAnalysisJob job) {
+        retrieveDwrUtility(job).setValue("errors", errorMessage);
+    }
+
+    /**
+     * Updates job status.
+     * @param job to update.
+     */
+    public void updateJobStatus(GenePatternAnalysisJob job) {
+        getWorkspaceService().saveGenePatternAnalysisJob(job);
+        
+        Util utilThis = retrieveDwrUtility(job);
+        String jobId = job.getId().toString();
+        utilThis.setValue(GP_JOB_NAME + jobId, job.getName());
+        utilThis.setValue(GP_JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
+        utilThis.setValue(GP_JOB_CREATION_DATE + jobId, 
+                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
+        if (!StringUtils.isEmpty(job.getJobUrl())) {
+            utilThis.setValue(GP_JOB_URL + jobId, 
+                    " - <a href=\"" + job.getJobUrl() + "\" target=\"_\">View " + job.getGpJobNumber() + "</a>", false);
+        }
+    }
+    
+    private String getStatusMessage(GenePatternJobStatusEnum jobStatus) {
+        if (GenePatternJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
+                || GenePatternJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
+            return AJAX_LOADING_GIF + " " + jobStatus.getValue();
+        }
+        return jobStatus.getValue();
+    }
+
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
+
+
 }
