@@ -9,10 +9,9 @@
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="cai2_test_load_platforms">Manage Cai2 - Load platforms</a></td></tr>
+<tr><td><a href="cai2_test_wait_for_platforms_to_be_loaded">Manage Cai2 -  Wait for platforms to be loaded</a></td></tr>
 <tr><td><a href="cai2_test_deploy_rembrandt_ncri">Manage Studies - Load Rembrandt NCRI</a></td></tr>
 <tr><td><a href="cai2_test_deploy_dc_lung">Manage Studies - Load DC Lung</a></td></tr>
-<tr><td><a href="cai2_test_query_dc_lung">Manage Queries - query DC Lung</a></td></tr>
-<tr><td><a href="cai2_test_deploy_rembrandt_ncri_after_1st">Manage Studies - Load Rembrandt NCRI - after 1st load</a></td></tr>
 <tr><td><a href="cai2_test_deploy_rembrandt_vasari">Manage Studies - Load Rembrandt / VASARI</a></td></tr>
 </tbody></table>
 </body>

@@ -17,11 +17,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/caintegrator2/addStudyLogo.action</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Manage Platforms</td>
 	<td></td>
@@ -47,7 +42,82 @@
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133A.na27.annot.csv</td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133B.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95Av2.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95B.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95C.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95D.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>addPlatform_0</td>
 	<td></td>
 </tr>
