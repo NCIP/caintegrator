@@ -455,7 +455,10 @@
     <target name="test:unpack-test-data">
         <for param="zipfile">
             <path>
-                <fileset dir="${caintegrator2.war.resources.test.dir}" includes="**/*.zip" />
+                <fileset dir="${caintegrator2.war.resources.test.dir}">
+                    <include name="**/*.zip" />
+                    <exclude name="pipelines/*.zip" />
+                </fileset>
             </path>
             <sequential>
                 <unzip overwrite="false" src="@{zipfile}" dest="@{zipfile}/.." />
