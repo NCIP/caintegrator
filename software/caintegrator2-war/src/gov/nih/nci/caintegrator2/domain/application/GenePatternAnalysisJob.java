@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,156 +83,125 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
+import java.util.Date;
 
 /**
- * Stub for DWR's WebContextBuilder.
+ * Object representing a single gene pattern analysis job.
  */
-public class WebContextBuilderStub implements WebContextBuilder {
+public class GenePatternAnalysisJob extends AbstractCaIntegrator2Object 
+                                    implements PersistedJob, Comparable <GenePatternAnalysisJob> {
 
-    public WebContext get() {
-        return new WebContextStub();
+    private final transient AnalysisForm analysisForm = new AnalysisForm();
+    private String name;
+    private GenePatternJobStatusEnum status = GenePatternJobStatusEnum.NOT_SUBMITTED;
+    private String jobUrl;
+    private Date creationDate;
+    private StudySubscription subscription;
+    private int gpJobNumber;
+
+    /**
+     * @return the analysisForm
+     */
+    public AnalysisForm getAnalysisForm() {
+        return analysisForm;
+    }
+    
+    /**
+     * @return the status
+     */
+    public GenePatternJobStatusEnum getStatus() {
+        return status;
+    }
+    
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(GenePatternJobStatusEnum status) {
+        this.status = status;
     }
 
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
+    /**
+     * @return the jobUrl
+     */
+    public String getJobUrl() {
+        return jobUrl;
     }
 
-    public void unset() {
-
+    /**
+     * @param jobUrl the jobUrl to set
+     */
+    public void setJobUrl(String jobUrl) {
+        this.jobUrl = jobUrl;
     }
 
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
-        }
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * @return the subscription
+     */
+    public StudySubscription getSubscription() {
+        return subscription;
+    }
+
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(StudySubscription subscription) {
+        this.subscription = subscription;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(GenePatternAnalysisJob o) {
+        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
+    }
+
+    /**
+     * @return the gpJobNumber
+     */
+    public int getGpJobNumber() {
+        return gpJobNumber;
+    }
+
+    /**
+     * @param gpJobNumber the gpJobNumber to set
+     */
+    public void setGpJobNumber(int gpJobNumber) {
+        this.gpJobNumber = gpJobNumber;
+    }
+
+
+
 }

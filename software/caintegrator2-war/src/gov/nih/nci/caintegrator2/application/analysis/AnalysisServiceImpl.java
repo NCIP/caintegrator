@@ -107,49 +107,31 @@ import java.util.List;
  */
 public class AnalysisServiceImpl implements AnalysisService {
     
-    private GenePatternClient genePatternClient;
     private CaIntegrator2Dao dao;
     private KMPlotService kmPlotService;
     private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
+    private GenePatternClientFactory genePatternClientFactory;
     
     /**
      * {@inheritDoc}
      */
     public List<AnalysisMethod> getGenePatternMethods(ServerConnectionProfile server)
             throws GenePatternServiceException {
-        configureClient(server);
-        return new GenePatternHelper(getGenePatternClient()).getMethods();
+        return new GenePatternHelper(retrieveClient(server)).getMethods();
     }
 
-    private void configureClient(ServerConnectionProfile server) {
-        getGenePatternClient().setUrl(server.getUrl());
-        getGenePatternClient().setUsername(server.getUsername());
-        getGenePatternClient().setPassword(server.getPassword());
-    }
-
-    /**
-     * @return the genePatternClient
-     */
-    public GenePatternClient getGenePatternClient() {
-        return genePatternClient;
-    }
-
-    /**
-     * @param genePatternClient the genePatternClient to set
-     */
-    public void setGenePatternClient(GenePatternClient genePatternClient) {
-        this.genePatternClient = genePatternClient;
+    private GenePatternClient retrieveClient(ServerConnectionProfile server) {
+        return genePatternClientFactory.retrieveClient(server);
     }
 
     /**
      * {@inheritDoc}
      * @throws GenePatternServiceException 
      */
-    public URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    public JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
     throws GenePatternServiceException {
-        configureClient(server);
-        new GenePatternHelper(getGenePatternClient()).execute(invocation);
+        JobInfoWrapper jobInfo = new GenePatternHelper(retrieveClient(server)).execute(invocation);
         URL serviceUrl;
         URL resultUrl;
         try {
@@ -159,7 +141,8 @@ public class AnalysisServiceImpl implements AnalysisService {
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid URL provided for server " + server.getUrl(), e);
         }
-        return resultUrl;
+        jobInfo.setUrl(resultUrl);
+        return jobInfo;
     }
 
     /**
@@ -240,6 +223,20 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public void setGePlotService(GeneExpressionPlotService gePlotService) {
         this.gePlotService = gePlotService;
+    }
+
+    /**
+     * @return the genePatternClientFactory
+     */
+    public GenePatternClientFactory getGenePatternClientFactory() {
+        return genePatternClientFactory;
+    }
+
+    /**
+     * @param genePatternClientFactory the genePatternClientFactory to set
+     */
+    public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
+        this.genePatternClientFactory = genePatternClientFactory;
     }
 
     

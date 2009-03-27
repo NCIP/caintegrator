@@ -85,154 +85,113 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
 import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
+import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * Stub for DWR's WebContextBuilder.
+ * Abstract class for creating dynamically updated reverse-ajax pages.
  */
-public class WebContextBuilderStub implements WebContextBuilder {
-
-    public WebContext get() {
-        return new WebContextStub();
+public abstract class AbstractDwrAjaxUpdater {
+    
+    private WorkspaceService workspaceService;
+    private DwrUtilFactory dwrUtilFactory;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void initializeJsp() {
+        WebContext wctx = WebContextFactory.get();
+        DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
+                        wctx.getSession().getAttribute("displayableWorkspace");
+        workspace.refresh(workspaceService);
+        associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
+                                new Util(wctx.getScriptSession()));
+        initializeDynamicTable(workspace);
+    }
+    
+    /**
+     * Abstract class which is used when initializing the JSP to associate a job type with 
+     * a username on the session.
+     * @param utilFactory global object which stores the map of username -> Util objects.
+     * @param username current users username.
+     * @param util dwr util object.
+     */
+    protected abstract void associateJobWithSession(DwrUtilFactory utilFactory, 
+                                                     String username,
+                                                     Util util);
+    
+    /**
+     * For the dynamic table to initialize which shows the status of the objects.
+     * @param workspace current users workspace.
+     */
+    protected abstract void initializeDynamicTable(DisplayableUserWorkspace workspace);
+    
+    /**
+     * Retrieves the DWR Util for a PersistedJob.
+     * @param job to retrieve Util object for.
+     * @return DWR util object.
+     */
+    protected Util retrieveDwrUtility(PersistedJob job) {
+        if (job.getSubscription() != null) {
+            return getDwrUtilFactory().retrieveDwrUtil(job);
+        }
+        return new Util();
+    }
+    
+    /**
+     * Retreives table options for DWR created tables.
+     * @param counter - to switch it from odd/even rows in a table.
+     * @return dwr table row options.
+     */
+    protected String retrieveRowOptions(int counter) {
+        String bgcolor = "#f9f9f9";
+        if (counter % 2 == 0) {
+            bgcolor = "fff";
+        }
+        return "{ rowCreator:function(options) { "
+            + " var row = document.createElement(\"tr\");"
+            + " row.style.background=\"" + bgcolor + "\";"
+            + "return row;"
+            + "},"
+            + "cellCreator:function(options) { "
+            + "var td = document.createElement(\"td\");"
+            + "if (options.cellNum == 1) { td.style.whiteSpace=\"nowrap\"; }"
+            + "return td;"
+            + "},"
+            + " escapeHtml:false }";
     }
 
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
+    /**
+     * @return the workspaceService
+     */
+    public WorkspaceService getWorkspaceService() {
+        return workspaceService;
     }
 
-    public void unset() {
-
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
     }
 
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
-        }
+    /**
+     * @return the dwrUtilFactory
+     */
+    public DwrUtilFactory getDwrUtilFactory() {
+        return dwrUtilFactory;
     }
+
+    /**
+     * @param dwrUtilFactory the dwrUtilFactory to set
+     */
+    public void setDwrUtilFactory(DwrUtilFactory dwrUtilFactory) {
+        this.dwrUtilFactory = dwrUtilFactory;
+    }
+
 }

@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
@@ -125,6 +126,7 @@ public class AnalysisServiceTest {
 
     private AnalysisService service;
     private TestGenePatternClientStub genePatternClientStub = new TestGenePatternClientStub();
+    private GenePatternClientFactoryStub genePatternClientFactoryStub = new GenePatternClientFactoryStub();
     // KMPlot Items
     private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
     private CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
@@ -138,7 +140,7 @@ public class AnalysisServiceTest {
         kmPlotService.setCaIntegratorPlotService(caIntegratorPlotServiceStub);
         GeneExpressionPlotServiceImpl gePlotService = new GeneExpressionPlotServiceImpl();
         caIntegratorPlotServiceStub.clear();
-        serviceImpl.setGenePatternClient(genePatternClientStub); 
+        serviceImpl.setGenePatternClientFactory(genePatternClientFactoryStub); 
         serviceImpl.setDao(daoStub);
         serviceImpl.setKmPlotService(kmPlotService);
         serviceImpl.setGePlotService(gePlotService);
@@ -351,7 +353,13 @@ public class AnalysisServiceTest {
         runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
     }
     
-    
+    private final class GenePatternClientFactoryStub implements GenePatternClientFactory {
+
+        public GenePatternClient retrieveClient(ServerConnectionProfile server) {
+            return genePatternClientStub;
+        }
+        
+    }
 
     private final class TestGenePatternClientStub extends GenePatternClientStub {
 

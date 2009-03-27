@@ -171,8 +171,12 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
         return choices;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
+    public void configureForInvocation(StudySubscription studySubscription, 
+                                       QueryManagementService queryManagementService) {
         SampleClassificationParameterValue parameterValue =
             (SampleClassificationParameterValue) getParameterValue();
         parameterValue.clear();

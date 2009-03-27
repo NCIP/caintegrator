@@ -4,6 +4,8 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -15,6 +17,8 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private Study study;
     private Collection<AbstractList> listCollection;
     private Collection<Query> queryCollection;
+    private Set<GenePatternAnalysisJob> analysisJobCollection = new HashSet<GenePatternAnalysisJob>(); 
+    private UserWorkspace userWorkspace;
     
     /**
      * @return the study
@@ -56,6 +60,35 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
      */
     public void setQueryCollection(Collection<Query> queryCollection) {
         this.queryCollection = queryCollection;
+    }
+
+    /**
+     * @return the userWorkspace
+     */
+    public UserWorkspace getUserWorkspace() {
+        return userWorkspace;
+    }
+
+    /**
+     * @param userWorkspace the userWorkspace to set
+     */
+    public void setUserWorkspace(UserWorkspace userWorkspace) {
+        this.userWorkspace = userWorkspace;
+    }
+
+    /**
+     * @return the analysisJobCollection
+     */
+    public Set<GenePatternAnalysisJob> getAnalysisJobCollection() {
+        return analysisJobCollection;
+    }
+
+    /**
+     * @param analysisJobCollection the analysisJobCollection to set
+     */
+    @SuppressWarnings("unused") // For hibernate.
+    private void setAnalysisJobCollection(Set<GenePatternAnalysisJob> analysisJobCollection) {
+        this.analysisJobCollection = analysisJobCollection;
     }
 
 }

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -102,10 +103,12 @@ public class AnalysisServiceStub implements AnalysisService {
     
     public boolean createKMPlotCalled;
     public boolean createGEPlotCalled;
+    public boolean executeGenePatternJobCalled;
     
     public void clear() {
         createKMPlotCalled = false;
         createGEPlotCalled = false;
+        executeGenePatternJobCalled = false;
     }
 
     /**
@@ -131,9 +134,13 @@ public class AnalysisServiceStub implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) {
+    public JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) {
+        JobInfoWrapper jobInfo = new JobInfoWrapper();
+        executeGenePatternJobCalled = true;
         try {
-            return new URL("http://localhost/resultUrl");
+            jobInfo.setUrl(new URL("http://localhost/resultUrl"));
+            jobInfo.setJobInfo(new JobInfo());
+            return jobInfo;
         } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }

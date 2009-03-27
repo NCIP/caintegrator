@@ -86,12 +86,13 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
@@ -114,11 +115,17 @@ public class WorkspaceServiceTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
         workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
         daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
+        daoStub.clear();
     }
 
     @Test
     public void testGetWorkspace() {
         UserWorkspace workspace = workspaceService.getWorkspace();
+        assertNotNull(workspace);
+        
+        WorkspaceServiceImpl workspaceService2 = (WorkspaceServiceImpl) workspaceService;
+        workspaceService2.setDao(new DaoStubNoWorkspace());
+        workspace = workspaceService2.getWorkspace();
         assertNotNull(workspace);
     }
     
@@ -167,6 +174,20 @@ public class WorkspaceServiceTest {
     @Test(expected=IllegalArgumentException.class)
     public void testCreateDisplayableStudySummaryInvalid() {
         workspaceService.createDisplayableStudySummary(null);
+    }
+    
+    @Test
+    public void testSaveGenePatternAnalysisJob() {
+        workspaceService.saveGenePatternAnalysisJob(new GenePatternAnalysisJob());
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    private final class DaoStubNoWorkspace extends CaIntegrator2DaoStub {
+        
+        @Override
+        public UserWorkspace getWorkspace(String username) {
+            return null;
+        }
     }
 
 }

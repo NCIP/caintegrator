@@ -87,19 +87,22 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethodInvocation;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.ajax.IGenePatternAjaxUpdater;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -133,12 +136,17 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public static final String EXECUTE_ACTION = "execute";
     
-    private static final String RESULTS = "results";
+    /**
+     * Indicates action should go to the status page.
+     */
+    public static final String STATUS_ACTION = "status";
+
     
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
+    private StudyManagementService studyManagementService;
+    private IGenePatternAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
-    private String resultUrl;
     private String analysisMethodName;
 
     /**
@@ -160,9 +168,18 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
     
     /**
+     * Opens to the status page.
+     * @return Status string.
+     */
+    public String showStatusPage() {
+        return STATUS_ACTION;
+    }
+    
+    /**
      * @return
      */
     private String open() {
+        resetCurrentAnalysisJob();
         getAnalysisForm().setGenomicQueries(getGenomicQueries());
         Collection<AnnotationDefinition> subjectClassifications = 
             getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
@@ -244,6 +261,9 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
 
     private void validateExecuteAnalysis() {
+        if (StringUtils.isBlank(getCurrentAnalysisJob().getName())) {
+            addFieldError("currentAnalysisJob.name", "Job name required.");
+        }
         getAnalysisForm().validate(this);
     }
 
@@ -273,16 +293,14 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
     
     private String executeAnalysis() {
-        try {
-            AnalysisMethodInvocation invocation = getAnalysisForm().getInvocation();
-            configureInvocationParameters();
-            setResultUrl(getAnalysisService().executeGenePatternJob(
-                    getAnalysisForm().getServer(), invocation).toExternalForm());
-            return RESULTS;
-        } catch (GenePatternServiceException e) {
-            addActionError("Couldn't execute GenePattern analysis job: " + e.getMessage());
-            return ERROR;
-        }
+        configureInvocationParameters();
+        getCurrentAnalysisJob().setCreationDate(new Date());
+        getCurrentAnalysisJob().setStatus(GenePatternJobStatusEnum.SUBMITTED);
+        getStudySubscription().getAnalysisJobCollection().add(getCurrentAnalysisJob());
+        getCurrentAnalysisJob().setSubscription(getStudySubscription());
+        getWorkspaceService().saveUserWorkspace(getWorkspace());
+        ajaxUpdater.runJob(getCurrentAnalysisJob());
+        return STATUS_ACTION;
     }
 
     private void configureInvocationParameters() {
@@ -305,19 +323,6 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
         this.analysisService = analysisService;
     }
 
-    /**
-     * @return the resultUrl
-     */
-    public String getResultUrl() {
-        return resultUrl;
-    }
-
-    /**
-     * @param resultUrl the resultUrl to set
-     */
-    private void setResultUrl(String resultUrl) {
-        this.resultUrl = resultUrl;
-    }
 
     /**
      * @return the queryManagementService
@@ -359,6 +364,34 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     public void setAnalysisMethodName(String analysisMethodName) {
         this.analysisMethodName = analysisMethodName;
+    }
+
+    /**
+     * @return the ajaxUpdater
+     */
+    public IGenePatternAjaxUpdater getAjaxUpdater() {
+        return ajaxUpdater;
+    }
+
+    /**
+     * @param ajaxUpdater the ajaxUpdater to set
+     */
+    public void setAjaxUpdater(IGenePatternAjaxUpdater ajaxUpdater) {
+        this.ajaxUpdater = ajaxUpdater;
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 
 }
