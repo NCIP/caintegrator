@@ -32,43 +32,44 @@
     <hr align="left" />
     <blockquote>
       <div class="Heading1"><a name="1073286">Creating a S</a>tudy – Overview</div>
-      <div class="Body_Text"><a name="1077143">You can create a c</a>aIntegrator2 study by importing clinical study data, genomics data and imaging data. As you create the study, you define its structure in the process, identifying the data sources and mapping the data between different source data. caIntegrator2 has KM-plot as well as genePattern integration for performing analyses. </div>
+      <div class="Body_Text"><a name="1077143">You can create a c</a>aIntegrator2 study by importing clinical study data, genomics data and imaging data, using a combination of spreadsheet/files and existing caGrid applications as source data. Each instance of caIntegrator 2 can support multiple studies. As the manager creating a study, it is important that you understand the study well and that the data you wish to aggregate has been submitted to the applications whose data can be integrated in caIntegrator2. </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075102">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083468">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1075102">Clinical study data are always in spreadsheet format.</a></div>
+              <div class="Bullet_inner"><a name="1083468">The clinical data should be available in CSV files, with a unique patient identifier </a>in one column, one patient per row. Other relevant data can be supplied in other columns, to be identified as annotations in the file from within caIntegrator2.  You, as the study creator, must have access to the clinical data file, as the file does not come from a caBIG<span style="vertical-align: super;">®</span> repository.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075106">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083477">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1075106">Genomic data are expression data from caArray.</a></div>
+              <div class="Bullet_inner"><a name="1083477">I</a>n order to use caIntegrator 2 to integrate array data, the data should be imported into caArray, either locally or the CBIIT installation, using that system's data file import functionality.<span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> </span>You must also have a mapping file in CSV format. The mapping file in CSV format indicates connections between array files and the clinical subjects in the clinical data files. A mapping file consists of two columns: one with the patient ID, and one with the sample ID.</div>
             </td>
           </tr>
         </table>
       </div>
       <div class="Bullet_outer" style="margin-left: 18pt;">
-        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1075107">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1083526">
           <tr style="vertical-align: baseline;">
             <td>
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><a name="1075107">Imaging data consists of NCIA images or annotations for images, which are in </a>spreadsheet format</div>
+              <div class="Bullet_inner"><a name="1083526">Imaging data should have been submitted to NCIA grid node as public data, </a>either locally or as part of the CBIIT installation. Image annotations, which includes information about images provided by radiologists or other researchers can include such information as tumor size, tumor location, etc. must be in CSV format, with unique image series IDs in one column and annotation IDs in the second column. You must also have an image mapping file in CSV format. The mapping file in CSV format indicates connections between images in NBIA and clinical subjects in the clinical data files. A mapping file consists of two columns: one with the patient ID, and one with the NCIA image series ID in the other column.</div>
             </td>
           </tr>
         </table>
       </div>
+      <div class="Body_Text"><a name="1083467">As you c</a>reate the study, you define its structure in the process, identifying the data sources and mapping the data between different source data. caIntegrator2 has KM-plot as well as genePattern integration for performing analyses. </div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
           // Clear related topics

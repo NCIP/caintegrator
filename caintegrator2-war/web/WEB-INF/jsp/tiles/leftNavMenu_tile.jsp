@@ -121,7 +121,8 @@
                 <li><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
                 <li><a href="${ notYetImplementedUrl }">Support</a></li>
                 <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
-                <li><a href="${ notYetImplementedUrl }">User Guide</a></li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a>
+</li>
             </ul>
         </li>
     </ul>

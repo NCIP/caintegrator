@@ -5,173 +5,23 @@
       <j l="8#1122280" />
     </i>
   </g>
-  <g t="B" o="002">
-    <i t="black dot in box">
-      <i t="on Categorical Plot">
-        <j l="62#1120317" />
-      </i>
-    </i>
-  </g>
   <g t="C" o="002">
     <i t="caIntegrator2">
       <i t="workspace">
         <j l="5#1122586" />
       </i>
     </i>
-    <i t="Categorical Plot">
-      <i t="Analysis, report, description">
-        <j l="62#1120315" />
-      </i>
-      <i t="black dot in box defined">
-        <j l="62#1120317" />
-      </i>
-      <i t="circles defined">
-        <j l="62#1115113" />
-      </i>
-      <i t="line in box defined">
-        <j l="62#1115111" />
-      </i>
-      <i t="triangles defined">
-        <j l="62#1115115" />
-      </i>
-      <i t="uses for">
-        <j l="62#1112818" />
-      </i>
-    </i>
-    <i t="circles">
-      <i t="on Categorical Plot">
-        <j l="62#1115113" />
-      </i>
-    </i>
-    <i t="Class Comparison">
-      <i t="example (View Results)">
-        <j l="54#1121889" />
-      </i>
-      <i t="report description (View Results)">
-        <j l="54#1121889" />
-      </i>
-    </i>
-    <i t="Clinical plot">
-      <i t="selecting samples of interest">
-        <j l="59#1114971" />
-      </i>
-    </i>
-    <i t="Clinical report">
-      <i t="creating PatientDID list">
-        <j l="48#1133749" />
-      </i>
-      <i t="description">
-        <j l="47#1140584" />
-      </i>
-      <i t="saving genes">
-        <j l="55#1123885" />
-      </i>
-      <i t="saving samples">
-        <j l="48#1133784" />
-      </i>
-      <i t="selecting samples">
-        <j l="48#1133751" />
-      </i>
-    </i>
-    <i t="closing">
-      <i t="a report">
-        <j l="45#1128922" />
-      </i>
-    </i>
-    <i t="Comparative Marker Selection">
-      <i t="GenePattern results">
-        <j l="63#1149544" />
-      </i>
-    </i>
-    <i t="Correlation Coefficient, definition">
-      <j l="61#1121151" />
-    </i>
-    <i t="Correlation Scatter Plot">
-      <i t="report, description">
-        <j l="61#1111207" />
-      </i>
-    </i>
-  </g>
-  <g t="G" o="002">
-    <i t="Gene list">
-      <i t="creating with Select Genes toolbar">
-        <j l="55#1083043" />
-      </i>
-      <i t="saving on Class Comparison report">
-        <j l="55#1123885" />
-      </i>
-      <i t="selecting and saving">
-        <j l="55#1083043" />
-      </i>
-    </i>
-    <i t="GenePattern">
-      <i t="Comparative Marker Selection report">
-        <j l="63#1149544" />
-      </i>
-      <i t="HeatMap Viewer report">
-        <j l="63#1149528" />
-      </i>
-      <i t="hierarchical clustering report">
-        <j l="63#1149544" />
-      </i>
-      <i t="K-nearest neighbors report">
-        <j l="63#1149544" />
-      </i>
-    </i>
   </g>
   <g t="H" o="002">
-    <i t="HeatMap Viewer, GenePattern report">
-      <j l="63#1149528" />
-    </i>
-    <i t="Hierarchical Clustering">
-      <i t="dendogram description">
-        <j l="60#1133041" />
-      </i>
-      <i t="GenePattern results">
-        <j l="63#1149544" />
-      </i>
-      <i t="NCIA icon">
-        <j l="49#1133127" />
-      </i>
-      <i t="page description (View Results)">
-        <j l="60#1088996" />
-      </i>
-      <i t="report, description">
-        <j l="60#1088996" />
-      </i>
-    </i>
-    <i t="horizontal line in box">
-      <i t="on Categorical Plot">
-        <j l="62#1115111" />
-      </i>
+    <i t="hierarchy of objects, NCIA">
+      <j l="27#1076814" />
+      <j l="37#1164562" />
     </i>
   </g>
   <g t="I" o="002">
-    <i t="IHC Expression X/Y axis, Color By, definition">
-      <j l="61#1121149" />
-    </i>
-    <i t="IHC Level of Expression">
-      <i t="report, description">
-        <j l="50#1137350" />
-      </i>
-      <i t="report, example">
-        <j l="50#1137350" />
-      </i>
-    </i>
-    <i t="IHC Loss of Expression">
-      <i t="report, description">
-        <j l="51#1121285" />
-      </i>
-      <i t="report, example">
-        <j l="51#1121285" />
-      </i>
-    </i>
-    <i t="Image Control bar">
-      <j l="60#1088996" />
-    </i>
     <i t="I-SPY">
       <i t="logging out">
-        <j l="8" />
+        <j l="7#1111569" />
       </i>
       <i t="tabs">
         <j l="6#1122024" />
@@ -179,234 +29,53 @@
     </i>
   </g>
   <g t="K" o="002">
-    <i t="K-nearest neighbors GenePattern results">
-      <j l="63#1149544" />
+    <i t="Kaplan-Meier for Gene Expression Data">
+      <i t="redrawing plot">
+        <j l="41#1073592" />
+      </i>
+      <i t="simple search">
+        <j l="41#1073579" />
+      </i>
     </i>
   </g>
   <g t="L" o="002">
-    <i t="line in box">
-      <i t="on Categorical Plot">
-        <j l="62#1115111" />
-      </i>
-    </i>
     <i t="logging out">
       <i t="I-SPY">
-        <j l="8" />
+        <j l="7#1111569" />
       </i>
     </i>
     <i t="logout link">
-      <j l="8" />
-    </i>
-  </g>
-  <g t="M" o="002">
-    <i t="Managing Lists function">
-      <i t="creating Gene list">
-        <j l="55#1083043" />
-      </i>
-      <i t="creating PatientDID list">
-        <j l="48#1133749" />
-      </i>
+      <j l="7#1111569" />
     </i>
   </g>
   <g t="N" o="002">
-    <i t="NCIA icon">
-      <j l="49#1133127" />
-    </i>
     <i t="NCICB Application Support">
       <j l="8#1122280" />
     </i>
   </g>
   <g t="O" o="002">
-    <i t="overview">
-      <i t="View Results function">
-        <j l="34#1092727" />
-      </i>
-    </i>
-  </g>
-  <g t="P" o="002">
-    <i t="p53 query">
-      <i t="report, description">
-        <j l="52#1149892" />
-      </i>
-    </i>
-    <i t="PatientDID list">
-      <i t="in Clinical report">
-        <j l="48#1133749" />
-      </i>
-      <i t="saving on Clinical report">
-        <j l="48#1133784" />
-      </i>
-      <i t="user list side bar">
-        <j l="48#1149813" />
-      </i>
-    </i>
-    <i t="Principal Component">
-      <i t="Analysis report, description">
-        <j l="58#1082927" />
-      </i>
-      <i t="report example">
-        <j l="58#1082927" />
-      </i>
-    </i>
-    <i t="printing">
-      <i t="a report">
-        <j l="45#1129107" />
-      </i>
+    <i t="objects in NCIA, hierarchy of">
+      <j l="27#1076814" />
+      <j l="37#1164562" />
     </i>
   </g>
   <g t="R" o="002">
-    <i t="red list name">
-      <i t="user created list">
-        <j l="48#1149813" />
-      </i>
-    </i>
-    <i t="reports">
-      <i t="Categorical Plot">
-        <j l="62#1120315" />
-      </i>
-      <i t="Class Comparison">
-        <j l="54#1121889" />
-      </i>
-      <i t="Correlation Scatter Plot report example">
-        <j l="61#1111207" />
-      </i>
-      <i t="GenePattern Comparative Marker Selection">
-        <j l="63#1149544" />
-      </i>
-      <i t="GenePattern HeapMap Viewer">
-        <j l="63#1149528" />
-      </i>
-      <i t="GenePattern hierarchical clustering">
-        <j l="63#1149544" />
-      </i>
-      <i t="GenePattern K-nearest neighbors">
-        <j l="63#1149544" />
-      </i>
-      <i t="Hierarchical Clustering">
-        <j l="60#1088996" />
-      </i>
-      <i t="p53">
-        <j l="52#1149892" />
-      </i>
-      <i t="Principal Component Analysis">
-        <j l="58#1082927" />
-      </i>
-      <i t="using icons">
-        <j l="45#1128909" />
-      </i>
-      <i t="viewing">
-        <j l="34#1092727" />
+    <i t="redrawing">
+      <i t="K-M Gene Expression plot">
+        <j l="41#1073592" />
       </i>
     </i>
   </g>
   <g t="S" o="002">
-    <i t="sample">
-      <i t="selecting on Clinical report">
-        <j l="48#1133751" />
-      </i>
-      <i t="selecting on plot">
-        <j l="59#1114971" />
-      </i>
-    </i>
-    <i t="Samples area">
-      <i t="selecting samples">
-        <j l="59#1115006" />
-      </i>
-    </i>
-    <i t="samples of interest">
-      <i t="">
-        <j l="59#1114971" />
-      </i>
-    </i>
-    <i t="saving">
-      <i t="a report">
-        <j l="45#1128918" />
-      </i>
-      <i t="Gene list (Select Genes Toolbar)">
-        <j l="55#1083043" />
-      </i>
-      <i t="genes on Class Comparison">
-        <j l="55#1123885" />
-      </i>
-      <i t="samples on Clinical report">
-        <j l="48#1133784" />
-      </i>
-    </i>
-    <i t="search">
-      <i t="p53 results">
-        <j l="52#1149892" />
-      </i>
-    </i>
-    <i t="Select Genes toolbar">
-      <j l="55" />
-      <i t="creating Genes list">
-        <j l="55#1083043" />
-      </i>
-    </i>
-    <i t="selecting">
-      <i t="genes (Select Genes Toolbar)">
-        <j l="55#1083043" />
-      </i>
-    </i>
-    <i t="side bar">
-      <i t="red Gene list (Class Comparison)">
-        <j l="55#1124659" />
-      </i>
-      <i t="red name user created">
-        <j l="48#1149813" />
-      </i>
-      <i t="red PatientDID list (Clinical report)">
-        <j l="48#1149813" />
-      </i>
-    </i>
-    <i t="sorting">
-      <i t="report columns">
-        <j l="56#1113341" />
-      </i>
-    </i>
-    <i t="spreadsheet">
-      <i t="saving report to">
-        <j l="45#1128918" />
+    <i t="simple searches">
+      <i t="K-M Gene Expression Data">
+        <j l="41#1073579" />
       </i>
     </i>
   </g>
   <g t="T" o="002">
     <i t="tabs, shown">
       <j l="6#1122024" />
-    </i>
-    <i t="triangles">
-      <i t="on Categorical Plot">
-        <j l="62#1115115" />
-      </i>
-      <i t="top of columns to sort">
-        <j l="56#1113341" />
-      </i>
-    </i>
-    <i t="T-test Two Sample Test">
-      <i t="output">
-        <j l="54#1121889" />
-      </i>
-    </i>
-  </g>
-  <g t="V" o="002">
-    <i t="View Results function">
-      <i t="overview">
-        <j l="34#1092727" />
-      </i>
-    </i>
-  </g>
-  <g t="W" o="002">
-    <i t="Wilcoxon Test Man-Whitney Test">
-      <i t="output">
-        <j l="54#1121889" />
-      </i>
-    </i>
-  </g>
-  <g t="Y" o="002">
-    <i t="yellow circle">
-      <i t="meaning on plot">
-        <j l="59#1120596" />
-      </i>
     </i>
   </g>
 </WebWorksHelpIX>

@@ -28,13 +28,13 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1076975">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.4.html#1076975">Configuring and Deploying Study</a> &gt; Adding Genomic Data</div>
+      <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.1.html#1076975">Creating a New Study</a> &gt; <a class="WebWorks_Breadcrumb_Link" href="CreatingNewStudy.3.3.html#1076975">Configuring and Deploying Study</a> &gt; Adding Genomic Data</div>
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1076975">Adding Genomic Data</a></div>
-      <div class="Body_Text"><a name="1081561">Once you have loaded clinical data and identified patient IDs, you can add either array </a>genomic sample data from caArray which caIntegrator2 maps by sample IDs to the patient IDs in the clinical data, covered in this section, or you can load imaging files from NCIA, also mapped by IDs to the patient data. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
+      <div class="Body_Text"><a name="1081561">Once you have loaded clinical data and identified patient IDs, you can add either array </a>genomic sample data from caArray, which caIntegrator2 maps by sample IDs to the patient IDs in the clinical data, covered in this section, or you can load imaging files from NCIA, also mapped by IDs to the patient data, covered in <span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.13.html#1075831', '');">Adding Imaging Data</a></span>. Genomic sample data and imaging data are independent of each other, so neither is required before loading the other.</div>
       <div class="Body_Text"><a name="1081008">It is essential that you are well acquainted with the data you are working with--the </a>clinical data, and the corresponding array data in caArray.</div>
-      <div class="Body_Text"><a name="1080137">caIntegrator2 support a limited number of array platforms. For more information, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.16.html#1078043', '');">Managing Platforms</a></span>.</div>
+      <div class="Body_Text"><a name="1080137">caIntegrator2 supports a limited number of array platforms. For more information, see </a><span class="Emphasis" style="color: #515186;"><a href="javascript:WWHClickedPopup('caIntegrator2', 'CreatingNewStudy.3.16.html#1078043', '');">Managing Platforms</a></span>.</div>
       <div class="Body_Text"><a name="1077960">To add genomic data to your caIntegrator2 study, follow these steps:</a></div>
       <div class="Numbered_List_1_outer" style="margin-left: 18pt;">
         <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1074448">
@@ -56,7 +56,7 @@
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1073889">caArray Host Name</a></span> – Enter the URL for your local installation or for the CBIIT installation of caArray</div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1073889">caArray Host Name</a></span> – Enter the hostname for your local installation or for the CBIIT installation of caArray, <span class="HTTP">array.nci.nih.gov.</span> If you misspell it, you will receive an error message.</div>
             </td>
           </tr>
         </table>
@@ -68,7 +68,7 @@
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077831">caArray JNDI Port</a></span> – Enter the appropriate server port. See your administrator for more information.</div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1077831">caArray JNDI Port</a></span> – Enter the appropriate server port. See your administrator for more information. <span style="font-style: italic;">Example</span>: For the CBIIT installation of caArray, enter <span style="font-style: italic; font-weight: bold;">8080</span>.</div>
             </td>
           </tr>
         </table>
@@ -92,7 +92,7 @@
               <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1079605">caArray Experiment ID</a></span> – Enter the caArray Experiment ID which you know corresponds with the clinical data you uploaded.</div>
+              <div class="Bullet_Indent_inner"><span style="font-weight: bold;"><a name="1079605">caArray Experiment ID</a></span> – Enter the caArray Experiment ID which you know corresponds with the clinical data you uploaded. <span style="font-style: italic;">Example</span>: Public experiiment “beer-00196” on the CBIIT installation of caArray (<span class="HTTP">array.nci.nih.gov</span>). If you misspell it, you will receive an error message.</div>
             </td>
           </tr>
         </table>

@@ -32,6 +32,146 @@
     <hr align="left" />
     <blockquote>
       <div class="Heading2"><a name="1073416">Creating  Kaplan-Meier P</a>lots</div>
+      <div class="Body_Text"><a name="1073562">The Kaplan Maier method is used for survival analysis of comparative groups of </a>patients or samples. For example, you might identify a group of patients with smoking history and compare survival rates with a group of non-smoking patients. You could compare groups of patients with varying gene expression levels. The key is to first identify subsets of patients that meet criteria you want to establish, and calculate a Kaplan-Maier curves based on their survival probability as a function of time. Survival differences are analyzed by the log-rank test. As an</div>
+      <div class="Body_Text"><a name="1073579">To create a </a><span class="Popup">Kaplan-Meier</span> survival plot for gene expression data (K-M Gene Expression), follow these steps:</div>
+      <div class="Numbered_List_1_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073580">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_1_inner"><a name="1073580">From the Simple Search page, select </a><span class="Bold">Create Kaplan-Meier survival plot for </span><span class="Bold">Gene Expression Data</span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073582">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073582">Enter a gene keyword, for example, enter a </a><span class="Popup">HUGO</span> gene symbol, such as <span class="Code">EGFR</span> or <span class="Code">WT1</span>, to plot a gene expression profile based on the expression of your gene of interest.<span class="Blue"> </span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Note_outer" style="margin-left: 36pt;margin-top: 3.0pt; vertical-align: baseline;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073583">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Note_inner" style="width: 32.400000000000006pt; white-space: nowrap;color: #000000; font-family: &quot;Palatino Linotype&quot;; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none;">Νοτε: </div>
+            </td>
+            <td width="100%">
+              <div class="Note_inner" style="color: #000000; font-family: &quot;Palatino Linotype&quot;; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none;"><a name="1073583">If you do not enter a valid gene symbol, the following message appears:   </a><span class="Emphasis" style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;">The gene you entered is either invalid, or not in the database. Please </span><span class="Emphasis" style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;">select another.</span><span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;"> Close the message window, and enter another gene </span><span style="font-family: &quot;Times New Roman&quot;; font-size: 12.0pt;">symbol.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073584">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073584">From the </a><span class="Bold">Restrict to Sample Group</span> drop-down list, select a saved sample group.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1073575">Click the </a><span class="Bold">Go </span>button.</div>
+      <div class="Body_Text" style="color: #000000; font-family: Arial; font-size: 11.0pt; font-style: normal; font-variant: normal; font-weight: bold; text-transform: none; vertical-align: baseline;"><a name="1073588">Redrawing...</a></div>
+      <div class="Body_Text"><a name="1073592">To redraw a K-M Gene Expression data, follow these steps:</a></div>
+      <div class="SideWords"><a name="1073593">Note:</a></div>
+      <div class="Body_Text"><a name="1073594">If you restricted the search to a group, </a><span class="Bold">Constrained to group</span> appears at the top.</div>
+      <div class="Numbered_List_1_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073595">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_1_inner" style="width: 18pt; white-space: nowrap;">1. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_1_inner"><a name="1073595">To dynamically modify the fold change thresholds and redraw the plot, adjust </a>the <span class="Bold">Up-Regulated</span> and <span class="Bold">Down-Regulated</span> values.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073596">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">2. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073596">Specify a </a><span class="Bold">Unified</span> or a <span class="Bold">Affymetrix</span> <span class="Bold">Reporter Type</span>.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073597">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">3. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073597">To visualize the K-M plot for the unified probeset, click the </a><span class="Bold">Reporters</span> drop-down list<span style="font-style: italic;">.</span></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073607">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">4. </div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073607">Select an individual reporter or one of the following options:</a></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073608">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span class="Bold"><a name="1073608">Median</a></span> is the median value of all Reporters (default).</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Bullet_Indent_outer" style="margin-left: 36pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073609">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Bullet_Indent_inner" style="width: 18pt; white-space: nowrap;">•</div>
+            </td>
+            <td width="100%">
+              <div class="Bullet_Indent_inner"><span class="Bold"><a name="1073609">Mean</a></span> is the mean value of all Reporters.</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Numbered_List_outer" style="margin-left: 18pt;margin-bottom: 6.0pt;">
+        <table border="0" cellspacing="0" cellpadding="0" id="SummaryNotRequired_np1073610">
+          <tr style="vertical-align: baseline;">
+            <td>
+              <div class="Numbered_List_inner" style="width: 18pt; white-space: nowrap;">5.	</div>
+            </td>
+            <td width="100%">
+              <div class="Numbered_List_inner"><a name="1073610">Click the </a><span class="Bold">Redraw Graph </span>button. </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="Body_Text"><a name="1073589">&nbsp;</a></div>
       <div class="Body_Text"><a name="1073425">1) Select a study with Gene Expression data. 2) Select Generate KM Plot on the left </a>menu 3) Select "For Gene Expression" tab 4) Input valid Gene and up/down regulated parameters 5) Hit "Create Plot" and notice that there's a KM plot on the tab</div>
       <script type="text/javascript" language="JavaScript1.2">
         <!--
