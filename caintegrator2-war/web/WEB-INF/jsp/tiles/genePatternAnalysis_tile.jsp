@@ -26,6 +26,7 @@
             <s:password name="analysisForm.password" label="GenePattern Password" size="50" showPassword="true" />
             <s:submit onclick="this.form.selectedAction.value = 'connect'; return true;" value="Connect" />
             <s:if test="%{!analysisForm.analysisMethodNames.empty}">
+                <s:textfield name="currentAnalysisJob.name" label="Job Name" required="true" />
                 <s:select label="Analysis Method" 
                     name="analysisMethodName" 
                     list="analysisForm.analysisMethodNames"

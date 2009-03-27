@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.net.URL;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
@@ -114,10 +113,10 @@ public interface AnalysisService {
      * 
      * @param server the GenePattern server
      * @param invocation contains the configuration of the job to execute
-     * @return the URL where the results may be seen.
+     * @return the Wrapper for the JobInfo retrieved from GenePattern.
      * @throws GenePatternServiceException if the service couldn't be reached.
      */
-    URL executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
+    JobInfoWrapper executeGenePatternJob(ServerConnectionProfile server, AnalysisMethodInvocation invocation) 
     throws GenePatternServiceException;
     
     /**

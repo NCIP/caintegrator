@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -149,6 +150,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public void saveUserWorkspace(UserWorkspace workspace) {
         dao.save(workspace);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void saveGenePatternAnalysisJob(GenePatternAnalysisJob job) {
+        dao.save(job);
     }
 
     /**

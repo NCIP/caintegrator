@@ -130,6 +130,10 @@
     <definition name="genePatternAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysis_tile.jsp" />
     </definition>
+    
+    <definition name="genePatternAnalysisStatus" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisStatus_tile.jsp" />
+    </definition>
 
     <!-- Analysis pages -->
     <definition name="genePatternAnalysisResults" extends="cssBaseDef">

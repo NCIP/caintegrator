@@ -203,7 +203,8 @@ public abstract class AbstractAnalysisFormParameter {
      * @param queryManagementService used to retrieve any necessary data.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
-    void configureForInvocation(StudySubscription studySubscription, QueryManagementService queryManagementService) {
+    public void configureForInvocation(StudySubscription studySubscription, 
+                                       QueryManagementService queryManagementService) {
         // default implementation is no-op; override as necessary
     }
     

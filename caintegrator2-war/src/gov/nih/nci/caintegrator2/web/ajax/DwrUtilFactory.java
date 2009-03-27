@@ -85,154 +85,48 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
+import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * Stub for DWR's WebContextBuilder.
+ * Application scope factory which will store and return Dwr Util objects for specific users on different
+ * <code>PersistedJob</code>types.
  */
-public class WebContextBuilderStub implements WebContextBuilder {
-
-    public WebContext get() {
-        return new WebContextStub();
+public class DwrUtilFactory {
+    
+    private final Map <String, Util> gpAnalysisUsernameUtilityMap = new HashMap<String, Util>();
+    
+    /**
+     * Retrieves the DWR Util object for a given job.
+     * @param job used to figure out which Util object to retrieve.
+     * @return - DWR Util.
+     */
+    public Util retrieveDwrUtil(PersistedJob job) {
+        if (job instanceof GenePatternAnalysisJob) {
+            return gpAnalysisUsernameUtilityMap.get(getUsername(job));
+        }
+        return new Util();
+    }
+    
+    /**
+     * Associates a username with a session for the <code>GenePatternAnalysisJob</code>. 
+     * @param username for current user.
+     * @param util dwr object.
+     */
+    public void associateGenePatternJobWithSession(String username, Util util) {
+        gpAnalysisUsernameUtilityMap.put(username, util);
+    }
+    
+    private String getUsername(PersistedJob job) {
+        if (job.getSubscription() != null) {
+            return job.getSubscription().getUserWorkspace().getUsername();
+        }
+        return "";
     }
 
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
-    }
-
-    public void unset() {
-
-    }
-
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
-        }
-    }
 }

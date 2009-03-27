@@ -299,9 +299,11 @@ class GenePatternHelper {
         return (String) parameterInfo.getAttributes().get(attributeName);
     }
 
-    void execute(AnalysisMethodInvocation invocation) throws GenePatternServiceException {
+    JobInfoWrapper execute(AnalysisMethodInvocation invocation) throws GenePatternServiceException {
+        JobInfoWrapper jobInfo = new JobInfoWrapper();
         List<ParameterInfo> parameters = convert(invocation.getParameterValues());
-        client.runAnalysis(invocation.getMethod().getName(), parameters);
+        jobInfo.setJobInfo(client.runAnalysis(invocation.getMethod().getName(), parameters));
+        return jobInfo;
     }
 
     private List<ParameterInfo> convert(List<AbstractParameterValue> parameterValues) {

@@ -93,7 +93,7 @@
                     <s:url id="gePlotUrl" includeParams="none" action="initializeGePlot" />
                     <a href="${ gePlotUrl }">Generate Gene Expression Plot</a></li>
                 <li>
-                    <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />
+                    <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysisStatus" />
                     <a href="${genePatternAnalysisUrl}">GenePattern Analysis</a>
                 </li>
             </ul>

@@ -354,6 +354,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="ajaxUpdater">
+            <ref local="genePatternAjaxUpdater"/>
+        </property>
     </bean>   
     
     
@@ -482,6 +485,22 @@
         </property>
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
+    
+    <bean id="genePatternAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.GenePatternAjaxUpdater">
+        <dwr:remote javascript="GenePatternAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="analysisService">
+          <ref local="analysisService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="dwrUtilFactory" scope="singleton" class="gov.nih.nci.caintegrator2.web.ajax.DwrUtilFactory" />
 
     <!-- ******************************************************************* -->
     <!-- ** SUBSYSTEMS                                                    ** -->
@@ -534,8 +553,8 @@
 
     <bean id="analysisService" 
         class="gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceImpl">
-        <property name="genePatternClient">
-            <ref local="genePatternClient"/>
+        <property name="genePatternClientFactory">
+            <ref local="genePatternClientFactory"/>
         </property>
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
@@ -646,7 +665,7 @@
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
     
-    <bean id="genePatternClient" class="edu.mit.broad.genepattern.gp.services.GenePatternClientImpl" />
+    <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" />
 
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">

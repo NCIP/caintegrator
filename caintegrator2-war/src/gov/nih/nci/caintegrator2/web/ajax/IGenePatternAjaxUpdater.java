@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,154 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.directwebremoting.Container;
-import org.directwebremoting.ScriptBuffer;
-import org.directwebremoting.ScriptSession;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory.WebContextBuilder;
-import org.springframework.mock.web.MockHttpSession;
 
 /**
- * Stub for DWR's WebContextBuilder.
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-public class WebContextBuilderStub implements WebContextBuilder {
+public interface IGenePatternAjaxUpdater {
+    
+    /**
+     * Initializes the web context to this JSP so the update messages stream here.
+     */
+    void initializeJsp();
+    
+    /**
+     * Used to run the GenePatternAnalysisJob.
+     * @param job to run.
+     */
+    void runJob(GenePatternAnalysisJob job);
 
-    public WebContext get() {
-        return new WebContextStub();
-    }
-
-    public void set(HttpServletRequest arg0, HttpServletResponse arg1, ServletConfig arg2, ServletContext arg3,
-            Container arg4) {
-    }
-
-    public void unset() {
-
-    }
-
-    private static class WebContextStub implements WebContext {
-
-        public String forwardToString(String arg0) throws ServletException, IOException {
-
-            return null;
-        }
-
-        public String getCurrentPage() {
-
-            return null;
-        }
-
-        public HttpServletRequest getHttpServletRequest() {
-            return null;
-        }
-
-        public HttpServletResponse getHttpServletResponse() {
-            return null;
-        }
-
-        public ScriptSession getScriptSession() {
-            return new ScriptSessionStub();
-        }
-
-        public HttpSession getSession() {
-            MockHttpSession session = new MockHttpSession();
-            DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) SessionHelper.getInstance()
-                    .getDisplayableUserWorkspace();
-            workspace.setCurrentStudySubscriptionId(Long.valueOf(1));
-            session.putValue("displayableWorkspace", workspace);
-            return session;
-        }
-
-        public HttpSession getSession(boolean arg0) {
-
-            return null;
-        }
-
-        public void setCurrentPageInformation(String arg0, String arg1) {
-
-        }
-
-        public Collection<Object> getAllScriptSessions() {
-            return null;
-        }
-
-        public Container getContainer() {
-            return null;
-        }
-
-        public Collection<Object> getScriptSessionsByPage(String arg0) {
-            return null;
-        }
-
-        public ServletConfig getServletConfig() {
-
-            return null;
-        }
-
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        public String getVersion() {
-            return null;
-        }
-
-        private static class ScriptSessionStub implements ScriptSession {
-
-            public void addScript(ScriptBuffer arg0) {
-
-            }
-
-            public Object getAttribute(String arg0) {
-                return null;
-            }
-
-            public Iterator<Object> getAttributeNames() {
-                return null;
-            }
-
-            public long getCreationTime() {
-                return 0;
-            }
-
-            public String getId() {
-                return null;
-            }
-
-            public long getLastAccessedTime() {
-
-                return 0;
-            }
-
-            public void invalidate() {
-
-            }
-
-            public boolean isInvalidated() {
-                return false;
-            }
-
-            public void removeAttribute(String arg0) {
-
-            }
-
-            public void setAttribute(String arg0, Object arg1) {
-
-            }
-
-        }
-    }
 }
