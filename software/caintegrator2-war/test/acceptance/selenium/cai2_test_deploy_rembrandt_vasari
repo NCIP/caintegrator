@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>http://localhost:8080/caintegrator2/createStudy.action</td>
+	<td>/caintegrator2/createStudy.action</td>
 	<td></td>
 </tr>
 <tr>
@@ -79,14 +79,14 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>select</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
 	<td>label=numeric</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -102,6 +102,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -124,6 +129,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>select</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
 	<td>label=date</td>
@@ -142,6 +152,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -163,6 +178,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -253,7 +273,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -289,7 +309,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -309,7 +329,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -354,7 +374,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -374,7 +394,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -429,7 +449,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -459,7 +479,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -479,7 +499,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -564,7 +584,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -644,7 +664,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -699,7 +719,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -794,7 +814,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -877,6 +897,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=STEREOTACTIC BIOPSY</td>
@@ -912,11 +937,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateFileColumn</td>
 	<td></td>
@@ -934,7 +954,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1014,7 +1034,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>created via selenium test.</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1119,6 +1139,16 @@
 	<td>rembr-00037</td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_password</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>saveGenomicSource_0</td>
 	<td></td>
@@ -1213,6 +1243,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=dxf113</td>
@@ -1248,6 +1283,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateImagingFileColumn</td>
 	<td></td>
@@ -1271,6 +1311,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1323,6 +1368,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=Right</td>
@@ -1356,6 +1406,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1393,14 +1448,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1526,6 +1581,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewImagingDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium test for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
