@@ -203,6 +203,7 @@ public class KMPlotGeneExpressionBasedActionTest {
         action.setCreatePlotSelected(true);
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());

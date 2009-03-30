@@ -116,7 +116,7 @@ public abstract class AbstractKMParameters {
      */
     protected boolean validateSurvivalValueDefinition(boolean currentValidation) {
         boolean isValid = currentValidation;
-        if (getSurvivalValueDefinition() == null) {
+        if (getSurvivalValueDefinition().getId() == null) {
             getErrorMessages().add("Must select a valid Survival Value Definition.");
             isValid = false;
         } else {
