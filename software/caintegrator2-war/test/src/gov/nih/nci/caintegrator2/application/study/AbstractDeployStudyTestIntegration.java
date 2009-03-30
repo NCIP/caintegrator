@@ -354,6 +354,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setUsername(getCaArrayUsername());
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
+            genomicSource.setPlatformVendor(getPlatformVendor());
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
             logEnd();
@@ -365,6 +366,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     abstract protected String getCaArrayId();
+    abstract protected String getPlatformVendor();
 
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {

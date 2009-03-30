@@ -103,6 +103,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private StudyConfiguration studyConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
+    private String platformVendor;
+    private String platformName;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
 
@@ -207,6 +209,34 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setStudyConfiguration(StudyConfiguration studyConfiguration) {
         this.studyConfiguration = studyConfiguration;
+    }
+
+    /**
+     * @return the platformVendor
+     */
+    public String getPlatformVendor() {
+        return platformVendor;
+    }
+
+    /**
+     * @param platformVendor the platformVendor to set
+     */
+    public void setPlatformVendor(String platformVendor) {
+        this.platformVendor = platformVendor;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
     }
 
 }

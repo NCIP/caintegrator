@@ -87,8 +87,10 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.domain.project.Experiment;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
+import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -178,9 +180,24 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, DataRetrievalException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        DataRetrievalService dataRetrievalService = 
-            getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
-        return new DataRetrievalHelper(genomicSource, dataRetrievalService, searchService, dao).retrieveData();
+        AbstractDataRetrievalHelper dataRetrievalHelper;
+        switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
+        case AFFYMETRIX:
+            DataRetrievalService dataRetrievalService = 
+                getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
+            dataRetrievalHelper = new AffymetrixDataRetrievalHelper(genomicSource, dataRetrievalService,
+                    searchService, dao);
+            break;
+        case AGILENT:
+            FileRetrievalService fileRetrievalService =
+                getServiceFactory().createFileRetrievalService(genomicSource.getServerProfile());
+            dataRetrievalHelper = new AgilentDataRetrievalHelper(genomicSource, fileRetrievalService,
+                 searchService, dao);
+            break;
+        default:
+            throw new DataRetrievalException("Unknown platform vendor.");
+        }
+        return dataRetrievalHelper.retrieveData();
     }
 
     /**

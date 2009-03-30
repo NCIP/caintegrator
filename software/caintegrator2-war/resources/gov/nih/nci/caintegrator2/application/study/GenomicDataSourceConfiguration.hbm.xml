@@ -18,6 +18,8 @@
             lazy="proxy" cascade="all" />
             
         <property name="experimentIdentifier" type="string" column="EXPERIMENT_IDENTIFIER"/>
+        <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
+        <property name="platformName" type="string" column="PLATFORM_NAME"/>
         
         <list name="sampleIdentifiers" lazy="true" inverse="true">
             <cache usage="read-write" />

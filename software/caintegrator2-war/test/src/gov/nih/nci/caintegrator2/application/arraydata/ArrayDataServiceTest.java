@@ -77,7 +77,7 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
         PlatformHelper platformHelper = new PlatformHelper(platform);
         Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        assertEquals(16711, geneReporters.size());
+        assertEquals(16710, geneReporters.size());
         for (AbstractReporter abstractReporter : geneReporters) {
             GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
             Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
