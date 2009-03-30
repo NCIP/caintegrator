@@ -229,6 +229,7 @@ public class AnalysisServiceTest {
         subscription.setStudy(study);
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.ANNOTATION_BASED;
         KMAnnotationBasedParameters annotationParameters = new KMAnnotationBasedParameters();
+        assertFalse(annotationParameters.validate());
         annotationParameters.setEntityType(EntityTypeEnum.SUBJECT);
         annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
         annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
@@ -246,6 +247,7 @@ public class AnalysisServiceTest {
         subscription.setStudy(study);
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.GENE_EXPRESSION;
         KMGeneExpressionBasedParameters geneExpressionParameters = new KMGeneExpressionBasedParameters();
+        assertFalse(geneExpressionParameters.validate());
         geneExpressionParameters.setGeneSymbol("EGFR");
         geneExpressionParameters.setOverexpressedFoldChangeNumber(2.0F);
         geneExpressionParameters.setUnderexpressedFoldChangeNumber(2.0F);
@@ -263,6 +265,7 @@ public class AnalysisServiceTest {
         subscription.setStudy(study);
         queryManagementServiceForKmPlotStub.kmPlotType = PlotTypeEnum.QUERY_BASED;
         KMQueryBasedParameters queryBasedParameters = new KMQueryBasedParameters();
+        assertFalse(queryBasedParameters.validate());
         queryBasedParameters.setExclusiveGroups(true);
         queryBasedParameters.setAddPatientsNotInQueriesGroup(true);
         Query query1 = new Query();
