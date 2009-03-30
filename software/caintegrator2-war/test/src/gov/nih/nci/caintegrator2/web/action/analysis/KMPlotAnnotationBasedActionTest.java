@@ -244,6 +244,7 @@ public class KMPlotAnnotationBasedActionTest {
         action.getKmPlotParameters().getSelectedValues().add(val2);
         assertEquals(ActionSupport.INPUT, action.createPlot());
         action.getKmPlotParameters().setSurvivalValueDefinition(new SurvivalValueDefinition());
+        action.getKmPlotParameters().getSurvivalValueDefinition().setId(Long.valueOf(1));
         action.getKmPlotParameters().getSurvivalValueDefinition().setSurvivalStartDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setDeathDate(new AnnotationDefinition());
         action.getKmPlotParameters().getSurvivalValueDefinition().setLastFollowupDate(new AnnotationDefinition());
@@ -306,6 +307,7 @@ public class KMPlotAnnotationBasedActionTest {
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());
+        selectedAnnotation.setId(Long.valueOf(1));
         action.getKmPlotParameters().setSelectedAnnotation(selectedAnnotation);
     }
     

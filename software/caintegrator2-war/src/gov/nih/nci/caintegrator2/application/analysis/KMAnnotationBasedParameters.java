@@ -109,7 +109,7 @@ public class KMAnnotationBasedParameters extends AbstractKMParameters {
     public boolean validate() {
         getErrorMessages().clear();
         boolean isValid = true;
-        if (getSelectedAnnotation() == null) {
+        if (getSelectedAnnotation().getId() == null) {
             getErrorMessages().add("Selected Annotation is null, please select a valid Selected Annotation.");
             isValid = false;
         }
