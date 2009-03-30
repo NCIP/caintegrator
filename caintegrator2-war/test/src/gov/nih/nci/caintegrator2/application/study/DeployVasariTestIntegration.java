@@ -235,4 +235,9 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return 54675;
     }
 
+    @Override
+    protected String getPlatformVendor() {
+        return "Affymetrix";
+    }
+
 }

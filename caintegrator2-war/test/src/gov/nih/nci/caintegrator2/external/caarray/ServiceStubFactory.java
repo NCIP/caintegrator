@@ -88,9 +88,11 @@ package gov.nih.nci.caintegrator2.external.caarray;
 import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
 import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
 import gov.nih.nci.caarray.domain.data.DataSet;
+import gov.nih.nci.caarray.domain.file.CaArrayFile;
 import gov.nih.nci.caarray.domain.project.Experiment;
 import gov.nih.nci.caarray.domain.sample.Sample;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
+import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -167,6 +169,24 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
 
         public DataSet getDataSet(DataRetrievalRequest arg0) {
             return new DataSet();
+        }
+
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactory#createFileRetrievalService(gov.nih.nci.caintegrator2.external.ServerConnectionProfile)
+     */
+    public FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile) throws ConnectionException {
+        return new FileRetrievalServiceStub();
+    }
+    
+    private static class FileRetrievalServiceStub implements FileRetrievalService {
+
+        /* (non-Javadoc)
+         * @see gov.nih.nci.caarray.services.file.FileRetrievalService#readFile(gov.nih.nci.caarray.domain.file.CaArrayFile)
+         */
+        public byte[] readFile(CaArrayFile arg0) {
+            return null;
         }
 
     }

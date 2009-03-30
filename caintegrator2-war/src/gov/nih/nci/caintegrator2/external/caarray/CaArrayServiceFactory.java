@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
+import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -105,12 +106,21 @@ public interface CaArrayServiceFactory {
     CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException;
 
     /**
-     * Creates a <code>CaArraySearchService</code> instance connected to the server provided in the profile.
+     * Creates a <code>DataRetrievalService</code> instance connected to the server provided in the profile.
      * 
      * @param profile contains host information for the server to connect to.
      * @return the search service.
      * @throws ConnectionException if there's a problem connecting to the caArray server.
      */
     DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) throws ConnectionException;
+
+    /**
+     * Creates a <code>FileRetrievalService</code> instance connected to the server provided in the profile.
+     * 
+     * @param profile contains host information for the server to connect to.
+     * @return the search service.
+     * @throws ConnectionException if there's a problem connecting to the caArray server.
+     */
+    FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile) throws ConnectionException;
 
 }

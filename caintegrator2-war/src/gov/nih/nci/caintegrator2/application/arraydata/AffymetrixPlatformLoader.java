@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -119,10 +118,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
     private static final String PLATFORM_NAME_HEADER = "chip_type";
     private static final Object NO_GENE_SYMBOL = "---";
 
-    private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
     private AffymetrixCdfReader cdfReader;
-    private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
-    private CSVReader annotationFileReader;
     private final Map<String, String> fileHeaders = new HashMap<String, String>();
 
     private final AffymetrixPlatformSource source;
@@ -159,7 +155,7 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         platform.getReporterLists().add(probeSetReporters);
         try {
-            annotationFileReader = new CSVReader(new FileReader(getAnnotationFile()));
+            setAnnotationFileReader(new CSVReader(new FileReader(getAnnotationFile())));
             loadHeaders();
             platform.setName(getHeaderValue(PLATFORM_NAME_HEADER));
             loadAnnotations(geneReporters, probeSetReporters, dao);
@@ -180,10 +176,10 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
 
     private void loadHeaders() throws PlatformLoadingException, IOException {
         String[] fields;
-        while ((fields = annotationFileReader.readNext()) != null) {
+        while ((fields = getAnnotationFileReader().readNext()) != null) {
             if (isFileHeaderLine(fields)) {
                 loadFileHeaderLine(fields);
-            } else if (isAnnotationHeadersLine(fields)) {
+            } else if (isAnnotationHeadersLine(fields, PROBE_SET_ID_HEADER)) {
                 loadAnnotationHeaders(fields);
                 return;
             }
@@ -200,56 +196,20 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         String[] parts = fields[0].substring(2).split("=");
         fileHeaders.put(parts[0], parts[1]);
     }
-
-    private void loadAnnotationHeaders(String[] headers) {
-        for (int i = 0; i < headers.length; i++) {
-            headerToIndexMap.put(headers[i], i);
-        }
-    }
-
-    private boolean isAnnotationHeadersLine(String[] fields) {
-        return fields.length > 0 && PROBE_SET_ID_HEADER.equals(fields[0]);
-    }
-
-    private void loadAnnotations(ReporterList geneReporters, ReporterList probeSetReporters, CaIntegrator2Dao dao) 
-    throws IOException {
-        String[] fields;
-        while ((fields = annotationFileReader.readNext()) != null) {
-            loadAnnotations(fields, geneReporters, probeSetReporters, dao);
-        }
-    }
     
-    private void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
+    protected void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
             CaIntegrator2Dao dao) {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
-        Gene gene = symbolToGeneMap.get(symbol.toUpperCase(Locale.getDefault()));
+        Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
         if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
-            gene = lookupOrCreateGene(fields, dao);
+            gene = lookupOrCreateGene(fields, GENE_SYMBOL_HEADER, dao);
             addGeneReporter(geneReporters, gene);
         }
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
         handleProbeSet(probeSetName, gene, probeSetReporters);
     }
 
-    private void addGeneReporter(ReporterList geneReporters, Gene gene) {
-        GeneExpressionReporter geneReporter = new GeneExpressionReporter();
-        geneReporter.setGene(gene);
-        geneReporter.setName(gene.getSymbol());
-        geneReporter.setReporterList(geneReporters);
-        geneReporters.getReporters().add(geneReporter);
-    }
-
-    private Gene lookupOrCreateGene(String[] fields, CaIntegrator2Dao dao) {
-        String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
-        Gene gene = dao.getGene(symbol);
-        if (gene == null) {
-            gene = createGene(fields);
-        }
-        symbolToGeneMap.put(symbol.toUpperCase(Locale.getDefault()), gene);
-        return gene;
-    }
-
-    private Gene createGene(String[] fields) {
+    protected Gene createGene(String[] fields) {
         Gene gene = new Gene();
         gene.setSymbol(getAnnotationValue(fields, GENE_SYMBOL_HEADER));
         gene.setEntrezgeneID(getAnnotationValue(fields, ENTREZ_GENE_HEADER));
@@ -258,34 +218,14 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         return gene;
     }
 
-    private String getAnnotationValue(String[] fields, String header) {
-        return fields[headerToIndexMap.get(header)];
-    }
-
-    private void handleProbeSet(String probeSetName, Gene gene, ReporterList probeSetReporters) {
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporter.setName(probeSetName);
-        reporter.setGene(gene);
-        reporter.setReporterList(probeSetReporters);
-        probeSetReporters.getReporters().add(reporter);
-    }
-
     private void releaseResources() {
         if (cdfReader != null) {
             cdfReader.close();
         }
-        closeAnnotationFileReader();
-        cdfReader = null;
-    }
-
-    private void closeAnnotationFileReader() {
-        if (annotationFileReader != null) {
-            try {
-                annotationFileReader.close();
-            } catch (IOException e) {
-                LOGGER.error("Couldn't close annotation file reader for file " + getAnnotationFile().getAbsolutePath());
-            }
+        if (!closeAnnotationFileReader()) {
+            LOGGER.error("Couldn't close annotation file reader for file " + getAnnotationFile().getAbsolutePath());
         }
+        cdfReader = null;
     }
 
 }

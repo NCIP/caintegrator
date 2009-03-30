@@ -234,4 +234,9 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return 54675;
     }
 
+    @Override
+    protected String getPlatformVendor() {
+        return "Affymetrix";
+    }
+
 }

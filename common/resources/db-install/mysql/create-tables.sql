@@ -49,6 +49,8 @@ create table GENOMIC_DATA_SOURCE_CONFIGURATION (
     ID bigint not null auto_increment, 
     SERVER_CONNECTION_PROFILE_ID bigint, 
     EXPERIMENT_IDENTIFIER varchar(255), 
+    PLATFORM_VENDOR varchar(50),
+    PLATFORM_NAME varchar(255),
     STUDY_CONFIGURATION_ID bigint, 
     LIST_INDEX integer,
     primary key (ID)

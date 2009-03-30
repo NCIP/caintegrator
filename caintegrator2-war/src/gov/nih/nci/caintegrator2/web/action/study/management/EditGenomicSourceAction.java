@@ -85,12 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
  */
 public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
+    
+    private ArrayDataService arrayDataService;
 
     /**
      * {@inheritDoc}
@@ -98,6 +107,34 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     @Override
     public String execute() {
         return SUCCESS;
+    }
+    
+    /**
+     * @return all platform names
+     */
+    public List<String> getAgilentPlatformNames() {
+        List<String> platformNames = new ArrayList<String>();
+        platformNames.add("");
+        for (Platform platform : getArrayDataService().getPlatforms()) {
+            if (platform.getVendor().equals(PlatformVendorEnum.AGILENT)) {
+                platformNames.add(platform.getName());
+            }
+        }
+        return platformNames;
+    }
+
+    /**
+     * @return the arrayDataService
+     */
+    public ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    /**
+     * @param arrayDataService the arrayDataService to set
+     */
+    public void setArrayDataService(ArrayDataService arrayDataService) {
+        this.arrayDataService = arrayDataService;
     }
        
 }

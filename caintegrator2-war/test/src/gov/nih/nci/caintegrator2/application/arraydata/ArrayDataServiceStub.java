@@ -89,8 +89,8 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class ArrayDataServiceStub implements ArrayDataService {
@@ -140,7 +140,14 @@ public class ArrayDataServiceStub implements ArrayDataService {
      * {@inheritDoc}
      */
     public List<Platform> getPlatforms() {
-        return Collections.emptyList();
+        List<Platform> platforms = new ArrayList<Platform>();
+        Platform platform = new Platform();
+        platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
+        platforms.add(platform);
+        platform = new Platform();
+        platform.setVendor(PlatformVendorEnum.AGILENT);
+        platforms.add(platform);
+        return platforms;
     }
 
     public void clear() {

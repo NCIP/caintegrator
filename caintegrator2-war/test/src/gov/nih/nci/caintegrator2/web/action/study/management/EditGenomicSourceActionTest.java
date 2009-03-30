@@ -111,6 +111,11 @@ public class EditGenomicSourceActionTest {
     }
 
     @Test
+    public void testGetAgilentPlatformNames() {
+        assertEquals(2, action.getAgilentPlatformNames().size());
+    }
+
+    @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
     }

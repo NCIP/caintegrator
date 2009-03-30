@@ -194,6 +194,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
     </bean>
 
     <bean id="editSampleMappingAction"
@@ -242,6 +245,11 @@
     
     <bean id="workspaceService" 
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" 
+        singleton="true">
+    </bean>
+    
+    <bean id="arrayDataService" 
+        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub" 
         singleton="true">
     </bean>
     

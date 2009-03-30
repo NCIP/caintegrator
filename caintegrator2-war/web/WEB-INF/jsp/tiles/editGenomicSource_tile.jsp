@@ -9,7 +9,17 @@
    (draft)</a>
     </div>
 
-    <!--/Page Help-->          
+    <!--/Page Help-->
+    
+    <script type="text/javascript">
+        function CheckPlatformVendor(vendor) {
+            if (vendor != "Agilent") {
+                document.getElementById("platformName").disabled = true;
+            } else {
+                document.getElementById("platformName").disabled = false;
+            }
+        }
+    </script>
     
     <h1>Edit Genomic Data Source</h1>
     <s:actionerror/>
@@ -21,8 +31,16 @@
         <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" />
         <s:password label="caArray Password" name="genomicSource.serverProfile.password" />
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
+        <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
+            list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
+            onchange="CheckPlatformVendor(this.form.platformVendor.value);"/>
+        <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)" list="agilentPlatformNames" />
         <s:submit value="Save" />
     </s:form>
+    
+    <script type="text/javascript">
+        CheckPlatformVendor();
+    </script>
             
 </div>
 
