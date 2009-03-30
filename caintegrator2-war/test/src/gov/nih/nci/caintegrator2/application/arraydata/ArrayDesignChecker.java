@@ -33,14 +33,11 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAgilentArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException {
-        //AgilentCdfReader cdfReader = AgilentCdfReader.create(cdfFile);
-        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile);
+        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile, "Agilent platform");
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
-        //checkPlatform(platform, cdfReader);
-        //checkProbeSetReporters(platform, cdfReader);
         checkGeneReporters(platform);
         return platform;
     }

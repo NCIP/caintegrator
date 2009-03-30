@@ -99,14 +99,18 @@ import gov.nih.nci.caarray.domain.data.DataSet;
 import gov.nih.nci.caarray.domain.data.DesignElementList;
 import gov.nih.nci.caarray.domain.data.FloatColumn;
 import gov.nih.nci.caarray.domain.data.HybridizationData;
+import gov.nih.nci.caarray.domain.data.RawArrayData;
+import gov.nih.nci.caarray.domain.file.CaArrayFile;
 import gov.nih.nci.caarray.domain.hybridization.Hybridization;
 import gov.nih.nci.caarray.domain.project.Experiment;
 import gov.nih.nci.caarray.domain.sample.Extract;
 import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
+import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -132,8 +136,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CaArrayFacadeTest {
 
     private CaArrayFacade caArrayFacade;
-    private GeneExpressionReporter reporter1 = createTestReporter("probeSet1");
-    private GeneExpressionReporter reporter2 = createTestReporter("probeSet2");
+    private GeneExpressionReporter reporter1 = createTestReporter("A_probeSet1");
+    private GeneExpressionReporter reporter2 = createTestReporter("A_probeSet2");
     
     @Before
     public void setUp() {
@@ -165,12 +169,13 @@ public class CaArrayFacadeTest {
     }
     
     @Test
-    public void testRetrieveData() throws ConnectionException, DataRetrievalException {
+    public void testAffymetrixRetrieveData() throws ConnectionException, DataRetrievalException {
         RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
         ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
         ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
         GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
         genomicSource.setExperimentIdentifier("test-data");
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         genomicSource.setStudyConfiguration(new StudyConfiguration());
         Sample sample1 = new Sample();
         Sample sample2 = new Sample();
@@ -184,6 +189,30 @@ public class CaArrayFacadeTest {
         for (ArrayData arrayData : values.getArrayDatas()) {
             assertEquals((float) 1.1, (float) values.getFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0);
             assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0);
+        }
+    }
+    
+    @Test
+    public void testAgilentRetrieveData() throws ConnectionException, DataRetrievalException {
+        RetrieveDataDaoStub daoStub = new RetrieveDataDaoStub();
+        ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
+        ((CaArrayFacadeImpl) caArrayFacade).setDao(daoStub);
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setExperimentIdentifier("test-data");
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        genomicSource.setStudyConfiguration(new StudyConfiguration());
+        Sample sample1 = new Sample();
+        Sample sample2 = new Sample();
+        sample1.setName("sample1");
+        sample2.setName("sample2");
+        genomicSource.getSamples().add(sample1);
+        genomicSource.getSamples().add(sample2);
+        ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
+        assertNotNull(values);
+        assertEquals(2, values.getArrayDatas().size());
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            assertEquals((float) 0.05, (float) values.getFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0);
         }
     }
 
@@ -220,8 +249,8 @@ public class CaArrayFacadeTest {
     private class RetrieveDataServiceFactoryStub extends ServiceStubFactory {
 
         private final ArrayDesign arrayDesign = createTestArrayDesign();
-        LogicalProbe probeSet1 = createTestProbeSet("probeSet1");
-        LogicalProbe probeSet2 = createTestProbeSet("probeSet2");
+        LogicalProbe probeSet1 = createTestProbeSet("A_probeSet1");
+        LogicalProbe probeSet2 = createTestProbeSet("A_probeSet2");
 
         @Override
         public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
@@ -238,6 +267,12 @@ public class CaArrayFacadeTest {
         @Override
         public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) {
             return new RetrieveDataDataRetrievalServiceStub();
+        }
+
+        @Override
+        public FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile)
+                throws ConnectionException {
+            return new RetrieveDataFileRetrievalServiceStub();
         }
 
         @SuppressWarnings("deprecation")
@@ -298,6 +333,9 @@ public class CaArrayFacadeTest {
                 hybridization.setName("hybridiation " + name);
                 hybridization.setArray(new Array());
                 hybridization.getArray().setDesign(arrayDesign);
+                RawArrayData rawArrayData = new RawArrayData();
+                rawArrayData.setDataFile(new CaArrayFile());
+                hybridization.addRawArrayData(rawArrayData);
                 LabeledExtract labeledExtract = new LabeledExtract();
                 hybridization.getLabeledExtracts().add(labeledExtract);
                 labeledExtract.getHybridizations().add(hybridization);
@@ -326,7 +364,23 @@ public class CaArrayFacadeTest {
                 return experiment;
             }
         }
-        
+    }
+    
+    private class RetrieveDataFileRetrievalServiceStub implements FileRetrievalService {
+
+        public byte[] readFile(CaArrayFile arg0) {
+            StringBuffer dataFile = new StringBuffer();
+            dataFile.append("TYPE\ttext\ttext\n");
+            dataFile.append("\n");
+            dataFile.append("FEATURES\tProbeName\tLogRatio\n");
+            dataFile.append("\n");
+            dataFile.append("DATA\tA_probeSet1\t0.05\n");
+            dataFile.append("DATA\tDarkCorner\t-0.0034\n");
+            dataFile.append("*\n");
+            dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
+            return dataFile.toString().getBytes();
+        }
+
     }
 
 }

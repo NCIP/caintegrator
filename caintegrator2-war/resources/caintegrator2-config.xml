@@ -254,6 +254,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
     </bean>
 
     <bean id="saveGenomicSourceAction"
@@ -442,7 +445,7 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
-    </bean>   
+    </bean>
     
    <bean id="managePlatformsAction"
         scope="prototype"

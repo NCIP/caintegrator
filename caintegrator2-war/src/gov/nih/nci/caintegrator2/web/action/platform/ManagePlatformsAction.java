@@ -105,6 +105,7 @@ import javax.jms.Queue;
 import javax.jms.Session;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -123,6 +124,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private String platformFileFileName;
     private JmsTemplate jmsTemplate;
     private Queue queue;
+    private String platformName;
     private String platformVendor;
     private String selectedAction;
 
@@ -154,9 +156,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             } else if (platformFile.length() == 0) {
                 setFieldError("File is empty");
             }
+            checkAgilentPlatformName();
             prepareValueStack();
         } else {
             super.validate();
+        }
+    }
+    
+    private void checkAgilentPlatformName() {
+        if (PlatformVendorEnum.AGILENT.getValue().equals(platformVendor)
+                && StringUtils.isEmpty(platformName)) {
+            setFieldError("Platform name is required for Agilent vendor");
         }
     }
     
@@ -176,7 +186,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                 break;
                 
             case AGILENT:
-                source = new AgilentPlatformSource(getPlatformFileCopy());
+                source = new AgilentPlatformSource(getPlatformFileCopy(), platformName);
                 break;
 
             default:
@@ -348,6 +358,20 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setPlatformVendor(String platformVendor) {
         this.platformVendor = platformVendor;
+    }
+
+    /**
+     * @return the platformName
+     */
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    /**
+     * @param platformName the platformName to set
+     */
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
     }
 
 }

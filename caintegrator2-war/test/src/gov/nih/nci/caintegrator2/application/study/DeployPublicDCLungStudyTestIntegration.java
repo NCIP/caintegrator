@@ -247,4 +247,9 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
         return 22283;
     }
 
+    @Override
+    protected String getPlatformVendor() {
+        return "Affymetrix";
+    }
+
 }

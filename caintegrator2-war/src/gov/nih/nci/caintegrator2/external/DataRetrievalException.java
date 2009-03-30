@@ -101,5 +101,14 @@ public class DataRetrievalException extends Exception {
         super(message);
     }
 
+    /**
+     * Creates a new instance.
+     * 
+     * @param message the message
+     * @param e exception to extract the message
+     */
+    public DataRetrievalException(String message, Exception e) {
+        super(message + e.getMessage());
+    }
 
 }
