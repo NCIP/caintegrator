@@ -85,7 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -330,6 +334,18 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return a Map of annotation types
+     */
+    public Map<String, String> getAnnotationTypes() {
+        Map<String, String> annotationTypes = new HashMap<String, String>();
+        annotationTypes.put(EntityTypeEnum.SUBJECT.getValue(), "Subject");
+        if (getStudy().hasImageSeriesData()) {
+            annotationTypes.put(EntityTypeEnum.IMAGESERIES.getValue(), "Image Series");
+        }
+        return annotationTypes;
     }
     
 }

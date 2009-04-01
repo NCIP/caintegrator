@@ -213,6 +213,13 @@ public class GEPlotAnnotationBasedActionTest {
     }
     
     @Test
+    public void testGetAnnotationTypes() {
+        assertEquals(1, action.getAnnotationTypes().size());
+        action.getCurrentStudy().getImageSeriesAnnotationCollection().add(new AnnotationDefinition());
+        assertEquals(2, action.getAnnotationTypes().size());
+    }
+    
+    @Test
     public void testUpdatePermissibleValues() {
         setupActionVariables();
         assertEquals(ActionSupport.SUCCESS, action.updatePermissibleValues());
