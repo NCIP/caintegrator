@@ -51,7 +51,7 @@
                 </td>
                 <td class="value_inline">
                     <s:select name="gePlotForm.annotationBasedForm.annotationTypeSelection" 
-                              list="#{'subject':'Subject', 'imageSeries':'Image Series'}"
+                              list="annotationTypes"
                               headerKey="invalidSelection"
                               headerValue="Select Annotation Type"
                               onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdateAnnotationDefinitions.action';document.geneExpressionAnnotationInputForm.submit();"
