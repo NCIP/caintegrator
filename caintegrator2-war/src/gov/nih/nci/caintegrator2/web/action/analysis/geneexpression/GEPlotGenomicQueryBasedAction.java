@@ -145,8 +145,7 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
     @SuppressWarnings("PMD.CyclomaticComplexity") // Null Checks and genomic query check.
     private void initialize() {
         if (getStudySubscription() != null 
-            && getStudySubscription().getQueryCollection() != null
-            && getGePlotForm().getGenomicQueryBasedForm().getQueries().isEmpty()) {
+            && getStudySubscription().getQueryCollection() != null) {
             getGePlotForm().getGenomicQueryBasedForm().getQueries().clear();
             for (Query query 
                     : getStudySubscription().getQueryCollection()) {

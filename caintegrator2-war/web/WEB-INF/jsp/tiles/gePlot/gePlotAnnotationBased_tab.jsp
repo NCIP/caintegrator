@@ -75,6 +75,13 @@
             </tr>
         
         </table>
+        <table class="data">
+            <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                4.) <s:checkbox name="gePlotForm.annotationBasedForm.addPatientsNotInQueriesGroup" theme="simple"/>Add additional group containing all other subjects not found in selected queries.
+                </td>
+            </tr>
+        </table>
         
 
         <br>

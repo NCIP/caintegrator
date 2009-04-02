@@ -95,16 +95,23 @@ import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * GE Plot Handler for Annotation Based GE Plots.
@@ -112,6 +119,7 @@ import java.util.List;
 class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
 
     private final GEPlotAnnotationBasedParameters parameters;
+    private final Set<StudySubjectAssignment> usedSubjects = new HashSet<StudySubjectAssignment>();
         
     AnnotationBasedGEPlotHandler(CaIntegrator2Dao dao, 
                                  QueryManagementService queryManagementService, 
@@ -125,11 +133,15 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
      */
     public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
                                                StudySubscription subscription) {
+        
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (AbstractPermissibleValue permissibleValue : parameters.getSelectedValues()) {
-            GenomicDataQueryResult result = retrieveGenomicResults(permissibleValue, 
-                                                                   subscription);
+            GenomicDataQueryResult result = retrieveGenomicResults(permissibleValue, subscription);
+            fillUsedSubjects(result);
             genomicResults.add(result);
+        }
+        if (parameters.isAddPatientsNotInQueriesGroup()) {
+            genomicResults.add(0, addAllOthersGroup(subscription));
         }
         
         GeneExpressionPlotConfiguration configuration = 
@@ -137,7 +149,24 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         return gePlotService.generatePlots(configuration);
     }
 
-    
+    private void fillUsedSubjects(GenomicDataQueryResult queryResults) {
+        if (parameters.isAddPatientsNotInQueriesGroup()) {
+            for (GenomicDataResultRow row : queryResults.getRowCollection()) {
+                for (GenomicDataResultValue value : row.getValueCollection()) {
+                    usedSubjects.add(value.getColumn().getSampleAcquisition().getAssignment());
+                }
+            }
+        }
+    }
+
+    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) {
+        Query query = new Query();
+        query.setName("All Others");
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        return retrieveAllOtherGenomicResults(subscription, query);
+    }
+
     private GenomicDataQueryResult retrieveGenomicResults(AbstractPermissibleValue permissibleValue,
                                                           StudySubscription subscription) {
         Query query = new Query();
@@ -159,6 +188,41 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);
+    }
+
+    private GenomicDataQueryResult retrieveAllOtherGenomicResults(StudySubscription subscription, Query query) {
+        CompoundCriterion newCompoundCriterion = new CompoundCriterion();
+        newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
+        newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());
+        newCompoundCriterion.getCriterionCollection().add(retrieveAllOtherCompoundCriterion());
+        query.setCompoundCriterion(newCompoundCriterion);
+        query.setReporterType(parameters.getReporterType());
+        query.setSubscription(subscription);
+        return getQueryManagementService().executeGenomicDataQuery(query);
+    }
+
+    private CompoundCriterion retrieveAllOtherCompoundCriterion() {
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
+        CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
+        geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);
+        geneNameCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
+        geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion());
+        return geneNameCompoundCriterion;
+    }
+    
+    private CompoundCriterion retrieveUsedSubjectsCriterion() {
+        CompoundCriterion idCriteria = new CompoundCriterion();
+        idCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
+        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        for (StudySubjectAssignment assignment : usedSubjects) {
+            IdentifierCriterion idCriterion = new IdentifierCriterion();
+            idCriterion.setStringValue(assignment.getIdentifier());
+            idCriterion.setWildCardType(WildCardTypeEnum.NOT_EQUAL_TO);
+            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+            idCriteria.getCriterionCollection().add(idCriterion);
+        }
+        return idCriteria;
     }
 
 }

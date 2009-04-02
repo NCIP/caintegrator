@@ -518,6 +518,8 @@
         </action>
         
         <action name="createAnnotationBasedGEPlot" method="createPlot" class="gePlotAnnotationBasedAction">
+            <interceptor-ref name="checkbox" />
+            <interceptor-ref name="cai2ParamsPrepareParamsStack" />
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBasedGraph_div.jsp</result>
         </action>
