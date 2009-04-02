@@ -342,7 +342,8 @@ class GenePatternHelper {
         File gctFile = 
             new File(System.getProperty("java.io.tmpdir"), "caintegrator2_job" + tempFileCounter++ + ".gct");
         gctFile.deleteOnExit();
-        ResultSetToGctConverter.writeAsGct(parameterValue.getGenomicData(), gctFile.getAbsolutePath());
+        GctDatasetFileWriter.writeAsGct(new GctDataset(parameterValue.getGenomicData()), 
+                                        gctFile.getAbsolutePath());
         genePatternParameter.setValue(gctFile.getAbsolutePath());
     }
 

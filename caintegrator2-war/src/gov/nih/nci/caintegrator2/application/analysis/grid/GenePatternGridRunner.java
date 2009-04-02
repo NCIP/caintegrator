@@ -83,82 +83,29 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
-
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
-
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
+/**
+ * 
+ */
+public interface GenePatternGridRunner {
 
     /**
-     * {@inheritDoc}
+     * Executes the grid service PreprocessDataset.
+     * @param studySubscription for current study.
+     * @param server to connect to for grid service.
+     * @param parameters for preprocess dataset.
+     * @return preprocessed GCT file.
+     * @throws ConnectionException if unable to connect to grid service.
      */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
+    File runPreprocessDataset(StudySubscription studySubscription, ServerConnectionProfile server,
+            PreprocessDatasetParameters parameters) throws ConnectionException;
 
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
-    }
-    
 }

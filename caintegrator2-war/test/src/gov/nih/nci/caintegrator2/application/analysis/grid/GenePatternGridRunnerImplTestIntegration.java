@@ -83,82 +83,116 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import static org.junit.Assert.assertArrayEquals;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
+import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+import au.com.bytecode.opencsv.CSVReader;
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
 
-    public void delete(Query query) {
-        deleteCalled = true;
+/**
+ * 
+ */
+public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactionalSpringContextTests {
+    
+    private static final String PREPROCESS_DATASET_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
+    private GenePatternGridRunnerImpl genePatternGridRunner;
+    private CaIntegrator2DaoImpl dao;
+    
+    public void setupContext() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("genepattern-test-config.xml", GenePatternGridRunnerImplTestIntegration.class);
+        genePatternGridRunner = (GenePatternGridRunnerImpl) context.getBean("genePatternGridRunnerIntegration");
+        ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub(); 
+        QueryManagementServiceImpl queryManagementServiceImpl = new QueryManagementServiceImpl();
+        queryManagementServiceImpl.setDao(dao);
+        queryManagementServiceImpl.setArrayDataService(arrayDataService);
+        queryManagementServiceImpl.setResultHandler(new ResultHandlerImpl());
+        genePatternGridRunner.setQueryManagementService(queryManagementServiceImpl);
+        
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
+    protected String[] getConfigLocations() {
+        return new String[] {"classpath*:/**/genepattern-test-config.xml"};
     }
     
+    public void testRunPreprocessDataset() throws ConnectionException, IOException {
+        setupContext();
+        StudyHelper studyHelper = new StudyHelper();
+        StudySubscription subscription = studyHelper.populateAndRetrieveStudy();
+        UserWorkspace userWorkspace = new UserWorkspace();
+        userWorkspace.setUsername("testUser");
+        subscription.setUserWorkspace(userWorkspace);
+        assertNull(subscription.getId());
+        dao.save(subscription.getStudy());
+        dao.save(subscription);
+        assertNotNull(subscription.getId());
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        server.setUrl(PREPROCESS_DATASET_URL);
+        PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
+        parameters.setProcessedGctFilename("test.gct");
+        parameters.getDatasetParameters().setLogBaseTwo(true);
+        File file = genePatternGridRunner.runPreprocessDataset(subscription, server, parameters);
+        checkFile(file, 7, 7, 0.2986583f);
+        file.deleteOnExit();
+        
+        // Now narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
+        // a 6th sample, so combined it should produce 6 sample rows.
+        Query query1 = studyHelper.createQuery(studyHelper.createCompoundCriterion4(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        Query query2 = studyHelper.createQuery(studyHelper.createCompoundCriterion5(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        parameters.setProcessedGctFilename("test2.gct");
+        parameters.getDatasetParameters().setLogBaseTwo(false);
+        parameters.getClinicalQueries().add(query1);
+        parameters.getClinicalQueries().add(query2);
+        File file2 = genePatternGridRunner.runPreprocessDataset(subscription, server, parameters);
+        checkFile(file2, 6, 6, 1.23f);
+        file2.deleteOnExit();
+    }
+    
+    private void checkFile(File gctFile, int numSamples, int numReporters, float value) throws IOException {
+        assertTrue(gctFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
+        checkLine(reader.readNext(), "#1.2");
+        checkLine(reader.readNext(), String.valueOf(numSamples), String.valueOf(numReporters));
+        reader.readNext(); // Header
+        checkValue(reader.readNext(), value); // Row values
+    }
+
+    private void checkValue(String[] readNext, float f) {
+        assertEquals(String.valueOf(f), readNext[2]);
+    }
+
+    private void checkLine(String[] line, String... expecteds) {
+        assertArrayEquals(expecteds, line);
+    }
+    
+    /**
+     * @param caIntegrator2Dao the caIntegrator2Dao to set
+     */
+    public void setDao(CaIntegrator2DaoImpl caIntegrator2Dao) {
+        this.dao = caIntegrator2Dao;
+    }
+
 }

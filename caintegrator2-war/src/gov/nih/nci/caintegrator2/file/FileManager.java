@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -124,5 +125,12 @@ public interface FileManager {
      * @return the directory.
      */
     File getNewTemporaryDirectory(String dirName);
+    
+    /**
+     * Retrieves the directory for the study subscription's user.
+     * @param studySubscription to get username from.
+     * @return the directory.
+     */
+    File getUserDirectory(StudySubscription studySubscription);
 
 }

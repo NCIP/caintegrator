@@ -109,7 +109,12 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
@@ -151,9 +156,11 @@ public class StudyHelper {
         
         imageSeriesAnnotationDefinition = new AnnotationDefinition();
         imageSeriesAnnotationDefinition.setDisplayName("ImageSeriesAnnotation");
+        imageSeriesAnnotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         
         subjectAnnotationDefinition = new AnnotationDefinition();
         subjectAnnotationDefinition.setDisplayName("SubjectAnnotation");
+        subjectAnnotationDefinition.setType(AnnotationTypeEnum.NUMERIC.getValue());
         
         defaultTimepoint = new Timepoint();
         defaultTimepoint.setDescription("This is the default timepoint assuming none is given.");
@@ -385,12 +392,19 @@ public class StudyHelper {
         Collection<SampleAcquisition> saCollection5 = studySubjectAssignment5.getSampleAcquisitionCollection();
         
         saCollection1.add(sampleAcquisition1);
+        createGenomicData(sampleAcquisition1, 1);
         saCollection1.add(sampleAcquisition1_2);
+        createGenomicData(sampleAcquisition1_2, 12);
         saCollection1.add(sampleAcquisition1_3);
+        createGenomicData(sampleAcquisition1_3, 13);
         saCollection2.add(sampleAcquisition2);
+        createGenomicData(sampleAcquisition2, 2);
         saCollection3.add(sampleAcquisition3);
+        createGenomicData(sampleAcquisition3, 3);
         saCollection4.add(sampleAcquisition4);
+        createGenomicData(sampleAcquisition4, 4);
         saCollection5.add(sampleAcquisition5);
+        createGenomicData(sampleAcquisition5, 5);
 
         /**
          * Add the 5 Image Series
@@ -475,6 +489,31 @@ public class StudyHelper {
         return studySubscription;
     }
     
+    /**
+     * @param sampleAcquisition1
+     */
+    private void createGenomicData(SampleAcquisition sampleAcquisition, int sampleNum) {
+        Sample sample = new Sample();
+        sample.setSampleAcquisition(sampleAcquisition);
+        sampleAcquisition.setSample(sample);
+        sample.setName("SAMPLE_" + sampleNum);
+        ArrayData arrayData = new ArrayData();
+        ReporterList reporterList = new ReporterList();
+        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList.getArrayDatas().add(arrayData);
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        Gene gene = new Gene();
+        gene.setSymbol("GENE_" + sampleNum);
+        reporter.getGenes().add(gene);
+        reporter.setReporterList(reporterList);
+        reporter.setIndex(0);
+        reporter.setName("REPORTER_" + sampleNum);
+        reporterList.getReporters().add(reporter);
+        arrayData.setReporterList(reporterList);
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+    }
+
     public Study populateAndRetrieveStudyWithSourceConfigurations() {
         Study study = populateAndRetrieveStudy().getStudy();
         StudyConfiguration studyConfiguration = new StudyConfiguration();
@@ -579,6 +618,41 @@ public class StudyHelper {
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
         compoundCriterion.getCriterionCollection().add(criterion);
+        return compoundCriterion;
+    }
+    
+    public CompoundCriterion createCompoundCriterion4() {
+        // Clinical criterion (Will return 3 subjects: #1, #2, #3)
+        NumericComparisonCriterion criterion = new NumericComparisonCriterion();
+        criterion.setNumericValue(4.0);
+        criterion.setNumericComparisonOperator(NumericComparisonOperatorEnum.LESS);
+        criterion.setEntityType(EntityTypeEnum.SUBJECT);
+        criterion.setAnnotationDefinition(getSubjectAnnotationDefinition());
+        
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion.getCriterionCollection().add(criterion);
+        return compoundCriterion;
+    }
+    
+    public CompoundCriterion createCompoundCriterion5() {
+        // Image Series criterion (Will return 2 subject: #3, #4)
+        StringComparisonCriterion criterion = new StringComparisonCriterion();
+        criterion.setStringValue("string4");
+        criterion.setEntityType(EntityTypeEnum.IMAGESERIES);
+        criterion.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        
+        StringComparisonCriterion criterion2 = new StringComparisonCriterion();
+        criterion2.setStringValue("string3");
+        criterion2.setEntityType(EntityTypeEnum.IMAGESERIES);
+        criterion2.setAnnotationDefinition(getImageSeriesAnnotationDefinition());
+        
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        compoundCriterion.setBooleanOperator(BooleanOperatorEnum.OR);
+        compoundCriterion.setCriterionCollection(new HashSet<AbstractCriterion>());
+        compoundCriterion.getCriterionCollection().add(criterion);
+        compoundCriterion.getCriterionCollection().add(criterion2);
         return compoundCriterion;
     }
     

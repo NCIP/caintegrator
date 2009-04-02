@@ -85,35 +85,33 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 
 /**
- * Converts a genomic result set to a GenePattern .GCT format file.
+ * Writes a GctDataset to a GenePattern .GCT format file.
  */
-final class ResultSetToGctConverter {
+public final class GctDatasetFileWriter {
     
     private static final String GCT_VERSION_HEADER = "#1.2\n";
     
-    private ResultSetToGctConverter() {
+    private GctDatasetFileWriter() {
         super();
     }
 
-    static File writeAsGct(GenomicDataQueryResult result, String gctFilePath) {
+    /**
+     * Writes a gctDataset to the given file path.
+     * @param dataset object representing the gct data.
+     * @param gctFilePath path to write file.
+     * @return written gct file.
+     */
+    public static File writeAsGct(GctDataset dataset, String gctFilePath) {
         File gctFile = new File(gctFilePath);
         try {
             FileWriter writer = new FileWriter(gctFile);
-            writeHeader(writer, result); 
-            writeData(writer, result);
+            writeHeader(writer, dataset); 
+            writeData(writer, dataset);
             writer.flush();
             writer.close();
             return gctFile;
@@ -122,49 +120,38 @@ final class ResultSetToGctConverter {
         }
     }
 
-    private static void writeHeader(FileWriter writer, GenomicDataQueryResult result) throws IOException {
+    private static void writeHeader(FileWriter writer, GctDataset dataset) throws IOException {
         writer.write(GCT_VERSION_HEADER);
-        writer.write(String.valueOf(result.getRowCollection().size()));
+        writer.write(String.valueOf(dataset.getRowReporterNames().size()));
         writer.write('\t');
-        writer.write(String.valueOf(result.getColumnCollection().size()));
+        writer.write(String.valueOf(dataset.getColumnSampleNames().size()));
         writer.write('\n');
         writer.write("NAME\tDescription");
-        for (GenomicDataResultColumn column : result.getColumnCollection()) {
+        for (String column : dataset.getColumnSampleNames()) {
             writer.write('\t');
-            writer.write(column.getSampleAcquisition().getSample().getName());
+            writer.write(column);
         }
         writer.write('\n');
     }
 
-    private static void writeData(FileWriter writer, GenomicDataQueryResult result) throws IOException {
-        for (GenomicDataResultRow row : result.getRowCollection()) {
-            writer.write(row.getReporter().getName());
+    private static void writeData(FileWriter writer, GctDataset dataset) throws IOException {
+        int rowNum = 0;
+        for (String row : dataset.getRowReporterNames()) {
+            writer.write(row);
             writer.write('\t');
-            writer.write(getDescription(row.getReporter()));
-            writeValues(writer, row.getValueCollection());
+            writer.write(dataset.getRowDescription().get(rowNum));
+            writeValues(writer, rowNum, dataset);
             writer.write('\n');
+            rowNum++;
         }
     }
 
-    private static void writeValues(FileWriter writer, Collection<GenomicDataResultValue> valueCollection) 
+    private static void writeValues(FileWriter writer, int rowNumber, GctDataset dataset) 
     throws IOException {
-        for (GenomicDataResultValue value : valueCollection) {
+        float[] rowValues = dataset.getValues()[rowNumber];
+        for (float value : rowValues) {
             writer.write('\t');
-            writer.write(value.getValue().toString());
-        }
-    }
-
-    private static String getDescription(AbstractReporter reporter) {
-        if (!reporter.getGenes().isEmpty()) {
-            StringBuffer sb = new StringBuffer();
-            sb.append("Gene:");
-            for (Gene gene : reporter.getGenes()) {
-                sb.append(' ');
-                sb.append(gene.getSymbol());
-            }
-            return sb.toString();
-        } else {
-            return "N/A";
+            writer.write(String.valueOf(value));
         }
     }
 
