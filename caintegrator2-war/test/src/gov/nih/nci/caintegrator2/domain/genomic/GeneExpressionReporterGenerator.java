@@ -85,25 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Set;
 
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-
-public final class GeneExpressionReporterGenerator extends AbstractTestDataGenerator<GeneExpressionReporter> {
+public final class GeneExpressionReporterGenerator extends AbstractReporterGenerator<GeneExpressionReporter> {
 
     public static final GeneExpressionReporterGenerator INSTANCE = new GeneExpressionReporterGenerator();
     
     private GeneExpressionReporterGenerator() { 
         super();
     }
+    
     @Override
     public void compareFields(GeneExpressionReporter original, GeneExpressionReporter retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getName(), retrieved.getName());
+        super.compareFields(original, retrieved);
     }
 
     @Override
@@ -113,8 +110,7 @@ public final class GeneExpressionReporterGenerator extends AbstractTestDataGener
 
     @Override
     public void setValues(GeneExpressionReporter geneExpressionReporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        geneExpressionReporter.setName(getUniqueString());
-        
+        super.setValues(geneExpressionReporter, nonCascadedObjects);
     }
 
 }

@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -245,7 +244,6 @@ public class AnalysisFormTest {
  
         queryManagementService.clear();
         parameterValue3.setGenomicData(new GenomicDataQueryResult());
-        parameterValue3.getGenomicData().setColumnCollection(new ArrayList<GenomicDataResultColumn>());
         formParameter4.setValue("Test");
         formParameter4.configureForInvocation(studySubscription, queryManagementService);
         assertTrue(queryManagementService.executeCalled);

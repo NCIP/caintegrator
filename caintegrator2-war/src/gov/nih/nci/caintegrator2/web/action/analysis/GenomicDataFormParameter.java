@@ -88,10 +88,12 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -177,7 +179,14 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
             refreshSelectedQuery(studySubscription);
         }
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(getSelectedQuery());
+        initializeReporterGenes(genomicData);
         ((GenomicDataParameterValue) getParameterValue()).setGenomicData(genomicData);
+    }
+
+    private void initializeReporterGenes(GenomicDataQueryResult genomicData) {
+        for (GenomicDataResultRow row : genomicData.getRowCollection()) {
+            Cai2Util.loadCollection(row.getReporter().getGenes());
+        }
     }
 
     private void refreshSelectedQuery(StudySubscription studySubscription) {

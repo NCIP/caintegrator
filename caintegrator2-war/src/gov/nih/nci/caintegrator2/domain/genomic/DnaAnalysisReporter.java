@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Reporter for DNA Analysis (SNP) arrays.
@@ -100,7 +98,6 @@ public class DnaAnalysisReporter extends AbstractReporter {
     private String dbSnpId;
     private Character alleleA;
     private Character alleleB;
-    private final Set<Gene> genes = new HashSet<Gene>();
 
     /**
      * {@inheritDoc}
@@ -189,13 +186,6 @@ public class DnaAnalysisReporter extends AbstractReporter {
      */
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    /**
-     * @return the genes
-     */
-    public Set<Gene> getGenes() {
-        return genes;
     }
 
 }
