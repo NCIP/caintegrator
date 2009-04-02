@@ -22,7 +22,7 @@
                 listValue="value" />
         </div>
         <div class="selectorNote">Reporter Id - will display all reporter ids.<br>
-                Gene - will display an average value for each gene.</div>    
+                Gene - will display a median value for each gene.</div>    
     </s:if>
     </div>
     
