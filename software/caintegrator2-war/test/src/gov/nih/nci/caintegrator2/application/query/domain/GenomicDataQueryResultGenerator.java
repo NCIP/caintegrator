@@ -89,10 +89,8 @@ import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -124,7 +122,6 @@ public final class GenomicDataQueryResultGenerator extends AbstractTestDataGener
         Query query = new Query();
         QueryGenerator.INSTANCE.setValues(query, nonCascadedObjects);
         queryResult.setQuery(query);
-        queryResult.setRowCollection(new ArrayList<GenomicDataResultRow>());
         for (int i = 0; i < 3; i++) {
             queryResult.getRowCollection().add(GenomicDataResultRowGenerator.INSTANCE.createPersistentObject());
         }

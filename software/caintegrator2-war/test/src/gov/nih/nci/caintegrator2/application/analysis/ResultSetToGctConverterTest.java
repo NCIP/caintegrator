@@ -47,8 +47,6 @@ public class ResultSetToGctConverterTest {
 
     private GenomicDataQueryResult createTestResult() {
         GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
         addColumn(result, "SAMPLE1");
         addColumn(result, "SAMPLE2");
         addColumn(result, "SAMPLE3");

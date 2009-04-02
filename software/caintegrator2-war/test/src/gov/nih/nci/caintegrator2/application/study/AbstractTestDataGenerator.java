@@ -149,6 +149,10 @@ public abstract class AbstractTestDataGenerator<T> {
         return uniqueInt++;
     }
 
+    protected Character getUniqueChar() {
+        return (char) getUniqueInt();
+    }
+
     @SuppressWarnings("hiding")
     protected <T extends Enum<?>> T getNewEnumValue(T enumValue, T[] values) {
         if (enumValue == null || enumValue.ordinal() == (values.length - 1)) {

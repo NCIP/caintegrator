@@ -137,7 +137,7 @@ class GenomicQueryHandler {
     }
 
     private GenomicDataQueryResult createResult(ArrayDataValues values) {
-        GenomicDataQueryResult result = createNewResult();
+        GenomicDataQueryResult result = new GenomicDataQueryResult();
         createResultRows(result, values);
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap = createReporterToRowMap(result);
         for (ArrayData arrayData : values.getArrayDatas()) {
@@ -180,13 +180,6 @@ class GenomicQueryHandler {
             row.setReporter(reporter);
             result.getRowCollection().add(row);
         }
-    }
-
-    private GenomicDataQueryResult createNewResult() {
-        GenomicDataQueryResult result = new GenomicDataQueryResult();
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
-        return result;
     }
 
     private ArrayDataValues getDataValues() {

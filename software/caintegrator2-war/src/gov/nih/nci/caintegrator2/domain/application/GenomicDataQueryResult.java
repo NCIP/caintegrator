@@ -2,6 +2,7 @@ package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private List<GenomicDataResultRow> rowCollection;
+    private List<GenomicDataResultRow> rowCollection = new ArrayList<GenomicDataResultRow>();
     private Query query;
-    private List<GenomicDataResultColumn> columnCollection;
+    private List<GenomicDataResultColumn> columnCollection = new ArrayList<GenomicDataResultColumn>();;
     
     /**
      * @return the rowCollection
@@ -25,7 +26,8 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     /**
      * @param rowCollection the rowCollection to set
      */
-    public void setRowCollection(List<GenomicDataResultRow> rowCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setRowCollection(List<GenomicDataResultRow> rowCollection) {
         this.rowCollection = rowCollection;
     }
     
@@ -53,7 +55,8 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
     /**
      * @param columnCollection the columnCollection to set
      */
-    public void setColumnCollection(List<GenomicDataResultColumn> columnCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setColumnCollection(List<GenomicDataResultColumn> columnCollection) {
         this.columnCollection = columnCollection;
     }
 

@@ -87,49 +87,42 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Set;
-
-import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
+import java.util.Set;
 
-public final class ReporterListGenerator extends AbstractTestDataGenerator<ReporterList> {
 
-    public static final ReporterListGenerator INSTANCE = new ReporterListGenerator();
+public final class DnaAnalysisReporterGenerator extends AbstractReporterGenerator<DnaAnalysisReporter> {
+
+    public static final DnaAnalysisReporterGenerator INSTANCE = new DnaAnalysisReporterGenerator();
     
-    private ReporterListGenerator() {
+    private DnaAnalysisReporterGenerator() { 
         super();
     }
-
+    
     @Override
-    public void compareFields(ReporterList original, ReporterList retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        AbstractReporterGenerator.compare(original.getReporters(), retrieved.getReporters());
+    public void compareFields(DnaAnalysisReporter original, DnaAnalysisReporter retrieved) {
+        assertEquals(original.getAlleleA(), retrieved.getAlleleA());
+        assertEquals(original.getAlleleB(), retrieved.getAlleleB());
+        assertEquals(original.getChromosome(), retrieved.getChromosome());
+        assertEquals(original.getDbSnpId(), retrieved.getDbSnpId());
+        assertEquals(original.getPosition(), retrieved.getPosition());
+        super.compareFields(original, retrieved);
     }
 
-
     @Override
-    public ReporterList createPersistentObject() {
-        return new ReporterList();
+    public DnaAnalysisReporter createPersistentObject() {
+        return new DnaAnalysisReporter();
     }
 
-
     @Override
-    public void setValues(ReporterList reporterList, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        if (reporterList.getReporters() != null) {
-            for (AbstractReporter reporter : reporterList.getReporters()) {
-                reporter.setReporterList(null);
-            }
-        }
-        reporterList.getReporters().clear();
-        GeneExpressionReporter reporter = GeneExpressionReporterGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-        reporter.setIndex(0);
-        reporter.setReporterList(reporterList);
-        reporterList.getReporters().add(reporter);
-        DnaAnalysisReporter reporter2 = DnaAnalysisReporterGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-        reporter2.setReporterList(reporterList);
-        reporter2.setIndex(1);
-        reporterList.getReporters().add(reporter2);
+    public void setValues(DnaAnalysisReporter reporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        super.setValues(reporter, nonCascadedObjects);
+        reporter.setAlleleA(getUniqueChar());
+        reporter.setAlleleB(getUniqueChar());
+        reporter.setChromosome(getUniqueInt());
+        reporter.setDbSnpId(getUniqueString());
+        reporter.setPosition(getUniqueInt());
     }
 
 }

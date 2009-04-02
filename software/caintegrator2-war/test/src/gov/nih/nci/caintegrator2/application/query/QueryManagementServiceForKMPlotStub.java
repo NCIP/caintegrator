@@ -101,7 +101,6 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -152,7 +151,6 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         executeGenomicDataQueryCalled = true;
         GenomicDataQueryResult result = new GenomicDataQueryResult();
         result.setQuery(query);
-        result.setRowCollection(new ArrayList<GenomicDataResultRow>());
         GenomicDataResultRow row = new GenomicDataResultRow();
         Set <GenomicDataResultValue> valueCollection = new HashSet<GenomicDataResultValue>();
         GenomicDataResultValue value = new GenomicDataResultValue();
@@ -172,7 +170,6 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         valueCollection.add(value);
         row.setValueCollection(valueCollection);
         result.getRowCollection().add(row);
-        result.setColumnCollection(new ArrayList<GenomicDataResultColumn>());
         return result;
     }
 
