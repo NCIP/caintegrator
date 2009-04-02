@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
@@ -126,7 +127,7 @@ public class FoldChangeCriterionHandlerTest {
         ReporterList reporterList = new ReporterList();
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
-        reporter.setGene(gene);
+        reporter.getGenes().add(gene);
         
         daoStub.clear();       
         study = new Study();
@@ -188,9 +189,9 @@ public class FoldChangeCriterionHandlerTest {
     private class DaoStub extends CaIntegrator2DaoStub {
 
         @Override
-        public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
+        public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study) {
-            Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+            Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter);
             return reporters;
         }

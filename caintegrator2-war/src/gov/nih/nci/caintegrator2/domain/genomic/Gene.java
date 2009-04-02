@@ -121,5 +121,13 @@ public class Gene extends AbstractCaIntegrator2Object implements Comparable<Gene
     public int compareTo(Gene gene) {
         return symbol.compareTo(gene.getSymbol());
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getSymbol();
+    }
 
 }

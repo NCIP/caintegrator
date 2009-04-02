@@ -89,6 +89,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -112,7 +113,8 @@ abstract class AbstractPlatformLoader {
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
     abstract void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
             CaIntegrator2Dao dao);
-    abstract  Gene createGene(String[] fields);
+    
+    abstract  Gene createGene(String symbol, String[] fields);
 
     protected Platform createPlatform(PlatformVendorEnum platformVendor) {
         Platform platform = new Platform();
@@ -140,17 +142,16 @@ abstract class AbstractPlatformLoader {
 
     protected void addGeneReporter(ReporterList geneReporters, Gene gene) {
         GeneExpressionReporter geneReporter = new GeneExpressionReporter();
-        geneReporter.setGene(gene);
+        geneReporter.getGenes().add(gene);
         geneReporter.setName(gene.getSymbol());
         geneReporter.setReporterList(geneReporters);
         geneReporters.getReporters().add(geneReporter);
     }
 
-    protected Gene lookupOrCreateGene(String[] fields, String geneSymbolHeader, CaIntegrator2Dao dao) {
-        String symbol = getAnnotationValue(fields, geneSymbolHeader);
+    protected Gene lookupOrCreateGene(String[] fields, String symbol, CaIntegrator2Dao dao) {
         Gene gene = dao.getGene(symbol);
         if (gene == null) {
-            gene = createGene(fields);
+            gene = createGene(symbol, fields);
         }
         getSymbolToGeneMap().put(symbol.toUpperCase(Locale.getDefault()), gene);
         return gene;
@@ -160,10 +161,10 @@ abstract class AbstractPlatformLoader {
         return fields[getHeaderToIndexMap().get(header)];
     }
 
-    protected void handleProbeSet(String probeSetName, Gene gene, ReporterList probeSetReporters) {
+    protected void handleProbeSet(String probeSetName, Set<Gene> genes, ReporterList probeSetReporters) {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(probeSetName);
-        reporter.setGene(gene);
+        reporter.getGenes().addAll(genes);
         reporter.setReporterList(probeSetReporters);
         probeSetReporters.getReporters().add(reporter);
     }

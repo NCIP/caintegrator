@@ -95,8 +95,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -197,21 +199,42 @@ class AffymetrixPlatformLoader extends AbstractPlatformLoader {
         fileHeaders.put(parts[0], parts[1]);
     }
     
-    protected void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
+    void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
             CaIntegrator2Dao dao) {
-        String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
-        Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
-        if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
-            gene = lookupOrCreateGene(fields, GENE_SYMBOL_HEADER, dao);
-            addGeneReporter(geneReporters, gene);
-        }
+        String[] symbols = getSymbols(fields);
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
-        handleProbeSet(probeSetName, gene, probeSetReporters);
+        Set<Gene> genes = handleGeneSymbols(symbols, fields, geneReporters, dao);
+        handleProbeSet(probeSetName, genes, probeSetReporters);
     }
 
-    protected Gene createGene(String[] fields) {
+    @SuppressWarnings("PMD.UseStringBufferForStringAppends")    // Invalid rule violation
+    private String[] getSymbols(String[] fields) {
+        String[] symbols = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
+        for (int i = 0; i < symbols.length; i++) {
+            symbols[i] = symbols[i].trim();
+        }
+        return symbols;
+    }
+
+    private Set<Gene> handleGeneSymbols(String[] symbols, String[] fields, ReporterList geneReporters, 
+            CaIntegrator2Dao dao) {
+        Set<Gene> genes = new HashSet<Gene>(symbols.length);
+        for (String symbol : symbols) {
+            Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
+            if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
+                gene = lookupOrCreateGene(fields, symbol, dao);
+                addGeneReporter(geneReporters, gene);
+            }
+            if (gene != null) {
+                genes.add(gene);
+            }
+        }
+        return genes;
+    }
+
+    protected Gene createGene(String symbol, String[] fields) {
         Gene gene = new Gene();
-        gene.setSymbol(getAnnotationValue(fields, GENE_SYMBOL_HEADER));
+        gene.setSymbol(symbol);
         gene.setEntrezgeneID(getAnnotationValue(fields, ENTREZ_GENE_HEADER));
         gene.setEnsemblgeneID(getAnnotationValue(fields, ENSEMBL_HEADER));
         gene.setUnigeneclusterID(getAnnotationValue(fields, UNIGENE_ID_HEADER));

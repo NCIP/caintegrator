@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -153,7 +152,7 @@ class GenomicDataHelper {
             platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         for (AbstractReporter geneReporter : geneReporters) {
             Collection<AbstractReporter> probeSetReporters = 
-                platformHelper.getReportersForGene(((GeneExpressionReporter) geneReporter).getGene(), 
+                platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataType.EXPRESSION_SIGNAL,
                     computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));

@@ -128,7 +128,7 @@ public class GeneNameCriterionHandlerTest {
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         gene.setSymbol(GENE_NAME);
-        reporter.setGene(gene);
+        reporter.getGenes().add(gene);
         reporter.setReporterList(reporterList);
   
         study = new Study();
@@ -177,7 +177,9 @@ public class GeneNameCriterionHandlerTest {
         Set<AbstractReporter> reporters = 
                 handler.getReporterMatches(daoStub, null, ReporterTypeEnum.GENE_EXPRESSION_GENE);
         GeneExpressionReporter reporter = (GeneExpressionReporter) reporters.iterator().next();
-        assertEquals(GENE_NAME, reporter.getGene().getSymbol());
+        assertEquals(1, reporter.getGenes().size());
+        Gene gene = reporter.getGenes().iterator().next();
+        assertEquals(GENE_NAME, gene.getSymbol());
         assertTrue(daoStub.findGeneExpressionReportersCalled);
     }
     
@@ -205,9 +207,9 @@ public class GeneNameCriterionHandlerTest {
     private class DaoStub extends CaIntegrator2DaoStub {
 
         @Override
-        public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols,
+        public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols,
                 ReporterTypeEnum reporterType, Study study) {
-            Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
+            Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
             reporters.add(reporter);
             findGeneExpressionReportersCalled = true;
             return reporters;

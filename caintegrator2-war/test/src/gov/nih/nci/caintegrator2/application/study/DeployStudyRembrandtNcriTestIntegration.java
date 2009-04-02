@@ -226,7 +226,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
 
     @Override
     protected int getExpectedNumberOfGeneReporters() {
-        return 20886;
+        return 21432;
     }
 
     @Override

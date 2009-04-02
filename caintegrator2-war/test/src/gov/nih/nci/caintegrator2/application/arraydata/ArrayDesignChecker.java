@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -46,10 +47,11 @@ public class ArrayDesignChecker {
         ReporterList geneReporters = getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE, platform);
         assertEquals(platform, geneReporters.getPlatform());
         Set<String> geneSymbols = new HashSet<String>();
-        for (AbstractReporter abstractReporter : geneReporters.getReporters()) {
-            GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
-            assertEquals(reporter.getName(), reporter.getGene().getSymbol());
-            geneSymbols.add(reporter.getGene().getSymbol());
+        for (AbstractReporter reporter : geneReporters.getReporters()) {
+            assertEquals(1, reporter.getGenes().size());
+            Gene gene = reporter.getGenes().iterator().next();
+            assertEquals(reporter.getName(), gene.getSymbol());
+            geneSymbols.add(gene.getSymbol());
         }
         assertEquals(geneReporters.getReporters().size(), geneSymbols.size());
     }
