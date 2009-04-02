@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -108,6 +109,10 @@ public class FileManagerStub implements FileManager {
     }
 
     public File getNewTemporaryDirectory(String dirName) {
+        return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    public File getUserDirectory(StudySubscription studySubscription) {
         return new File(System.getProperty("java.io.tmpdir"));
     }
 

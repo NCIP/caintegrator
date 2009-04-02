@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-lazy-init="false" 
+    default-dependency-check="none" 
+    default-autowire="no">
+        
+    <bean name="genePatternGridRunnerIntegration" class="gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerImpl">
+        <property name="genePatternGridClientFactory">
+            <ref local="genePatternGridClientFactoryIntegration"/>
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="mbaGenerator">
+            <ref local="mbaGeneratorIntegration"/>
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager"/>
+        </property>        
+    </bean>
+    
+    
+    <bean id="fileManagerStub" class="gov.nih.nci.caintegrator2.file.FileManagerStub" />
+    
+    <bean id="fileManager"
+        class="gov.nih.nci.caintegrator2.file.FileManagerImpl">
+        <property name="configurationHelper">
+            <ref local="configurationHelperStub" />
+        </property>
+    </bean>
+        
+    <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
+
+    <bean id="genePatternGridClientFactoryIntegration" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
+    
+    <bean id="mbaGeneratorIntegration" 
+        class="edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl" />    
+    
+    
+    <bean id="queryManagementService" 
+        class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataService"/>
+        </property>
+        <property name="resultHandler">
+            <ref local="resultHandler"/>
+        </property>
+    </bean>
+    
+    <bean id="arrayDataService" 
+        class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub"/>
+    
+    <bean id="resultHandler" class="gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl" />
+    
+    <bean id="caIntegrator2Dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl" scope="singleton">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="sessionFactory"/>
+        </property>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    
+    <bean id="sessionFactory" 
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation">
+            <value>classpath:hibernate.cfg.xml</value>
+        </property>
+    </bean>
+    
+</beans>

@@ -20,13 +20,13 @@ import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class ResultSetToGctConverterTest {
+public class GctDatasetFileWriterTest {
 
     @Test
     public void testWriteAsGct() throws IOException {
         GenomicDataQueryResult result = createTestResult();
         String testFilePath = System.getProperty("java.io.tmpdir") + File.separator + "gctTest.gct";
-        File gctFile = ResultSetToGctConverter.writeAsGct(result, testFilePath);
+        File gctFile = GctDatasetFileWriter.writeAsGct(new GctDataset(result), testFilePath);
         gctFile.deleteOnExit();
         checkFile(gctFile, result);
     }
@@ -66,10 +66,13 @@ public class ResultSetToGctConverterTest {
         }
         row.setReporter(reporter);
         row.setValueCollection(new ArrayList<GenomicDataResultValue>());
+        int colNum = 0;
         for (float value : values) {
             GenomicDataResultValue genomicValue = new GenomicDataResultValue();
             genomicValue.setValue(value);
             row.getValueCollection().add(genomicValue);
+            genomicValue.setColumn(result.getColumnCollection().get(colNum));
+            colNum++;
         }
         result.getRowCollection().add(row);
     }

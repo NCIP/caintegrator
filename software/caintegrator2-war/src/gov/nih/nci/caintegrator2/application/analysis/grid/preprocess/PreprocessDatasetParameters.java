@@ -83,82 +83,80 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gridextensions.PreprocessDatasetParameterSet;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import valuedomain.PreprocessDatasetPreprocessingFlag;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
-
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
-
-    public void delete(Query query) {
-        deleteCalled = true;
+/**
+ * Parameters used for PreprocessDataset gene pattern grid service.
+ */
+public class PreprocessDatasetParameters {
+    
+    private static final Float DEFAULT_MIN_CHANGE = 3f;
+    private static final Float DEFAULT_MIN_DELTA = 100f;
+    private static final Float DEFAULT_THRESHOLD = 20f;
+    private static final Float DEFAULT_CEILING = 2.1f;
+    private static final Float DEFAULT_PROBABILITY_THRESHOLD = 1f;
+    
+    private final PreprocessDatasetParameterSet datasetParameters;
+    private final Set<Query> clinicalQueries = new HashSet<Query>();
+    private String processedGctFilename;
+    
+    /**
+     * Constructor.
+     */
+    public PreprocessDatasetParameters() {
+        datasetParameters = new PreprocessDatasetParameterSet();
+        fillDefaultDatasetParameters();
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
+    private void fillDefaultDatasetParameters() {
+        datasetParameters.setFilterFlag(false);
+        datasetParameters.setPreprocessingFlag(PreprocessDatasetPreprocessingFlag.value2);
+        datasetParameters.setMinChange(DEFAULT_MIN_CHANGE);
+        datasetParameters.setMinDelta(DEFAULT_MIN_DELTA);
+        datasetParameters.setThreshold(DEFAULT_THRESHOLD);
+        datasetParameters.setCeiling(DEFAULT_CEILING);
+        datasetParameters.setMaxSigmaBinning(1);
+        datasetParameters.setProbabilityThreshold(DEFAULT_PROBABILITY_THRESHOLD);
+        datasetParameters.setNumExclude(0);
+        datasetParameters.setLogBaseTwo(false);
+        datasetParameters.setNumberOfColumnsAboveThreshold(1);
     }
     
+    /**
+     * @return the clinicalQueries
+     */
+    public Set<Query> getClinicalQueries() {
+        return clinicalQueries;
+    }
+
+    /**
+     * @return the datasetParameters
+     */
+    public PreprocessDatasetParameterSet getDatasetParameters() {
+        return datasetParameters;
+    }
+
+    /**
+     * @return the processedGctFilename
+     */
+    public String getProcessedGctFilename() {
+        return processedGctFilename;
+    }
+
+    /**
+     * @param processedGctFilename the processedGctFilename to set
+     */
+    public void setProcessedGctFilename(String processedGctFilename) {
+        this.processedGctFilename = processedGctFilename;
+    }
+    
+
 }

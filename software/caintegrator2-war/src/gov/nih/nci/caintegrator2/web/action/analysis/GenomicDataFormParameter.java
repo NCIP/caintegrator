@@ -89,20 +89,13 @@ import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
-import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -174,7 +167,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     public void configureForInvocation(StudySubscription studySubscription, 
                                        QueryManagementService queryManagementService) {
         if (getSelectedQuery() == null) {
-            setSelectedQuery(createAllDataQuery(studySubscription));
+            setSelectedQuery(Cai2Util.createAllDataQuery(studySubscription, null));
         } else {
             refreshSelectedQuery(studySubscription);
         }
@@ -195,18 +188,6 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
                 setSelectedQuery(nextQuery);
             }
         }
-    }
-
-    private Query createAllDataQuery(StudySubscription studySubscription) {
-        Query query = new Query();
-        query.setResultType(ResultTypeEnum.GENOMIC);
-        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
-        query.setSubscription(studySubscription);
-        return query;
     }
 
 }

@@ -83,82 +83,107 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
-
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
-
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
+/**
+ * An object representing a GctDataset, which can only be created from GenomicDataQueryResults.
+ */
+public class GctDataset {
+    private final List<String> rowReporterNames = new ArrayList<String>();
+    private final List<String> rowDescription = new ArrayList<String>();
+    private final List<String> columnSampleNames = new ArrayList<String>();
+    private float[][] values;
+    
+    /**
+     * Creates a GctDataset from GenomicDataQueryResults.
+     * @param resultSet results to use.
+     */
+    public GctDataset(GenomicDataQueryResult resultSet) {
+        loadGenomicResultSet(resultSet);
     }
 
-    public void delete(Query query) {
-        deleteCalled = true;
+    private void loadGenomicResultSet(GenomicDataQueryResult resultSet) {
+        boolean columnNamesMapped = false;
+        values = new float[resultSet.getRowCollection().size()][resultSet.getColumnCollection().size()];
+        int rowNum = 0;
+        for (GenomicDataResultRow row : resultSet.getRowCollection()) {
+            AbstractReporter rowReporter = row.getReporter();
+            addRowReporters(row, rowReporter);
+            addRowValues(columnNamesMapped, rowNum, row);
+            columnNamesMapped = true;
+            rowNum++;
+        }
+    }
+
+    private void addRowReporters(GenomicDataResultRow row, AbstractReporter rowReporter) {
+        rowReporterNames.add(row.getReporter().getName());
+        if (!rowReporter.getGenes().isEmpty()) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Gene:");
+            for (Gene gene : rowReporter.getGenes()) {
+                sb.append(' ');
+                sb.append(gene.getSymbol());
+            }
+            rowDescription.add(sb.toString());
+        } else {
+            rowDescription.add("N/A");
+        }
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
+    private void addRowValues(boolean columnNamesMapped, int rowNum, GenomicDataResultRow row) {
+        int colNum = 0;
+        for (GenomicDataResultValue value : row.getValueCollection()) {
+            values[rowNum][colNum] = value.getValue();
+            if (!columnNamesMapped) {
+                columnSampleNames.add(value.getColumn().getSampleAcquisition().getSample().getName());
+            }
+            colNum++;
+        }
     }
 
+    
     /**
-     * {@inheritDoc}
+     * @return the values
      */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
+    public float[][] getValues() {
+        return values.clone();
     }
     
+    /**
+     * @param values the values to set
+     */
+    public void setValues(float[][] values) {
+        this.values = values.clone();
+    }
+
+    /**
+     * @return the rowReporterNames
+     */
+    public List<String> getRowReporterNames() {
+        return rowReporterNames;
+    }
+    
+    /**
+     * @return the columnSampleNames
+     */
+    public List<String> getColumnSampleNames() {
+        return columnSampleNames;
+    }
+
+    /**
+     * @return the rowDescription
+     */
+    public List<String> getRowDescription() {
+        return rowDescription;
+    }
+
 }
