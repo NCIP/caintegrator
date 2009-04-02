@@ -85,17 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collection;
-
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Converts a genomic result set to a GenePattern .GCT format file.
@@ -154,14 +154,15 @@ final class ResultSetToGctConverter {
         }
     }
 
-    private static String getDescription(AbstractReporter abstractReporter) {
-        if (abstractReporter instanceof GeneExpressionReporter) {
-            GeneExpressionReporter geneExpressionReporter = (GeneExpressionReporter) abstractReporter;
-            if (geneExpressionReporter.getGene() != null) {
-                return "Gene: " + geneExpressionReporter.getGene().getSymbol();
-            } else {
-                return "N/A";
+    private static String getDescription(AbstractReporter reporter) {
+        if (!reporter.getGenes().isEmpty()) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Gene:");
+            for (Gene gene : reporter.getGenes()) {
+                sb.append(' ');
+                sb.append(gene.getSymbol());
             }
+            return sb.toString();
         } else {
             return "N/A";
         }

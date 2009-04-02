@@ -113,8 +113,6 @@ public final class GeneExpressionReporterGenerator extends AbstractTestDataGener
 
     @Override
     public void setValues(GeneExpressionReporter geneExpressionReporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        
-        geneExpressionReporter.setGene(new Gene());
         geneExpressionReporter.setName(getUniqueString());
         
     }

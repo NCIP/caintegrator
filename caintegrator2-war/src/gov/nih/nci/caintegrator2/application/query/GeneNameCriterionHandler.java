@@ -146,7 +146,7 @@ final class GeneNameCriterionHandler extends AbstractCriterionHandler {
         Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         Set<String> geneSymbols = new HashSet<String>();
         geneSymbols.addAll(Arrays.asList(criterion.getGeneSymbol().replaceAll("\\s*", "").split(",")));
-        reporters.addAll(dao.findGeneExpressionReporters(geneSymbols, reporterType, study));
+        reporters.addAll(dao.findReportersForGenes(geneSymbols, reporterType, study));
         return reporters;
     }
 

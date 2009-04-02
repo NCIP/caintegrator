@@ -98,10 +98,10 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -297,17 +297,17 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped    
-    public Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols, 
+    public Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, 
             ReporterTypeEnum reporterType, Study study) {
         Set<ReporterList> studyReporterLists = getStudyReporterLists(study, reporterType);
         if (studyReporterLists.isEmpty()) {
             return Collections.emptySet();
         }
-        Set<GeneExpressionReporter> reporters = new HashSet<GeneExpressionReporter>();
-        Criteria criteria = getCurrentSession().createCriteria(GeneExpressionReporter.class);
-        criteria.createCriteria("gene").add(Restrictions.in("symbol", geneSymbols));
+        Set<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+        Criteria criteria = getCurrentSession().createCriteria(AbstractReporter.class);
+        criteria.createCriteria("genes").add(Restrictions.in("symbol", geneSymbols));
         criteria.add(Restrictions.in("reporterList", studyReporterLists));
-        reporters.addAll((List<GeneExpressionReporter>) criteria.list());
+        reporters.addAll((List<AbstractReporter>) criteria.list());
         return reporters;
     }
 

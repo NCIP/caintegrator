@@ -337,7 +337,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         reporter.setReporterList(reporterList);
         reporterList.getReporters().add(reporter);
         reporter.setIndex(0);
-        reporter.setGene(gene);
+        reporter.getGenes().add(gene);
         StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
         study.getAssignmentCollection().add(studySubjectAssignment);
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
@@ -353,7 +353,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         dao.save(gene);
         Set<String> geneSymbols = new HashSet<String>();
         geneSymbols.add("TEST");
-        assertEquals(1, dao.findGeneExpressionReporters(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
+        assertEquals(1, dao.findReportersForGenes(geneSymbols, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, study).size());
     }
     
     @Test

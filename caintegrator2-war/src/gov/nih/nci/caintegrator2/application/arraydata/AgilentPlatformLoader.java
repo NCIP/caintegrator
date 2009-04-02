@@ -94,7 +94,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -186,20 +188,24 @@ class AgilentPlatformLoader extends AbstractPlatformLoader {
         String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
         Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
         if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
-            gene = lookupOrCreateGene(fields, GENE_SYMBOL_HEADER, dao);
+            gene = lookupOrCreateGene(fields, symbol, dao);
             addGeneReporter(geneReporters, gene);
         }
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
-        handleProbeSet(probeSetName, gene, probeSetReporters);
+        Set<Gene> genes = new HashSet<Gene>();
+        if (gene != null) {
+            genes.add(gene);
+        }
+        handleProbeSet(probeSetName, genes, probeSetReporters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    Gene createGene(String[] fields) {
+    Gene createGene(String symbol, String[] fields) {
         Gene gene = new Gene();
-        gene.setSymbol(getAnnotationValue(fields, GENE_SYMBOL_HEADER));
+        gene.setSymbol(symbol);
         gene.setGenbankAccession(getAnnotationValue(fields, ACCESSIONS_HEADER));
         gene.setFullName(getAnnotationValue(fields, GENE_NAME_HEADER));
         return gene;

@@ -7,6 +7,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -61,13 +62,14 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
         PlatformHelper platformHelper = new PlatformHelper(platform);
         Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        assertEquals(4562, geneReporters.size());
-        for (AbstractReporter abstractReporter : geneReporters) {
-            GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
-            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        assertEquals(4587, geneReporters.size());
+        for (AbstractReporter geneReporter : geneReporters) {
+            assertEquals(1, geneReporter.getGenes().size());
+            Gene gene = geneReporter.getGenes().iterator().next();
+            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(gene, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             for (AbstractReporter probeSetReporter : probeSets) {
                 GeneExpressionReporter probeSet = (GeneExpressionReporter) probeSetReporter;
-                assertTrue(geneReporter.getGene() == probeSet.getGene());
+                assertTrue(probeSet.getGenes().contains(gene));
             }
         }
     }
@@ -78,12 +80,13 @@ public class ArrayDataServiceTest {
         PlatformHelper platformHelper = new PlatformHelper(platform);
         Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
         assertEquals(16710, geneReporters.size());
-        for (AbstractReporter abstractReporter : geneReporters) {
-            GeneExpressionReporter geneReporter = (GeneExpressionReporter) abstractReporter;
-            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(geneReporter.getGene(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        for (AbstractReporter geneReporter : geneReporters) {
+            assertEquals(1, geneReporter.getGenes().size());
+            Gene gene = geneReporter.getGenes().iterator().next();
+            Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(gene, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             for (AbstractReporter probeSetReporter : probeSets) {
                 GeneExpressionReporter probeSet = (GeneExpressionReporter) probeSetReporter;
-                assertTrue(geneReporter.getGene() == probeSet.getGene());
+                assertTrue(probeSet.getGenes().contains(gene));
             }
         }
     }

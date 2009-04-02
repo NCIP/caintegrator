@@ -83,41 +83,119 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-
-import org.apache.log4j.Logger;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Logs query result sets.
+ * Reporter for DNA Analysis (SNP) arrays.
  */
-public final class ResultLogger {
+public class DnaAnalysisReporter extends AbstractReporter {
 
-    public static void log(GenomicDataQueryResult result, Logger logger) {
-        for (GenomicDataResultRow row : result.getRowCollection()) {
-            StringBuffer sb = new StringBuffer();
-            if (row.getReporter() instanceof GeneExpressionReporter) {
-                GeneExpressionReporter expressionReporter = (GeneExpressionReporter) row.getReporter();
-                sb.append(expressionReporter.getName());
-                sb.append(" [Gene = ");
-                sb.append(expressionReporter.getGene().getSymbol());
-                sb.append("]: ");
-            }
-            for (GenomicDataResultValue value : row.getValueCollection()) {
-                if (value.getColumn().getSampleAcquisition() != null) {
-                    sb.append(value.getColumn().getSampleAcquisition().getSample().getName());
-                } else {
-                    sb.append("unmapped");
-                }
-                sb.append("=");
-                sb.append(value.getValue());                    
-            }
-            logger.info(sb.toString());
+    private static final long serialVersionUID = 1L;
+    
+    private Integer chromosome;
+    private Integer position;
+    private String dbSnpId;
+    private Character alleleA;
+    private Character alleleB;
+    private final Set<Gene> genes = new HashSet<Gene>();
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(AbstractReporter abstractReporter) {
+        DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
+        if (getChromosome().equals(reporter.getChromosome())) {
+            return getPosition() - reporter.getPosition();
+        } else {
+            return getChromosome() - reporter.getChromosome();
         }
+    }
+
+    /**
+     * @return the chromosome
+     */
+    public Integer getChromosome() {
+        return chromosome;
+    }
+
+    /**
+     * @param chromosome the chromosome to set
+     */
+    public void setChromosome(Integer chromosome) {
+        this.chromosome = chromosome;
+    }
+
+    /**
+     * @return the position
+     */
+    public Integer getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    /**
+     * @return the dbSnpId
+     */
+    public String getDbSnpId() {
+        return dbSnpId;
+    }
+
+    /**
+     * @param dbSnpId the dbSnpId to set
+     */
+    public void setDbSnpId(String dbSnpId) {
+        this.dbSnpId = dbSnpId;
+    }
+
+    /**
+     * @return the alleleA
+     */
+    public Character getAlleleA() {
+        return alleleA;
+    }
+
+    /**
+     * @param alleleA the alleleA to set
+     */
+    public void setAlleleA(Character alleleA) {
+        this.alleleA = alleleA;
+    }
+
+    /**
+     * @return the alleleB
+     */
+    public Character getAlleleB() {
+        return alleleB;
+    }
+
+    /**
+     * @param alleleB the alleleB to set
+     */
+    public void setAlleleB(Character alleleB) {
+        this.alleleB = alleleB;
+    }
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    /**
+     * @return the genes
+     */
+    public Set<Gene> getGenes() {
+        return genes;
     }
 
 }
