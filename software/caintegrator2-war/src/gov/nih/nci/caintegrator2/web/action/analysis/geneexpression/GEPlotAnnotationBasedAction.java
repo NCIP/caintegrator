@@ -133,6 +133,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     
     private void retrieveFormValues() {
         plotParameters.setGeneSymbol(getGePlotForm().getAnnotationBasedForm().getGeneSymbol());
+        plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setReporterType(ReporterTypeEnum.
                         getByValue(getGePlotForm().getAnnotationBasedForm().getReporterType()));
         if (getForm().getSelectedAnnotationId() != null 
@@ -222,7 +223,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     }
     
     /**
-     * This is used to update the Annotation Definitions on the Kaplan-Meier input form when
+     * This is used to update the Annotation Definitions on the GE input form when
      * a user selects a valid Annotation Type.
      * @return Struts return value.
      */

@@ -276,5 +276,6 @@ public class GEPlotAnnotationBasedActionTest {
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());
         action.getPlotParameters().setSelectedAnnotation(selectedAnnotation);
+        action.getPlotParameters().setAddPatientsNotInQueriesGroup(true);
     }
 }
