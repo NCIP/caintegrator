@@ -100,8 +100,13 @@ public enum ConfigurationParameter {
     /**
      * Determines where to store temporary files for download.
      */
-    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload");
-
+    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"),
+    
+    /**
+     * 
+     */
+    USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles");
+    
     private String defaultValue;
 
     ConfigurationParameter(String defaultValue)  {

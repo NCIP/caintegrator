@@ -95,12 +95,17 @@ import gov.nih.nci.caintegrator2.domain.annotation.NumericPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.awt.Color;
 import java.io.File;
@@ -108,6 +113,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -407,6 +413,37 @@ public final class Cai2Util {
             }
         }
         return false;
+    }
+    
+    /**
+     * Creates a query for all genomic data in the study, and limits it to the given clinical queries (if any
+     * are given).
+     * @param studySubscription for querying.
+     * @param clinicalQueries to limit genomic data returned based.
+     * @return a Query which contains all genomic data for all clinical queries given (if any).
+     */
+    public static Query createAllDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries) {
+        Query query = new Query();
+        query.setResultType(ResultTypeEnum.GENOMIC);
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(studySubscription);
+        if (clinicalQueries != null && !clinicalQueries.isEmpty()) {
+            CompoundCriterion clinicalCompoundCriterions = new CompoundCriterion();
+            clinicalCompoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
+            for (Query clinicalQuery : clinicalQueries) {
+                CompoundCriterion clinicalCompoundCriterion = clinicalQuery.getCompoundCriterion();
+                if (isCompoundCriterionGenomic(clinicalCompoundCriterion)) {
+                    throw new IllegalArgumentException("Clinical query has genomic criterion");
+                }
+                clinicalCompoundCriterions.getCriterionCollection().add(clinicalCompoundCriterion);
+            }
+            query.getCompoundCriterion().getCriterionCollection().add(clinicalCompoundCriterions);
+        }
+        return query;
     }
 
 }

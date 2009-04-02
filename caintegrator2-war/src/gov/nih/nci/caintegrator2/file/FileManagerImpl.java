@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.file;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.File;
@@ -137,6 +138,24 @@ public class FileManagerImpl implements FileManager {
     private File getStudyDirectory(StudyConfiguration studyConfiguration) {
         return getStudyDirectory(studyConfiguration.getStudy());
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File getUserDirectory(StudySubscription studySubscription) {
+        if (studySubscription.getUserWorkspace() == null 
+            || studySubscription.getUserWorkspace().getUsername() == null) {
+            throw new IllegalArgumentException("Couldn't determine username from the StudySubscription.");
+        }
+        File userDirectory = new File(getUserRootDirectory(), studySubscription.getUserWorkspace().getUsername());
+        userDirectory.mkdirs();
+        return userDirectory;
+    }
+    
+    private File getUserRootDirectory() {
+        return new File(getConfigurationHelper().getString(ConfigurationParameter.USER_FILE_STORAGE_DIRECTORY));
+    }
+
 
     /**
      * {@inheritDoc}

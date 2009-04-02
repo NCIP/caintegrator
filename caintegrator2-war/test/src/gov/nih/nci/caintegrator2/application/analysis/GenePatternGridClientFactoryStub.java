@@ -83,82 +83,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.mageom.domain.bioassay.BioAssay;
+import gridextensions.PreprocessDatasetParameterSet;
 
-import java.util.Collections;
-import java.util.List;
+import java.rmi.RemoteException;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import javax.xml.namespace.QName;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
+import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
+import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
+/**
+ * 
+ */
+public class GenePatternGridClientFactoryStub implements GenePatternGridClientFactory {
 
-    public void delete(Query query) {
-        deleteCalled = true;
+    
+    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server)
+            throws ConnectionException {
+        
+        return new PreprocessDatasetMAGEServiceStub();
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
+    private static class PreprocessDatasetMAGEServiceStub implements PreprocessDatasetMAGEServiceI {
+
+        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
+                GetMultipleResourceProperties_Element params) throws RemoteException {
+            return null;
+        }
+
+        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
+            return null;
+        }
+
+        public BioAssay[] performAnalysis(BioAssay[] bioAssay,
+                PreprocessDatasetParameterSet preprocessDatasetParameterSet) throws RemoteException,
+                InvalidParameterException {
+            return bioAssay;
+        }
+
+        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
+                throws RemoteException {
+            return null;
+        }
+        
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
-    }
-    
 }

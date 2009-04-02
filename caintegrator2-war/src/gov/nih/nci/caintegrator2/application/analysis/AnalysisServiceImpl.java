@@ -89,6 +89,8 @@ import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -96,8 +98,10 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -112,6 +116,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private GeneExpressionPlotService gePlotService;
     private QueryManagementService queryManagementService;
     private GenePatternClientFactory genePatternClientFactory;
+    private GenePatternGridRunner genePatternGridRunner;
     
     /**
      * {@inheritDoc}
@@ -143,6 +148,21 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
         jobInfo.setUrl(resultUrl);
         return jobInfo;
+    }
+    
+    /**
+     * Executes preprocessDataset.
+     * @param studySubscription current study subscription.
+     * @param server to connect to grid.
+     * @param parameters for preprocess.
+     * @return GCT file.
+     * @throws ConnectionException if unable to connect to grid.
+     */
+    public File executeGridPreprocessDataset(StudySubscription studySubscription,
+                                             ServerConnectionProfile server, 
+                                             PreprocessDatasetParameters parameters) 
+        throws ConnectionException {
+        return genePatternGridRunner.runPreprocessDataset(studySubscription, server, parameters);
     }
 
     /**
@@ -237,6 +257,20 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public void setGenePatternClientFactory(GenePatternClientFactory genePatternClientFactory) {
         this.genePatternClientFactory = genePatternClientFactory;
+    }
+
+    /**
+     * @return the genePatternGridRunner
+     */
+    public GenePatternGridRunner getGenePatternGridRunner() {
+        return genePatternGridRunner;
+    }
+
+    /**
+     * @param genePatternGridRunner the genePatternGridRunner to set
+     */
+    public void setGenePatternGridRunner(GenePatternGridRunner genePatternGridRunner) {
+        this.genePatternGridRunner = genePatternGridRunner;
     }
 
     

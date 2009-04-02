@@ -83,82 +83,91 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
+import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.mageom.domain.bioassay.BioAssay;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
+import java.rmi.RemoteException;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+/**
+ * Runs the GenePattern grid service PreprocessDataset (MAGE).
+ */
+public class PreprocessDatasetGridRunner {
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
-
-    public void delete(Query query) {
-        deleteCalled = true;
+    private final PreprocessDatasetMAGEServiceI client;
+    private final QueryManagementService queryManagementService;
+    private final MageBioAssayGenerator mbaGenerator;
+    private final FileManager fileManager;
+    
+    /**
+     * Public Constructor.
+     * @param client of grid service.
+     * @param queryManagementService to run queries.
+     * @param mbaGenerator to generae BioAssay objects.
+     * @param fileManager to store gct file.
+     */
+    public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client,
+                                QueryManagementService queryManagementService,
+                                MageBioAssayGenerator mbaGenerator,
+                                FileManager fileManager) {
+        this.client = client;
+        this.queryManagementService = queryManagementService;
+        this.mbaGenerator = mbaGenerator;
+        this.fileManager = fileManager;
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
-
     /**
-     * {@inheritDoc}
+     * Executes the grid service PreprocessDataset.
+     * @param studySubscription for current study.
+     * @param parameters for preprocess dataset.
+     * @return preprocessed GCT file.
+     * @throws ConnectionException if unable to connect to grid service.
      */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
+    public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters) 
+        throws ConnectionException {
+        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, parameters.getClinicalQueries());
+        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
+        GctDataset dataset = new GctDataset(genomicData);
+        if (dataset.getValues().length > 0) {
+            runPreprocessDataset(parameters, dataset);
+        }
+        return GctDatasetFileWriter.writeAsGct(dataset, 
+                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
+                        + parameters.getProcessedGctFilename()).getAbsolutePath());
     }
 
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
+    private void runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
+    throws ConnectionException {
+        try {
+            BioAssay[] processedBioAssay = client.performAnalysis(convertGctDatasetToBioAssay(dataset), 
+                                                                  parameters.getDatasetParameters());
+            dataset.setValues(mbaGenerator.bioAssayArrayToFloat2D(processedBioAssay));
+        } catch (InvalidParameterException e) {
+            throw new IllegalArgumentException("Invalid parameters.", e);
+        } catch (RemoteException e) {
+            throw new ConnectionException("Remote Connection Failed.", e);
+        }
     }
     
+    private BioAssay[] convertGctDatasetToBioAssay(GctDataset dataset) {
+        BioAssay[] bioassay = mbaGenerator.float2DToBioAssayArray(dataset.getValues(), 
+                dataset.getRowReporterNames().toArray(new String[dataset.getRowReporterNames().size()]), 
+                dataset.getColumnSampleNames().toArray(new String[dataset.getColumnSampleNames().size()]));
+        return bioassay;
+    }
+
 }
