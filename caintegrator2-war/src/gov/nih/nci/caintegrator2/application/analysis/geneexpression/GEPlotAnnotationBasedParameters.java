@@ -103,6 +103,7 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     private AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
     private final Collection <AbstractPermissibleValue> selectedValues = new HashSet<AbstractPermissibleValue>();    
     private EntityTypeEnum entityType;
+    private boolean addPatientsNotInQueriesGroup = false;
     private ReporterTypeEnum reporterType;
     
     /**
@@ -134,6 +135,7 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
     public void clear() {
         setSelectedAnnotation(new AnnotationDefinition());
         getSelectedValues().clear();
+        addPatientsNotInQueriesGroup = false;
     }
     
     /**
@@ -183,6 +185,20 @@ public class GEPlotAnnotationBasedParameters extends AbstractGEPlotParameters {
      */
     public void setReporterType(ReporterTypeEnum reporterType) {
         this.reporterType = reporterType;
+    }
+
+    /**
+     * @return the addPatientsNotInQueriesGroup
+     */
+    public boolean isAddPatientsNotInQueriesGroup() {
+        return addPatientsNotInQueriesGroup;
+    }
+
+    /**
+     * @param addPatientsNotInQueriesGroup the addPatientsNotInQueriesGroup to set
+     */
+    public void setAddPatientsNotInQueriesGroup(boolean addPatientsNotInQueriesGroup) {
+        this.addPatientsNotInQueriesGroup = addPatientsNotInQueriesGroup;
     }
 
 }
