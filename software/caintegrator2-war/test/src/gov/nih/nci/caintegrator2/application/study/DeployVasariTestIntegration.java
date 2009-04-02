@@ -227,7 +227,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     protected int getExpectedNumberOfGeneReporters() {
-        return 20886;
+        return 21432;
     }
 
     @Override

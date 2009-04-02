@@ -101,13 +101,13 @@ public class ReporterListTest {
         Gene gene2 = new Gene();
         gene2.setSymbol("BBBB");
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
-        reporter1.setGene(gene1);
+        reporter1.getGenes().add(gene1);
         reporter1.setName("reporter1");
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
-        reporter2.setGene(gene1);
+        reporter2.getGenes().add(gene1);
         reporter2.setName("reporter2");
         GeneExpressionReporter reporter3 = new GeneExpressionReporter();
-        reporter3.setGene(gene2);
+        reporter3.getGenes().add(gene2);
         reporter3.setName("reporter3");
         GeneExpressionReporter reporter4 = new GeneExpressionReporter();
         reporter4.setName("reporter4");

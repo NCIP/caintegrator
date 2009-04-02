@@ -167,7 +167,7 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         Gene gene = new Gene();
         gene.setSymbol("EGFR");
-        reporter.setGene(gene);
+        reporter.getGenes().add(gene);
         row.setReporter(reporter);
         valueCollection.add(value);
         row.setValueCollection(valueCollection);

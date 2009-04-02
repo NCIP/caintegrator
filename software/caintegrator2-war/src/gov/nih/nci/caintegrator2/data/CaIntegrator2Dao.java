@@ -94,8 +94,8 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -212,7 +212,7 @@ public interface CaIntegrator2Dao {
      * @param study restrict the search to the given study.
      * @return the list of matches.
      */
-    Set<GeneExpressionReporter> findGeneExpressionReporters(Set<String> geneSymbols, ReporterTypeEnum reporterType, 
+    Set<AbstractReporter> findReportersForGenes(Set<String> geneSymbols, ReporterTypeEnum reporterType, 
             Study study);
 
     

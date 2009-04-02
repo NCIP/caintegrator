@@ -85,17 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
  * Provides useful methods for working with <code>Platforms</code> and they objects they contain.
@@ -193,20 +192,21 @@ public class PlatformHelper {
     private Map<Gene, Collection<AbstractReporter>> createGeneReporterMap(ReporterTypeEnum type) {
         Map<Gene, Collection<AbstractReporter>> geneToReporterMap = new HashMap<Gene, Collection<AbstractReporter>>();
         for (AbstractReporter reporter : getReporterList(type).getReporters()) {
-            GeneExpressionReporter geneExpressionReporter = (GeneExpressionReporter) reporter;
-            addToGeneToReporterMap(geneExpressionReporter, geneToReporterMap);
+            addToGenesToReporterMap(reporter, geneToReporterMap);
         }
         return geneToReporterMap;
     }
 
-    private void addToGeneToReporterMap(GeneExpressionReporter geneExpressionReporter,
+    private void addToGenesToReporterMap(AbstractReporter reporter,
             Map<Gene, Collection<AbstractReporter>> geneToReporterMap) {
-        Collection<AbstractReporter> reportersForGene = geneToReporterMap.get(geneExpressionReporter.getGene());
-        if (reportersForGene == null) {
-            reportersForGene = new HashSet<AbstractReporter>();
-            geneToReporterMap.put(geneExpressionReporter.getGene(), reportersForGene);
+        for (Gene gene : reporter.getGenes()) {
+            Collection<AbstractReporter> reportersForGene = geneToReporterMap.get(gene);
+            if (reportersForGene == null) {
+                reportersForGene = new HashSet<AbstractReporter>();
+                geneToReporterMap.put(gene, reportersForGene);
+            }
+            reportersForGene.add(reporter);
         }
-        reportersForGene.add(geneExpressionReporter);
     }
 
 }

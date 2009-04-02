@@ -62,8 +62,9 @@ public class ResultSetToGctConverterTest {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporter.setName(reporterName);
         if (geneName != null) {
-            reporter.setGene(new Gene());
-            reporter.getGene().setSymbol(geneName);
+            Gene gene = new Gene();
+            gene.setSymbol(geneName);
+            reporter.getGenes().add(gene);
         }
         row.setReporter(reporter);
         row.setValueCollection(new ArrayList<GenomicDataResultValue>());

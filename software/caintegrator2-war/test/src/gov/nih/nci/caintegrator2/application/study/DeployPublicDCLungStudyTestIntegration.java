@@ -239,7 +239,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected int getExpectedNumberOfGeneReporters() {
-        return 13266;
+        return 13796;
     }
 
     @Override

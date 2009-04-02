@@ -96,6 +96,8 @@ import java.util.Date;
 public class GenePatternAnalysisJob extends AbstractCaIntegrator2Object 
                                     implements PersistedJob, Comparable <GenePatternAnalysisJob> {
 
+    private static final long serialVersionUID = 1L;
+    
     private final transient AnalysisForm analysisForm = new AnalysisForm();
     private String name;
     private GenePatternJobStatusEnum status = GenePatternJobStatusEnum.NOT_SUBMITTED;

@@ -109,21 +109,21 @@ public class GenomicDataResultRowComparatorTest {
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setName("xyz");
         resultRow1.setReporter(reporter1);
-        reporter1.setGene(egfr);
+        reporter1.getGenes().add(egfr);
         
         
         GenomicDataResultRow resultRow2 = new GenomicDataResultRow();
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
         reporter2.setName("abc");
         resultRow2.setReporter(reporter2);
-        reporter2.setGene(egfr);
+        reporter2.getGenes().add(egfr);
         
         
         GenomicDataResultRow resultRow3 = new GenomicDataResultRow();
         GeneExpressionReporter reporter3 = new GeneExpressionReporter();
         reporter3.setName("zzz");
         resultRow3.setReporter(reporter3);
-        reporter3.setGene(brca1);
+        reporter3.getGenes().add(brca1);
         
         List<GenomicDataResultRow> resultRows = new ArrayList<GenomicDataResultRow>();
         resultRows.add(resultRow1);
