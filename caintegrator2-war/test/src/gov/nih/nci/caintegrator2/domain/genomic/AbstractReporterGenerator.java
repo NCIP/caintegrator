@@ -86,50 +86,48 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Set;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 
-public final class ReporterListGenerator extends AbstractTestDataGenerator<ReporterList> {
-
-    public static final ReporterListGenerator INSTANCE = new ReporterListGenerator();
+abstract public class AbstractReporterGenerator<T extends AbstractReporter> extends AbstractTestDataGenerator<T> {
     
-    private ReporterListGenerator() {
+     AbstractReporterGenerator() { 
         super();
     }
-
+    
     @Override
-    public void compareFields(ReporterList original, ReporterList retrieved) {
-        assertEquals(original.getId(), retrieved.getId());
-        AbstractReporterGenerator.compare(original.getReporters(), retrieved.getReporters());
+    public void compareFields(T original, T retrieved) {
+        assertEquals(original.getName(), retrieved.getName());
+        assertEquals(original.getIndex(), retrieved.getIndex());
+        compareCollections(original.getGenes(), retrieved.getGenes(), GeneGenerator.INSTANCE);
     }
 
-
     @Override
-    public ReporterList createPersistentObject() {
-        return new ReporterList();
+    public void setValues(T reporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        reporter.setName(getUniqueString());
+        reporter.getGenes().clear();
+        for (int i = 0; i < 3; i++) {
+            reporter.getGenes().add(GeneGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
+        }
     }
 
-
-    @Override
-    public void setValues(ReporterList reporterList, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        if (reporterList.getReporters() != null) {
-            for (AbstractReporter reporter : reporterList.getReporters()) {
-                reporter.setReporterList(null);
+    public static void compare(List<AbstractReporter> originalReporters, List<AbstractReporter> retreivedReporters) {
+        assertEquals(originalReporters.size(), retreivedReporters.size());
+        for (int i = 0; i < originalReporters.size(); i++) {
+            if (originalReporters.get(i) instanceof GeneExpressionReporter) {
+                assertTrue(retreivedReporters.get(i) instanceof GeneExpressionReporter);
+                GeneExpressionReporterGenerator.INSTANCE.compare((GeneExpressionReporter) originalReporters.get(i), (GeneExpressionReporter) retreivedReporters.get(i));
+            } else if (originalReporters.get(i) instanceof DnaAnalysisReporter) {
+                assertTrue(retreivedReporters.get(i) instanceof DnaAnalysisReporter);
+                DnaAnalysisReporterGenerator.INSTANCE.compare((DnaAnalysisReporter) originalReporters.get(i), (DnaAnalysisReporter) retreivedReporters.get(i));
             }
         }
-        reporterList.getReporters().clear();
-        GeneExpressionReporter reporter = GeneExpressionReporterGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-        reporter.setIndex(0);
-        reporter.setReporterList(reporterList);
-        reporterList.getReporters().add(reporter);
-        DnaAnalysisReporter reporter2 = DnaAnalysisReporterGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-        reporter2.setReporterList(reporterList);
-        reporter2.setIndex(1);
-        reporterList.getReporters().add(reporter2);
     }
 
 }
