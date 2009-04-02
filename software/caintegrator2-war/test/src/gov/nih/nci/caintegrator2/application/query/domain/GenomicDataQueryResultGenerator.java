@@ -107,7 +107,6 @@ public final class GenomicDataQueryResultGenerator extends AbstractTestDataGener
         assertEquals(original.getId(), retrieved.getId());
         QueryGenerator.INSTANCE.compareFields(original.getQuery(), retrieved.getQuery());
         assertEquals(original.getRowCollection().size(), retrieved.getRowCollection().size());
-        assertEquals(original.getRowCollection().size(), 3);
     }
 
 
@@ -125,7 +124,6 @@ public final class GenomicDataQueryResultGenerator extends AbstractTestDataGener
         for (int i = 0; i < 3; i++) {
             queryResult.getRowCollection().add(GenomicDataResultRowGenerator.INSTANCE.createPersistentObject());
         }
-
     }
 
 }
