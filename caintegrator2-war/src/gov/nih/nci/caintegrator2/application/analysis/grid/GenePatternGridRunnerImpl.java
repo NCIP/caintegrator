@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.Preprocess
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
@@ -109,12 +108,14 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     private MageBioAssayGenerator mbaGenerator;
     private FileManager fileManager;
     
+    
     /**
      * {@inheritDoc}
      */
-    public File runPreprocessDataset(StudySubscription studySubscription, ServerConnectionProfile server,
+    public File runPreprocessDataset(StudySubscription studySubscription,
             PreprocessDatasetParameters parameters) throws ConnectionException {
-        PreprocessDatasetMAGEServiceI client = genePatternGridClientFactory.createPreprocessDatasetClient(server);
+        PreprocessDatasetMAGEServiceI client = 
+            genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
         PreprocessDatasetGridRunner runner = 
             new PreprocessDatasetGridRunner(client, queryManagementService, mbaGenerator, fileManager);
         return runner.execute(studySubscription, parameters);

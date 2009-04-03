@@ -88,24 +88,22 @@ package gov.nih.nci.caintegrator2.application.analysis.grid;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
 
 /**
- * 
+ * Entry point to run all GenePattern grid jobs.
  */
 public interface GenePatternGridRunner {
-
+            
     /**
      * Executes the grid service PreprocessDataset.
      * @param studySubscription for current study.
-     * @param server to connect to for grid service.
      * @param parameters for preprocess dataset.
      * @return preprocessed GCT file.
      * @throws ConnectionException if unable to connect to grid service.
      */
-    File runPreprocessDataset(StudySubscription studySubscription, ServerConnectionProfile server,
+    File runPreprocessDataset(StudySubscription studySubscription,
             PreprocessDatasetParameters parameters) throws ConnectionException;
 
 }
