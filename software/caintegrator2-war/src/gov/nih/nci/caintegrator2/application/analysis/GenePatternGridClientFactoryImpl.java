@@ -91,6 +91,8 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
+import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 
@@ -111,6 +113,24 @@ public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFa
         }
         try {
             return new PreprocessDatasetMAGEServiceClient(server.getUrl());
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Malformed URI.", e);
+        } catch (RemoteException e) {
+            throw new ConnectionException("Remote Connection Failed.", e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
+    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
+    throws ConnectionException {
+        if (server == null || server.getUrl() == null) {
+            throw new IllegalArgumentException("Must specify grid URL");
+        }
+        try {
+            return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
         } catch (MalformedURIException e) {
             throw new ConnectionException("Malformed URI.", e);
         } catch (RemoteException e) {

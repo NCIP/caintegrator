@@ -90,6 +90,7 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
@@ -97,11 +98,11 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -151,16 +152,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
     
     /**
-     * Executes preprocessDataset.
-     * @param studySubscription current study subscription.
-     * @param parameters for preprocess.
-     * @return GCT file.
-     * @throws ConnectionException if unable to connect to grid.
+     * {@inheritDoc}
      */
-    public File executeGridPreprocessDataset(StudySubscription studySubscription,
-                                             PreprocessDatasetParameters parameters) 
+    public List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
+                                             PreprocessDatasetParameters preprocessParams,
+                                             ComparativeMarkerSelectionParameters comparativeMarkerParams) 
         throws ConnectionException {
-        return genePatternGridRunner.runPreprocessDataset(studySubscription, parameters);
+        return genePatternGridRunner.runPreprocessComparativeMarkerSelection(
+                            studySubscription, preprocessParams, comparativeMarkerParams);
     }
 
     /**

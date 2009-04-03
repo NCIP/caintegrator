@@ -83,101 +83,109 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.genepattern.cabig.util.DatasetWrapper;
+import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
+import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
+import org.genepattern.io.ParseException;
+import org.genepattern.matrix.Dataset;
+
+import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.mageom.domain.bioassay.BioAssay;
 import gridextensions.ClassMembership;
-import gridextensions.ComparativeMarkerSelectionParameterSet;
 import gridextensions.ComparativeMarkerSelectionResultCollection;
-import gridextensions.MarkerResult;
-import gridextensions.PreprocessDatasetParameterSet;
-
-import java.rmi.RemoteException;
-
-import javax.xml.namespace.QName;
-
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
-import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
-import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 
 /**
- * 
+ * Runs the GenePattern grid service Comparative Marker Selection.
  */
-public class GenePatternGridClientFactoryStub implements GenePatternGridClientFactory {
+public class ComparativeMarkerSelectionGridRunner {
 
+    private final ComparativeMarkerSelMAGESvcI client;
+    private final MageBioAssayGenerator mbaGenerator;
     
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        
-        return new PreprocessDatasetMAGEServiceStub();
+    /**
+     * Public Constructor.
+     * @param client of grid service.
+     * @param mbaGenerator to generate BioAssay objects.
+     */
+    public ComparativeMarkerSelectionGridRunner(ComparativeMarkerSelMAGESvcI client,
+                                MageBioAssayGenerator mbaGenerator) {
+        this.client = client;
+        this.mbaGenerator = mbaGenerator;
     }
     
-    private static class PreprocessDatasetMAGEServiceStub implements PreprocessDatasetMAGEServiceI {
+    /**
+     * Runs comparative marker selection baseed on input parameters, and the gct and cls files.
+     * @param parameters to run comparative marker selection.
+     * @param gctFile gene pattern file containing genomic data.
+     * @param clsFile gene pattern file containing sample classifications.
+     * @return the results from Comparative Marker Selection.
+     * @throws ConnectionException if unable to connect to grid service.
+     */
+    public List<MarkerResult> execute(ComparativeMarkerSelectionParameters parameters, File gctFile, File clsFile) 
+        throws ConnectionException {
+        try {
+            DatasetWrapper datasetWrapper = new DatasetWrapper(gctFile.getAbsolutePath());
+            ClassMembership cls = ComparativeMarkerSelMAGESvcClient.
+                                    createClassMembership(datasetWrapper, clsFile.getAbsolutePath());
+            Dataset dataset = datasetWrapper.getDataset();
+            double[][] values = new double[datasetWrapper.getRowCount()][datasetWrapper.getColumnCount()];
+            for (int i = 0; i < datasetWrapper.getRowCount(); i++) {
+                for (int j = 0; j < datasetWrapper.getColumnCount(); j++) {
+                    values[i][j] = dataset.getValue(i, j);
+                }
+            }
+            String[] rowNames = datasetWrapper.getRowNames();
+            String[] columnNames = datasetWrapper.getColumnNames();
 
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
+            BioAssay[] bioAssay = mbaGenerator.double2DToBioAssayArray(values, rowNames, columnNames);
+            ComparativeMarkerSelectionResultCollection result = 
+                client.performAnalysis(bioAssay, cls, parameters.getDatasetParameters());
+            return retrieveMarkerResultList(result.getMarkerResult());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't read gct file at the path " + gctFile.getAbsolutePath(), e);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Error parsing cls or gct file ", e);
         }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        public BioAssay[] performAnalysis(BioAssay[] bioAssay,
-                PreprocessDatasetParameterSet preprocessDatasetParameterSet) throws RemoteException,
-                InvalidParameterException {
-            return bioAssay;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
     }
 
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        return new ComparativeMarkerSelStub();
+    private List<MarkerResult> retrieveMarkerResultList(gridextensions.MarkerResult[] markerResults) {
+        List<MarkerResult> markerResultList = new ArrayList<MarkerResult>();
+        for (gridextensions.MarkerResult markerResult : markerResults) {
+            markerResultList.add(createCai2MarkerResult(markerResult));
+        }
+        return markerResultList;
     }
-    
-    private static class ComparativeMarkerSelStub implements ComparativeMarkerSelMAGESvcI {
 
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
-        }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        
-        public ComparativeMarkerSelectionResultCollection performAnalysis(BioAssay[] bioAssay,
-                ClassMembership classMembership,
-                ComparativeMarkerSelectionParameterSet comparativeMarkerSelectionParameterSet) throws RemoteException,
-                org.genepattern.cagrid.service.compmarker.mage.stubs.types.InvalidParameterException {
-            ComparativeMarkerSelectionResultCollection result = new ComparativeMarkerSelectionResultCollection();
-            
-            MarkerResult[] results = new MarkerResult[1];
-            results[0] = new MarkerResult();
-            results[0].setDescription("test");
-            result.setMarkerResult(results);
-            return result;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
+    private MarkerResult createCai2MarkerResult(gridextensions.MarkerResult markerResult) {
+        MarkerResult cai2MarkerResult = new MarkerResult();
+        cai2MarkerResult.setBonferroni(markerResult.getBonferroni());
+        cai2MarkerResult.setClass0Mean(markerResult.getClass0Mean());
+        cai2MarkerResult.setClass0Std(markerResult.getClass0Std());
+        cai2MarkerResult.setClass1Mean(markerResult.getClass1Mean());
+        cai2MarkerResult.setClass1Std(markerResult.getClass1Std());
+        cai2MarkerResult.setDescription(markerResult.getDescription());
+        cai2MarkerResult.setFdr(markerResult.getFDR());
+        cai2MarkerResult.setFeature(markerResult.getFeature());
+        cai2MarkerResult.setFeatureP(markerResult.getFeatureP());
+        cai2MarkerResult.setFeaturePHigh(markerResult.getFeaturePHigh());
+        cai2MarkerResult.setFeaturePLow(markerResult.getFeaturePLow());
+        cai2MarkerResult.setFoldChange(markerResult.getFoldChange());
+        cai2MarkerResult.setFwer(markerResult.getFWER());
+        cai2MarkerResult.setK(markerResult.getK());
+        cai2MarkerResult.setMaxT(markerResult.getMaxT());
+        cai2MarkerResult.setQValue(markerResult.getQValue());
+        cai2MarkerResult.setRank(markerResult.getRank());
+        cai2MarkerResult.setScore(markerResult.getScore());
+        return cai2MarkerResult;
     }
 
 }

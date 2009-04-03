@@ -86,16 +86,23 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryStub;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -110,6 +117,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -122,8 +131,9 @@ import au.com.bytecode.opencsv.CSVReader;
 public class GenePatternGridRunnerImplTest {
     
     private GenePatternGridRunnerImpl genePatternGridRunner;
-    private QueryManagementServiceStub queryManagementServiceStub;
+    private QueryManagementServiceGenePatternStub queryManagementServiceStub;
     private GenePatternGridClientFactoryStub genePatternGridClientFactoryStub;
+    private FileManagerStub fileManager;
 
     /**
      * @throws java.lang.Exception
@@ -131,32 +141,78 @@ public class GenePatternGridRunnerImplTest {
     @Before
     public void setUp() throws Exception {
         genePatternGridRunner = new GenePatternGridRunnerImpl();
-        queryManagementServiceStub = new QueryManagementServiceStub();
+        queryManagementServiceStub = new QueryManagementServiceGenePatternStub();
         genePatternGridClientFactoryStub = new GenePatternGridClientFactoryStub();
-        genePatternGridRunner.setFileManager(new FileManagerStub());
+        fileManager = new FileManagerStub();
+        genePatternGridRunner.setFileManager(fileManager);
         genePatternGridRunner.setMbaGenerator(new MageBioAssayGeneratorImpl());
         genePatternGridRunner.setQueryManagementService(queryManagementServiceStub);
         genePatternGridRunner.setGenePatternGridClientFactory(genePatternGridClientFactoryStub);
         queryManagementServiceStub.setExpectedGenomicResult(createTestResult());
     }
-
-    @Test
-    public void testRunPreprocessDataset() throws ConnectionException, IOException {
+    
+    private StudySubscription setupStudySubscription() {
         StudyHelper studyHelper = new StudyHelper();
         StudySubscription studySubscription = studyHelper.populateAndRetrieveStudy();
         UserWorkspace userWorkspace = new UserWorkspace();
         userWorkspace.setUsername("testUser");
         studySubscription.setUserWorkspace(userWorkspace);
+        return studySubscription;
+    }
+
+    @Test
+    public void testRunPreprocessDataset() throws ConnectionException, IOException {
+        StudySubscription studySubscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
         PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
         parameters.setServer(server);
         parameters.setProcessedGctFilename("testFile.gct");
         File gctFile = genePatternGridRunner.runPreprocessDataset(studySubscription, parameters);
+//        gctFile.deleteOnExit();
+        checkGctFile(gctFile);
+    }
+
+
+    @Test
+    public void testRunPreprocessComparativeMarkerSelection() throws ConnectionException, IOException {
+        StudySubscription studySubscription = setupStudySubscription();
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        Query query1 = new Query();
+        query1.setName("query1");
+        query1.setCompoundCriterion(new CompoundCriterion());
+        Query query2 = new Query();
+        query2.setName("query2");
+        query2.setCompoundCriterion(new CompoundCriterion());
+        PreprocessDatasetParameters preprocessParams = new PreprocessDatasetParameters();
+        preprocessParams.setServer(server);
+        preprocessParams.setProcessedGctFilename("testFile.gct");
+        preprocessParams.getClinicalQueries().add(query1);
+        preprocessParams.getClinicalQueries().add(query2);
+        ComparativeMarkerSelectionParameters comparativeMarkerParams = new ComparativeMarkerSelectionParameters();
+        comparativeMarkerParams.setServer(server);
+        comparativeMarkerParams.setClassificationFileName("testFile.cls");
+        comparativeMarkerParams.getClinicalQueries().addAll(preprocessParams.getClinicalQueries());
+        List<MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(studySubscription, preprocessParams, comparativeMarkerParams);
+        assertEquals("test", results.get(0).getDescription());
+        File gctFile = new File(fileManager.getUserDirectory(null) + File.separator 
+                + preprocessParams.getProcessedGctFilename());
+        checkGctFile(gctFile);
         gctFile.deleteOnExit();
-        checkFile(gctFile);
+        File clsFile = new File(fileManager.getUserDirectory(null) + File.separator 
+                + comparativeMarkerParams.getClassificationFileName());
+        clsFile.deleteOnExit();
+        checkClsFile(clsFile);
     }
     
-    private void checkFile(File gctFile) throws IOException {
+    private void checkClsFile(File clsFile) throws IOException {
+        assertTrue(clsFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(clsFile), ' ');
+        checkLine(reader.readNext(), "3", "2", "1");
+        checkLine(reader.readNext(), "#", "query1", "query2");
+        checkLine(reader.readNext(), "0", "0", "1");
+    }
+    
+    private void checkGctFile(File gctFile) throws IOException {
         assertTrue(gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");
@@ -208,6 +264,37 @@ public class GenePatternGridRunnerImplTest {
         column.getSampleAcquisition().setSample(new Sample());
         column.getSampleAcquisition().getSample().setName(sampleName);
         result.getColumnCollection().add(column);
+    }
+    
+    private static class QueryManagementServiceGenePatternStub extends QueryManagementServiceStub {
+        
+        private static Long counter = 0l;
+        @Override
+        public QueryResult execute(Query query) {
+            return result(counter++, ++counter);
+        }
+        
+        private QueryResult result(Long id1, Long id2) {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setRowCollection(new HashSet<ResultRow>());
+            ResultRow row1 = new ResultRow();
+            SampleAcquisition sampleAcquisition = new SampleAcquisition();
+            Sample sample = new Sample();
+            sample.setId(id1);
+            sampleAcquisition.setSample(sample);
+            row1.setSampleAcquisition(sampleAcquisition);
+            
+            ResultRow row2 = new ResultRow();
+            SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+            Sample sample2 = new Sample();
+            sample2.setId(id2);
+            sampleAcquisition2.setSample(sample2);
+            row2.setSampleAcquisition(sampleAcquisition2);
+            
+            queryResult.getRowCollection().add(row1);
+            queryResult.getRowCollection().add(row2);
+            return queryResult;
+        }
     }
 
 }

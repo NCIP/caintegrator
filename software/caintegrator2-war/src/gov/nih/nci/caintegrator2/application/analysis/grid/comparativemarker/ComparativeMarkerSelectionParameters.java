@@ -83,101 +83,92 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
-import gridextensions.ClassMembership;
 import gridextensions.ComparativeMarkerSelectionParameterSet;
-import gridextensions.ComparativeMarkerSelectionResultCollection;
-import gridextensions.MarkerResult;
-import gridextensions.PreprocessDatasetParameterSet;
 
-import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
-import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
-import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
+import valuedomain.ComparativeMarkerSelectionPhenotypeTest;
+import valuedomain.ComparativeMarkerSelectionTestDirection;
+import valuedomain.ComparativeMarkerSelectionTestStatistic;
 
 /**
  * 
  */
-public class GenePatternGridClientFactoryStub implements GenePatternGridClientFactory {
-
+public class ComparativeMarkerSelectionParameters {
     
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        
-        return new PreprocessDatasetMAGEServiceStub();
-    }
+    private static final Integer DEFAULT_NUMBER_OF_PERMUTATIONS = 1000;
+    private static final Integer DEFAULT_RANDOM_SEED = 779948241;
     
-    private static class PreprocessDatasetMAGEServiceStub implements PreprocessDatasetMAGEServiceI {
-
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
-        }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        public BioAssay[] performAnalysis(BioAssay[] bioAssay,
-                PreprocessDatasetParameterSet preprocessDatasetParameterSet) throws RemoteException,
-                InvalidParameterException {
-            return bioAssay;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
-    }
-
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        return new ComparativeMarkerSelStub();
+    private final List<Query> clinicalQueries = new ArrayList<Query>();
+    private final ComparativeMarkerSelectionParameterSet datasetParameters;
+    private ServerConnectionProfile server;
+    private String classificationFileName;
+    
+    /**
+     * Constructor.
+     */
+    public ComparativeMarkerSelectionParameters() {
+        datasetParameters = new ComparativeMarkerSelectionParameterSet();
+        fillDefaultDatasetParameters();
     }
     
-    private static class ComparativeMarkerSelStub implements ComparativeMarkerSelMAGESvcI {
-
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
-        }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        
-        public ComparativeMarkerSelectionResultCollection performAnalysis(BioAssay[] bioAssay,
-                ClassMembership classMembership,
-                ComparativeMarkerSelectionParameterSet comparativeMarkerSelectionParameterSet) throws RemoteException,
-                org.genepattern.cagrid.service.compmarker.mage.stubs.types.InvalidParameterException {
-            ComparativeMarkerSelectionResultCollection result = new ComparativeMarkerSelectionResultCollection();
-            
-            MarkerResult[] results = new MarkerResult[1];
-            results[0] = new MarkerResult();
-            results[0].setDescription("test");
-            result.setMarkerResult(results);
-            return result;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
+    private void fillDefaultDatasetParameters() {
+        datasetParameters.setTestDirection(ComparativeMarkerSelectionTestDirection.value1);
+        datasetParameters.setTestStatistic(ComparativeMarkerSelectionTestStatistic.value5);
+        datasetParameters.setMinStd(1f);
+        datasetParameters.setNumberOfPermutations(DEFAULT_NUMBER_OF_PERMUTATIONS);
+        datasetParameters.setComplete(false);
+        datasetParameters.setBalanced(false);
+        datasetParameters.setRandomSeed(DEFAULT_RANDOM_SEED);
+        datasetParameters.setSmoothPvalues(false);
+        datasetParameters.setPhenotypeTest(ComparativeMarkerSelectionPhenotypeTest.value2);
     }
+
+    /**
+     * @return the clinicalQueries
+     */
+    public List<Query> getClinicalQueries() {
+        return clinicalQueries;
+    }
+    /**
+     * @return the datasetParameterSet
+     */
+    public ComparativeMarkerSelectionParameterSet getDatasetParameters() {
+        return datasetParameters;
+    }
+
+    /**
+     * @return the classificationFileName
+     */
+    public String getClassificationFileName() {
+        return classificationFileName;
+    }
+
+    /**
+     * @param classificationFileName the classificationFileName to set
+     */
+    public void setClassificationFileName(String classificationFileName) {
+        this.classificationFileName = classificationFileName;
+    }
+
+    /**
+     * @return the server
+     */
+    public ServerConnectionProfile getServer() {
+        return server;
+    }
+
+    /**
+     * @param server the server to set
+     */
+    public void setServer(ServerConnectionProfile server) {
+        this.server = server;
+    }
+    
 
 }
