@@ -96,13 +96,19 @@ import java.io.IOException;
  * Utility class that writes out a GenePattern .cls format file based on a 
  * <code>SampleClassificationParameterValue</code>.
  */
-final class ClassificationsToClsConverter {
+public final class ClassificationsToClsConverter {
     
     private ClassificationsToClsConverter() {
         super();
     }
 
-    static void writeAsCls(SampleClassificationParameterValue parameterValue, String clsFilePath) {
+    /**
+     * Writes the sample classifications to the specified file path.
+     * @param parameterValue sample classification values to write.
+     * @param clsFilePath file to write to.
+     * @return cls file.
+     */
+    public static File writeAsCls(SampleClassificationParameterValue parameterValue, String clsFilePath) {
         File clsFile = new File(clsFilePath);
         try {
             FileWriter writer = new FileWriter(clsFile);
@@ -111,6 +117,7 @@ final class ClassificationsToClsConverter {
             writeClassifications(writer, parameterValue);
             writer.flush();
             writer.close();
+            return clsFile;
         } catch (IOException e) {
             throw new IllegalArgumentException("Couldn't write file at the path " + clsFile, e);
         }

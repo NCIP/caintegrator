@@ -89,8 +89,8 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gridextensions.PreprocessDatasetParameterSet;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import valuedomain.PreprocessDatasetPreprocessingFlag;
 
@@ -106,7 +106,7 @@ public class PreprocessDatasetParameters {
     private static final Float DEFAULT_PROBABILITY_THRESHOLD = 1f;
     
     private final PreprocessDatasetParameterSet datasetParameters;
-    private final Set<Query> clinicalQueries = new HashSet<Query>();
+    private final List<Query> clinicalQueries = new ArrayList<Query>();
     private ServerConnectionProfile server;
     private String processedGctFilename;
     
@@ -135,7 +135,7 @@ public class PreprocessDatasetParameters {
     /**
      * @return the clinicalQueries
      */
-    public Set<Query> getClinicalQueries() {
+    public List<Query> getClinicalQueries() {
         return clinicalQueries;
     }
 

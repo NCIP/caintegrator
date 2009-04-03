@@ -86,16 +86,34 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import gov.nih.nci.caintegrator2.application.analysis.ClassificationsToClsConverter;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactory;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 
 /**
@@ -112,14 +130,74 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     /**
      * {@inheritDoc}
      */
+    public List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
+            PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
+            throws ConnectionException {
+        // Need to validate that the clinical queries in both params are the same.
+        File gctFile = runPreprocessDataset(studySubscription, preprocessParams);
+        File clsFile = createClassificationFile(studySubscription, comparativeMarkerParams.getClinicalQueries(), 
+                        comparativeMarkerParams.getClassificationFileName());
+        return runComparativeMarkerSelection(comparativeMarkerParams, gctFile, clsFile);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public File runPreprocessDataset(StudySubscription studySubscription,
             PreprocessDatasetParameters parameters) throws ConnectionException {
         PreprocessDatasetMAGEServiceI client = 
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
         PreprocessDatasetGridRunner runner = 
-            new PreprocessDatasetGridRunner(client, queryManagementService, mbaGenerator, fileManager);
-        return runner.execute(studySubscription, parameters);
+            new PreprocessDatasetGridRunner(client, mbaGenerator, fileManager);
+        Set<Query> querySet = new HashSet<Query>();
+        querySet.addAll(parameters.getClinicalQueries());
+        GctDataset gctDataset = retrieveGctDataset(studySubscription, querySet);
+        return runner.execute(studySubscription, parameters, gctDataset);
     }
+    
+    private List<MarkerResult> runComparativeMarkerSelection(ComparativeMarkerSelectionParameters parameters, 
+            File gctFile, File clsFile) 
+            throws ConnectionException {
+        ComparativeMarkerSelMAGESvcI client = 
+            genePatternGridClientFactory.createComparativeMarkerSelClient(parameters.getServer());
+        ComparativeMarkerSelectionGridRunner runner = 
+            new ComparativeMarkerSelectionGridRunner(client, mbaGenerator);
+        return runner.execute(parameters, gctFile, clsFile);
+    }
+    
+    private GctDataset retrieveGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries) {
+        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
+        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
+        return new GctDataset(genomicData);
+    }
+    
+    private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
+            String classificationFileName) {
+        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
+        Set<Long> usedSampleIds = new HashSet<Long>();
+        for (Query query : clinicalQueries) {
+            ResultColumn sampleColumn = new ResultColumn();
+            sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
+            sampleColumn.setColumnIndex(query.getColumnCollection().size());
+            query.getColumnCollection().add(sampleColumn);
+            String classificationName = query.getName();
+            QueryResult result = queryManagementService.execute(query);
+            for (ResultRow row : result.getRowCollection()) {
+                if (row.getSampleAcquisition() != null) {
+                    Sample sample = row.getSampleAcquisition().getSample();
+                    if (!usedSampleIds.contains(sample.getId())) {
+                        sampleClassifications.classify(sample, classificationName);
+                        usedSampleIds.add(sample.getId());
+                    }
+                }
+            }
+        }
+        return ClassificationsToClsConverter.writeAsCls(sampleClassifications, 
+                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
+                        + classificationFileName).getAbsolutePath());
+    }
+    
+    
     
 
     /**
