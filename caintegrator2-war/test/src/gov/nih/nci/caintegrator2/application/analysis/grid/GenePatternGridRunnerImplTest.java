@@ -168,7 +168,7 @@ public class GenePatternGridRunnerImplTest {
         parameters.setServer(server);
         parameters.setProcessedGctFilename("testFile.gct");
         File gctFile = genePatternGridRunner.runPreprocessDataset(studySubscription, parameters);
-//        gctFile.deleteOnExit();
+        gctFile.deleteOnExit();
         checkGctFile(gctFile);
     }
 
