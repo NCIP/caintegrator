@@ -86,23 +86,27 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import static org.junit.Assert.assertArrayEquals;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -111,18 +115,20 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 import au.com.bytecode.opencsv.CSVReader;
 
 
-/**
- * 
- */
 public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private static final String PREPROCESS_DATASET_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
+    private static final String COMPARATIVE_MARKER_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
+    
     private GenePatternGridRunnerImpl genePatternGridRunner;
+    private FileManager fileManager;
     private CaIntegrator2DaoImpl dao;
+    private StudyHelper studyHelper;
     
     public void setupContext() {
         ApplicationContext context = new ClassPathXmlApplicationContext("genepattern-test-config.xml", GenePatternGridRunnerImplTestIntegration.class);
         genePatternGridRunner = (GenePatternGridRunnerImpl) context.getBean("genePatternGridRunnerIntegration");
+        fileManager = (FileManager) context.getBean("fileManager");
         ArrayDataServiceStub arrayDataService = new ArrayDataServiceStub(); 
         QueryManagementServiceImpl queryManagementServiceImpl = new QueryManagementServiceImpl();
         queryManagementServiceImpl.setDao(dao);
@@ -131,48 +137,76 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         genePatternGridRunner.setQueryManagementService(queryManagementServiceImpl);
         
     }
-    
-    protected String[] getConfigLocations() {
-        return new String[] {"classpath*:/**/genepattern-test-config.xml"};
-    }
-    
-    public void testRunPreprocessDataset() throws ConnectionException, IOException {
-        setupContext();
-        StudyHelper studyHelper = new StudyHelper();
+
+    private StudySubscription setupStudySubscription() {
+        studyHelper = new StudyHelper();
         StudySubscription subscription = studyHelper.populateAndRetrieveStudy();
         UserWorkspace userWorkspace = new UserWorkspace();
         userWorkspace.setUsername("testUser");
         subscription.setUserWorkspace(userWorkspace);
         assertNull(subscription.getId());
-        dao.save(subscription.getStudy());
         dao.save(subscription);
         assertNotNull(subscription.getId());
+        return subscription;
+    }
+    
+    protected String[] getConfigLocations() {
+        return new String[] {"classpath*:/**/genepattern-test-config.xml"};
+    }
+    
+    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException {
+        setupContext();
+        StudySubscription subscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl(PREPROCESS_DATASET_URL);
-        PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
-        parameters.setProcessedGctFilename("test.gct");
-        parameters.getDatasetParameters().setLogBaseTwo(true);
-        parameters.setServer(server);
-        File file = genePatternGridRunner.runPreprocessDataset(subscription, parameters);
-        checkFile(file, 7, 7, 0.2986583f);
-        file.deleteOnExit();
+        PreprocessDatasetParameters preprocessParameters = new PreprocessDatasetParameters();
+        preprocessParameters.setServer(server);
         
-        // Now narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
+        // Narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
         // a 6th sample, so combined it should produce 6 sample rows.
         Query query1 = studyHelper.createQuery(studyHelper.createCompoundCriterion4(), 
                                             new HashSet<ResultColumn>(), subscription);
         Query query2 = studyHelper.createQuery(studyHelper.createCompoundCriterion5(), 
                                             new HashSet<ResultColumn>(), subscription);
-        parameters.setProcessedGctFilename("test2.gct");
-        parameters.getDatasetParameters().setLogBaseTwo(false);
-        parameters.getClinicalQueries().add(query1);
-        parameters.getClinicalQueries().add(query2);
-        File file2 = genePatternGridRunner.runPreprocessDataset(subscription, parameters);
-        checkFile(file2, 6, 6, 1.23f);
-        file2.deleteOnExit();
+        preprocessParameters.setProcessedGctFilename("test2.gct");
+        preprocessParameters.getDatasetParameters().setLogBaseTwo(true);
+        // For some reason, the only way this will work is if I name my queries (classes) ALL and AML.
+        // I have a forum submittal on this here:
+        // https://cabig-kc.nci.nih.gov/Molecular/forums/viewtopic.php?f=14&t=231&sid=1409d072fac7fe1661c0e5ffdf7ae0a0
+        preprocessParameters.getClinicalQueries().add(query1);
+        query1.setName("ALL");
+        preprocessParameters.getClinicalQueries().add(query2);
+        query2.setName("AML");
+        ComparativeMarkerSelectionParameters comparativeMarkerParameters = new ComparativeMarkerSelectionParameters();
+        comparativeMarkerParameters.setClassificationFileName("test2.cls");
+        comparativeMarkerParameters.getClinicalQueries().addAll(preprocessParameters.getClinicalQueries());
+        ServerConnectionProfile comparativeMarkerServer = new ServerConnectionProfile();
+        comparativeMarkerServer.setUrl(COMPARATIVE_MARKER_URL);
+        comparativeMarkerParameters.setServer(comparativeMarkerServer);
+
+        List <MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(subscription, preprocessParameters, comparativeMarkerParameters);
+        assertEquals(6, results.size());
+        File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
+                + preprocessParameters.getProcessedGctFilename());
+        checkGctFile(gctFile, 6, 6, 0.2986583f);
+        gctFile.deleteOnExit();
+        
+        File clsFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
+                + comparativeMarkerParameters.getClassificationFileName());
+        clsFile.deleteOnExit();
+        checkClsFile(clsFile);
     }
+
+    private void checkClsFile(File clsFile) throws IOException {
+        assertTrue(clsFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(clsFile), ' ');
+        checkLine(reader.readNext(), "6", "2", "1");
+        checkLine(reader.readNext(), "#", "ALL", "AML");
+        checkLine(reader.readNext(), "0", "0", "0", "0", "0", "1");
+    }
+
     
-    private void checkFile(File gctFile, int numSamples, int numReporters, float value) throws IOException {
+    private void checkGctFile(File gctFile, int numSamples, int numReporters, float value) throws IOException {
         assertTrue(gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");

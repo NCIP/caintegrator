@@ -83,101 +83,250 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.domain.analysis;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
-import gridextensions.ClassMembership;
-import gridextensions.ComparativeMarkerSelectionParameterSet;
-import gridextensions.ComparativeMarkerSelectionResultCollection;
-import gridextensions.MarkerResult;
-import gridextensions.PreprocessDatasetParameterSet;
-
-import java.rmi.RemoteException;
-
-import javax.xml.namespace.QName;
-
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
-import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
-import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 /**
  * 
  */
-public class GenePatternGridClientFactoryStub implements GenePatternGridClientFactory {
-
+@SuppressWarnings("PMD.TooManyFields") // This is a wrapped object from genepattern.
+public class MarkerResult extends AbstractCaIntegrator2Object {
+    private static final long serialVersionUID = 1L;
     
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        
-        return new PreprocessDatasetMAGEServiceStub();
+    private Integer rank;
+    private String feature;
+    private String description;
+    private Double score;
+    private Double featureP;
+    private Double featurePLow;
+    private Double featurePHigh;
+    private Double fdr;
+    private Double qValue;
+    private Double bonferroni;
+    private Double maxT;
+    private Double fwer;
+    private Double foldChange;
+    private Double class0Mean;
+    private Double class0Std;
+    private Double class1Mean;
+    private Double class1Std;
+    private Double k;
+    /**
+     * @return the rank
+     */
+    public Integer getRank() {
+        return rank;
+    }
+    /**
+     * @param rank the rank to set
+     */
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+    /**
+     * @return the feature
+     */
+    public String getFeature() {
+        return feature;
+    }
+    /**
+     * @param feature the feature to set
+     */
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    /**
+     * @return the score
+     */
+    public Double getScore() {
+        return score;
+    }
+    /**
+     * @param score the score to set
+     */
+    public void setScore(Double score) {
+        this.score = score;
+    }
+    /**
+     * @return the featureP
+     */
+    public Double getFeatureP() {
+        return featureP;
+    }
+    /**
+     * @param featureP the featureP to set
+     */
+    public void setFeatureP(Double featureP) {
+        this.featureP = featureP;
+    }
+    /**
+     * @return the featurePLow
+     */
+    public Double getFeaturePLow() {
+        return featurePLow;
+    }
+    /**
+     * @param featurePLow the featurePLow to set
+     */
+    public void setFeaturePLow(Double featurePLow) {
+        this.featurePLow = featurePLow;
+    }
+    /**
+     * @return the featurePHigh
+     */
+    public Double getFeaturePHigh() {
+        return featurePHigh;
+    }
+    /**
+     * @param featurePHigh the featurePHigh to set
+     */
+    public void setFeaturePHigh(Double featurePHigh) {
+        this.featurePHigh = featurePHigh;
+    }
+    /**
+     * @return the fdr
+     */
+    public Double getFdr() {
+        return fdr;
+    }
+    /**
+     * @param fdr the fdr to set
+     */
+    public void setFdr(Double fdr) {
+        this.fdr = fdr;
+    }
+    /**
+     * @return the qValue
+     */
+    public Double getQValue() {
+        return qValue;
+    }
+    /**
+     * @param value the qValue to set
+     */
+    public void setQValue(Double value) {
+        qValue = value;
+    }
+    /**
+     * @return the bonferroni
+     */
+    public Double getBonferroni() {
+        return bonferroni;
+    }
+    /**
+     * @param bonferroni the bonferroni to set
+     */
+    public void setBonferroni(Double bonferroni) {
+        this.bonferroni = bonferroni;
+    }
+    /**
+     * @return the maxT
+     */
+    public Double getMaxT() {
+        return maxT;
+    }
+    /**
+     * @param maxT the maxT to set
+     */
+    public void setMaxT(Double maxT) {
+        this.maxT = maxT;
+    }
+    /**
+     * @return the fwer
+     */
+    public Double getFwer() {
+        return fwer;
+    }
+    /**
+     * @param fwer the fwer to set
+     */
+    public void setFwer(Double fwer) {
+        this.fwer = fwer;
+    }
+    /**
+     * @return the foldChange
+     */
+    public Double getFoldChange() {
+        return foldChange;
+    }
+    /**
+     * @param foldChange the foldChange to set
+     */
+    public void setFoldChange(Double foldChange) {
+        this.foldChange = foldChange;
+    }
+    /**
+     * @return the class0Mean
+     */
+    public Double getClass0Mean() {
+        return class0Mean;
+    }
+    /**
+     * @param class0Mean the class0Mean to set
+     */
+    public void setClass0Mean(Double class0Mean) {
+        this.class0Mean = class0Mean;
+    }
+    /**
+     * @return the class0Std
+     */
+    public Double getClass0Std() {
+        return class0Std;
+    }
+    /**
+     * @param class0Std the class0Std to set
+     */
+    public void setClass0Std(Double class0Std) {
+        this.class0Std = class0Std;
+    }
+    /**
+     * @return the class1Mean
+     */
+    public Double getClass1Mean() {
+        return class1Mean;
+    }
+    /**
+     * @param class1Mean the class1Mean to set
+     */
+    public void setClass1Mean(Double class1Mean) {
+        this.class1Mean = class1Mean;
+    }
+    /**
+     * @return the class1Std
+     */
+    public Double getClass1Std() {
+        return class1Std;
+    }
+    /**
+     * @param class1Std the class1Std to set
+     */
+    public void setClass1Std(Double class1Std) {
+        this.class1Std = class1Std;
+    }
+    /**
+     * @return the k
+     */
+    public Double getK() {
+        return k;
+    }
+    /**
+     * @param k the k to set
+     */
+    public void setK(Double k) {
+        this.k = k;
     }
     
-    private static class PreprocessDatasetMAGEServiceStub implements PreprocessDatasetMAGEServiceI {
-
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
-        }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        public BioAssay[] performAnalysis(BioAssay[] bioAssay,
-                PreprocessDatasetParameterSet preprocessDatasetParameterSet) throws RemoteException,
-                InvalidParameterException {
-            return bioAssay;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
-    }
-
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server)
-            throws ConnectionException {
-        return new ComparativeMarkerSelStub();
-    }
-    
-    private static class ComparativeMarkerSelStub implements ComparativeMarkerSelMAGESvcI {
-
-        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
-                GetMultipleResourceProperties_Element params) throws RemoteException {
-            return null;
-        }
-
-        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
-            return null;
-        }
-
-        
-        public ComparativeMarkerSelectionResultCollection performAnalysis(BioAssay[] bioAssay,
-                ClassMembership classMembership,
-                ComparativeMarkerSelectionParameterSet comparativeMarkerSelectionParameterSet) throws RemoteException,
-                org.genepattern.cagrid.service.compmarker.mage.stubs.types.InvalidParameterException {
-            ComparativeMarkerSelectionResultCollection result = new ComparativeMarkerSelectionResultCollection();
-            
-            MarkerResult[] results = new MarkerResult[1];
-            results[0] = new MarkerResult();
-            results[0].setDescription("test");
-            result.setMarkerResult(results);
-            return result;
-        }
-
-        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
-                throws RemoteException {
-            return null;
-        }
-        
-    }
-
 }

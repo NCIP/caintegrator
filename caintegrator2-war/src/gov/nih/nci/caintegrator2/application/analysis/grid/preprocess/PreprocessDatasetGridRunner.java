@@ -85,23 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
-import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
-import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
-import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
-
 import java.io.File;
 import java.rmi.RemoteException;
 
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
+
+import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.mageom.domain.bioassay.BioAssay;
 
 /**
  * Runs the GenePattern grid service PreprocessDataset (MAGE).
@@ -109,23 +105,19 @@ import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.Invalid
 public class PreprocessDatasetGridRunner {
 
     private final PreprocessDatasetMAGEServiceI client;
-    private final QueryManagementService queryManagementService;
     private final MageBioAssayGenerator mbaGenerator;
     private final FileManager fileManager;
     
     /**
      * Public Constructor.
      * @param client of grid service.
-     * @param queryManagementService to run queries.
      * @param mbaGenerator to generae BioAssay objects.
      * @param fileManager to store gct file.
      */
     public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client,
-                                QueryManagementService queryManagementService,
                                 MageBioAssayGenerator mbaGenerator,
                                 FileManager fileManager) {
         this.client = client;
-        this.queryManagementService = queryManagementService;
         this.mbaGenerator = mbaGenerator;
         this.fileManager = fileManager;
     }
@@ -134,14 +126,14 @@ public class PreprocessDatasetGridRunner {
      * Executes the grid service PreprocessDataset.
      * @param studySubscription for current study.
      * @param parameters for preprocess dataset.
+     * @param dataset the GctDataset to run preprocess on.
      * @return preprocessed GCT file.
      * @throws ConnectionException if unable to connect to grid service.
      */
-    public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters) 
+    public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters, 
+            GctDataset dataset) 
         throws ConnectionException {
-        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, parameters.getClinicalQueries());
-        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
-        GctDataset dataset = new GctDataset(genomicData);
+        
         if (dataset.getValues().length > 0) {
             runPreprocessDataset(parameters, dataset);
         }

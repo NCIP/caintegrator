@@ -85,16 +85,32 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Entry point to run all GenePattern grid jobs.
  */
 public interface GenePatternGridRunner {
+
+    /**
+     * Runs the GenePattern Grid Services PreprocessDataset followed by ComparativeMarkerSelection on the 
+     * preprocessed data and returns the Marker Results.
+     * @param studySubscription for current study.
+     * @param preprocessParams for preprocess dataset.
+     * @param comparativeMarkerParams for comparative marker selection.
+     * @return MarkerResults of the processed dataset.
+     * @throws ConnectionException if unable to connect to grid services.
+     */
+    List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
+            PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
+            throws ConnectionException;
             
     /**
      * Executes the grid service PreprocessDataset.
