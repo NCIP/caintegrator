@@ -153,16 +153,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * Executes preprocessDataset.
      * @param studySubscription current study subscription.
-     * @param server to connect to grid.
      * @param parameters for preprocess.
      * @return GCT file.
      * @throws ConnectionException if unable to connect to grid.
      */
     public File executeGridPreprocessDataset(StudySubscription studySubscription,
-                                             ServerConnectionProfile server, 
                                              PreprocessDatasetParameters parameters) 
         throws ConnectionException {
-        return genePatternGridRunner.runPreprocessDataset(studySubscription, server, parameters);
+        return genePatternGridRunner.runPreprocessDataset(studySubscription, parameters);
     }
 
     /**

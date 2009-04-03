@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gridextensions.PreprocessDatasetParameterSet;
 
 import java.util.HashSet;
@@ -106,6 +107,7 @@ public class PreprocessDatasetParameters {
     
     private final PreprocessDatasetParameterSet datasetParameters;
     private final Set<Query> clinicalQueries = new HashSet<Query>();
+    private ServerConnectionProfile server;
     private String processedGctFilename;
     
     /**
@@ -156,6 +158,20 @@ public class PreprocessDatasetParameters {
      */
     public void setProcessedGctFilename(String processedGctFilename) {
         this.processedGctFilename = processedGctFilename;
+    }
+
+    /**
+     * @return the server
+     */
+    public ServerConnectionProfile getServer() {
+        return server;
+    }
+
+    /**
+     * @param server the server to set
+     */
+    public void setServer(ServerConnectionProfile server) {
+        this.server = server;
     }
     
 
