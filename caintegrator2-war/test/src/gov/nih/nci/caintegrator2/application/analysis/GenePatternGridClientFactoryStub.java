@@ -94,6 +94,7 @@ import java.rmi.RemoteException;
 
 import javax.xml.namespace.QName;
 
+import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
@@ -136,6 +137,12 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
             return null;
         }
         
+    }
+
+    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server)
+            throws ConnectionException {
+
+        return null;
     }
 
 }

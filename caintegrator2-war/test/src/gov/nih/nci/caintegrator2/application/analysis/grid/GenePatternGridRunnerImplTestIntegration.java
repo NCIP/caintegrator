@@ -152,7 +152,8 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
         parameters.setProcessedGctFilename("test.gct");
         parameters.getDatasetParameters().setLogBaseTwo(true);
-        File file = genePatternGridRunner.runPreprocessDataset(subscription, server, parameters);
+        parameters.setServer(server);
+        File file = genePatternGridRunner.runPreprocessDataset(subscription, parameters);
         checkFile(file, 7, 7, 0.2986583f);
         file.deleteOnExit();
         
@@ -166,7 +167,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         parameters.getDatasetParameters().setLogBaseTwo(false);
         parameters.getClinicalQueries().add(query1);
         parameters.getClinicalQueries().add(query2);
-        File file2 = genePatternGridRunner.runPreprocessDataset(subscription, server, parameters);
+        File file2 = genePatternGridRunner.runPreprocessDataset(subscription, parameters);
         checkFile(file2, 6, 6, 1.23f);
         file2.deleteOnExit();
     }
