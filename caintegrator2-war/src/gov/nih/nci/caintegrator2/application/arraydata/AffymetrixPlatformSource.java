@@ -86,6 +86,13 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Used to load Affymetrix array designs.
@@ -104,10 +111,37 @@ public class AffymetrixPlatformSource extends AbstractPlatformSource {
     }
 
     @Override
-    AbstractPlatformLoader getLoader() {
-        return new AffymetrixPlatformLoader(this);
+    AbstractPlatformLoader getLoader() throws PlatformLoadingException {
+        PlatformTypeEnum type = getPlatformType();
+        switch (type) {
+        case AFFYMETRIX_DNA_ANALYSIS:
+            return new AffymetrixDnaAnalysisPlatformLoader(this);
+        case AFFYMETRIX_GENE_EXPRESSION:
+            return new AffymetrixExpressionPlatformLoader(this);
+        default:
+            throw new IllegalStateException("Unrecognized file format");
+        }
     }
-    
+
+    private PlatformTypeEnum getPlatformType() throws PlatformLoadingException {
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(getAnnotationFile()));
+            AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(csvReader);
+            List<String> headers = Arrays.asList(headerReader.getDataHeaders());
+            if (headers.contains(AffymetrixExpressionPlatformLoader.GENE_SYMBOL_HEADER)) {
+                return PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION;
+            } else if (headers.contains(AffymetrixDnaAnalysisPlatformLoader.DBSNP_RS_ID_HEADER)) {
+                return PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS;
+            } else {
+                throw new PlatformLoadingException("Invalid Affymetrix annotation file");
+            }
+        } catch (FileNotFoundException e) {
+            throw new PlatformLoadingException("File not found", e);
+        } catch (IOException e) {
+            throw new PlatformLoadingException("Couldn't read file", e);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */

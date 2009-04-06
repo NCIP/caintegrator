@@ -29,7 +29,7 @@ public class ArrayDataServiceTestIntegration extends AbstractTransactionalSpring
     }
 
     private void checkLoadArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        ArrayDesignChecker.checkLoadAffymetrixArrayDesign(cdfFile, annotationFile, arrayDataService);
+        ArrayDesignChecker.checkLoadAffymetrixExpressionArrayDesign(cdfFile, annotationFile, arrayDataService);
     }
 
     /**
