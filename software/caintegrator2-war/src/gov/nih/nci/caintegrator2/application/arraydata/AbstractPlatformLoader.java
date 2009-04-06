@@ -85,19 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
-
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 
 /**
  * Base class for platform loaders.
@@ -109,25 +109,20 @@ abstract class AbstractPlatformLoader {
     private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
 
     private CSVReader annotationFileReader;
+    private final AbstractPlatformSource source;
+
+    AbstractPlatformLoader(AbstractPlatformSource source) {
+        this.source = source;
+    }
 
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
-    abstract void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
-            CaIntegrator2Dao dao);
-    
+
     abstract  Gene createGene(String symbol, String[] fields);
 
     protected Platform createPlatform(PlatformVendorEnum platformVendor) {
         Platform platform = new Platform();
         platform.setVendor(platformVendor);
         return platform;
-    }
-
-    protected void loadAnnotations(ReporterList geneReporters, ReporterList probeSetReporters, CaIntegrator2Dao dao) 
-    throws IOException {
-        String[] fields;
-        while ((fields = annotationFileReader.readNext()) != null) {
-            loadAnnotations(fields, geneReporters, probeSetReporters, dao);
-        }
     }
 
     protected void loadAnnotationHeaders(String[] headers) {
@@ -138,14 +133,6 @@ abstract class AbstractPlatformLoader {
 
     protected boolean isAnnotationHeadersLine(String[] fields, String firstField) {
         return fields.length > 0 && firstField.equals(fields[0]);
-    }
-
-    protected void addGeneReporter(ReporterList geneReporters, Gene gene) {
-        GeneExpressionReporter geneReporter = new GeneExpressionReporter();
-        geneReporter.getGenes().add(gene);
-        geneReporter.setName(gene.getSymbol());
-        geneReporter.setReporterList(geneReporters);
-        geneReporters.getReporters().add(geneReporter);
     }
 
     protected Gene lookupOrCreateGene(String[] fields, String symbol, CaIntegrator2Dao dao) {
@@ -161,56 +148,51 @@ abstract class AbstractPlatformLoader {
         return fields[getHeaderToIndexMap().get(header)];
     }
 
-    protected void handleProbeSet(String probeSetName, Set<Gene> genes, ReporterList probeSetReporters) {
-        GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporter.setName(probeSetName);
-        reporter.getGenes().addAll(genes);
-        reporter.setReporterList(probeSetReporters);
-        probeSetReporters.getReporters().add(reporter);
+    protected String getAnnotationValue(String[] fields, String header, String noValueSymbol) {
+        String value = fields[getHeaderToIndexMap().get(header)];
+        return value.equals(noValueSymbol) ? null : value;
     }
 
-    protected void cleanUp(AbstractPlatformSource source) {
-        if (source.getDeleteFileOnCompletion()) {
-            source.getAnnotationFile().delete();
+    protected void cleanUp() {
+        if (getSource().getDeleteFileOnCompletion()) {
+            getSource().getAnnotationFile().delete();
         }
     }
 
-    protected boolean closeAnnotationFileReader() {
+    protected void closeAnnotationFileReader() {
         if (annotationFileReader != null) {
             try {
                 annotationFileReader.close();
             } catch (IOException e) {
-                return false;
+                getLogger().error("Couldn't close annotation file reader for file " 
+                        + getAnnotationFile().getAbsolutePath());
             }
         }
-        return true;
     }
+    abstract Logger getLogger();
 
-    /**
-     * @return the annotationFileReader
-     */
-    public CSVReader getAnnotationFileReader() {
+    CSVReader getAnnotationFileReader() {
         return annotationFileReader;
     }
 
-    /**
-     * @param annotationFileReader the annotationFileReader to set
-     */
-    public void setAnnotationFileReader(CSVReader annotationFileReader) {
+    void setAnnotationFileReader(CSVReader annotationFileReader) {
         this.annotationFileReader = annotationFileReader;
     }
 
-    /**
-     * @return the symbolToGeneMap
-     */
-    public Map<String, Gene> getSymbolToGeneMap() {
+    Map<String, Gene> getSymbolToGeneMap() {
         return symbolToGeneMap;
     }
 
-    /**
-     * @return the headerToIndexMap
-     */
-    public Map<String, Integer> getHeaderToIndexMap() {
+    Map<String, Integer> getHeaderToIndexMap() {
         return headerToIndexMap;
     }
+
+    AbstractPlatformSource getSource() {
+        return source;
+    }
+
+    final File getAnnotationFile() {
+        return getSource().getAnnotationFile();
+    }
+
 }

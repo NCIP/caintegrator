@@ -112,6 +112,8 @@ public class TestArrayDesignFiles {
     public static final String HG_U95B_CDF_PATH = "/arraydesign/affymetrix/HG_U95B.CDF";
     public static final String HG_U95C_CDF_PATH = "/arraydesign/affymetrix/HG_U95C.CDF";
     public static final String HG_U95D_CDF_PATH = "/arraydesign/affymetrix/HG_U95D.CDF";
+    public static final String MAPPING_50K_HIND_ANNOTATION_PATH = "/arraydesign/affymetrix/Mapping50K_Hind240.na27.annot.csv";
+    public static final String MAPPING_50K_HIND_CDF_PATH = "/arraydesign/affymetrix/Mapping50K_Hind240.cdf";
     
     public static final File HG_U133A_CDF_FILE = getFile(HG_U133A_CDF_PATH);
     public static final File HG_U133A_ANNOTATION_FILE = getFile(HG_U133A_ANNOTATION_PATH);
@@ -130,6 +132,8 @@ public class TestArrayDesignFiles {
     public static final File HG_U95B_CDF_FILE = getFile(HG_U95B_CDF_PATH);
     public static final File HG_U95C_CDF_FILE = getFile(HG_U95C_CDF_PATH);
     public static final File HG_U95D_CDF_FILE = getFile(HG_U95D_CDF_PATH);
+    public static final File MAPPING_50K_HIND_ANNOTATION_FILE = getFile(MAPPING_50K_HIND_ANNOTATION_PATH);
+    public static final File MAPPING_50K_HIND_CDF_FILE = getFile(MAPPING_50K_HIND_CDF_PATH);
 
 
     // Agilent files
