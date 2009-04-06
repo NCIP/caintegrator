@@ -119,5 +119,21 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
     private void setGenes(Set<Gene> genes) {
         this.genes = genes;
     }
+    
+    /**
+     * Provides a comma-separated list of gene symbols intended for display.
+     * 
+     * @return symbols of all associated genes.
+     */
+    public String getGeneSymbols() {
+        StringBuffer buffer = new StringBuffer();
+        for (Gene gene : getGenes()) {
+            if (buffer.length() > 0) {
+                buffer.append(", ");
+            }
+            buffer.append(gene.getSymbol());
+        }
+        return buffer.toString();
+    }
 
 }
