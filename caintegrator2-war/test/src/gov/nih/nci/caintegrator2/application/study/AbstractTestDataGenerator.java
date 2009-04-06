@@ -145,6 +145,15 @@ public abstract class AbstractTestDataGenerator<T> {
         return String.valueOf(getUniqueInt());
     }
 
+    protected String getUniqueString(int maxLength) {
+        String value = getUniqueString();
+        if (value.length() > maxLength) {
+            return value.substring(value.length() - maxLength);
+        } else {
+            return value;
+        }
+    }
+
     protected int getUniqueInt() {
         return uniqueInt++;
     }
