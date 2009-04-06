@@ -10,6 +10,11 @@ import java.util.Map;
 public enum ReporterTypeEnum {
 
     /**
+     * Reporter for a SNP array.
+     */
+    DNA_ANALYSIS_REPORTER("dnaAnalysisReporter"),
+
+    /**
      * Reporter for a transcript that is not the full gene sequence.
      */
     GENE_EXPRESSION_PROBE_SET("geneExpressionProbeSet"),

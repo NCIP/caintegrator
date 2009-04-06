@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -105,7 +104,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Used to load Agilent array designs.
  */
-class AgilentPlatformLoader extends AbstractPlatformLoader {
+class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     
     private static final Logger LOGGER = Logger.getLogger(AgilentPlatformLoader.class);
     
@@ -119,7 +118,7 @@ class AgilentPlatformLoader extends AbstractPlatformLoader {
     private final AgilentPlatformSource source;
 
     AgilentPlatformLoader(AgilentPlatformSource source) {
-        super();
+        super(source);
         this.source = source;
     }
 
@@ -133,13 +132,10 @@ class AgilentPlatformLoader extends AbstractPlatformLoader {
             handleAnnotationFile(platform, dao);
             dao.save(platform);
         } finally {
-            if (!closeAnnotationFileReader()) {
-                LOGGER.error("Couldn't close annotation file reader for file " + getAnnotationFile().getAbsolutePath());
-            }
-            cleanUp(source);
+            closeAnnotationFileReader();
+            cleanUp();
         }
         return platform;
-
     }
 
     private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
@@ -161,10 +157,6 @@ class AgilentPlatformLoader extends AbstractPlatformLoader {
         } catch (IOException e) {
             throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFile().getName(), e);
         }
-    }
-
-    private File getAnnotationFile() {
-        return source.getAnnotationFile();
     }
 
     private void loadHeaders() throws PlatformLoadingException, IOException {
@@ -209,6 +201,11 @@ class AgilentPlatformLoader extends AbstractPlatformLoader {
         gene.setGenbankAccession(getAnnotationValue(fields, ACCESSIONS_HEADER));
         gene.setFullName(getAnnotationValue(fields, GENE_NAME_HEADER));
         return gene;
+    }
+
+    @Override
+    Logger getLogger() {
+        return LOGGER;
     }
 
 }

@@ -120,7 +120,7 @@ public final class DnaAnalysisReporterGenerator extends AbstractReporterGenerato
         super.setValues(reporter, nonCascadedObjects);
         reporter.setAlleleA(getUniqueChar());
         reporter.setAlleleB(getUniqueChar());
-        reporter.setChromosome(getUniqueInt());
+        reporter.setChromosome(getUniqueString());
         reporter.setDbSnpId(getUniqueString());
         reporter.setPosition(getUniqueInt());
     }

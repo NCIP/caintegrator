@@ -95,7 +95,8 @@ public abstract class AbstractPlatformSource implements Serializable {
 
     private boolean deleteFileOnCompletion;
     private final File annotationFile;
-    abstract AbstractPlatformLoader getLoader();
+    
+    abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
 
     /**
      * Creates a new instance.

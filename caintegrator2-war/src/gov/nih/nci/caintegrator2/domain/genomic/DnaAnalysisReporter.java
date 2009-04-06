@@ -93,7 +93,7 @@ public class DnaAnalysisReporter extends AbstractReporter {
 
     private static final long serialVersionUID = 1L;
     
-    private Integer chromosome;
+    private String chromosome;
     private Integer position;
     private String dbSnpId;
     private Character alleleA;
@@ -104,24 +104,41 @@ public class DnaAnalysisReporter extends AbstractReporter {
      */
     public int compareTo(AbstractReporter abstractReporter) {
         DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
-        if (getChromosome().equals(reporter.getChromosome())) {
-            return getPosition() - reporter.getPosition();
+        int chromosomeComparison = getChromosomeComparison(reporter);
+        if (chromosomeComparison == 0) {
+            return getPositionComparison(reporter);
         } else {
-            return getChromosome() - reporter.getChromosome();
+            return chromosomeComparison;
+        }
+    }
+
+    private int getPositionComparison(DnaAnalysisReporter reporter) {
+        int positionInt = getPosition() != null ? getPosition() : 0;
+        int comparePositionInt = reporter.getPosition() != null ? reporter.getPosition() : 0;
+        return positionInt - comparePositionInt;
+    }
+
+    private int getChromosomeComparison(DnaAnalysisReporter reporter) {
+        if (chromosome == null) {
+            return reporter.getChromosome() == null ? 0 : 1;
+        } else if (reporter.getChromosome() == null) {
+            return -1;
+        } else {
+            return chromosome.compareTo(reporter.getChromosome());
         }
     }
 
     /**
      * @return the chromosome
      */
-    public Integer getChromosome() {
+    public String getChromosome() {
         return chromosome;
     }
 
     /**
      * @param chromosome the chromosome to set
      */
-    public void setChromosome(Integer chromosome) {
+    public void setChromosome(String chromosome) {
         this.chromosome = chromosome;
     }
 

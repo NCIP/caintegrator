@@ -26,8 +26,8 @@
         </joined-subclass>
         <joined-subclass name="DnaAnalysisReporter" table="DNA_ANALYSIS_REPORTER" lazy="false">
             <key column="ID" />
-            <property name="chromosome" type="integer" column="CHROMOSOME" not-null="true"/>
-            <property name="position" type="integer" column="POSITION" not-null="true"/>
+            <property name="chromosome" type="string" column="CHROMOSOME"/>
+            <property name="position" type="integer" column="POSITION"/>
             <property name="dbSnpId" type="string" column="DB_SNP_ID"/>
             <property name="alleleA" type="character" column="ALLELE_A"/>
             <property name="alleleB" type="character" column="ALLELE_B"/>
