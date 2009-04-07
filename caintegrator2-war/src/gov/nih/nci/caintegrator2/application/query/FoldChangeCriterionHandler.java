@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -135,7 +135,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
         request.addArrayDatas(getCandidateArrayDatas(study, reporterType));
-        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         ArrayDataValues values = arrayDataService.getFoldChangeValues(request, getCompareToArrayDatas(reporterType));
         return getRows(values, entityTypes);
     }
@@ -153,7 +153,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
 
     private boolean hasFoldChangeMatch(ArrayData arrayData, ArrayDataValues values) {
         for (AbstractReporter reporter : values.getReporters()) {
-            Float foldChangeValue = values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
+            Float foldChangeValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (isFoldChangeMatch(foldChangeValue)) {
                 return true;
             }

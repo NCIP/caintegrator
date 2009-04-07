@@ -94,7 +94,7 @@ import gov.nih.nci.caarray.domain.project.Experiment;
 import gov.nih.nci.caarray.domain.sample.Extract;
 import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -254,7 +254,7 @@ abstract class AbstractDataRetrievalHelper {
     }
 
     protected void setValue(ArrayData arrayData, AbstractReporter reporter, float value) {
-        arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL, value);
+        arrayDataValues.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, value);
     }
 
     /**

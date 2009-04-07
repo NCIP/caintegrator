@@ -85,8 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
+
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -154,7 +156,7 @@ class GenomicDataHelper {
             Collection<AbstractReporter> probeSetReporters = 
                 platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataType.EXPRESSION_SIGNAL,
+            geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataValueType.EXPRESSION_SIGNAL,
                     computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
         }
     }
@@ -163,7 +165,7 @@ class GenomicDataHelper {
             ArrayDataValues probeSetValues, ArrayData arrayData) {
         DescriptiveStatistics statistics = new DescriptiveStatistics();
         for (AbstractReporter reporter : probeSetReporters) {
-            statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL));
+            statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
         }
         return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
     }

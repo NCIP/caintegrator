@@ -99,11 +99,11 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
  */
 class TypeValues {
 
-    private final ArrayDataType type;
+    private final ArrayDataValueType type;
     private final ArrayDataValues arrayDataValues;
     private final Map<ArrayData, Object> valuesMap = new HashMap<ArrayData, Object>();
 
-    TypeValues(ArrayDataType type, ArrayDataValues arrayDataValues) {
+    TypeValues(ArrayDataValueType type, ArrayDataValues arrayDataValues) {
         this.type = type;
         this.arrayDataValues = arrayDataValues;
     }
