@@ -172,7 +172,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
 
     private SubjectGroup retrieveOtherSubjectGroup(StudySubscription subscription) {
         SubjectGroup otherSubjectsGroup = new SubjectGroup();
-        otherSubjectsGroup.setName("All Others");
+        otherSubjectsGroup.setName("Others");
         for (StudySubjectAssignment assignment : subscription.getStudy().getAssignmentCollection()) {
             if (!usedSubjects.contains(assignment)) {
                 SubjectSurvivalData subjectSurvivalData = createSubjectSurvivalData(assignment);
