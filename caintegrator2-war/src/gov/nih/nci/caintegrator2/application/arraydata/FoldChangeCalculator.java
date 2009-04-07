@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
+
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 
@@ -115,15 +117,15 @@ class FoldChangeCalculator {
         double controlValue = getControlValue(reporter);
         for (ArrayData arrayData : values.getArrayDatas()) {
             float foldChange = 
-                (float) (values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL) / controlValue);
-            foldChangeValues.setFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL, foldChange);
+                (float) (values.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL) / controlValue);
+            foldChangeValues.setFloatValue(arrayData, reporter, EXPRESSION_SIGNAL, foldChange);
         }
     }
 
     private double getControlValue(AbstractReporter reporter) {
         double valueProduct = 1.0f;
         for (ArrayData arrayData : controlValues.getArrayDatas()) {
-            valueProduct *= controlValues.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
+            valueProduct *= controlValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL);
         }
         double logSum = log2(valueProduct);
         double logMean = logSum / controlValues.getArrayDatas().size();

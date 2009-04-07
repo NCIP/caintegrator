@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 /**
  * Represents a quantitation type of microarray data.
  */
-public enum ArrayDataType {
+public enum ArrayDataValueType {
     
     /**
      * Expression signal.
@@ -102,7 +102,7 @@ public enum ArrayDataType {
     
     private final Class<?> typeClass;
 
-    ArrayDataType(Class<?> typeClass) {
+    ArrayDataValueType(Class<?> typeClass) {
         this.typeClass = typeClass;
     }
 

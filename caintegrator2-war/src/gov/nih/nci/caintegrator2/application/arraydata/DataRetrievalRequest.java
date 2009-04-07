@@ -103,7 +103,7 @@ public class DataRetrievalRequest {
     
     private final Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
     private final List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-    private final Set<ArrayDataType> types = new HashSet<ArrayDataType>();
+    private final Set<ArrayDataValueType> types = new HashSet<ArrayDataValueType>();
     private boolean reportersChanged;
 
     Set<ArrayData> getArrayDatas() {
@@ -118,7 +118,7 @@ public class DataRetrievalRequest {
         return Collections.unmodifiableList(reporters);
     }
 
-    Set<ArrayDataType> getTypes() {
+    Set<ArrayDataValueType> getTypes() {
         return Collections.unmodifiableSet(types);
     }
     
@@ -141,12 +141,12 @@ public class DataRetrievalRequest {
     }
     
     /**
-     * Adds an <code>ArrayDataType</code> to the request.
+     * Adds an <code>ArrayDataValueType</code> to the request.
      * 
-     * @param arrayDataType the array data
+     * @param valueType the array data
      */
-    public void addType(ArrayDataType arrayDataType) {
-        types.add(arrayDataType);
+    public void addType(ArrayDataValueType valueType) {
+        types.add(valueType);
     }
     
     /**
@@ -154,7 +154,7 @@ public class DataRetrievalRequest {
      * 
      * @param arrayDataTypeCollection the array data types.
      */
-    public void addTypes(Collection<ArrayDataType> arrayDataTypeCollection) {
+    public void addTypes(Collection<ArrayDataValueType> arrayDataTypeCollection) {
         types.addAll(arrayDataTypeCollection);
     }
     

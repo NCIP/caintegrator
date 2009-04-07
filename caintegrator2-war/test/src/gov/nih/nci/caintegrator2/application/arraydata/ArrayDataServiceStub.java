@@ -105,7 +105,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
         ArrayDataValues values = new ArrayDataValues(request.getReporters());
         for (AbstractReporter reporter : request.getReporters()) {
             for (ArrayData arrayData : request.getArrayDatas()) {
-                for (ArrayDataType type : request.getTypes()) {
+                for (ArrayDataValueType type : request.getTypes()) {
                     values.setFloatValue(arrayData, reporter, type, (float) 1.23);
                 }
             }

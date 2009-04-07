@@ -136,31 +136,31 @@ public class ArrayDataServiceTest {
         controlArrayDatas.add(controlData2);
         controlArrayDatas.add(controlData3);
 
-        values.setFloatValue(data1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.2);
-        values.setFloatValue(data1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 4.4);
-        values.setFloatValue(data2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 6.6);
-        values.setFloatValue(data2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 8.8);
+        values.setFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.2);
+        values.setFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 4.4);
+        values.setFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 6.6);
+        values.setFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 8.8);
         
-        values.setFloatValue(controlData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 0.1);
-        values.setFloatValue(controlData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.0);
-        values.setFloatValue(controlData3, reporter1, ArrayDataType.EXPRESSION_SIGNAL, (float) 9.9);
+        values.setFloatValue(controlData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
+        values.setFloatValue(controlData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
+        values.setFloatValue(controlData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 9.9);
         
-        values.setFloatValue(controlData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 0.1);
-        values.setFloatValue(controlData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 2.0);
-        values.setFloatValue(controlData3, reporter2, ArrayDataType.EXPRESSION_SIGNAL, (float) 1.1);
+        values.setFloatValue(controlData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 0.1);
+        values.setFloatValue(controlData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 2.0);
+        values.setFloatValue(controlData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, (float) 1.1);
 
         service.save(values);
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addArrayDatas(arrayDatas);
         request.addReporters(reporters);
-        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         ArrayDataValues foldChangeValues = service.getFoldChangeValues(request, controlArrayDatas);
         assertEquals(2, foldChangeValues.getArrayDatas().size());
         assertEquals(2, foldChangeValues.getReporters().size());
-        assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(5.256, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(7.2886, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
-        assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(1.752, (float) foldChangeValues.getFloatValue(data1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(5.256, (float) foldChangeValues.getFloatValue(data2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(7.2886, (float) foldChangeValues.getFloatValue(data1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
+        assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
     }
 
     private ArrayData createArrayData(Long id, Study study, ReporterList reporterList) {

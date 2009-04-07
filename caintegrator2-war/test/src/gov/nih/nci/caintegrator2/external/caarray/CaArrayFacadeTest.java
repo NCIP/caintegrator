@@ -108,7 +108,7 @@ import gov.nih.nci.caarray.domain.sample.LabeledExtract;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -187,8 +187,8 @@ public class CaArrayFacadeTest {
         assertNotNull(values);
         assertEquals(2, values.getArrayDatas().size());
         for (ArrayData arrayData : values.getArrayDatas()) {
-            assertEquals((float) 1.1, (float) values.getFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0);
-            assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 1.1, (float) values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
     
@@ -211,8 +211,8 @@ public class CaArrayFacadeTest {
         assertNotNull(values);
         assertEquals(2, values.getArrayDatas().size());
         for (ArrayData arrayData : values.getArrayDatas()) {
-            assertEquals((float) 0.05, (float) values.getFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0);
-            assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) 0.05, (float) values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
+            assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
     }
 

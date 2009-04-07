@@ -104,7 +104,7 @@ public class ArrayDataValues {
     
     private final List<AbstractReporter> reporters;
     private final Map<AbstractReporter, Integer> reporterIndexMap = new HashMap<AbstractReporter, Integer>();
-    private final Map<ArrayDataType, TypeValues> typeValuesMap = new HashMap<ArrayDataType, TypeValues>();
+    private final Map<ArrayDataValueType, TypeValues> typeValuesMap = new HashMap<ArrayDataValueType, TypeValues>();
 
     /**
      * Creates a new values object.
@@ -137,7 +137,7 @@ public class ArrayDataValues {
      * @param type the type of data
      * @return the value to .
      */
-    public float getFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataType type) {
+    public float getFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type) {
         return getFloatValue(arrayData, getReporterIndex(reporter), type);
     }
     
@@ -149,7 +149,7 @@ public class ArrayDataValues {
      * @param type the type of data
      * @return the value to .
      */
-    public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataType type) {
+    public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
         return getTypeValues(type).getFloatValue(arrayData, reporterIndex);
     }
     
@@ -161,7 +161,7 @@ public class ArrayDataValues {
      * @param type the type of data
      * @param value the value to set.
      */
-    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataType type, float value) {
+    public void setFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type, float value) {
         getTypeValues(type).setFloatValue(arrayData, reporter, value);
     }
 
@@ -173,12 +173,12 @@ public class ArrayDataValues {
      * @param type the type of data
      * @param values the values to set.
      */
-    public void setFloatValues(ArrayData arrayData, List<AbstractReporter> forReporters, ArrayDataType type,
+    public void setFloatValues(ArrayData arrayData, List<AbstractReporter> forReporters, ArrayDataValueType type,
             float[] values) {
         getTypeValues(type).setFloatValues(arrayData, forReporters, values);
     }
 
-    private TypeValues getTypeValues(ArrayDataType type) {
+    private TypeValues getTypeValues(ArrayDataValueType type) {
         if (type == null) {
             throw new IllegalArgumentException("type was null");
         }
@@ -202,7 +202,7 @@ public class ArrayDataValues {
      * 
      * @return the data types.
      */
-    public Set<ArrayDataType> getTypes() {
+    public Set<ArrayDataValueType> getTypes() {
         return typeValuesMap.keySet();
     }
     

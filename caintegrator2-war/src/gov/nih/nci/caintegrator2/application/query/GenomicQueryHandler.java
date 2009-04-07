@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -158,7 +158,7 @@ class GenomicQueryHandler {
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
             GenomicDataResultValue value = new GenomicDataResultValue();
             value.setColumn(column);
-            Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL);
+            Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
                 value.setValue(Float.valueOf(new DecimalFormat("0.00").
                             format((double) floatValue)));
@@ -194,7 +194,7 @@ class GenomicQueryHandler {
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
         request.addArrayDatas(arrayDatas);
-        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         if (isFoldChangeQuery()) {
             return arrayDataService.getFoldChangeValues(request, getControlArrayDatas());
         } else {

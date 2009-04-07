@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.application.arraydata.NetCDFManager;
@@ -140,8 +140,8 @@ public class NetCDFManagerTest {
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData1 = createArrayData(new Study());
         ArrayData arrayData2 = createArrayData(new Study());
-        values.setFloatValue(arrayData1, reporter, ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
-        values.setFloatValue(arrayData2, reporter, ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
+        values.setFloatValue(arrayData1, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
+        values.setFloatValue(arrayData2, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
         manager.storeValues(values);
     }
     
@@ -159,7 +159,7 @@ public class NetCDFManagerTest {
         ArrayData arrayData = createArrayData(study);
         arrayData.setReporterList(reporterList);
         arrayData.setId(null);
-        values.setFloatValue(arrayData, reporter, ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
+        values.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
         manager.storeValues(values);
     }
     
@@ -174,7 +174,7 @@ public class NetCDFManagerTest {
         reporters.add(reporter2);
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData = createArrayData(new Study());
-        values.setFloatValue(arrayData, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 0.0f);
+        values.setFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
         manager.storeValues(values);
     }
     
@@ -204,18 +204,18 @@ public class NetCDFManagerTest {
         arrayData2.setReporterList(reporterList);
         
         // Store first set of values
-        values.setFloatValue(arrayData1, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 1.1f);
-        values.setFloatValue(arrayData1, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 2.2f);
-        values.setFloatValue(arrayData1, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 3.3f);
-        values.setFloatValue(arrayData2, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 4.4f);
-        values.setFloatValue(arrayData2, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 5.5f);
-        values.setFloatValue(arrayData2, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 6.6f);
-        values.setFloatValue(arrayData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 7.7f);
-        values.setFloatValue(arrayData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL, 8.8f);
-        values.setFloatValue(arrayData1, reporter3, ArrayDataType.EXPRESSION_SIGNAL, 9.9f);
-        values.setFloatValue(arrayData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 10.10f);
-        values.setFloatValue(arrayData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL, 11.11f);
-        values.setFloatValue(arrayData2, reporter3, ArrayDataType.EXPRESSION_SIGNAL, 12.12f);
+        values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 1.1f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 2.2f);
+        values.setFloatValue(arrayData1, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 3.3f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 4.4f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 5.5f);
+        values.setFloatValue(arrayData2, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 6.6f);
+        values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 7.7f);
+        values.setFloatValue(arrayData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 8.8f);
+        values.setFloatValue(arrayData1, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 9.9f);
+        values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 10.10f);
+        values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 11.11f);
+        values.setFloatValue(arrayData2, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 12.12f);
         manager.storeValues(values);
         NCdumpW.print("/tmp/data1.nc", new OutputStreamWriter(System.out), true, true, true, true, null, null);
         
@@ -223,12 +223,12 @@ public class NetCDFManagerTest {
         values = new ArrayDataValues(reporters);
         ArrayData arrayData3 = createArrayData(study);
         arrayData3.setReporterList(reporterList);
-        values.setFloatValue(arrayData3, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 13.13f);
-        values.setFloatValue(arrayData3, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 14.14f);
-        values.setFloatValue(arrayData3, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO, 15.15f);
-        values.setFloatValue(arrayData3, reporter1, ArrayDataType.EXPRESSION_SIGNAL, 16.16f);
-        values.setFloatValue(arrayData3, reporter2, ArrayDataType.EXPRESSION_SIGNAL, 17.17f);
-        values.setFloatValue(arrayData3, reporter3, ArrayDataType.EXPRESSION_SIGNAL, 18.18f);
+        values.setFloatValue(arrayData3, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 13.13f);
+        values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 14.14f);
+        values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 15.15f);
+        values.setFloatValue(arrayData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 16.16f);
+        values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 17.17f);
+        values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 18.18f);
         manager.storeValues(values);
         NCdumpW.print("/tmp/data1.nc", new OutputStreamWriter(System.out), true, true, true, true, null, null);
 
@@ -237,51 +237,51 @@ public class NetCDFManagerTest {
         request.addArrayData(arrayData1);
         request.addArrayData(arrayData2);
         request.addArrayData(arrayData3);
-        request.addType(ArrayDataType.COPY_NUMBER_LOG2_RATIO);
-        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        request.addType(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         request.addReporters(reporters);
         values = manager.retrieveValues(request);
         assertEquals(3, values.getArrayDatas().size());
         assertEquals(3, values.getReporters().size());
         assertEquals(2, values.getTypes().size());
-        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(5.5f, values.getFloatValue(arrayData2, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(6.6f, values.getFloatValue(arrayData2, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(7.7f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(8.8f, values.getFloatValue(arrayData1, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(9.9f, values.getFloatValue(arrayData1, reporter3, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(10.10f, values.getFloatValue(arrayData2, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(11.11f, values.getFloatValue(arrayData2, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(12.12f, values.getFloatValue(arrayData2, reporter3, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(14.14f, values.getFloatValue(arrayData3, reporter2, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(17.17f, values.getFloatValue(arrayData3, reporter2, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(2.2f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(4.4f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(5.5f, values.getFloatValue(arrayData2, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(6.6f, values.getFloatValue(arrayData2, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(7.7f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(8.8f, values.getFloatValue(arrayData1, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(9.9f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(10.10f, values.getFloatValue(arrayData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(11.11f, values.getFloatValue(arrayData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(12.12f, values.getFloatValue(arrayData2, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(14.14f, values.getFloatValue(arrayData3, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(17.17f, values.getFloatValue(arrayData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
 
         request = new DataRetrievalRequest();
         request.addArrayData(arrayData1);
         request.addArrayData(arrayData3);
-        request.addType(ArrayDataType.COPY_NUMBER_LOG2_RATIO);
-        request.addType(ArrayDataType.EXPRESSION_SIGNAL);
+        request.addType(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
         request.addReporter(reporter1);
         request.addReporter(reporter3);
         values = manager.retrieveValues(request);
         assertEquals(2, values.getArrayDatas().size());
         assertEquals(2, values.getReporters().size());
         assertEquals(2, values.getTypes().size());
-        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(7.7f, values.getFloatValue(arrayData1, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(9.9f, values.getFloatValue(arrayData1, reporter3, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataType.COPY_NUMBER_LOG2_RATIO), 0.0f);
-        assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
-        assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(1.1f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(3.3f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(7.7f, values.getFloatValue(arrayData1, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(9.9f, values.getFloatValue(arrayData1, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(13.13f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
+        assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
 }
 
     private ArrayData createArrayData(Study study) {
