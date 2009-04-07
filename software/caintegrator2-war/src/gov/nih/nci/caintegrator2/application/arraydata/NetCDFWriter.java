@@ -143,8 +143,8 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
             Dimension reporterDimension = writer.addDimension(REPORTER_DIMENSION_NAME, values.getReporters().size());
             Dimension arrayDataDimension = writer.addUnlimitedDimension(ARRAY_DATA_DIMENSION_NAME);
             Dimension[] dimensions = new Dimension[] {arrayDataDimension, reporterDimension};
-            for (ArrayDataType arrayDataType : values.getTypes()) {
-                writer.addVariable(arrayDataType.name(), getDataType(arrayDataType), dimensions);
+            for (ArrayDataValueType valueType : values.getTypes()) {
+                writer.addVariable(valueType.name(), getDataType(valueType), dimensions);
             }
             writer.addVariable(ARRAY_DATA_IDS_VARIABLE, DataType.INT, new Dimension[] {arrayDataDimension});
             writer.create();
@@ -184,20 +184,20 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
                 arrayDataIdArray.setLong(arrayDataIdArray.getIndex(), arrayData.getId());
                 writer.write(ARRAY_DATA_IDS_VARIABLE, arrayIdOrigin, arrayDataIdArray);
             }
-            for (ArrayDataType arrayDataType : values.getTypes()) {
-                Array valuesArray = Array.factory(arrayDataType.getTypeClass(), shape);
+            for (ArrayDataValueType valueType : values.getTypes()) {
+                Array valuesArray = Array.factory(valueType.getTypeClass(), shape);
                 Index valuesIndex = valuesArray.getIndex();
                 for (AbstractReporter reporter : values.getReporters()) {
                     valuesIndex.set(0, reporter.getIndex());
-                    setValue(valuesArray, valuesIndex, arrayData, reporter, arrayDataType);
+                    setValue(valuesArray, valuesIndex, arrayData, reporter, valueType);
                 }
-                writer.write(arrayDataType.name(), valuesOrigin, valuesArray);
+                writer.write(valueType.name(), valuesOrigin, valuesArray);
             }
           }
         }
 
     private void setValue(Array valuesArray, Index valuesIndex, ArrayData arrayData, AbstractReporter reporter, 
-            ArrayDataType type) {
+            ArrayDataValueType type) {
         if (Float.class.equals(type.getTypeClass())) {
             valuesArray.setFloat(valuesIndex, values.getFloatValue(arrayData, reporter, type));
         } else {

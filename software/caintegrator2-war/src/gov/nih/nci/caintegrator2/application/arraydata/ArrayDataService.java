@@ -97,7 +97,7 @@ import java.util.List;
 public interface ArrayDataService {
     
     /**
-     * Stores the values of an <code>ArrayDataMatrix</code> for later search and retrieval.
+     * Stores the values of an <code>ArrayDataValues</code> for later search and retrieval.
      * 
      * @param values the data matrix values to store.
      */

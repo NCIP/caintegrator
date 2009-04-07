@@ -113,11 +113,11 @@ abstract class AbstractNetCdfFileHandler {
         this.fileManager = fileManager;
     }
 
-    DataType getDataType(ArrayDataType arrayDataType) {
-        if (Float.class.equals(arrayDataType.getTypeClass())) {
+    DataType getDataType(ArrayDataValueType valueType) {
+        if (Float.class.equals(valueType.getTypeClass())) {
             return DataType.FLOAT;
         } else {
-            throw new ArrayDataStorageException("Unsupported data type: " + arrayDataType.getTypeClass().getName());
+            throw new ArrayDataStorageException("Unsupported data type: " + valueType.getTypeClass().getName());
         }
     }
 

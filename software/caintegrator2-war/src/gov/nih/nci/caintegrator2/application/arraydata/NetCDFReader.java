@@ -122,7 +122,7 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         try {
             ArrayDataValues values = new ArrayDataValues(request.getReporters());
             openNetCdfFile(request.getStudy(), request.getReporters().get(0).getReporterList());
-            for (ArrayDataType type : request.getTypes()) {
+            for (ArrayDataValueType type : request.getTypes()) {
                 loadValues(values, type);
             }
             closeNetCdfFile();
@@ -142,14 +142,14 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         reader.close();
     }
 
-    private void loadValues(ArrayDataValues values, ArrayDataType type) throws IOException, InvalidRangeException {
+    private void loadValues(ArrayDataValues values, ArrayDataValueType type) throws IOException, InvalidRangeException {
         Variable variable = reader.findVariable(type.name());
         for (ArrayData arrayData : request.getArrayDatas()) {
             loadValues(values, variable, type, arrayData);
         }
     }
 
-    private void loadValues(ArrayDataValues values, Variable variable, ArrayDataType type, ArrayData arrayData) 
+    private void loadValues(ArrayDataValues values, Variable variable, ArrayDataValueType type, ArrayData arrayData) 
     throws IOException, InvalidRangeException {
         if (Float.class.equals(type.getTypeClass())) {
             loadFloatValues(values, variable, type, arrayData);
@@ -158,7 +158,8 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         }
     }
 
-    private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataType type, ArrayData arrayData) 
+    private void loadFloatValues(ArrayDataValues values, Variable variable, ArrayDataValueType type, 
+            ArrayData arrayData) 
     throws IOException, InvalidRangeException {
         for (List<AbstractReporter> reporters : getSequentialReporterLists()) {
             float[] floatValues = getFloatValues(variable, reporters, getArrayDataOffset(arrayData));
