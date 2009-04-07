@@ -165,6 +165,12 @@ public class TestDataFiles {
     public static final File REMBRANDT_NCRI_SAMPLE_MAPPING_FILE = getFile(REMBRANDT_NCRI_SAMPLE_MAPPING_FILE_PATH);
     
 
+    // Copy number test data
+    public static final String HIND_COPY_NUMBER_CHP_FILE_PATH = "/arraydata/affymetrix/E10003_T_Hind.CN4.cnchp";
+    public static final File HIND_COPY_NUMBER_CHP_FILE = getFile(HIND_COPY_NUMBER_CHP_FILE_PATH);
+    public static final String XBA_COPY_NUMBER_CHP_FILE_PATH = "/arraydata/affymetrix/E07733_T_Xba.CN4.cnchp";
+    public static final File XBA_COPY_NUMBER_CHP_FILE = getFile(XBA_COPY_NUMBER_CHP_FILE_PATH);
+    
     public static File getFile(String resourcePath) {
         return new File(TestDataFiles.class.getResource(resourcePath).getFile());
     }
