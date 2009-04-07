@@ -157,7 +157,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
 
     private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) {
         Query query = new Query();
-        query.setName("All Others");
+        query.setName("Others");
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         return retrieveGenomicResultsForQuery(subscription, query, true);
