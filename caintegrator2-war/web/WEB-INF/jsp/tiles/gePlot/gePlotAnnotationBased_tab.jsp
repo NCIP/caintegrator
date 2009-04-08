@@ -7,22 +7,26 @@
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
        
     <!-- Gene Expression Inputs -->
-    <h2>Annotation Based Gene Expression Plots</h2>
+    <h2>Annotation Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
+   (draft)</a>
+    </div></h2>
+    
     
     <table class="data">
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 1.)
                 </td>
-                <td class="value_inline" style="min-width: 5px; width: 190px;">
+                <td class="value_inline" style="min-width: 5px; width: 190px; white-space: nowrap;">
                     Gene Symbol(s) (comma separated list):<br>
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
                 <td class="value_inline"><s:textfield name="gePlotForm.annotationBasedForm.geneSymbol" theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>                
                 </td>
+                <td class="value_inline"></td>
+                <td class="value_inline"></td>
             </tr>
-        </table>
-        <table class="data">
+
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 2.)
@@ -36,18 +40,23 @@
 	                listKey="key" 
 	                listValue="value" />                
                 </td>
+                <td class="value_inline"></td>
+                <td class="value_inline"></td>
             </tr>
-        </table>
-        <table class="data">
+
             <tr>
-                <th/>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                <td class="value_inline" style="min-width: 5px; width: 190px; white-space: nowrap;">
                 <th> Annotation Type</th>
                 <th> Annotation </th>
                 <th> Values </th>
             </tr>
             <tr>
-                <td class="value_inline" style="min-width: 5px; padding-left: 10px;">
-                    3.) Sample Groups:
+                <td class="value_inline" style="min-width: 5px; padding-left: 10px; border-top: 0px;">
+                    3.)
+                </td>    
+                <td class="value_inline" style="min-width: 5px; width: 120px; border-top: 0px;">    
+                    Sample Groups:
                 </td>
                 <td class="value_inline">
                     <s:select name="gePlotForm.annotationBasedForm.annotationTypeSelection" 
@@ -66,19 +75,20 @@
                               onchange="document.geneExpressionAnnotationInputForm.action = 'gePlotUpdatePermissibleValues.action';document.geneExpressionAnnotationInputForm.permissibleValuesNeedUpdate.value = 'true';document.geneExpressionAnnotationInputForm.submit();"
                               theme="simple"/>
                 </td>
-                <td>
+                <td class="value_inline">
                 <s:select name="gePlotForm.annotationBasedForm.selectedValuesIds" 
                               list="gePlotForm.annotationBasedForm.permissibleValues"
                               multiple="true"
                               theme="simple"/>
                 </td>
             </tr>
-        
-        </table>
-        <table class="data">
+
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
-                4.) <s:checkbox name="gePlotForm.annotationBasedForm.addPatientsNotInQueriesGroup" theme="simple"/>Add additional group containing all other subjects not found in selected queries.
+                4.)
+                </td>
+                <td class="value_inline" colspan="4">
+                <s:checkbox name="gePlotForm.annotationBasedForm.addPatientsNotInQueriesGroup" theme="simple"/>Add additional group containing all other subjects not found in selected queries.
                 </td>
             </tr>
         </table>
