@@ -174,9 +174,9 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         // I have a forum submittal on this here:
         // https://cabig-kc.nci.nih.gov/Molecular/forums/viewtopic.php?f=14&t=231&sid=1409d072fac7fe1661c0e5ffdf7ae0a0
         preprocessParameters.getClinicalQueries().add(query1);
-        query1.setName("ALL");
+        query1.setName("Query 1");
         preprocessParameters.getClinicalQueries().add(query2);
-        query2.setName("AML");
+        query2.setName("Query  2");
         ComparativeMarkerSelectionParameters comparativeMarkerParameters = new ComparativeMarkerSelectionParameters();
         comparativeMarkerParameters.setClassificationFileName("test2.cls");
         comparativeMarkerParameters.getClinicalQueries().addAll(preprocessParameters.getClinicalQueries());
@@ -201,7 +201,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         assertTrue(clsFile.exists());
         CSVReader reader = new CSVReader(new FileReader(clsFile), ' ');
         checkLine(reader.readNext(), "6", "2", "1");
-        checkLine(reader.readNext(), "#", "ALL", "AML");
+        checkLine(reader.readNext(), "#", "Query_1", "Query__2");
         checkLine(reader.readNext(), "0", "0", "0", "0", "0", "1");
     }
 

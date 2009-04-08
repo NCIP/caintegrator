@@ -139,7 +139,7 @@ public final class ClassificationsToClsConverter {
         stringBuffer.append('#');
         for (SampleClassification classification : parameterValue.getClassifications()) {
             stringBuffer.append(' ');
-            stringBuffer.append(classification.getName());
+            stringBuffer.append(classification.getName().replaceAll(" ", "_"));
         }
         stringBuffer.append('\n');
         writer.write(stringBuffer.toString());
