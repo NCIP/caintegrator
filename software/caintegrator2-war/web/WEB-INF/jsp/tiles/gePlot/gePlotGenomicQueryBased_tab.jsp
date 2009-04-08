@@ -8,7 +8,9 @@
     
        
     <!-- Gene Expression Inputs -->
-    <h2>Genomic Query Based Gene Expression Plots</h2>
+    <h2>Genomic Query Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_gen_queries_help')" class="help">
+   (draft)</a>
+    </div></h2>
     
     <table class="data">
             <tr>
