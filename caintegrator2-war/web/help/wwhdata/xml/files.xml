@@ -57,15 +57,16 @@
     <Document title="Editing a Study" href="CreatingNewStudy.3.8.html" />
     <Document title="Editing Survival Values" href="CreatingNewStudy.3.9.html" />
     <Document title="Adding Genomic Data" href="CreatingNewStudy.3.10.html" />
-    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.11.html" />
-    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.12.html" />
-    <Document title="Adding Imaging Data" href="CreatingNewStudy.3.13.html" />
-    <Document title="Deploying the Study" href="CreatingNewStudy.3.14.html" />
-    <Document title="Managing a Study" href="CreatingNewStudy.3.15.html" />
-    <Document title="Managing Platforms" href="CreatingNewStudy.3.16.html" />
+    <Document title="Editing Genomic Data" href="CreatingNewStudy.3.11.html" />
+    <Document title="Mapping Genomic Data to Clinical Data" href="CreatingNewStudy.3.12.html" />
+    <Document title="Uploading Control Samples" href="CreatingNewStudy.3.13.html" />
+    <Document title="Adding Imaging Data" href="CreatingNewStudy.3.14.html" />
+    <Document title="Deploying the Study" href="CreatingNewStudy.3.15.html" />
+    <Document title="Managing a Study" href="CreatingNewStudy.3.16.html" />
+    <Document title="Managing Platforms" href="CreatingNewStudy.3.17.html" />
     <Document title="Searching a caIntegrator2 Study" href="SearchingWithinAStudy.4.1.html" />
     <Document title="Search Overview" href="SearchingWithinAStudy.4.2.html" />
-    <Document title="Launching a Search" href="SearchingWithinAStudy.4.3.html" />
+    <Document title="Searching a Study" href="SearchingWithinAStudy.4.3.html" />
     <Document title="Columns and Sorting Tabs" href="SearchingWithinAStudy.4.4.html" />
     <Document title="Managing Queries" href="SearchingWithinAStudy.4.5.html" />
     <Document title="Saving a Query" href="SearchingWithinAStudy.4.6.html" />
@@ -83,7 +84,10 @@
     <Document title="KM Plot for Annotations" href="PerformingAnalysis.6.4.html" />
     <Document title="KM Plot for Gene Expression" href="PerformingAnalysis.6.5.html" />
     <Document title="KM Plot for Queries" href="PerformingAnalysis.6.6.html" />
-    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.7.html" />
+    <Document title="Gene Expression Value Plot for Annotation" href="PerformingAnalysis.6.7.html" />
+    <Document title="Gene Expression Value Plot for Genomic Queries" href="PerformingAnalysis.6.8.html" />
+    <Document title="Gene Expression Value Plot for Cinical Queries" href="PerformingAnalysis.6.9.html" />
+    <Document title="Analyzing Data with GenePattern" href="PerformingAnalysis.6.10.html" />
     <Document title="Glossary" href="Glossary.7.1.html" />
     <Document title="Data Import Configurations" href="appdx%20data%20import.8.1.html" />
     <Document title="Delimited-Text Annotation Import" href="appdx%20data%20import.8.2.html" />
@@ -96,22 +100,28 @@
   <TopicMap>
     <Topic name="login_help" href="Getting_Started.2.4.html#1115560" />
     <Topic name="welcome_help" href="Getting_Started.2.5.html#1127723" />
-    <Topic name="Logging_out" href="Getting_Started.2.7.html#1128246" />
+    <Topic name="logging_out" href="Getting_Started.2.7.html#1128246" />
     <Topic name="edit_study_help" href="CreatingNewStudy.3.4.html#1073921" />
     <Topic name="define_fields_help" href="CreatingNewStudy.3.5.html#1075197" />
     <Topic name="assign_annotations_help" href="CreatingNewStudy.3.6.html#1082187" />
     <Topic name="search_annotation_definitions_help" href="CreatingNewStudy.3.7.html#1082197" />
+    <Topic name="survival_values_help" href="CreatingNewStudy.3.9.html#1077698" />
     <Topic name="edit_genomic_data_help" href="CreatingNewStudy.3.10.html#1076975" />
-    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.11.html#1081247" />
-    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.13.html#1075831" />
-    <Topic name="manage_study_help" href="CreatingNewStudy.3.15.html#1076280" />
-    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.16.html#1078043" />
+    <Topic name="edit_sample_mappings_help" href="CreatingNewStudy.3.12.html#1081247" />
+    <Topic name="edit_imaging_data_help" href="CreatingNewStudy.3.14.html#1075831" />
+    <Topic name="manage_study_help" href="CreatingNewStudy.3.16.html#1076280" />
+    <Topic name="manage_platforms_help" href="CreatingNewStudy.3.17.html#1078043" />
+    <Topic name="search_criteria_help" href="SearchingWithinAStudy.4.3.html#1074305" />
     <Topic name="search_columns_help" href="SearchingWithinAStudy.4.4.html#1074610" />
-    <Topic name="View_results_overview" href="View%20Results.5.2.html#1163458" />
+    <Topic name="save_query_help" href="SearchingWithinAStudy.4.6.html#1075754" />
+    <Topic name="search_results_help" href="View%20Results.5.2.html#1167812" />
     <Topic name="DICOM_retrieval_help" href="View%20Results.5.5.html#1164183" />
     <Topic name="KM_annotation_help" href="PerformingAnalysis.6.4.html#1073490" />
     <Topic name="KM_gene-expression_help" href="PerformingAnalysis.6.5.html#1073810" />
     <Topic name="KM_queries_help" href="PerformingAnalysis.6.6.html#1073776" />
-    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.7.html#1073419" />
+    <Topic name="GE_plot_annotation_help" href="PerformingAnalysis.6.7.html#1073419" />
+    <Topic name="GE_plot_gen_queries_help" href="PerformingAnalysis.6.8.html#1077369" />
+    <Topic name="GE_plot_clin_queries_help" href="PerformingAnalysis.6.9.html#1077378" />
+    <Topic name="gene_pattern_help" href="PerformingAnalysis.6.10.html#1077363" />
   </TopicMap>
 </WebWorksHelpBook>

@@ -201,7 +201,7 @@
               <div class="Bullet_inner" style="width: 18pt; white-space: nowrap;">•</div>
             </td>
             <td width="100%">
-              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1164183">Retrieve Dicom Images </a></span>– This button is linked to results you have selected by row. Click the button to retrieve the corresponding image(s) from NCIA through the grid. NCIA organizes the downoad file by patientID, StudyInstanceUID, and ImageSeriesUID, and compresses it into a zip file. When caIntegrator 2 notifies you that the file is retrieved, the DICOM Retrieval page indicates whether the retrieved files are Study Instance UIDs or Image Series UIDs. For more information, see the note below.  </div>
+              <div class="Bullet_inner"><span style="font-weight: bold;"><a name="1164183">Retrieve Dicom Images </a></span>– This button is linked to results you have selected by row. Click the button to retrieve the corresponding image(s) from NCIA through the grid. NCIA organizes the downoad file by patientID, StudyInstanceUID, and ImageSeriesUID, and compresses it into a zip file. When caIntegrator2 notifies you that the file is retrieved, the DICOM Retrieval page indicates whether the retrieved files are Study Instance UIDs or Image Series UIDs. For more information, see the note below.  </div>
             </td>
           </tr>
         </table>
@@ -215,7 +215,7 @@
       <div class="Body_Text"><a name="1166600">If no image series showing in query results, simply mean not mapped. Will to up to </a>Study Instance UID.</div>
       <div class="Body_Text"><a name="1166601">2 ways defined:</a></div>
       <div class="Body_Text"><a name="1166602">1.  Image series annotations. Pulls up image series IDs.</a></div>
-      <div class="Body_Text"><a name="1166603">2. Image links to NCIA. In this case, pulls up Sugdy instance level.</a></div>
+      <div class="Body_Text"><a name="1166603">2. Image links to NCIA. In this case, pulls up study instance level.</a></div>
       <div class="Body_Text"><a name="1164294">&nbsp;</a></div>
       <div class="Body_Text_Indent"><a name="1162043">&nbsp;</a></div>
       <div class="Body_Text"><a name="1162053">&nbsp;</a></div>
@@ -314,6 +314,12 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Clinical and Imaging Data", "caIntegrator2", "View%20Results.5.3.html#1163763");
+          WWHAddRelatedTopic("Genomic Data", "caIntegrator2", "View%20Results.5.4.html#1163775");
+          WWHAddRelatedTopic("Exporting Data", "caIntegrator2", "View%20Results.5.6.html#1162538");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->

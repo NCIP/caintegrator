@@ -3,6 +3,7 @@ function FileData_Pairs(x)
 x.t("getting","started");
 x.t("link","upper");
 x.t("upper","right-hand");
+x.t("corner","page");
 x.t("right-hand","corner");
 x.t("logging","getting");
 x.t("logging","logging");
