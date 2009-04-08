@@ -83,112 +83,21 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
-
-import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
-
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
-
-import java.util.Collection;
-
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
 /**
- * Helper class that retrieves data from caArray and loads it into a study.
+ * Type of data in an <code>ArrayData</code> instance.
  */
-class GenomicDataHelper {
-
-    private static final double FIFTIETH_PERCENTILE = 50;
-    private final CaArrayFacade caArrayFacade;
-    private final ArrayDataService arrayDataService;
-    private final CaIntegrator2Dao dao;
-
-    GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        this.caArrayFacade = caArrayFacade;
-        this.arrayDataService = arrayDataService;
-        this.dao = dao;
-    }
-
-    void loadData(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException {
-        for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
-            ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-            arrayDataService.save(probeSetValues);
-            arrayDataService.save(geneValues);
-        }
-    }
-
-    private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
-        PlatformHelper platformHelper = 
-            new PlatformHelper(probeSetValues.getReporterList().getPlatform());
-        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        ArrayDataValues geneValues = 
-            new ArrayDataValues(reporterList.getReporters());
-        for (ArrayData arrayData : probeSetValues.getArrayDatas()) {
-            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterList);
-        }
-        return geneValues;
-    }
-
-    private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, 
-            ArrayData arrayData,
-            PlatformHelper platformHelper, ReporterList reporterList) {
-        ArrayData geneArrayData = createGeneArrayData(arrayData, reporterList);
-        loadGeneValues(geneValues, probeSetValues, arrayData, geneArrayData, platformHelper);
-    }
-
-    private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
-            ArrayData geneArrayData, PlatformHelper platformHelper) {
-        Collection<AbstractReporter> geneReporters = 
-            platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        for (AbstractReporter geneReporter : geneReporters) {
-            Collection<AbstractReporter> probeSetReporters = 
-                platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
-                        ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                    computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
-        }
-    }
-
-    private float computeGeneReporterValue(Collection<AbstractReporter> probeSetReporters, 
-            ArrayDataValues probeSetValues, ArrayData arrayData) {
-        DescriptiveStatistics statistics = new DescriptiveStatistics();
-        for (AbstractReporter reporter : probeSetReporters) {
-            statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
-        }
-        return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
-    }
-
-    private ArrayData createGeneArrayData(ArrayData probeSetArrayData, ReporterList reporterList) {
-        ArrayData arrayData = new ArrayData();
-        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
-        arrayData.setStudy(probeSetArrayData.getStudy());
-        arrayData.setArray(probeSetArrayData.getArray());
-        arrayData.setSample(probeSetArrayData.getSample());
-        arrayData.getSample().getArrayDataCollection().add(arrayData);
-        arrayData.setReporterList(reporterList);
-        reporterList.getArrayDatas().add(arrayData);
-        dao.save(arrayData);
-        return arrayData;
-    }
-
+public enum ArrayDataType {
+    
     /**
-     * @return the caArrayFacade
+     * Gene expression.
      */
-    public CaArrayFacade getCaArrayFacade() {
-        return caArrayFacade;
-    }
+    GENE_EXPRESSION,
+    
+    /**
+     * Copy number.
+     */
+    COPY_NUMBER;
 
 }

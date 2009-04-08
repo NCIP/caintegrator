@@ -16,6 +16,7 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
         assertEquals(original.getName(), retrieved.getName());
         assertEquals(original.getArrayDataCollection().size(), retrieved.getArrayDataCollection().size());
         assertEquals(original.getArrayCollection().size(), retrieved.getArrayCollection().size());
+        compareCollections(original.getArrayDataCollection(), retrieved.getArrayDataCollection(), ArrayDataGenerator.INSTANCE);
     }
 
     @Override
@@ -28,13 +29,13 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
         sample.setName(getUniqueString());
         sample.getArrayCollection().clear();
         sample.getArrayDataCollection().clear();
-        ArrayData arrayData1 = new ArrayData();
-        Array array1 = new Array();
-        sample.getArrayCollection().add(array1);
-        sample.getArrayDataCollection().add(arrayData1);
-        arrayData1.setSample(sample);
-        array1.setSampleCollection(new HashSet<Sample>());
-        array1.getSampleCollection().add(sample);
+        ArrayData arrayData = ArrayDataGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+        Array array = new Array();
+        sample.getArrayCollection().add(array);
+        sample.getArrayDataCollection().add(arrayData);
+        arrayData.setSample(sample);
+        array.setSampleCollection(new HashSet<Sample>());
+        array.getSampleCollection().add(sample);
     }
 
 
