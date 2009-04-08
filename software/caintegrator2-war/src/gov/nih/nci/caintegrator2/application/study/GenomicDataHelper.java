@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -172,6 +173,7 @@ class GenomicDataHelper {
 
     private ArrayData createGeneArrayData(ArrayData probeSetArrayData, ReporterList reporterList) {
         ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
         arrayData.setStudy(probeSetArrayData.getStudy());
         arrayData.setArray(probeSetArrayData.getArray());
         arrayData.setSample(probeSetArrayData.getSample());

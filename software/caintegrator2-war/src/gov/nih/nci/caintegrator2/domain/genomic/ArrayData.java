@@ -14,6 +14,7 @@ public class ArrayData extends AbstractCaIntegrator2Object {
     private Sample sample;
     private Study study;
     private Array array;
+    private ArrayDataType type;
     
     /**
      * @return the reporterList
@@ -87,6 +88,20 @@ public class ArrayData extends AbstractCaIntegrator2Object {
         if (getStudy() == null) {
             throw new IllegalArgumentException("Null Study in ArrayData with id: " + getId());
         }
+    }
+
+    /**
+     * @return the type
+     */
+    public ArrayDataType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(ArrayDataType type) {
+        this.type = type;
     }
 
 }

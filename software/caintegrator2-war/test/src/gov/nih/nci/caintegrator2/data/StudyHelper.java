@@ -110,6 +110,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -498,6 +499,7 @@ public class StudyHelper {
         sampleAcquisition.setSample(sample);
         sample.setName("SAMPLE_" + sampleNum);
         ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
         ReporterList reporterList = new ReporterList();
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.getArrayDatas().add(arrayData);

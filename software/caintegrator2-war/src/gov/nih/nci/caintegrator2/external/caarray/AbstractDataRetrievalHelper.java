@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -235,6 +236,7 @@ abstract class AbstractDataRetrievalHelper {
         Sample sample = getAssociatedSample(hybridization);
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
         arrayData.setArray(array);
         ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayData.setReporterList(reporterList);
