@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.caintegrator2.domain.genomic">
+    <typedef name="ArrayDataType" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
+       <param name="enumClass">gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType</param> 
+    </typedef> 
 	<class name="ArrayData" table="ARRAY_DATA" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the ArrayData class -->
+        <property name="type" column="ARRAY_DATA_TYPE" type="ArrayDataType" />
 		<!-- Associations mapping for the ArrayData class -->
 		<many-to-one name="sample" class="gov.nih.nci.caintegrator2.domain.genomic.Sample" column="SAMPLE_ID" lazy="proxy" cascade="all" />
 		<many-to-one name="array" class="gov.nih.nci.caintegrator2.domain.genomic.Array" column="ARRAY_ID" unique="true" lazy="proxy" cascade="all" />
