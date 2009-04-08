@@ -28,10 +28,10 @@
   <body style="" onLoad="WWHUpdate();" onUnload="WWHUnload();" onKeyDown="WWHHandleKeyDown((document.all||document.getElementById||document.layers)?event:null);" onKeyPress="WWHHandleKeyPress((document.all||document.getElementById||document.layers)?event:null);" onKeyUp="WWHHandleKeyUp((document.all||document.getElementById||document.layers)?event:null);">
     <br />
     <div class="WebWorks_Breadcrumbs" style="text-align: left;">
-      <a class="WebWorks_Breadcrumb_Link" href="View%20Results.5.1.html#1163458">Viewing Search Results</a> &gt; Search Results Overview</div>
+      <a class="WebWorks_Breadcrumb_Link" href="View%20Results.5.1.html#1167812">Viewing Search Results</a> &gt; Search Results Overview</div>
     <hr align="left" />
     <blockquote>
-      <div class="Heading1"><a name="1163458">Search R</a>esults Overview</div>
+      <div class="Heading1"><a name="1167812">Search R</a>esults Overview</div>
       <div class="Body_Text"><a name="1163460">After you launch a search of a caIntegrator2 study, the system automatically opens the </a>Search Results tab showing the results of your search. </div>
       <div class="Body_Text"><a name="1163519">If you have not configured column and sort display parameters before launching the </a>search, by default the tab shows only the [subject] identifiers and a column that allows you to select each row of the data subset.</div>
       <div class="Body_Text"><a name="1161115">To display and/or sort additional data, you must return to the Columns and/or Sorting </a>tabs to set display parameters, then re-run the search. The new search results will display the additional information, with the columns and data sorted as you specified.</div>
@@ -42,6 +42,13 @@
           // Clear related topics
           //
           WWHClearRelatedTopics();
+
+          // Add related topics
+          //
+          WWHAddRelatedTopic("Clinical and Imaging Data", "caIntegrator2", "View%20Results.5.3.html#1163763");
+          WWHAddRelatedTopic("Genomic Data", "caIntegrator2", "View%20Results.5.4.html#1163775");
+          WWHAddRelatedTopic("Imaging Data Results", "caIntegrator2", "View%20Results.5.5.html#1161867");
+          WWHAddRelatedTopic("Exporting Data", "caIntegrator2", "View%20Results.5.6.html#1162538");
 
           document.writeln(WWHRelatedTopicsInlineHTML());
         // -->
