@@ -93,6 +93,8 @@ import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
@@ -210,7 +212,9 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
     
     private String executeAnalysis() {
-        loadParameters();
+        if (!loadParameters()) {
+            return INPUT;
+        }
         getCurrentComparativeMarkerSelectionAnalysisJob().setCreationDate(new Date());
         getCurrentComparativeMarkerSelectionAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
         getStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection()
@@ -221,9 +225,9 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         return STATUS_ACTION;
     }
     
-    private void loadParameters() {
+    private boolean loadParameters() {
         loadServers();
-        loadQueries();
+        return loadQueries();
     }
     
     private void loadServers() {
@@ -235,15 +239,38 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         getComparativeMarkerSelectionParameters().setServer(server);
     }
     
-    private void loadQueries() {
+    private boolean loadQueries() {
         if (!getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().isEmpty()) {
             getPreprocessDatasetParameters().getClinicalQueries().clear();
             getComparativeMarkerSelectionParameters().getClinicalQueries().clear();
             for (String id : getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs()) {
-                getPreprocessDatasetParameters().getClinicalQueries().add(getQuery(id));
-                getComparativeMarkerSelectionParameters().getClinicalQueries().add(getQuery(id));
+                Query currentQuery = getQuery(id);
+                if (!validateQuerySampleCount(currentQuery)) {
+                    return false;
+                }
+                getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
+                getComparativeMarkerSelectionParameters().getClinicalQueries().add(currentQuery);
             }
         }
+        return true;
+    }
+
+    private boolean validateQuerySampleCount(Query currentQuery) {
+        int numSamples = 0;
+        QueryResult results = queryManagementService.execute(currentQuery);
+        for (ResultRow row : results.getRowCollection()) {
+            if (!row.getSubjectAssignment().getSampleAcquisitionCollection().isEmpty()) {
+                numSamples++;
+            }
+            if (numSamples >= 2) {
+                break;
+            }
+        }
+        if (numSamples < 2) {
+            addActionError("Query " + currentQuery.getName() + " is invalid because it contains less than 2 samples.");
+            return false;
+        }
+        return true;
     }
     
     private Query getQuery(String id) {
