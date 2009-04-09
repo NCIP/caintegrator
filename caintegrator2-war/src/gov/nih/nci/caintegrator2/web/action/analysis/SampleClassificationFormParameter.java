@@ -121,7 +121,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
     private AnnotationDefinition classificationAnnotation;
     private EntityTypeEnum entityType;
 
-    SampleClassificationFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+    SampleClassificationFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
     }
 

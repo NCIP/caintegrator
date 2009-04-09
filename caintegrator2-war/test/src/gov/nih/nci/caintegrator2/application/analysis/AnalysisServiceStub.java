@@ -108,11 +108,13 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean createKMPlotCalled;
     public boolean createGEPlotCalled;
     public boolean executeGenePatternJobCalled;
+    public boolean executeComparativeMarkerSelectionJobCalled;
     
     public void clear() {
         createKMPlotCalled = false;
         createGEPlotCalled = false;
         executeGenePatternJobCalled = false;
+        executeComparativeMarkerSelectionJobCalled = false;
     }
 
     /**
@@ -169,6 +171,7 @@ public class AnalysisServiceStub implements AnalysisService {
     public List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
             PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
             throws ConnectionException {
+        executeComparativeMarkerSelectionJobCalled = true;
         return null;
     }
 

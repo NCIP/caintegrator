@@ -139,6 +139,10 @@
     <definition name="genePatternAnalysisResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisResults_tile.jsp" />
     </definition>
+    
+    <definition name="comparativeMarkerSelectionAnalysis" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/comparativeMarkerSelectionAnalysis_tile.jsp" />
+    </definition>
 
     <definition name="kmPlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />

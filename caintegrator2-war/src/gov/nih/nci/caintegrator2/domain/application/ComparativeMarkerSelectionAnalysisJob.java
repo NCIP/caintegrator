@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,107 +83,144 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.domain.application;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
-import javax.servlet.ServletException;
+/**
+ * Object representing a single gene pattern analysis job.
+ */
+public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2Object 
+                                    implements PersistedJob, Comparable <ComparativeMarkerSelectionAnalysisJob> {
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
+    private static final long serialVersionUID = 1L;
+    
+    private final transient ComparativeMarkerSelectionAnalysisForm comparativeMarkerSelectionAnalysisForm
+        = new ComparativeMarkerSelectionAnalysisForm();
+    private String name;
+    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
+    private String preprocessDataSetUrl;
+    private String comparativeMarkerSelectionUrl;
+    private Date creationDate;
+    private StudySubscription subscription;
+    private List<MarkerResult> results = new ArrayList<MarkerResult>();
 
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class GenePatternAjaxUpdaterTest {
-
-    private GenePatternAjaxUpdater updater;
-    private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceGPJobStub workspaceService;
-    private AnalysisServiceStub analysisService;
-    private GenePatternAnalysisJob job;
-
-    @Before
-    public void setUp() throws Exception {
-        updater = new GenePatternAjaxUpdater();
-        dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceGPJobStub();
-        analysisService = new AnalysisServiceStub();
-        analysisService.clear();
-        workspaceService.clear();
-        updater.setWorkspaceService(workspaceService);
-        updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setAnalysisService(analysisService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        job = new GenePatternAnalysisJob();
-        job.setName("Job");
-        job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        job.setCreationDate(new Date());
-        job.setId(Long.valueOf(1));
-    }
-
-    @Test
-    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
-        updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
+    /**
+     * @return the analysisForm
+     */
+    public ComparativeMarkerSelectionAnalysisForm getComparativeMarkerSelectionAnalysisForm() {
+        return comparativeMarkerSelectionAnalysisForm;
     }
     
-    @Test
-    public void testRunJob() throws InterruptedException {
-        updater.runJob(job);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus()));
+    /**
+     * @return the status
+     */
+    public AnalysisJobStatusEnum getStatus() {
+        return status;
     }
     
-    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
-        @Override
-        public UserWorkspace getWorkspace() {
-            UserWorkspace workspace = new UserWorkspace();
-            workspace.setUsername("Test");
-            StudySubscription subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setUserWorkspace(workspace);
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            workspace.getSubscriptionCollection().add(subscription);
-            job.setSubscription(subscription);
-            subscription.getGenePatternAnalysisJobCollection().add(job);
-            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
-            subscription.getGenePatternAnalysisJobCollection().add(job2);
-            job2.setSubscription(subscription);
-            job2.setCreationDate(new Date());
-            job2.setId(Long.valueOf(2));
-            job2.setName("Job2");
-            return workspace;
-        }
-    }
-    private final class PersistedJobStub implements PersistedJob {
-
-        public StudySubscription getSubscription() {
-            return null;
-        }
-        
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(AnalysisJobStatusEnum status) {
+        this.status = status;
     }
 
+    /**
+     * @return the preprocessDataSetUrl
+     */
+    public String getPreprocessDataSetUrl() {
+        return preprocessDataSetUrl;
+    }
+
+    /**
+     * @param preprocessDataSetUrl the preprocessDataSetUrl to set
+     */
+    public void setPreprocessDataSetUrl(String preprocessDataSetUrl) {
+        this.preprocessDataSetUrl = preprocessDataSetUrl;
+    }
+
+    /**
+     * @return the comparativeMarkerSelectionUrl
+     */
+    public String getComparativeMarkerSelectionUrl() {
+        return comparativeMarkerSelectionUrl;
+    }
+
+    /**
+     * @param comparativeMarkerSelectionUrl the comparativeMarkerSelectionUrl to set
+     */
+    public void setComparativeMarkerSelectionUrl(String comparativeMarkerSelectionUrl) {
+        this.comparativeMarkerSelectionUrl = comparativeMarkerSelectionUrl;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * @return the subscription
+     */
+    public StudySubscription getSubscription() {
+        return subscription;
+    }
+
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(StudySubscription subscription) {
+        this.subscription = subscription;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(ComparativeMarkerSelectionAnalysisJob o) {
+        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
+    }
+
+    /**
+     * @return the results
+     */
+    public List<MarkerResult> getResults() {
+        return results;
+    }
+
+    /**
+     * @param results the results to set
+     */
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setResults(List<MarkerResult> results) {
+        this.results = results;
+    }
 }

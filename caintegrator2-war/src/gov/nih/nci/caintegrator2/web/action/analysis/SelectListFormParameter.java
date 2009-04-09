@@ -98,7 +98,7 @@ public class SelectListFormParameter extends AbstractAnalysisFormParameter {
 
     private Map<AbstractParameterValue, String> displayValueMap;
 
-    SelectListFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+    SelectListFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
     }
 

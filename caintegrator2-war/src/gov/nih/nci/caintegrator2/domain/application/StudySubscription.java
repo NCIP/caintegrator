@@ -17,7 +17,9 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private Study study;
     private Collection<AbstractList> listCollection;
     private Collection<Query> queryCollection;
-    private Set<GenePatternAnalysisJob> analysisJobCollection = new HashSet<GenePatternAnalysisJob>(); 
+    private Set<GenePatternAnalysisJob> genePatternAnalysisJobCollection = new HashSet<GenePatternAnalysisJob>();
+    private Set<ComparativeMarkerSelectionAnalysisJob> comparativeMarkerSelectionAnalysisJobCollection =
+        new HashSet<ComparativeMarkerSelectionAnalysisJob>();
     private UserWorkspace userWorkspace;
     
     /**
@@ -77,18 +79,34 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the analysisJobCollection
+     * @return the genePatternAnalysisJobCollection
      */
-    public Set<GenePatternAnalysisJob> getAnalysisJobCollection() {
-        return analysisJobCollection;
+    public Set<GenePatternAnalysisJob> getGenePatternAnalysisJobCollection() {
+        return genePatternAnalysisJobCollection;
     }
 
     /**
-     * @param analysisJobCollection the analysisJobCollection to set
+     * @param genePatternAnalysisJobCollection the genePatternAnalysisJobCollection to set
      */
     @SuppressWarnings("unused") // For hibernate.
-    private void setAnalysisJobCollection(Set<GenePatternAnalysisJob> analysisJobCollection) {
-        this.analysisJobCollection = analysisJobCollection;
+    private void setGenePatternAnalysisJobCollection(Set<GenePatternAnalysisJob> genePatternAnalysisJobCollection) {
+        this.genePatternAnalysisJobCollection = genePatternAnalysisJobCollection;
+    }
+
+    /**
+     * @return the comparativeMarkerSelectionAnalysisJobCollection
+     */
+    public Set<ComparativeMarkerSelectionAnalysisJob> getComparativeMarkerSelectionAnalysisJobCollection() {
+        return comparativeMarkerSelectionAnalysisJobCollection;
+    }
+
+    /**
+     * @param comparativeMarkerSelectionAnalysisJobCollection the comparativeMarkerSelectionAnalysisJobCollection to set
+     */
+    @SuppressWarnings("unused") // For hibernate.
+    private void setComparativeMarkerSelectionAnalysisJobCollection(
+            Set<ComparativeMarkerSelectionAnalysisJob> comparativeMarkerSelectionAnalysisJobCollection) {
+        this.comparativeMarkerSelectionAnalysisJobCollection = comparativeMarkerSelectionAnalysisJobCollection;
     }
 
 }

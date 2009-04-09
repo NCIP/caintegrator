@@ -85,28 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.web.action.query;
 
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 /**
  * 
  */
-public class NewQueryAction extends AbstractCaIntegrator2Action {
+public class NewQueryAction extends AbstractDeployedStudyAction {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-            return;
-        } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
-            return;
-        }
-    }
 }

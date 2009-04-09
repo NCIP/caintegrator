@@ -106,6 +106,7 @@ import gridextensions.ComparativeMarkerSelectionResultCollection;
 /**
  * Runs the GenePattern grid service Comparative Marker Selection.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See excute method
 public class ComparativeMarkerSelectionGridRunner {
 
     private final ComparativeMarkerSelMAGESvcI client;
@@ -130,6 +131,7 @@ public class ComparativeMarkerSelectionGridRunner {
      * @return the results from Comparative Marker Selection.
      * @throws ConnectionException if unable to connect to grid service.
      */
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Loop through the all data
     public List<MarkerResult> execute(ComparativeMarkerSelectionParameters parameters, File gctFile, File clsFile) 
         throws ConnectionException {
         try {
@@ -149,7 +151,7 @@ public class ComparativeMarkerSelectionGridRunner {
             BioAssay[] bioAssay = mbaGenerator.double2DToBioAssayArray(values, rowNames, columnNames);
             ComparativeMarkerSelectionResultCollection result = 
                 client.performAnalysis(bioAssay, cls, parameters.getDatasetParameters());
-            return retrieveMarkerResultList(result.getMarkerResult());
+            return result == null ? null : retrieveMarkerResultList(result.getMarkerResult());
         } catch (IOException e) {
             throw new IllegalArgumentException("Couldn't read gct file at the path " + gctFile.getAbsolutePath(), e);
         } catch (ParseException e) {
@@ -182,7 +184,7 @@ public class ComparativeMarkerSelectionGridRunner {
         cai2MarkerResult.setFwer(markerResult.getFWER());
         cai2MarkerResult.setK(markerResult.getK());
         cai2MarkerResult.setMaxT(markerResult.getMaxT());
-        cai2MarkerResult.setQValue(markerResult.getQValue());
+        cai2MarkerResult.setQvalue(markerResult.getQValue());
         cai2MarkerResult.setRank(markerResult.getRank());
         cai2MarkerResult.setScore(markerResult.getScore());
         return cai2MarkerResult;

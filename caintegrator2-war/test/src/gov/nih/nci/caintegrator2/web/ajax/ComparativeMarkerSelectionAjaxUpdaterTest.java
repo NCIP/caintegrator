@@ -91,8 +91,8 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -112,17 +112,17 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionContext;
 
 
-public class GenePatternAjaxUpdaterTest {
+public class ComparativeMarkerSelectionAjaxUpdaterTest {
 
-    private GenePatternAjaxUpdater updater;
+    private ComparativeMarkerSelectionAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
     private WorkspaceServiceGPJobStub workspaceService;
     private AnalysisServiceStub analysisService;
-    private GenePatternAnalysisJob job;
+    private ComparativeMarkerSelectionAnalysisJob job;
 
     @Before
     public void setUp() throws Exception {
-        updater = new GenePatternAjaxUpdater();
+        updater = new ComparativeMarkerSelectionAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
         workspaceService = new WorkspaceServiceGPJobStub();
         analysisService = new AnalysisServiceStub();
@@ -134,7 +134,7 @@ public class GenePatternAjaxUpdaterTest {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        job = new GenePatternAnalysisJob();
+        job = new ComparativeMarkerSelectionAnalysisJob();
         job.setName("Job");
         job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
         job.setCreationDate(new Date());
@@ -145,7 +145,7 @@ public class GenePatternAjaxUpdaterTest {
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
+        assertNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
     
@@ -153,7 +153,7 @@ public class GenePatternAjaxUpdaterTest {
     public void testRunJob() throws InterruptedException {
         updater.runJob(job);
         Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
+        assertTrue(analysisService.executeComparativeMarkerSelectionJobCalled);
         assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus()));
     }
     
@@ -168,9 +168,9 @@ public class GenePatternAjaxUpdaterTest {
             workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
             workspace.getSubscriptionCollection().add(subscription);
             job.setSubscription(subscription);
-            subscription.getGenePatternAnalysisJobCollection().add(job);
-            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
-            subscription.getGenePatternAnalysisJobCollection().add(job2);
+            subscription.getComparativeMarkerSelectionAnalysisJobCollection().add(job);
+            ComparativeMarkerSelectionAnalysisJob job2 = new ComparativeMarkerSelectionAnalysisJob();
+            subscription.getComparativeMarkerSelectionAnalysisJobCollection().add(job2);
             job2.setSubscription(subscription);
             job2.setCreationDate(new Date());
             job2.setId(Long.valueOf(2));

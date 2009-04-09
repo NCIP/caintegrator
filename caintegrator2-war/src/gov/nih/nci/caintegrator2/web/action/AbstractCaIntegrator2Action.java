@@ -85,10 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -98,11 +96,15 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -285,31 +287,63 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     /**
      * @return the analysisForm
      */
-    public AnalysisForm getAnalysisForm() {
+    public GenePatternAnalysisForm getGenePatternAnalysisForm() {
         if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getCurrentAnalysisJob().getAnalysisForm();
+            return getDisplayableWorkspace().getCurrentGenePatternAnalysisJob().getGenePatternAnalysisForm();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the analysisForm
+     */
+    public ComparativeMarkerSelectionAnalysisForm getComparativeMarkerSelectionAnalysisForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentComparativeMarkerSelectionAnalysisJob().
+                getComparativeMarkerSelectionAnalysisForm();
         } else {
             return null;
         }
     }
     
     /**
-     * @return the currentAnalysisJob.
+     * @return the currentGenePatternAnalysisJob.
      */
-    public GenePatternAnalysisJob getCurrentAnalysisJob() {
+    public GenePatternAnalysisJob getCurrentGenePatternAnalysisJob() {
         if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getCurrentAnalysisJob();
+            return getDisplayableWorkspace().getCurrentGenePatternAnalysisJob();
         } else {
             return null;
         }
     }
     
     /**
-     * Resets the current job.
+     * Resets the current GenePattern job.
      */
-    protected void resetCurrentAnalysisJob() {
+    protected void resetCurrentGenePatternAnalysisJob() {
         if (getDisplayableWorkspace() != null) {
-            getDisplayableWorkspace().setCurrentAnalysisJob(new GenePatternAnalysisJob());
+            getDisplayableWorkspace().setCurrentGenePatternAnalysisJob(new GenePatternAnalysisJob());
+        }
+    }
+    
+    /**
+     * @return the currentComparativeMarkerSelectionAnalysisJob.
+     */
+    public ComparativeMarkerSelectionAnalysisJob getCurrentComparativeMarkerSelectionAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentComparativeMarkerSelectionAnalysisJob();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Resets the current ComparativeMarkerSelection job.
+     */
+    protected void resetCurrentComparativeMarkerSelectionAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            getDisplayableWorkspace().setCurrentGenePatternAnalysisJob(new GenePatternAnalysisJob());
         }
     }
 

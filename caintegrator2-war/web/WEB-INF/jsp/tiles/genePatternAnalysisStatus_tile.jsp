@@ -2,6 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type='text/javascript' src='dwr/interface/GenePatternAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/interface/ComparativeMarkerSelectionAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
@@ -13,7 +14,9 @@
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
         GenePatternAjaxUpdater.initializeJsp();
+        ComparativeMarkerSelectionAjaxUpdater.initializeJsp();
     }
+    
     </script>
     <!--Page Help-->
 
@@ -28,17 +31,31 @@
     <div id="errors" > </div>
     <table class="data">
         <tr>
-	        <th> Job Name </th>
-	        <th> Job Status </th>
-	        <th> Creation Date </th>
+            <th> GenePattern Job Name </th>
+            <th> Status </th>
+            <th> Creation Date </th>
         </tr>
-        <tbody id="genePatternStatusTable">
-        </tbody>
-
+        <tbody id="genePatternStatusTable" />
     </table>
     <br><br>
-        <s:url id="genePatternAnalysisUrl" includeParams="none" action="genePatternAnalysis" />
-        <s:a href="%{genePatternAnalysisUrl}" cssClass="btn" cssStyle="margin:0 5px;"><span class="btn_img"><span class="add">New Analysis Job</span></span></s:a>
+    <table class="data">
+        <tr>
+            <th> Comparative Marker Selection Job Name </th>
+            <th> Status </th>
+            <th> Creation Date </th>
+        </tr>
+        <tbody id="comparativeMarkerSelectionStatusTable" />
+    </table>
+    <br><br>
+        <s:form ><table><tr>
+        <td>
+            <s:select id="analysisType" name="analysisType" label="Analysis Type" value="GPM" 
+                list="#{'genePatternModules':'Gene Pattern Modules', 'comparativeMarkerSelection':'Comparative Marker Selection'}" />
+        </td>
+        <td>
+            <s:submit value="New Analysis Job" action="selectAnalysis" />
+        </td>
+        </tr></table></s:form>
             
 </div>
 

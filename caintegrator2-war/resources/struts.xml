@@ -393,13 +393,31 @@
 
         <!--  Analysis Actions -->
    
+        <action name="selectAnalysis" class="selectAnalysisAction">
+            <result name="genePatternModules" type="redirectAction">
+                <param name="actionName">genePatternAnalysis</param>
+            </result>
+            <result name="comparativeMarkerSelection" type="redirectAction">
+                <param name="actionName">comparativeMarkerSelectionAnalysis</param>
+            </result>
+            <result name="error" type="tiles">genePatternAnalysisStatus</result>
+            <result name="input" type="tiles">genePatternAnalysisStatus</result>
+        </action>
+   
         <action name="genePatternAnalysis" class="genePatternAnalysisAction">
             <result type="tiles">genePatternAnalysis</result>
             <result name="status" type="redirectAction">
                 <param name="actionName">genePatternAnalysisStatus</param>
             </result>
-            <result name="error" type="tiles">genePatternAnalysis</result>
             <result name="input" type="tiles">genePatternAnalysis</result>
+        </action>
+        
+        <action name="comparativeMarkerSelectionAnalysis" class="comparativeMarkerSelectionAnalysisAction">
+            <result type="tiles">comparativeMarkerSelectionAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
         </action>
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">

@@ -123,7 +123,7 @@ public class AnalysisFormTest {
     private SampleClassificationFormParameter formParameter4;
     private StudySubscription studySubscription = new StudySubscription();
     private Query query = new Query();
-    private AnalysisForm form = new AnalysisForm();
+    private GenePatternAnalysisForm form = new GenePatternAnalysisForm();
 
     @Before
     public void setUp() {        
