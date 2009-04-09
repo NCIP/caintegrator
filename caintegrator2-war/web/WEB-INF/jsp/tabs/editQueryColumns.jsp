@@ -2,7 +2,9 @@
 
 <!--Columns-->
     
-    <h2 class="resultsColumnsTabHeader">Select Results Type:</h2>
+    <h2 class="resultsColumnsTabHeader">Select Results Type: <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+   (draft)</a>
+    </div></h2>
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
             onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"

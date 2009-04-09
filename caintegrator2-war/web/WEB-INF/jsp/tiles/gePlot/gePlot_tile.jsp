@@ -18,14 +18,6 @@
 </script>
 
 <div id="content">
-
-        <!--Page Help-->
-
-        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('GE_annotation_help')" class="help">
-       (draft)</a>
-        </div>
-
-        <!--/Page Help-->
         
         <h1>Gene Expression Value Plots</h1>
         <s:actionerror/>
