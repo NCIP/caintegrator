@@ -102,9 +102,11 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.file.FileManagerImpl;
@@ -277,5 +279,21 @@ public class Cai2UtilTest {
         assertFalse(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
         compoundCriterion2.getCriterionCollection().add(new FoldChangeCriterion());
         assertTrue(Cai2Util.isCompoundCriterionGenomic(compoundCriterion1));
+    }
+    
+
+    @Test
+    public void testLoadCollection() {
+        Query query = new Query();
+        Cai2Util.loadCollection(query);
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        query.setCompoundCriterion(compoundCriterion);
+        Cai2Util.loadCollection(query);
+
+        compoundCriterion.getCriterionCollection().add(new SelectedValueCriterion());
+        compoundCriterion.getCriterionCollection().add(new FoldChangeCriterion());
+        compoundCriterion.getCriterionCollection().add(new GeneNameCriterion());
+        Cai2Util.loadCollection(query);
+        
     }
 }

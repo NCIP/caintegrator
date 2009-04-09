@@ -83,118 +83,88 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.ajax.ComparativeMarkerSelectionAjaxUpdater;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class WorkspaceServiceTest {
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class ComparativeMarkerSelectionAnalysisActionTest {
     
-    private WorkspaceService workspaceService;
-    private CaIntegrator2DaoStub daoStub;
+    private ComparativeMarkerSelectionAnalysisAction action;
+
 
     @Before
     public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
-        workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
-    }
-
-    @Test
-    public void testGetWorkspace() {
-        UserWorkspace workspace = workspaceService.getWorkspace();
-        assertNotNull(workspace);
-        
-        WorkspaceServiceImpl workspaceService2 = (WorkspaceServiceImpl) workspaceService;
-        workspaceService2.setDao(new DaoStubNoWorkspace());
-        workspace = workspaceService2.getWorkspace();
-        assertNotNull(workspace);
-    }
-    
-    @Test
-    public void testSubscribe() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        StudySubscription subscription = new StudySubscription();
         Study study = new Study();
-        study.setId(1L);
-        UserWorkspace workspace = workspaceService.getWorkspace();
-        assertEquals(0, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
-        assertEquals(1, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
-        assertEquals(1, workspace.getSubscriptionCollection().size());
-        workspaceService.unsubscribe(workspace, study);
-        assertEquals(0, workspace.getSubscriptionCollection().size());
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
+        subscription.setStudy(study);
+        subscription.setQueryCollection(new HashSet<Query>());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        action = new ComparativeMarkerSelectionAnalysisAction();
+        action.setAnalysisService(new AnalysisServiceStub());
+        action.setQueryManagementService(new QueryManagementServiceStub());
+        action.setWorkspaceService(new WorkspaceServiceStub());
+        action.setAjaxUpdater(new ComparativeMarkerSelectionAjaxUpdater());
     }
     
     @Test
-    public void testCreateDisplayableStudySummary() {
-        StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
-        DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
-        assertNotNull(summary);
-        assertTrue(daoStub.retrieveNumberImagesInStudyCalled);
-        assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
-        assertEquals(2, summary.getNumberImages());
-        assertEquals(1, summary.getNumberSubjectAnnotationColumns());
-        assertEquals(5, summary.getNumberSubjects());
-        assertEquals(study.getShortTitleText(), summary.getStudyName());
-        assertEquals(study.getLongTitleText(), summary.getStudyDescription());
-        assertTrue(summary.isGenomicStudy());
-        assertTrue(summary.isImagingStudy());
-        List<DisplayableGenomicSource> genomicSources = summary.getGenomicDataSources();
-        assertEquals(1, genomicSources.size());
-        DisplayableGenomicSource genomicSource = genomicSources.get(0);
-        assertEquals(2, genomicSource.getPlatforms().size());
-        assertEquals(2, genomicSource.getNumberSamples());
-        assertEquals(0, genomicSource.getNumberControlSamples());
-        assertFalse(genomicSource.isControlSamplesSet());
-        assertEquals("experimentIdentifier", genomicSource.getExperimentName());
-        assertNotNull(genomicSource.getGenomicDataSourceConfiguration());
-        //currently the genomic data source hostname is not populated in our test data
-        assertNull(genomicSource.getHostName());
-    }
-    
-    @Test(expected=IllegalArgumentException.class)
-    public void testCreateDisplayableStudySummaryInvalid() {
-        workspaceService.createDisplayableStudySummary(null);
+    public void testOpen() {
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.OPEN_ACTION);
+        assertEquals(ActionSupport.SUCCESS, action.execute());
     }
     
     @Test
-    public void testSaveGenePatternAnalysisJob() {
-        workspaceService.saveGenePatternAnalysisJob(new GenePatternAnalysisJob());
-        assertTrue(daoStub.saveCalled);
+    public void testValidate() {
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getCurrentComparativeMarkerSelectionAnalysisJob().setName("Test");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("Query 1");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("Query 2");
+        action.validate();
+        assertFalse(action.hasErrors());
     }
     
     @Test
-    public void testSaveComparativeMarkerSelectionAnalysisJob() {
-        workspaceService.saveComparativeMarkerSelectionAnalysisJob(new ComparativeMarkerSelectionAnalysisJob());
-        assertTrue(daoStub.saveCalled);
-    }
-    
-    private final class DaoStubNoWorkspace extends CaIntegrator2DaoStub {
-        
-        @Override
-        public UserWorkspace getWorkspace(String username) {
-            return null;
-        }
+    public void testExecute() {
+        testOpen();
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        assertEquals("status", action.execute());
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("Query 1");
+        action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("Query 2");
+        assertEquals("status", action.execute());
     }
 
 }

@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
  */
 public class TextFieldFormParameter extends AbstractAnalysisFormParameter {
 
-    TextFieldFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+    TextFieldFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
         stringValue = parameterValue.getValueAsString();
     }

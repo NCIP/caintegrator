@@ -110,7 +110,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     
     private Query selectedQuery;
 
-    GenomicDataFormParameter(AnalysisForm form, AbstractParameterValue parameterValue) {
+    GenomicDataFormParameter(GenePatternAnalysisForm form, AbstractParameterValue parameterValue) {
         super(form, parameterValue);
     }
 

@@ -345,6 +345,14 @@
     
     <!-- Analysis actions -->
     
+    <bean id="selectAnalysisAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.SelectAnalysisAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
     <bean id="genePatternAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisAction">
@@ -360,10 +368,26 @@
         <property name="ajaxUpdater">
             <ref local="genePatternAjaxUpdater"/>
         </property>
-    </bean>   
+    </bean>
     
+    <bean id="comparativeMarkerSelectionAnalysisAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisAction">
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="ajaxUpdater">
+            <ref local="comparativeMarkerSelectionAjaxUpdater"/>
+        </property>
+    </bean>
     
-   <bean id="kmPlotAnnotationBasedAction"
+    <bean id="kmPlotAnnotationBasedAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotAnnotationBasedAction">
         <property name="workspaceService">
@@ -503,6 +527,20 @@
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
     
+    <bean id="comparativeMarkerSelectionAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.ComparativeMarkerSelectionAjaxUpdater">
+        <dwr:remote javascript="ComparativeMarkerSelectionAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="analysisService">
+          <ref local="analysisService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
     <bean id="dwrUtilFactory" scope="singleton" class="gov.nih.nci.caintegrator2.web.ajax.DwrUtilFactory" />
 
     <!-- ******************************************************************* -->
@@ -570,6 +608,9 @@
         </property>
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
+        </property>
+        <property name="genePatternGridRunner">
+            <ref local="genePatternGridRunner"/>
         </property>
     </bean>
 
@@ -669,6 +710,26 @@
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
     
     <bean id="genePatternClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternClientFactoryImpl" />
+    
+    <bean id="genePatternGridRunner"
+        class="gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunnerImpl">
+        <property name="genePatternGridClientFactory">
+            <ref local="genePatternGridClientFactory" />
+        </property>
+        <property name="mbaGenerator">
+            <ref local="mbaGenerator" />
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService" />
+        </property>
+        <property name="fileManager">
+            <ref local="fileManager" />
+        </property>
+    </bean>
+    
+    <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
+
+    <bean id="mbaGenerator" class="edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl" />
 
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">

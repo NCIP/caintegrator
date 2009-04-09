@@ -169,6 +169,84 @@ public class ComparativeMarkerSelectionParameters {
     public void setServer(ServerConnectionProfile server) {
         this.server = server;
     }
+
+    /**
+     * @return the testDirection
+     */
+    public String getTestDirection() {
+        return datasetParameters.getTestDirection().getValue();
+    }
+
+    /**
+     * @param value of the testDirection to set
+     */
+    public void setTestDirection(String value) {
+        datasetParameters.setTestDirection(ComparativeMarkerSelectionTestDirection.fromString(value));
+    }
     
+    /**
+     * @return ComparativeMarkerSelectionTestDirection options.
+     */
+    public List<String> getTestDirectionOptions() {
+        List<String> options = new ArrayList<String>();
+        options.add(ComparativeMarkerSelectionTestDirection._value1);
+        options.add(ComparativeMarkerSelectionTestDirection._value2);
+        options.add(ComparativeMarkerSelectionTestDirection._value3);
+        return options;
+    }
+
+    /**
+     * @return the testStatistic
+     */
+    public String getTestStatistic() {
+        return datasetParameters.getTestStatistic().getValue();
+    }
+
+    /**
+     * @param value of the testStatistic to set
+     */
+    public void setTestStatistic(String value) {
+        datasetParameters.setTestStatistic(ComparativeMarkerSelectionTestStatistic.fromString(value));
+    }
+    
+    /**
+     * @return ComparativeMarkerSelectionTestDirection options.
+     */
+    public List<String> getTestStatisticOptions() {
+        List<String> options = new ArrayList<String>();
+        options.add(ComparativeMarkerSelectionTestStatistic._value1);
+        options.add(ComparativeMarkerSelectionTestStatistic._value2);
+        options.add(ComparativeMarkerSelectionTestStatistic._value3);
+        options.add(ComparativeMarkerSelectionTestStatistic._value4);
+        options.add(ComparativeMarkerSelectionTestStatistic._value5);
+        options.add(ComparativeMarkerSelectionTestStatistic._value6);
+        options.add(ComparativeMarkerSelectionTestStatistic._value7);
+        options.add(ComparativeMarkerSelectionTestStatistic._value8);
+        return options;
+    }
+
+    /**
+     * @return the phenotypeTest
+     */
+    public String getPhenotypeTest() {
+        return datasetParameters.getPhenotypeTest().getValue();
+    }
+
+    /**
+     * @param value of the phenotypeTest to set
+     */
+    public void setPhenotypeTest(String value) {
+        datasetParameters.setPhenotypeTest(ComparativeMarkerSelectionPhenotypeTest.fromString(value));
+    }
+    
+    /**
+     * @return ComparativeMarkerSelectionTestDirection options.
+     */
+    public List<String> getPhenotypeTestOptions() {
+        List<String> options = new ArrayList<String>();
+        options.add(ComparativeMarkerSelectionPhenotypeTest._value1);
+        options.add(ComparativeMarkerSelectionPhenotypeTest._value2);
+        return options;
+    }
 
 }

@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import java.util.HashSet;
 
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -106,6 +107,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean refreshAnnotationDefinitionsCalled;
     public boolean createDisplayableStudySummaryCalled;
     public boolean saveGenePatternAnalysisJobCalled;
+    public boolean saveComparativeMarkerSelectionAnalysisJobCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -114,6 +116,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         refreshAnnotationDefinitionsCalled = false;
         createDisplayableStudySummaryCalled = false;
         saveGenePatternAnalysisJobCalled = false;
+        saveComparativeMarkerSelectionAnalysisJobCalled= false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -166,6 +169,9 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void saveGenePatternAnalysisJob(GenePatternAnalysisJob job) {
         saveGenePatternAnalysisJobCalled = true;
-        
+    }
+
+    public void saveComparativeMarkerSelectionAnalysisJob(ComparativeMarkerSelectionAnalysisJob job) {
+        saveComparativeMarkerSelectionAnalysisJobCalled = true;
     }
 }

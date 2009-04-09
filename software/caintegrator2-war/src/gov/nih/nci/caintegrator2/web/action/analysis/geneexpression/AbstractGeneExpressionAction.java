@@ -91,14 +91,14 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEP
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 import java.util.Calendar;
 
 /**
  * Abstract Action dealing with GeneExpression plotting.
  */
-public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2Action {
+public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudyAction {
 
     /**
      * Annotation Tab.
@@ -157,22 +157,6 @@ public abstract class AbstractGeneExpressionAction extends AbstractCaIntegrator2
      * @return URL string.
      */
     public abstract String getBoxWhiskerPlotUrl();
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-            return;
-        } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
-            return;
-        } 
-    }
     
     /**
      * Clears the gene name.

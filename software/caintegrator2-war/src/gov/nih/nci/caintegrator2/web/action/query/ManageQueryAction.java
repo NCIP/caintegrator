@@ -171,13 +171,8 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      */
     @Override
     public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-            return;
-        } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
+        super.validate();
+        if (hasActionErrors()) {
             return;
         } else if ("selectedTabSearchResults".equals(selectedAction)) {
             return;

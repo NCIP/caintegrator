@@ -4,7 +4,7 @@
     <typedef name="AnalysisJobStatusEnum" class="gov.nih.nci.caintegrator2.common.GenericEnumUserType"> 
        <param name="enumClass">gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum</param> 
     </typedef> 
-	<class name="GenePatternAnalysisJob" table="GENE_PATTERN_ANALYSIS_JOB" lazy="false" polymorphism="explicit">
+	<class name="ComparativeMarkerSelectionAnalysisJob" table="COMPARATIVE_MARKER_SELECTION_ANALYSIS_JOB" lazy="false" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="ID">
 			<generator class="native" />
@@ -12,11 +12,16 @@
 		<!-- Attributes mapping for the Query class -->
 		<property name="name" type="string" column="NAME"/>
         <property name="status" type="AnalysisJobStatusEnum" column="STATUS"/>
-        <property name="jobUrl" type="string" column="JOB_URL"/>
+        <property name="preprocessDataSetUrl" type="string" column="PDS_URL"/>
+        <property name="comparativeMarkerSelectionUrl" type="string" column="CMS_URL"/>
 		<property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
-		<property name="gpJobNumber" type="integer" column="GP_JOB_NUMBER"/>
 		<!-- Associations mapping for the Query class -->
 		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />
-        
+        <list name="results" lazy="true" cascade="save-update,merge" >
+            <cache usage="read-write" />
+            <key column="COMPARATIVE_MARKER_JOB_ID" />
+            <list-index column="MARKER_INDEX"/>
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.analysis.MarkerResult"/>
+        </list>
 	</class>
 </hibernate-mapping>

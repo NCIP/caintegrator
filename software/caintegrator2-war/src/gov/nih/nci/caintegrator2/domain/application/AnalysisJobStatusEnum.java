@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Possible job status values for <code>GenePatternAnalysisJob.status</code>.
  */
-public enum GenePatternJobStatusEnum {
+public enum AnalysisJobStatusEnum {
 
     /**
      * Not yet submitted, still in creation state.
@@ -34,12 +34,12 @@ public enum GenePatternJobStatusEnum {
      */
     COMPLETED("Completed");
     
-    private static Map<String, GenePatternJobStatusEnum> valueToTypeMap = 
-                    new HashMap<String, GenePatternJobStatusEnum>();
+    private static Map<String, AnalysisJobStatusEnum> valueToTypeMap = 
+                    new HashMap<String, AnalysisJobStatusEnum>();
 
     private String value;
     
-    private GenePatternJobStatusEnum(String value) {
+    private AnalysisJobStatusEnum(String value) {
         this.value = value;
     }
 
@@ -57,9 +57,9 @@ public enum GenePatternJobStatusEnum {
         this.value = value;
     }
 
-    private static Map<String, GenePatternJobStatusEnum> getValueToTypeMap() {
+    private static Map<String, AnalysisJobStatusEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (GenePatternJobStatusEnum type : values()) {
+            for (AnalysisJobStatusEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -73,7 +73,7 @@ public enum GenePatternJobStatusEnum {
      * @param value the value to match
      * @return the matching type.
      */
-    public static GenePatternJobStatusEnum getByValue(String value) {
+    public static AnalysisJobStatusEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

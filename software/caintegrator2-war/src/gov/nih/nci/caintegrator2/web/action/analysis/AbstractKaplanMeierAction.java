@@ -94,7 +94,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -108,7 +108,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Abstract Action dealing with Kaplan-Meier plotting.
  */
-public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Action {
+public abstract class AbstractKaplanMeierAction extends AbstractDeployedStudyAction {
 
     /**
      * Annotation Tab.
@@ -192,15 +192,8 @@ public abstract class AbstractKaplanMeierAction extends AbstractCaIntegrator2Act
      */
     @Override
     public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-            return;
-        } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
-            return;
-        } else if (getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
+        super.validate();
+        if (!hasActionErrors() && getKmPlotForm().getSurvivalValueDefinitions().isEmpty()) {
             addActionError("There are no survival value definitions defined for this study, "
                     + "unable to create Kaplan-Meier plot.");
         }

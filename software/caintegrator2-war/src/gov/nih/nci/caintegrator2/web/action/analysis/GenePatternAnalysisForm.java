@@ -109,7 +109,7 @@ import com.opensymphony.xwork2.ValidationAware;
 /**
  * Used for Struts representation of the currently configured analysis method.
  */
-public class AnalysisForm {
+public class GenePatternAnalysisForm {
     
     private List<AnalysisMethod> analysisMethods = new ArrayList<AnalysisMethod>();
     private final List<String> analysisMethodNames = new ArrayList<String>();

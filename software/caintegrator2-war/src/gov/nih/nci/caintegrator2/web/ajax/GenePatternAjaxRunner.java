@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.web.ajax;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.JobInfoWrapper;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 
 /**
  * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
@@ -107,7 +107,7 @@ public class GenePatternAjaxRunner implements Runnable {
      * {@inheritDoc}
      */
     public void run() {
-        job.setStatus(GenePatternJobStatusEnum.PROCESSING_LOCALLY);
+        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         updater.updateJobStatus(job);
         try {
             processLocally();
@@ -118,9 +118,9 @@ public class GenePatternAjaxRunner implements Runnable {
 
     private JobInfoWrapper processLocally() throws GenePatternServiceException {
         JobInfoWrapper jobInfo = updater.getAnalysisService().executeGenePatternJob(
-                job.getAnalysisForm().getServer(), job.getAnalysisForm().getInvocation());
+                job.getGenePatternAnalysisForm().getServer(), job.getGenePatternAnalysisForm().getInvocation());
         job.setJobUrl(jobInfo.getUrl().toExternalForm());
-        job.setStatus(GenePatternJobStatusEnum.COMPLETED);
+        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         job.setGpJobNumber(jobInfo.getJobInfo().getJobNumber());
         updater.updateJobStatus(job);
         return jobInfo;
