@@ -2,7 +2,9 @@
 
 <!--Save Search-->
 
-    <h2>Save This Query</h2>
+    <h2>Save This Query<div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('save_query_help')" class="help">
+   (draft)</a>
+    </div></h2>
 
     <table class="form">
 

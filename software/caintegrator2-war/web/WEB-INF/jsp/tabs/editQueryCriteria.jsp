@@ -9,6 +9,9 @@
         <s:else>
             Unsaved Query
         </s:else>
+        <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
+   (draft)</a>
+    </div>
     </h2>
 
     <s:hidden name="selectedAction" value="" />

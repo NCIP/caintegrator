@@ -90,14 +90,6 @@
 
 <div id="content">
 
-        <!--Page Help-->
-
-        <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
-       (draft)</a>
-        </div>
-
-        <!--/Page Help-->
-
         <h1>Search <s:property value="study.shortTitleText"/></h1>
         <s:actionerror/>
         
