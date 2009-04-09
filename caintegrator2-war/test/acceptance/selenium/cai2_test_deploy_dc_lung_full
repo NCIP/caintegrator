@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>Manage Studies - Load DC Lung Moffet</title>
+<title>Manage Studies - Load DC Lung Full</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Manage Studies - Load DC Lung Moffet</td></tr>
+<tr><td rowspan="1" colspan="3">Manage Studies - Load DC Lung Full</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -18,8 +18,13 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>DC Lung Study Moffet (Public)</td>
+	<td>DC Lung Study Full (Public)</td>
 	<td>Cai2StudyName</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${Cai2StudyName}</td>
+	<td></td>
 </tr>
 <tr>
 	<td>open</td>
@@ -39,7 +44,7 @@
 <tr>
 	<td>type</td>
 	<td>createStudy_studyConfiguration_study_longTitleText</td>
-	<td>DC Lung Study (Public)</td>
+	<td>${Cai2StudyName}.&nbsp;&nbsp;Study created via Selenium test.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -2042,7 +2047,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
-	<td>liu-00216</td>
+	<td>liu-00217</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -2067,7 +2072,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung_sample_mapping.csv</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\DCLungStudy_full_array_mapping_load_qa.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -2082,7 +2087,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung_control_samples_moff.csv</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\DCLungStudy_full_control_samples_load.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
