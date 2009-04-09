@@ -343,7 +343,8 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     protected void resetCurrentComparativeMarkerSelectionAnalysisJob() {
         if (getDisplayableWorkspace() != null) {
-            getDisplayableWorkspace().setCurrentGenePatternAnalysisJob(new GenePatternAnalysisJob());
+            getDisplayableWorkspace().setCurrentComparativeMarkerSelectionAnalysisJob(
+                                            new ComparativeMarkerSelectionAnalysisJob());
         }
     }
 

@@ -15,6 +15,7 @@
     
     <div class="box2">   
     <div class="whitebg">   
+        <s:actionerror/>
         <s:form id="comparativeMarkerSelectionAnalysisForm" action="comparativeMarkerSelectionAnalysis">
         
             <s:hidden name="selectedAction" />

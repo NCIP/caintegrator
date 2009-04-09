@@ -180,13 +180,8 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
         if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
-            if (job.getResults().size() > 0) {
             utilThis.setValue(JOB_URL + jobId, 
                     " - <a href=\"\">View (not yet implemeted) </a>", false);
-            } else {
-                utilThis.setValue(JOB_URL + jobId, "(with no result)");
-                
-            }
         }
     }
     
