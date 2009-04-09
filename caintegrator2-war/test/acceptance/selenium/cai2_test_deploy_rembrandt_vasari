@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost:8080/caintegrator2/" />
+<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
 <title>Manage Studies - Load Rembrandt / VASARI</title>
 </head>
 <body>
@@ -15,6 +15,11 @@
 	<td>setTimeout</td>
 	<td>3600000</td>
 	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Rembrandt / VASARI</td>
+	<td>Cai2StudyName</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -29,7 +34,7 @@
 <tr>
 	<td>type</td>
 	<td>nameId</td>
-	<td>Rembrandt/VASARI</td>
+	<td>${Cai2StudyName}</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -81,7 +86,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -106,7 +111,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -131,7 +136,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -156,7 +161,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -182,7 +187,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -273,7 +278,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -309,7 +314,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -329,7 +334,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -374,7 +379,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -394,7 +399,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -449,7 +454,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -499,7 +504,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -584,7 +589,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -664,7 +669,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -719,7 +724,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -814,7 +819,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -899,7 +904,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -954,7 +959,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1034,7 +1039,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1198,7 +1203,7 @@
 <tr>
 	<td>type</td>
 	<td>addImagingFile_collectionName</td>
-	<td>NCRI</td>
+	<td>GBM Rembrandt</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1234,7 +1239,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[4]/td[1]/a</td>
+	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[3]/td[1]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -1245,7 +1250,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1285,37 +1290,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[5]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1370,7 +1345,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1410,7 +1385,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1455,7 +1430,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1490,7 +1465,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Entered via Selenium test.&nbsp;&nbsp;For Rembrandt/VASARI test data.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1510,7 +1485,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Entered via Selenium test.&nbsp;&nbsp;For Rembrandt/VASARI test data.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1545,7 +1520,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Entered via Selenium test.&nbsp;&nbsp;For Rembrandt/VASARI test data.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1585,7 +1560,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1610,7 +1585,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Entered via Selenium test.&nbsp;&nbsp;For Rembrandt/VASARI test data.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1630,7 +1605,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Entered via Selenium test.&nbsp;&nbsp;For Rembrandt/VASARI test data.</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

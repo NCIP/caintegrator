@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://caintegrator2-qa.nci.nih.gov/" />
+<link rel="selenium.base" href="http://localhost:8080/caintegrator2/" />
 <title>Manage Studies - Load Rembrandt NCRI</title>
 </head>
 <body>
@@ -15,6 +15,11 @@
 	<td>setTimeout</td>
 	<td>3600000</td>
 	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Rembrandt NCRI</td>
+	<td>Cai2StudyName</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -29,7 +34,7 @@
 <tr>
 	<td>type</td>
 	<td>nameId</td>
-	<td>Rembrandt with NCRI</td>
+	<td>${Cai2StudyName}</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -98,7 +103,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -114,6 +119,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -136,6 +146,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+</tr>
+<tr>
 	<td>select</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
 	<td>label=date</td>
@@ -154,6 +169,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -175,6 +195,11 @@
 	<td>clickAndWait</td>
 	<td>updateDefinition_createNewDefinition</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -265,7 +290,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -301,7 +326,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -321,7 +346,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -366,7 +391,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -386,7 +411,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -441,7 +466,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -471,7 +496,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -491,7 +516,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -576,7 +601,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -656,7 +681,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -711,7 +736,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -806,7 +831,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -926,7 +951,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -946,7 +971,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1026,7 +1051,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1189,6 +1214,16 @@
 </tr>
 <tr>
 	<td>type</td>
+	<td>addImagingFile_imageSourceConfiguration_serverProfile_username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addImagingFile_imageSourceConfiguration_serverProfile_password</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
 	<td>addImagingFile_collectionName</td>
 	<td>NCRI</td>
 </tr>
@@ -1237,7 +1272,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1287,7 +1322,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1327,7 +1362,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1357,7 +1392,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1412,7 +1447,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1452,7 +1487,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt NCRI</td>
+	<td>Created via Selenium test for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
