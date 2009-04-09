@@ -86,8 +86,8 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.text.SimpleDateFormat;
@@ -118,7 +118,7 @@ public class GenePatternAjaxUpdater extends AbstractDwrAjaxUpdater implements IG
     protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
         int counter = 0;
         List <GenePatternAnalysisJob> jobList = new ArrayList<GenePatternAnalysisJob>();
-        jobList.addAll(workspace.getCurrentStudySubscription().getAnalysisJobCollection());
+        jobList.addAll(workspace.getCurrentStudySubscription().getGenePatternAnalysisJobCollection());
         Collections.sort(jobList);
         for (GenePatternAnalysisJob job : jobList) {
             retrieveDwrUtility(job).addRows(GENE_PATTERN_STATUS_TABLE, 
@@ -185,9 +185,9 @@ public class GenePatternAjaxUpdater extends AbstractDwrAjaxUpdater implements IG
         }
     }
     
-    private String getStatusMessage(GenePatternJobStatusEnum jobStatus) {
-        if (GenePatternJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
-                || GenePatternJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
+    private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {
+        if (AnalysisJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
+                || AnalysisJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
             return AJAX_LOADING_GIF + " " + jobStatus.getValue();
         }
         return jobStatus.getValue();

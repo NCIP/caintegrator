@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.web.action.analysis.AnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
 
 import java.util.Date;
 
@@ -98,9 +98,9 @@ public class GenePatternAnalysisJob extends AbstractCaIntegrator2Object
 
     private static final long serialVersionUID = 1L;
     
-    private final transient AnalysisForm analysisForm = new AnalysisForm();
+    private final transient GenePatternAnalysisForm genePatternAnalysisForm = new GenePatternAnalysisForm();
     private String name;
-    private GenePatternJobStatusEnum status = GenePatternJobStatusEnum.NOT_SUBMITTED;
+    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
     private String jobUrl;
     private Date creationDate;
     private StudySubscription subscription;
@@ -109,21 +109,21 @@ public class GenePatternAnalysisJob extends AbstractCaIntegrator2Object
     /**
      * @return the analysisForm
      */
-    public AnalysisForm getAnalysisForm() {
-        return analysisForm;
+    public GenePatternAnalysisForm getGenePatternAnalysisForm() {
+        return genePatternAnalysisForm;
     }
     
     /**
      * @return the status
      */
-    public GenePatternJobStatusEnum getStatus() {
+    public AnalysisJobStatusEnum getStatus() {
         return status;
     }
     
     /**
      * @param status the status to set
      */
-    public void setStatus(GenePatternJobStatusEnum status) {
+    public void setStatus(AnalysisJobStatusEnum status) {
         this.status = status;
     }
 

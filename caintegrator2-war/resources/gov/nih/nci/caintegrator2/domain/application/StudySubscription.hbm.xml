@@ -19,10 +19,15 @@
 			<key column="STUDY_SUBSCRIPTION_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.AbstractList"/>
 		</set>
-		<set name="analysisJobCollection" lazy="true" cascade="all" >
+        <set name="genePatternAnalysisJobCollection" lazy="true" cascade="all" >
             <cache usage="read-write" />
             <key column="STUDY_SUBSCRIPTION_ID" />
             <one-to-many class="GenePatternAnalysisJob"/>
+        </set>
+        <set name="comparativeMarkerSelectionAnalysisJobCollection" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_SUBSCRIPTION_ID" />
+            <one-to-many class="ComparativeMarkerSelectionAnalysisJob"/>
         </set>
 		<many-to-one name="userWorkspace" class="UserWorkspace" column="USER_WORKSPACE_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>

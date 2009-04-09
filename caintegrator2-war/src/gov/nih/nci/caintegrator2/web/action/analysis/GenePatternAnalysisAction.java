@@ -91,11 +91,11 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
-import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IGenePatternAjaxUpdater;
 
 import java.net.MalformedURLException;
@@ -112,7 +112,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Action to configure and run GenePattern analysis jobs.
  */
-public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
+public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
 
@@ -163,7 +163,8 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
             return executeAnalysis();
         } else  {
-            throw new IllegalStateException("Invalid action: " + getSelectedAction());
+            addActionError("Invalid action: " + getSelectedAction());
+            return INPUT;
         }
     }
     
@@ -179,19 +180,22 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      * @return
      */
     private String open() {
-        resetCurrentAnalysisJob();
-        getAnalysisForm().setGenomicQueries(getGenomicQueries());
+        resetCurrentGenePatternAnalysisJob();
+        getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
         Collection<AnnotationDefinition> subjectClassifications = 
             getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
         Collection<AnnotationDefinition> imageSeriesClassifications = 
             getClassificationAnnotations(getStudy().getImageSeriesAnnotationCollection());
         Collection<AnnotationDefinition> sampleClassifications = 
             getClassificationAnnotations(getStudy().getSampleAnnotationCollection());
-        getAnalysisForm().clearClassificationAnnotations();
-        getAnalysisForm().addClassificationAnnotations(subjectClassifications, EntityTypeEnum.SUBJECT);
-        getAnalysisForm().addClassificationAnnotations(imageSeriesClassifications, EntityTypeEnum.IMAGESERIES);
-        getAnalysisForm().addClassificationAnnotations(sampleClassifications, EntityTypeEnum.SAMPLE);
-        setAnalysisMethodName(getAnalysisForm().getAnalysisMethodName());
+        getGenePatternAnalysisForm().clearClassificationAnnotations();
+        getGenePatternAnalysisForm().addClassificationAnnotations(subjectClassifications,
+                EntityTypeEnum.SUBJECT);
+        getGenePatternAnalysisForm().addClassificationAnnotations(imageSeriesClassifications,
+                EntityTypeEnum.IMAGESERIES);
+        getGenePatternAnalysisForm().addClassificationAnnotations(sampleClassifications,
+                EntityTypeEnum.SAMPLE);
+        setAnalysisMethodName(getGenePatternAnalysisForm().getAnalysisMethodName());
         return SUCCESS;
     }
 
@@ -225,15 +229,7 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
      */
     @Override
     public void validate() {
-        if (getStudySubscription() == null) {
-            addActionError("Please select a study under \"My Studies\".");
-            return;
-        } else if (!getStudy().isDeployed()) {
-            addActionError("The study '"
-                    + getStudy().getShortTitleText()
-                    + "' is not yet deployed.");
-            return;
-        }
+        super.validate();
         if (CONNECT_ACTION.equals(getSelectedAction())) {
             validateConnect();
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {
@@ -242,51 +238,51 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     }
     
     private void validateConnect() {
-        if (StringUtils.isEmpty(getAnalysisForm().getUrl())) {
+        if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUrl())) {
             addFieldError("analysisForm.url", "URL is required");
         } else {
             validateUrl();
         }
-        if (StringUtils.isEmpty(getAnalysisForm().getUsername())) {
+        if (StringUtils.isEmpty(getGenePatternAnalysisForm().getUsername())) {
             addFieldError("analysisForm.username", "Username is required");
         }
     }
 
     private void validateUrl() {
         try {
-            new URL(getAnalysisForm().getUrl());
+            new URL(getGenePatternAnalysisForm().getUrl());
         } catch (MalformedURLException e) {
             addFieldError("analysisForm.url", "Invalid URL format");
         }
     }
 
     private void validateExecuteAnalysis() {
-        if (StringUtils.isBlank(getCurrentAnalysisJob().getName())) {
+        if (StringUtils.isBlank(getCurrentGenePatternAnalysisJob().getName())) {
             addFieldError("currentAnalysisJob.name", "Job name required.");
         }
-        getAnalysisForm().validate(this);
+        getGenePatternAnalysisForm().validate(this);
     }
 
     /**
      * @return
      */
     private String changeMethod() {
-        if (!getAnalysisMethodName().equals(getAnalysisForm().getAnalysisMethodName())) {
-            getAnalysisForm().setAnalysisMethodName(getAnalysisMethodName());
+        if (!getAnalysisMethodName().equals(getGenePatternAnalysisForm().getAnalysisMethodName())) {
+            getGenePatternAnalysisForm().setAnalysisMethodName(getAnalysisMethodName());
         }
         return SUCCESS;
     }
 
     private String connect() {
         try {
-            if (!StringUtils.isBlank(getAnalysisForm().getServer().getUrl())) {
-                getAnalysisForm().setAnalysisMethods(
-                        getAnalysisService().getGenePatternMethods(getAnalysisForm().getServer()));
-                setAnalysisMethodName(getAnalysisForm().getAnalysisMethodName());
+            if (!StringUtils.isBlank(getGenePatternAnalysisForm().getServer().getUrl())) {
+                getGenePatternAnalysisForm().setAnalysisMethods(
+                        getAnalysisService().getGenePatternMethods(getGenePatternAnalysisForm().getServer()));
+                setAnalysisMethodName(getGenePatternAnalysisForm().getAnalysisMethodName());
             }
             return SUCCESS;
         } catch (GenePatternServiceException e) { 
-            getAnalysisForm().setAnalysisMethods(new ArrayList<AnalysisMethod>());
+            getGenePatternAnalysisForm().setAnalysisMethods(new ArrayList<AnalysisMethod>());
             addActionError("Couldn't retrieve GenePattern analysis method information: " + e.getMessage());
             return ERROR;
         }
@@ -294,17 +290,17 @@ public class GenePatternAnalysisAction extends AbstractCaIntegrator2Action {
     
     private String executeAnalysis() {
         configureInvocationParameters();
-        getCurrentAnalysisJob().setCreationDate(new Date());
-        getCurrentAnalysisJob().setStatus(GenePatternJobStatusEnum.SUBMITTED);
-        getStudySubscription().getAnalysisJobCollection().add(getCurrentAnalysisJob());
-        getCurrentAnalysisJob().setSubscription(getStudySubscription());
+        getCurrentGenePatternAnalysisJob().setCreationDate(new Date());
+        getCurrentGenePatternAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
+        getStudySubscription().getGenePatternAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());
+        getCurrentGenePatternAnalysisJob().setSubscription(getStudySubscription());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        ajaxUpdater.runJob(getCurrentAnalysisJob());
+        ajaxUpdater.runJob(getCurrentGenePatternAnalysisJob());
         return STATUS_ACTION;
     }
 
     private void configureInvocationParameters() {
-        for (AbstractAnalysisFormParameter formParameter : getAnalysisForm().getParameters()) {
+        for (AbstractAnalysisFormParameter formParameter : getGenePatternAnalysisForm().getParameters()) {
             formParameter.configureForInvocation(getStudySubscription(), getQueryManagementService());
         }
     }

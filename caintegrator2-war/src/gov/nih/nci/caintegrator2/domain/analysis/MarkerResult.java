@@ -102,7 +102,7 @@ public class MarkerResult extends AbstractCaIntegrator2Object {
     private Double featurePLow;
     private Double featurePHigh;
     private Double fdr;
-    private Double qValue;
+    private Double qvalue;
     private Double bonferroni;
     private Double maxT;
     private Double fwer;
@@ -209,16 +209,16 @@ public class MarkerResult extends AbstractCaIntegrator2Object {
         this.fdr = fdr;
     }
     /**
-     * @return the qValue
+     * @return the qvalue
      */
-    public Double getQValue() {
-        return qValue;
+    public Double getQvalue() {
+        return qvalue;
     }
     /**
-     * @param value the qValue to set
+     * @param qvalue the qvalue to set
      */
-    public void setQValue(Double value) {
-        qValue = value;
+    public void setQvalue(Double qvalue) {
+        this.qvalue = qvalue;
     }
     /**
      * @return the bonferroni

@@ -173,6 +173,30 @@ public class PreprocessDatasetParameters {
     public void setServer(ServerConnectionProfile server) {
         this.server = server;
     }
-    
 
+    /**
+     * @return the preprocessingFlag
+     */
+    public String getPreprocessingFlag() {
+        return datasetParameters.getPreprocessingFlag().getValue();
+    }
+
+    /**
+     * @param value of the preprocessingFlag to set
+     */
+    public void setPreprocessingFlag(String value) {
+        datasetParameters.setPreprocessingFlag(PreprocessDatasetPreprocessingFlag.fromString(value));
+    }
+    
+    /**
+     * @return PreprocessingFlag options.
+     */
+    public List<String> getPreprocessingFlagOptions() {
+        List<String> options = new ArrayList<String>();
+        options.add(PreprocessDatasetPreprocessingFlag._value1);
+        options.add(PreprocessDatasetPreprocessingFlag._value2);
+        options.add(PreprocessDatasetPreprocessingFlag._value3);
+        return options;
+    }
+    
 }

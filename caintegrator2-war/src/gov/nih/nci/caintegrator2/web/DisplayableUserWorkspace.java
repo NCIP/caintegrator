@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -125,7 +126,9 @@ public class DisplayableUserWorkspace {
     private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
-    private GenePatternAnalysisJob currentAnalysisJob = new GenePatternAnalysisJob();
+    private GenePatternAnalysisJob currentGenePatternAnalysisJob = new GenePatternAnalysisJob();
+    private ComparativeMarkerSelectionAnalysisJob currentComparativeMarkerSelectionAnalysisJob
+        = new ComparativeMarkerSelectionAnalysisJob();
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
@@ -386,15 +389,30 @@ public class DisplayableUserWorkspace {
     /**
      * @return the currentAnalysisJob
      */
-    public GenePatternAnalysisJob getCurrentAnalysisJob() {
-        return currentAnalysisJob;
+    public GenePatternAnalysisJob getCurrentGenePatternAnalysisJob() {
+        return currentGenePatternAnalysisJob;
     }
 
     /**
-     * @param currentAnalysisJob the currentAnalysisJob to set
+     * @param currentGenePatternAnalysisJob the currentGenePatternAnalysisJob to set
      */
-    public void setCurrentAnalysisJob(GenePatternAnalysisJob currentAnalysisJob) {
-        this.currentAnalysisJob = currentAnalysisJob;
+    public void setCurrentGenePatternAnalysisJob(GenePatternAnalysisJob currentGenePatternAnalysisJob) {
+        this.currentGenePatternAnalysisJob = currentGenePatternAnalysisJob;
+    }
+
+    /**
+     * @return the currentComparativeMarkerSelectionAnalysisJob
+     */
+    public ComparativeMarkerSelectionAnalysisJob getCurrentComparativeMarkerSelectionAnalysisJob() {
+        return currentComparativeMarkerSelectionAnalysisJob;
+    }
+
+    /**
+     * @param currentComparativeMarkerSelectionAnalysisJob the currentComparativeMarkerSelectionAnalysisJob to set
+     */
+    public void setCurrentComparativeMarkerSelectionAnalysisJob(
+            ComparativeMarkerSelectionAnalysisJob currentComparativeMarkerSelectionAnalysisJob) {
+        this.currentComparativeMarkerSelectionAnalysisJob = currentComparativeMarkerSelectionAnalysisJob;
     }
 
 }

@@ -83,118 +83,127 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.workspace;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
-import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
-import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Used for Struts representation of the currently configured analysis method.
+ */
+public class ComparativeMarkerSelectionAnalysisForm {
+    
+    private PreprocessDatasetParameters preprocessDatasetparameters;
+    private ComparativeMarkerSelectionParameters comparativeMarkerSelectionParameters;
+    
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
 
-public class WorkspaceServiceTest {
+    private List<String> selectedQueryIDs = new ArrayList<String>();
+    private List<String> unselectedQueryIDs = new ArrayList<String>();
     
-    private WorkspaceService workspaceService;
-    private CaIntegrator2DaoStub daoStub;
+    // JSP Select List Options
+    private Map<String, Query> selectedQueries = new HashMap<String, Query>();
+    private Map<String, Query> unselectedQueries = new HashMap<String, Query>();
 
-    @Before
-    public void setUp() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("workspaceservice-test-config.xml", WorkspaceServiceTest.class); 
-        workspaceService = (WorkspaceService) context.getBean("WorkspaceService"); 
-        daoStub = (CaIntegrator2DaoStub) context.getBean("dao");
-        daoStub.clear();
-    }
-
-    @Test
-    public void testGetWorkspace() {
-        UserWorkspace workspace = workspaceService.getWorkspace();
-        assertNotNull(workspace);
-        
-        WorkspaceServiceImpl workspaceService2 = (WorkspaceServiceImpl) workspaceService;
-        workspaceService2.setDao(new DaoStubNoWorkspace());
-        workspace = workspaceService2.getWorkspace();
-        assertNotNull(workspace);
-    }
-    
-    @Test
-    public void testSubscribe() {
-        Study study = new Study();
-        study.setId(1L);
-        UserWorkspace workspace = workspaceService.getWorkspace();
-        assertEquals(0, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
-        assertEquals(1, workspace.getSubscriptionCollection().size());
-        workspaceService.subscribe(workspace, study);
-        assertEquals(1, workspace.getSubscriptionCollection().size());
-        workspaceService.unsubscribe(workspace, study);
-        assertEquals(0, workspace.getSubscriptionCollection().size());
-    }
-    
-    @Test
-    public void testCreateDisplayableStudySummary() {
-        StudyHelper studyHelper = new StudyHelper();
-        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
-        DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
-        assertNotNull(summary);
-        assertTrue(daoStub.retrieveNumberImagesInStudyCalled);
-        assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
-        assertEquals(2, summary.getNumberImages());
-        assertEquals(1, summary.getNumberSubjectAnnotationColumns());
-        assertEquals(5, summary.getNumberSubjects());
-        assertEquals(study.getShortTitleText(), summary.getStudyName());
-        assertEquals(study.getLongTitleText(), summary.getStudyDescription());
-        assertTrue(summary.isGenomicStudy());
-        assertTrue(summary.isImagingStudy());
-        List<DisplayableGenomicSource> genomicSources = summary.getGenomicDataSources();
-        assertEquals(1, genomicSources.size());
-        DisplayableGenomicSource genomicSource = genomicSources.get(0);
-        assertEquals(2, genomicSource.getPlatforms().size());
-        assertEquals(2, genomicSource.getNumberSamples());
-        assertEquals(0, genomicSource.getNumberControlSamples());
-        assertFalse(genomicSource.isControlSamplesSet());
-        assertEquals("experimentIdentifier", genomicSource.getExperimentName());
-        assertNotNull(genomicSource.getGenomicDataSourceConfiguration());
-        //currently the genomic data source hostname is not populated in our test data
-        assertNull(genomicSource.getHostName());
-    }
-    
-    @Test(expected=IllegalArgumentException.class)
-    public void testCreateDisplayableStudySummaryInvalid() {
-        workspaceService.createDisplayableStudySummary(null);
-    }
-    
-    @Test
-    public void testSaveGenePatternAnalysisJob() {
-        workspaceService.saveGenePatternAnalysisJob(new GenePatternAnalysisJob());
-        assertTrue(daoStub.saveCalled);
-    }
-    
-    @Test
-    public void testSaveComparativeMarkerSelectionAnalysisJob() {
-        workspaceService.saveComparativeMarkerSelectionAnalysisJob(new ComparativeMarkerSelectionAnalysisJob());
-        assertTrue(daoStub.saveCalled);
-    }
-    
-    private final class DaoStubNoWorkspace extends CaIntegrator2DaoStub {
-        
-        @Override
-        public UserWorkspace getWorkspace(String username) {
-            return null;
-        }
+    /**
+     * 
+     * @return the server.
+     */
+    public ServerConnectionProfile getServer() {
+        return server;
     }
 
+    /**
+     * @return the preprocessDatasetparameters
+     */
+    public PreprocessDatasetParameters getPreprocessDatasetparameters() {
+        return preprocessDatasetparameters;
+    }
+
+    /**
+     * @param preprocessDatasetparameters the preprocessDatasetparameters to set
+     */
+    public void setPreprocessDatasetparameters(PreprocessDatasetParameters preprocessDatasetparameters) {
+        this.preprocessDatasetparameters = preprocessDatasetparameters;
+    }
+
+    /**
+     * @return the comparativeMarkerSelectionParameters
+     */
+    public ComparativeMarkerSelectionParameters getComparativeMarkerSelectionParameters() {
+        return comparativeMarkerSelectionParameters;
+    }
+
+    /**
+     * @param comparativeMarkerSelectionParameters the comparativeMarkerSelectionParameters to set
+     */
+    public void setComparativeMarkerSelectionParameters(
+            ComparativeMarkerSelectionParameters comparativeMarkerSelectionParameters) {
+        this.comparativeMarkerSelectionParameters = comparativeMarkerSelectionParameters;
+    }
+
+    /**
+     * @return the selectedQueryIDs
+     */
+    public List<String> getSelectedQueryIDs() {
+        return selectedQueryIDs;
+    }
+
+    /**
+     * @param selectedQueryIDs the selectedQueryIDs to set
+     */
+    public void setSelectedQueryIDs(List<String> selectedQueryIDs) {
+        this.selectedQueryIDs = selectedQueryIDs;
+    }
+
+    /**
+     * @return the unselectedQueryIDs
+     */
+    public List<String> getUnselectedQueryIDs() {
+        return unselectedQueryIDs;
+    }
+
+    /**
+     * @param unselectedQueryIDs the unselectedQueryIDs to set
+     */
+    public void setUnselectedQueryIDs(List<String> unselectedQueryIDs) {
+        this.unselectedQueryIDs = unselectedQueryIDs;
+    }
+
+    /**
+     * @return the selectedQueries
+     */
+    public Map<String, Query> getSelectedQueries() {
+        return selectedQueries;
+    }
+
+    /**
+     * @param selectedQueries the selectedQueries to set
+     */
+    public void setSelectedQueries(Map<String, Query> selectedQueries) {
+        this.selectedQueries = selectedQueries;
+    }
+
+    /**
+     * @return the unselectedQueries
+     */
+    public Map<String, Query> getUnselectedQueries() {
+        return unselectedQueries;
+    }
+
+    /**
+     * @param unselectedQueries the unselectedQueries to set
+     */
+    public void setUnselectedQueries(Map<String, Query> unselectedQueries) {
+        this.unselectedQueries = unselectedQueries;
+    }
+    
+    
 }

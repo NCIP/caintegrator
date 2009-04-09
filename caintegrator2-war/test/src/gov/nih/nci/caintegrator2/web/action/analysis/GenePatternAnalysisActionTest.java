@@ -150,41 +150,41 @@ public class GenePatternAnalysisActionTest {
     public void testConnect() {
         action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
         assertEquals(ActionSupport.SUCCESS, action.execute());
-        assertTrue(action.getAnalysisForm().getAnalysisMethods().isEmpty());
-        action.getAnalysisForm().setUrl("url");
+        assertTrue(action.getGenePatternAnalysisForm().getAnalysisMethods().isEmpty());
+        action.getGenePatternAnalysisForm().setUrl("url");
         action.execute();
-        assertNotNull(action.getAnalysisForm().getAnalysisMethods());
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethods().size());
+        assertNotNull(action.getGenePatternAnalysisForm().getAnalysisMethods());
+        assertEquals(1, action.getGenePatternAnalysisForm().getAnalysisMethods().size());
     }
 
     @Test
     public void testSetAnalysisMethodName() {
         action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
-        assertNull(action.getAnalysisForm().getInvocation());
-        action.getAnalysisForm().setUrl("url");
-        assertEquals("url", action.getAnalysisForm().getUrl());
+        assertNull(action.getGenePatternAnalysisForm().getInvocation());
+        action.getGenePatternAnalysisForm().setUrl("url");
+        assertEquals("url", action.getGenePatternAnalysisForm().getUrl());
         action.execute();
         action.setSelectedAction(GenePatternAnalysisAction.CHANGE_METHOD_ACTION);
-        assertEquals(1, action.getAnalysisForm().getAnalysisMethodNames().size());
+        assertEquals(1, action.getGenePatternAnalysisForm().getAnalysisMethodNames().size());
         action.setAnalysisMethodName("method");
         action.execute();
-        assertNotNull(action.getAnalysisForm().getInvocation());
-        assertEquals("method", action.getAnalysisForm().getAnalysisMethodName());
-        assertEquals(1, action.getAnalysisForm().getParameters().size());
-        AbstractAnalysisFormParameter parameter = action.getAnalysisForm().getParameters().get(0);
+        assertNotNull(action.getGenePatternAnalysisForm().getInvocation());
+        assertEquals("method", action.getGenePatternAnalysisForm().getAnalysisMethodName());
+        assertEquals(1, action.getGenePatternAnalysisForm().getParameters().size());
+        AbstractAnalysisFormParameter parameter = action.getGenePatternAnalysisForm().getParameters().get(0);
         assertEquals("parameter", parameter.getName());
         assertTrue(parameter.isRequired());
-        assertTrue(action.getAnalysisForm().isExecutable());
+        assertTrue(action.getGenePatternAnalysisForm().isExecutable());
         action.setAnalysisMethodName("");
         action.execute();
-        assertNull(action.getAnalysisForm().getInvocation());
-        assertFalse(action.getAnalysisForm().isExecutable());
+        assertNull(action.getGenePatternAnalysisForm().getInvocation());
+        assertFalse(action.getGenePatternAnalysisForm().isExecutable());
     }
     
     @Test
     public void testExecute() {
         action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
-        action.getAnalysisForm().setUrl("url");
+        action.getGenePatternAnalysisForm().setUrl("url");
         action.execute();
         action.setSelectedAction(GenePatternAnalysisAction.CHANGE_METHOD_ACTION);
         action.setAnalysisMethodName("method");
@@ -193,7 +193,7 @@ public class GenePatternAnalysisActionTest {
         AnalysisParameter genomicParameter = new AnalysisParameter();
         genomicParameter.setType(AnalysisParameterType.GENOMIC_DATA);
         genomicParameterValue.setParameter(genomicParameter);
-        action.getAnalysisForm().getInvocation().setParameterValue(genomicParameter, genomicParameterValue);
+        action.getGenePatternAnalysisForm().getInvocation().setParameterValue(genomicParameter, genomicParameterValue);
         action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
         assertEquals("status", action.execute());
     }
@@ -201,17 +201,17 @@ public class GenePatternAnalysisActionTest {
     @Test
     public void testValidate() {
         action.setSelectedAction(GenePatternAnalysisAction.CONNECT_ACTION);
-        action.getAnalysisForm().setUrl("");
-        action.getAnalysisForm().setUsername("username");
+        action.getGenePatternAnalysisForm().setUrl("");
+        action.getGenePatternAnalysisForm().setUsername("username");
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getAnalysisForm().setUrl("bad url");
+        action.getGenePatternAnalysisForm().setUrl("bad url");
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getAnalysisForm().setUrl("http://localhost/directory");
-        action.getCurrentAnalysisJob().setName("name");
+        action.getGenePatternAnalysisForm().setUrl("http://localhost/directory");
+        action.getCurrentGenePatternAnalysisJob().setName("name");
         action.validate();
         assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();
@@ -220,18 +220,18 @@ public class GenePatternAnalysisActionTest {
         action.setAnalysisMethodName("method");
         action.execute();
         action.setSelectedAction(GenePatternAnalysisAction.EXECUTE_ACTION);
-        action.getAnalysisForm().getParameters().get(0).setValue("");
+        action.getGenePatternAnalysisForm().getParameters().get(0).setValue("");
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getAnalysisForm().getParameters().get(0).setValue("value");
+        action.getGenePatternAnalysisForm().getParameters().get(0).setValue("value");
         action.validate();
         assertFalse(action.hasErrors());
-        action.getAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.INTEGER);
+        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.INTEGER);
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
-        action.getAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.FLOAT);
+        action.getGenePatternAnalysisForm().getParameters().get(0).getParameterValue().getParameter().setType(AnalysisParameterType.FLOAT);
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();

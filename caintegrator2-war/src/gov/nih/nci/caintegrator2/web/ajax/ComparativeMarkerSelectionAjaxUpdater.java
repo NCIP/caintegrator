@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,105 +85,133 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
-import javax.servlet.ServletException;
+import org.directwebremoting.proxy.dwr.Util;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class GenePatternAjaxUpdaterTest {
-
-    private GenePatternAjaxUpdater updater;
-    private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceGPJobStub workspaceService;
-    private AnalysisServiceStub analysisService;
-    private GenePatternAnalysisJob job;
-
-    @Before
-    public void setUp() throws Exception {
-        updater = new GenePatternAjaxUpdater();
-        dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceGPJobStub();
-        analysisService = new AnalysisServiceStub();
-        analysisService.clear();
-        workspaceService.clear();
-        updater.setWorkspaceService(workspaceService);
-        updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setAnalysisService(analysisService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        job = new GenePatternAnalysisJob();
-        job.setName("Job");
-        job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        job.setCreationDate(new Date());
-        job.setId(Long.valueOf(1));
-    }
-
-    @Test
-    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
-        updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
-    }
+/**
+ * This is an object which is turned into an AJAX javascript file using the DWR framework.  
+ */
+public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdater
+    implements IComparativeMarkerSelectionAjaxUpdater {
     
-    @Test
-    public void testRunJob() throws InterruptedException {
-        updater.runJob(job);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus()));
-    }
-    
-    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
-        @Override
-        public UserWorkspace getWorkspace() {
-            UserWorkspace workspace = new UserWorkspace();
-            workspace.setUsername("Test");
-            StudySubscription subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setUserWorkspace(workspace);
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            workspace.getSubscriptionCollection().add(subscription);
-            job.setSubscription(subscription);
-            subscription.getGenePatternAnalysisJobCollection().add(job);
-            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
-            subscription.getGenePatternAnalysisJobCollection().add(job2);
-            job2.setSubscription(subscription);
-            job2.setCreationDate(new Date());
-            job2.setId(Long.valueOf(2));
-            job2.setName("Job2");
-            return workspace;
+    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
+    private static final String STATUS_TABLE = "comparativeMarkerSelectionStatusTable";
+    private static final String JOB_NAME = "cmsJobName_";
+    private static final String JOB_STATUS = "cmsJobStatus_";
+    private static final String JOB_CREATION_DATE = "cmsJobCreationDate_";
+    private static final String JOB_URL = "cmsJobUrl_";
+    private AnalysisService analysisService;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
+        int counter = 0;
+        List <ComparativeMarkerSelectionAnalysisJob> jobList = new ArrayList<ComparativeMarkerSelectionAnalysisJob>();
+        jobList.addAll(workspace.getCurrentStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection());
+        Collections.sort(jobList);
+        for (ComparativeMarkerSelectionAnalysisJob job : jobList) {
+            retrieveDwrUtility(job).addRows(STATUS_TABLE, 
+                                            createRow(job), 
+                                            retrieveRowOptions(counter));
+            updateJobStatus(job);
+            counter++;
         }
     }
-    private final class PersistedJobStub implements PersistedJob {
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void associateJobWithSession(DwrUtilFactory dwrUtilFactory, String username, Util util) {
+        dwrUtilFactory.associateComparativeMarkerSelectionJobWithSession(username, util);
+    }
 
-        public StudySubscription getSubscription() {
-            return null;
-        }
+    private String[][] createRow(ComparativeMarkerSelectionAnalysisJob job) {
+        String[][] rowString = new String[1][3];
+        String id = job.getId().toString();
+        String startSpan = "<span id=\"";
+        String endSpan = "\"> </span>";
+        rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
+        rowString[0][1] = startSpan + JOB_STATUS + id + endSpan
+                            + startSpan + JOB_URL + id + endSpan;
+        rowString[0][2] = startSpan + JOB_CREATION_DATE + id + endSpan;
+        return rowString;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runJob(ComparativeMarkerSelectionAnalysisJob job) {
+        Thread jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this, job));
+        jobRunner.start();
+    }
+    
+    /**
+     * Adds error to JSP.
+     * @param errorMessage .
+     * @param job to associate JSP script session to.
+     */
+    public void addError(String errorMessage, ComparativeMarkerSelectionAnalysisJob job) {
+        retrieveDwrUtility(job).setValue("errors", errorMessage);
+    }
+
+    /**
+     * Updates job status.
+     * @param job to update.
+     */
+    public void updateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
+        getWorkspaceService().saveComparativeMarkerSelectionAnalysisJob(job);
         
+        Util utilThis = retrieveDwrUtility(job);
+        String jobId = job.getId().toString();
+        utilThis.setValue(JOB_NAME + jobId, job.getName());
+        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
+        utilThis.setValue(JOB_CREATION_DATE + jobId, 
+                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
+        if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
+            if (job.getResults().size() > 0) {
+            utilThis.setValue(JOB_URL + jobId, 
+                    " - <a href=\"\">View (not yet implemeted) </a>", false);
+            } else {
+                utilThis.setValue(JOB_URL + jobId, "(with no result)");
+                
+            }
+        }
     }
+    
+    private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {
+        if (AnalysisJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
+                || AnalysisJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
+            return AJAX_LOADING_GIF + " " + jobStatus.getValue();
+        }
+        return jobStatus.getValue();
+    }
+
+
+    /**
+     * @return the analysisService
+     */
+    public AnalysisService getAnalysisService() {
+        return analysisService;
+    }
+
+    /**
+     * @param analysisService the analysisService to set
+     */
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
+
 
 }

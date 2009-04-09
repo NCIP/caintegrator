@@ -104,6 +104,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
@@ -284,6 +285,25 @@ public final class Cai2Util {
     public static void loadCollections(AnnotationDefinition definition) {
         loadCollection(definition.getAnnotationValueCollection());
         loadCollection(definition.getPermissibleValueCollection());
+    }
+
+    /**
+     * Make sure all persistent collections are loaded.
+     * 
+     * @param query the query to ensure is loaded from Hibernate.
+     */
+    public static void loadCollection(Query query) {
+        if (query.getCompoundCriterion() != null) {
+            loadCollection(query.getCompoundCriterion().getCriterionCollection());
+            for (AbstractCriterion criterion : query.getCompoundCriterion().getCriterionCollection()) {
+                if (criterion instanceof SelectedValueCriterion) {
+                    loadCollection(((SelectedValueCriterion) criterion).getValueCollection());
+                } else if (criterion instanceof FoldChangeCriterion) {
+                    loadCollection(((FoldChangeCriterion) criterion).getCompareToSamples());
+                }
+            }
+        }
+        loadCollection(query.getColumnCollection());
     }
 
     /**
