@@ -422,6 +422,7 @@
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
+            <result name="input" type="tiles">genePatternAnalysisStatus</result>
         </action>
         
         <!-- Kaplan-Meier Actions -->
