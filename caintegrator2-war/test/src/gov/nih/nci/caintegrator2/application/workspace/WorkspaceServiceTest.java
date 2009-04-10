@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
+import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 import java.util.List;
@@ -150,9 +151,9 @@ public class WorkspaceServiceTest {
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
         assertNotNull(summary);
-        assertTrue(daoStub.retrieveNumberImagesInStudyCalled);
+        assertTrue(daoStub.retrieveNumberImagesForImagingSourceCalled);
+        assertTrue(daoStub.retrieveNumberImageSeriesForImagingSourceCalled);
         assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
-        assertEquals(2, summary.getNumberImages());
         assertEquals(1, summary.getNumberSubjectAnnotationColumns());
         assertEquals(5, summary.getNumberSubjects());
         assertEquals(study.getShortTitleText(), summary.getStudyName());
@@ -170,6 +171,14 @@ public class WorkspaceServiceTest {
         assertNotNull(genomicSource.getGenomicDataSourceConfiguration());
         //currently the genomic data source hostname is not populated in our test data
         assertNull(genomicSource.getHostName());
+        
+        List<DisplayableImageSource> imageSources = summary.getImageDataSources();
+        assertEquals(1, imageSources.size());
+        DisplayableImageSource imageSource = imageSources.get(0);
+        assertEquals(2, imageSource.getNumberImages());
+        assertEquals(1, imageSource.getNumberImageSeries());
+        assertEquals(1, imageSource.getNumberImageStudies());
+        assertEquals("collection", imageSource.getCollectionName());
     }
     
     @Test(expected=IllegalArgumentException.class)

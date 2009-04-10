@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
@@ -95,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
+import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 import java.util.HashSet;
@@ -218,12 +220,23 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public DisplayableStudySummary createDisplayableStudySummary(Study study) {
         DisplayableStudySummary studySummary = new DisplayableStudySummary(study);
         if (studySummary.isImagingStudy()) {
-            studySummary.setNumberImages(dao.retrieveNumberImagesInStudy(study));
+            addImagingData(studySummary);
         }
         if (studySummary.isGenomicStudy()) {
             addGenomicData(studySummary);
         }
         return studySummary;
+    }
+
+    private void addImagingData(DisplayableStudySummary studySummary) {
+        for (ImageDataSourceConfiguration imageSource
+                : studySummary.getStudy().getStudyConfiguration().getImageDataSources()) {
+            DisplayableImageSource displayableImageSource = new DisplayableImageSource(imageSource);
+            displayableImageSource.setNumberImageStudies(imageSource.getImageSeriesAcquisitions().size());
+            displayableImageSource.setNumberImageSeries(dao.retrieveNumberImageSeriesForImagingSource(imageSource));
+            displayableImageSource.setNumberImages(dao.retrieveNumberImagesForImagingSource(imageSource));
+            studySummary.getImageDataSources().add(displayableImageSource);
+        }
     }
 
 
