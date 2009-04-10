@@ -28,8 +28,10 @@
         <s:hidden name="genomicSource.id" />
         <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" />
         <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" />
-        <s:textfield label="caArray Username" name="genomicSource.serverProfile.username" />
-        <s:password label="caArray Password" name="genomicSource.serverProfile.password" />
+        <!-- NOTE - using custom struts theme to turn off autocomplete -->
+        <s:textfield label="caArrayUsername" name="genomicSource.serverProfile.username" theme="cai2xhtml" />
+        <s:password label="caArrayPassword" name="genomicSource.serverProfile.password" theme="cai2xhtml"/>
+        <!--/NOTE --> 
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" />
         <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
