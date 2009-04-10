@@ -300,11 +300,18 @@ public interface CaIntegrator2Dao {
     ImageDataSourceConfiguration retrieveImagingDataSourceForStudy(Study study);
     
     /**
-     * For a given study, finds the number of images associated with it.
-     * @param study to retrieve number of images.
-     * @return number of images in study.
+     * For a given image source, finds the number of image series associated with it.
+     * @param imageSource to retrieve number of images.
+     * @return number of image series for source.
      */
-    int retrieveNumberImagesInStudy(Study study);
+    int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration imageSource);
+    
+    /**
+     * For a given image source, finds the number of images associated with it.
+     * @param imageSource to retrieve number of images.
+     * @return number of images for source.
+     */
+    int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration imageSource);
     
     /**
      * For a given genomic source, retrieves all distinct platforms.
