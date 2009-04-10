@@ -17,26 +17,10 @@
         <s:hidden name="genomicSource.id" />
         <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" readonly="true" cssClass="readonly" />
         <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" readonly="true" cssClass="readonly" />
-        
-        <!-- Begin autocomplete workaround -->
-        <!-- The following table rows are being formatted outside of struts to allow -->
-        <!-- for inclusion of the autocomplete attribute, which is not supported by  -->
-        <!-- the struts tag library.                                                 -->
-        <tr>
-            <td class="tdLabel"><label class="label" for="saveSampleMapping_genomicSource_serverProfile_username">caArrayusername:</label></td>
-            <td>
-            <input label="caArrayUsername" name="genomicSource.serverProfile.username" readonly="true" class="readonly" autocomplete="off" />
-            </td>
-        </tr>
-        
-        <tr>
-            <td class="tdLabel"><label class="label" for="saveSampleMapping_genomicSource_serverProfile_password">caArraypassword:</label></td>
-            <td>        
-            <input type="password" class="readonly" id="saveSampleMapping_genomicSource_serverProfile_password" readonly="readonly" name="genomicSource.serverProfile.password" autocomplete="off" />
-            </td>
-        </tr>
-        <!-- End autocomplete workaround -->
-        
+        <!-- NOTE - using custom struts theme to turn off autocomplete -->
+        <s:textfield label="caArrayUsername" name="genomicSource.serverProfile.username" readonly="true" cssClass="readonly" theme="cai2xhtml" />
+        <s:password label="caArrayPassword" name="genomicSource.serverProfile.password" readonly="true" cssClass="readonly" theme="cai2xhtml"/>
+        <!--/NOTE -->       
         <s:textfield label="caArray Experiment Id" name="genomicSource.experimentIdentifier" readonly="true" cssClass="readonly" />
         <s:file name="sampleMappingFile" label="Subject to Sample Mapping File" />
         <s:submit value="Upload Mapping File" />
