@@ -392,6 +392,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         for (ResultRow resultRow : result.getRowCollection()) {
             if (resultRow.getImageSeries() != null) {
                 resultRow.getImageSeries().getImageCollection().isEmpty();
+                resultRow.getImageSeries().getImageStudy().getImageDataSource().getServerProfile().getHostname();
             }
             if (resultRow.getSubjectAssignment().getImageStudyCollection() != null) {
                 resultRow.getSubjectAssignment().getImageStudyCollection().isEmpty();
