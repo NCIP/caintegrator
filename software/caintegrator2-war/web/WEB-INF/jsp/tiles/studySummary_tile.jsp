@@ -157,10 +157,46 @@
 	        <tr>
 	            <th colspan="4">Imaging Data</th>
 	        </tr>
-	        <tr>
-                <td align="right">Number of Images:</td>
-                <td> <b><s:property value="studySummary.numberImages"/></b> </td>
+            <s:iterator value="%{studySummary.imageDataSources}" status="imageDataSourceStatus">
+
+            <tr>
+                <td align="right">Hostname:</td>
+                <td> <b><s:property value="hostName"/></b></td>
                 <td />
+                <td />
+            </tr>
+            
+            <tr>
+                <td align="right">Collection:</td>
+                <td> <b><s:property value="collectionName"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td align="right">Number of Image Studies Mapped:</td>
+                <td> <b><s:property value="numberImageStudies"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td align="right">Number of Image Series Mapped:</td>
+                <td> <b><s:property value="numberImageSeries"/></b></td>
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td align="right">Number of Images Mapped:</td>
+                <td> <b><s:property value="numberImages"/></b></td>
+                <td />
+                <td />
+            </tr>
+            
+            </s:iterator>
+            
+            <tr>
+                <td align="right">Number of Annotation Columns:</td>
+                <td> <b><s:property value="studySummary.numberImageSeriesAnnotationColumns"/> </b></td>
+                <td />  
                 <td />
             </tr>
         </s:if>

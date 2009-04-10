@@ -145,7 +145,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
     public boolean refreshCalled;
-    public boolean retrieveNumberImagesInStudyCalled;
+    public boolean retrieveNumberImagesForImagingSourceCalled;
+    public boolean retrieveNumberImageSeriesForImagingSourceCalled;
     public boolean retrievePlatformsForGenomicSourceCalled;
 
     public UserWorkspace getWorkspace(String username) {
@@ -188,7 +189,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformsCalled = false;
         setFlushModeCalled = false;
         refreshCalled = false;
-        retrieveNumberImagesInStudyCalled = false;
+        retrieveNumberImagesForImagingSourceCalled = false;
+        retrieveNumberImageSeriesForImagingSourceCalled = false;
         retrievePlatformsForGenomicSourceCalled = false;
     }
 
@@ -375,18 +377,25 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         
     }
 
-    public int retrieveNumberImagesInStudy(Study study) {
+    public int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration configuration) {
+        int numberImageSeries = 0;
+        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
+            numberImageSeries += imageAcquisition.getSeriesCollection().size();
+        }
+        retrieveNumberImageSeriesForImagingSourceCalled = true;
+        return numberImageSeries;
+    }
+    
+    public int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration configuration) {
         int numberImages = 0;
-        for (StudySubjectAssignment subject : study.getAssignmentCollection()) {
-            for (ImageSeriesAcquisition imageAcquisition : subject.getImageStudyCollection()) {
-                for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
-                    if (imageSeries != null && imageSeries.getImageCollection() != null) {
-                        numberImages += imageSeries.getImageCollection().size();
-                    }
+        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
+            for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
+                if (imageSeries != null && imageSeries.getImageCollection() != null) {
+                    numberImages += imageSeries.getImageCollection().size();
                 }
             }
         }
-        retrieveNumberImagesInStudyCalled = true;
+        retrieveNumberImagesForImagingSourceCalled = true;
         return numberImages;
     }
 

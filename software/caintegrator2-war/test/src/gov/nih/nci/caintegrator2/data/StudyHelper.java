@@ -130,6 +130,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -523,6 +524,7 @@ public class StudyHelper {
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         genomicDataSourceConfiguration.setExperimentIdentifier("experimentIdentifier");
         ImageDataSourceConfiguration imageDataSourceConfiguration = new ImageDataSourceConfiguration();
+        imageDataSourceConfiguration.setCollectionName("collection");
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
@@ -541,6 +543,20 @@ public class StudyHelper {
         sample2.getArrayCollection().add(array1);
         samples.add(sample2);
         genomicDataSourceConfiguration.setSamples(samples);
+        ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
+        Set<ImageSeries> seriesCollection = new HashSet<ImageSeries>();
+        ImageSeries imageSeries = new ImageSeries();
+        seriesCollection.add(imageSeries);
+        imageSeriesAcquisition.setSeriesCollection(seriesCollection);
+        Set<Image> imageCollection = new HashSet<Image>();
+        Image image1 = new Image();
+        Image image2 = new Image();
+        imageCollection.add(image1);
+        imageCollection.add(image2);
+        imageSeries.setImageCollection(imageCollection);
+        List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
+        imageSeriesAcquisitions.add(imageSeriesAcquisition);
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().addAll(imageSeriesAcquisitions);
         return study;
     }
     

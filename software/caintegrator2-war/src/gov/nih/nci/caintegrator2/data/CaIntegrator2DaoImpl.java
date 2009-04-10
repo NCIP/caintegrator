@@ -522,13 +522,23 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    public int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration imageSource) {
+        Criteria imageSeriesCriteria = getCurrentSession().createCriteria(ImageSeries.class);
+        imageSeriesCriteria.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION)
+                     .add(Restrictions.eq("imageDataSource", imageSource));
+        imageSeriesCriteria.setProjection(Projections.rowCount());
+        return (Integer) imageSeriesCriteria.list().get(0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)
-    public int retrieveNumberImagesInStudy(Study study) {
+    public int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration imageSource) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
         imageCriteria.createCriteria("series")
                      .createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION)
-                     .createCriteria(STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION)
-                     .add(Restrictions.eq(STUDY_ASSOCIATION, study));
+                     .add(Restrictions.eq("imageDataSource", imageSource));
         imageCriteria.setProjection(Projections.rowCount());
         return (Integer) imageCriteria.list().get(0);
     }
