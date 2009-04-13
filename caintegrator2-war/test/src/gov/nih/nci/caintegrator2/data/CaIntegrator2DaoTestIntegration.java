@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.NumericComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.NumericComparisonOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -142,6 +143,55 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         UserWorkspace workspace2 = this.dao.getWorkspace("username");
         assertEquals(workspace.getId(), workspace2.getId());
         
+    }
+    
+    @Test
+    public void testRetrieveAllSubscribedWorkspaces() {
+        Study study = new Study();
+        Study study2 = new Study();
+        
+        UserWorkspace workspace1 = new UserWorkspace();
+        StudySubscription subscription1 = new StudySubscription();
+        subscription1.setStudy(study);
+        workspace1.setSubscriptionCollection(new HashSet<StudySubscription>());
+        workspace1.getSubscriptionCollection().add(subscription1);
+        
+        UserWorkspace workspace2 = new UserWorkspace();
+        StudySubscription subscription2 = new StudySubscription();
+        subscription2.setStudy(study);
+        workspace2.setSubscriptionCollection(new HashSet<StudySubscription>());
+        workspace2.getSubscriptionCollection().add(subscription2);
+        
+        UserWorkspace workspace3 = new UserWorkspace();
+        StudySubscription subscription3 = new StudySubscription();
+        subscription3.setStudy(study2);
+        workspace3.setSubscriptionCollection(new HashSet<StudySubscription>());
+        workspace3.getSubscriptionCollection().add(subscription3);
+        dao.save(study);
+        dao.save(study2);
+        dao.save(workspace1);
+        dao.save(workspace2);
+        dao.save(workspace3);
+        
+        assertEquals(2, dao.retrieveAllSubscribedWorkspaces(study).size());
+        assertEquals(1, dao.retrieveAllSubscribedWorkspaces(study2).size());
+    }
+    
+    @Test
+    public void testGetManagedStudies() {
+        UserWorkspace userWorkspace1 = new UserWorkspace();
+        userWorkspace1.setUsername("user1");
+        userWorkspace1.setSubscriptionCollection(new HashSet<StudySubscription>());
+        StudySubscription studySubscription1 = new StudySubscription();
+        Study study1 = new Study();
+        studySubscription1.setStudy(study1);
+        StudyConfiguration studyConfiguration1 = new StudyConfiguration();
+        study1.setStudyConfiguration(studyConfiguration1);
+        userWorkspace1.getSubscriptionCollection().add(studySubscription1);
+        dao.save(study1);
+        dao.save(studySubscription1);
+        dao.save(userWorkspace1);
+        assertEquals(studyConfiguration1, dao.getManagedStudies("user1").get(0));
     }
 
     @Test

@@ -90,6 +90,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -132,6 +133,7 @@ public class StudyManagementServiceTest {
     private CaIntegrator2DaoStub daoStub;
     private CaDSRFacadeStub caDSRFacadeStub;
     private FileManagerStub fileManagerStub;
+    private WorkspaceServiceStub workspaceServiceStub;
 
     @Before
     public void setUp() throws Exception {
@@ -143,6 +145,8 @@ public class StudyManagementServiceTest {
         caDSRFacadeStub.clear();
         fileManagerStub = (FileManagerStub) context.getBean("fileManagerStub");
         fileManagerStub.clear();
+        workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceServiceStub");
+        workspaceServiceStub.clear();
     }
 
     @Test
@@ -163,6 +167,7 @@ public class StudyManagementServiceTest {
 
         studyManagementService.delete(configTest);
         assertTrue(daoStub.deleteCalled);
+        assertTrue(workspaceServiceStub.unSubscribeAllCalled);
     }
     
     @Test
