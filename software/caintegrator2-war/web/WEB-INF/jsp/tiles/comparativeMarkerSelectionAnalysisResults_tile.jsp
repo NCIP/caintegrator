@@ -38,10 +38,10 @@
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).feature}" />
                 </display:column>
                 <display:column title="Description" sortable="true" >
-                    <s:property value="%{job.results.get(#attr.jobResultRow_rowNum - 1).description}" />
+                    <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).description}" />
                 </display:column>
                 <display:column title="Score" sortable="true" >
-                    <s:property value="%{job.results.get(#attr.jobResultRow_rowNum - 1).score}" />
+                    <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).score}" />
                 </display:column>
                 <display:column title="Feature P" sortable="true" >
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).featureP}" />
