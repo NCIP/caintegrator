@@ -118,6 +118,12 @@ public interface WorkspaceService {
      * @param study - study to subscribe to.
      */
     void unsubscribe(UserWorkspace workspace, Study study);
+    
+    /**
+     * Un-subscribes all users from the given study.
+     * @param study to un-subscribe from.
+     */
+    void unsubscribeAll(Study study);
 
     /**
      * Saves the current changes.

@@ -146,6 +146,12 @@ public class WorkspaceServiceTest {
     }
     
     @Test
+    public void testUnsubscribeAll() {
+        workspaceService.unsubscribeAll(new Study());
+        assertTrue(daoStub.retrieveAllSubscribedWorkspacesCalled);
+    }
+    
+    @Test
     public void testCreateDisplayableStudySummary() {
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();

@@ -103,6 +103,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     private StudySubscription subscription;
     public boolean subscribeCalled;
     public boolean unSubscribeCalled;
+    public boolean unSubscribeAllCalled;
     public boolean saveUserWorspaceCalled;
     public boolean refreshAnnotationDefinitionsCalled;
     public boolean createDisplayableStudySummaryCalled;
@@ -117,6 +118,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         createDisplayableStudySummaryCalled = false;
         saveGenePatternAnalysisJobCalled = false;
         saveComparativeMarkerSelectionAnalysisJobCalled= false;
+        unSubscribeAllCalled = false;
     }
     public UserWorkspace getWorkspace() {
         UserWorkspace workspace = new UserWorkspace();
@@ -141,6 +143,10 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public void unsubscribe(UserWorkspace workspace, Study study) {
         unSubscribeCalled = true;
         
+    }
+    
+    public void unsubscribeAll(Study study) {
+        unSubscribeAllCalled = true;
     }
     
     public void setSubscription(StudySubscription subscription) {
@@ -174,4 +180,6 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public void saveComparativeMarkerSelectionAnalysisJob(ComparativeMarkerSelectionAnalysisJob job) {
         saveComparativeMarkerSelectionAnalysisJobCalled = true;
     }
+
+
 }
