@@ -202,6 +202,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void unsubscribeAll(Study study) {
+        List<UserWorkspace> workspaces = dao.retrieveAllSubscribedWorkspaces(study);
+        if (workspaces != null && !workspaces.isEmpty()) {
+            for (UserWorkspace workspace : workspaces) {
+                unsubscribe(workspace, study);
+            }
+        }
+    }
 
     private boolean isSubscribed(UserWorkspace workspace, Study study) {
         for (StudySubscription subscription : workspace.getSubscriptionCollection()) {

@@ -148,6 +148,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveNumberImagesForImagingSourceCalled;
     public boolean retrieveNumberImageSeriesForImagingSourceCalled;
     public boolean retrievePlatformsForGenomicSourceCalled;
+    public boolean retrieveAllSubscribedWorkspacesCalled;
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -192,6 +193,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         retrieveNumberImagesForImagingSourceCalled = false;
         retrieveNumberImageSeriesForImagingSourceCalled = false;
         retrievePlatformsForGenomicSourceCalled = false;
+        retrieveAllSubscribedWorkspacesCalled = false;
     }
 
     public <T> T get(Long id, Class<T> objectClass) {
@@ -411,6 +413,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         platformList.addAll(platforms);
         retrievePlatformsForGenomicSourceCalled = true;
         return platformList;
+    }
+
+    public List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study) {
+        retrieveAllSubscribedWorkspacesCalled = true;
+        return new ArrayList<UserWorkspace>();
     }
 
 }

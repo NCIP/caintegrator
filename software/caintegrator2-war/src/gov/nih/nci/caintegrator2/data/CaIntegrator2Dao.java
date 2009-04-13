@@ -175,6 +175,13 @@ public interface CaIntegrator2Dao {
     List<StudyConfiguration> getManagedStudies(String username);
     
     /**
+     * Retrieves all workspaces subscribed to the given study.
+     * @param study to find workspace subscriptions for.
+     * @return the list of workspaces.
+     */
+    List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study);
+    
+    /**
      * Returns the subjects (via their linked <code>StudySubjectAssignments</code> that match
      * the corresponding criterion.
      * 
