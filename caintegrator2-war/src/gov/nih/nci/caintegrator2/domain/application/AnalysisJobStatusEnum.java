@@ -30,6 +30,11 @@ public enum AnalysisJobStatusEnum {
     PROCESSING_REMOTELY("Processing Remotely"),
     
     /**
+     * Error Connecting.
+     */
+    ERROR_CONNECTING("Error Connecting"),
+    
+    /**
      * Completed.
      */
     COMPLETED("Completed");

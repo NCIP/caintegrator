@@ -83,53 +83,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import java.text.DecimalFormat;
 
-import java.util.List;
+import javax.servlet.jsp.PageContext;
+
+import org.displaytag.decorator.DisplaytagColumnDecorator;
+import org.displaytag.exception.DecoratorException;
+import org.displaytag.properties.MediaTypeEnum;
 
 /**
- * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
- * need to eventually add a function to process the job remotely and update the status on GenePattern side.
+ * This is a Displaytag Decorator for the Double columns with 2 decimal points.
  */
-public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
-    private final ComparativeMarkerSelectionAjaxUpdater updater;
-    private final ComparativeMarkerSelectionAnalysisJob job;
+public class DoubleFormatColumnDecorator implements DisplaytagColumnDecorator {
     
-    ComparativeMarkerSelectionAjaxRunner(ComparativeMarkerSelectionAjaxUpdater updater,
-            ComparativeMarkerSelectionAnalysisJob job) {
-        this.updater = updater;
-        this.job = job;
-    }
-
+    private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#0.0000");
     /**
      * {@inheritDoc}
      */
-    public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        updater.updateJobStatus(job);
-        try {
-            processLocally();
-        } catch (ConnectionException e) {
-            updater.addError("Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
-                    + " - " + e.getMessage(), job);
-            job.setStatus(AnalysisJobStatusEnum.ERROR_CONNECTING);
-            updater.updateJobStatus(job);
-        }
-    }
-
-    private void processLocally() throws ConnectionException {
-        List<MarkerResult> results = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
-                job.getSubscription(),
-                job.getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters(),
-                job.getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters());
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        job.getResults().addAll(results);
-        updater.updateJobStatus(job);
+    public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
+        return DOUBLE_FORMAT.format(Double.parseDouble((String) columnValue)).toString();
     }
 
 }

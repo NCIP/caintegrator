@@ -387,7 +387,8 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      */
     public Map<String, String> getPreprocessDatasetServices() {
         Map<String, String> preprocessDatasetServices = new HashMap<String, String>();
-        preprocessDatasetServices.put(PREPROCESS_DATASET_URL, "Broad MIT edu");
+        preprocessDatasetServices.put(PREPROCESS_DATASET_URL,
+                "Broad Institude - " + PREPROCESS_DATASET_URL);
         return preprocessDatasetServices;
     }
 
@@ -396,7 +397,8 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      */
     public Map<String, String> getComparativeMarkerSelectionServices() {
         Map<String, String> comparativeMarkerSelectionServices = new HashMap<String, String>();
-        comparativeMarkerSelectionServices.put(COMPARATIVE_MARKER_URL, "Broad MIT edu");
+        comparativeMarkerSelectionServices.put(COMPARATIVE_MARKER_URL,
+                "Broad Institude - " + COMPARATIVE_MARKER_URL);
         return comparativeMarkerSelectionServices;
     }
 }
