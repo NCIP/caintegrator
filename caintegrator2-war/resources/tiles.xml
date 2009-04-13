@@ -143,6 +143,10 @@
     <definition name="comparativeMarkerSelectionAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/comparativeMarkerSelectionAnalysis_tile.jsp" />
     </definition>
+    
+    <definition name="comparativeMarkerSelectionAnalysisResults" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/comparativeMarkerSelectionAnalysisResults_tile.jsp" />
+    </definition>
 
     <definition name="kmPlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />

@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
@@ -271,6 +272,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
 
     /**
+     * @return the cmsJobResult
+     */
+    public final DisplayableCmsJobResult getCmsJobResult() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCmsJobResult();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @param queryResult the queryResult to set
      */
     protected final void setQueryResult(DisplayableQueryResult queryResult) {
@@ -282,6 +294,13 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
      */
     protected final void setGenomicDataQueryResult(GenomicDataQueryResult genomicDataQueryResult) {
         getDisplayableWorkspace().setGenomicDataQueryResult(genomicDataQueryResult);
+    }
+
+    /**
+     * @param cmsJobResult the genomicDataQueryResult to set
+     */
+    protected final void setCmsJobResult(DisplayableCmsJobResult cmsJobResult) {
+        getDisplayableWorkspace().setCmsJobResult(cmsJobResult);
     }
 
     /**

@@ -420,6 +420,11 @@
             <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
         </action>
         
+        <action name="comparativeMarkerSelectionAnalysisResults" class="comparativeMarkerSelectionAnalysisResultsAction">
+            <result type="tiles">comparativeMarkerSelectionAnalysisResults</result>
+            <result name="input" type="tiles">comparativeMarkerSelectionAnalysisResults</result>
+        </action>
+        
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
             <result name="input" type="tiles">genePatternAnalysisStatus</result>

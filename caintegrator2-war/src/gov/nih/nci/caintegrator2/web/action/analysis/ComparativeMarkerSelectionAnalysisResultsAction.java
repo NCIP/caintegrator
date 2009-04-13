@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caArray
+ * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caArray Software License (the License) is between NCI and You. You (or 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caArray Software to (i) use, install, access, operate, 
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caArray Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator Software and any 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator2 Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,131 +83,90 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-import org.directwebremoting.proxy.dwr.Util;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 /**
- * This is an object which is turned into an AJAX javascript file using the DWR framework.  
+ * 
  */
-public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdater
-    implements IComparativeMarkerSelectionAjaxUpdater {
+public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDeployedStudyAction {
     
-    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
-    private static final String STATUS_TABLE = "comparativeMarkerSelectionStatusTable";
-    private static final String JOB_NAME = "cmsJobName_";
-    private static final String JOB_STATUS = "cmsJobStatus_";
-    private static final String JOB_CREATION_DATE = "cmsJobCreationDate_";
-    private static final String JOB_URL = "cmsJobUrl_";
-    private AnalysisService analysisService;
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
-        int counter = 0;
-        List <ComparativeMarkerSelectionAnalysisJob> jobList = new ArrayList<ComparativeMarkerSelectionAnalysisJob>();
-        jobList.addAll(workspace.getCurrentStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection());
-        Collections.sort(jobList);
-        for (ComparativeMarkerSelectionAnalysisJob job : jobList) {
-            retrieveDwrUtility(job).addRows(STATUS_TABLE, 
-                                            createRow(job), 
-                                            retrieveRowOptions(counter));
-            updateJobStatus(job);
-            counter++;
-        }
-    }
-    
+    private static final int DEFAULT_PAGE_SIZE = 50;
+    private Long jobId;
+
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void associateJobWithSession(DwrUtilFactory dwrUtilFactory, String username, Util util) {
-        dwrUtilFactory.associateComparativeMarkerSelectionJobWithSession(username, util);
-    }
-
-    private String[][] createRow(ComparativeMarkerSelectionAnalysisJob job) {
-        String[][] rowString = new String[1][3];
-        String id = job.getId().toString();
-        String startSpan = "<span id=\"";
-        String endSpan = "\"> </span>";
-        rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
-        rowString[0][1] = startSpan + JOB_STATUS + id + endSpan
-                            + startSpan + JOB_URL + id + endSpan;
-        rowString[0][2] = startSpan + JOB_CREATION_DATE + id + endSpan;
-        return rowString;
+    public void validate() {
+        super.validate();
+        if (jobId == null) {
+            addActionError("No job id for Comparative Marker Selection specified.");
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void runJob(ComparativeMarkerSelectionAnalysisJob job) {
-        Thread jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this, job));
-        jobRunner.start();
+    @Override
+    public String execute() {
+        if (getDisplayableWorkspace().getCmsJobResult() == null
+                || jobId.compareTo(getDisplayableWorkspace().getCmsJobResult().getJobId()) != 0) {
+            loadJob();
+        }
+        return SUCCESS;
     }
     
-    /**
-     * Adds error to JSP.
-     * @param errorMessage .
-     * @param job to associate JSP script session to.
-     */
-    public void addError(String errorMessage, ComparativeMarkerSelectionAnalysisJob job) {
-        retrieveDwrUtility(job).setValue("errors", errorMessage);
+    private void loadJob() {
+        for (ComparativeMarkerSelectionAnalysisJob cmsJob
+                : getStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection()) {
+            if (jobId.compareTo(cmsJob.getId()) == 0) {
+                Cai2Util.loadCollection(cmsJob.getResults());
+                getDisplayableWorkspace().setCmsJobResult(
+                        new DisplayableCmsJobResult(cmsJob));
+                return;
+            }
+        }
+        addActionError("Comparative Marker Selection job not found: " + jobId);
     }
 
     /**
-     * Updates job status.
-     * @param job to update.
+     * @return the jobId
      */
-    public void updateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
-        getWorkspaceService().saveComparativeMarkerSelectionAnalysisJob(job);
+    public Long getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+    
+    /**
+     * @return page size
+     */
+    public int getPageSize() {
+        if (getCmsJobResult() != null) {
+            return getCmsJobResult().getPageSize();
+        }
+        return DEFAULT_PAGE_SIZE;
+    }
         
-        Util utilThis = retrieveDwrUtility(job);
-        String jobId = job.getId().toString();
-        utilThis.setValue(JOB_NAME + jobId, job.getName());
-        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
-        utilThis.setValue(JOB_CREATION_DATE + jobId, 
-                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
-        if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
-            utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">View</a>",
-                    false);
+    /**
+     * Set the page size.
+     * @param pageSize the page size
+     */
+    public void setPageSize(int pageSize) {
+        if (getCmsJobResult() != null) {
+            getCmsJobResult().setPageSize(pageSize);
         }
     }
-    
-    private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {
-        if (AnalysisJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
-                || AnalysisJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
-            return AJAX_LOADING_GIF + " " + jobStatus.getValue();
-        }
-        return jobStatus.getValue();
-    }
-
-
-    /**
-     * @return the analysisService
-     */
-    public AnalysisService getAnalysisService() {
-        return analysisService;
-    }
-
-    /**
-     * @param analysisService the analysisService to set
-     */
-    public void setAnalysisService(AnalysisService analysisService) {
-        this.analysisService = analysisService;
-    }
-
 
 }
