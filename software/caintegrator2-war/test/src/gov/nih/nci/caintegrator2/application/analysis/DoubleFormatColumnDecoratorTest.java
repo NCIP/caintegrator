@@ -83,53 +83,28 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.application.analysis;
 
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import org.displaytag.exception.DecoratorException;
+import org.displaytag.properties.MediaTypeEnum;
+import org.junit.Test;
 
 /**
- * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
- * need to eventually add a function to process the job remotely and update the status on GenePattern side.
+ * 
  */
-public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
-    private final ComparativeMarkerSelectionAjaxUpdater updater;
-    private final ComparativeMarkerSelectionAnalysisJob job;
-    
-    ComparativeMarkerSelectionAjaxRunner(ComparativeMarkerSelectionAjaxUpdater updater,
-            ComparativeMarkerSelectionAnalysisJob job) {
-        this.updater = updater;
-        this.job = job;
-    }
+public class DoubleFormatColumnDecoratorTest {
 
     /**
-     * {@inheritDoc}
+     * Test method for {@link gov.nih.nci.caintegrator2.application.query.DateFormatColumnDecorator#decorate(java.lang.Object, javax.servlet.jsp.PageContext, org.displaytag.properties.MediaTypeEnum)}.
+     * @throws DecoratorException 
      */
-    public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        updater.updateJobStatus(job);
-        try {
-            processLocally();
-        } catch (ConnectionException e) {
-            updater.addError("Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
-                    + " - " + e.getMessage(), job);
-            job.setStatus(AnalysisJobStatusEnum.ERROR_CONNECTING);
-            updater.updateJobStatus(job);
-        }
-    }
-
-    private void processLocally() throws ConnectionException {
-        List<MarkerResult> results = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
-                job.getSubscription(),
-                job.getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters(),
-                job.getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters());
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        job.getResults().addAll(results);
-        updater.updateJobStatus(job);
+    @Test
+    public void testDecorate() throws DecoratorException {
+        String columnValue = "0.12345678";
+        DoubleFormatColumnDecorator decorator = new DoubleFormatColumnDecorator();
+        assertEquals("0.1235", (String) decorator.decorate((Object)columnValue, null, MediaTypeEnum.HTML));
     }
 
 }
