@@ -40,49 +40,64 @@
                 <display:column title="Description" sortable="true" >
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).description}" />
                 </display:column>
-                <display:column title="Score" sortable="true" >
+                <display:column title="Score" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).score}" />
                 </display:column>
-                <display:column title="Feature P" sortable="true" >
+                <display:column title="Feature P" sortable="true"
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).featureP}" />
                 </display:column>
-                <display:column title="Feature P Low" sortable="true" >
+                <display:column title="Feature P Low" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).featurePLow}" />
                 </display:column>
-                <display:column title="Feature P High" sortable="true" >
+                <display:column title="Feature P High" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).featurePHigh}" />
                 </display:column>
-                <display:column title="FDR" sortable="true" >
+                <display:column title="FDR" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).fdr}" />
                 </display:column>
-                <display:column title="Q Value" sortable="true" >
+                <display:column title="Q Value" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).qvalue}" />
                 </display:column>
-                <display:column title="Bonferroni" sortable="true" >
+                <display:column title="Bonferroni" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).bonferroni}" />
                 </display:column>
-                <display:column title="Max T" sortable="true" >
+                <display:column title="Max T" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).maxT}" />
                 </display:column>
-                <display:column title="FWER" sortable="true" >
+                <display:column title="FWER" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).fwer}" />
                 </display:column>
-                <display:column title="Fold Change" sortable="true" >
+                <display:column title="Fold Change" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).foldChange}" />
                 </display:column>
-                <display:column title="class0Mean" sortable="true" >
+                <display:column title="class0Mean" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).class0Mean}" />
                 </display:column>
-                <display:column title="Class0 Std" sortable="true" >
+                <display:column title="Class0 Std" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).class0Std}" />
                 </display:column>
-                <display:column title="Class1 Mean" sortable="true" >
+                <display:column title="Class1 Mean" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).class1Mean}" />
                 </display:column>
-                <display:column title="Class1 Std" sortable="true" >
+                <display:column title="Class1 Std" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).class1Std}" />
                 </display:column>
-                <display:column title="K" sortable="true" >
+                <display:column title="K" sortable="true" 
+                    decorator="gov.nih.nci.caintegrator2.application.analysis.DoubleFormatColumnDecorator">
                     <s:property value="%{cmsJobResult.rows.get(#attr.jobResultRow_rowNum - 1).k}" />
                 </display:column>
             </display:table>

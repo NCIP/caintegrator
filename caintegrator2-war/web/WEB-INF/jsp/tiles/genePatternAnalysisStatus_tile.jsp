@@ -29,6 +29,18 @@
     <h1>GenePattern Analysis Status</h1>
     <s:set name="displayableWorkspace" value="#session['displayableWorkspace']" />
     <div id="errors" > </div>
+    <br><br>
+        <s:form theme="simple"><table><tr>
+        <td>
+            <s:select id="analysisType" name="analysisType" label="Analysis Type" value="GPM" 
+                list="#{'genePatternModules':'Gene Pattern Modules', 'comparativeMarkerSelection':'Comparative Marker Selection (Grid Service)'}" />
+        </td>
+        <td>
+            <s:submit value="New Analysis Job" action="selectAnalysis" />
+        </td>
+        </tr></table></s:form>
+    <br><br>
+            
     <table class="data">
         <tr>
             <th> GenePattern Job Name </th>
@@ -46,17 +58,6 @@
         </tr>
         <tbody id="comparativeMarkerSelectionStatusTable" />
     </table>
-    <br><br>
-        <s:form ><table><tr>
-        <td>
-            <s:select id="analysisType" name="analysisType" label="Analysis Type" value="GPM" 
-                list="#{'genePatternModules':'Gene Pattern Modules', 'comparativeMarkerSelection':'Comparative Marker Selection'}" />
-        </td>
-        <td>
-            <s:submit value="New Analysis Job" action="selectAnalysis" />
-        </td>
-        </tr></table></s:form>
-            
 </div>
 
 <div class="clear"><br /></div>
