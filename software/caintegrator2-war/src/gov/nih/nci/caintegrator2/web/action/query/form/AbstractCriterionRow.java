@@ -125,13 +125,6 @@ public abstract class AbstractCriterionRow {
         newFieldName = fieldName;
     }
     
-    /**
-     * Removes this row from the query.
-     */
-    public void remove() {
-        removeCriterionFromQuery();
-        getGroup().getRows().remove(this);
-    }
     
     /**
      * @return the row type.
@@ -181,8 +174,8 @@ public abstract class AbstractCriterionRow {
         }
     }
 
-    String getOgnlPath() {
-        return "queryForm.criteriaGroup.rows[" + getGroup().getRows().indexOf(this) + "]";
+    int getRowIndex() {
+        return getGroup().getRows().indexOf(this);
     }
 
     void processCriteriaChanges() {

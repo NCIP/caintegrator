@@ -165,6 +165,21 @@ public class CriteriaGroup {
     public void setBooleanOperator(String booleanOperator) {
         compoundCriterion.setBooleanOperator(BooleanOperatorEnum.getByValue(booleanOperator));
     }
+    
+    /**
+     * Removes the row at the given row number.
+     * @param rowNumber to remove from list.
+     */
+    public void removeRow(int rowNumber) {
+        rows.get(rowNumber).removeCriterionFromQuery();
+        rows.remove(rowNumber);
+        for (AbstractCriterionRow row : rows) {
+            int rowIndex = rows.indexOf(row);
+            for (AbstractCriterionParameter parameter : row.getParameters()) {
+                parameter.setRowIndex(rowIndex);
+            }
+        }
+    }
 
     /**
      * Adds a new criterion of the currently selected type.
