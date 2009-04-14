@@ -103,9 +103,9 @@ public class SelectListParameter<E> extends AbstractCriterionParameter {
     private final ValueSelectedHandler<E> valueSelectedHandler;
     private boolean updateFormOnChange;
 
-    SelectListParameter(String formFieldName, OptionList<E> options, 
+    SelectListParameter(int parameterIndex, int rowIndex, OptionList<E> options, 
             ValueSelectedHandler<E> valueSelectedHandler, E initialValue) {
-        super(formFieldName);
+        super(parameterIndex, rowIndex);
         this.optionList = options;
         this.valueSelectedHandler = valueSelectedHandler;
         this.selectedKey = options.getKey(initialValue);

@@ -276,13 +276,13 @@ public class QueryFormTest {
     private void checkRemoveRow(CriteriaGroup group) {
         assertEquals(3, group.getRows().size());
         assertEquals(3, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
-        group.getRows().get(2).remove();
+        group.removeRow(2);
         assertEquals(2, group.getRows().size());
         assertEquals(2, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
-        group.getRows().get(0).remove();
+        group.removeRow(0);
         assertEquals(1, group.getRows().size());
         assertEquals(1, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
-        group.getRows().get(0).remove();
+        group.removeRow(0);
         assertEquals(0, group.getRows().size());
         assertEquals(0, queryForm.getQuery().getCompoundCriterion().getCriterionCollection().size());
     }

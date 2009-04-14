@@ -103,9 +103,9 @@ public class MultiSelectParameter<E> extends AbstractCriterionParameter {
     private String[] selectedKeys;
     private final ValuesSelectedHandler<E> valuesSelectedHandler;
 
-    MultiSelectParameter(String formFieldName, OptionList<E> options, 
+    MultiSelectParameter(int parameterIndex, int rowIndex, OptionList<E> options, 
             ValuesSelectedHandler<E> valuesSelectedHandler, Collection<E> initialSelections) {
-        super(formFieldName);
+        super(parameterIndex, rowIndex);
         this.optionList = options;
         this.valuesSelectedHandler = valuesSelectedHandler;
         this.selectedKeys = options.getKeys(initialSelections);

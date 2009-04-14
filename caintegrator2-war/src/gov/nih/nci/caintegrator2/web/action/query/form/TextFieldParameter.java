@@ -98,8 +98,8 @@ public class TextFieldParameter extends AbstractCriterionParameter {
     private String value;
     private ValueHandler valueHandler;
 
-    TextFieldParameter(String formFieldName, String initialValue) {
-        super(formFieldName);
+    TextFieldParameter(int parameterIndex, int rowIndex, String initialValue) {
+        super(parameterIndex, rowIndex);
         this.value = initialValue;
     }
 
