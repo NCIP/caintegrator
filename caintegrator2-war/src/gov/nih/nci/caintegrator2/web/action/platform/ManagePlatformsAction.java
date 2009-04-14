@@ -186,7 +186,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                 break;
                 
             case AGILENT:
-                source = new AgilentPlatformSource(getPlatformFileCopy(), platformName);
+                source = new AgilentPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
                 break;
 
             default:
