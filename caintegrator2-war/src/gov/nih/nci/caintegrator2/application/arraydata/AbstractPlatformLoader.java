@@ -145,7 +145,10 @@ abstract class AbstractPlatformLoader {
     }
 
     protected String getAnnotationValue(String[] fields, String header) {
-        return fields[getHeaderToIndexMap().get(header)];
+        if (getHeaderToIndexMap().containsKey(header)) {
+            return fields[getHeaderToIndexMap().get(header)];
+        }
+        return "";
     }
 
     protected String getAnnotationValue(String[] fields, String header, String noValueSymbol) {

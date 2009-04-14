@@ -55,7 +55,7 @@
 </s:form></div>
     
 <script type="text/javascript">
-    CheckPlatformVendor();
+    CheckPlatformVendor(this.form.platformVendor.value);
 </script>
 
 <div class="clear"><br />

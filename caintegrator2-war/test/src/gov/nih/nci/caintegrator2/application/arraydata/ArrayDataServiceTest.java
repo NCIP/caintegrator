@@ -55,7 +55,8 @@ public class ArrayDataServiceTest {
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
         checkLoadAffymetrixSnpArrayDesign(TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
-        checkLoadAgilentArrayDesign(null, TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        checkLoadAgilentArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        checkLoadAgilentArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);
     }
 
     private void checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
@@ -69,8 +70,8 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
     }
     
-    private void checkLoadAgilentArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException {
-        Platform platform = ArrayDesignChecker.checkLoadAgilentArrayDesign(cdfFile, annotationFile, service);
+    private void checkLoadAgilentArrayDesign(File annotationFile) throws PlatformLoadingException {
+        Platform platform = ArrayDesignChecker.checkLoadAgilentArrayDesign(annotationFile, service);
         checkGenesForReporters(platform);
         assertTrue(daoStub.saveCalled);
     }

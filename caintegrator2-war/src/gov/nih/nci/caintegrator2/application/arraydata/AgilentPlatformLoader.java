@@ -113,6 +113,16 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     private static final String GENE_NAME_HEADER = "GeneName";
     private static final String ACCESSIONS_HEADER = "Accessions";
 
+    // ADF file headers
+    private static final String ADF_FIRST_FIELD_HEADER = "X_Block";
+    private static final String ADF_PROBE_SET_ID_HEADER = "Reporter_ID";
+    private static final String ADF_GENE_SYMBOL_HEADER = "Composite";
+
+    private String firstFieldHeader;
+    private String probeIdHeader;
+    private String geneSymbolHeader;
+    private final Set<String> probeSetNames;
+    
     private static final Object NO_GENE_SYMBOL = "";
 
     private final AgilentPlatformSource source;
@@ -120,6 +130,20 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     AgilentPlatformLoader(AgilentPlatformSource source) {
         super(source);
         this.source = source;
+        probeSetNames = new HashSet<String>();
+        setFieldHeaders();
+    }
+    
+    private void setFieldHeaders() {
+        if (source.getPlatformFileName().endsWith(".adf")) {
+            firstFieldHeader = ADF_FIRST_FIELD_HEADER;
+            probeIdHeader = ADF_PROBE_SET_ID_HEADER;
+            geneSymbolHeader = ADF_GENE_SYMBOL_HEADER;
+        } else {
+            firstFieldHeader = PROBE_SET_ID_HEADER;
+            probeIdHeader = PROBE_SET_ID_HEADER;
+            geneSymbolHeader = GENE_SYMBOL_HEADER;
+        }
     }
 
     /**
@@ -162,7 +186,7 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     private void loadHeaders() throws PlatformLoadingException, IOException {
         String[] fields;
         while ((fields = getAnnotationFileReader().readNext()) != null) {
-            if (isAnnotationHeadersLine(fields, PROBE_SET_ID_HEADER)) {
+            if (isAnnotationHeadersLine(fields, firstFieldHeader)) {
                 loadAnnotationHeaders(fields);
                 return;
             }
@@ -177,13 +201,21 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     @Override
     void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
             CaIntegrator2Dao dao) {
-        String symbol = getAnnotationValue(fields, GENE_SYMBOL_HEADER);
+        String probeSetName = getAnnotationValue(fields, probeIdHeader);
+        if (probeSetName.startsWith("A_") && !probeSetNames.contains(probeSetName)) {
+            probeSetNames.add(probeSetName);
+            extractGene(probeSetName, fields, geneReporters, probeSetReporters, dao);
+        }
+    }
+    
+    private void extractGene(String probeSetName, String[] fields, ReporterList geneReporters,
+            ReporterList probeSetReporters, CaIntegrator2Dao dao) {
+        String symbol = getAnnotationValue(fields, geneSymbolHeader);
         Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
         if (gene == null && !symbol.equals(NO_GENE_SYMBOL)) {
             gene = lookupOrCreateGene(fields, symbol, dao);
             addGeneReporter(geneReporters, gene);
         }
-        String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
         Set<Gene> genes = new HashSet<Gene>();
         if (gene != null) {
             genes.add(gene);

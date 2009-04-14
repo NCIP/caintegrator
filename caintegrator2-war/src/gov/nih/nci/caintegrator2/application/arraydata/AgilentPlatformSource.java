@@ -94,16 +94,20 @@ public class AgilentPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
     private final String platformName;
+    private final String platformFileName;
     
     /**
      * Creates a new instance.
      * 
      * @param annotationFile the CSV annotation file.
      * @param platformName the platform name.
+     * @param platformFileName the platform file name.
      */
-    public AgilentPlatformSource(File annotationFile, String platformName) {
+    public AgilentPlatformSource(File annotationFile, String platformName,
+            String platformFileName) {
         super(annotationFile);
         this.platformName = platformName;
+        this.platformFileName = platformFileName;
     }
 
     @Override
@@ -124,6 +128,13 @@ public class AgilentPlatformSource extends AbstractPlatformSource {
      */
     public String getPlatformName() {
         return platformName;
+    }
+
+    /**
+     * @return the platformFileName
+     */
+    public String getPlatformFileName() {
+        return platformFileName;
     }
 
 }
