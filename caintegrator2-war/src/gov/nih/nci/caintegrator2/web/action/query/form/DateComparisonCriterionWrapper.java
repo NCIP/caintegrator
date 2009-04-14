@@ -144,8 +144,7 @@ final class DateComparisonCriterionWrapper extends AbstractAnnotationCriterionWr
 
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // anonymous inner class
     private TextFieldParameter createValueParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
-        TextFieldParameter valueParameter = new TextFieldParameter(fieldName,
+        TextFieldParameter valueParameter = new TextFieldParameter(0, getRow().getRowIndex(),
                 DateUtil.toString(criterion.getDateValue()));
         valueParameter.setOperatorHandler(this);
         ValueHandler valueHandler = new ValueHandlerAdapter() {

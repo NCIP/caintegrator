@@ -125,8 +125,8 @@ class StringComparisonCriterionWrapper extends AbstractAnnotationCriterionWrappe
     }
 
     private TextFieldParameter createValueParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
-        TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getStringValue());
+        TextFieldParameter valueParameter = new TextFieldParameter(0, getRow().getRowIndex(), 
+                                                                   criterion.getStringValue());
         valueParameter.setOperatorHandler(this);
         ValueHandler valueHandler = new ValueHandlerAdapter() {
             /**

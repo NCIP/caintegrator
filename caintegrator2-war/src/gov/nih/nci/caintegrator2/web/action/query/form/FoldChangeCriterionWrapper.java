@@ -181,8 +181,8 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
     }
 
     private AbstractCriterionParameter createGeneSymbolParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
-        TextFieldParameter geneSymbolParameter = new TextFieldParameter(fieldName, criterion.getGeneSymbol());
+        TextFieldParameter geneSymbolParameter = new TextFieldParameter(0, getRow().getRowIndex(), 
+                                                                        criterion.getGeneSymbol());
         geneSymbolParameter.setLabel(SYMBOL_LABEL);
         geneSymbolParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
         ValueHandler geneSymbolHandler = new ValueHandlerAdapter() {
@@ -217,9 +217,9 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
                 setUpFoldsParameters();
             }
         };
-        String fieldName = getRow().getOgnlPath() + ".parameters[1]";
         SelectListParameter<RegulationTypeEnum> regulationTypeParameter = 
-            new SelectListParameter<RegulationTypeEnum>(fieldName, options, handler, criterion.getRegulationType());
+            new SelectListParameter<RegulationTypeEnum>(1, getRow().getRowIndex(), 
+                                                        options, handler, criterion.getRegulationType());
         regulationTypeParameter.setLabel(REGULATION_TYPE_LABEL);
         regulationTypeParameter.setUpdateFormOnChange(true);
         return regulationTypeParameter;
@@ -230,8 +230,8 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         final String label = 
             RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) ? "And" : "Up-regulation folds";
         int parameterIndex = RegulationTypeEnum.UP.equals(criterion.getRegulationType()) ? 2 : 3;
-        String fieldName = getRow().getOgnlPath() + ".parameters[" + parameterIndex + "]";
-        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFoldsUp().toString());
+        TextFieldParameter foldsParameter = new TextFieldParameter(parameterIndex, getRow().getRowIndex(), 
+                                                                   criterion.getFoldsUp().toString());
         foldsParameter.setLabel(label);
         ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
 
@@ -258,8 +258,8 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
         final String label = 
             RegulationTypeEnum.UNCHANGED.equals(criterion.getRegulationType()) 
                 ? "Folds between" : "Down-regulation folds";
-        String fieldName = getRow().getOgnlPath() + ".parameters[2]";
-        TextFieldParameter foldsParameter = new TextFieldParameter(fieldName, criterion.getFoldsDown().toString());
+        TextFieldParameter foldsParameter = new TextFieldParameter(2, getRow().getRowIndex(), 
+                                                                   criterion.getFoldsDown().toString());
         foldsParameter.setLabel(label);
         ValueHandler foldsChangeHandler = new ValueHandlerAdapter() {
 

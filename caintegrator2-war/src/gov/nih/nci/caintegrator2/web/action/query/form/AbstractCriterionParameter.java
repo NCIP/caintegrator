@@ -116,15 +116,17 @@ public abstract class AbstractCriterionParameter {
     private String title = "";
     private List<String> availableOperators = new ArrayList<String>();
     private OperatorHandler operatorHandler;
-    private final String formFieldName;
+    private final int parameterIndex;
+    private int rowIndex;
 
     private boolean operatorChanged;
 
     private String newOperator;
 
-    AbstractCriterionParameter(String formFieldName) {
+    AbstractCriterionParameter(int parameterIndex, int rowIndex) {
         super();
-        this.formFieldName = formFieldName;
+        this.parameterIndex = parameterIndex;
+        this.rowIndex = rowIndex;
     }
 
     void setOperatorHandler(OperatorHandler operatorHandler) {
@@ -205,8 +207,9 @@ public abstract class AbstractCriterionParameter {
      * @return the formFieldName
      */
     public String getFormFieldName() {
-        return formFieldName;
+        return "queryForm.criteriaGroup.rows[" + rowIndex + "].parameters[" + parameterIndex + "]";
     }
+    
 
     void processCriteriaChanges() {
         if (operatorChanged) {
@@ -220,4 +223,24 @@ public abstract class AbstractCriterionParameter {
         }
     }
 
+    /**
+     * @return the rowIndex
+     */
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+    /**
+     * @param rowIndex the rowIndex to set
+     */
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
+    /**
+     * @return the parameterIndex
+     */
+    public int getParameterIndex() {
+        return parameterIndex;
+    }
 }

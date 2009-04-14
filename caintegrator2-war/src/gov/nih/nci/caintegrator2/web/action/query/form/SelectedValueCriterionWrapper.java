@@ -138,9 +138,8 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
                 }
             
         };
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         MultiSelectParameter<AbstractPermissibleValue> parameter = 
-            new MultiSelectParameter<AbstractPermissibleValue>(fieldName, 
+            new MultiSelectParameter<AbstractPermissibleValue>(0, getRow().getRowIndex(), 
                     getOptions(), handler, criterion.getValueCollection());
         parameter.setOperatorHandler(this);
         return parameter;
@@ -161,9 +160,8 @@ final class SelectedValueCriterionWrapper extends AbstractAnnotationCriterionWra
         } else {
             value = criterion.getValueCollection().iterator().next();
         }
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
         SelectListParameter<AbstractPermissibleValue> parameter = 
-            new SelectListParameter<AbstractPermissibleValue>(fieldName, getOptions(), handler, value);
+            new SelectListParameter<AbstractPermissibleValue>(0, getRow().getRowIndex(), getOptions(), handler, value);
         parameter.setOperatorHandler(this);
         return parameter;
     }

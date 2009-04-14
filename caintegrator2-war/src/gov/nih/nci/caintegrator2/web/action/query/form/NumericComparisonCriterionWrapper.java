@@ -138,8 +138,8 @@ final class NumericComparisonCriterionWrapper extends AbstractAnnotationCriterio
 
     @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength" }) // anonymous inner class
     private TextFieldParameter createValueParameter() {
-        String fieldName = getRow().getOgnlPath() + ".parameters[0]";
-        TextFieldParameter valueParameter = new TextFieldParameter(fieldName, criterion.getNumericValue().toString());
+        TextFieldParameter valueParameter = new TextFieldParameter(0, getRow().getRowIndex(), 
+                                                                   criterion.getNumericValue().toString());
         valueParameter.setOperatorHandler(this);
         ValueHandler valueHandler = new ValueHandlerAdapter() {
 

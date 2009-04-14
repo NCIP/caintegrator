@@ -354,7 +354,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     }
     
     private String removeRow() {
-        getQueryForm().getCriteriaGroup().getRows().get(rowNumber).remove();
+        getQueryForm().getCriteriaGroup().removeRow(rowNumber);
         return SUCCESS;
     }
     
