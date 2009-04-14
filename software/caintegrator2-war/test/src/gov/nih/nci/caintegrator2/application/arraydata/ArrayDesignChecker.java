@@ -58,9 +58,10 @@ public class ArrayDesignChecker {
         return platform;
     }
 
-    public static Platform checkLoadAgilentArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAgilentArrayDesign(File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException {
-        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile, "Agilent platform");
+        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile, "Agilent platform",
+                annotationFile.getName());
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);
