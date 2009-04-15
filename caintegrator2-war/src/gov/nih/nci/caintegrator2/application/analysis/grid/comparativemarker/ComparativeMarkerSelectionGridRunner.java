@@ -98,6 +98,7 @@ import org.genepattern.io.ParseException;
 import org.genepattern.matrix.Dataset;
 
 import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.mageom.domain.bioassay.BioAssay;
@@ -126,6 +127,7 @@ public class ComparativeMarkerSelectionGridRunner {
         this.mbaGenerator = mbaGenerator;
         this.reporterGeneSymbols = reporterGeneSymbols;
     }
+
     
     /**
      * Runs comparative marker selection baseed on input parameters, and the gct and cls files.
@@ -151,10 +153,14 @@ public class ComparativeMarkerSelectionGridRunner {
             }
             String[] rowNames = datasetWrapper.getRowNames();
             String[] columnNames = datasetWrapper.getColumnNames();
-
             BioAssay[] bioAssay = mbaGenerator.double2DToBioAssayArray(values, rowNames, columnNames);
+            String jobInfoString = parameters.getClassificationFileName().replace(".cls", "") 
+                                    + " -- ComparativeMarkerSelection Grid Task";
+            TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());
+            timeLogger.startLog(jobInfoString);
             ComparativeMarkerSelectionResultCollection result = 
                 client.performAnalysis(bioAssay, cls, parameters.getDatasetParameters());
+            timeLogger.stopLog(jobInfoString);
             return result == null ? null : retrieveMarkerResultList(result.getMarkerResult());
         } catch (IOException e) {
             throw new IllegalArgumentException("Couldn't read gct file at the path " + gctFile.getAbsolutePath(), e);

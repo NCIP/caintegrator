@@ -108,6 +108,7 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2
     private String preprocessDataSetUrl;
     private String comparativeMarkerSelectionUrl;
     private Date creationDate;
+    private Date lastUpdateDate;
     private StudySubscription subscription;
     private List<MarkerResult> results = new ArrayList<MarkerResult>();
 
@@ -222,5 +223,19 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2
     @SuppressWarnings("unused")     // required by Hibernate
     private void setResults(List<MarkerResult> results) {
         this.results = results;
+    }
+
+    /**
+     * @return the lastUpdateDate
+     */
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    /**
+     * @param lastUpdateDate the lastUpdateDate to set
+     */
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 }

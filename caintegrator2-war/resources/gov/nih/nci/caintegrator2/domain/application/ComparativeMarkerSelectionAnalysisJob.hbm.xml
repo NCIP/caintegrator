@@ -15,6 +15,7 @@
         <property name="preprocessDataSetUrl" type="string" column="PDS_URL"/>
         <property name="comparativeMarkerSelectionUrl" type="string" column="CMS_URL"/>
 		<property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
+		<property name="lastUpdateDate" type="java.util.Date" column="LAST_UPDATE_DATE"/>
 		<!-- Associations mapping for the Query class -->
 		<many-to-one name="subscription" class="gov.nih.nci.caintegrator2.domain.application.StudySubscription" column="STUDY_SUBSCRIPTION_ID" lazy="proxy" cascade="none" />
         <list name="results" lazy="true" cascade="save-update,merge" >

@@ -94,6 +94,7 @@ import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.Invalid
 import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
+import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -145,8 +146,13 @@ public class PreprocessDatasetGridRunner {
     private void runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
     throws ConnectionException {
         try {
+            String jobInfoString = parameters.getProcessedGctFilename().replace(".gct", "") 
+            + " -- PreProcess Dataset Grid Task";
+            TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());
+            timeLogger.startLog(jobInfoString);
             BioAssay[] processedBioAssay = client.performAnalysis(convertGctDatasetToBioAssay(dataset), 
                                                                   parameters.getDatasetParameters());
+            timeLogger.stopLog(jobInfoString);
             dataset.setValues(mbaGenerator.bioAssayArrayToFloat2D(processedBioAssay));
         } catch (InvalidParameterException e) {
             throw new IllegalArgumentException("Invalid parameters.", e);

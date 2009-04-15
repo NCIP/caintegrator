@@ -170,9 +170,6 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
                                             new HashSet<ResultColumn>(), subscription);
         preprocessParameters.setProcessedGctFilename("test2.gct");
         preprocessParameters.getDatasetParameters().setLogBaseTwo(true);
-        // For some reason, the only way this will work is if I name my queries (classes) ALL and AML.
-        // I have a forum submittal on this here:
-        // https://cabig-kc.nci.nih.gov/Molecular/forums/viewtopic.php?f=14&t=231&sid=1409d072fac7fe1661c0e5ffdf7ae0a0
         preprocessParameters.getClinicalQueries().add(query1);
         query1.setName("Query 1");
         preprocessParameters.getClinicalQueries().add(query2);

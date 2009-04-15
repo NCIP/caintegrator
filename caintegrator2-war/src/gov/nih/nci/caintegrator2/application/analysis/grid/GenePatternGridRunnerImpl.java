@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.Preprocess
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -129,19 +130,27 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     private FileManager fileManager;
     private final Map<String, String> reporterGeneSymbols = new HashMap<String, String>();
     private static final int DESCRIPTION_LENGTH = 200;
-
+    
     /**
      * {@inheritDoc}
      */
     public List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
-            PreprocessDatasetParameters preprocessParams,
+           PreprocessDatasetParameters preprocessParams,
             ComparativeMarkerSelectionParameters comparativeMarkerParams)
             throws ConnectionException {
         // Need to validate that the clinical queries in both params are the same.
+        String jobInfoString = studySubscription.getUserWorkspace().getUsername() + "_" 
+                            + preprocessParams.getProcessedGctFilename().replace(".gct", "") 
+                            + " -- Full ComparativeMarkerSelection Job";
+        TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());
+        timeLogger.startLog(jobInfoString);
         File gctFile = runPreprocessDataset(studySubscription, preprocessParams);
+        timeLogger.logInfo("Preprocessed Dataset Filename = " + gctFile.getAbsolutePath());
         File clsFile = createClassificationFile(studySubscription, comparativeMarkerParams.getClinicalQueries(), 
                         comparativeMarkerParams.getClassificationFileName());
-        return runComparativeMarkerSelection(comparativeMarkerParams, gctFile, clsFile);
+        List <MarkerResult> results = runComparativeMarkerSelection(comparativeMarkerParams, gctFile, clsFile);
+        timeLogger.stopLog(jobInfoString);
+        return results;
     }
 
     /**
@@ -212,6 +221,9 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + classificationFileName).getAbsolutePath());
     }
+    
+    
+    
 
     /**
      * @param genePatternGridClientFactory the genePatternGridClientFactory to set
