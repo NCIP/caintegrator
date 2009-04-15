@@ -109,8 +109,10 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
@@ -125,13 +127,15 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     private QueryManagementService queryManagementService;
     private MageBioAssayGenerator mbaGenerator;
     private FileManager fileManager;
-    
-    
+    private final Map<String, String> reporterGeneSymbols = new HashMap<String, String>();
+    private static final int DESCRIPTION_LENGTH = 200;
+
     /**
      * {@inheritDoc}
      */
     public List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
-            PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
+            PreprocessDatasetParameters preprocessParams,
+            ComparativeMarkerSelectionParameters comparativeMarkerParams)
             throws ConnectionException {
         // Need to validate that the clinical queries in both params are the same.
         File gctFile = runPreprocessDataset(studySubscription, preprocessParams);
@@ -152,7 +156,19 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         Set<Query> querySet = new HashSet<Query>();
         querySet.addAll(parameters.getClinicalQueries());
         GctDataset gctDataset = retrieveGctDataset(studySubscription, querySet);
+        populateReporterGeneSymbols(gctDataset);
         return runner.execute(studySubscription, parameters, gctDataset);
+    }
+
+    private void populateReporterGeneSymbols(GctDataset gctDataset) {
+        for (int i = 0; i < gctDataset.getRowReporterNames().size(); i++) {
+            String geneSymbols = gctDataset.getRowDescription().get(i);
+            if (geneSymbols.length() > DESCRIPTION_LENGTH) {
+                geneSymbols = geneSymbols.substring(0, DESCRIPTION_LENGTH);
+            }
+            reporterGeneSymbols.put(gctDataset.getRowReporterNames().get(i),
+                    geneSymbols);
+        }
     }
     
     private List<MarkerResult> runComparativeMarkerSelection(ComparativeMarkerSelectionParameters parameters, 
@@ -161,7 +177,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         ComparativeMarkerSelMAGESvcI client = 
             genePatternGridClientFactory.createComparativeMarkerSelClient(parameters.getServer());
         ComparativeMarkerSelectionGridRunner runner = 
-            new ComparativeMarkerSelectionGridRunner(client, mbaGenerator);
+            new ComparativeMarkerSelectionGridRunner(client, mbaGenerator, reporterGeneSymbols);
         return runner.execute(parameters, gctFile, clsFile);
     }
     
@@ -196,9 +212,6 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + classificationFileName).getAbsolutePath());
     }
-    
-    
-    
 
     /**
      * @param genePatternGridClientFactory the genePatternGridClientFactory to set
