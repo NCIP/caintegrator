@@ -193,7 +193,8 @@ public class GenePatternGridRunnerImplTest {
         comparativeMarkerParams.setClassificationFileName("testFile.cls");
         comparativeMarkerParams.getClinicalQueries().addAll(preprocessParams.getClinicalQueries());
         List<MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(studySubscription, preprocessParams, comparativeMarkerParams);
-        assertEquals("test", results.get(0).getDescription());
+        //assertEquals("test", results.get(0).getFeature());
+        assertEquals(null, results.get(0).getFeature());
         File gctFile = new File(fileManager.getUserDirectory(null) + File.separator 
                 + preprocessParams.getProcessedGctFilename());
         checkGctFile(gctFile);
