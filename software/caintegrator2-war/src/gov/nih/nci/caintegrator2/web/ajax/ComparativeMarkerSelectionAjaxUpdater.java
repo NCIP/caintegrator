@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -109,6 +110,7 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
     private static final String JOB_NAME = "cmsJobName_";
     private static final String JOB_STATUS = "cmsJobStatus_";
     private static final String JOB_CREATION_DATE = "cmsJobCreationDate_";
+    private static final String JOB_LAST_UPDATE_DATE = "cmsJobLastUpdateDate_";
     private static final String JOB_URL = "cmsJobUrl_";
     private AnalysisService analysisService;
 
@@ -138,7 +140,7 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
     }
 
     private String[][] createRow(ComparativeMarkerSelectionAnalysisJob job) {
-        String[][] rowString = new String[1][3];
+        String[][] rowString = new String[1][4];
         String id = job.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
@@ -146,6 +148,7 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
         rowString[0][1] = startSpan + JOB_STATUS + id + endSpan
                             + startSpan + JOB_URL + id + endSpan;
         rowString[0][2] = startSpan + JOB_CREATION_DATE + id + endSpan;
+        rowString[0][3] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
         return rowString;
     }
 
@@ -165,20 +168,32 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
     public void addError(String errorMessage, ComparativeMarkerSelectionAnalysisJob job) {
         retrieveDwrUtility(job).setValue("errors", errorMessage);
     }
+    
+    /**
+     * Saves job to database, then updates the status to JSP.
+     * @param job to save and update.
+     */
+    public void saveAndUpdateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
+        job.setLastUpdateDate(new Date());
+        getWorkspaceService().saveComparativeMarkerSelectionAnalysisJob(job);
+        updateJobStatus(job);
+    }
 
     /**
      * Updates job status.
      * @param job to update.
      */
     public void updateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
-        getWorkspaceService().saveComparativeMarkerSelectionAnalysisJob(job);
-        
         Util utilThis = retrieveDwrUtility(job);
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
         utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
+        if (job.getLastUpdateDate() != null) {
+            utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
+                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getLastUpdateDate()));
+        }
         if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
             utilThis.setValue(JOB_URL + jobId, 
                     " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">View</a>",

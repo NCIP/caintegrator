@@ -138,6 +138,7 @@ public class ComparativeMarkerSelectionAjaxUpdaterTest {
         job.setName("Job");
         job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
         job.setCreationDate(new Date());
+        job.setLastUpdateDate(new Date());
         job.setId(Long.valueOf(1));
     }
 
