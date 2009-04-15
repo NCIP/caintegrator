@@ -83,60 +83,65 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
 /**
- * Asynchronous thread that runs GenePatternAnalysis jobs and updates the status of those jobs.  Still
- * need to eventually add a function to process the job remotely and update the status on GenePattern side.
+ * Wraps a log4j logger object to show start/stop time stamps in a generic log message.
  */
-public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
+@SuppressWarnings("PMD.LoggerIsNotStaticFinal") // This wraps the logger and it is passed in.
+public class TimeLoggerHelper {
     
-    private static final Logger LOGGER = Logger.getLogger(ComparativeMarkerSelectionAjaxRunner.class);
+    private final Logger logger;
+    private Date startTime;
+    private boolean isStarted = false;
+    private static final Long MILLISECONDS_PER_SECOND = 1000L;
     
-    private final ComparativeMarkerSelectionAjaxUpdater updater;
-    private final ComparativeMarkerSelectionAnalysisJob job;
-    
-    ComparativeMarkerSelectionAjaxRunner(ComparativeMarkerSelectionAjaxUpdater updater,
-            ComparativeMarkerSelectionAnalysisJob job) {
-        this.updater = updater;
-        this.job = job;
-    }
-
     /**
-     * {@inheritDoc}
+     * Constructor for wrapping the logger.
+     * @param clazz to build the logger.
      */
-    public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        updater.saveAndUpdateJobStatus(job);
-        try {
-            processLocally();
-        } catch (ConnectionException e) {
-            String errorMessage = "Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
-            + " - " + e.getMessage();
-            updater.addError(errorMessage, job);
-            LOGGER.error(errorMessage);
-            job.setStatus(AnalysisJobStatusEnum.ERROR_CONNECTING);
-            updater.saveAndUpdateJobStatus(job);
+    public TimeLoggerHelper(Class<?> clazz) {
+        this.logger = Logger.getLogger(clazz);
+    }
+    
+    /**
+     * Starts the log timer and displays the data.
+     * @param description to display.
+     */
+    public void startLog(String description) {
+        startTime = new Date();
+        logger.info("+++ " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(startTime)
+                + " Starting " + description + "  +++ ");
+        isStarted = true;
+    }
+    
+    /**
+     * Stops the log timer and displays the data.
+     * @param description description to display.
+     */
+    public void stopLog(String description) {
+        if (!isStarted) {
+            throw new IllegalStateException("Must startLog() before you can stopLog()!");
         }
+        Date stopTime = new Date();
+        logger.info("+++ " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(stopTime)
+                + " Stopping " + description + " +++ ");
+        Long deltaTime = stopTime.getTime() - startTime.getTime();
+        logger.info("~~~ TOTAL TIME for " + description + " = " + deltaTime / MILLISECONDS_PER_SECOND + " seconds ~~~");
+        isStarted = false;
     }
-
-    private void processLocally() throws ConnectionException {
-        List<MarkerResult> results = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
-                job.getSubscription(),
-                job.getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters(),
-                job.getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters());
-        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        job.getResults().addAll(results);
-        updater.saveAndUpdateJobStatus(job);
+    
+    /**
+     * Logs info.
+     * @param info to log.
+     */
+    public void logInfo(String info) {
+       logger.info(info); 
     }
-
 }
