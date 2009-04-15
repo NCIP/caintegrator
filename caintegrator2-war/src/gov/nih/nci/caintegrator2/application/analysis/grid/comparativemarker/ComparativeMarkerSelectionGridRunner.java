@@ -89,6 +89,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.genepattern.cabig.util.DatasetWrapper;
 import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
@@ -111,16 +112,19 @@ public class ComparativeMarkerSelectionGridRunner {
 
     private final ComparativeMarkerSelMAGESvcI client;
     private final MageBioAssayGenerator mbaGenerator;
+    private final Map<String, String> reporterGeneSymbols;
     
     /**
      * Public Constructor.
      * @param client of grid service.
      * @param mbaGenerator to generate BioAssay objects.
+     * @param reporterGeneSymbols the reporterGeneSymbols map.
      */
     public ComparativeMarkerSelectionGridRunner(ComparativeMarkerSelMAGESvcI client,
-                                MageBioAssayGenerator mbaGenerator) {
+            MageBioAssayGenerator mbaGenerator, Map<String, String> reporterGeneSymbols) {
         this.client = client;
         this.mbaGenerator = mbaGenerator;
+        this.reporterGeneSymbols = reporterGeneSymbols;
     }
     
     /**
@@ -174,7 +178,7 @@ public class ComparativeMarkerSelectionGridRunner {
         cai2MarkerResult.setClass0Std(markerResult.getClass0Std());
         cai2MarkerResult.setClass1Mean(markerResult.getClass1Mean());
         cai2MarkerResult.setClass1Std(markerResult.getClass1Std());
-        cai2MarkerResult.setDescription(markerResult.getDescription());
+        cai2MarkerResult.setDescription(reporterGeneSymbols.get(markerResult.getFeature()));
         cai2MarkerResult.setFdr(markerResult.getFDR());
         cai2MarkerResult.setFeature(markerResult.getFeature());
         cai2MarkerResult.setFeatureP(markerResult.getFeatureP());
