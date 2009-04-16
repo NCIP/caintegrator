@@ -162,6 +162,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     @Override
     public void validate() {
         super.validate();
+        validateStudyHasGenomicData("Comparative Marker Selection Analysis");
         
         if (EXECUTE_ACTION.equals(getSelectedAction())) {
             validateExecuteAnalysis();

@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -178,8 +179,16 @@ public class GEPlotAnnotationBasedActionTest {
     
     @Test
     public void testValidate() {
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.getActionErrors().size() > 0);
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(
+                new GenomicDataSourceConfiguration());
+        action.clearErrorsAndMessages();
+        action.validate();
+        assertTrue(action.getActionErrors().isEmpty());
         StudySubscription validStudySubscription = (StudySubscription)
-        ActionContext.getContext().getValueStack().getContext().get("studySubscription");
+            ActionContext.getContext().getValueStack().getContext().get("studySubscription");
         ActionContext.getContext().getValueStack().setValue("studySubscription", null);
         action.clearErrorsAndMessages();
         action.validate();
