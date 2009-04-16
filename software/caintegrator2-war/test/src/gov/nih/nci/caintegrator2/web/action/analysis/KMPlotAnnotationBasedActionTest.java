@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
@@ -196,6 +197,10 @@ public class KMPlotAnnotationBasedActionTest {
         action.clearErrorsAndMessages();
         action.validate();
         assertTrue(action.getActionErrors().size() > 0);
+        action.clearErrorsAndMessages();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        action.validate();
+        assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
         action.getKmPlotForm().getSurvivalValueDefinitions().put("1", new SurvivalValueDefinition());
         action.validate();

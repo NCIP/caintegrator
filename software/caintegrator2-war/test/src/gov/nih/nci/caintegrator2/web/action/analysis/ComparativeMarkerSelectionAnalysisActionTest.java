@@ -91,6 +91,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
@@ -160,6 +161,10 @@ public class ComparativeMarkerSelectionAnalysisActionTest {
     @Test
     public void testValidate() {
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         action.validate();
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
