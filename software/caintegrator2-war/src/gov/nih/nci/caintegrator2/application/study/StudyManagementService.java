@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
 import java.io.IOException;
@@ -191,8 +190,10 @@ public interface StudyManagementService {
      * @param studyConfiguration the study configuration to deploy
      * @throws ConnectionException if underlying data sources couldn't be reached
      * @throws DataRetrievalException if external data couldn't be retrieved
+     * @throws ValidationException if the study configuration is invalid
      */
-    void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException;
+    void deployStudy(StudyConfiguration studyConfiguration) 
+    throws ConnectionException, DataRetrievalException, ValidationException;
 
     /**
      * Adds a new, initialized genomic data source to the study. Samples related to this data source are
@@ -376,5 +377,16 @@ public interface StudyManagementService {
      * @return image data source configuration for the study.
      */
     ImageDataSourceConfiguration retrieveImageDataSource(Study study);
+
+    /**
+     * Associates a copy number mapping file to the given genomic data source.
+     * 
+     * @param genomicDataSourceConfiguration  copy number data is associated to this source.
+     * @param mappingFile the file containing the mapping of subjects to samples to copy number files.
+     * @param filename the filename to save the file as. 
+     * @throws IOException if the file couldn't be saved.
+     */
+    void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration, 
+            File mappingFile, String filename) throws IOException;
 
 }

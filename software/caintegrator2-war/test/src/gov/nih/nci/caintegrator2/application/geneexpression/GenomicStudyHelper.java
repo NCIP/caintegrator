@@ -147,7 +147,6 @@ public class GenomicStudyHelper {
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
         arrayData.setArray(array);
-        array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
@@ -157,7 +156,6 @@ public class GenomicStudyHelper {
         arrayData2.setSample(sample);
         array.getArrayDataCollection().add(arrayData2);
         sample.getArrayDataCollection().add(arrayData2);        
-        array.setSampleCollection(new HashSet<Sample>());
         array.getSampleCollection().add(sample);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);

@@ -107,6 +107,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String platformName;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
+    private CopyNumberMappingFile copyNumberMappingFile;
 
     /**
      * @return the experimentIdentifier
@@ -237,6 +238,20 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
+    }
+
+    /**
+     * @return the copyNumberMappingFile
+     */
+    public CopyNumberMappingFile getCopyNumberMappingFile() {
+        return copyNumberMappingFile;
+    }
+
+    /**
+     * @param copyNumberMappingFile the copyNumberMappingFile to set
+     */
+    public void setCopyNumberMappingFile(CopyNumberMappingFile copyNumberMappingFile) {
+        this.copyNumberMappingFile = copyNumberMappingFile;
     }
 
 }

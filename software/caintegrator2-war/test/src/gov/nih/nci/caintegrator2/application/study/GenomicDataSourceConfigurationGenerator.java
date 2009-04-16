@@ -106,6 +106,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         for (int i = 0; i < original.getSamples().size(); i++) {
             SampleGenerator.INSTANCE.compare(original.getSamples().get(i), retrieved.getSamples().get(i));
         }
+        assertEquals(original.getCopyNumberMappingFile().getPath(), retrieved.getCopyNumberMappingFile().getPath());
     }
 
     @Override
@@ -116,6 +117,8 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     @Override
     public void setValues(GenomicDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setExperimentIdentifier(getUniqueString());
+        config.setCopyNumberMappingFile(new CopyNumberMappingFile());
+        config.getCopyNumberMappingFile().setPath(getUniqueString());
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
         config.getSamples().clear();
         for (int i = 0; i < 3; i++) {

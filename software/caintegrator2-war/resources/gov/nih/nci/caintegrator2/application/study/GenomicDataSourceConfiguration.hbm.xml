@@ -35,6 +35,10 @@
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" />
         </list>
         
+        <component name="CopyNumberMappingFile">
+            <property name="path" column="COPY_NUMBER_MAPING_FILE_PATH" />
+        </component>
+        
         
 	</class>
 </hibernate-mapping>

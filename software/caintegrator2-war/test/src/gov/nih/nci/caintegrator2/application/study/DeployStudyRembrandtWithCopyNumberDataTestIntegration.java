@@ -89,28 +89,61 @@ import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(timeout = 2880)
-public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyTestIntegration {
+public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
     
-    private final static Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
+    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
         deployStudy();
+        checkCopyNumberData();
     }
-    
+
+    private void checkCopyNumberData() {
+        Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        assertEquals(2, arrayDatas.size());
+        for (ArrayData arrayData : arrayDatas) {
+            checkCopyNumberData(arrayData);
+        }
+    }
+
+    private void checkCopyNumberData(ArrayData arrayData) {
+        PlatformHelper platformHelper = new PlatformHelper(arrayData.getArray().getPlatform());
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addType(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
+        request.addArrayData(arrayData);
+        request.addReporters(platformHelper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER).getReporters());
+        ArrayDataValues values = getArrayDataService().getData(request);
+        int nonZeroValueCount = 0;
+        for (AbstractReporter reporter : values.getReporters()) {
+            if (values.getFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO) != 0) {
+                nonZeroValueCount++;
+            }
+        }
+        assertTrue(nonZeroValueCount > 50000);
+    }
+
     @Override
     protected boolean getMapImages() {
         return false;
@@ -135,30 +168,25 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     protected boolean getLoadSamples() {
         return true;
     }
-
-    @Override
-    protected String getCaArrayHostname() {
-        return "array-stage.nci.nih.gov";
-    }
-
+    
     @Override
     protected String getCaArrayId() {
-        return "liu-00216";
+        return "jagla-00034";
     }
 
     @Override
     protected int getExpectedSampleCount() {
-        return 101;
+        return 3;
     }
 
     @Override
     protected int getExpectedMappedSampleCount() {
-        return 101;
+        return 2;
     }
 
     @Override
     protected int getExpectedControlSampleCount() {
-        return 4;
+        return 1;
     }
 
     @Override
@@ -167,29 +195,85 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    protected String getNCIAServerUrl() {
-        return null;
+    protected String getStudyName() {
+        return "Rembrandt with Copy Number Data";
     }
     
     @Override
-    protected String getNCIATrialId() {
-        return null;
+    protected File getCopyNumberFile() {
+        return TestDataFiles.REMBRANDT_NCRI_COPY_NUMBER_FILE;
     }
-
+    
     @Override
-    protected String getStudyName() {
-        return "DC Lung Study (Public)";
+    protected AbstractPlatformSource[] getAdditionalPlatformSources() {
+        return new AbstractPlatformSource[] {
+                new AffymetrixPlatformSource(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE),
+                new AffymetrixPlatformSource(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE)
+        };
     }
-
-    protected String getDescription() {
-        return "DC Lung Study (Public)";
+    
+    @Override
+    protected String getCopyNumberCaArrayId() {
+        return "liu-00215";
     }
 
     @Override
     protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE;
+        return TestDataFiles.REMBRANDT_ANNOTATION_DEFINITIONS_FILE;
     }
 
+
+    @Override
+    protected File getSampleMappingFile() {
+        return TestDataFiles.REMBRANDT_NCRI_SAMPLE_MAPPING_FILE;
+    }
+
+    @Override
+    protected File getControlSamplesFile() {
+        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE;
+    }
+
+    @Override
+    protected File getSubjectAnnotationFile() {
+        return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
+    }
+
+    @Override
+    protected AbstractPlatformSource getPlatformSource() {
+        return new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+    }
+    
+    @Override
+    protected String getDeathDateName() {
+        return "Death Date";
+    }
+
+    @Override
+    protected String getLastFollowupDateName() {
+        return "Last Followup Date";
+    }
+
+    @Override
+    protected String getSurvivalStartDateName() {
+        return "Survival Start Date";
+    }
+
+    @Override
+    protected int getExpectedNumberOfGeneReporters() {
+        return 21432;
+    }
+
+    @Override
+    protected int getExpectedNumberProbeSets() {
+        return 54675;
+    }
+
+    @Override
+    protected String getPlatformVendor() {
+        return "Affymetrix";
+    }
+
+    @Override
     protected File getImageAnnotationFile() {
         return null;
     }
@@ -198,54 +282,15 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     protected File getImageMappingFile() {
         return null;
     }
+
     @Override
-    protected File getSampleMappingFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE;
+    protected String getNCIAServerUrl() {
+        return null;
     }
 
     @Override
-    protected File getControlSamplesFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE;
-    }
-
-    @Override
-    protected File getSubjectAnnotationFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_CLINICAL_FILE;
-    }
-
-    @Override
-    protected AbstractPlatformSource getPlatformSource() {
-        return new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-    }
-
-    @Override
-    protected String getDeathDateName() {
-        return "DEATH_DATE";
-    }
-
-    @Override
-    protected String getLastFollowupDateName() {
-        return "LAST_CONTACT_DATE";
-    }
-
-    @Override
-    protected String getSurvivalStartDateName() {
-        return "ENROLLMENT_DATE";
-    }
-
-    @Override
-    protected int getExpectedNumberOfGeneReporters() {
-        return 13796;
-    }
-
-    @Override
-    protected int getExpectedNumberProbeSets() {
-        return 22283;
-    }
-
-    @Override
-    protected String getPlatformVendor() {
-        return "Affymetrix";
+    protected String getNCIATrialId() {
+        return null;
     }
 
 }

@@ -339,6 +339,11 @@
             <result name="input" type="tiles">editSampleMapping</result>
         </action>
         
+        <action name="saveCopyNumberFileMapping" class="saveCopyNumberFileMappingAction">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editSampleMapping</result>
+        </action>
+        
         <action name="addImagingSource" class="editImagingSourceAction">
             <result type="tiles">editImagingSource</result>
         </action>

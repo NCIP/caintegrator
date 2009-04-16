@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;

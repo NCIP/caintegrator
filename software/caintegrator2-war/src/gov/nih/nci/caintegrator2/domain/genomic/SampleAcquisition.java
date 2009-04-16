@@ -6,7 +6,8 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -17,7 +18,7 @@ public class SampleAcquisition extends AbstractCaIntegrator2Object {
     
     private StudySubjectAssignment assignment;
     private Sample sample;
-    private Collection<AbstractAnnotationValue> annotationCollection;
+    private Set<AbstractAnnotationValue> annotationCollection = new HashSet<AbstractAnnotationValue>();;
     private Timepoint timepoint;
     
     /**
@@ -47,21 +48,7 @@ public class SampleAcquisition extends AbstractCaIntegrator2Object {
     public void setSample(Sample sample) {
         this.sample = sample;
     }
-    
-    /**
-     * @return the annotationCollection
-     */
-    public Collection<AbstractAnnotationValue> getAnnotationCollection() {
-        return annotationCollection;
-    }
-    
-    /**
-     * @param annotationCollection the annotationCollection to set
-     */
-    public void setAnnotationCollection(Collection<AbstractAnnotationValue> annotationCollection) {
-        this.annotationCollection = annotationCollection;
-    }
-    
+   
     /**
      * @return the timepoint
      */
@@ -85,6 +72,21 @@ public class SampleAcquisition extends AbstractCaIntegrator2Object {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return the annotationCollection
+     */
+    public Set<AbstractAnnotationValue> getAnnotationCollection() {
+        return annotationCollection;
+    }
+
+    /**
+     * @param annotationCollection the annotationCollection to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setAnnotationCollection(Set<AbstractAnnotationValue> annotationCollection) {
+        this.annotationCollection = annotationCollection;
     }
 
 }

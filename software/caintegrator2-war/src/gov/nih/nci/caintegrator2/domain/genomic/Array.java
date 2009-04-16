@@ -2,7 +2,8 @@ package gov.nih.nci.caintegrator2.domain.genomic;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -13,8 +14,8 @@ public class Array extends AbstractCaIntegrator2Object {
     
     private String name;
     private Platform platform;
-    private Collection<Sample> sampleCollection;
-    private Collection<ArrayData> arrayDataCollection;
+    private Set<Sample> sampleCollection = new HashSet<Sample>();
+    private Set<ArrayData> arrayDataCollection = new HashSet<ArrayData>();
     
     /**
      * @return the name
@@ -42,34 +43,37 @@ public class Array extends AbstractCaIntegrator2Object {
      */
     public void setPlatform(Platform platform) {
         this.platform = platform;
-    }
-    
+
+}
+
     /**
      * @return the sampleCollection
      */
-    public Collection<Sample> getSampleCollection() {
+    public Set<Sample> getSampleCollection() {
         return sampleCollection;
     }
-    
+
     /**
      * @param sampleCollection the sampleCollection to set
      */
-    public void setSampleCollection(Collection<Sample> sampleCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setSampleCollection(Set<Sample> sampleCollection) {
         this.sampleCollection = sampleCollection;
     }
-    
+
     /**
      * @return the arrayDataCollection
      */
-    public Collection<ArrayData> getArrayDataCollection() {
+    public Set<ArrayData> getArrayDataCollection() {
         return arrayDataCollection;
     }
-    
+
     /**
      * @param arrayDataCollection the arrayDataCollection to set
      */
-    public void setArrayDataCollection(Collection<ArrayData> arrayDataCollection) {
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setArrayDataCollection(Set<ArrayData> arrayDataCollection) {
         this.arrayDataCollection = arrayDataCollection;
     }
-
+    
 }

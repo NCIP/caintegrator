@@ -87,8 +87,9 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
 
@@ -201,13 +202,8 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
-    protected File getPlatformAnnotationFile() {
-        return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
-    }
-
-    @Override
-    protected String getPlatformName() {
-        return "HG-U133_Plus_2";
+    protected AbstractPlatformSource getPlatformSource() {
+        return new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
     }
 
     @Override
