@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
@@ -212,6 +213,10 @@ public class GenePatternAnalysisActionTest {
         action.clearErrorsAndMessages();
         action.getGenePatternAnalysisForm().setUrl("http://localhost/directory");
         action.getCurrentGenePatternAnalysisJob().setName("name");
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.getCurrentStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         action.validate();
         assertFalse(action.hasErrors());
         action.clearErrorsAndMessages();
