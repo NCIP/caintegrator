@@ -111,7 +111,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
@@ -171,11 +170,11 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException{
+    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, ValidationException{
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
-        studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);
-        genomicDataSourceConfiguration.setId(Long.valueOf(1));        
+        GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
+        studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
+        sourceConfig.setId(Long.valueOf(1));        
         studyManagementService.deployStudy(studyConfiguration);
         assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
         assertTrue(daoStub.saveCalled);

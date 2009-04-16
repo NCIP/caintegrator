@@ -107,7 +107,6 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -325,7 +324,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void deployStudy(StudyConfiguration studyConfiguration) throws ConnectionException, DataRetrievalException {
+    public void deployStudy(StudyConfiguration studyConfiguration) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao).loadData(studyConfiguration);
         }
@@ -348,6 +348,10 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
+        if (samples.isEmpty() && genomicSource.getCopyNumberMappingFile() == null) {
+            throw new NoSamplesForExperimentException("There were no samples found for experiment '" 
+            + genomicSource.getExperimentIdentifier() + "'");
+        }        
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
         genomicSource.setSamples(samples);
@@ -765,6 +769,19 @@ public class StudyManagementServiceImpl implements StudyManagementService {
             Hibernate.initialize(dataSource.getServerProfile());
         }
         return dataSource;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @throws IOException 
+     */
+    public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration source,
+            File mappingFile, String filename) throws IOException {
+        File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
+        source.setCopyNumberMappingFile(new CopyNumberMappingFile());
+        source.getCopyNumberMappingFile().setPath(savedFile.getAbsolutePath());
+        dao.save(source);
     }
 
 }

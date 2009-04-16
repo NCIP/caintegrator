@@ -232,7 +232,6 @@ abstract class AbstractDataRetrievalHelper {
         Array array = new Array();
         array.setPlatform(platformHelper.getPlatform());
         array.setName(hybridization.getName());
-        array.setSampleCollection(new HashSet<Sample>());
         Sample sample = getAssociatedSample(hybridization);
         array.getSampleCollection().add(sample);
         ArrayData arrayData = new ArrayData();
@@ -241,7 +240,6 @@ abstract class AbstractDataRetrievalHelper {
         ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         arrayData.setReporterList(reporterList);
         reporterList.getArrayDatas().add(arrayData);
-        array.setArrayDataCollection(new HashSet<ArrayData>());
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());

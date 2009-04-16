@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import java.io.FileNotFoundException;
+
 /**
  * Indicates that an action couldn't be performed due to invalid data.
  */
@@ -102,6 +104,12 @@ public class ValidationException extends Exception {
         super(invalidMessage);
         this.result = new ValidationResult();
         this.result.setInvalidMessage(invalidMessage);
+    }
+
+    ValidationException(String message, FileNotFoundException e) {
+        super(message, e);
+        this.result = new ValidationResult();
+        this.result.setInvalidMessage(message);
     }
 
     /**

@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CaArrayFacadeStub implements CaArrayFacade {
@@ -107,7 +106,9 @@ public class CaArrayFacadeStub implements CaArrayFacade {
      */
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile)
             throws ConnectionException {
-        return Collections.emptyList();
+        List<Sample> samples = new ArrayList<Sample>();
+        samples.add(new Sample());
+        return samples;
     }
 
     /**
@@ -129,6 +130,13 @@ public class CaArrayFacadeStub implements CaArrayFacade {
         reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         platform.getReporterLists().add(reporterList2);
         return values;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public byte[] retrieveFile(GenomicDataSourceConfiguration source, String filename) {
+        return new byte[0];
     }
 
 }

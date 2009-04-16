@@ -85,19 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
+import gov.nih.nci.caarray.domain.file.CaArrayFile;
 import gov.nih.nci.caarray.domain.project.Experiment;
+import gov.nih.nci.caarray.domain.project.Project;
 import gov.nih.nci.caarray.services.data.DataRetrievalService;
 import gov.nih.nci.caarray.services.file.FileRetrievalService;
 import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,10 +128,6 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
                 : getCaArraySamples(experimentIdentifier, searchService)) {
             samples.add(translateSample(experimentSample));
-        }
-        if (samples == null || samples.isEmpty()) {
-            throw new NoSamplesForExperimentException("There were no samples found for experiment '" 
-                    + experimentIdentifier + "'");
         }
         return samples;
     }
@@ -212,6 +212,33 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
+    throws FileNotFoundException, ConnectionException {
+        CaArrayFile file = getFile(genomicSource, filename);
+        FileRetrievalService fileRetrievalService =
+            getServiceFactory().createFileRetrievalService(genomicSource.getServerProfile());
+        return fileRetrievalService.readFile(file);
+    }
+
+    private CaArrayFile getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
+    throws ConnectionException, FileNotFoundException {
+        CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+        Experiment searchExperiment = new Experiment();
+        searchExperiment.setPublicIdentifier(genomicSource.getExperimentIdentifier());
+        Experiment experiment = searchService.search(searchExperiment).get(0);
+        Project project = searchService.search(experiment.getProject()).get(0);
+        for (CaArrayFile file : project.getFiles()) {
+            if (filename.equals(file.getName())) {
+                return file;
+            }
+        }
+        throw new FileNotFoundException("Experiment " + genomicSource.getExperimentIdentifier() 
+                + " doesn't contain a file named " + filename);
     }
 
 }

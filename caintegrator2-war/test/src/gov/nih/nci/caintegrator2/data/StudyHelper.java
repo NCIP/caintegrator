@@ -235,26 +235,13 @@ public class StudyHelper {
 
 
         SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
-        sampleAcquisition1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         SampleAcquisition sampleAcquisition1_2 = new SampleAcquisition();
-        sampleAcquisition1_2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         SampleAcquisition sampleAcquisition1_3 = new SampleAcquisition();
-        sampleAcquisition1_3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
-        sampleAcquisition2.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
         SampleAcquisition sampleAcquisition3 = new SampleAcquisition();
-        sampleAcquisition3.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-       
         SampleAcquisition sampleAcquisition4 = new SampleAcquisition();
-        sampleAcquisition4.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-       
         SampleAcquisition sampleAcquisition5 = new SampleAcquisition();
-        sampleAcquisition5.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
-        
+
         ImageSeries imageSeries1 = new ImageSeries();
         imageSeries1.setAnnotationCollection(new HashSet<AbstractAnnotationValue>());
         

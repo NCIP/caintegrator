@@ -83,52 +83,43 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.application.study;
 
 import java.io.File;
 import java.io.Serializable;
 
 /**
- * Base class for platform source specifications.
+ * Provides persistent access to a file that maps subjects to samples to copy number data files in caArray.
+ * 
+ * <p>The format of the file should be subject_id,sample_name,cnchp_filename on each line.
  */
-public abstract class AbstractPlatformSource implements Serializable {
+public class CopyNumberMappingFile implements Serializable {
 
-    private boolean deleteFileOnCompletion;
-    private final File annotationFile;
+    private static final long serialVersionUID = 1L;
     
-    abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
+    private String path;
 
     /**
-     * Creates a new instance.
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
+     * The file.
      * 
-     * @param annotationFile the CSV annotation file.
+     * @return the file.
      */
-    public AbstractPlatformSource(File annotationFile) {
-        super();
-        if (annotationFile == null || !annotationFile.exists()) {
-            throw new IllegalArgumentException("Annotation file must exist.");
-        }
-        this.annotationFile = annotationFile;
-    }
-    /**
-     * @return the deleteFileOnCompletion
-     */
-    public boolean getDeleteFileOnCompletion() {
-        return deleteFileOnCompletion;
+    public File getFile() {
+        return new File(getPath());
     }
 
-    /**
-     * @param deleteFileOnCompletion the deleteFileOnCompletion to set
-     */
-    public void setDeleteFileOnCompletion(boolean deleteFileOnCompletion) {
-        this.deleteFileOnCompletion = deleteFileOnCompletion;
-    }
-
-    /**
-     * @return the annotationFile
-     */
-    public File getAnnotationFile() {
-        return annotationFile;
-    }
-    
 }

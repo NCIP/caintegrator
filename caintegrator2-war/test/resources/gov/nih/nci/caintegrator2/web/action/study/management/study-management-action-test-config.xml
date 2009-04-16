@@ -86,6 +86,17 @@
         </property>
     </bean>
 
+    <bean id="saveCopyNumberFileMappingAction"
+        singleton="false"
+        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveCopyNumberFileMappingAction">
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
+        </property>
+         <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+    </bean>
+
     <bean id="saveImagingSourceAction"
         singleton="false"
         class="gov.nih.nci.caintegrator2.web.action.study.management.SaveImagingSourceAction">

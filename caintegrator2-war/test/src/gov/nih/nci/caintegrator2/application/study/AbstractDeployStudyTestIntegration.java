@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -117,7 +119,6 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
@@ -168,7 +169,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        loadDesign();
+        loadDesigns();
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
@@ -180,12 +181,36 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         loadSamples();
         mapSamples();
         loadControlSamples();
+        loadCopyNumberMappingFile();
         ImageDataSourceConfiguration imageSource = loadImages();
         mapImages();
         loadImageAnnotation(imageSource);
         deploy();
         checkArrayData();
         checkQueries();
+    }
+
+    private void loadCopyNumberMappingFile() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+        if (getCopyNumberFile() != null) {
+            GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+            genomicSource.getServerProfile().setHostname(getCopyNumberCaArrayHostname());
+            genomicSource.getServerProfile().setPort(8080);
+            genomicSource.getServerProfile().setUsername(getCaArrayUsername());
+            genomicSource.getServerProfile().setPassword(getCaArrayPassword());
+            genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
+            genomicSource.setPlatformVendor(getPlatformVendor());
+            genomicSource.setCopyNumberMappingFile(new CopyNumberMappingFile());
+            genomicSource.getCopyNumberMappingFile().setPath(getCopyNumberFile().getAbsolutePath());
+            service.addGenomicSource(studyConfiguration, genomicSource);
+        }
+    }
+
+    protected String getCopyNumberCaArrayId() {
+        return null;
+    }
+
+    protected File getCopyNumberFile() {
+        return null;
     }
 
     private void clearStudyDirectory(Study study) throws IOException {
@@ -201,16 +226,27 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return getStudyName() + " demo study";
     }
 
-    private void loadDesign() throws PlatformLoadingException {
+    private void loadDesigns() throws PlatformLoadingException {
         if (getLoadDesign()) {
             logStart();
-            design = getExistingDesign();
-            if (design == null) {
-                AffymetrixPlatformSource designSource = new AffymetrixPlatformSource(getPlatformAnnotationFile());
-                design = arrayDataService.loadArrayDesign(designSource);
+            design = getOrLoadDesign(getPlatformSource());
+            for (AbstractPlatformSource platformSource : getAdditionalPlatformSources()) {
+                getOrLoadDesign(platformSource);
             }
             logEnd();
         }
+    }
+
+    protected AbstractPlatformSource[] getAdditionalPlatformSources() {
+        return new AbstractPlatformSource[0];
+    }
+
+    private Platform getOrLoadDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
+        Platform platform = getExistingDesign(platformSource);
+        if (platform == null) {
+            platform = arrayDataService.loadArrayDesign(platformSource);
+        }
+        return platform;
     }
 
     private void logStart() {
@@ -229,13 +265,21 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return e.getStackTrace()[2].getMethodName();
     }
 
-    private Platform getExistingDesign() {
-        return dao.getPlatform(getPlatformName());
+    private Platform getExistingDesign(AbstractPlatformSource platformSource) {
+        return dao.getPlatform(getPlatformName(platformSource));
     }
 
-    protected abstract String getPlatformName();
-    
-    protected abstract File getPlatformAnnotationFile();
+    private String getPlatformName(AbstractPlatformSource platformSource) {
+        if (platformSource instanceof AgilentPlatformSource) {
+            return ((AgilentPlatformSource) platformSource).getPlatformName();
+        } else if (platformSource instanceof AffymetrixPlatformSource) {
+            return platformSource.getAnnotationFile().getName().split("\\.")[0];
+        } else {
+            throw new IllegalArgumentException("Unknonw platform source type: " + platformSource.getClass().getName());
+        }
+    }
+
+    protected abstract AbstractPlatformSource getPlatformSource();
 
     protected boolean getLoadDesign() {
         return true;
@@ -361,13 +405,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
+    protected String getCopyNumberCaArrayHostname() {
+        return "array-stage.nci.nih.gov";
+    }
+
     protected String getCaArrayHostname() {
         return "array.nci.nih.gov";
     }
 
     abstract protected String getCaArrayId();
-    abstract protected String getPlatformVendor();
-
     private void mapSamples() throws ValidationException, IOException {
         if (getLoadSamples()) {
             logStart();
@@ -390,7 +436,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected File getControlSamplesFile();
     
-    private void deploy() throws ConnectionException, DataRetrievalException {
+    private void deploy() throws ConnectionException, DataRetrievalException, ValidationException {
         logStart();
         service.deployStudy(studyConfiguration);
         logEnd();
@@ -512,6 +558,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return query;
     }
 
+    abstract protected String getPlatformVendor();
+
     /**
      * @return the queryManagementService
      */
@@ -546,6 +594,13 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      */
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
+    }
+
+    /**
+     * @return the studyConfiguration
+     */
+    protected StudyConfiguration getStudyConfiguration() {
+        return studyConfiguration;
     }
 
 }

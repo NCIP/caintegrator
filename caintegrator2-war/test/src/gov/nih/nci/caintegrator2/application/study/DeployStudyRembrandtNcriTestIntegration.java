@@ -87,10 +87,15 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -102,10 +107,11 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InterruptedException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
         deployStudy();
     }
-    
+
+
     @Override
     protected boolean getMapImages() {
         return true;
@@ -200,13 +206,8 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
-    protected File getPlatformAnnotationFile() {
-        return TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE;
-    }
-
-    @Override
-    protected String getPlatformName() {
-        return "HG-U133_Plus_2";
+    protected AbstractPlatformSource getPlatformSource() {
+        return new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
     }
     
     @Override

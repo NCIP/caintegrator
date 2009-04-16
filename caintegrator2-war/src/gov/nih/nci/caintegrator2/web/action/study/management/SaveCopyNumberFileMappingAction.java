@@ -83,72 +83,105 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.junit.Test;
 
-import affymetrix.calvin.data.ProbeSetMultiDataCopyNumberData;
-import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
-import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
-import affymetrix.fusion.chp.FusionCHPDataReg;
-import affymetrix.fusion.chp.FusionCHPMultiDataData;
+/**
+ * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
+ */
+public class SaveCopyNumberFileMappingAction extends AbstractGenomicSourceAction {
 
-public class AffymetrixCopyNumberChpParserTest {
+    private static final long serialVersionUID = 1L;
+    
+    private File copyNumberMappingFile;
+    private String copyNumberMappingFileContentType;
+    private String copyNumberMappingFileFileName;
 
-    @Test
-    public void testParse() throws DataRetrievalException, UnsignedOutOfLimitsException, IOException {
-        List<AbstractReporter> reporters = getReporters(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE);
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ArrayData arrayData = new ArrayData();
-        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, values, arrayData);
-        parser.parse();
-        checkValues(reporters, values, arrayData);
-        reporters = getReporters(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
-        values = new ArrayDataValues(reporters);
-        parser = new AffymetrixCopyNumberChpParser(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE, values, arrayData);
-        parser.parse();
-        checkValues(reporters, values, arrayData);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isFileUpload() {
+        return true;
     }
-
-    private void checkValues(List<AbstractReporter> reporters, ArrayDataValues values, ArrayData arrayData) {
-        assertEquals(1, values.getTypes().size());
-        assertTrue(values.getTypes().contains(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
-        assertEquals(1, values.getArrayDatas().size());
-        assertTrue(values.getArrayDatas().contains(arrayData));
-        for (AbstractReporter reporter : reporters) {
-            assertTrue(reporter.getName().startsWith("SNP_"));
-            assertTrue(values.getFloatValue(arrayData, reporter, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO) != 0.0f);
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        try {
+            getStudyManagementService().saveCopyNumberMappingFile(getGenomicSource(), getCopyNumberMappingFile(), 
+                    getCopyNumberMappingFileFileName());
+            return SUCCESS;
+        } catch (Exception e) {
+            setFieldError("Something is very wrong in the code, please report this problem - " + e.getMessage());
+            return INPUT;
+        } 
+        
+    }
+    
+    private void setFieldError(String errorMessage) {
+        addFieldError("copyNumberMappingFile", errorMessage);
+        
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (copyNumberMappingFile == null) {
+            addFieldError("copyNumberMappingFile", " File is required");
+        } else if (copyNumberMappingFile.length() == 0) {
+            addFieldError("copyNumberMappingFile", " File is empty");
         }
+        prepareValueStack();
     }
 
-    private List<AbstractReporter> getReporters(File chpFile) throws UnsignedOutOfLimitsException, IOException  {
-        FusionCHPMultiDataData.registerReader();
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        FusionCHPMultiDataData chpData = FusionCHPMultiDataData.fromBase(FusionCHPDataReg.read(chpFile.getAbsolutePath()));
-        int numProbeSets = chpData.getEntryCount(MultiDataType.CopyNumberMultiDataType);
-        for (int i = 0; i < numProbeSets; i++) {
-            ProbeSetMultiDataCopyNumberData probeSetData = 
-                chpData.getCopyNumberEntry(MultiDataType.CopyNumberMultiDataType, i);
-            DnaAnalysisReporter reporter = new DnaAnalysisReporter();
-            reporter.setName(probeSetData.getName());
-            reporters.add(reporter);
-        }
-        return reporters;
+
+    /**
+     * @return the copyNumberMappingFile
+     */
+    public File getCopyNumberMappingFile() {
+        return copyNumberMappingFile;
     }
 
+    /**
+     * @param copyNumberMappingFile the copyNumberMappingFile to set
+     */
+    public void setCopyNumberMappingFile(File copyNumberMappingFile) {
+        this.copyNumberMappingFile = copyNumberMappingFile;
+    }
+
+    /**
+     * @return the copyNumberMappingFileContentType
+     */
+    public String getCopyNumberMappingFileContentType() {
+        return copyNumberMappingFileContentType;
+    }
+
+    /**
+     * @param copyNumberMappingFileContentType the copyNumberMappingFileContentType to set
+     */
+    public void setCopyNumberMappingFileContentType(String copyNumberMappingFileContentType) {
+        this.copyNumberMappingFileContentType = copyNumberMappingFileContentType;
+    }
+
+    /**
+     * @return the copyNumberMappingFileFileName
+     */
+    public String getCopyNumberMappingFileFileName() {
+        return copyNumberMappingFileFileName;
+    }
+
+    /**
+     * @param copyNumberMappingFileFileName the copyNumberMappingFileFileName to set
+     */
+    public void setCopyNumberMappingFileFileName(String copyNumberMappingFileFileName) {
+        this.copyNumberMappingFileFileName = copyNumberMappingFileFileName;
+    }
+       
 }

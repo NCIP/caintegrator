@@ -131,6 +131,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean removeSurvivalValueDefinitionCalled;
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
+    public boolean saveCopyNumberMappingFileCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -199,6 +200,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         createNewSurvivalValueDefinitionCalled = false;
         removeSurvivalValueDefinitionCalled = false;
         throwSearchError = false;
+        saveCopyNumberMappingFileCalled = false;       
         retrieveImageDataSourceCalled = false;
     }
 
@@ -337,5 +339,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public ImageDataSourceConfiguration retrieveImageDataSource(Study study) {
         retrieveImageDataSourceCalled = true;
         return new ImageDataSourceConfiguration();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
+            File mappingFile, String filename) {
+        saveCopyNumberMappingFileCalled = true;       
     }
 }
