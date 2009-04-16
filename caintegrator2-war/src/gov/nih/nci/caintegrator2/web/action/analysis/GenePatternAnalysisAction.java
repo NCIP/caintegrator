@@ -230,6 +230,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     @Override
     public void validate() {
         super.validate();
+        validateStudyHasGenomicData("GenePattern Analysis");
         if (CONNECT_ACTION.equals(getSelectedAction())) {
             validateConnect();
         } else if (EXECUTE_ACTION.equals(getSelectedAction())) {

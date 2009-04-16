@@ -89,6 +89,9 @@ package gov.nih.nci.caintegrator2.web.action;
  * Base class for all Struts 2 <code>Actions</code> in the application, provides context set up
  * for the current request.
  */
+/**
+ * 
+ */
 public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2Action {
     
     /**
@@ -106,5 +109,15 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
                     + "' is not yet deployed.");
             return;
         } 
+    }
+    
+    /**
+     * @param functionDescription the function description to display in the error message.
+     */
+    public void validateStudyHasGenomicData(String functionDescription) {
+        if (!hasActionErrors() && !getStudy().hasGenomicDataSources()) {
+            addActionError("There are no genomic data defined for this study, "
+                    + "unable to perform " + functionDescription + ".");
+        }
     }
 }

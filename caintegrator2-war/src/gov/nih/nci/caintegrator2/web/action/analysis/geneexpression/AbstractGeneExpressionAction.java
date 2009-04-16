@@ -119,6 +119,15 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
     private AnalysisService analysisService;
     private String displayTab;
     
+    /** 
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        validateStudyHasGenomicData("GeneExpression plot");
+    }
+
     /**
      * Starting point for the gePlot_tile.jsp.
      * @return Struts string.
