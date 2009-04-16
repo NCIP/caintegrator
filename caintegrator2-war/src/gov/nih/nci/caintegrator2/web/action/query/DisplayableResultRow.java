@@ -163,7 +163,7 @@ public class DisplayableResultRow {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("https://");
             stringBuffer.append(hostname);
-            stringBuffer.append("/ncia/faces/referencedImages.tiles?source=ISPY&image1TrialId=");
+            stringBuffer.append("/ncia/referencedImages.jsf?source=ISPY&image1TrialId=");
             stringBuffer.append(getImageSeries().getImageStudy().getNciaTrialIdentifier());
             stringBuffer.append("&image1PatientId=");
             stringBuffer.append(getImageSeries().getImageStudy().getAssignment().getIdentifier());
