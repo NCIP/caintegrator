@@ -83,52 +83,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import java.io.File;
-import java.io.Serializable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
-/**
- * Base class for platform source specifications.
- */
-public abstract class AbstractPlatformSource implements Serializable {
+import java.util.HashMap;
 
-    private boolean deleteFileOnCompletion;
-    private final File annotationFile;
-    
-    abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-    /**
-     * Creates a new instance.
-     * 
-     * @param annotationFile the CSV annotation file.
-     */
-    public AbstractPlatformSource(File annotationFile) {
-        super();
-        if (annotationFile == null || !annotationFile.exists()) {
-            throw new IllegalArgumentException("Annotation file must exist.");
-        }
-        this.annotationFile = annotationFile;
-    }
-    /**
-     * @return the deleteFileOnCompletion
-     */
-    public boolean getDeleteFileOnCompletion() {
-        return deleteFileOnCompletion;
-    }
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
-    /**
-     * @param deleteFileOnCompletion the deleteFileOnCompletion to set
-     */
-    public void setDeleteFileOnCompletion(boolean deleteFileOnCompletion) {
-        this.deleteFileOnCompletion = deleteFileOnCompletion;
+@SuppressWarnings("PMD")
+public class SaveCopyNumberFileMappingActionTest {
+
+    private SaveCopyNumberFileMappingAction action;
+    private StudyManagementServiceStub studyManagementServiceStub;
+
+    @Before
+    public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", SaveCopyNumberFileMappingActionTest.class); 
+        action = (SaveCopyNumberFileMappingAction) context.getBean("saveCopyNumberFileMappingAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
-    /**
-     * @return the annotationFile
-     */
-    public File getAnnotationFile() {
-        return annotationFile;
+    @Test
+    public void testExecute() {
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.setCopyNumberMappingFile(TestDataFiles.XBA_COPY_NUMBER_CHP_FILE);
+        assertEquals(Action.SUCCESS, action.execute());
+        assertTrue(action.isFileUpload());
+        assertTrue(studyManagementServiceStub.saveCopyNumberMappingFileCalled);
     }
-    
 }

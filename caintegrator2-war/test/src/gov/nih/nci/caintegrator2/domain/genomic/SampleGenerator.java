@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
@@ -34,7 +33,6 @@ public class SampleGenerator extends AbstractTestDataGenerator<Sample> {
         sample.getArrayCollection().add(array);
         sample.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
-        array.setSampleCollection(new HashSet<Sample>());
         array.getSampleCollection().add(sample);
     }
 

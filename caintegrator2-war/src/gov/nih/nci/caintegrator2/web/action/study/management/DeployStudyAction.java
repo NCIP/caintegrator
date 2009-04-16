@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
@@ -106,6 +107,9 @@ public class DeployStudyAction extends AbstractStudyAction {
             addActionError(e.getMessage());
             return ERROR;
         } catch (DataRetrievalException e) {
+            addActionError(e.getMessage());
+            return ERROR;
+        } catch (ValidationException e) {
             addActionError(e.getMessage());
             return ERROR;
         }

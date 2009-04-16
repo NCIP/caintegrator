@@ -83,7 +83,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.caarray;
+package gov.nih.nci.caintegrator2.application.study;
 
 /**
  * Indicates a problem finding samples for a given experiment for caArray.
@@ -98,7 +98,7 @@ public class NoSamplesForExperimentException extends Exception {
      * @param message describes the connection problem
      * @param cause the source exception
      */
-    public NoSamplesForExperimentException(String message, Throwable cause) {
+    NoSamplesForExperimentException(String message, Throwable cause) {
         super(message, cause);
     }
     
@@ -107,7 +107,7 @@ public class NoSamplesForExperimentException extends Exception {
      * 
      * @param message describes the problem.
      */
-    public NoSamplesForExperimentException(String message) {
+    NoSamplesForExperimentException(String message) {
         super(message);
     }
 

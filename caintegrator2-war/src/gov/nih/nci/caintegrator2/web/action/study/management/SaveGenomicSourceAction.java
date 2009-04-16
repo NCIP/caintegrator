@@ -88,10 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import org.apache.commons.lang.StringUtils;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
-import gov.nih.nci.caintegrator2.external.caarray.NoSamplesForExperimentException;
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.

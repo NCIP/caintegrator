@@ -85,123 +85,145 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
-import java.util.Collection;
-
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
-
 /**
- * Helper class that retrieves data from caArray and loads it into a study.
+ * Reads and retrieves copy number data based on a copy number mapping file.
  */
-class GenomicDataHelper {
+class CopyNumberMappingFileHandler {
 
-    private static final double FIFTIETH_PERCENTILE = 50;
     private final CaArrayFacade caArrayFacade;
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
+    private final GenomicDataSourceConfiguration genomicSource;
 
-    GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        this.caArrayFacade = caArrayFacade;
-        this.arrayDataService = arrayDataService;
-        this.dao = dao;
+    CopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+                this.genomicSource = genomicSource;
+                this.caArrayFacade = caArrayFacade;
+                this.arrayDataService = arrayDataService;
+                this.dao = dao;
     }
 
-    void loadData(StudyConfiguration studyConfiguration) 
+    void loadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
+        try {
+            CSVReader reader = new CSVReader(new FileReader(getFile()));
+            String[] fields;
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0];
+                String sampleName = fields[1];
+                String copyNumberFilename = fields[2];
+                loadCopyNumberData(subjectId, sampleName, copyNumberFilename);
+            }
+            dao.save(genomicSource.getStudyConfiguration());
+            reader.close();
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file " 
+                    + getFile().getAbsolutePath(), e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't read copy number mapping file " 
+                    + getFile().getAbsolutePath(), e);
+        }
+    }
+
+    private File getFile() {
+        return genomicSource.getCopyNumberMappingFile().getFile();
+    }
+
+    private void loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            if (!genomicSource.getSamples().isEmpty()) {
-                ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
-                ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-                arrayDataService.save(probeSetValues);
-                arrayDataService.save(geneValues);
-            }
-            if (genomicSource.getCopyNumberMappingFile() != null) {
-                handleCopyNumberData(genomicSource);
-            }
-        }
+        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+        Sample sample = getSample(sampleName);
+        SampleAcquisition acquisition = new SampleAcquisition();
+        acquisition.setAssignment(assignment);
+        acquisition.setSample(sample);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
+        File cnchpFile = getCnChpFile(copyNumberFilename);
+        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
+        String platformName = parser.getArrayDesignName();
+        Platform platform = dao.getPlatform(platformName);
+        PlatformHelper helper = new PlatformHelper(platform);
+        ReporterList reporterList = helper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        ArrayDataValues values = new ArrayDataValues(reporterList.getReporters());
+        ArrayData arrayData = createArrayData(sample, reporterList, assignment.getStudy());
+        dao.save(arrayData);
+        parser.parse(values, arrayData);
+        arrayDataService.save(values);
+        cnchpFile.delete();
     }
 
-    private void handleCopyNumberData(GenomicDataSourceConfiguration genomicSource) 
-    throws DataRetrievalException, ConnectionException, ValidationException {
-        CopyNumberMappingFileHandler handler = 
-            new CopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        handler.loadCopyNumberData();
-    }
-
-    private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
-        PlatformHelper platformHelper = 
-            new PlatformHelper(probeSetValues.getReporterList().getPlatform());
-        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        ArrayDataValues geneValues = 
-            new ArrayDataValues(reporterList.getReporters());
-        for (ArrayData arrayData : probeSetValues.getArrayDatas()) {
-            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterList);
-        }
-        return geneValues;
-    }
-
-    private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, 
-            ArrayData arrayData,
-            PlatformHelper platformHelper, ReporterList reporterList) {
-        ArrayData geneArrayData = createGeneArrayData(arrayData, reporterList);
-        loadGeneValues(geneValues, probeSetValues, arrayData, geneArrayData, platformHelper);
-    }
-
-    private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
-            ArrayData geneArrayData, PlatformHelper platformHelper) {
-        Collection<AbstractReporter> geneReporters = 
-            platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        for (AbstractReporter geneReporter : geneReporters) {
-            Collection<AbstractReporter> probeSetReporters = 
-                platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
-                        ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            geneValues.setFloatValue(geneArrayData, geneReporter, ArrayDataValueType.EXPRESSION_SIGNAL,
-                    computeGeneReporterValue(probeSetReporters, probeSetValues, arrayData));
-        }
-    }
-
-    private float computeGeneReporterValue(Collection<AbstractReporter> probeSetReporters, 
-            ArrayDataValues probeSetValues, ArrayData arrayData) {
-        DescriptiveStatistics statistics = new DescriptiveStatistics();
-        for (AbstractReporter reporter : probeSetReporters) {
-            statistics.addValue(probeSetValues.getFloatValue(arrayData, reporter, EXPRESSION_SIGNAL));
-        }
-        return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
-    }
-
-    private ArrayData createGeneArrayData(ArrayData probeSetArrayData, ReporterList reporterList) {
+    private ArrayData createArrayData(Sample sample, ReporterList reporterList, Study study) {
         ArrayData arrayData = new ArrayData();
-        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
-        arrayData.setStudy(probeSetArrayData.getStudy());
-        arrayData.setArray(probeSetArrayData.getArray());
-        arrayData.setSample(probeSetArrayData.getSample());
-        arrayData.getSample().getArrayDataCollection().add(arrayData);
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+        arrayData.setStudy(study);
+        Array array = new Array();
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setArray(array);
+        array.getSampleCollection().add(sample);
+        sample.getArrayCollection().add(array);
         arrayData.setReporterList(reporterList);
         reporterList.getArrayDatas().add(arrayData);
-        dao.save(arrayData);
+        array.setPlatform(reporterList.getPlatform());
         return arrayData;
     }
 
-    /**
-     * @return the caArrayFacade
-     */
-    public CaArrayFacade getCaArrayFacade() {
-        return caArrayFacade;
+    private File getCnChpFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        try {
+            byte[] fileBytes = caArrayFacade.retrieveFile(genomicSource, copyNumberFilename);
+            File tempFile = File.createTempFile("temp", ".cnchp");
+            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            throw new ValidationException("Experiment " + genomicSource.getExperimentIdentifier() 
+                    + " doesn't contain a file named " + copyNumberFilename, e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't write CNCHP file locally", e);
+        }
+    }
+
+    private Sample getSample(String sampleName) {
+        Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
+        if (sample == null) {
+            sample = new Sample();
+            sample.setName(sampleName);
+        }
+        return sample;
+    }
+
+    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) throws ValidationException {
+        StudySubjectAssignment assignment = 
+            genomicSource.getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
+        if (assignment == null) {
+            throw new ValidationException("Subject identifier " + subjectIdentifier + " in copy number mapping file " 
+                    + getFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
+        }
+        return assignment;
     }
 
 }

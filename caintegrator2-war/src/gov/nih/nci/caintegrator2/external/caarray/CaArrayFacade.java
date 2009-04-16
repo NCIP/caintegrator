@@ -87,11 +87,13 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -123,5 +125,17 @@ public interface CaArrayFacade {
      */
     ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, DataRetrievalException;
+
+    /**
+     * Retrieves a file from a caArray experiment.
+     * 
+     * @param genomicSource retrieve file from this experiment and server
+     * @param filename retrieve the file with this name
+     * @return the downloaded file contents.
+     * @throws ConnectionException if the server couldn't be reached.
+     * @throws FileNotFoundException if the experiment doesn't contain the requested file.
+     */
+    byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
+    throws ConnectionException, FileNotFoundException;
 
 }
