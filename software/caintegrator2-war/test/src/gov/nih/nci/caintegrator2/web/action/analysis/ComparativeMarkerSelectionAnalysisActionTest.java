@@ -183,10 +183,14 @@ public class ComparativeMarkerSelectionAnalysisActionTest {
         testOpen();
         action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
         assertEquals("status", action.execute());
+        testOpen();
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("1");
         action.getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().add("2");
         queryManagementService.setupInvalidQueryResult();
         assertEquals("input", action.execute());
+        testOpen();
+        action.setSelectedAction(ComparativeMarkerSelectionAnalysisAction.EXECUTE_ACTION);
         assertTrue(action.hasErrors());
         action.clearErrorsAndMessages();
         queryManagementService.setupValidQueryResult();
