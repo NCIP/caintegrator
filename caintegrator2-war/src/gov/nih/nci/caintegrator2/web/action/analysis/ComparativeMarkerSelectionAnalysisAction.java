@@ -223,6 +223,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         getCurrentComparativeMarkerSelectionAnalysisJob().setSubscription(getStudySubscription());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         ajaxUpdater.runJob(getCurrentComparativeMarkerSelectionAnalysisJob());
+        resetCurrentComparativeMarkerSelectionAnalysisJob();
         return STATUS_ACTION;
     }
     

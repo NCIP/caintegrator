@@ -88,10 +88,13 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 import java.io.File;
 import java.rmi.RemoteException;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
 
 import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
+import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
@@ -146,6 +149,9 @@ public class PreprocessDatasetGridRunner {
     private void runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
     throws ConnectionException {
         try {
+            // I was unable to disable logging using log4j.properties for this class, and it is
+            // very verbose, so using this as a workaround to not spam the log file.
+            Logger.getLogger(MageBioAssayGeneratorImpl.class).setLevel(Level.WARN);
             String jobInfoString = parameters.getProcessedGctFilename().replace(".gct", "") 
             + " -- PreProcess Dataset Grid Task";
             TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());

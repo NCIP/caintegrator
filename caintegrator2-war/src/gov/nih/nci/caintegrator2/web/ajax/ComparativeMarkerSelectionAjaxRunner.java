@@ -135,7 +135,9 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
                 job.getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters(),
                 job.getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters());
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        job.getResults().addAll(results);
+        if (results != null) {
+            job.getResults().addAll(results);
+        }
         updater.saveAndUpdateJobStatus(job);
     }
 
