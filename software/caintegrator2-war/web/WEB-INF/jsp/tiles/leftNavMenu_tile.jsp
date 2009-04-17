@@ -19,10 +19,11 @@
     
     <s:url id="notYetImplementedUrl" includeParams="none" action="notYetImplemented" />
     
+    <s:set name="sessionHelper" value="#session['sessionHelper']" />
+
+    <s:if test="currentStudy != null">    
     <ul class="menu">
-        <s:set name="sessionHelper" value="#session['sessionHelper']" />
-        <s:if test="currentStudy != null">
-        <li class="stdnav">
+        <li class="stdnavforinvestigator">
             <div><s:property value="currentStudy.shortTitleText"/></div>
             <ul>
                 <li><s:url id="homePageUrl" includeParams="none" action="workspace" />
@@ -81,10 +82,8 @@
                 </li>
             </ul>
         </li>
-
-        <!--/Tree Control-->
         
-        <li class="stdnav"><div>Analysis Tools</div>
+        <li class="stdnavforinvestigator"><div>Analysis Tools</div>
             <ul>
                 <li>
                     <s:url id="kmPlotUrl" includeParams="none" action="initializeKmPlot" />
@@ -98,8 +97,10 @@
                 </li>
             </ul>
         </li>
-        </s:if>
-        
+    </ul>
+    </s:if>
+    
+    <ul class="menu">        
         <s:if test="#sessionHelper.studyManager">
             <li class="stdnav"><div>Study Management</div>
                 <ul>
@@ -121,8 +122,7 @@
                 <li><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
                 <li><a href="${ notYetImplementedUrl }">Support</a></li>
                 <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
-                <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a>
-</li>
+                <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
             </ul>
         </li>
     </ul>
