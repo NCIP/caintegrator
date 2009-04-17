@@ -3,7 +3,7 @@
 }
 
 .dojoTabPaneWrapper {
-	border : 1px solid #6290d2;
+	border : 7px solid #5D7BA2;
 	_zoom: 1; /* force IE6 layout mode so top border doesnt disappear */
 	display: block;
 	clear: both;
@@ -36,7 +36,7 @@
 
 .dojoTab div {
 	display : block;
-	color : #5D7BA2;
+	color : #263d6b;
 	font-size:115%;
 font-weight:bold;
 text-decoration:none !important;
@@ -77,12 +77,12 @@ border-right:1px solid #ccc;
 	padding-bottom : 5px;
 	margin-bottom : -1px;
 	background-position : 100% -150px;
-background-color:#5D7BA2;
-background-image:none;
-border-left:1px solid #475B82;
-border-right:0 none;
-border-top:3px solid #475B82;
-color:#FFFFFF;
+    background-color:#5D7BA2;
+    background-image:none;
+    border-left:1px solid #475B82;
+    border-right:0 none;
+    border-top:3px solid #475B82;
+    color:#FFFFFF;
 }
 
 /* bottom tabs */
