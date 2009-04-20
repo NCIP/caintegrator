@@ -271,7 +271,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 					</else> 
 				</if>   
 			</else> 
-		</if>   
+		</if>
+	    <echo message="Replacing reference to JBOSS web-based dtd with local dtd."/>
+	    <replace file="${jboss.home}/server/${jboss.server.name}/conf/login-config.xml" token="http://www.jboss.org/j2ee/dtd/security_config.dtd" value="${jboss.home}/docs/dtd/security_config.dtd"/>    
 		<echo message="Inserting ${login-config.block.file} into ${jboss.home}/server/${jboss.server.name}/conf/login-config.xml"/>
 		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/conf/login-config.xml" verbose="true">
 			<insertbranch path="//policy" srcxmlfile="${login-config.block.file}" srcpath="//application-policy" />
