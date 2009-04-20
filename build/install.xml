@@ -273,7 +273,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			</else> 
 		</if>   
 		<echo message="Inserting ${login-config.block.file} into ${jboss.home}/server/${jboss.server.name}/conf/login-config.xml"/>
-		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/conf/login-config.xml" verbose="false">
+		<xmlconfig in="${jboss.home}/server/${jboss.server.name}/conf/login-config.xml" verbose="true">
 			<insertbranch path="//policy" srcxmlfile="${login-config.block.file}" srcpath="//application-policy" />
 		</xmlconfig>
 	</target>
