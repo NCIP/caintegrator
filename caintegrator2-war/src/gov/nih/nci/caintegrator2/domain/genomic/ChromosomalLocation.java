@@ -83,116 +83,100 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static java.lang.Character.isDigit;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.Serializable;
 
 /**
- * Base class for test data generators. These provide support for creating test objects and comparing two test objects. These were
- * designed principally to test persistence, but may be applicable whenever test data is necessary. 
- * 
- * <p>Subclasses must provide implementations of:
- * 
- * <ul>
- *  <li><code>createPersistentObject</code>: create an instance of the class handled by the generator.</li>
- *  <li><code>setValues</code>: set a unique or changed set of values on all fields within the instance.</li>
- *  <li><code>compareFields</code>: compare all the fields between two instances asserting that they are equal..</li>
- * </ul>
+ * Represents a segment of a chromosome.
  */
-public abstract class AbstractTestDataGenerator<T> {
+public class ChromosomalLocation implements Serializable, Comparable<ChromosomalLocation> {
     
-    private static int uniqueInt;
+    private static final long serialVersionUID = 1L;
     
-    public final void compare(T original, T retrieved) {
-        if (original == null) {
-            assertNull(retrieved);
-        } else {
-            assertEquals(original, retrieved);
-        }
-        if (getId(original) != null) {
-            assertEquals(getId(original), getId(retrieved));
-        }
-        compareFields(original, retrieved);
-    }
-
-    public Long getId(T object) {
-        try {
-            return (Long) object.getClass().getMethod("getId").invoke(object);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Object doesn't have a getId method", e);
-        }
-    }
-
-    public abstract void compareFields(T original, T retrieved);
-
-    public abstract void setValues(T object, Set<AbstractCaIntegrator2Object> nonCascadedObjects);
-
-    public abstract T createPersistentObject();
-
-    public T createPopulatedPersistentObject(Set <AbstractCaIntegrator2Object> nonCascadedObjects) {
-        T object = createPersistentObject();
-        setValues(object, nonCascadedObjects);
-        return object;
-    }
-
-    protected String getUniqueString() {
-        return String.valueOf(getUniqueInt());
-    }
-
-    protected String getUniqueString(int maxLength) {
-        String value = getUniqueString();
-        if (value.length() > maxLength) {
-            return value.substring(value.length() - maxLength);
-        } else {
-            return value;
-        }
-    }
-
-    protected int getUniqueInt() {
-        return uniqueInt++;
+    private String chromosome;
+    private Integer startPosition;
+    private Integer endPosition;
+    
+    /**
+     * @return the chromosome
+     */
+    public String getChromosome() {
+        return chromosome;
     }
     
-    protected float getUniqueFloat() {
-        return (float) getUniqueInt();
+    /**
+     * @param chromosome the chromosome to set
+     */
+    public void setChromosome(String chromosome) {
+        this.chromosome = chromosome;
+    }
+    
+    /**
+     * @return the startPosition
+     */
+    public Integer getStartPosition() {
+        return startPosition;
+    }
+    
+    /**
+     * @param startPosition the startPosition to set
+     */
+    public void setStartPosition(Integer startPosition) {
+        this.startPosition = startPosition;
+    }
+    
+    /**
+     * @return the endPosition
+     */
+    public Integer getEndPosition() {
+        return endPosition;
+    }
+    
+    /**
+     * @param endPosition the endPosition to set
+     */
+    public void setEndPosition(Integer endPosition) {
+        this.endPosition = endPosition;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(ChromosomalLocation location) {
+        int chromosomeComparison = compareChromosome(location);
+        return chromosomeComparison == 0 ? comparePosition(location) : chromosomeComparison;
+        
     }
 
-    protected Character getUniqueChar() {
-        return (char) (getUniqueInt() % 255);
-    }
-
-    @SuppressWarnings("hiding")
-    protected <T extends Enum<?>> T getNewEnumValue(T enumValue, T[] values) {
-        if (enumValue == null || enumValue.ordinal() == (values.length - 1)) {
-            return values[0];
+    private int compareChromosome(ChromosomalLocation location) {
+        if (getChromosome() == null) {
+            return location.getChromosome() == null ? 0 : 1;
+        } else if (location.getChromosome() == null) {
+            return -1;
         } else {
-            return values[enumValue.ordinal() + 1];
+            return compareChromosomeStrings(location);
         }
     }
 
-    @SuppressWarnings("hiding")
-    protected <T> void compareCollections(Collection<T> originalCollection, Collection<T> retrievedCollection, AbstractTestDataGenerator<T> generator) {
-        assertEquals(originalCollection.size(), retrievedCollection.size());
-        for (Iterator<T> retrievedIterator = retrievedCollection.iterator(); retrievedIterator.hasNext();) {
-            T retrieved = retrievedIterator.next();
-            T original = getOriginal(originalCollection, retrieved);
-            generator.compare(original, retrieved);
+    private int compareChromosomeStrings(ChromosomalLocation location) {
+        if (isDigit(getChromosome().charAt(0)) && isDigit(location.getChromosome().charAt(0))) {
+            return Integer.valueOf(getChromosome()) - Integer.valueOf(location.getChromosome());
+        } else {
+            return getChromosome().compareTo(location.getChromosome());
         }
     }
 
-    @SuppressWarnings("hiding")
-    private <T> T getOriginal(Collection<T> originalCollection, T retrieved) {
-        for (T original : originalCollection) {
-            if (original.equals(retrieved)) {
-                return original;
-            }
+    private int comparePosition(ChromosomalLocation location) {
+        if (getStartPosition() == null) {
+            return location.getStartPosition() == null ? 0 : 1;
+        } else if (location.getStartPosition() == null) {
+            return -1;
+        } else {
+            return getStartPosition().compareTo(location.getStartPosition());
         }
-        return null;
     }
 
 }

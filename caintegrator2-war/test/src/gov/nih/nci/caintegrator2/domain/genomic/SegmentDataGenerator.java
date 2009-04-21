@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
@@ -93,37 +94,41 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import java.util.Set;
 
 
-public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayData> {
+public final class SegmentDataGenerator extends AbstractTestDataGenerator<SegmentData> {
 
-    public static final ArrayDataGenerator INSTANCE = new ArrayDataGenerator();
+    public static final SegmentDataGenerator INSTANCE = new SegmentDataGenerator();
     
-    private ArrayDataGenerator() { 
+    private SegmentDataGenerator() { 
         super();
     }
     
     @Override
-    public void compareFields(ArrayData original, ArrayData retrieved) {
-        assertEquals(original.getStudy(), retrieved.getStudy());
-        assertEquals(original.getArray(), retrieved.getArray());
-        assertEquals(original.getReporterList(), retrieved.getReporterList());
-        assertEquals(original.getSample(), retrieved.getSample());
-        assertEquals(original.getType(), retrieved.getType());
-        compareCollections(original.getSegmentDatas(), retrieved.getSegmentDatas(), SegmentDataGenerator.INSTANCE);
-    }
-
-    @Override
-    public ArrayData createPersistentObject() {
-        return new ArrayData();
-    }
-
-    @Override
-    public void setValues(ArrayData arrayData, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        arrayData.setType(getNewEnumValue(arrayData.getType(), ArrayDataType.values()));
-        for (int i = 0; i < 3; i++) {
-            SegmentData segmentData = SegmentDataGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-            segmentData.setArrayData(arrayData);
-            arrayData.getSegmentDatas().add(segmentData);
+    public void compareFields(SegmentData original, SegmentData retrieved) {
+        assertEquals(original.getArrayData(), retrieved.getArrayData());
+        assertEquals(original.getNumberOfMarkers(), retrieved.getNumberOfMarkers());
+        assertEquals(original.getSegmentValue(), retrieved.getSegmentValue());
+        if (original.getLocation() == null) {
+            assertNull(retrieved.getLocation());
+        } else {
+            assertEquals(original.getLocation().getChromosome(), retrieved.getLocation().getChromosome());
+            assertEquals(original.getLocation().getStartPosition(), retrieved.getLocation().getStartPosition());
+            assertEquals(original.getLocation().getEndPosition(), retrieved.getLocation().getEndPosition());
         }
+    }
+
+    @Override
+    public SegmentData createPersistentObject() {
+        return new SegmentData();
+    }
+
+    @Override
+    public void setValues(SegmentData segmentData, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        segmentData.setNumberOfMarkers(getUniqueInt());
+        segmentData.setSegmentValue(getUniqueFloat());
+        segmentData.setLocation(new ChromosomalLocation());
+        segmentData.getLocation().setChromosome(getUniqueString(2));
+        segmentData.getLocation().setStartPosition(getUniqueInt());
+        segmentData.getLocation().setEndPosition(getUniqueInt());
     }
 
 }
