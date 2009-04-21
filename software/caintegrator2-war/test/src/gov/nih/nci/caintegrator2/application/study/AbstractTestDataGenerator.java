@@ -157,6 +157,10 @@ public abstract class AbstractTestDataGenerator<T> {
     protected int getUniqueInt() {
         return uniqueInt++;
     }
+    
+    protected float getUniqueFloat() {
+        return (float) getUniqueInt();
+    }
 
     protected Character getUniqueChar() {
         return (char) (getUniqueInt() % 255);

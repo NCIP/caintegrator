@@ -1,5 +1,8 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -15,6 +18,7 @@ public class ArrayData extends AbstractCaIntegrator2Object {
     private Study study;
     private Array array;
     private ArrayDataType type;
+    private SortedSet<SegmentData> segmentDatas = new TreeSet<SegmentData>();
     
     /**
      * @return the reporterList
@@ -102,6 +106,21 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      */
     public void setType(ArrayDataType type) {
         this.type = type;
+    }
+
+    /**
+     * @return the segmentDatas
+     */
+    public SortedSet<SegmentData> getSegmentDatas() {
+        return segmentDatas;
+    }
+
+    /**
+     * @param segmentDatas the segmentDatas to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setSegmentDatas(SortedSet<SegmentData> segmentDatas) {
+        this.segmentDatas = segmentDatas;
     }
 
 }

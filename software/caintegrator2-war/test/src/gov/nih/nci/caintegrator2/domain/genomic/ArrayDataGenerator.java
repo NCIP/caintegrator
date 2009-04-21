@@ -108,6 +108,7 @@ public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayDat
         assertEquals(original.getReporterList(), retrieved.getReporterList());
         assertEquals(original.getSample(), retrieved.getSample());
         assertEquals(original.getType(), retrieved.getType());
+        compareCollections(original.getSegmentDatas(), retrieved.getSegmentDatas(), SegmentDataGenerator.INSTANCE);
     }
 
     @Override
@@ -116,8 +117,13 @@ public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayDat
     }
 
     @Override
-    public void setValues(ArrayData reporter, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        reporter.setType(getNewEnumValue(reporter.getType(), ArrayDataType.values()));
+    public void setValues(ArrayData arrayData, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        arrayData.setType(getNewEnumValue(arrayData.getType(), ArrayDataType.values()));
+        for (int i = 0; i < 3; i++) {
+            SegmentData segmentData = SegmentDataGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+            segmentData.setArrayData(arrayData);
+            arrayData.getSegmentDatas().add(segmentData);
+        }
     }
 
 }
