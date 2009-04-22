@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -111,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
@@ -143,6 +145,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     private StudyManagementService service;
     private QueryManagementService queryManagementService;
+    private WorkspaceService workspaceService;
     private StudyConfiguration studyConfiguration;
     private DelimitedTextClinicalSourceConfiguration sourceConfiguration;
     private CaIntegrator2Dao dao;
@@ -170,10 +173,14 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         loadDesigns();
+        UserWorkspace userWorkspace = workspaceService.getWorkspace();
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
+        userWorkspace.getStudyConfigurationJobs().add(studyConfiguration);
+        studyConfiguration.setUserWorkspace(userWorkspace);
         service.save(studyConfiguration);
+        workspaceService.saveUserWorkspace(userWorkspace);
         clearStudyDirectory(studyConfiguration.getStudy());
         loadAnnotationDefinitions();
         loadClinicalData();
@@ -601,6 +608,20 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      */
     protected StudyConfiguration getStudyConfiguration() {
         return studyConfiguration;
+    }
+
+    /**
+     * @return the workspaceService
+     */
+    public WorkspaceService getWorkspaceService() {
+        return workspaceService;
+    }
+
+    /**
+     * @param workspaceService the workspaceService to set
+     */
+    public void setWorkspaceService(WorkspaceService workspaceService) {
+        this.workspaceService = workspaceService;
     }
 
 }

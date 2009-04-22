@@ -99,7 +99,7 @@
         
         <!--  Study Actions -->
    
-        <action name="manageStudies" class="manageStudiesAction">
+        <action name="manageStudies" method="manageStudies" class="editStudyAction">
             <result type="tiles">manageStudies</result>
         </action>
 

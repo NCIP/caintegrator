@@ -204,6 +204,13 @@ public class GenePatternAnalysisJob extends AbstractCaIntegrator2Object
         this.gpJobNumber = gpJobNumber;
     }
 
-
-
+    /**
+     * {@inheritDoc}
+     */
+    public UserWorkspace getUserWorkspace() {
+        if (getSubscription() != null) {
+            return getSubscription().getUserWorkspace();
+        }
+        return null;
+    }
 }

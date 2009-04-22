@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
@@ -102,6 +103,7 @@ public class DwrUtilFactory {
 
     private final Map <String, Util> gpAnalysisUsernameUtilityMap = new HashMap<String, Util>();
     private final Map <String, Util> cmsAnalysisUsernameUtilityMap = new HashMap<String, Util>();
+    private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
     
     /**
      * Retrieves the DWR Util object for a given job.
@@ -114,6 +116,9 @@ public class DwrUtilFactory {
         }
         if (job instanceof ComparativeMarkerSelectionAnalysisJob) {
             return cmsAnalysisUsernameUtilityMap.get(getUsername(job));
+        }
+        if (job instanceof StudyConfiguration) {
+            return studyConfigurationUtilityMap.get(getUsername(job));
         }
         return new Util();
     }
@@ -136,9 +141,18 @@ public class DwrUtilFactory {
         cmsAnalysisUsernameUtilityMap.put(username, util);
     }
     
+    /**
+     * Associates a username with a session for the <code>StudyDeploymentJob</code>. 
+     * @param username for current user.
+     * @param util dwr object.
+     */
+    public void associateStudyConfigurationJobWithSession(String username, Util util) {
+        studyConfigurationUtilityMap.put(username, util);
+    }
+    
     private String getUsername(PersistedJob job) {
-        if (job.getSubscription() != null) {
-            return job.getSubscription().getUserWorkspace().getUsername();
+        if (job.getUserWorkspace() != null) {
+            return job.getUserWorkspace().getUsername();
         }
         return "";
     }

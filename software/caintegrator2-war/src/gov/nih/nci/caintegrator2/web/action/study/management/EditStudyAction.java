@@ -104,6 +104,14 @@ public class EditStudyAction extends AbstractStudyAction {
     }
     
     /**
+     * Used to get to the manage studies screen.
+     * @return Struts result.
+     */
+    public String manageStudies() {
+        return SUCCESS;
+    }
+    
+    /**
      * @return SUCCESS
      */
     public String deleteStudy() {

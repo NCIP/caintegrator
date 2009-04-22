@@ -85,6 +85,10 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
@@ -137,7 +141,7 @@ public abstract class AbstractDwrAjaxUpdater {
      * @return DWR util object.
      */
     protected Util retrieveDwrUtility(PersistedJob job) {
-        if (job.getSubscription() != null) {
+        if (job.getUserWorkspace() != null) {
             return getDwrUtilFactory().retrieveDwrUtil(job);
         }
         return new Util();
@@ -149,7 +153,7 @@ public abstract class AbstractDwrAjaxUpdater {
      * @return dwr table row options.
      */
     protected String retrieveRowOptions(int counter) {
-        String bgcolor = "#f9f9f9";
+        String bgcolor = "#dcdcdc";
         if (counter % 2 == 0) {
             bgcolor = "fff";
         }
@@ -164,6 +168,15 @@ public abstract class AbstractDwrAjaxUpdater {
             + "return td;"
             + "},"
             + " escapeHtml:false }";
+    }
+    
+    /**
+     * Given a date it returns the formatted date string.
+     * @param date to convert to string.
+     * @return string conversion.
+     */
+    protected String getDateString(Date date) {
+        return date == null ? null : new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date);
     }
 
     /**

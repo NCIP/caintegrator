@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -158,13 +159,17 @@ public class StudyManagementServiceTest {
     @Test
     public void testDelete() throws ValidationException {
         StudyConfiguration configTest = new StudyConfiguration();
-        
+        UserWorkspace userWorkspace = new UserWorkspace();
+        configTest.setUserWorkspace(userWorkspace);
+        userWorkspace.getStudyConfigurationJobs().add(configTest);
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
         studyManagementService.delete(configTest, clinicalSource);
         assertTrue(daoStub.deleteCalled);
         daoStub.deleteCalled = false;
-
+        
+        assertTrue(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         studyManagementService.delete(configTest);
+        assertFalse(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         assertTrue(daoStub.deleteCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);
     }

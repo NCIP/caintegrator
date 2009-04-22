@@ -91,6 +91,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
@@ -295,5 +297,13 @@ public class Cai2UtilTest {
         compoundCriterion.getCriterionCollection().add(new GeneNameCriterion());
         Cai2Util.loadCollection(query);
         
+    }
+    
+    @Test
+    public void testLoadCollectionStudyConfiguration() {
+        StudyHelper studyHelper = new StudyHelper();
+        StudyConfiguration studyConfiguration = studyHelper.
+                    populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        Cai2Util.loadCollection(studyConfiguration);
     }
 }
