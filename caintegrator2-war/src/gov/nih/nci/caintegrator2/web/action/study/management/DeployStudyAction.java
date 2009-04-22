@@ -85,9 +85,11 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
+
+import java.util.Date;
 
 /**
  * Action that deploys a study.
@@ -95,25 +97,35 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 public class DeployStudyAction extends AbstractStudyAction {
 
     private static final long serialVersionUID = 1L;
+    private IStudyDeploymentAjaxUpdater ajaxUpdater;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String execute() {
-        try {
-            getStudyManagementService().deployStudy(getStudyConfiguration());
-        } catch (ConnectionException e) {
-            addActionError(e.getMessage());
-            return ERROR;
-        } catch (DataRetrievalException e) {
-            addActionError(e.getMessage());
-            return ERROR;
-        } catch (ValidationException e) {
-            addActionError(e.getMessage());
-            return ERROR;
-        }
+        getStudyConfiguration().setDeploymentStartDate(new Date());
+        getStudyConfiguration().setDeploymentFinishDate(null);
+        getStudyConfiguration().setStatusDescription(null);
+        getStudyConfiguration().setStatus(Status.PROCESSING);
+        getStudyManagementService().save(getStudyConfiguration());
+        Cai2Util.loadCollection(getStudyConfiguration());
+        ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;
+    }
+
+    /**
+     * @return the ajaxUpdater
+     */
+    public IStudyDeploymentAjaxUpdater getAjaxUpdater() {
+        return ajaxUpdater;
+    }
+
+    /**
+     * @param ajaxUpdater the ajaxUpdater to set
+     */
+    public void setAjaxUpdater(IStudyDeploymentAjaxUpdater ajaxUpdater) {
+        this.ajaxUpdater = ajaxUpdater;
     }
     
 }

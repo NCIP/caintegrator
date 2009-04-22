@@ -111,6 +111,12 @@ public interface StudyManagementService {
     void save(StudyConfiguration studyConfiguration);
     
     /**
+     * Saves a study configuration asynchronous job.
+     * @param studyConfiguration study configuraiton to save.
+     */
+    void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration);
+    
+    /**
      * Deletes a study.
      * 
      * @param studyConfiguration study to delete

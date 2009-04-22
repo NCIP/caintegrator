@@ -96,6 +96,16 @@ public enum Status {
     NOT_DEPLOYED("Not Deployed"),
     
     /**
+     * Processing.
+     */
+    PROCESSING("Processing"),
+    
+    /**
+     * Error.
+     */
+    ERROR("Error"),
+    
+    /**
      * Currently deployed.
      */
     DEPLOYED("Deployed");

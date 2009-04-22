@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -105,6 +106,13 @@ public class DateUtilTest {
         assertTrue("01/02/1970".equalsIgnoreCase(DateUtil.toString(date)));
         assertTrue("1970/01/02".equalsIgnoreCase(DateUtil.toStringForComparison(date)));
         
+    }
+    
+    @Test
+    public void testCompareDatesInMinutes() {
+        Date date1 = new Date(1000);
+        Date date2 = new Date(125000);
+        assertEquals(Long.valueOf(2), DateUtil.compareDatesInMinutes(date1, date2));
     }
 
 }

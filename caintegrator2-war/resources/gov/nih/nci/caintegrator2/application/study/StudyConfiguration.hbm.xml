@@ -21,6 +21,12 @@
 		<property name="visibility" type="Visibility" column="VISIBILITY"/>
 		
 		<property name="status" type="Status" column="STATUS"/>
+		
+		<property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
+		
+		<property name="deploymentStartDate" type="java.util.Date" column="DEPLOYMENT_START_DATE"/>
+		
+        <property name="deploymentFinishDate" type="java.util.Date" column="DEPLOYMENT_FINISH_DATE"/>
     
         <list name="clinicalConfigurationCollection" lazy="false" cascade="all">
             <cache usage="read-write" />
@@ -48,5 +54,8 @@
 		    
         <many-to-one name="studyLogo" class="gov.nih.nci.caintegrator2.application.study.StudyLogo" column="STUDY_LOGO_ID"
             lazy="proxy" cascade="all" />
+        
+        <many-to-one name="userWorkspace" class="gov.nih.nci.caintegrator2.domain.application.UserWorkspace" column="USER_WORKSPACE_ID"
+            lazy="proxy" cascade="none" />
 	</class>
 </hibernate-mapping>

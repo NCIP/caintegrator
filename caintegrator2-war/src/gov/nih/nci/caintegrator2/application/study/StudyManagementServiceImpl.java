@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.common.DateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -114,6 +115,7 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -152,15 +154,25 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
         persist(studyConfiguration);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
+        dao.save(studyConfiguration);
+    }
 
     /**
      *  {@inheritDoc}
      */
     public void delete(StudyConfiguration studyConfiguration) {
         getWorkspaceService().unsubscribeAll(studyConfiguration.getStudy());
+        studyConfiguration.getUserWorkspace().getStudyConfigurationJobs().remove(studyConfiguration);
+        dao.save(studyConfiguration.getUserWorkspace());
+        studyConfiguration.setUserWorkspace(null);
         dao.delete(studyConfiguration);
     }
-
+    
     private boolean isNew(StudyConfiguration studyConfiguration) {
         return studyConfiguration.getId() == null;
     }
@@ -326,10 +338,15 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void deployStudy(StudyConfiguration studyConfiguration) 
     throws ConnectionException, DataRetrievalException, ValidationException {
+        studyConfiguration.setDeploymentStartDate(new Date());
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao).loadData(studyConfiguration);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
+        studyConfiguration.setDeploymentFinishDate(new Date());
+        studyConfiguration.setStatusDescription("Minutes for deployment (approx):  " 
+                + DateUtil.compareDatesInMinutes(studyConfiguration.getDeploymentStartDate(), 
+                                                 studyConfiguration.getDeploymentFinishDate()));
         dao.save(studyConfiguration);
     }
 

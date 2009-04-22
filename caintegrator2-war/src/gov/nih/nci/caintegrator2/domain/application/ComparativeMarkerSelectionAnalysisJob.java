@@ -238,4 +238,14 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2
     public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserWorkspace getUserWorkspace() {
+        if (getSubscription() != null) {
+            return getSubscription().getUserWorkspace();
+        }
+        return null;
+    }
 }
