@@ -43,6 +43,14 @@
                 <s:property value="studyConfiguration.status.value"/>
             </td>
         </tr>
+        <tr>
+            <td class="tdLabel" align="right">
+                <label class="label">Status Description:</label>
+            </td>
+            <td>
+                <s:property value="studyConfiguration.statusDescription"/>
+            </td>
+        </tr>
         
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">

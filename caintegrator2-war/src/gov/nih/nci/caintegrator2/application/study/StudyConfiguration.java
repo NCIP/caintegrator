@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -97,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -106,18 +109,21 @@ import java.util.Set;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-public class StudyConfiguration extends AbstractCaIntegrator2Object {
+public class StudyConfiguration extends AbstractCaIntegrator2Object implements PersistedJob {
     
     private static final long serialVersionUID = 1L;
     private Visibility visibility;
     private Status status = Status.NOT_DEPLOYED;
+    private String statusDescription;
     private Study study = new Study();
     private List<AbstractClinicalSourceConfiguration> clinicalConfigurationCollection =
         new ArrayList<AbstractClinicalSourceConfiguration>();   
     private List<GenomicDataSourceConfiguration> genomicDataSources = new ArrayList<GenomicDataSourceConfiguration>();
     private List<ImageDataSourceConfiguration> imageDataSources = new ArrayList<ImageDataSourceConfiguration>();
     private StudyLogo studyLogo;
-
+    private UserWorkspace userWorkspace;
+    private Date deploymentStartDate;
+    private Date deploymentFinishDate;
     private transient Map<String, StudySubjectAssignment> identifierToSubjectAssignmentMap;
     private transient Map<String, ImageSeries> identifierToImageSeriesMap;
     private transient Map<String, Timepoint> nameToTimepointMap;
@@ -421,7 +427,7 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study is deployable
      */
     public boolean isDeployable() {
-        return (Status.NOT_DEPLOYED.equals(status)
+        return ((Status.NOT_DEPLOYED.equals(status) || Status.ERROR.equals(status))
                 && hasOneLoadedClinical());
     }
     
@@ -432,5 +438,61 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
             }
         }
         return false;
+    }
+
+    /**
+     * @return the userWorkspace
+     */
+    public UserWorkspace getUserWorkspace() {
+        return userWorkspace;
+    }
+
+    /**
+     * @param userWorkspace the userWorkspace to set
+     */
+    public void setUserWorkspace(UserWorkspace userWorkspace) {
+        this.userWorkspace = userWorkspace;
+    }
+
+    /**
+     * @return the deploymentStartDate
+     */
+    public Date getDeploymentStartDate() {
+        return deploymentStartDate;
+    }
+
+    /**
+     * @param deploymentStartDate the deploymentStartDate to set
+     */
+    public void setDeploymentStartDate(Date deploymentStartDate) {
+        this.deploymentStartDate = deploymentStartDate;
+    }
+
+    /**
+     * @return the deploymentFinishDate
+     */
+    public Date getDeploymentFinishDate() {
+        return deploymentFinishDate;
+    }
+
+    /**
+     * @param deploymentFinishDate the deploymentFinishDate to set
+     */
+    public void setDeploymentFinishDate(Date deploymentFinishDate) {
+        this.deploymentFinishDate = deploymentFinishDate;
+    }
+
+    /**
+     * @return the statusDescription
+     */
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    /**
+     * @param statusDescription the statusDescription to set
+     */
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 }

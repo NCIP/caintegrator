@@ -91,9 +91,9 @@ package gov.nih.nci.caintegrator2.domain.application;
 public interface PersistedJob {
     
     /**
-     * Retrieves studySubscription.
-     * @return the subscription.
+     * Retrieves user workspace for the job.
+     * @return the user workspace.
      */
-    StudySubscription getSubscription();
+    UserWorkspace getUserWorkspace();
 
 }

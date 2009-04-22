@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import org.apache.commons.lang.StringUtils;
@@ -107,15 +106,14 @@ public class SaveStudyAction extends AbstractStudyAction {
     @Override
     public String execute() {
         if (SessionHelper.getInstance().isAuthenticated()) {
-            getStudyManagementService().save(getStudyConfiguration());
-            for (StudySubscription subscription  
-                    : getDisplayableWorkspace().getUserWorkspace().getSubscriptionCollection()) {
-                if ((this.getStudyConfiguration().getStudy().getId() != null) 
-                        && (this.getStudyConfiguration().getStudy().getId().equals(subscription.getId()))) {
-                    setStudySubscription(subscription);
-                }
+            if (getStudyConfiguration().getUserWorkspace() == null) {
+                getStudyConfiguration().setUserWorkspace(getWorkspace());
+                getWorkspace().getStudyConfigurationJobs().add(getStudyConfiguration());
+                getStudyManagementService().save(getStudyConfiguration());   
+                getWorkspaceService().saveUserWorkspace(getWorkspace());
+            } else {
+                getStudyManagementService().save(getStudyConfiguration());
             }
-
             return SUCCESS;
         } else {
             addActionError("User is unauthenticated");

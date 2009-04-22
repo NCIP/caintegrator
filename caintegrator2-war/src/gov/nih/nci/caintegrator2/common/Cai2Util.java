@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -107,6 +109,9 @@ import gov.nih.nci.caintegrator2.domain.application.ResultValue;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
 import java.io.File;
@@ -304,6 +309,47 @@ public final class Cai2Util {
             }
         }
         loadCollection(query.getColumnCollection());
+    }
+    
+    /**
+     * Make sure all persistent collections are loaded.
+     * @param studyConfiguration to load from hibernate.
+     */
+    public static void loadCollection(StudyConfiguration studyConfiguration) {
+        loadCollection(studyConfiguration.getGenomicDataSources());
+        for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
+            loadSamples(genomicSource.getSamples());
+            loadSamples(genomicSource.getControlSamples());
+            loadSamples(genomicSource.getMappedSamples());
+            Hibernate.initialize(genomicSource.getServerProfile());
+        }
+        Cai2Util.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
+        for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
+            loadCollection(assignment.getSampleAcquisitionCollection());
+            for (SampleAcquisition sampleAcquisition : assignment.getSampleAcquisitionCollection()) {
+                loadSampleCollections(sampleAcquisition.getSample());
+            }
+        }
+    }
+    
+    /**
+     * Loads the samples collection, as well as the subcollections.
+     * @param samples to load.
+     */
+    public static void loadSamples(Collection<Sample> samples) {
+        loadCollection(samples);
+        for (Sample sample : samples) {
+            loadSampleCollections(sample);
+        }
+    }
+    
+    /**
+     * Loads the subcollections for the Sample object.
+     * @param sample to load.
+     */
+    public static void loadSampleCollections(Sample sample) {
+        loadCollection(sample.getArrayCollection());
+        loadCollection(sample.getArrayDataCollection());
     }
 
     /**

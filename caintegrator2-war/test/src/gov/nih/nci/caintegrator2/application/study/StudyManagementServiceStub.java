@@ -132,6 +132,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
     public boolean saveCopyNumberMappingFileCalled;
+    public boolean saveAsynchronousStudyConfigurationJobCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -202,6 +203,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         throwSearchError = false;
         saveCopyNumberMappingFileCalled = false;       
         retrieveImageDataSourceCalled = false;
+        saveAsynchronousStudyConfigurationJobCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -347,5 +349,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) {
         saveCopyNumberMappingFileCalled = true;       
+    }
+
+    public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
+        saveAsynchronousStudyConfigurationJobCalled = true;
     }
 }

@@ -87,7 +87,9 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -100,6 +102,7 @@ public class DeployStudyActionTest {
 
     private DeployStudyAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
+    private DeployStudyAjaxUpdaterStub ajaxUpdaterStub;
 
     @Before
     public void setUp() {
@@ -107,12 +110,27 @@ public class DeployStudyActionTest {
         action = (DeployStudyAction) context.getBean("deployStudyAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
+        ajaxUpdaterStub = new DeployStudyAjaxUpdaterStub();
+        action.setAjaxUpdater(ajaxUpdaterStub);
     }
 
     @Test
     public void testExecute() {
         assertEquals(Action.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
+        assertTrue(ajaxUpdaterStub.runJobCalled);
+    }
+    
+    private static class DeployStudyAjaxUpdaterStub implements IStudyDeploymentAjaxUpdater {
+
+        public boolean runJobCalled = false;
+        
+        public void initializeJsp() {
+        }
+
+        public void runJob(StudyConfiguration job) {
+            runJobCalled = true;
+        }
+        
     }
 
 }

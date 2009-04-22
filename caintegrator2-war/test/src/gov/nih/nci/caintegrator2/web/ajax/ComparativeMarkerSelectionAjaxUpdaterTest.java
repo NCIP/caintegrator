@@ -181,7 +181,7 @@ public class ComparativeMarkerSelectionAjaxUpdaterTest {
     }
     private final class PersistedJobStub implements PersistedJob {
 
-        public StudySubscription getSubscription() {
+        public UserWorkspace getUserWorkspace() {
             return null;
         }
         

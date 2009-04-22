@@ -69,22 +69,14 @@
     </bean>
     <!-- Study Management -->
 
-    <bean id="manageStudiesAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.ManageStudiesAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>
-
     <bean id="deployStudyAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.DeployStudyAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
+        </property>
+        <property name="ajaxUpdater">
+            <ref local="studyDeploymentAjaxUpdater"/>
         </property>
         <property name="workspaceService">
             <ref local="workspaceService"/>
@@ -553,6 +545,20 @@
         </property>
         <property name="analysisService">
           <ref local="analysisService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="studyDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.StudyDeploymentAjaxUpdater">
+        <dwr:remote javascript="StudyDeploymentAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+          <ref local="studyManagementService"/>
         </property>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>

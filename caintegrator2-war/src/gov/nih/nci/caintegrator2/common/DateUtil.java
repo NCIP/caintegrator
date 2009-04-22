@@ -95,6 +95,9 @@ import java.util.Locale;
  */
 public final class DateUtil {
     
+    private static final Long MILLISECONDS_PER_SECOND = 1000L;
+    private static final Long SECONDS_PER_MINUTE = 60L;
+    
     private DateUtil() {
         
     }
@@ -141,5 +144,15 @@ public final class DateUtil {
     public static String toStringForComparison(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         return formatter.format(date);
+    }
+    
+    /**
+     * Returns the difference between two times in Minutes apart.
+     * @param date1 first date.
+     * @param date2 second date.
+     * @return difference between the dates.
+     */
+    public static Long compareDatesInMinutes(Date date1, Date date2) {
+        return Math.abs(date1.getTime() - date2.getTime()) / MILLISECONDS_PER_SECOND / SECONDS_PER_MINUTE;
     }
 }

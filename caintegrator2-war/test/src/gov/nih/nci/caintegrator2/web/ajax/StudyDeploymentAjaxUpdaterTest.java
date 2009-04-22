@@ -89,16 +89,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -112,69 +111,55 @@ import org.junit.Test;
 import com.opensymphony.xwork2.ActionContext;
 
 
-public class GenePatternAjaxUpdaterTest {
+public class StudyDeploymentAjaxUpdaterTest {
 
-    private GenePatternAjaxUpdater updater;
+    private StudyDeploymentAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceGPJobStub workspaceService;
-    private AnalysisServiceStub analysisService;
-    private GenePatternAnalysisJob job;
+    private WorkspaceServiceStudyDeploymentJobStub workspaceService;
+    private StudyManagementServiceStub studyManagementServiceStub;
+    private StudyConfiguration studyConfiguration;
 
     @Before
     public void setUp() throws Exception {
-        updater = new GenePatternAjaxUpdater();
+        updater = new StudyDeploymentAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceGPJobStub();
-        analysisService = new AnalysisServiceStub();
-        analysisService.clear();
+        workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
+        studyManagementServiceStub = new StudyManagementServiceStub();
         workspaceService.clear();
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setAnalysisService(analysisService);
+        updater.setStudyManagementService(studyManagementServiceStub);
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        job = new GenePatternAnalysisJob();
-        job.setName("Job");
-        job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        job.setCreationDate(new Date());
-        job.setId(Long.valueOf(1));
+        StudyHelper studyHelper = new StudyHelper();
+        studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        studyConfiguration.setId(Long.valueOf(1));
     }
 
     @Test
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(studyConfiguration));
+        assertNull(dwrUtilFactory.retrieveDwrUtil(new StudyConfiguration()));
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
     
     @Test
     public void testRunJob() throws InterruptedException {
-        updater.runJob(job);
+        updater.runJob(studyConfiguration);
         Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus()));
+        assertTrue(studyManagementServiceStub.deployStudyCalled);
     }
     
-    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
+    private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {
         @Override
         public UserWorkspace getWorkspace() {
             UserWorkspace workspace = new UserWorkspace();
             workspace.setUsername("Test");
-            StudySubscription subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setUserWorkspace(workspace);
             workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            workspace.getSubscriptionCollection().add(subscription);
-            job.setSubscription(subscription);
-            subscription.getGenePatternAnalysisJobCollection().add(job);
-            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
-            subscription.getGenePatternAnalysisJobCollection().add(job2);
-            job2.setSubscription(subscription);
-            job2.setCreationDate(new Date());
-            job2.setId(Long.valueOf(2));
-            job2.setName("Job2");
+            studyConfiguration.setUserWorkspace(workspace);
+            workspace.getStudyConfigurationJobs().add(studyConfiguration);
             return workspace;
         }
     }

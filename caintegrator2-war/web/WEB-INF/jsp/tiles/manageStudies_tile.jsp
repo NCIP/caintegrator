@@ -1,7 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script type='text/javascript' src='dwr/interface/StudyDeploymentAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+
 <div id="content">
+
+<script type="text/javascript">
+    
+    initializeJsp();
+
+    function initializeJsp() {
+        dwr.engine.setActiveReverseAjax(true);
+        StudyDeploymentAjaxUpdater.initializeJsp();
+    }
+    
+    </script>
 
     <!--Page Help-->
     
@@ -12,38 +27,21 @@
     <!--/Page Help--> 
 
 <h1>Manage Studies</h1>
-<s:form>
+
+<div id="errorMessages" style="color: red;"> </div>
+
     <table class="data">
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Status</th>
+            <th>Deployment Start Date</th>
+            <th>Deployment Finish Date</th>
             <th>Action</th>
         </tr>
-        <s:iterator value="studyConfigurations" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-                <td><s:property value="study.shortTitleText" /></td>
-                <td><s:property value="study.longTitleText" /></td>
-                <td><s:property value="status.value" /></td>
-                <td>
-                    <s:url id="editUrl" action="editStudy">
-                        <s:param name="studyConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:url id="deleteUrl" action="deleteStudy">
-                        <s:param name="studyConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{editUrl}">Edit </s:a> | 
-                    <s:a href="%{deleteUrl}" onclick="return confirm('This study will be permanently deleted.')">Delete</s:a> 
-                </td>
-            </tr>
-        </s:iterator>
+        <tbody id="studyDeploymentJobStatusTable" />
     </table>
-</s:form></div>
-
+    
+    </div> 
 <div class="clear"><br />
 </div>
