@@ -138,7 +138,10 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
             genomicResults.add(queryResults);
         }
         if (parameters.isAddPatientsNotInQueriesGroup()) {
-            genomicResults.add(0, addAllOthersGroup(subscription));
+            GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
+            if (!queryResults.getRowCollection().isEmpty()) {
+                genomicResults.add(0, queryResults);
+            }
         }
         GeneExpressionPlotConfiguration configuration = 
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
