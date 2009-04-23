@@ -249,14 +249,6 @@ public interface StudyManagementService {
     void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
 
     /**
-     * Returns the studies managed by the Study Manager indicated by username.
-     * 
-     * @param username get studies managed by this user
-     * @return the list of managed studies.
-     */
-    List<StudyConfiguration> getManagedStudies(String username);
-
-    /**
      * Returns the refreshed entity attached to the current Hibernate session.
      * 
      * @param <T> type of object being returned.

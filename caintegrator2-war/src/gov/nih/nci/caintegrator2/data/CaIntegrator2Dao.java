@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.data;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -165,14 +164,6 @@ public interface CaIntegrator2Dao {
      * @return - list of annotation definitions that match.
      */
     List<AnnotationDefinition> findMatches(Collection<String> keywords);
-
-    /**
-     * Returns the studies managed by this user.
-     * 
-     * @param username return studies managed by this user.
-     * @return the list of studies.
-     */
-    List<StudyConfiguration> getManagedStudies(String username);
     
     /**
      * Retrieves all workspaces subscribed to the given study.

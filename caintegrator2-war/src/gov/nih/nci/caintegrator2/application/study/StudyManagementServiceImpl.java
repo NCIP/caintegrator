@@ -381,13 +381,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        return dao.getManagedStudies(username);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     public <T> T getRefreshedStudyEntity(T entity) {
         Long id;

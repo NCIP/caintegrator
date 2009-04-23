@@ -237,12 +237,6 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testGetManagedStudies() {
-        assertNotNull(studyManagementService.getManagedStudies("username"));
-        assertTrue(daoStub.getManagedStudiesCalled);
-    }
-    
-    @Test
     public void testGetStudyEntity() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setId(1L);
