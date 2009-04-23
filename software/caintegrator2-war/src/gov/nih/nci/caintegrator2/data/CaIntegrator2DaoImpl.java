@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
@@ -116,7 +115,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -220,34 +218,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             }
         }
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings(UNCHECKED)
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        // TODO Real implementation requires checking StudyConfiguration ownership in CSM when integrated
-        // This actually is returning all studies that are subscribed by the given username, use CSM later.
-        Criteria studyCriteria = getCurrentSession().createCriteria(StudySubscription.class);
-        studyCriteria.createCriteria("userWorkspace").add(Restrictions.eq("username", username));
-        studyCriteria.setProjection(Projections.property(STUDY_ASSOCIATION));
-                                     
-        List<Study> studyList = studyCriteria.list();
-        List<StudyConfiguration> studyConfigurations = new ArrayList<StudyConfiguration>();
-        if (studyList != null && !studyList.isEmpty()) {
-            Comparator<Study> nameComparator = new Comparator<Study>() {
-                public int compare(Study study1, Study study2) {
-                    return study1.getShortTitleText().
-                           compareToIgnoreCase(study2.getShortTitleText());
-                }
-            };
-            Collections.sort(studyList, nameComparator);
-            for (Study study : studyList) {
-                studyConfigurations.add(study.getStudyConfiguration());
-            }
-        }
-        return studyConfigurations;
     }
     
     /**

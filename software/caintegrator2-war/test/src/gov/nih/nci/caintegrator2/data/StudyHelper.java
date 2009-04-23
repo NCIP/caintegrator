@@ -672,18 +672,6 @@ public class StudyHelper {
         return query;
     }
     
-    public Study retrieveStudyByName(String studyName, String username, CaIntegrator2Dao dao) {
-        List<StudyConfiguration> studyConfigurations = dao.getManagedStudies(username);
-        for (StudyConfiguration studyConfiguration : studyConfigurations) {
-            if (studyConfiguration.getStudy().getShortTitleText().contains(studyName)){
-                return studyConfiguration.getStudy();
-            }
-        }
-        return null;
-        
-    }
-
-    
     public AnnotationDefinition getSampleAnnotationDefinition() {
         return sampleAnnotationDefinition;
     }
