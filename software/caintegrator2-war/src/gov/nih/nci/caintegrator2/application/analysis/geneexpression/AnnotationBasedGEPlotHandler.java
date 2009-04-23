@@ -141,7 +141,10 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
             genomicResults.add(result);
         }
         if (parameters.isAddPatientsNotInQueriesGroup()) {
-            genomicResults.add(0, addAllOthersGroup(subscription));
+            GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
+            if (!queryResults.getRowCollection().isEmpty()) {
+                genomicResults.add(0, queryResults);
+            }
         }
         
         GeneExpressionPlotConfiguration configuration = 
