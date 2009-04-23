@@ -109,7 +109,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean deleteCalled;
     public boolean addGenomicSourceCalled;
     public boolean addClinicalAnnotationFileCalled;
-    public boolean manageStudiesCalled;
     public boolean getRefreshedStudyEntityCalled;
     public boolean getMatchingDefinitionsCalled;
     public boolean getMatchingDataElementsCalled;
@@ -182,7 +181,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveCalled = false;
         addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;
-        manageStudiesCalled = false;
         getRefreshedStudyEntityCalled = false;
         getMatchingDefinitionsCalled = false;
         getMatchingDataElementsCalled = false;
@@ -220,11 +218,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         }
         addClinicalAnnotationFileCalled = true;
         return new DelimitedTextClinicalSourceConfiguration();
-    }
-
-    public List<StudyConfiguration> getManagedStudies(String username) {
-        manageStudiesCalled = true;
-        return Collections.emptyList();
     }
 
     public <T> T getRefreshedStudyEntity(T entity) {

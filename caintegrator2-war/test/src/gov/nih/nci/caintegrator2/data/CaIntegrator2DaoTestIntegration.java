@@ -176,23 +176,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(2, dao.retrieveAllSubscribedWorkspaces(study).size());
         assertEquals(1, dao.retrieveAllSubscribedWorkspaces(study2).size());
     }
-    
-    @Test
-    public void testGetManagedStudies() {
-        UserWorkspace userWorkspace1 = new UserWorkspace();
-        userWorkspace1.setUsername("user1");
-        userWorkspace1.setSubscriptionCollection(new HashSet<StudySubscription>());
-        StudySubscription studySubscription1 = new StudySubscription();
-        Study study1 = new Study();
-        studySubscription1.setStudy(study1);
-        StudyConfiguration studyConfiguration1 = new StudyConfiguration();
-        study1.setStudyConfiguration(studyConfiguration1);
-        userWorkspace1.getSubscriptionCollection().add(studySubscription1);
-        dao.save(study1);
-        dao.save(studySubscription1);
-        dao.save(userWorkspace1);
-        assertEquals(studyConfiguration1, dao.getManagedStudies("user1").get(0));
-    }
 
     @Test
     public void testSave() {
