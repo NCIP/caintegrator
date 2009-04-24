@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -286,6 +287,12 @@ public class ManageQueryActionTest {
         manageQueryAction.setSelectedAction("updateResultsPerPage");
         assertEquals(Action.SUCCESS, manageQueryAction.execute());
         assertEquals(20, SessionHelper.getInstance().getDisplayableUserWorkspace().getQueryResult().getPageSize());
+        
+        // Test exporting genomic results.
+        manageQueryAction.setSelectedAction("exportGenomicResults");
+        assertEquals("exportGenomicResults", manageQueryAction.execute());
+        assertTrue(queryManagementService.createCsvFileFromGenomicResultCalled);
+        assertNotNull(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
     }
     
 }

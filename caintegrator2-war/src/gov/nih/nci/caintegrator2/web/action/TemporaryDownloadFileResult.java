@@ -83,90 +83,82 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
+import java.io.DataInputStream;
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public boolean createCsvFileFromGenomicResultCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+import org.apache.struts2.ServletActionContext;
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
 
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
+/**
+ * Struts2 result type for downloading any temporary file, and
+ * then deleting the file.
+ */
+public class TemporaryDownloadFileResult implements Result {
+
+    private static final long serialVersionUID = 1L;
+    private static final Integer BUFSIZE = 4096;
+    private String contentType;
+    private String fileName;
 
     /**
      * {@inheritDoc}
      */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-        createCsvFileFromGenomicResultCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
+    public void execute(ActionInvocation invocation) throws IOException {
+        File tempFile = new File(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setTemporaryDownloadFile(null);
+        HttpServletResponse response = ServletActionContext.getResponse();
+        ServletOutputStream op = response.getOutputStream();
+        response.setContentType(contentType);
+        response.setContentLength((int) tempFile.length());
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\""); 
+        
+        byte[] bbuf = new byte[BUFSIZE];
+        DataInputStream in = new DataInputStream(new FileInputStream(tempFile));
+        int length;
+        while ((length = in.read(bbuf)) != -1) {
+            op.write(bbuf, 0, length);
+        }
+        in.close();
+        op.flush();
+        tempFile.delete();
     }
 
     /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
+     * @return the contentType
      */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
+    public String getContentType() {
+        return contentType;
     }
 
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        createCsvFileFromGenomicResultCalled = true;
-        return new File(System.getProperty("java.io.tmpdir"));
+    /**
+     * @param contentType the contentType to set
+     */
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
-    
+
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

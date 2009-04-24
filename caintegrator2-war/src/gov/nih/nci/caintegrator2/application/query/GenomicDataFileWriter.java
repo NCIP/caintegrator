@@ -86,87 +86,93 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
-import java.util.Collections;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import org.apache.commons.lang.StringUtils;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public boolean createCsvFileFromGenomicResultCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+/**
+ * Writes GenomicDataQueryResults in csv format.
+ */
+public final class GenomicDataFileWriter {
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
+    private GenomicDataFileWriter() { }
+    
+    /**
+     * Writes a GenomicDataQueryResult to the given file.  
+     * @param result genomic query result to write in csv format.
+     * @param csvFile to write file to.
+     * @return csv file.
+     */
+    public static File writeAsCsv(GenomicDataQueryResult result, File csvFile) {
+        try {
+            FileWriter writer = new FileWriter(csvFile);
+            writeHeaders(result, writer);
+            writeRows(result, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't write file at the path " + csvFile.getAbsolutePath(), e);
+        }
+        return csvFile;
     }
 
-    public void delete(Query query) {
-        deleteCalled = true;
+    private static void writeHeaders(GenomicDataQueryResult result, FileWriter writer) throws IOException {
+        List<String> assignmentIdentifiersRow = new ArrayList<String>();
+        assignmentIdentifiersRow.add("");
+        assignmentIdentifiersRow.add("Patient ID");
+        List<String> sampleIdentifiersRow = new ArrayList<String>();
+        sampleIdentifiersRow.add("");
+        sampleIdentifiersRow.add("Sample ID");
+        if (isProbeSetResultType(result)) {
+            assignmentIdentifiersRow.add(1, "");
+            sampleIdentifiersRow.add(1, "");
+        }
+        for (GenomicDataResultColumn column : result.getColumnCollection()) {
+            sampleIdentifiersRow.add(column.getSampleAcquisition().getSample().getName());
+            assignmentIdentifiersRow.add(column.getSampleAcquisition().getAssignment().getIdentifier());
+        }
+        writeListAsCsvRow(writer, assignmentIdentifiersRow);
+        writeListAsCsvRow(writer, sampleIdentifiersRow);
+        String[] reporterHeadersRow = new String[assignmentIdentifiersRow.size()];
+        reporterHeadersRow[0] = "Gene Name";
+        if (isProbeSetResultType(result)) {
+            reporterHeadersRow[1] = "Reporter Id";
+        }
+        writeListAsCsvRow(writer, Arrays.asList(reporterHeadersRow));
     }
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-        createCsvFileFromGenomicResultCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
-    }
-
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        createCsvFileFromGenomicResultCalled = true;
-        return new File(System.getProperty("java.io.tmpdir"));
+    private static void writeRows(GenomicDataQueryResult result, FileWriter writer) throws IOException {
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            List<String> resultValuesRow = new ArrayList<String>();
+            resultValuesRow.add(row.getReporter().getGeneSymbols().replaceAll(",", "-"));
+            if (isProbeSetResultType(result)) {
+                resultValuesRow.add(row.getReporter().getName());
+            }
+            resultValuesRow.add("");
+            for (GenomicDataResultValue value : row.getValueCollection()) {
+                resultValuesRow.add(String.valueOf(value.getValue()));
+            }
+            writeListAsCsvRow(writer, resultValuesRow);
+        }
     }
     
+    private static void writeListAsCsvRow(FileWriter writer, List<String> csvRowString) throws IOException {
+        writer.append(StringUtils.join(csvRowString, ","));
+        writer.append("\n");
+    }
+    
+    private static boolean isProbeSetResultType(GenomicDataQueryResult result) {
+        return ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.equals(result.getQuery().getReporterType());
+    }
+
 }

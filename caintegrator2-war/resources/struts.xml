@@ -10,6 +10,7 @@
             <result-type name="kmPlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.KMPlotResult"/>
             <result-type name="gePlotResult" class="gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotResult"/>
             <result-type name="dicomFileResult" class="gov.nih.nci.caintegrator2.web.action.query.NCIADicomFileResult"/>
+            <result-type name="temporaryDownloadFileResult" class="gov.nih.nci.caintegrator2.web.action.TemporaryDownloadFileResult"/>
             <result-type name="redirect" class="org.apache.struts2.dispatcher.ServletRedirectResult"/>
         </result-types>
         
@@ -381,6 +382,10 @@
             <result name="export" type="tiles">exportSearchResults</result>
             <result name="dicomJobAjax" type="tiles">dicomJobAjax</result>
             <result name="dicomJobCurrentlyRunning" type="tiles">genericError</result>
+            <result name="exportGenomicResults" type="temporaryDownloadFileResult">
+                <param name="fileName">genomicResults.csv</param>
+                <param name="contentType">text/plain</param>
+            </result>
         </action>
         
         <action name="downloadDicomFile" method="downloadDicomFile" class="nciaDicomRetrievalAction">
