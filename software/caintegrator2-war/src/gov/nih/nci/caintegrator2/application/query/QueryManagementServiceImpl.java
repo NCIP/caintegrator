@@ -97,8 +97,10 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregationTypeEnum;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAImageAggregator;
+import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -114,6 +116,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
     private CaIntegrator2Dao dao;
     private ResultHandler resultHandler;
     private ArrayDataService arrayDataService;
+    private FileManager fileManager;
 
     /**
      * @param resultHandler the resultHandler to set
@@ -213,6 +216,14 @@ public class QueryManagementServiceImpl implements QueryManagementService {
             }
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
+        File csvFile = new File(fileManager.getUserDirectory(result.getQuery().getSubscription()), "genomicData.csv");
+        return GenomicDataFileWriter.writeAsCsv(result, csvFile);
+    }
 
     /**
      * {@inheritDoc}
@@ -251,6 +262,20 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      */
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
+    }
+
+    /**
+     * @return the fileManager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @param fileManager the fileManager to set
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 

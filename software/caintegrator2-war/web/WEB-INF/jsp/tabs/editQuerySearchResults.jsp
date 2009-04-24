@@ -17,17 +17,19 @@
     </h2>
 
     <div class="tableheader">
-        <label>Results per Page:</label>
-        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
-        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
-            <span class="btn_img">Apply</span>
-        </s:a>
+        <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
+        <s:else>
+	        <label>Results per Page:</label>
+	        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
+	        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
+	            <span class="btn_img">Apply</span>
+	        </s:a>
+        </s:else>
     </div>
 
     <div id="queryResultsDiv" >
-    <table class="data">
-
         <s:if test='%{query.resultType.value.equals("genomic")}'>
+        <table class="data">
             <tr>
                 <td />
                 <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
@@ -70,6 +72,14 @@
                     <td><s:property value="value" /></td>
                 </s:iterator>
             </s:iterator>
+        </table>    
+        <br>
+            <div class="exportlinks">
+				Export options:
+				<s:a href="#" onclick="submitForm('exportGenomicResults')">
+				<span class="export csv">CSV</span>
+				</s:a>
+			</div>
         </s:if>
         <s:else>
             <s:set name="pageSizeVar" id="pageSizeVar" value="%{queryResult.pageSize}" />
@@ -123,7 +133,6 @@
             </display:table>
 
         </s:else>
-    </table>    
     </div>
     <!--Buttons-->
 
