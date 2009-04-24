@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -247,6 +248,9 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         } else if ("updateResultsPerPage".equals(selectedAction)) {
                displayTab = RESULTS_TAB;
                returnValue = SUCCESS;
+        } else if ("exportGenomicResults".equals(selectedAction)) {
+            displayTab = RESULTS_TAB;
+            returnValue = exportGenomicResults();
         } else if ("createNewQuery".equals(selectedAction)) {
             getQueryForm().createQuery(getStudySubscription());
             setQueryResult(null);
@@ -274,6 +278,13 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
         }
         return returnValue;
     }
+
+    private String exportGenomicResults() {
+        File file = queryManagementService.createCsvFileFromGenomicResults(getGenomicDataQueryResult());
+        getDisplayableWorkspace().setTemporaryDownloadFile(file.getAbsolutePath());
+        return "exportGenomicResults";
+    }
+
 
     private void updateCriteria() {
         displayTab = CRITERIA_TAB;

@@ -85,88 +85,98 @@
  */
 package gov.nih.nci.caintegrator2.application.query;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import org.junit.Test;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR;
-    public boolean executeGenomicDataQueryCalled;
-    public boolean createCsvFileFromGenomicResultCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+import au.com.bytecode.opencsv.CSVReader;
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
+public class GenomicDataFileWriterTest {
 
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR = new QueryResult();
-        QR.setQuery(query);
-        QR.setRowCollection(Collections.EMPTY_SET);
-        return QR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
-    }
-
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-        createCsvFileFromGenomicResultCalled = false;
-    }
-
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
-    }
-
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
-    }
-
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        createCsvFileFromGenomicResultCalled = true;
-        return new File(System.getProperty("java.io.tmpdir"));
+    @Test
+    public void testWriteAsCsv() throws IOException {
+        GenomicDataQueryResult result = createTestResult();
+        Query query = new Query();
+        query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        result.setQuery(query);
+        File csvFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "genomicResultTest.csv");
+        csvFile = GenomicDataFileWriter.writeAsCsv(result, csvFile);
+        csvFile.deleteOnExit();
+        checkFile(csvFile, result);
     }
     
+    private void checkFile(File csvFile, GenomicDataQueryResult result) throws IOException {
+        assertTrue(csvFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(csvFile), ',');
+        checkLine(reader.readNext(), "", "", "Patient ID", "ASSIGNMENT1", "ASSIGNMENT2", "ASSIGNMENT3");
+        checkLine(reader.readNext(), "", "", "Sample ID", "SAMPLE1", "SAMPLE2", "SAMPLE3");
+        checkLine(reader.readNext(), "Gene Name", "Reporter Id", "", "", "", "");
+        checkLine(reader.readNext(), "GENE1", "REPORTER1", "", "1.1", "2.2", "3.3");
+        checkLine(reader.readNext(), "", "REPORTER2", "", "4.4", "5.5", "6.6");
+    }
+
+    private void checkLine(String[] line, String... expecteds) {
+        assertArrayEquals(expecteds, line);
+    }
+
+    private GenomicDataQueryResult createTestResult() {
+        GenomicDataQueryResult result = new GenomicDataQueryResult();
+        addColumn(result, "SAMPLE1", "ASSIGNMENT1");
+        addColumn(result, "SAMPLE2", "ASSIGNMENT2");
+        addColumn(result, "SAMPLE3", "ASSIGNMENT3");
+        addRow(result, "REPORTER1", "GENE1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
+        addRow(result, "REPORTER2", null, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
+        return result;
+    }
+
+    private void addRow(GenomicDataQueryResult result, String reporterName, String geneName, float[] values) {
+        GenomicDataResultRow row = new GenomicDataResultRow();
+        GeneExpressionReporter reporter = new GeneExpressionReporter();
+        reporter.setName(reporterName);
+        if (geneName != null) {
+            Gene gene = new Gene();
+            gene.setSymbol(geneName);
+            reporter.getGenes().add(gene);
+        }
+        row.setReporter(reporter);
+        row.setValueCollection(new ArrayList<GenomicDataResultValue>());
+        int colNum = 0;
+        for (float value : values) {
+            GenomicDataResultValue genomicValue = new GenomicDataResultValue();
+            genomicValue.setValue(value);
+            row.getValueCollection().add(genomicValue);
+            genomicValue.setColumn(result.getColumnCollection().get(colNum));
+            colNum++;
+        }
+        result.getRowCollection().add(row);
+    }
+
+    private void addColumn(GenomicDataQueryResult result, String sampleName, String assignmentName) {
+        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        column.setSampleAcquisition(new SampleAcquisition());
+        column.getSampleAcquisition().setSample(new Sample());
+        column.getSampleAcquisition().getSample().setName(sampleName);
+        StudySubjectAssignment assignment = new StudySubjectAssignment();
+        assignment.setIdentifier(assignmentName);
+        column.getSampleAcquisition().setAssignment(assignment);
+        result.getColumnCollection().add(column);
+    }
+
 }

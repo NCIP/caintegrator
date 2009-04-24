@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -186,6 +187,10 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
 
     public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
 
+        return null;
+    }
+
+    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
         return null;
     }
     

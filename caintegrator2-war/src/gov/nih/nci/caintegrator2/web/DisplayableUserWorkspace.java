@@ -141,6 +141,7 @@ public class DisplayableUserWorkspace {
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
     private boolean createPlotSelected = false;
     private boolean createPlotRunning = false;
+    private String temporaryDownloadFile;
     
     
     /**
@@ -433,6 +434,20 @@ public class DisplayableUserWorkspace {
     public void setCurrentComparativeMarkerSelectionAnalysisJob(
             ComparativeMarkerSelectionAnalysisJob currentComparativeMarkerSelectionAnalysisJob) {
         this.currentComparativeMarkerSelectionAnalysisJob = currentComparativeMarkerSelectionAnalysisJob;
+    }
+
+    /**
+     * @return the temporaryDownloadFile
+     */
+    public String getTemporaryDownloadFile() {
+        return temporaryDownloadFile;
+    }
+
+    /**
+     * @param temporaryDownloadFile the temporaryDownloadFile to set
+     */
+    public void setTemporaryDownloadFile(String temporaryDownloadFile) {
+        this.temporaryDownloadFile = temporaryDownloadFile;
     }
 
 }

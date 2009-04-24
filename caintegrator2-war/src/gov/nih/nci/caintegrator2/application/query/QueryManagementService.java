@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -143,5 +144,12 @@ public interface QueryManagementService {
      * @param query item to update
      */
     void delete(Query query);
+    
+    /**
+     * Creates a CSV file from the genomic results.
+     * @param result to create csv file for.
+     * @return csv file.
+     */
+    File createCsvFileFromGenomicResults(GenomicDataQueryResult result);
 
 }
