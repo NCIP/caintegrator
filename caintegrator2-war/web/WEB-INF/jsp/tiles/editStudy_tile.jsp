@@ -196,9 +196,9 @@
             <td><s:property value="serverProfile.hostname" /></td>
             <td><s:property value="experimentIdentifier" /></td>
             <td> 
-            <i>Mapping File(s):</i> <s:iterator value="sampleMappingFiles"> <s:property /> <br> </s:iterator>
-            <i>Control Sample Mapping File(s):</i> <s:iterator value="controlSampleMappingFiles"> <s:property /> <br> </s:iterator>
-            <i>Copy Number Mapping File(s):</i> <s:iterator value="copyNumberMappingFiles"> <s:property /> <br> </s:iterator>
+            <i>Mapping File(s):</i> <s:iterator value="sampleMappingFileNames"> <s:property /> <br> </s:iterator>
+            <i>Control Sample Mapping File(s):</i> <s:iterator value="controlSampleMappingFileNames"> <s:property /> <br> </s:iterator>
+            <i>Copy Number Mapping File:</i> <s:property value="copyNumberMappingFileName"/> 
             </td>
             <td>
                 <s:url id="editGenomicSource" action="editGenomicSource">

@@ -108,9 +108,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String experimentIdentifier;
     private String platformVendor;
     private String platformName;
-    private String sampleMappingFileName;
-    private String controlSampleMappingFileName;
-    private String copyNumberMappingFileName;
+    private String sampleMappingCommaSeparatedFileNames;
+    private String controlSampleMappingCommaSeparatedFileNames;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private CopyNumberMappingFile copyNumberMappingFile;
@@ -259,89 +258,93 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public void setCopyNumberMappingFile(CopyNumberMappingFile copyNumberMappingFile) {
         this.copyNumberMappingFile = copyNumberMappingFile;
     }
-
-    /**
-     * @return the sampleMappingFileName
-     */
-    public String getSampleMappingFileName() {
-        return sampleMappingFileName;
-    }
-
-    /**
-     * @param sampleMappingFileName the sampleMappingFileName to set
-     */
-    public void setSampleMappingFileName(String sampleMappingFileName) {
-        this.sampleMappingFileName = sampleMappingFileName;
-    }
     
+    /**
+     * Adds the filename to the comma separated list of file names.
+     * @param filename to add to the list.
+     */
+    public void addSampleMappingFileName(String filename) {
+        if (sampleMappingCommaSeparatedFileNames == null) {
+            setSampleMappingCommaSeparatedFileNames(filename);    
+        } else {
+            setSampleMappingCommaSeparatedFileNames(sampleMappingCommaSeparatedFileNames 
+                                                    + "," + filename);
+        }
+    }
+
+    /**
+     * @return the sampleMappingCommaSeparatedFileNames
+     */
+    public String getSampleMappingCommaSeparatedFileNames() {
+        return sampleMappingCommaSeparatedFileNames;
+    }
+
+    private void setSampleMappingCommaSeparatedFileNames(String sampleMappingCommaSeparatedFileNames) {
+        this.sampleMappingCommaSeparatedFileNames = sampleMappingCommaSeparatedFileNames;
+    }
+
     /**
      * Used for the visual display of the sample mapping file names.
      * @return list of sample mapping file names.
      */
-    public List<String> getSampleMappingFiles() {
-        List<String> sampleMappingFiles = new ArrayList<String>();
-        if (StringUtils.isBlank(sampleMappingFileName)) {
-            sampleMappingFiles.add("None Configured");
+    public List<String> getSampleMappingFileNames() {
+        List<String> sampleMappingFileNames = new ArrayList<String>();
+        if (StringUtils.isBlank(sampleMappingCommaSeparatedFileNames)) {
+            sampleMappingFileNames.add("None Configured");
         } else {
-            sampleMappingFiles.addAll(Arrays.asList(StringUtils.split(sampleMappingFileName, ",")));
+            sampleMappingFileNames.addAll(Arrays.asList(StringUtils.split(sampleMappingCommaSeparatedFileNames, ",")));
         }
-        return sampleMappingFiles;
+        return sampleMappingFileNames;
     }
     
+    /**
+     * Adds the filename to the comma separated list of file names.
+     * @param filename to add to the list.
+     */
+    public void addControlSampleMappingFileName(String filename) {
+        if (controlSampleMappingCommaSeparatedFileNames == null) {
+            setControlSampleMappingCommaSeparatedFileNames(filename);    
+        } else {
+            setControlSampleMappingCommaSeparatedFileNames(controlSampleMappingCommaSeparatedFileNames 
+                                                    + "," + filename);
+        }
+    }
+    
+    /**
+     * @return the controlSampleMappingCommaSeparatedFileName
+     */
+    public String getControlSampleMappingCommaSeparatedFileNames() {
+        return controlSampleMappingCommaSeparatedFileNames;
+    }
+
+    private void setControlSampleMappingCommaSeparatedFileNames(String controlSampleMappingCommaSeparatedFileNames) {
+        this.controlSampleMappingCommaSeparatedFileNames = controlSampleMappingCommaSeparatedFileNames;
+    }
+
     /**
      * Used for the visual display of the control sample mapping file names.
      * @return list of control sample mapping file names.
      */
-    public List<String> getControlSampleMappingFiles() {
-        List<String> controlSampleMappingFiles = new ArrayList<String>();
-        if (StringUtils.isBlank(controlSampleMappingFileName)) {
-            controlSampleMappingFiles.add("None Configured");
+    public List<String> getControlSampleMappingFileNames() {
+        List<String> controlSampleMappingFileNames = new ArrayList<String>();
+        if (StringUtils.isBlank(controlSampleMappingCommaSeparatedFileNames)) {
+            controlSampleMappingFileNames.add("None Configured");
         } else {
-            controlSampleMappingFiles.addAll(Arrays.asList(StringUtils.split(controlSampleMappingFileName, ",")));
+            controlSampleMappingFileNames.addAll(Arrays.asList(
+                    StringUtils.split(controlSampleMappingCommaSeparatedFileNames, ",")));
         }
-        return controlSampleMappingFiles;
+        return controlSampleMappingFileNames;
     }
     
     /**
-     * Used for the visual display of the copy number mapping file names.
-     * @return list of copy number mapping file names.
-     */
-    public List<String> getCopyNumberMappingFiles() {
-        List<String> copyNumberMappingFiles = new ArrayList<String>();
-        if (StringUtils.isBlank(copyNumberMappingFileName)) {
-            copyNumberMappingFiles.add("None Configured");
-        } else {
-            copyNumberMappingFiles.addAll(Arrays.asList(StringUtils.split(copyNumberMappingFileName, ",")));
-        }
-        return copyNumberMappingFiles;
-    }
-
-    /**
-     * @return the controlSampleMappingFileName
-     */
-    public String getControlSampleMappingFileName() {
-        return controlSampleMappingFileName;
-    }
-
-    /**
-     * @param controlSampleMappingFileName the controlSampleMappingFileName to set
-     */
-    public void setControlSampleMappingFileName(String controlSampleMappingFileName) {
-        this.controlSampleMappingFileName = controlSampleMappingFileName;
-    }
-
-    /**
-     * @return the copyNumberMappingFileName
+     * Used for the visual display of the copy number mapping file name.
+     * @return file name.
      */
     public String getCopyNumberMappingFileName() {
-        return copyNumberMappingFileName;
+        if (getCopyNumberMappingFile() != null 
+            && getCopyNumberMappingFile().getFile() != null) {
+            return getCopyNumberMappingFile().getFile().getName();
+        }
+        return "None Configured";
     }
-
-    /**
-     * @param copyNumberMappingFileName the copyNumberMappingFileName to set
-     */
-    public void setCopyNumberMappingFileName(String copyNumberMappingFileName) {
-        this.copyNumberMappingFileName = copyNumberMappingFileName;
-    }
-
 }
