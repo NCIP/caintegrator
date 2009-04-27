@@ -825,5 +825,35 @@
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:jdbc/CaIntegrator2DataSource" />
     </bean>
+    
+    <bean id="gridDiscoveryClient" class="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryClientImpl">
+        <property name="configurationHelper">
+            <ref local="configurationHelper" />
+        </property>
+    </bean>
+    
+    <bean id="gridDiscoveryServiceTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass"
+            value="gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="gridDiscoveryClient" value-ref="gridDiscoveryClient"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="gridDiscoveryServiceTask"/>
+        <!-- repeat every 3600 seconds (1 hour) -->
+        <property name="repeatInterval" value="3600000"/>
+    </bean>
+    
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger"/>
+            </list>
+        </property>
+    </bean>
 
 </beans>

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
@@ -130,17 +131,11 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      */
     public static final String STATUS_ACTION = "status";
 
-    
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
     private IComparativeMarkerSelectionAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
-
-    private static final String PREPROCESS_DATASET_URL =
-        "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
-    private static final String COMPARATIVE_MARKER_URL =
-        "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
 
     /**
      * {@inheritDoc}
@@ -189,8 +184,6 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     
     private void loadDefaultValues() {
         getComparativeMarkerSelectionAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
-        getCurrentComparativeMarkerSelectionAnalysisJob().setPreprocessDataSetUrl(PREPROCESS_DATASET_URL);
-        getCurrentComparativeMarkerSelectionAnalysisJob().setComparativeMarkerSelectionUrl(COMPARATIVE_MARKER_URL);
         
         addNonGenomicQueries();
         getComparativeMarkerSelectionAnalysisForm().setPreprocessDatasetparameters(new PreprocessDatasetParameters());
@@ -388,19 +381,13 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      * @return available PreprocessDataset services.
      */
     public Map<String, String> getPreprocessDatasetServices() {
-        Map<String, String> preprocessDatasetServices = new HashMap<String, String>();
-        preprocessDatasetServices.put(PREPROCESS_DATASET_URL,
-                "Broad Institude - " + PREPROCESS_DATASET_URL);
-        return preprocessDatasetServices;
+        return GridDiscoveryServiceJob.getGridPreprocessServices();
     }
 
     /**
      * @return available ComparativeMarkerSelection services.
      */
     public Map<String, String> getComparativeMarkerSelectionServices() {
-        Map<String, String> comparativeMarkerSelectionServices = new HashMap<String, String>();
-        comparativeMarkerSelectionServices.put(COMPARATIVE_MARKER_URL,
-                "Broad Institude - " + COMPARATIVE_MARKER_URL);
-        return comparativeMarkerSelectionServices;
+        return GridDiscoveryServiceJob.getGridCmsServices();
     }
 }

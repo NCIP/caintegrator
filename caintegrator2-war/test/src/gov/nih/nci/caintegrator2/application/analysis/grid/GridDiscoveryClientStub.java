@@ -83,46 +83,47 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.common;
+package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import java.io.File;
+import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.message.addressing.ServiceNameType;
 
 /**
- * Configurable properties for caIntegrator 2.
+ * 
  */
-public enum ConfigurationParameter {
-    
-    /**
-     * Determines where Study files (NetCDF, annotation files, etc.) are stored on the system.
-     */
-    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir")),
-    
-    /**
-     * Determines where to store temporary files for download.
-     */
-    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"),
-    
-    /**
-     * 
-     */
-    USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles"),
-    
-    /**
-     * Grid index service url.
-     */
-    GRID_INDEX_URL("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
-    
-    private String defaultValue;
+public class GridDiscoveryClientStub implements GridDiscoveryClient {
 
-    ConfigurationParameter(String defaultValue)  {
-        this.defaultValue = defaultValue;
+    /**
+     * {@inheritDoc}
+     */
+    public EndpointReferenceType[] searchServices(String searchString) throws ResourcePropertyRetrievalException {
+        EndpointReferenceType[] results = new EndpointReferenceType[3];
+        results[0] = buildEndpoint("http://broad/PreprocessDatasetService" + searchString);
+        results[1] = buildEndpoint("http://broad/ComparativeMarkerSelectionService" + searchString);
+        results[2] = buildEndpoint("http://broad/OtherService" + searchString);
+        return results;
     }
     
+    private EndpointReferenceType buildEndpoint(String uri) {
+        EndpointReferenceType endpoint = new EndpointReferenceType();
+        endpoint.setServiceName(new ServiceNameType(uri, "Board"));
+        return endpoint;
+    }
+
     /**
-     * @return the default value for the configuration parameter.
+     * {@inheritDoc}
      */
-    public String getDefaultValue() {
-        return defaultValue;
+    public String getAddress(EndpointReferenceType endpoint) {
+        return endpoint.getServiceName().getNamespaceURI();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getHostinCenter(EndpointReferenceType endpoint) {
+        return "NCI";
     }
 
 }
