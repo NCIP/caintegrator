@@ -72,7 +72,6 @@
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-httpclient-3.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/concurrent-1.4.1.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/csmapi-4.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/dom4j-1.6.1.jar"/>
@@ -139,5 +138,13 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/caintegrator2/software/lib/javadoc/netcdf-4.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-discovery-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-gts-client-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/caGrid-metadatautils-1.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cryptix32-3.2.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/cryptix-asn1-0.1.11.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/puretls-0.9b5.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/quartz-1.5.2.jar"/>
 	<classpathentry kind="output" path="software/caintegrator2-war/target/classes"/>
 </classpath>
