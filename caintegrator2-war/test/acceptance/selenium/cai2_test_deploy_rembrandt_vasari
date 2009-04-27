@@ -39,7 +39,7 @@
 <tr>
 	<td>type</td>
 	<td>createStudy_studyConfiguration_study_longTitleText</td>
-	<td>Rembrandt clinical data combined with the VASARI collection from NCIA.</td>
+	<td>Rembrandt clinical data combined with the VASARI collection from NCIA.&nbsp;&nbsp;Created via Selenium.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -86,7 +86,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -111,7 +111,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -136,7 +136,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -161,7 +161,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -187,7 +187,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -278,7 +278,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -314,7 +314,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -334,7 +334,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -379,7 +379,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -399,7 +399,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -454,7 +454,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -484,7 +484,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium test for Rembrandt / VASARI.</td>
+	<td>Created via selenium for Rembrandt / VASARI.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -504,7 +504,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -589,7 +589,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -669,7 +669,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -724,7 +724,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -819,7 +819,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -904,7 +904,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -959,7 +959,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1039,7 +1039,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1158,6 +1158,23 @@
 	<td>saveGenomicSource_0</td>
 	<td></td>
 </tr>
+<!--// the following command is done to recover from a server timeout that occurs after saving the genomic source-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/index.jsp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Studies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='manageStudies']/table[2]/tbody/tr[4]/td[4]/a[1]</td>
+	<td></td>
+</tr>
+<!--// at this point the user session should be at the Edit Study screen-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Map Samples</td>
@@ -1250,7 +1267,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1290,7 +1307,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1345,7 +1362,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1385,7 +1402,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via Selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1430,7 +1447,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1465,7 +1482,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1485,7 +1502,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1520,7 +1537,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1560,7 +1577,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1583,11 +1600,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>updateDefinition_updateImagingFileColumn</td>
 	<td></td>
@@ -1605,7 +1617,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via Selenium test for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
