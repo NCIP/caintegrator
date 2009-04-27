@@ -131,12 +131,7 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     }
 
     private void persistFileName() {
-        if (getGenomicSource().getControlSampleMappingFileName() == null) {
-            getGenomicSource().setControlSampleMappingFileName(getControlSampleFileFileName());    
-        } else {
-            getGenomicSource().setControlSampleMappingFileName(getGenomicSource().getControlSampleMappingFileName() 
-                                                        + "," + getControlSampleFileFileName());
-        }
+        getGenomicSource().addControlSampleMappingFileName(getControlSampleFileFileName());
         getStudyManagementService().save(getStudyConfiguration());
     }
     
