@@ -118,6 +118,7 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     public String execute() {
         try {
             getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
+            persistFileName();
             return SUCCESS;
         } catch (ValidationException e) {
             setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
@@ -127,6 +128,16 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
             return INPUT;
         } 
         
+    }
+
+    private void persistFileName() {
+        if (getGenomicSource().getControlSampleMappingFileName() == null) {
+            getGenomicSource().setControlSampleMappingFileName(getControlSampleFileFileName());    
+        } else {
+            getGenomicSource().setControlSampleMappingFileName(getGenomicSource().getControlSampleMappingFileName() 
+                                                        + "," + getControlSampleFileFileName());
+        }
+        getStudyManagementService().save(getStudyConfiguration());
     }
     
     /**

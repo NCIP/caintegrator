@@ -406,6 +406,15 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
+            if (getSampleMappingFile() != null) {
+                genomicSource.setSampleMappingFileName(getSampleMappingFile().getName());
+            }
+            if (getControlSamplesFile() != null) {
+                genomicSource.setControlSampleMappingFileName(getControlSamplesFile().getName());
+            }
+            if (getCopyNumberFile() != null) {
+                genomicSource.setCopyNumberMappingFileName(getCopyNumberFile().getName());
+            }
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
             logEnd();
