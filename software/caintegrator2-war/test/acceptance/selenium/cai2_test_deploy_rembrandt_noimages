@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
-<title>Manage Studies - Load Rembrandt with NCRI images</title>
+<link rel="selenium.base" href="https://caintegrator2-stage.nci.nih.gov/" />
+<title>Manage Studies - Load Rembrandt</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Manage Studies - Load Rembrandt with NCRI images</td></tr>
+<tr><td rowspan="1" colspan="3">Manage Studies - Load Rembrandt</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>Rembrandt with NCRI</td>
+	<td>Rembrandt</td>
 	<td>Cai2StudyName</td>
 </tr>
 <tr>
@@ -34,34 +34,22 @@
 <tr>
 	<td>type</td>
 	<td>nameId</td>
-	<td>Demo Study based on ${Cai2StudyName} data.</td>
+	<td>Demo Study based on ${Cai2StudyName} data</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>createStudy_studyConfiguration_study_longTitleText</td>
-	<td>Rembrandt clinical data combined with the NCRI collection from NCIA.&nbsp;&nbsp;Created via selenium.</td>
+	<td>Rembrandt clinical data combined with genomic data with no images.&nbsp;&nbsp;Created via Selenium.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>createStudy_saveStudy</td>
 	<td></td>
 </tr>
-<!--// add logo-->
-<tr>
-	<td>type</td>
-	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri logo.jpg</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addStudyLogo_addStudyLogo</td>
-	<td></td>
-</tr>
-<!--// add clinical data-->
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_clinical_Aug08_subset.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -96,14 +84,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
-	<td>label=numeric</td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
 	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_type</td>
+	<td>label=numeric</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -914,6 +902,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
 	<td>addSelection</td>
 	<td>updateDefinition_availableUpdateList</td>
 	<td>label=STEREOTACTIC BIOPSY</td>
@@ -947,11 +940,6 @@
 	<td>click</td>
 	<td>//input[@value=' &lt; Add']</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1143,7 +1131,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
-	<td>array-stage.nci.nih.gov</td>
+	<td>array.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1153,7 +1141,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
-	<td>jagla-00034</td>
+	<td>rembr-00037</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1170,6 +1158,18 @@
 	<td>saveGenomicSource_0</td>
 	<td></td>
 </tr>
+<!--// the following command is done to recover from a server timeout that occurs after saving the genomic source-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/index.jsp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Studies</td>
+	<td></td>
+</tr>
+<!--// at this point the user session should be at the Edit Study screen-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Map Samples</td>
@@ -1178,7 +1178,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_sample_mapping.csv</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_caarray_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1193,7 +1193,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\jagla_0034_control_samples.csv</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1202,338 +1202,26 @@
 </tr>
 <!--// end map samples-->
 <!--// begin add imaging data source-->
-<tr>
-	<td>clickAndWait</td>
-	<td>saveControlSamples_addImagingSource</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_url</td>
-	<td>http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_imageSourceConfiguration_serverProfile_username</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_imageSourceConfiguration_serverProfile_password</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_collectionName</td>
-	<td>NCRI</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_imageAnnotationFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_image_annotations.csv</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addImagingFile_imageClinicalMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_image_mapping.csv</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addImagingFile_0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>saveImagingSource_</td>
-	<td></td>
-</tr>
 <!--// end add imaging data source-->
 <!--// begin assign imaging annotation-->
-<tr>
-	<td>selectAndWait</td>
-	<td>saveImagingColumnType_columnType</td>
-	<td>label=Identifier</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[3]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=3</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=5</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=2</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=4</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=1</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[4]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=dxf113</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=aflanders</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=rjg143</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[5]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[6]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Insular</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Temporal</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Frontal, Temporal, Insular</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Parietal</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Frontal, Insular</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Frontal</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[7]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Right</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Left</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Center</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='saveImagingSource']/table[2]/tbody/tr[8]/td[1]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_createNewImagingDefinition</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Motor</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=None</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Speech</td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>updateDefinition_availableUpdateList</td>
-	<td>label=Language</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>updateDefinition_updateImagingFileColumn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>saveImagingSource_0</td>
-	<td></td>
-</tr>
 <!--// end assign imaging annotation-->
+<!--// begin load images-->
+<!--//end load images-->
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_vasari_logo.gif</td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Load All Imaging</td>
+	<td>addStudyLogo_addStudyLogo</td>
 	<td></td>
 </tr>
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>
-	<td>loadImagingSource_deployStudy</td>
+	<td>addStudyLogo_deployStudy</td>
 	<td></td>
 </tr>
 
