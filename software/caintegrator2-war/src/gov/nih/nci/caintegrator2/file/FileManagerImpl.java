@@ -124,6 +124,13 @@ public class FileManagerImpl implements FileManager {
     /**
      * {@inheritDoc}
      */
+    public void deleteStudyDirectory(StudyConfiguration studyConfiguration) {
+        FileUtils.deleteQuietly(getStudyDirectory(studyConfiguration));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public File getNewTemporaryDirectory(String dirName) {
         if (StringUtils.isBlank(dirName)) {
             throw new IllegalArgumentException("Directory name is null or blank.");

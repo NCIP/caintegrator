@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.file;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.TestDataFiles;
@@ -43,6 +44,19 @@ public class FileManagerImplTest {
         assertTrue(configurationHelperStub.getStringCalled);
         assertEquals(ConfigurationParameter.STUDY_FILE_STORAGE_DIRECTORY, configurationHelperStub.parameterPassed);
         assertEquals(TestDataFiles.VALID_FILE.length(), storedFile.length());
+    }
+    
+    @Test
+    public void testDeleteStudyDirectory() throws IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getStudy().setId(100L);
+        File storedFile = fileManager.storeStudyFile(TestDataFiles.VALID_FILE, TEST_FILENAME, studyConfiguration);
+        assertTrue(storedFile.exists());
+        assertTrue(new File(System.getProperty("java.io.tmpdir") + File.separator + "100").exists());
+        fileManager.deleteStudyDirectory(studyConfiguration);
+        assertFalse(storedFile.exists());
+        assertFalse(new File(System.getProperty("java.io.tmpdir") + File.separator + "100").exists());
+        
     }
     
     @Test

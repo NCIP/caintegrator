@@ -109,6 +109,11 @@ public interface FileManager {
      */
     File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) throws IOException;
     
+    /**
+     * Deletes the storage directory for the given study.
+     * @param studyConfiguration for the directory to delete.
+     */
+    void deleteStudyDirectory(StudyConfiguration studyConfiguration);
         
     /**
      * Returns the storage directory for the given study.

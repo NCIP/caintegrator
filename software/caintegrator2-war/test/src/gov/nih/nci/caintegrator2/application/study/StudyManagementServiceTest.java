@@ -172,6 +172,7 @@ public class StudyManagementServiceTest {
         assertFalse(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         assertTrue(daoStub.deleteCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);
+        assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
     }
     
     @Test
