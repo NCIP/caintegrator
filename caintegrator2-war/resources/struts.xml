@@ -420,6 +420,7 @@
                 <param name="actionName">genePatternAnalysisStatus</param>
             </result>
             <result name="input" type="tiles">genePatternAnalysis</result>
+            <result name="error" type="tiles">genePatternAnalysis</result>
         </action>
         
         <action name="comparativeMarkerSelectionAnalysis" class="comparativeMarkerSelectionAnalysisAction">
