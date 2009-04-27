@@ -1,0 +1,1109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/" />
+<title>Manage Studies - Load TCGA, Agilent, topal-00047</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Manage Studies - Load TCGA, Agilent, topal-00047</td></tr>
+</thead><tbody>
+<tr>
+	<td>setTimeout</td>
+	<td>3600000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>TCGA Agilent</td>
+	<td>Cai2StudyName</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${Cai2StudyName}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create New Study</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>nameId</td>
+	<td>Demo Study based on ${Cai2StudyName} data</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createStudy_studyConfiguration_study_longTitleText</td>
+	<td>${Cai2StudyName}.&nbsp;&nbsp;Study created via selenium.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>createStudy_saveStudy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addClinicalFile_clinicalFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_clinical.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addClinicalFile_addClinicalFile</td>
+	<td></td>
+</tr>
+<!--//begin create identifier-->
+<tr>
+	<td>clickAndWait</td>
+	<td>saveClinicalSource_</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>saveColumnType_columnType</td>
+	<td>label=Identifier</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<!--//-->
+<!--//begin creation of additional annotation definitions-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[3]/td[1]/a</td>
+	<td></td>
+</tr>
+<!--//-->
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=GBM</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[4]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=GLIOBLASTOMA MULTIFORME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[5]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=MGED Ontology</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[6]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Henry Ford Hospital System, Department of Neurosurgery</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=MD Anderson Cancer Center</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[7]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Brain</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[8]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=Homo sapiens</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[9]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=henryford.com:biopsy:clin:01</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=mdanderson.org:biopsy:clin:01</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[10]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0160-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0043-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0187-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0033-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0037-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0166-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0140-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0137-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0237-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0080-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0148-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0114-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0071-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0137-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0060-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0027-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0064-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0038-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0185-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0169-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0010-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0184-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0173-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0133-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0221-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0158-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0141-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0006-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0157-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0124-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0089-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0024-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0150-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0014-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0174-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0058-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0241-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0216-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0122-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0107-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0209-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0055-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0210-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0011-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0125-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0074-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0132-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0143-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0129-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0046-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0171-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0147-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0151-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0168-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0211-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0210-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0139-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0128-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0116-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0002-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0085-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0047-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0213-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0189-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0142-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0113-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0165-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0167-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0188-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0054-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0115-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0009-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0159-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0211-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0099-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0190-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0154-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0028-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0240-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0201-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0197-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0083-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0176-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0208-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0195-01B</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0126-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0138-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0219-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0208-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0086-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0034-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0145-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0214-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0069-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0075-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0007-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0001-01C</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0102-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0178-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0206-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0057-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0052-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0130-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-06-0156-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0021-01A</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TCGA-02-0003-01A</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[11]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=NOT SPECIFIED</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=GLIOBLASTOMA MULTIFORME</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=GLIOBLASTOMA</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[12]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=CEREBRUM</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=OCCIPITAL LOBE</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=BRAIN, NOS</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=OVERLAPPING LESION OF BRAIN</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=FRONTAL LOBE</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=NOT SPECIFIED</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=TEMPORAL LOBE</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=PARIETAL LOBE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='saveClinicalSource']/table[2]/tbody/tr[13]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_createNewDefinition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
+	<td>Created via selenium for ${Cai2StudyName}.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=MALIGNANT</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>updateDefinition_availableUpdateList</td>
+	<td>label=NOT SPECIFIED</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value=' &lt; Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>updateDefinition_updateFileColumn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveClinicalSource_0</td>
+	<td></td>
+</tr>
+<!--//end creation of additional annotation definitions-->
+<!--// begin Load Clinical-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Load Clinical</td>
+	<td></td>
+</tr>
+<!--// begin add genomic-->
+<tr>
+	<td>clickAndWait</td>
+	<td>action:addGenomicSource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
+	<td>array.nci.nih.gov</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_port</td>
+	<td>8080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
+	<td>topal-00047</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveGenomicSource_genomicSource_serverProfile_password</td>
+	<td></td>
+</tr>
+<!--//select vendor-->
+<tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Agilent</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>platformName</td>
+	<td>label=AgilentG4502A_07_01</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveGenomicSource_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveSampleMapping_sampleMappingFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_sample_mapping.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveSampleMapping_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Map Samples</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveSampleMapping_controlSampleFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_control_samples.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveSampleMapping_saveControlSamples</td>
+	<td></td>
+</tr>
+<!--// end map samples-->
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_logo.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// begin Save and Deploy-->
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_deployStudy</td>
+	<td></td>
+</tr>
+<!--// scratch-->
+
+</tbody></table>
+</body>
+</html>
