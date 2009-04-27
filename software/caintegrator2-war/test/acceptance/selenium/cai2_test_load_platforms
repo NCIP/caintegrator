@@ -121,6 +121,31 @@
 	<td>addPlatform_0</td>
 	<td></td>
 </tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>addPlatform_platformVendor</td>
+	<td>label=Agilent</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>AgilentG4502A_07_01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addPlatform_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\agilent\AgilentG4502A_07_01.tcga.adf</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPlatform_0</td>
+	<td></td>
+</tr>
 
 </tbody></table>
 </body>
