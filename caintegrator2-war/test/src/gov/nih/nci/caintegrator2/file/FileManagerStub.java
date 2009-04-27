@@ -94,9 +94,11 @@ import java.io.File;
 public class FileManagerStub implements FileManager {
     
     public boolean storeStudyFileCalled;
+    public boolean deleteStudyDirectoryCalled;
     
     public void clear() {
         storeStudyFileCalled = false;
+        deleteStudyDirectoryCalled = false;
     }
 
     public File storeStudyFile(File sourceFile, String filename, StudyConfiguration studyConfiguration) {
@@ -114,6 +116,10 @@ public class FileManagerStub implements FileManager {
 
     public File getUserDirectory(StudySubscription studySubscription) {
         return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    public void deleteStudyDirectory(StudyConfiguration studyConfiguration) {
+        deleteStudyDirectoryCalled = true;
     }
 
 }
