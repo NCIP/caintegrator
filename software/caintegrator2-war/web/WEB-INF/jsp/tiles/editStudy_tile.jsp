@@ -178,11 +178,12 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="3">Genomic Data Sources</th>
+            <th colspan="4">Genomic Data Sources</th>
         </tr>
         <tr>
-            <th>Server</th>
+            <th>Host Name</th>
             <th>Experiment Identifier</th>
+            <th>File Description</th>
             <th>Action</th>
         </tr>
         <s:iterator value="studyConfiguration.genomicDataSources" status="status">
@@ -194,6 +195,11 @@
             </s:else>            
             <td><s:property value="serverProfile.hostname" /></td>
             <td><s:property value="experimentIdentifier" /></td>
+            <td> 
+            <i>Mapping File(s):</i> <s:iterator value="sampleMappingFiles"> <s:property /> <br> </s:iterator>
+            <i>Control Sample Mapping File(s):</i> <s:iterator value="controlSampleMappingFiles"> <s:property /> <br> </s:iterator>
+            <i>Copy Number Mapping File(s):</i> <s:iterator value="copyNumberMappingFiles"> <s:property /> <br> </s:iterator>
+            </td>
             <td>
                 <s:url id="editGenomicSource" action="editGenomicSource">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
@@ -209,7 +215,7 @@
         </tr>
         </s:iterator>
         <tr>
-            <th colspan="3"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
+            <th colspan="4"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
         </tr>
     </table>
     </s:form>

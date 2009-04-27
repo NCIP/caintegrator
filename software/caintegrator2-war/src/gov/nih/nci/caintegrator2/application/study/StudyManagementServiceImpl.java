@@ -791,6 +791,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
         source.setCopyNumberMappingFile(new CopyNumberMappingFile());
         source.getCopyNumberMappingFile().setPath(savedFile.getAbsolutePath());
+        source.setCopyNumberMappingFileName(filename);
         dao.save(source);
     }
 

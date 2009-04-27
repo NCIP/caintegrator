@@ -20,6 +20,9 @@
         <property name="experimentIdentifier" type="string" column="EXPERIMENT_IDENTIFIER"/>
         <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
+        <property name="sampleMappingFileName" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
+        <property name="controlSampleMappingFileName" type="string" column="CONTROL_SAMPLE_MAPPING_FILE_NAME"/>
+        <property name="copyNumberMappingFileName" type="string" column="COPY_NUMBER_MAPPING_FILE_NAME"/>
         
         <list name="sampleIdentifiers" lazy="true" inverse="true">
             <cache usage="read-write" />
