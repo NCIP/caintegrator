@@ -13,6 +13,7 @@
 <tr><td><a href="cai2_test_deploy_rembrandt_ncri">Manage Studies - Load Rembrandt with NCRI images</a></td></tr>
 <tr><td><a href="cai2_test_deploy_rembrandt_noimages">Manage Studies - Load Rembrandt</a></td></tr>
 <tr><td><a href="cai2_test_deploy_dc_lung_full">Manage Studies - Load DC Lung Full</a></td></tr>
+<tr><td><a href="cai2_test_deploy_tcga_agilent_topal-00047">Manage Studies - Load TCGA, Agilent, topal-00047</a></td></tr>
 </tbody></table>
 </body>
 </html>
