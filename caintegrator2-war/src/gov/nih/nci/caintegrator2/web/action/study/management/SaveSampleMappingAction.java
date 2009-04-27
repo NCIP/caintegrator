@@ -116,9 +116,8 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
     @Override
     public String execute() {
         try {
-            
-            File holdFile = getSampleMappingFile();
-            getStudyManagementService().mapSamples(getStudyConfiguration(), holdFile);
+            getStudyManagementService().mapSamples(getStudyConfiguration(), getSampleMappingFile());
+            persistFileName();
             return SUCCESS;
         } catch (ValidationException e) {
             setFieldError("Invalid file: " + e.getResult().getInvalidMessage());
@@ -131,6 +130,16 @@ public class SaveSampleMappingAction extends AbstractGenomicSourceAction {
             return INPUT;
         } 
         
+    }
+
+    private void persistFileName() {
+        if (getGenomicSource().getSampleMappingFileName() == null) {
+            getGenomicSource().setSampleMappingFileName(getSampleMappingFileFileName());    
+        } else {
+            getGenomicSource().setSampleMappingFileName(getGenomicSource().getSampleMappingFileName() 
+                                                        + "," + getSampleMappingFileFileName());
+        }
+        getStudyManagementService().save(getStudyConfiguration());
     }
     
     private void setFieldError(String errorMessage) {

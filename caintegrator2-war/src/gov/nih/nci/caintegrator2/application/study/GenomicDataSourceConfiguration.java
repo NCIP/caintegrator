@@ -91,8 +91,11 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Records sample and array data retrieval information.
@@ -105,6 +108,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String experimentIdentifier;
     private String platformVendor;
     private String platformName;
+    private String sampleMappingFileName;
+    private String controlSampleMappingFileName;
+    private String copyNumberMappingFileName;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private CopyNumberMappingFile copyNumberMappingFile;
@@ -252,6 +258,90 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setCopyNumberMappingFile(CopyNumberMappingFile copyNumberMappingFile) {
         this.copyNumberMappingFile = copyNumberMappingFile;
+    }
+
+    /**
+     * @return the sampleMappingFileName
+     */
+    public String getSampleMappingFileName() {
+        return sampleMappingFileName;
+    }
+
+    /**
+     * @param sampleMappingFileName the sampleMappingFileName to set
+     */
+    public void setSampleMappingFileName(String sampleMappingFileName) {
+        this.sampleMappingFileName = sampleMappingFileName;
+    }
+    
+    /**
+     * Used for the visual display of the sample mapping file names.
+     * @return list of sample mapping file names.
+     */
+    public List<String> getSampleMappingFiles() {
+        List<String> sampleMappingFiles = new ArrayList<String>();
+        if (StringUtils.isBlank(sampleMappingFileName)) {
+            sampleMappingFiles.add("None Configured");
+        } else {
+            sampleMappingFiles.addAll(Arrays.asList(StringUtils.split(sampleMappingFileName, ",")));
+        }
+        return sampleMappingFiles;
+    }
+    
+    /**
+     * Used for the visual display of the control sample mapping file names.
+     * @return list of control sample mapping file names.
+     */
+    public List<String> getControlSampleMappingFiles() {
+        List<String> controlSampleMappingFiles = new ArrayList<String>();
+        if (StringUtils.isBlank(controlSampleMappingFileName)) {
+            controlSampleMappingFiles.add("None Configured");
+        } else {
+            controlSampleMappingFiles.addAll(Arrays.asList(StringUtils.split(controlSampleMappingFileName, ",")));
+        }
+        return controlSampleMappingFiles;
+    }
+    
+    /**
+     * Used for the visual display of the copy number mapping file names.
+     * @return list of copy number mapping file names.
+     */
+    public List<String> getCopyNumberMappingFiles() {
+        List<String> copyNumberMappingFiles = new ArrayList<String>();
+        if (StringUtils.isBlank(copyNumberMappingFileName)) {
+            copyNumberMappingFiles.add("None Configured");
+        } else {
+            copyNumberMappingFiles.addAll(Arrays.asList(StringUtils.split(copyNumberMappingFileName, ",")));
+        }
+        return copyNumberMappingFiles;
+    }
+
+    /**
+     * @return the controlSampleMappingFileName
+     */
+    public String getControlSampleMappingFileName() {
+        return controlSampleMappingFileName;
+    }
+
+    /**
+     * @param controlSampleMappingFileName the controlSampleMappingFileName to set
+     */
+    public void setControlSampleMappingFileName(String controlSampleMappingFileName) {
+        this.controlSampleMappingFileName = controlSampleMappingFileName;
+    }
+
+    /**
+     * @return the copyNumberMappingFileName
+     */
+    public String getCopyNumberMappingFileName() {
+        return copyNumberMappingFileName;
+    }
+
+    /**
+     * @param copyNumberMappingFileName the copyNumberMappingFileName to set
+     */
+    public void setCopyNumberMappingFileName(String copyNumberMappingFileName) {
+        this.copyNumberMappingFileName = copyNumberMappingFileName;
     }
 
 }
