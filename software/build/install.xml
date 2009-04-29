@@ -202,6 +202,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<database-upgrade/>
 		<database-tag/>
 	</target>
+    
+    <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database"
+        depends="
+        install:init,
+        install:database:prep
+        ">
+        <!-- Run script to initialize application properties table -->
+        <switch value="${database.type}">
+            <case value="mysql">
+                <database-install
+                    db.install.create.file.list="${db.init.application.properties.filename}"
+                    />                               
+            </case>
+        </switch>
+    </target>    
 
 
 	<target name="install:jboss:binaries" description="Unzip JBoss binary" unless="exclude.jboss">
