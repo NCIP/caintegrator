@@ -89,7 +89,18 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGr
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
+import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Abstract class representing a handler for Gene Expression plot creation.
@@ -137,9 +148,10 @@ public abstract class AbstractGEPlotHandler {
      * @param gePlotService creates the plots. 
      * @param subscription that user is currently using.
      * @return plot group.
+     * @throws ControlSamplesNotMappedException when a control sample is not mapped.
      */
     public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                                        StudySubscription subscription);
+    StudySubscription subscription) throws ControlSamplesNotMappedException;
 
     /**
      * @return the dao
@@ -153,6 +165,68 @@ public abstract class AbstractGEPlotHandler {
      */
     public QueryManagementService getQueryManagementService() {
         return queryManagementService;
+    }
+    
+    /**
+     * Retrieves the control group criterion for the study subscription.
+     * @param subscription to get control samples for.
+     * @return criterion on the ID's of the control samples. 
+     * @throws ControlSamplesNotMappedException when a control sample is not mapped.
+     */
+    protected AbstractCriterion retrieveControlGroupCriterion(StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
+        CompoundCriterion idCriteria = new CompoundCriterion();
+        idCriteria.setBooleanOperator(BooleanOperatorEnum.OR);
+        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        for (Sample sample : subscription.getStudy().getControlSampleCollection()) {
+            if (sample.getSampleAcquisition() == null) {
+                throw new ControlSamplesNotMappedException("Sample '" 
+                        + sample.getName() + "' is not mapped to a patient.");
+            }
+            IdentifierCriterion idCriterion = new IdentifierCriterion();
+            idCriterion.setStringValue(sample.getSampleAcquisition().getAssignment().getIdentifier());
+            idCriterion.setWildCardType(WildCardTypeEnum.WILDCARD_OFF);
+            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+            idCriteria.getCriterionCollection().add(idCriterion);
+        }
+        return idCriteria;
+    }
+
+    /**
+     * Retrieves the used subjects criterion.
+     * @param usedSubjects set of used subjects.
+     * @return compound criterion of used subjects.
+     */
+    protected CompoundCriterion retrieveUsedSubjectsCriterion(Set<StudySubjectAssignment> usedSubjects) {
+        CompoundCriterion idCriteria = new CompoundCriterion();
+        idCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
+        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
+        for (StudySubjectAssignment assignment : usedSubjects) {
+            IdentifierCriterion idCriterion = new IdentifierCriterion();
+            idCriterion.setStringValue(assignment.getIdentifier());
+            idCriterion.setWildCardType(WildCardTypeEnum.NOT_EQUAL_TO);
+            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
+            idCriteria.getCriterionCollection().add(idCriterion);
+        }
+        return idCriteria;
+    }
+    
+    /**
+     * Sample Group Type enumeration.
+     */
+    protected enum SampleGroupType {
+        /**
+         * Default.
+         */
+        DEFAULT,
+        /**
+         * Others Subjects.
+         */
+        OTHERS_GROUP,
+        /**
+         * Control samples group.
+         */
+        CONTROL_GROUP;
     }
 
 }

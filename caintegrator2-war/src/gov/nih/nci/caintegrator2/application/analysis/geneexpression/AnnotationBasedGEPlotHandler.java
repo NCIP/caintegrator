@@ -89,23 +89,21 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotCo
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotSampleGroup;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
@@ -130,9 +128,11 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
     
     /**
      * {@inheritDoc}
+     * @throws ControlSamplesNotMappedException 
      */
     public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                               StudySubscription subscription) {
+                                               StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
         
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (AbstractPermissibleValue permissibleValue : parameters.getSelectedValues()) {
@@ -140,16 +140,23 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
             fillUsedSubjects(result);
             genomicResults.add(result);
         }
+        addOptionalGroups(subscription, genomicResults);
+        GeneExpressionPlotConfiguration configuration = 
+                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        return gePlotService.generatePlots(configuration);
+    }
+
+    private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults) 
+    throws ControlSamplesNotMappedException {
         if (parameters.isAddPatientsNotInQueriesGroup()) {
             GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
             if (!queryResults.getRowCollection().isEmpty()) {
                 genomicResults.add(0, queryResults);
             }
         }
-        
-        GeneExpressionPlotConfiguration configuration = 
-                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+        if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().getControlSampleCollection().isEmpty()) {
+            genomicResults.add(0, addControlSamplesGroup(subscription));
+        }
     }
 
     private void fillUsedSubjects(GenomicDataQueryResult queryResults) {
@@ -162,19 +169,27 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         }
     }
 
-    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) {
+    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
         Query query = new Query();
-        query.setName("Others");
+        query.setName(PlotSampleGroup.ALL_OTHERS_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        return retrieveAllOtherGenomicResults(subscription, query);
+        return retrieveOptionalGroupGenomicResults(subscription, query, SampleGroupType.OTHERS_GROUP);
+    }
+    
+    private GenomicDataQueryResult addControlSamplesGroup(StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
+        Query query = new Query();
+        query.setName(PlotSampleGroup.CONTROL_SAMPLE_GROUP_NAME);
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        return retrieveOptionalGroupGenomicResults(subscription, query, SampleGroupType.CONTROL_GROUP);
     }
 
     private GenomicDataQueryResult retrieveGenomicResults(AbstractPermissibleValue permissibleValue,
                                                           StudySubscription subscription) {
         Query query = new Query();
-        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
-        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         SelectedValueCriterion selectedValueCriterion = new SelectedValueCriterion();
         selectedValueCriterion.setAnnotationDefinition(parameters.getSelectedAnnotation());
         selectedValueCriterion.setEntityType(parameters.getEntityType());
@@ -185,7 +200,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
-        query.getCompoundCriterion().getCriterionCollection().add(geneNameCriterion);
+        query.getCompoundCriterion().getCriterionCollection().add(retrieveGeneNameCriterion());
         query.getCompoundCriterion().getCriterionCollection().add(selectedValueCriterion);
         query.setResultType(ResultTypeEnum.GENOMIC);
         query.setReporterType(parameters.getReporterType());
@@ -193,39 +208,37 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         return getQueryManagementService().executeGenomicDataQuery(query);
     }
 
-    private GenomicDataQueryResult retrieveAllOtherGenomicResults(StudySubscription subscription, Query query) {
+    private GenomicDataQueryResult retrieveOptionalGroupGenomicResults(StudySubscription subscription, Query query,
+            SampleGroupType groupType) throws ControlSamplesNotMappedException {
         CompoundCriterion newCompoundCriterion = new CompoundCriterion();
         newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());
-        newCompoundCriterion.getCriterionCollection().add(retrieveAllOtherCompoundCriterion());
+        newCompoundCriterion.getCriterionCollection().add(
+                    retrieveOptionalGroupCompoundCriterion(subscription, groupType));
         query.setCompoundCriterion(newCompoundCriterion);
         query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);
     }
 
-    private CompoundCriterion retrieveAllOtherCompoundCriterion() {
-        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
-        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
+    private CompoundCriterion retrieveOptionalGroupCompoundCriterion(StudySubscription subscription, 
+                                                                     SampleGroupType groupType) 
+        throws ControlSamplesNotMappedException {
         CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
-        geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);
+        geneNameCompoundCriterion.getCriterionCollection().add(retrieveGeneNameCriterion());
         geneNameCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
-        geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion());
+        if (SampleGroupType.OTHERS_GROUP.equals(groupType)) {
+            geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion(usedSubjects));
+        } else if (SampleGroupType.CONTROL_GROUP.equals(groupType)) {
+            geneNameCompoundCriterion.getCriterionCollection().add(retrieveControlGroupCriterion(subscription));
+        }
         return geneNameCompoundCriterion;
     }
-    
-    private CompoundCriterion retrieveUsedSubjectsCriterion() {
-        CompoundCriterion idCriteria = new CompoundCriterion();
-        idCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
-        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
-        for (StudySubjectAssignment assignment : usedSubjects) {
-            IdentifierCriterion idCriterion = new IdentifierCriterion();
-            idCriterion.setStringValue(assignment.getIdentifier());
-            idCriterion.setWildCardType(WildCardTypeEnum.NOT_EQUAL_TO);
-            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-            idCriteria.getCriterionCollection().add(idCriterion);
-        }
-        return idCriteria;
+
+    private GeneNameCriterion retrieveGeneNameCriterion() {
+        GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
+        geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
+        return geneNameCriterion;
     }
 
 }

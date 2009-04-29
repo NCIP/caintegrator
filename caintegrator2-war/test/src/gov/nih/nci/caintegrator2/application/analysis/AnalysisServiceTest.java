@@ -95,6 +95,7 @@ import edu.mit.broad.genepattern.gp.services.JobInfo;
 import edu.mit.broad.genepattern.gp.services.ParameterInfo;
 import edu.mit.broad.genepattern.gp.services.TaskInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
@@ -283,7 +284,8 @@ public class AnalysisServiceTest {
         assertEquals(ResultTypeEnum.CLINICAL, query1.getResultType());
     }
     
-    private void runGEPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractGEPlotParameters annotationParameters) {
+    private void runGEPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractGEPlotParameters annotationParameters) 
+    throws ControlSamplesNotMappedException {
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, annotationParameters);
         
         assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
@@ -291,7 +293,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateAnnotationBasedGEPlot() {
+    public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -309,7 +311,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGenomicQueryBasedGEPlot() {
+    public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -330,7 +332,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateClinicalQueryBasedGEPlot() {
+    public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();

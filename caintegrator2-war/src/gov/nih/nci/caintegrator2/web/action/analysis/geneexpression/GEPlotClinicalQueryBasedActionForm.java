@@ -104,6 +104,7 @@ public class GEPlotClinicalQueryBasedActionForm {
     private List<String> unselectedQueryIDs = new ArrayList<String>();
     private boolean exclusiveGroups = false;
     private boolean addPatientsNotInQueriesGroup = false;
+    private boolean addControlSamplesGroup = false;
     private boolean resetSelected = false;
     
     // JSP Select List Options
@@ -122,6 +123,7 @@ public class GEPlotClinicalQueryBasedActionForm {
         unselectedQueryIDs = new ArrayList<String>();
         exclusiveGroups = false;
         addPatientsNotInQueriesGroup = false;
+        addControlSamplesGroup = false;
         selectedQueries.clear();
         unselectedQueries.clear();
     }
@@ -286,5 +288,23 @@ public class GEPlotClinicalQueryBasedActionForm {
      */
     public void setReporterType(String reporterType) {
         this.reporterType = reporterType;
+    }
+
+
+
+    /**
+     * @return the addControlSamplesGroup
+     */
+    public boolean isAddControlSamplesGroup() {
+        return addControlSamplesGroup;
+    }
+
+
+
+    /**
+     * @param addControlSamplesGroup the addControlSamplesGroup to set
+     */
+    public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
+        this.addControlSamplesGroup = addControlSamplesGroup;
     }
 }

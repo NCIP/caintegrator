@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -131,6 +132,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         plotParameters.setReporterType(ReporterTypeEnum.getByValue(getForm().getReporterType()));
         plotParameters.setExclusiveGroups(getForm().isExclusiveGroups());
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
+        plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
         if (!getForm().getSelectedQueryIDs().isEmpty()) {
             plotParameters.getQueries().clear();
             for (String id : getForm().getSelectedQueryIDs()) {
@@ -238,9 +240,15 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
             if (plotParameters.validate()) {
-                GeneExpressionPlotGroup plots = getAnalysisService().
+                try {
+                    GeneExpressionPlotGroup plots = getAnalysisService().
                             createGeneExpressionPlot(getStudySubscription(), plotParameters);
-                SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, plots);
+                    SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, plots);
+                } catch (ControlSamplesNotMappedException e) {
+                    SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
+                    addActionError("Group selected in step 6 invalid, control samples must all be mapped to patients: "
+                            + e.getMessage());
+                }
             }
             setCreatePlotRunning(false);
         }

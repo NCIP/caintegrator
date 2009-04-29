@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -192,9 +193,14 @@ public class GEPlotGenomicQueryBasedAction extends AbstractGeneExpressionAction 
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
             if (getPlotParameters().validate()) {
-                GeneExpressionPlotGroup plots = getAnalysisService().
-                        createGeneExpressionPlot(getStudySubscription(), plotParameters);
-                SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, plots);
+                try {
+                    GeneExpressionPlotGroup plots = getAnalysisService().
+                            createGeneExpressionPlot(getStudySubscription(), plotParameters);
+                    SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, plots);
+                } catch (ControlSamplesNotMappedException e) {
+                    SessionHelper.setGePlots(PlotTypeEnum.GENOMIC_QUERY_BASED, null);
+                    addActionError("Control samples must all be mapped to patients: " + e.getMessage());
+                }
             }
             setCreatePlotRunning(false);
         }
