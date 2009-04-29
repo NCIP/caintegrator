@@ -107,8 +107,8 @@ public class GridDiscoveryServiceJobTest {
     
     @Test
     public void executeInternalTest() throws JobExecutionException {
-        assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
-        assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
+        assertFalse(!GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
+        assertFalse(!GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
         job.executeInternal(null);
         assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());

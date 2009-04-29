@@ -108,10 +108,23 @@ public enum ConfigurationParameter {
     USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles"),
     
     /**
-     * Grid index service url.
+     * Default Grid index service URL.
      */
-    GRID_INDEX_URL("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
+    GRID_INDEX_URL(
+            "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"),
     
+    /**
+     * Default Preprocess Dataset URL.
+     */
+    PREPROCESS_DATASET_URL(
+            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
+    
+    /**
+     * Default Comparative Marker Selection URL.
+     */
+    COMPARATIVE_MARKER_SELECTION_URL(
+            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc");
+
     private String defaultValue;
 
     ConfigurationParameter(String defaultValue)  {

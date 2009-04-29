@@ -105,13 +105,14 @@ public class GridDiscoveryServiceJobTestIntegration {
     public void setUp() throws Exception {
         job = new GridDiscoveryServiceJob();
         job.setGridDiscoveryClient(gridDiscoveryClientImpl);
+        job.setConfigurationHelper(configurationHelperStub);
         gridDiscoveryClientImpl.setConfigurationHelper(configurationHelperStub);
     }
     
     @Test
     public void executeInternalTest() throws JobExecutionException {
-        assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
-        assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
+        assertFalse(!GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
+        assertFalse(!GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
         job.executeInternal(null);
         assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
