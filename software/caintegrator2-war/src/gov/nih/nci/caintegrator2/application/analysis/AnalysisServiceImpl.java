@@ -89,6 +89,7 @@ import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
@@ -177,7 +178,8 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      */
     public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
-            AbstractGEPlotParameters plotParameters) {
+            AbstractGEPlotParameters plotParameters) 
+    throws ControlSamplesNotMappedException {
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
                 dao, queryManagementService, plotParameters);
         

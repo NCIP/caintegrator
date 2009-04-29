@@ -93,6 +93,14 @@ import java.util.List;
  */
 public class PlotSampleGroup {
 
+    /**
+     * Used to name the group for control samples.
+     */
+    public static final String CONTROL_SAMPLE_GROUP_NAME = "Control Samples";
+    /**
+     * Used to name the group for the "All Others" group.
+     */
+    public static final String ALL_OTHERS_GROUP_NAME = "Others";
     private String name;
     private int numberSubjects;
     private List<PlotReporterGroup> reporterGroups = new ArrayList<PlotReporterGroup>();
@@ -134,6 +142,12 @@ public class PlotSampleGroup {
         this.numberSubjects = numberSubjects;
     }
     
-    
+    /**
+     * Tests to see if this sample group is the control group.
+     * @return T/F value.
+     */
+    public boolean isControlSampleGroup() { 
+        return CONTROL_SAMPLE_GROUP_NAME.equals(name);
+    }
     
 }

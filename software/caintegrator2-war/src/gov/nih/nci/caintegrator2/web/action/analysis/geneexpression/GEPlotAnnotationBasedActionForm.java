@@ -103,6 +103,7 @@ public class GEPlotAnnotationBasedActionForm {
     private Collection <String> selectedValuesIds = new HashSet<String>();
     private boolean permissibleValuesNeedUpdate = false;
     private boolean addPatientsNotInQueriesGroup = false;
+    private boolean addControlSamplesGroup = false;
     private String geneSymbol;
     private String reporterType;
     
@@ -121,6 +122,7 @@ public class GEPlotAnnotationBasedActionForm {
         selectedAnnotationId = null;
         selectedValuesIds = new HashSet<String>();
         addPatientsNotInQueriesGroup = false;
+        addControlSamplesGroup = false;
         geneSymbol = null;
         reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
         clearAnnotationDefinitions();
@@ -268,6 +270,20 @@ public class GEPlotAnnotationBasedActionForm {
      */
     public void setReporterType(String reporterType) {
         this.reporterType = reporterType;
+    }
+
+    /**
+     * @return the addControlSamplesGroup
+     */
+    public boolean isAddControlSamplesGroup() {
+        return addControlSamplesGroup;
+    }
+
+    /**
+     * @param addControlSamplesGroup the addControlSamplesGroup to set
+     */
+    public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
+        this.addControlSamplesGroup = addControlSamplesGroup;
     }
 
 }

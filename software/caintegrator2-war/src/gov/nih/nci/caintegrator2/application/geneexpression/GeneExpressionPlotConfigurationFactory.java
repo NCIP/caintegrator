@@ -134,7 +134,9 @@ public final class GeneExpressionPlotConfigurationFactory {
             sampleGroup.setName(genomicResult.getQuery().getName());
             configuration.getPlotSampleGroups().add(sampleGroup);
             int numberSubjects = numberSubjectsInGenomicResult(genomicResult);
-            numberSubjectsTotal += numberSubjects;
+            if (!sampleGroup.isControlSampleGroup()) { // Don't count control group for total.
+                numberSubjectsTotal += numberSubjects;
+            }
             sampleGroup.setNumberSubjects(numberSubjects);
             addReporterGroups(reporterNameToGroupMap, genomicResult, sampleGroup, configuration);
         }
@@ -165,10 +167,17 @@ public final class GeneExpressionPlotConfigurationFactory {
         } 
         PlotReporterGroup reporterGroup = copyReporterGroup(reporterNameToGroupMap.get(name));
         sampleGroup.getReporterGroups().add(reporterGroup);
+        addGeneExpressionValuesToGroup(reporterNameToGroupMap, sampleGroup, row, name, reporterGroup);
+    }
+
+    private static void addGeneExpressionValuesToGroup(Map<String, PlotReporterGroup> reporterNameToGroupMap,
+            PlotSampleGroup sampleGroup, GenomicDataResultRow row, String name, PlotReporterGroup reporterGroup) {
         for (GenomicDataResultValue value : row.getValueCollection()) {
             reporterGroup.getGeneExpressionValues().add(Double.valueOf(value.getValue()));
         }
-        reporterNameToGroupMap.get(name).getGeneExpressionValues().addAll(reporterGroup.getGeneExpressionValues());
+        if (!sampleGroup.isControlSampleGroup()) { // Don't count control group for total.
+            reporterNameToGroupMap.get(name).getGeneExpressionValues().addAll(reporterGroup.getGeneExpressionValues());
+        }
     }
     
     private static int numberSubjectsInGenomicResult(GenomicDataQueryResult genomicResult) {

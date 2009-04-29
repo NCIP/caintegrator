@@ -91,6 +91,14 @@
                     <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addPatientsNotInQueriesGroup"/>Add additional group containing all other subjects not found in selected queries.
                 </td>
             </tr>
+            <tr>
+                <td class="value_inline_index" >
+                    6.)
+                </td>
+                <td colspan="2" class="value_inline">
+                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addControlSamplesGroup"/>Add additional group containing all control samples for this study.
+                </td>
+            </tr>
         </table>
         <br>
         <div>

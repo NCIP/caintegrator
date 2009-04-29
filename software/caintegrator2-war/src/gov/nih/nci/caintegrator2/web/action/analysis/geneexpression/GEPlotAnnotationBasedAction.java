@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
@@ -134,6 +135,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
     private void retrieveFormValues() {
         plotParameters.setGeneSymbol(getGePlotForm().getAnnotationBasedForm().getGeneSymbol());
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
+        plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
         plotParameters.setReporterType(ReporterTypeEnum.
                         getByValue(getGePlotForm().getAnnotationBasedForm().getReporterType()));
         if (getForm().getSelectedAnnotationId() != null 
@@ -329,10 +331,16 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
             loadAnnotationDefinitions();
             loadPermissibleValues();
             if (plotParameters.validate()) {
-                plotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
-                GeneExpressionPlotGroup plots = getAnalysisService().
-                                createGeneExpressionPlot(getStudySubscription(), plotParameters);
-                SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
+                try {
+                    plotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
+                    GeneExpressionPlotGroup plots = getAnalysisService().
+                                    createGeneExpressionPlot(getStudySubscription(), plotParameters);
+                    SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, plots);
+                } catch (ControlSamplesNotMappedException e) {
+                    SessionHelper.setGePlots(PlotTypeEnum.ANNOTATION_BASED, null);
+                    addActionError("Group selected in step 5 invalid, control samples must all be mapped to patients: "
+                            + e.getMessage());
+                }
             }
             setCreatePlotRunning(false);
         }
