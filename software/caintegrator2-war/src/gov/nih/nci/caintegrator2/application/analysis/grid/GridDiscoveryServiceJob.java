@@ -85,6 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,6 +106,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     private static final Logger LOGGER = Logger.getLogger(GridDiscoveryServiceJob.class);
 
     private static GridDiscoveryClient gridDiscoveryClient;
+    private static ConfigurationHelper configurationHelper;
     private static Map<String, String> gridPreprocessServices
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCmsServices
@@ -128,8 +132,21 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
                     extractSelectedServices(hostingCenter, url);
                 }
             }
+            setDefaultServices();
         } catch (Exception e) {
             LOGGER.error("Error getting directory from GridDiscoveryClient: " + e.getMessage());
+            setDefaultServices();
+        }
+    }
+    
+    private static void setDefaultServices() {
+        if (gridPreprocessServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.PREPROCESS_DATASET_URL);
+            gridPreprocessServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
+        }
+        if (gridCmsServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.COMPARATIVE_MARKER_SELECTION_URL);
+            gridCmsServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
         }
     }
     
@@ -147,9 +164,6 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      * @return the gridPreprocessServices
      */
     public static Map<String, String> getGridPreprocessServices() {
-        if (gridPreprocessServices.isEmpty()) {
-            queryGridServices();
-        }
         return gridPreprocessServices;
     }
 
@@ -157,9 +171,6 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      * @return the gridCmsServices
      */
     public static Map<String, String> getGridCmsServices() {
-        if (gridCmsServices.isEmpty()) {
-            queryGridServices();
-        }
         return gridCmsServices;
     }
 
@@ -168,6 +179,13 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      */
     public void setGridDiscoveryClient(GridDiscoveryClient gridDiscoveryClient) {
         GridDiscoveryServiceJob.gridDiscoveryClient = gridDiscoveryClient;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        GridDiscoveryServiceJob.configurationHelper = configurationHelper;
     }
 
 }
