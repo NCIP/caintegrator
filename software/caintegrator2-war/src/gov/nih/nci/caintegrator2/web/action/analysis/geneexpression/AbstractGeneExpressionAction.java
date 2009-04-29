@@ -336,4 +336,12 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
         getDisplayableWorkspace().setCreatePlotRunning(createPlotRunning);
     }
     
+    /**
+     * Checks to see if the study has any control samples associated with it (to display the checkbox).
+     * @return T/F value.
+     */
+    public boolean hasControlSamples() {
+        return getStudySubscription() != null ? getStudySubscription().getStudy().hasControlSamples() : false;
+    }
+    
 }
