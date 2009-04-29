@@ -98,6 +98,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			<property name="database.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="db-upgrade.list.file" value="${db-upgrade.mysql.list.file}"/>
 			<property name="db-upgrade.conf.file" value="${db-upgrade.mysql.conf.file}"/>
+		    <property name="db.init.application.properties.filename" value="db-init-application-properties.sql"/>			    
 		</case>
 		<default>
 			<fail message="Invalid database type ${database.type}"/>
