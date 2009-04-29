@@ -91,16 +91,16 @@
                 <s:checkbox name="gePlotForm.annotationBasedForm.addPatientsNotInQueriesGroup" theme="simple"/>Add additional group containing all other subjects not found in selected queries.
                 </td>
             </tr>
-            <s:if test="hasControlSamples()">
+            
             <tr>
                 <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
                 5.)
                 </td>
                 <td class="value_inline" colspan="4">
-                <s:checkbox name="gePlotForm.annotationBasedForm.addControlSamplesGroup" theme="simple"/>Add additional group containing all control samples for this study.
+                <s:checkbox name="gePlotForm.annotationBasedForm.addControlSamplesGroup" disabled="%{!hasControlSamples()}" theme="simple"/>Add additional group containing all control samples for this study.
                 </td>
             </tr>
-            </s:if>
+            
         </table>
         
 
