@@ -838,6 +838,7 @@
         <property name="jobDataAsMap">
             <map>
                 <entry key="gridDiscoveryClient" value-ref="gridDiscoveryClient"/>
+                <entry key="configurationHelper" value-ref="configurationHelper"/>
             </map>
         </property>
     </bean>
