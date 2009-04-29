@@ -89,20 +89,17 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotCo
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.geneexpression.PlotSampleGroup;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
-import gov.nih.nci.caintegrator2.domain.application.IdentifierCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.util.ArrayList;
@@ -130,22 +127,32 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
      * {@inheritDoc}
      */
     public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                               StudySubscription subscription) {
+                                               StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (Query query : parameters.getQueries()) {
-            GenomicDataQueryResult queryResults = retrieveGenomicResultsForQuery(subscription, query, false);
+            GenomicDataQueryResult queryResults = 
+                retrieveGenomicResultsForQuery(subscription, query, SampleGroupType.DEFAULT);
             fillUsedSubjects(queryResults);
             genomicResults.add(queryResults);
         }
+        addOptionalGroups(subscription, genomicResults);
+        GeneExpressionPlotConfiguration configuration = 
+                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
+        return gePlotService.generatePlots(configuration);
+    }
+
+    private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults) 
+    throws ControlSamplesNotMappedException {
         if (parameters.isAddPatientsNotInQueriesGroup()) {
             GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
             if (!queryResults.getRowCollection().isEmpty()) {
                 genomicResults.add(0, queryResults);
             }
         }
-        GeneExpressionPlotConfiguration configuration = 
-                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+        if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().getControlSampleCollection().isEmpty()) {
+            genomicResults.add(0, addControlSamplesGroup(subscription));
+        }
     }
 
     private void fillUsedSubjects(GenomicDataQueryResult queryResults) {
@@ -157,51 +164,54 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
             }
         }
     }
-
-    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) {
+    
+    private GenomicDataQueryResult addControlSamplesGroup(StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
         Query query = new Query();
-        query.setName("Others");
+        query.setName(PlotSampleGroup.CONTROL_SAMPLE_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        return retrieveGenomicResultsForQuery(subscription, query, true);
+        return retrieveGenomicResultsForQuery(subscription, query, SampleGroupType.CONTROL_GROUP);
+    }
+
+    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) 
+    throws ControlSamplesNotMappedException {
+        Query query = new Query();
+        query.setName(PlotSampleGroup.ALL_OTHERS_GROUP_NAME);
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        return retrieveGenomicResultsForQuery(subscription, query, SampleGroupType.OTHERS_GROUP);
     }
     
     private GenomicDataQueryResult retrieveGenomicResultsForQuery(StudySubscription subscription, 
                                                                   Query query,
-                                                                  boolean isOthersGroup) {
+                                                                  SampleGroupType groupType) 
+    throws ControlSamplesNotMappedException {
         CompoundCriterion newCompoundCriterion = new CompoundCriterion();
         newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());
-        newCompoundCriterion.getCriterionCollection().add(retrieveGeneNameCompoundCriterion(isOthersGroup));
+        newCompoundCriterion.getCriterionCollection().add(retrieveGeneNameCompoundCriterion(subscription, groupType));
         query.setCompoundCriterion(newCompoundCriterion);
         query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);
     }
 
-    private CompoundCriterion retrieveGeneNameCompoundCriterion(boolean isOthersGroup) {
+    private CompoundCriterion retrieveGeneNameCompoundCriterion(StudySubscription subscription, 
+                                                                SampleGroupType groupType) 
+    throws ControlSamplesNotMappedException {
         GeneNameCriterion geneNameCriterion = new GeneNameCriterion();
         geneNameCriterion.setGeneSymbol(parameters.getGeneSymbol());
         CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
         geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);
         geneNameCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
-        if (parameters.isExclusiveGroups() || isOthersGroup) {
-            geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion());
+        if (SampleGroupType.CONTROL_GROUP.equals(groupType)) {
+            geneNameCompoundCriterion.getCriterionCollection().add(retrieveControlGroupCriterion(subscription));
+        } else if (parameters.isExclusiveGroups() || SampleGroupType.OTHERS_GROUP.equals(groupType)) {
+            geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion(usedSubjects));
         }
         return geneNameCompoundCriterion;
     }
-    
-    private CompoundCriterion retrieveUsedSubjectsCriterion() {
-        CompoundCriterion idCriteria = new CompoundCriterion();
-        idCriteria.setBooleanOperator(BooleanOperatorEnum.AND);
-        idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
-        for (StudySubjectAssignment assignment : usedSubjects) {
-            IdentifierCriterion idCriterion = new IdentifierCriterion();
-            idCriterion.setStringValue(assignment.getIdentifier());
-            idCriterion.setWildCardType(WildCardTypeEnum.NOT_EQUAL_TO);
-            idCriterion.setEntityType(EntityTypeEnum.SUBJECT);
-            idCriteria.getCriterionCollection().add(idCriterion);
-        }
-        return idCriteria;
-    }
+
+
 }
