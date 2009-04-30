@@ -98,7 +98,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			<property name="database.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="db-upgrade.list.file" value="${db-upgrade.mysql.list.file}"/>
 			<property name="db-upgrade.conf.file" value="${db-upgrade.mysql.conf.file}"/>
-		    <property name="db.init.application.properties.filename" value="db-init-application-properties.sql"/>			    
+		    <property name="db.init.application.properties.filename" value="${db-upgrade.dir.dest}/${database.type}/db-init-application-properties.sql"/>			    
 		</case>
 		<default>
 			<fail message="Invalid database type ${database.type}"/>
@@ -204,14 +204,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<database-tag/>
 	</target>
     
-    <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database"
-        depends="
-        install:init,
-        install:database:prep
-        ">
+    <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database">
         <!-- Run script to initialize application properties table -->
         <switch value="${database.type}">
             <case value="mysql">
+                <!-- "replace" command for grid.index.url -->
+                <replace file="${db.init.application.properties.filename}" token="@grid.index.url@" value="${grid.index.url}" />
+
                 <database-install
                     db.install.create.file.list="${db.init.application.properties.filename}"
                     />                               
