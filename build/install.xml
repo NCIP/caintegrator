@@ -50,7 +50,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<property name="common.dir.target" value="${working.dir}/${common.dist.relative.dir}" />
 	<property name="db-install.dir.dest" value="${working.dir}/${db-install.dist.relative.dir}" />
     <property name="db-upgrade.src.dir" value="${basedir}/${db-upgrade.dist.relative.dir}/${database.type}" />
-    <property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}/${database.type}" />
+    <property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
 	<property name="jboss-conf.dir.target" value="${working.dir}/${jboss-conf.dist.relative.dir}" />
 
 	<!-- deployment XML files and WAR -->
@@ -156,7 +156,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 			<!-- added internal properties that may be used in a filtered copy -->
 			<filter token="database.driver" value="${database.driver}"/>
 			<filter token="database.dialect" value="${database.dialect}"/>
-			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}"/>
+			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
 			<filter token="jboss.home" value="${jboss.home}"/>
 		</filterset>
 		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
@@ -205,9 +205,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database">
         <!-- Run script to initialize application properties table -->
         <property name="db.init.application.properties.filename"
-            value="${db-upgrade.dir.dest}/db-init-application-properties.sql"/>  
-        <mkdir dir="${db-upgrade.dir.dest}" />
-        <copy todir="${db-upgrade.dir.dest}" overwrite="true">
+            value="${db-upgrade.dir.dest}/${database.type}/db-init-application-properties.sql"/>  
+        <mkdir dir="${db-upgrade.dir.dest}/${database.type}" />
+        <copy todir="${db-upgrade.dir.dest}/${database.type}" overwrite="true">
             <fileset dir="${db-upgrade.src.dir}" includes="*.sql" />
         </copy>
         <!-- "replace" command for grid.index.url -->
@@ -215,8 +215,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
         <database-install
             db.install.create.file.list="${db.init.application.properties.filename}"
             />
-        <database-upgrade/>
-        <database-tag/>
     </target>    
 
 
