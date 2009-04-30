@@ -117,7 +117,11 @@ public class EditStudyAction extends AbstractStudyAction {
     public String deleteStudy() {
 
         if (SessionHelper.getInstance().isAuthenticated()) {
-            getStudyManagementService().delete(getStudyConfiguration());
+            try {
+                getStudyManagementService().delete(getStudyConfiguration());
+            } catch (RuntimeException e) {
+                addActionError("Study does not exist or cannot be deleted.");
+            }
         } else {
             addActionError("User is unauthenticated");
         }
