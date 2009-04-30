@@ -528,6 +528,8 @@
     <!-- ******************************************************************* -->
     
     <property name="caintegrator2db.dir" location="${software.dir}/common/resources/db-install/mysql" />
+    <property name="caintegrator2db.sql.upgrade.src.dir" location="${software.dir}/common/resources/db-upgrade/mysql" />
+    <property name="caintegrator2db.sql.upgrade.target.dir" location="${caintegrator2db.sql.upgrade.src.dir}/target/sql" />
     <property name="caintegrator2db.sql.src.dir" location="${caintegrator2db.dir}" />
     <property name="caintegrator2db.sql.target.dir" location="${caintegrator2db.dir}/target/sql" />
     <property name="comment.start" value="&lt;!-- " />
@@ -536,9 +538,18 @@
     <target name="database:init-sql">
         <mkdir dir="${caintegrator2db.sql.target.dir}" />
         <copy todir="${caintegrator2db.sql.target.dir}">
-            <filterset refid="caintegrator2.filterset" />
             <fileset dir="${caintegrator2db.sql.src.dir}" includes="*.sql" />
         </copy>
+    </target>
+    
+    <target name="database:upgrade" depends="database:init-sql" description="Reload configuration table">
+        <mkdir dir="${caintegrator2db.sql.upgrade.target.dir}" />
+        <copy todir="${caintegrator2db.sql.upgrade.target.dir}" overwrite="true">
+            <fileset dir="${caintegrator2db.sql.upgrade.src.dir}" includes="*.sql" />
+        </copy>
+        <!-- "replace" command for grid.index.url -->
+        <replace file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" token="@grid.index.url@" value="${grid.index.url}" />
+        <run-sql-script onerror="continue" sql.file="${caintegrator2db.sql.upgrade.target.dir}/db-init-application-properties.sql" />
     </target>
 
     <target name="database:drop-tables" depends="database:init-sql" description="Drop caIntegrator 2 schema">
@@ -561,6 +572,7 @@
     <target name="database:reinitialize" depends="database:init-sql" description="Completely reset caIntegrator 2 by dropping database, recreating, and creating schema, and populating with initial data">
         <antcall target="database:recreate-database" />
         <antcall target="database:create-tables" />
+        <antcall target="database:upgrade" />
     </target>
 
         <target name="database:reinitialize-generated" depends="database:init-sql" description="Completely reset caIntegrator 2 by dropping database, recreating, and creating schema (from generated files), and populating with initial data">
