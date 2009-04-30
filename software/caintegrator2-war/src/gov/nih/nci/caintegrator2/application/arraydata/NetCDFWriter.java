@@ -165,9 +165,9 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
         try {
             writeAllValues();
         } catch (IOException e) {
-            throw new ArrayDataStorageException("Couldn't writes values", e);
+            throw new ArrayDataStorageException("Couldn't writes values. IOException.", e);
         } catch (InvalidRangeException e) {
-            throw new ArrayDataStorageException("Couldn't writes values", e);
+            throw new ArrayDataStorageException("Couldn't writes values. InvalidRangeException", e);
         }
     }
 
