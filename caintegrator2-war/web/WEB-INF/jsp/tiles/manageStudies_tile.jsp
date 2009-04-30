@@ -27,6 +27,7 @@
     <!--/Page Help--> 
 
 <h1>Manage Studies</h1>
+<s:actionerror/>
 
 <div id="errorMessages" style="color: red;"> </div>
 
