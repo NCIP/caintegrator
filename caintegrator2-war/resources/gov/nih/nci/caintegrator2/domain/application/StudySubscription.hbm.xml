@@ -29,6 +29,11 @@
             <key column="STUDY_SUBSCRIPTION_ID" />
             <one-to-many class="ComparativeMarkerSelectionAnalysisJob"/>
         </set>
+        <set name="pcaAnalysisJobCollection" lazy="true" cascade="all" >
+            <cache usage="read-write" />
+            <key column="STUDY_SUBSCRIPTION_ID" />
+            <one-to-many class="PCAAnalysisJob"/>
+        </set>
 		<many-to-one name="userWorkspace" class="UserWorkspace" column="USER_WORKSPACE_ID" lazy="proxy" cascade="save-update,merge" />
 	</class>
 </hibernate-mapping>

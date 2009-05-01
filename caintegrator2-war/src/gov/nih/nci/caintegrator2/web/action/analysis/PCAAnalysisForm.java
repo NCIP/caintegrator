@@ -83,32 +83,110 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external;
+package gov.nih.nci.caintegrator2.web.action.analysis;
+
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Indicates a problem connecting to an external server.
+ * Used for Struts representation of the currently configured analysis method.
  */
-public class ConnectionException extends Exception {
+public class PCAAnalysisForm {
+    
+    private PCAParameters pcaParameters;
+    
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
 
-    private static final long serialVersionUID = 1L;
+    private List<String> selectedQueryIDs = new ArrayList<String>();
+    private List<String> unselectedQueryIDs = new ArrayList<String>();
+    
+    // JSP Select List Options
+    private Map<String, Query> selectedQueries = new HashMap<String, Query>();
+    private Map<String, Query> unselectedQueries = new HashMap<String, Query>();
 
     /**
-     * Creates a new instance based on an underlying exception.
      * 
-     * @param message describes the connection problem
-     * @param cause the source exception
+     * @return the server.
      */
-    public ConnectionException(String message, Throwable cause) {
-        super(message, cause);
+    public ServerConnectionProfile getServer() {
+        return server;
     }
 
     /**
-     * Creates a new instance.
-     * 
-     * @param message the message
+     * @return the selectedQueryIDs
      */
-    public ConnectionException(String message) {
-        super(message);
+    public List<String> getSelectedQueryIDs() {
+        return selectedQueryIDs;
     }
 
+    /**
+     * @param selectedQueryIDs the selectedQueryIDs to set
+     */
+    public void setSelectedQueryIDs(List<String> selectedQueryIDs) {
+        this.selectedQueryIDs = selectedQueryIDs;
+    }
+
+    /**
+     * @return the unselectedQueryIDs
+     */
+    public List<String> getUnselectedQueryIDs() {
+        return unselectedQueryIDs;
+    }
+
+    /**
+     * @param unselectedQueryIDs the unselectedQueryIDs to set
+     */
+    public void setUnselectedQueryIDs(List<String> unselectedQueryIDs) {
+        this.unselectedQueryIDs = unselectedQueryIDs;
+    }
+
+    /**
+     * @return the selectedQueries
+     */
+    public Map<String, Query> getSelectedQueries() {
+        return selectedQueries;
+    }
+
+    /**
+     * @param selectedQueries the selectedQueries to set
+     */
+    public void setSelectedQueries(Map<String, Query> selectedQueries) {
+        this.selectedQueries = selectedQueries;
+    }
+
+    /**
+     * @return the unselectedQueries
+     */
+    public Map<String, Query> getUnselectedQueries() {
+        return unselectedQueries;
+    }
+
+    /**
+     * @param unselectedQueries the unselectedQueries to set
+     */
+    public void setUnselectedQueries(Map<String, Query> unselectedQueries) {
+        this.unselectedQueries = unselectedQueries;
+    }
+
+    /**
+     * @return the pcaParameters
+     */
+    public PCAParameters getPcaParameters() {
+        return pcaParameters;
+    }
+
+    /**
+     * @param pcaParameters the pcaParameters to set
+     */
+    public void setPcaParameters(PCAParameters pcaParameters) {
+        this.pcaParameters = pcaParameters;
+    }
+    
+    
 }
