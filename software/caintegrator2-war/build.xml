@@ -505,6 +505,7 @@
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/pca/PCAGridRunner.class" />
              </fileset>
          </cobertura-instrument>
      </target>
@@ -574,6 +575,7 @@
         <antcall target="database:create-tables" />
         <antcall target="database:upgrade" />
     </target>
+
 
         <target name="database:reinitialize-generated" depends="database:init-sql" description="Completely reset caIntegrator 2 by dropping database, recreating, and creating schema (from generated files), and populating with initial data">
             <antcall target="database:recreate-database" />

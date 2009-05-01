@@ -83,32 +83,41 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external;
+package gov.nih.nci.caintegrator2.domain.application;
+
+import java.io.File;
+import java.io.Serializable;
 
 /**
- * Indicates a problem connecting to an external server.
+ * Provides persistent access to a zipped results file.
  */
-public class ConnectionException extends Exception {
+public class ResultsZipFile implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    private String path;
 
     /**
-     * Creates a new instance based on an underlying exception.
-     * 
-     * @param message describes the connection problem
-     * @param cause the source exception
+     * @return the path
      */
-    public ConnectionException(String message, Throwable cause) {
-        super(message, cause);
+    public String getPath() {
+        return path;
     }
 
     /**
-     * Creates a new instance.
-     * 
-     * @param message the message
+     * @param path the path to set
      */
-    public ConnectionException(String message) {
-        super(message);
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
+     * The file.
+     * 
+     * @return the file.
+     */
+    public File getFile() {
+        return new File(getPath());
     }
 
 }

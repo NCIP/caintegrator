@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -251,8 +252,22 @@ public class Cai2UtilTest {
         assertEquals("cai2UtilTest.zip", zippedDirectory.getName());
         assertFalse(tempDirectory.exists());
         zippedDirectory.deleteOnExit();
+        
+        File tempDirectory2 = fileManager.getNewTemporaryDirectory("cai2UtilTest2");
+        File destFile2 = new File(tempDirectory2, "tempFile2");
+        FileUtils.copyFile(TestDataFiles.VALID_FILE, destFile2);
+        File newZipFile = Cai2Util.addFilesToZipFile(zippedDirectory, destFile2);
+        assertNotNull(newZipFile); // need to actually verify it contains 2 items now.
+        FileUtils.deleteDirectory(tempDirectory2);
+        try {
+            Cai2Util.addFilesToZipFile(TestDataFiles.VALID_FILE, new File(""));
+            fail("Expected illegal argument exception, adding to a non-zip file");
+        } catch (IllegalArgumentException e){
+            
+        }
+        
     }
-    
+
     @Test
     public void testGetHostNameFromUrl() {
         String url = "https://imaging-dev.nci.nih.gov/ncia/externalDataBasketDisplay.jsf";

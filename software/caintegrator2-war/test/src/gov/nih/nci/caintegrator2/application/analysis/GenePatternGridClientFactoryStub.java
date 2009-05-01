@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import edu.duke.cabig.rproteomics.model.statml.Data;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.mageom.domain.bioassay.BioAssay;
@@ -98,9 +99,18 @@ import java.rmi.RemoteException;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI.MalformedURIException;
+import org.cabig.icr.asbp.parameter.ParameterList;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
+import org.genepattern.pca.PCAResult;
+import org.genepattern.pca.common.PCAI;
+import org.genepattern.pca.context.client.PCAContextClient;
+import org.genepattern.pca.context.stubs.types.AnalysisNotComplete;
+import org.genepattern.pca.context.stubs.types.CannotLocateResource;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
 import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
@@ -178,6 +188,65 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
             return null;
         }
         
+    }
+    
+
+    public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
+        return new PcaClientStub();
+    }
+
+    private static class PcaClientStub implements PCAI {
+
+
+        public PCAContextClient createAnalysis() throws RemoteException, MalformedURIException {
+            return new PCAContextClientStub("http://test");
+        }
+
+        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
+                GetMultipleResourceProperties_Element params) throws RemoteException {
+            return null;
+        }
+
+        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
+            return null;
+        }
+
+        public PCAResult performAnalysis(Data data, ParameterList parameterList) throws RemoteException {
+            return null;
+        }
+
+        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
+                throws RemoteException {
+            return null;
+        }
+        
+    }
+    
+    private static class PCAContextClientStub extends PCAContextClient {
+
+        public PCAContextClientStub(String url) throws MalformedURIException, RemoteException {
+            super(url);
+        }
+        
+        @Override
+        public TransferServiceContextReference submitData(ParameterList parameterList) throws RemoteException,
+                CannotLocateResource {
+            return new TransferServiceContextReferenceStub();
+        }
+        
+        @Override
+        public TransferServiceContextReference getResult() throws RemoteException, AnalysisNotComplete,
+                CannotLocateResource {
+            return new TransferServiceContextReferenceStub();
+        }
+    }
+    
+    private static class TransferServiceContextReferenceStub extends TransferServiceContextReference {
+        
+        @Override
+        public EndpointReferenceType getEndpointReference() {
+            return new EndpointReferenceType();
+        }
     }
 
 }

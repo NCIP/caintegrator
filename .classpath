@@ -18,6 +18,10 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/PreprocessDatasetMAGEService-service.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/statmlutil.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/ginkgo-0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/PCA-service.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/PCA-client.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/PCA-common.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/PCA-stubs.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -121,5 +122,14 @@ public interface GenePatternGridRunner {
      */
     File runPreprocessDataset(StudySubscription studySubscription,
             PreprocessDatasetParameters parameters) throws ConnectionException;
+    
+    /**
+     * Executes the grid service PCA.
+     * @param studySubscription for current study.
+     * @param parameters for PCA.
+     * @return zip file containing results.
+     * @throws ConnectionException if unable to connect to grid service.
+     */
+    File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException; 
 
 }

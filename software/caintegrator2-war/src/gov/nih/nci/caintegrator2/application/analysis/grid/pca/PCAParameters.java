@@ -83,77 +83,118 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.analysis.grid.pca;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.axis.types.URI.MalformedURIException;
-import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.pca.client.PCAClient;
-import org.genepattern.pca.common.PCAI;
+import org.cabig.icr.asbp.parameter.Parameter;
+import org.cabig.icr.asbp.parameter.ParameterList;
+import org.cabig.icr.asbp.parameter.StringParameter;
 
 /**
- * Implementation of GenePatternGridClientFactory.
+ * Parameters to run PCA Gene Pattern grid service.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
+public class PCAParameters {
     
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new PreprocessDatasetMAGEServiceClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
-    }
+    private final List<Query> clinicalQueries = new ArrayList<Query>();
+    private ServerConnectionProfile server;
+    private String clusterBy;
+    private String classificationFileName;
+    private String gctFileName;
     
+
     /**
-     * {@inheritDoc}
+     * @return the clinicalQueries
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
+    public List<Query> getClinicalQueries() {
+        return clinicalQueries;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the server
      */
-    public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new PCAClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
+    public ServerConnectionProfile getServer() {
+        return server;
+    }
+
+    /**
+     * @param server the server to set
+     */
+    public void setServer(ServerConnectionProfile server) {
+        this.server = server;
+    }
+
+    /**
+     * 
+     * @return options list for the "cluster.by" parameter.
+     */
+    public List<String> getClusterByOptions() {
+        List<String> options = new ArrayList<String>();
+        options.add("columns");
+        options.add("rows");
+        return options;
+    }
+
+    /**
+     * @return the clusterBy
+     */
+    public String getClusterBy() {
+        return clusterBy;
+    }
+
+    /**
+     * @param clusterBy the clusterBy to set
+     */
+    public void setClusterBy(String clusterBy) {
+        this.clusterBy = clusterBy;
+    }
+    
+    /**
+     * Creates the parameter list from the parameters given by user.
+     * @return parameters to run grid job.
+     */
+    public ParameterList createParameterList() {
+        ParameterList parameterList = new ParameterList();
+        Parameter[] params = new Parameter[1];
+        StringParameter param = new StringParameter();
+        param.setName("cluster.by");
+        param.setValue(clusterBy);
+        params[0] = param;
+
+        parameterList.setParameterCollection(params);
+        return parameterList;       
+    }
+
+    /**
+     * @return the classificationFileName
+     */
+    public String getClassificationFileName() {
+        return classificationFileName;
+    }
+
+    /**
+     * @param classificationFileName the classificationFileName to set
+     */
+    public void setClassificationFileName(String classificationFileName) {
+        this.classificationFileName = classificationFileName;
+    }
+
+    /**
+     * @return the gctFileName
+     */
+    public String getGctFileName() {
+        return gctFileName;
+    }
+
+    /**
+     * @param gctFileName the gctFileName to set
+     */
+    public void setGctFileName(String gctFileName) {
+        this.gctFileName = gctFileName;
     }
 
 }

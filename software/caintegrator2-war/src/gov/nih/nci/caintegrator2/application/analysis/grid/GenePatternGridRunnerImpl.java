@@ -88,28 +88,26 @@ package gov.nih.nci.caintegrator2.application.analysis.grid;
 import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
 import gov.nih.nci.caintegrator2.application.analysis.ClassificationsToClsConverter;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactory;
-import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
-import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -118,6 +116,7 @@ import java.util.Set;
 
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.pca.common.PCAI;
 
 /**
  * Entry point to run all GenePattern grid jobs.
@@ -164,9 +163,32 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             new PreprocessDatasetGridRunner(client, mbaGenerator, fileManager);
         Set<Query> querySet = new HashSet<Query>();
         querySet.addAll(parameters.getClinicalQueries());
-        GctDataset gctDataset = retrieveGctDataset(studySubscription, querySet);
+        GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet, queryManagementService);
         populateReporterGeneSymbols(gctDataset);
         return runner.execute(studySubscription, parameters, gctDataset);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException {
+        PCAI client = genePatternGridClientFactory.createPCAClient(parameters.getServer());
+        PCAGridRunner runner = new PCAGridRunner(client, fileManager);
+        Set<Query> querySet = new HashSet<Query>();
+        querySet.addAll(parameters.getClinicalQueries());
+        File gctFile = createGctFile(studySubscription, querySet, parameters.getGctFileName());
+        File clsFile = createClassificationFile(studySubscription, parameters.getClinicalQueries(), 
+                parameters.getClassificationFileName());
+        try {
+            File zipFile = runner.execute(studySubscription, parameters, gctFile);
+            Cai2Util.addFilesToZipFile(zipFile, gctFile, clsFile);
+            return zipFile;
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to add gct/cls files to the zip file.", e);
+        } catch (InterruptedException e) {
+            return null;
+        }
+
     }
 
     private void populateReporterGeneSymbols(GctDataset gctDataset) {
@@ -190,40 +212,20 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         return runner.execute(parameters, gctFile, clsFile);
     }
     
-    private GctDataset retrieveGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries) {
-        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
-        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
-        return new GctDataset(genomicData);
-    }
-    
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
             String classificationFileName) {
-        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
-        Set<Long> usedSampleIds = new HashSet<Long>();
-        for (Query query : clinicalQueries) {
-            ResultColumn sampleColumn = new ResultColumn();
-            sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
-            sampleColumn.setColumnIndex(query.getColumnCollection().size());
-            query.getColumnCollection().add(sampleColumn);
-            String classificationName = query.getName();
-            QueryResult result = queryManagementService.execute(query);
-            for (ResultRow row : result.getRowCollection()) {
-                if (row.getSampleAcquisition() != null) {
-                    Sample sample = row.getSampleAcquisition().getSample();
-                    if (!usedSampleIds.contains(sample.getId())) {
-                        sampleClassifications.classify(sample, classificationName);
-                        usedSampleIds.add(sample.getId());
-                    }
-                }
-            }
-        }
-        return ClassificationsToClsConverter.writeAsCls(sampleClassifications, 
+        return ClassificationsToClsConverter.writeAsCls(
+                GenePatternUtil.createSampleClassification(queryManagementService, clinicalQueries), 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + classificationFileName).getAbsolutePath());
     }
     
-    
-    
+    private File createGctFile(StudySubscription studySubscription, Set<Query> clinicalQueries, String fileName) {
+        return GctDatasetFileWriter.writeAsGct(
+                GenePatternUtil.createGctDataset(studySubscription, clinicalQueries, queryManagementService), 
+                new File(fileManager.getUserDirectory(studySubscription) + File.separator 
+                        + fileName).getAbsolutePath());
+    }
 
     /**
      * @param genePatternGridClientFactory the genePatternGridClientFactory to set
