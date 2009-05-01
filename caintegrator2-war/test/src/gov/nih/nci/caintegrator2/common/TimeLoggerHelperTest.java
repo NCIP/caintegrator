@@ -83,77 +83,19 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import java.text.ParseException;
 
-import java.rmi.RemoteException;
+import org.junit.Test;
 
-import org.apache.axis.types.URI.MalformedURIException;
-import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.pca.client.PCAClient;
-import org.genepattern.pca.common.PCAI;
 
-/**
- * Implementation of GenePatternGridClientFactory.
- */
-@SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
-    
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new PreprocessDatasetMAGEServiceClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
-    }
+public class TimeLoggerHelperTest {
 
-    /**
-     * {@inheritDoc}
-     */
-    public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new PCAClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
+    @Test (expected = IllegalStateException.class)
+    public void testStopLog() throws ParseException {
+        TimeLoggerHelper logger = new TimeLoggerHelper(TimeLoggerHelperTest.class);
+        logger.stopLog("Trying to stop before starting log");
     }
 
 }

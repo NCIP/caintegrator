@@ -114,15 +114,21 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
@@ -386,9 +392,54 @@ public final class Cai2Util {
         return zipfile;
     }
     
+    /**
+     * Adds files to an already created zip file.
+     * @param sourceZipfile to add files to.
+     * @param files to add to zip file.
+     * @return the new zip file.
+     * @throws IOException if unable to add to zip file.
+     */
+    public static File addFilesToZipFile(File sourceZipfile, File... files) throws IOException {
+        File newZipDirectory = unzipAndDeleteZipFile(sourceZipfile);
+        for (File file : files) {
+            FileUtils.moveFileToDirectory(file, newZipDirectory, false);
+        }
+        return zipAndDeleteDirectory(newZipDirectory.getAbsolutePath());
+    }
+
+    private static File unzipAndDeleteZipFile(File sourceZipfile) throws IOException {
+        if (!sourceZipfile.getAbsolutePath().endsWith(".zip")) {
+            throw new IllegalArgumentException("The zipfile isn't a .zip type.");
+        }
+        File newZipDir = new File(sourceZipfile.getAbsolutePath().replace(".zip", ""));
+        ZipFile zipFile = new ZipFile(sourceZipfile, ZipFile.OPEN_READ);
+        Enumeration <? extends ZipEntry> zipFileEntries = zipFile.entries();
+        while (zipFileEntries.hasMoreElements()) {
+            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+            File destFile = new File(newZipDir, entry.getName());
+            File destinationParent = destFile.getParentFile();
+            destinationParent.mkdirs();
+            if (!entry.isDirectory()) {
+                BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
+                int currentByte;
+                byte[] data = new byte[BUFFER_SIZE];
+                FileOutputStream fos = new FileOutputStream(destFile);
+                BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
+                while ((currentByte = is.read(data, 0, BUFFER_SIZE)) != -1) {
+                    dest.write(data, 0, currentByte);
+                }
+                dest.flush();
+                dest.close();
+                is.close();
+            }
+        }
+        zipFile.close();
+        FileUtils.deleteQuietly(sourceZipfile);
+        return newZipDir;
+    }
+    
     private static void addDir(File dirObj, ZipOutputStream out, int index) throws IOException {
         File[] files = dirObj.listFiles();
-        byte[] tmpBuf = new byte[BUFFER_SIZE];
 
         for (int i = 0; i < files.length; i++) {
             File curFile = files[i];
@@ -396,17 +447,44 @@ public final class Cai2Util {
                 addDir(curFile, out, index);
                 continue;
             }
-            FileInputStream in = new FileInputStream(curFile);
-            String relativePathName = curFile.getPath().substring(index);
-            out.putNextEntry(new ZipEntry(relativePathName));
-            int len;
-            while ((len = in.read(tmpBuf)) > 0) {
-                out.write(tmpBuf, 0, len);
-            }
-            // Complete the entry
-            out.closeEntry();
-            in.close();
+            addFile(curFile, out, index);
         }
+    }
+    
+    private static void addFile(File curFile, ZipOutputStream out, int index) 
+    throws IOException {
+        byte[] tmpBuf = new byte[BUFFER_SIZE];
+        FileInputStream in = new FileInputStream(curFile);
+        String relativePathName = curFile.getPath().substring(index);
+        out.putNextEntry(new ZipEntry(relativePathName));
+        int len;
+        while ((len = in.read(tmpBuf)) > 0) {
+            out.write(tmpBuf, 0, len);
+        }
+        // Complete the entry
+        out.closeEntry();
+        in.close();
+    }
+    
+    /**
+     * Stores a file from an input stream.
+     * @param istream stream to store file from.
+     * @param filename file to store.
+     * @return File that was created.
+     * @throws IOException if unable to create file.
+     */
+    public static File storeFileFromInputStream(InputStream istream, String filename) throws IOException {
+        File file = new File(filename);
+        OutputStream out = new FileOutputStream(file);
+        byte [] buf = new byte[BUFFER_SIZE];
+        int len;
+        while ((len = istream.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        out.flush();
+        out.close();
+        istream.close();
+        return file;
     }
     
     /**

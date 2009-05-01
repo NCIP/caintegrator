@@ -83,77 +83,136 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.application.analysis.grid.pca;
 
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.file.FileManager;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
-import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.pca.client.PCAClient;
+import org.apache.log4j.Logger;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.genepattern.pca.common.PCAI;
+import org.genepattern.pca.context.client.PCAContextClient;
+import org.genepattern.pca.context.stubs.types.AnalysisNotComplete;
+import org.genepattern.pca.context.stubs.types.CannotLocateResource;
 
 /**
- * Implementation of GenePatternGridClientFactory.
+ * Runs the GenePattern grid service PCA.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
+public class PCAGridRunner {
+
+    private static final Logger LOGGER = Logger.getLogger(PCAGridRunner.class);
+    private static final int DOWNLOAD_REFRESH_INTERVAL = 1000;
+    private static final int TIMEOUT_SECONDS = 60;
+    private final PCAI client;
+    private final FileManager fileManager;
     
     /**
-     * {@inheritDoc}
+     * Constructor.
+     * @param client of the grid service.
+     * @param fileManager to store results zip file.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
+    public PCAGridRunner(PCAI client, FileManager fileManager) {
+        this.client = client;
+        this.fileManager = fileManager;
+    }
+
+    
+    /**
+     * Runs PCA baseed on input parameters, and the gct file.
+     * @param studySubscription for current study.
+     * @param parameters to run PCA.
+     * @param gctFile gene pattern file containing genomic data.
+     * @return the zipped file results from PCA (should contain 3 .odf files).
+     * @throws ConnectionException if unable to connect to grid service.
+     * @throws InterruptedException if thread is interrupted while waiting for file download.
+     */
+    public File execute(StudySubscription studySubscription, PCAParameters parameters, File gctFile) 
+        throws ConnectionException, InterruptedException {
         try {
-            return new PreprocessDatasetMAGEServiceClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
+            PCAContextClient analysisClient = client.createAnalysis();
+            postUpload(analysisClient, parameters, gctFile);
+            return downloadResult(studySubscription, analysisClient);
         } catch (RemoteException e) {
             throw new ConnectionException("Remote Connection Failed.", e);
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Malformed URI.", e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Couldn't read gct file at the path " + gctFile.getAbsolutePath(), e);
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
+    private void postUpload(PCAContextClient analysis, PCAParameters parameters, File gctFile) 
+        throws ConnectionException, IOException {
+        TransferServiceContextReference up = analysis.submitData(parameters.createParameterList());
+        TransferServiceContextClient tClient = new TransferServiceContextClient(up.getEndpointReference());
+        BufferedInputStream bis = null;
         try {
-            return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            long size = gctFile.length();
+            bis = new BufferedInputStream(new FileInputStream(gctFile));
+            TransferClientHelper.putData(bis, size, tClient.getDataTransferDescriptor());
+        } catch (Exception e) {
+            // For some reason TransferClientHelper throws "Exception", going to rethrow a connection exception.
+            throw new ConnectionException("Unable to transfer gct data to the server.", e);
+        } finally {
+            if (bis != null) {
+                bis.close();
+            }
+        }
+    }
+    
+    private File downloadResult(StudySubscription studySubscription, PCAContextClient analysisClient) 
+        throws ConnectionException, MalformedURIException, RemoteException, InterruptedException {
+        String filename = new File(fileManager.getUserDirectory(studySubscription) + File.separator
+                            + "PCA_RESULTS_" + System.currentTimeMillis() + ".zip").getAbsolutePath();
+        TransferServiceContextReference tscr = null;
+        int callCount = 0;
+        while (tscr == null) {
+            try {
+                callCount++;
+                tscr = analysisClient.getResult();
+            } catch (AnalysisNotComplete e) {
+                LOGGER.info("PCA - " + callCount + " - Analysis not complete");
+                checkTimeout(callCount);
+            } catch (CannotLocateResource e) {
+                LOGGER.info("PCA - " + callCount + " - Cannot locate resource");
+                checkTimeout(callCount);
+            } catch (RemoteException e) {
+                throw new ConnectionException("Unable to connect to server to download result.", e);
+            }
+            Thread.sleep(DOWNLOAD_REFRESH_INTERVAL);
+        }
+        return retrieveFileFromTscr(filename, tscr);
+    }
+
+    private void checkTimeout(int callCount) throws ConnectionException {
+        if (callCount >= TIMEOUT_SECONDS) {
+            throw new ConnectionException("Timed out trying to download PCA results");
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
+    private File retrieveFileFromTscr(String filename, TransferServiceContextReference tscr)
+            throws MalformedURIException, RemoteException, ConnectionException {
+        TransferServiceContextClient tclient = 
+            new TransferServiceContextClient(tscr.getEndpointReference());
         try {
-            return new PCAClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            InputStream stream = 
+                (InputStream) TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+            return Cai2Util.storeFileFromInputStream(stream, filename);
+        } catch (Exception e) {
+            throw new ConnectionException("Unable to download stream data from server.", e);
         }
     }
-
+    
 }

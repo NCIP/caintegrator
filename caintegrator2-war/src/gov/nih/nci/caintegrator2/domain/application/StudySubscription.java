@@ -20,6 +20,7 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private Set<GenePatternAnalysisJob> genePatternAnalysisJobCollection = new HashSet<GenePatternAnalysisJob>();
     private Set<ComparativeMarkerSelectionAnalysisJob> comparativeMarkerSelectionAnalysisJobCollection =
         new HashSet<ComparativeMarkerSelectionAnalysisJob>();
+    private Set<PCAAnalysisJob> pcaAnalysisJobCollection = new HashSet<PCAAnalysisJob>();
     private UserWorkspace userWorkspace;
     
     /**
@@ -107,6 +108,21 @@ public class StudySubscription extends AbstractCaIntegrator2Object {
     private void setComparativeMarkerSelectionAnalysisJobCollection(
             Set<ComparativeMarkerSelectionAnalysisJob> comparativeMarkerSelectionAnalysisJobCollection) {
         this.comparativeMarkerSelectionAnalysisJobCollection = comparativeMarkerSelectionAnalysisJobCollection;
+    }
+
+    /**
+     * @return the pcaAnalysisJobCollection
+     */
+    public Set<PCAAnalysisJob> getPcaAnalysisJobCollection() {
+        return pcaAnalysisJobCollection;
+    }
+
+    /**
+     * @param pcaAnalysisJobCollection the pcaAnalysisJobCollection to set
+     */
+    @SuppressWarnings("unused") // For hibernate.
+    private void setPcaAnalysisJobCollection(Set<PCAAnalysisJob> pcaAnalysisJobCollection) {
+        this.pcaAnalysisJobCollection = pcaAnalysisJobCollection;
     }
 
 }

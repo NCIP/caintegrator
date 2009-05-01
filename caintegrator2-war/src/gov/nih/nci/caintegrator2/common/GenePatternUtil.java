@@ -83,77 +83,74 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
-import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.axis.types.URI.MalformedURIException;
-import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.pca.client.PCAClient;
-import org.genepattern.pca.common.PCAI;
 
 /**
- * Implementation of GenePatternGridClientFactory.
+ * This is a static utility class for GenePattern type operations.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
+public final class GenePatternUtil {
+    
+    private GenePatternUtil() { }
     
     /**
-     * {@inheritDoc}
+     * Creates the sample classifications from the clinical queries.
+     * @param queryManagementService to query database.
+     * @param clinicalQueries to be turned into sample classifications.
+     * @return sample classification.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
+    public static SampleClassificationParameterValue createSampleClassification(
+            QueryManagementService queryManagementService, List<Query> clinicalQueries) {
+        SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
+        Set<Long> usedSampleIds = new HashSet<Long>();
+        for (Query query : clinicalQueries) {
+            ResultColumn sampleColumn = new ResultColumn();
+            sampleColumn.setEntityType(EntityTypeEnum.SAMPLE);
+            sampleColumn.setColumnIndex(query.getColumnCollection().size());
+            query.getColumnCollection().add(sampleColumn);
+            String classificationName = query.getName();
+            QueryResult result = queryManagementService.execute(query);
+            for (ResultRow row : result.getRowCollection()) {
+                if (row.getSampleAcquisition() != null) {
+                    Sample sample = row.getSampleAcquisition().getSample();
+                    if (!usedSampleIds.contains(sample.getId())) {
+                        sampleClassifications.classify(sample, classificationName);
+                        usedSampleIds.add(sample.getId());
+                    }
+                }
+            }
         }
-        try {
-            return new PreprocessDatasetMAGEServiceClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
+        return sampleClassifications;
     }
     
     /**
-     * {@inheritDoc}
+     * Creates the GCT dataset given the clinical queries (based on all genomic data).
+     * @param studySubscription to run queries against.
+     * @param clinicalQueries to be turned into GctDataset. 
+     * @param queryManagementService to query database.
+     * @return gct dataset for the queries.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
-    public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
-    throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
+    public static GctDataset createGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries, 
+            QueryManagementService queryManagementService) {
+        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
+        GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
+        return new GctDataset(genomicData);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
-        if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
-        }
-        try {
-            return new PCAClient(server.getUrl());
-        } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
-        } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
-        }
-    }
-
+    
 }

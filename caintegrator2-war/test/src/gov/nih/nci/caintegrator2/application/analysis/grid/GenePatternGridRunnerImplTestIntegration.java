@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import static org.junit.Assert.assertArrayEquals;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
@@ -108,6 +109,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -119,6 +121,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     
     private static final String PREPROCESS_DATASET_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
     private static final String COMPARATIVE_MARKER_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
+    private static final String PCA_URL                = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA";
     
     private GenePatternGridRunnerImpl genePatternGridRunner;
     private FileManager fileManager;
@@ -192,6 +195,38 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
                 + comparativeMarkerParameters.getClassificationFileName());
         clsFile.deleteOnExit();
         checkClsFile(clsFile);
+    }
+    
+    @Test
+    public void testRunPCA() throws ConnectionException {
+        setupContext();
+        StudySubscription subscription = setupStudySubscription();
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        server.setUrl(PCA_URL);
+        PCAParameters parameters = new PCAParameters();
+        parameters.setClusterBy("columns");
+        parameters.setGctFileName("testPca.gct");
+        parameters.setClassificationFileName("testPca.cls");
+        parameters.setServer(server);
+        // Narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
+        // a 6th sample, so combined it should produce 6 sample rows.
+        Query query1 = studyHelper.createQuery(studyHelper.createCompoundCriterion4(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        Query query2 = studyHelper.createQuery(studyHelper.createCompoundCriterion5(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        parameters.getClinicalQueries().add(query1);
+        parameters.getClinicalQueries().add(query2);
+        // For now, since the PCA service is up and down, don't fail on this test yet.
+        boolean isConnectionException = false;
+        File zipFile = null;
+        try {
+            zipFile = genePatternGridRunner.runPCA(subscription, parameters);
+        } catch (ConnectionException e) {
+            isConnectionException = true;
+        }
+        if (!isConnectionException) {
+            assertNotNull(zipFile);
+        }
     }
 
     private void checkClsFile(File clsFile) throws IOException {
