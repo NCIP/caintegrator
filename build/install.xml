@@ -50,6 +50,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<property name="common.dir.target" value="${working.dir}/${common.dist.relative.dir}" />
 	<property name="db-install.dir.dest" value="${working.dir}/${db-install.dist.relative.dir}" />
     <property name="db-upgrade.src.dir" value="${basedir}/${db-upgrade.dist.relative.dir}/${database.type}" />
+    <property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
 	<property name="jboss-conf.dir.target" value="${working.dir}/${jboss-conf.dist.relative.dir}" />
 
 	<!-- deployment XML files and WAR -->
