@@ -96,6 +96,16 @@ import org.apache.axis.types.URI.MalformedURIException;
 public interface GridDiscoveryClient {
 
     /**
+     * Get the EndpointReferenceTypes of the grid services registered in the Index Service.
+     * @return matching EndpointReferenceType
+     * @throws ResourcePropertyRetrievalException if the DiscoveryClient or MetadaUtils cannot retrieve data
+     * @throws MalformedURIException invalid URL
+     * 
+     */
+    EndpointReferenceType[] getServices()
+        throws ResourcePropertyRetrievalException, MalformedURIException;
+
+    /**
      * @param searchString search string.
      * @return matching EndpointReferenceType
      * @throws ResourcePropertyRetrievalException exception from the grid service

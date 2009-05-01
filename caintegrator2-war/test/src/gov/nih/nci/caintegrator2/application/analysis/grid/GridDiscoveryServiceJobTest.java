@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import static org.junit.Assert.assertFalse;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -95,6 +96,7 @@ public class GridDiscoveryServiceJobTest {
 
     private GridDiscoveryServiceJob job;
     private GridDiscoveryClientStub gridDiscoveryClientStub = new GridDiscoveryClientStub();
+    private ConfigurationHelperStub configurationHelperStub = new ConfigurationHelperStub();
 
     /**
      * @throws java.lang.Exception
@@ -102,6 +104,7 @@ public class GridDiscoveryServiceJobTest {
     @Before
     public void setUp() throws Exception {
         job = new GridDiscoveryServiceJob();
+        job.setConfigurationHelper(configurationHelperStub);
         job.setGridDiscoveryClient(gridDiscoveryClientStub);
     }
     
@@ -109,8 +112,10 @@ public class GridDiscoveryServiceJobTest {
     public void executeInternalTest() throws JobExecutionException {
         assertFalse(!GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(!GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
+        assertFalse(!GridDiscoveryServiceJob.getGridPcaServices().isEmpty());
         job.executeInternal(null);
         assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
+        assertFalse(GridDiscoveryServiceJob.getGridPcaServices().isEmpty());
     }
 }
