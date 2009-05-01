@@ -110,7 +110,9 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     private static Map<String, String> gridPreprocessServices
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCmsServices
-        = Collections.synchronizedMap(new HashMap<String, String>());
+    = Collections.synchronizedMap(new HashMap<String, String>());
+    private static Map<String, String> gridPcaServices
+    = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * {@inheritDoc}
@@ -123,8 +125,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     
     private static void queryGridServices() {
         try {
-            // search for "MAGES" services
-            EndpointReferenceType[] searchedServices = gridDiscoveryClient.searchServices("MAGES");
+            // Get all services
+            EndpointReferenceType[] searchedServices = gridDiscoveryClient.getServices();
             if (searchedServices != null) {
                 for (EndpointReferenceType epr : searchedServices) {
                     String url = gridDiscoveryClient.getAddress(epr);
@@ -148,9 +150,22 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.COMPARATIVE_MARKER_SELECTION_URL);
             gridCmsServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
         }
+        if (gridPcaServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.PCA_URL);
+            gridPcaServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
+        }
     }
     
     private static void extractSelectedServices(String hostingCenter, String url) {
+        if (url.contains("MAGES")) {
+            extractCmsServices(hostingCenter, url);
+        } else if (url.contains("PCA")
+                && !gridPcaServices.containsKey(url)) {
+            gridPcaServices.put(url, hostingCenter + " - " + url);
+        }
+    }
+    
+    private static void extractCmsServices(String hostingCenter, String url) {
         if (url.contains("Comparative")
                 && !gridCmsServices.containsKey(url)) {
             gridCmsServices.put(url, hostingCenter + " - " + url);
@@ -172,6 +187,13 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      */
     public static Map<String, String> getGridCmsServices() {
         return gridCmsServices;
+    }
+
+    /**
+     * @return the gridPcaServices
+     */
+    public static Map<String, String> getGridPcaServices() {
+        return gridPcaServices;
     }
 
     /**

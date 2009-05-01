@@ -98,6 +98,18 @@ public class GridDiscoveryClientStub implements GridDiscoveryClient {
     /**
      * {@inheritDoc}
      */
+    public EndpointReferenceType[] getServices() throws ResourcePropertyRetrievalException {
+        EndpointReferenceType[] results = new EndpointReferenceType[4];
+        results[0] = buildEndpoint("http://broad/PreprocessDatasetMAGEService");
+        results[1] = buildEndpoint("http://broad/ComparativeMarkerSelectionMAGEService");
+        results[2] = buildEndpoint("http://broad/PCA");
+        results[3] = buildEndpoint("http://broad/OtherService");
+        return results;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public EndpointReferenceType[] searchServices(String searchString) throws ResourcePropertyRetrievalException {
         EndpointReferenceType[] results = new EndpointReferenceType[3];
         results[0] = buildEndpoint("http://broad/PreprocessDatasetService" + searchString);

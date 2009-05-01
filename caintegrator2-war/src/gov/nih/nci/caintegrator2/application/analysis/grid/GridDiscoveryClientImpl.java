@@ -106,8 +106,19 @@ public class GridDiscoveryClientImpl implements GridDiscoveryClient {
     /**
      * {@inheritDoc}
      */
+    public EndpointReferenceType[] getServices()
+            throws ResourcePropertyRetrievalException, MalformedURIException {
+        
+        EndpointReferenceType[] allServices = null;
+        allServices = getDiscClient().getAllServices(true);
+        return allServices;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public EndpointReferenceType[] searchServices(String searchString)
-        throws ResourcePropertyRetrievalException, MalformedURIException {
+            throws ResourcePropertyRetrievalException, MalformedURIException {
         EndpointReferenceType[] searchedServices = null;
         searchedServices = getDiscClient().discoverServicesBySearchString(searchString);
         return searchedServices;
