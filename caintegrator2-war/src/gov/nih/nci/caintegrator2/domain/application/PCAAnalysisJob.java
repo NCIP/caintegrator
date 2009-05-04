@@ -85,113 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.web.action.analysis.PCAAnalysisForm;
-
-import java.util.Date;
 
 /**
  * Object representing a single gene pattern analysis job.
  */
-public class PCAAnalysisJob extends AbstractCaIntegrator2Object 
-                                    implements PersistedJob, Comparable <PCAAnalysisJob> {
+public class PCAAnalysisJob extends AbstractPersistedAnalysisJob {
 
     private static final long serialVersionUID = 1L;
     
     private final transient PCAAnalysisForm form = new PCAAnalysisForm();
-    private String name;
-    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
-    private Date creationDate;
-    private Date lastUpdateDate;
-    private StudySubscription subscription;
     private ResultsZipFile resultsZipFile;
 
-    
     /**
-     * @return the status
+     * Default Constructor.
      */
-    public AnalysisJobStatusEnum getStatus() {
-        return status;
-    }
-    
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(AnalysisJobStatusEnum status) {
-        this.status = status;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the creationDate
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
-     * @param creationDate the creationDate to set
-     */
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /**
-     * @return the subscription
-     */
-    public StudySubscription getSubscription() {
-        return subscription;
-    }
-
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(PCAAnalysisJob o) {
-        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
-    }
-
-    /**
-     * @return the lastUpdateDate
-     */
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    /**
-     * @param lastUpdateDate the lastUpdateDate to set
-     */
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public UserWorkspace getUserWorkspace() {
-        if (getSubscription() != null) {
-            return getSubscription().getUserWorkspace();
-        }
-        return null;
+    public PCAAnalysisJob() {
+        this.setJobType(AnalysisJobTypeEnum.PCA.getValue());
     }
 
     /**

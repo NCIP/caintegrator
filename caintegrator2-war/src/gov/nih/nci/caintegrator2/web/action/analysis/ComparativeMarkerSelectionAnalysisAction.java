@@ -99,7 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
-import gov.nih.nci.caintegrator2.web.ajax.IComparativeMarkerSelectionAjaxUpdater;
+import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 import gridextensions.ComparativeMarkerSelectionParameterSet;
 import gridextensions.PreprocessDatasetParameterSet;
 
@@ -134,7 +134,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
-    private IComparativeMarkerSelectionAjaxUpdater ajaxUpdater;
+    private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
 
     /**
@@ -211,7 +211,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         }
         getCurrentComparativeMarkerSelectionAnalysisJob().setCreationDate(new Date());
         getCurrentComparativeMarkerSelectionAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        getStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection()
+        getStudySubscription().getAnalysisJobCollection()
             .add(getCurrentComparativeMarkerSelectionAnalysisJob());
         getCurrentComparativeMarkerSelectionAnalysisJob().setSubscription(getStudySubscription());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
@@ -324,14 +324,14 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     /**
      * @return the ajaxUpdater
      */
-    public IComparativeMarkerSelectionAjaxUpdater getAjaxUpdater() {
+    public IPersistedAnalysisJobAjaxUpdater getAjaxUpdater() {
         return ajaxUpdater;
     }
 
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
-    public void setAjaxUpdater(IComparativeMarkerSelectionAjaxUpdater ajaxUpdater) {
+    public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }
 

@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caArray
+ * source code form and machine readable, binary, object code form. The caIntegrator2
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caArray Software License (the License) is between NCI and You. You (or 
+ * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caArray Software to (i) use, install, access, operate, 
+ * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caArray Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator Software and any 
+ * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator2 Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,128 +85,120 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import org.apache.commons.lang.StringUtils;
-import org.directwebremoting.proxy.dwr.Util;
+import javax.servlet.ServletException;
 
-/**
- * This is an object which is turned into an AJAX javascript file using the DWR framework.  
- */
-public class GenePatternAjaxUpdater extends AbstractDwrAjaxUpdater implements IGenePatternAjaxUpdater {
-    
-    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
-    private static final String GENE_PATTERN_STATUS_TABLE = "genePatternStatusTable";
-    private static final String GP_JOB_NAME = "gpJobName_";
-    private static final String GP_JOB_STATUS = "gpJobStatus_";
-    private static final String GP_JOB_CREATION_DATE = "gpJobCreationDate_";
-    private static final String GP_JOB_URL = "gpJobUrl_";
-    private AnalysisService analysisService;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.directwebremoting.WebContextFactory;
+import org.junit.Before;
+import org.junit.Test;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
-        int counter = 0;
-        List <GenePatternAnalysisJob> jobList = new ArrayList<GenePatternAnalysisJob>();
-        jobList.addAll(workspace.getCurrentStudySubscription().getGenePatternAnalysisJobCollection());
-        Collections.sort(jobList);
-        for (GenePatternAnalysisJob job : jobList) {
-            retrieveDwrUtility(job).addRows(GENE_PATTERN_STATUS_TABLE, 
-                                            createRow(job), 
-                                            retrieveRowOptions(counter));
-            updateJobStatus(job);
-            counter++;
-        }
+import com.opensymphony.xwork2.ActionContext;
+
+
+public class PersistedAnalysisJobAjaxUpdaterTest {
+
+    private PersistedAnalysisJobAjaxUpdater updater;
+    private DwrUtilFactory dwrUtilFactory;
+    private WorkspaceServiceGPJobStub workspaceService;
+    private AnalysisServiceStub analysisService;
+    private ComparativeMarkerSelectionAnalysisJob cmsJob;
+    private GenePatternAnalysisJob gpJob;
+
+    @Before
+    public void setUp() throws Exception {
+        updater = new PersistedAnalysisJobAjaxUpdater();
+        dwrUtilFactory = new DwrUtilFactory();
+        workspaceService = new WorkspaceServiceGPJobStub();
+        analysisService = new AnalysisServiceStub();
+        analysisService.clear();
+        workspaceService.clear();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(dwrUtilFactory);
+        updater.setAnalysisService(analysisService);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        setupJobs();
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void associateJobWithSession(DwrUtilFactory dwrUtilFactory, String username, Util util) {
-        dwrUtilFactory.associateGenePatternJobWithSession(username, util);
+    private void setupJobs() {
+        cmsJob = new ComparativeMarkerSelectionAnalysisJob();
+        cmsJob.setName("Job");
+        cmsJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
+        cmsJob.setCreationDate(new Date());
+        cmsJob.setLastUpdateDate(new Date());
+        cmsJob.setId(Long.valueOf(1));
+        gpJob = new GenePatternAnalysisJob();
+        gpJob.setName("Job");
+        gpJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
+        gpJob.setCreationDate(new Date());
+        gpJob.setId(Long.valueOf(1));
     }
 
-    private String[][] createRow(GenePatternAnalysisJob job) {
-        String[][] rowString = new String[1][3];
-        String id = job.getId().toString();
-        String startSpan = "<span id=\"";
-        String endSpan = "\"> </span>";
-        rowString[0][0] = startSpan + GP_JOB_NAME + id + endSpan;
-        rowString[0][1] = startSpan + GP_JOB_STATUS + id + endSpan
-                            + startSpan + GP_JOB_URL + id + endSpan;
-        rowString[0][2] = startSpan + GP_JOB_CREATION_DATE + id + endSpan;
-        return rowString;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void runJob(GenePatternAnalysisJob job) {
-        Thread jobRunner = new Thread(new GenePatternAjaxRunner(this, job));
-        jobRunner.start();
+    @Test
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        updater.initializeJsp();
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(cmsJob));
+        assertNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
     
-    /**
-     * Adds error to JSP.
-     * @param errorMessage .
-     * @param job to associate JSP script session to.
-     */
-    public void addError(String errorMessage, GenePatternAnalysisJob job) {
-        retrieveDwrUtility(job).setValue("errors", errorMessage);
-    }
-
-    /**
-     * Updates job status.
-     * @param job to update.
-     */
-    public void updateJobStatus(GenePatternAnalysisJob job) {
-        getWorkspaceService().saveGenePatternAnalysisJob(job);
+    @Test
+    public void testRunJob() throws InterruptedException {
         
-        Util utilThis = retrieveDwrUtility(job);
-        String jobId = job.getId().toString();
-        utilThis.setValue(GP_JOB_NAME + jobId, job.getName());
-        utilThis.setValue(GP_JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
-        utilThis.setValue(GP_JOB_CREATION_DATE + jobId, 
-                new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(job.getCreationDate()));
-        if (!StringUtils.isEmpty(job.getJobUrl())) {
-            utilThis.setValue(GP_JOB_URL + jobId, 
-                    " - <a href=\"" + job.getJobUrl() + "\" target=\"_\">View " + job.getGpJobNumber() + "</a>", false);
-        }
+        updater.runJob(cmsJob);
+        Thread.sleep(500);
+        assertTrue(analysisService.executeComparativeMarkerSelectionJobCalled);
+        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(cmsJob.getStatus()));
+        
+        updater.runJob(gpJob);
+        Thread.sleep(500);
+        assertTrue(analysisService.executeGenePatternJobCalled);
+        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(gpJob.getStatus()));
+
     }
     
-    private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {
-        if (AnalysisJobStatusEnum.PROCESSING_LOCALLY.equals(jobStatus) 
-                || AnalysisJobStatusEnum.PROCESSING_REMOTELY.equals(jobStatus)) {
-            return AJAX_LOADING_GIF + " " + jobStatus.getValue();
+    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
+        @Override
+        public UserWorkspace getWorkspace() {
+            UserWorkspace workspace = new UserWorkspace();
+            workspace.setUsername("Test");
+            StudySubscription subscription = new StudySubscription();
+            subscription.setId(Long.valueOf(1));
+            subscription.setUserWorkspace(workspace);
+            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            workspace.getSubscriptionCollection().add(subscription);
+            cmsJob.setSubscription(subscription);
+            gpJob.setSubscription(subscription);
+            subscription.getAnalysisJobCollection().add(cmsJob);
+            subscription.getAnalysisJobCollection().add(gpJob);
+            return workspace;
         }
-        return jobStatus.getValue();
     }
+    private final class PersistedJobStub implements PersistedJob {
 
-
-    /**
-     * @return the analysisService
-     */
-    public AnalysisService getAnalysisService() {
-        return analysisService;
+        public UserWorkspace getUserWorkspace() {
+            return null;
+        }
+        
     }
-
-    /**
-     * @param analysisService the analysisService to set
-     */
-    public void setAnalysisService(AnalysisService analysisService) {
-        this.analysisService = analysisService;
-    }
-
 
 }
