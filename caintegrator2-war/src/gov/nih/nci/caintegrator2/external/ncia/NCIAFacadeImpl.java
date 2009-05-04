@@ -134,6 +134,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
         for (Patient patient : patientCollection) {
             imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
         }
+        LOGGER.info("Completed retrieving ImageSeriesAcquisitions for " + collectionNameProject);
         return imageSeriesAcquisitions;
     }
 
