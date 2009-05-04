@@ -110,9 +110,9 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
     private static Map<String, String> gridPreprocessServices
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCmsServices
-    = Collections.synchronizedMap(new HashMap<String, String>());
+        = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridPcaServices
-    = Collections.synchronizedMap(new HashMap<String, String>());
+        = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * {@inheritDoc}
@@ -128,6 +128,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             // Get all services
             EndpointReferenceType[] searchedServices = gridDiscoveryClient.getServices();
             if (searchedServices != null) {
+                clearServices();
                 for (EndpointReferenceType epr : searchedServices) {
                     String url = gridDiscoveryClient.getAddress(epr);
                     String hostingCenter = gridDiscoveryClient.getHostinCenter(epr);
@@ -141,15 +142,33 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         }
     }
     
+    private static void clearServices() {
+        gridPreprocessServices.clear();
+        gridCmsServices.clear();
+        gridPcaServices.clear();
+    }
+    
     private static void setDefaultServices() {
+        setDefaultPreprocessService();
+        setDefaultCmsService();
+        setDefaultPcaService();
+    }
+    
+    private static void setDefaultPreprocessService() {
         if (gridPreprocessServices.isEmpty()) {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.PREPROCESS_DATASET_URL);
             gridPreprocessServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
         }
+    }
+    
+    private static void setDefaultCmsService() {
         if (gridCmsServices.isEmpty()) {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.COMPARATIVE_MARKER_SELECTION_URL);
             gridCmsServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
         }
+    }
+    
+    private static void setDefaultPcaService() {
         if (gridPcaServices.isEmpty()) {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.PCA_URL);
             gridPcaServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
@@ -179,6 +198,9 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      * @return the gridPreprocessServices
      */
     public static Map<String, String> getGridPreprocessServices() {
+        if (gridPreprocessServices.isEmpty()) {
+            setDefaultPreprocessService();
+        }
         return gridPreprocessServices;
     }
 
@@ -186,6 +208,9 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      * @return the gridCmsServices
      */
     public static Map<String, String> getGridCmsServices() {
+        if (gridCmsServices.isEmpty()) {
+            setDefaultCmsService();
+        }
         return gridCmsServices;
     }
 
@@ -193,6 +218,9 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
      * @return the gridPcaServices
      */
     public static Map<String, String> getGridPcaServices() {
+        if (gridPcaServices.isEmpty()) {
+            setDefaultPcaService();
+        }
         return gridPcaServices;
     }
 
