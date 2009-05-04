@@ -1,8 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type='text/javascript' src='dwr/interface/GenePatternAjaxUpdater.js'></script>
-<script type='text/javascript' src='dwr/interface/ComparativeMarkerSelectionAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/interface/PersistedAnalysisJobAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
@@ -13,8 +12,7 @@
 
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
-        GenePatternAjaxUpdater.initializeJsp();
-        ComparativeMarkerSelectionAjaxUpdater.initializeJsp();
+        PersistedAnalysisJobAjaxUpdater.initializeJsp();
     }
     
     </script>
@@ -40,25 +38,17 @@
         </td>
         </tr></table></s:form>
     <br><br>
-            
     <table class="data">
         <tr>
-            <th> GenePattern Job Name </th>
-            <th> Status </th>
-            <th> Creation Date </th>
-        </tr>
-        <tbody id="genePatternStatusTable" />
-    </table>
-    <br><br>
-    <table class="data">
-        <tr>
-            <th> Comparative Marker Selection Job Name </th>
+            <th> Job Name </th>
+            <th> Job Type </th>
             <th> Status </th>
             <th> Creation Date </th>
             <th> Status Update Date </th>
         </tr>
-        <tbody id="comparativeMarkerSelectionStatusTable" />
+        <tbody id="analysisJobStatusTable" />
     </table>
 </div>
 
 <div class="clear"><br /></div>
+

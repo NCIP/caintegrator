@@ -86,8 +86,7 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 
 import java.util.HashMap;
@@ -101,8 +100,7 @@ import org.directwebremoting.proxy.dwr.Util;
  */
 public class DwrUtilFactory {
 
-    private final Map <String, Util> gpAnalysisUsernameUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> cmsAnalysisUsernameUtilityMap = new HashMap<String, Util>();
+    private final Map <String, Util> analysisUsernameUtilityMap = new HashMap<String, Util>();
     private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
     
     /**
@@ -111,11 +109,8 @@ public class DwrUtilFactory {
      * @return - DWR Util.
      */
     public Util retrieveDwrUtil(PersistedJob job) {
-        if (job instanceof GenePatternAnalysisJob) {
-            return gpAnalysisUsernameUtilityMap.get(getUsername(job));
-        }
-        if (job instanceof ComparativeMarkerSelectionAnalysisJob) {
-            return cmsAnalysisUsernameUtilityMap.get(getUsername(job));
+        if (job instanceof AbstractPersistedAnalysisJob) {
+            return analysisUsernameUtilityMap.get(getUsername(job));
         }
         if (job instanceof StudyConfiguration) {
             return studyConfigurationUtilityMap.get(getUsername(job));
@@ -124,22 +119,14 @@ public class DwrUtilFactory {
     }
     
     /**
-     * Associates a username with a session for the <code>GenePatternAnalysisJob</code>. 
+     * Associates a username with a session for the <code>AbstractPersistedAnalysisJob</code>. 
      * @param username for current user.
      * @param util dwr object.
      */
-    public void associateGenePatternJobWithSession(String username, Util util) {
-        gpAnalysisUsernameUtilityMap.put(username, util);
+    public void associateAnalysisJobWithSession(String username, Util util) {
+        analysisUsernameUtilityMap.put(username, util);
     }
     
-    /**
-     * Associates a username with a session for the <code>ComparativeMarkerSelectionAnalysisJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateComparativeMarkerSelectionJobWithSession(String username, Util util) {
-        cmsAnalysisUsernameUtilityMap.put(username, util);
-    }
     
     /**
      * Associates a username with a session for the <code>StudyDeploymentJob</code>. 

@@ -85,15 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
-import java.util.HashSet;
-
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+
+import java.util.HashSet;
 
 /**
  * Stubbed implementation of WorkspaceService for testing.
@@ -107,8 +106,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public boolean saveUserWorspaceCalled;
     public boolean refreshAnnotationDefinitionsCalled;
     public boolean createDisplayableStudySummaryCalled;
-    public boolean saveGenePatternAnalysisJobCalled;
-    public boolean saveComparativeMarkerSelectionAnalysisJobCalled;
+    public boolean savePersistedAnalysisJobCalled;
     
     public void clear() {
         subscribeCalled = false;
@@ -116,8 +114,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         saveUserWorspaceCalled = false;
         refreshAnnotationDefinitionsCalled = false;
         createDisplayableStudySummaryCalled = false;
-        saveGenePatternAnalysisJobCalled = false;
-        saveComparativeMarkerSelectionAnalysisJobCalled= false;
+        savePersistedAnalysisJobCalled = false;
         unSubscribeAllCalled = false;
     }
     public UserWorkspace getWorkspace() {
@@ -173,13 +170,11 @@ public class WorkspaceServiceStub implements WorkspaceService {
         return new DisplayableStudySummary(study);
     }
 
-    public void saveGenePatternAnalysisJob(GenePatternAnalysisJob job) {
-        saveGenePatternAnalysisJobCalled = true;
+
+    public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
+        savePersistedAnalysisJobCalled = true;
     }
 
-    public void saveComparativeMarkerSelectionAnalysisJob(ComparativeMarkerSelectionAnalysisJob job) {
-        saveComparativeMarkerSelectionAnalysisJobCalled = true;
-    }
 
 
 }

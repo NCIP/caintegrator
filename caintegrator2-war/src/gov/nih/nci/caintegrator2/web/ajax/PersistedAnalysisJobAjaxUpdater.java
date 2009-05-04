@@ -86,8 +86,11 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import java.util.ArrayList;
@@ -100,16 +103,17 @@ import org.directwebremoting.proxy.dwr.Util;
 /**
  * This is an object which is turned into an AJAX javascript file using the DWR framework.  
  */
-public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdater
-    implements IComparativeMarkerSelectionAjaxUpdater {
+public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
+    implements IPersistedAnalysisJobAjaxUpdater {
     
     private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
-    private static final String STATUS_TABLE = "comparativeMarkerSelectionStatusTable";
-    private static final String JOB_NAME = "cmsJobName_";
-    private static final String JOB_STATUS = "cmsJobStatus_";
-    private static final String JOB_CREATION_DATE = "cmsJobCreationDate_";
-    private static final String JOB_LAST_UPDATE_DATE = "cmsJobLastUpdateDate_";
-    private static final String JOB_URL = "cmsJobUrl_";
+    private static final String STATUS_TABLE = "analysisJobStatusTable";
+    private static final String JOB_NAME = "jobName_";
+    private static final String JOB_TYPE = "jobType_";
+    private static final String JOB_STATUS = "jobStatus_";
+    private static final String JOB_CREATION_DATE = "jobCreationDate_";
+    private static final String JOB_LAST_UPDATE_DATE = "jobLastUpdateDate_";
+    private static final String JOB_URL = "jobUrl_";
     private AnalysisService analysisService;
 
     /**
@@ -117,10 +121,10 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
      */
     protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
         int counter = 0;
-        List <ComparativeMarkerSelectionAnalysisJob> jobList = new ArrayList<ComparativeMarkerSelectionAnalysisJob>();
-        jobList.addAll(workspace.getCurrentStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection());
+        List <AbstractPersistedAnalysisJob> jobList = new ArrayList<AbstractPersistedAnalysisJob>();
+        jobList.addAll(workspace.getCurrentStudySubscription().getAnalysisJobCollection());
         Collections.sort(jobList);
-        for (ComparativeMarkerSelectionAnalysisJob job : jobList) {
+        for (AbstractPersistedAnalysisJob job : jobList) {
             retrieveDwrUtility(job).addRows(STATUS_TABLE, 
                                             createRow(job), 
                                             retrieveRowOptions(counter));
@@ -134,27 +138,41 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
      */
     @Override
     protected void associateJobWithSession(DwrUtilFactory dwrUtilFactory, String username, Util util) {
-        dwrUtilFactory.associateComparativeMarkerSelectionJobWithSession(username, util);
+        dwrUtilFactory.associateAnalysisJobWithSession(username, util);
     }
 
-    private String[][] createRow(ComparativeMarkerSelectionAnalysisJob job) {
-        String[][] rowString = new String[1][4];
+    private String[][] createRow(AbstractPersistedAnalysisJob job) {
+        String[][] rowString = new String[1][5];
         String id = job.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_NAME + id + endSpan;
-        rowString[0][1] = startSpan + JOB_STATUS + id + endSpan
+        rowString[0][1] = startSpan + JOB_TYPE + id + endSpan;
+        rowString[0][2] = startSpan + JOB_STATUS + id + endSpan
                             + startSpan + JOB_URL + id + endSpan;
-        rowString[0][2] = startSpan + JOB_CREATION_DATE + id + endSpan;
-        rowString[0][3] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
+        rowString[0][3] = startSpan + JOB_CREATION_DATE + id + endSpan;
+        rowString[0][4] = startSpan + JOB_LAST_UPDATE_DATE + id + endSpan;
         return rowString;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void runJob(ComparativeMarkerSelectionAnalysisJob job) {
-        Thread jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this, job));
+    public void runJob(AbstractPersistedAnalysisJob job) {
+        Thread jobRunner = null;
+        switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
+        case CMS:
+            jobRunner = new Thread(new ComparativeMarkerSelectionAjaxRunner(this, 
+                    (ComparativeMarkerSelectionAnalysisJob) job));
+            break;
+        case GENE_PATTERN:
+            jobRunner = new Thread(new GenePatternAjaxRunner(this, (GenePatternAnalysisJob) job));
+            break;
+        case PCA:
+            break;
+        default:
+            throw new IllegalStateException("Job type doesn't have an associated Runner");
+        }
         jobRunner.start();
     }
     
@@ -163,7 +181,7 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
      * @param errorMessage .
      * @param job to associate JSP script session to.
      */
-    public void addError(String errorMessage, ComparativeMarkerSelectionAnalysisJob job) {
+    public void addError(String errorMessage, AbstractPersistedAnalysisJob job) {
         retrieveDwrUtility(job).setValue("errors", errorMessage);
     }
     
@@ -171,9 +189,9 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
      * Saves job to database, then updates the status to JSP.
      * @param job to save and update.
      */
-    public void saveAndUpdateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
+    public void saveAndUpdateJobStatus(AbstractPersistedAnalysisJob job) {
         job.setLastUpdateDate(new Date());
-        getWorkspaceService().saveComparativeMarkerSelectionAnalysisJob(job);
+        getWorkspaceService().savePersistedAnalysisJob(job);
         updateJobStatus(job);
     }
 
@@ -181,10 +199,11 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
      * Updates job status.
      * @param job to update.
      */
-    public void updateJobStatus(ComparativeMarkerSelectionAnalysisJob job) {
+    public void updateJobStatus(AbstractPersistedAnalysisJob job) {
         Util utilThis = retrieveDwrUtility(job);
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
+        utilThis.setValue(JOB_TYPE + jobId, job.getJobType());
         utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));
@@ -193,10 +212,30 @@ public class ComparativeMarkerSelectionAjaxUpdater extends AbstractDwrAjaxUpdate
                 getDateString(job.getLastUpdateDate()));
         }
         if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
+            addJobUrl(utilThis, job);
+        }
+    }
+
+    private void addJobUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
+        String jobId = job.getId().toString();
+        switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
+        case CMS:
             utilThis.setValue(JOB_URL + jobId, 
                     " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">View</a>",
                     false);
+            break;
+        case GENE_PATTERN:
+            GenePatternAnalysisJob gpJob = (GenePatternAnalysisJob) job;
+            utilThis.setValue(JOB_URL + jobId, 
+                    " - <a href=\"" + gpJob.getJobUrl() + "\" target=\"_\">View " 
+                        + gpJob.getGpJobNumber() + "</a>", false);
+            break;
+        case PCA:
+            break;
+        default:
+            throw new IllegalStateException("Job type doesn't have an associated Runner");
         }
+        
     }
     
     private String getStatusMessage(AnalysisJobStatusEnum jobStatus) {

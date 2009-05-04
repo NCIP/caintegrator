@@ -369,7 +369,7 @@
             <ref local="workspaceService"/>
         </property>
         <property name="ajaxUpdater">
-            <ref local="genePatternAjaxUpdater"/>
+            <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
     </bean>   
     
@@ -386,7 +386,7 @@
             <ref local="workspaceService"/>
         </property>
         <property name="ajaxUpdater">
-            <ref local="comparativeMarkerSelectionAjaxUpdater"/>
+            <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
     </bean>
     
@@ -524,22 +524,8 @@
         <aop:scoped-proxy proxy-target-class="false" />
     </bean>
     
-    <bean id="genePatternAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.GenePatternAjaxUpdater">
-        <dwr:remote javascript="GenePatternAjaxUpdater" />
-        <property name="workspaceService">
-          <ref local="workspaceService"/>
-        </property>
-        <property name="analysisService">
-          <ref local="analysisService"/>
-        </property>
-        <property name="dwrUtilFactory">
-            <ref local="dwrUtilFactory"/>
-        </property>
-        <aop:scoped-proxy proxy-target-class="false" />
-    </bean>
-    
-    <bean id="comparativeMarkerSelectionAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.ComparativeMarkerSelectionAjaxUpdater">
-        <dwr:remote javascript="ComparativeMarkerSelectionAjaxUpdater" />
+    <bean id="persistedAnalysisJobAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater">
+        <dwr:remote javascript="PersistedAnalysisJobAjaxUpdater" />
         <property name="workspaceService">
           <ref local="workspaceService"/>
         </property>

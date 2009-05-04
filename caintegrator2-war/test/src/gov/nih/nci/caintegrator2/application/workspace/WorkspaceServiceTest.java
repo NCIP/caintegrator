@@ -92,7 +92,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -193,16 +192,11 @@ public class WorkspaceServiceTest {
     }
     
     @Test
-    public void testSaveGenePatternAnalysisJob() {
-        workspaceService.saveGenePatternAnalysisJob(new GenePatternAnalysisJob());
+    public void testSavePersistedAnalysisJob() {
+        workspaceService.savePersistedAnalysisJob(new GenePatternAnalysisJob());
         assertTrue(daoStub.saveCalled);
     }
     
-    @Test
-    public void testSaveComparativeMarkerSelectionAnalysisJob() {
-        workspaceService.saveComparativeMarkerSelectionAnalysisJob(new ComparativeMarkerSelectionAnalysisJob());
-        assertTrue(daoStub.saveCalled);
-    }
     
     private final class DaoStubNoWorkspace extends CaIntegrator2DaoStub {
         

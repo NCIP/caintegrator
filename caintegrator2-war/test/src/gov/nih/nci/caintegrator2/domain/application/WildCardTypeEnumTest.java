@@ -83,83 +83,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.domain.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import static org.junit.Assert.assertNull;
 
-import java.util.HashMap;
-
-import org.acegisecurity.context.SecurityContextHolder;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
+public class WildCardTypeEnumTest {
 
-public class ComparativeMarkerSelectionAnalysisResultsActionTest {
-    
-    private ComparativeMarkerSelectionAnalysisResultsAction action;
-
-    @Before
-    public void setUp() {
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        StudySubscription subscription = new StudySubscription();
-        Study study = new Study();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyConfiguration.setStatus(Status.DEPLOYED);
-        study.setStudyConfiguration(studyConfiguration);
-        subscription.setStudy(study);
-        ComparativeMarkerSelectionAnalysisJob job = new ComparativeMarkerSelectionAnalysisJob();
-        job.setId(1L);
-        subscription.getAnalysisJobCollection().add(job);
-        job = new ComparativeMarkerSelectionAnalysisJob();
-        job.setId(2L);
-        subscription.getAnalysisJobCollection().add(job);
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
-        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
-        action = new ComparativeMarkerSelectionAnalysisResultsAction();
-        action.setWorkspaceService(new WorkspaceServiceStub());
+    @Test
+    public void testGetByValue() {
+        assertEquals(WildCardTypeEnum.NOT_EQUAL_TO, WildCardTypeEnum.getByValue("notEqualTo"));
+        assertNull(WildCardTypeEnum.getByValue(null));
     }
     
-    @Test
-    public void testValidate() {
-        action.validate();
-        assertTrue(action.hasErrors());
-        action.clearErrorsAndMessages();
-        action.setJobId(1L);
-        action.validate();
-        assertFalse(action.hasErrors());
-    }
-        
-    @Test
-    public void testExecute() {
-        
-        assertEquals(50, action.getPageSize());
-        action.setPageSize(100);
-        assertEquals(50, action.getPageSize());
-        
-        action.setJobId(3L);
-        assertEquals("success", action.execute());
-        assertTrue(action.hasErrors());
-        action.clearErrorsAndMessages();
-        action.setJobId(2L);
-        assertEquals("success", action.execute());
-        assertFalse(action.hasErrors());
-        assertEquals("success", action.execute());
-        assertFalse(action.hasErrors());
-
-        action.setPageSize(100);
-        assertEquals(100, action.getPageSize());
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        WildCardTypeEnum.checkType("no match");
     }
 
 }

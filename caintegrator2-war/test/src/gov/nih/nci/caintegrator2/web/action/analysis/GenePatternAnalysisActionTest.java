@@ -104,7 +104,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.ajax.GenePatternAjaxUpdater;
+import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -138,7 +138,7 @@ public class GenePatternAnalysisActionTest {
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(new QueryManagementServiceStub());
         action.setWorkspaceService(new WorkspaceServiceStub());
-        action.setAjaxUpdater(new GenePatternAjaxUpdater());
+        action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
     }
     
     @Test

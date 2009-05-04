@@ -104,7 +104,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
-import gov.nih.nci.caintegrator2.web.ajax.ComparativeMarkerSelectionAjaxUpdater;
+import gov.nih.nci.caintegrator2.web.ajax.PersistedAnalysisJobAjaxUpdater;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -149,7 +149,7 @@ public class ComparativeMarkerSelectionAnalysisActionTest {
         action.setAnalysisService(new AnalysisServiceStub());
         action.setQueryManagementService(queryManagementService);
         action.setWorkspaceService(new WorkspaceServiceStub());
-        action.setAjaxUpdater(new ComparativeMarkerSelectionAjaxUpdater());
+        action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
     }
     
     @Test

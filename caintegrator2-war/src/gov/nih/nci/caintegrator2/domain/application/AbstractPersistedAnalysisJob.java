@@ -83,107 +83,125 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.domain.application;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
-
-import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import javax.servlet.ServletException;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class GenePatternAjaxUpdaterTest {
-
-    private GenePatternAjaxUpdater updater;
-    private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceGPJobStub workspaceService;
-    private AnalysisServiceStub analysisService;
-    private GenePatternAnalysisJob job;
-
-    @Before
-    public void setUp() throws Exception {
-        updater = new GenePatternAjaxUpdater();
-        dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceGPJobStub();
-        analysisService = new AnalysisServiceStub();
-        analysisService.clear();
-        workspaceService.clear();
-        updater.setWorkspaceService(workspaceService);
-        updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setAnalysisService(analysisService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        job = new GenePatternAnalysisJob();
-        job.setName("Job");
-        job.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        job.setCreationDate(new Date());
-        job.setId(Long.valueOf(1));
+/**
+ * 
+ */
+public class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
+    implements PersistedJob, Comparable<AbstractPersistedAnalysisJob> {
+    
+    private String name;
+    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
+    private Date creationDate;
+    private Date lastUpdateDate;
+    private String jobType;
+    private StudySubscription subscription;
+    
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 
-    @Test
-    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
-        updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(job));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new GenePatternAnalysisJob()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the status
+     */
+    public AnalysisJobStatusEnum getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(AnalysisJobStatusEnum status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * @return the lastUpdateDate
+     */
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    /**
+     * @param lastUpdateDate the lastUpdateDate to set
+     */
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    /**
+     * @return the subscription
+     */
+    public StudySubscription getSubscription() {
+        return subscription;
+    }
+
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(StudySubscription subscription) {
+        this.subscription = subscription;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserWorkspace getUserWorkspace() {
+        if (getSubscription() != null) {
+            return getSubscription().getUserWorkspace();
+        }
+        return null;
     }
     
-    @Test
-    public void testRunJob() throws InterruptedException {
-        updater.runJob(job);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus()));
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(AbstractPersistedAnalysisJob o) {
+        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
+    }
+
+    /**
+     * @return the jobType
+     */
+    public String getJobType() {
+        return jobType;
+    }
+
+    /**
+     * @param jobType the jobType to set
+     */
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
     }
     
-    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
-        @Override
-        public UserWorkspace getWorkspace() {
-            UserWorkspace workspace = new UserWorkspace();
-            workspace.setUsername("Test");
-            StudySubscription subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setUserWorkspace(workspace);
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            workspace.getSubscriptionCollection().add(subscription);
-            job.setSubscription(subscription);
-            subscription.getGenePatternAnalysisJobCollection().add(job);
-            GenePatternAnalysisJob job2 = new GenePatternAnalysisJob();
-            subscription.getGenePatternAnalysisJobCollection().add(job2);
-            job2.setSubscription(subscription);
-            job2.setCreationDate(new Date());
-            job2.setId(Long.valueOf(2));
-            job2.setName("Job2");
-            return workspace;
-        }
-    }
-    private final class PersistedJobStub implements PersistedJob {
-
-        public UserWorkspace getUserWorkspace() {
-            return null;
-        }
-        
-    }
-
 }

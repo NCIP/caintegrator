@@ -85,8 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
@@ -135,13 +134,7 @@ public interface WorkspaceService {
      * Saves the current changes.
      * @param job - object to be updated.
      */
-    void saveGenePatternAnalysisJob(GenePatternAnalysisJob job);
-    
-    /**
-     * Saves the current changes.
-     * @param job - object to be updated.
-     */
-    void saveComparativeMarkerSelectionAnalysisJob(ComparativeMarkerSelectionAnalysisJob job);
+    void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job);
     
     /**
      * Creates a <code> DisplayableStudySummary </code> from the given Study. 
