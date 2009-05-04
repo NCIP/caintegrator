@@ -539,6 +539,7 @@
     <target name="database:init-sql">
         <mkdir dir="${caintegrator2db.sql.target.dir}" />
         <copy todir="${caintegrator2db.sql.target.dir}">
+            <filterset refid="caintegrator2.filterset" />
             <fileset dir="${caintegrator2db.sql.src.dir}" includes="*.sql" />
         </copy>
     </target>
