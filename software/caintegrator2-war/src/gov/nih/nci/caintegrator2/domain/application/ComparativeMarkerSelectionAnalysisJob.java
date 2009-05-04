@@ -85,52 +85,37 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Object representing a single gene pattern analysis job.
  */
-public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2Object 
-                                    implements PersistedJob, Comparable <ComparativeMarkerSelectionAnalysisJob> {
+public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnalysisJob {
 
     private static final long serialVersionUID = 1L;
     
     private final transient ComparativeMarkerSelectionAnalysisForm comparativeMarkerSelectionAnalysisForm
         = new ComparativeMarkerSelectionAnalysisForm();
-    private String name;
-    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
     private String preprocessDataSetUrl;
     private String comparativeMarkerSelectionUrl;
-    private Date creationDate;
-    private Date lastUpdateDate;
-    private StudySubscription subscription;
     private List<MarkerResult> results = new ArrayList<MarkerResult>();
+    
+    /**
+     * Default Constructor.
+     */
+    public ComparativeMarkerSelectionAnalysisJob() {
+        this.setJobType(AnalysisJobTypeEnum.CMS.getValue());
+    }
 
     /**
      * @return the analysisForm
      */
     public ComparativeMarkerSelectionAnalysisForm getComparativeMarkerSelectionAnalysisForm() {
         return comparativeMarkerSelectionAnalysisForm;
-    }
-    
-    /**
-     * @return the status
-     */
-    public AnalysisJobStatusEnum getStatus() {
-        return status;
-    }
-    
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(AnalysisJobStatusEnum status) {
-        this.status = status;
     }
 
     /**
@@ -162,55 +147,6 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2
     }
 
     /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the creationDate
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
-     * @param creationDate the creationDate to set
-     */
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /**
-     * @return the subscription
-     */
-    public StudySubscription getSubscription() {
-        return subscription;
-    }
-
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(ComparativeMarkerSelectionAnalysisJob o) {
-        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
-    }
-
-    /**
      * @return the results
      */
     public List<MarkerResult> getResults() {
@@ -225,27 +161,4 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractCaIntegrator2
         this.results = results;
     }
 
-    /**
-     * @return the lastUpdateDate
-     */
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    /**
-     * @param lastUpdateDate the lastUpdateDate to set
-     */
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public UserWorkspace getUserWorkspace() {
-        if (getSubscription() != null) {
-            return getSubscription().getUserWorkspace();
-        }
-        return null;
-    }
 }

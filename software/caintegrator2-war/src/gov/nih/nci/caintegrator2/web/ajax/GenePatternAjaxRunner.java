@@ -95,10 +95,10 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
  * need to eventually add a function to process the job remotely and update the status on GenePattern side.
  */
 public class GenePatternAjaxRunner implements Runnable {
-    private final GenePatternAjaxUpdater updater;
+    private final PersistedAnalysisJobAjaxUpdater updater;
     private final GenePatternAnalysisJob job;
     
-    GenePatternAjaxRunner(GenePatternAjaxUpdater updater, GenePatternAnalysisJob job) {
+    GenePatternAjaxRunner(PersistedAnalysisJobAjaxUpdater updater, GenePatternAnalysisJob job) {
         this.updater = updater;
         this.job = job;
     }
@@ -108,7 +108,7 @@ public class GenePatternAjaxRunner implements Runnable {
      */
     public void run() {
         job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
-        updater.updateJobStatus(job);
+        updater.saveAndUpdateJobStatus(job);
         try {
             processLocally();
         } catch (GenePatternServiceException e) {
@@ -122,7 +122,7 @@ public class GenePatternAjaxRunner implements Runnable {
         job.setJobUrl(jobInfo.getUrl().toExternalForm());
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         job.setGpJobNumber(jobInfo.getJobInfo().getJobNumber());
-        updater.updateJobStatus(job);
+        updater.saveAndUpdateJobStatus(job);
         return jobInfo;
     }
 

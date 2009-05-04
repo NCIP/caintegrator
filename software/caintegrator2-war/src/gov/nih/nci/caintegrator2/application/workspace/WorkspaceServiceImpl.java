@@ -88,8 +88,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -157,15 +156,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     
     /**
      * {@inheritDoc}
-     */
-    public void saveGenePatternAnalysisJob(GenePatternAnalysisJob job) {
-        dao.save(job);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void saveComparativeMarkerSelectionAnalysisJob(ComparativeMarkerSelectionAnalysisJob job) {
+     */    
+    public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
         if (job.getId() == null) {
             dao.save(job);
         } else {

@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
@@ -123,9 +125,14 @@ public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDe
     }
     
     private void loadJob() {
-        for (ComparativeMarkerSelectionAnalysisJob cmsJob
-                : getStudySubscription().getComparativeMarkerSelectionAnalysisJobCollection()) {
-            if (jobId.compareTo(cmsJob.getId()) == 0) {
+        for (AbstractPersistedAnalysisJob job
+                : getStudySubscription().getAnalysisJobCollection()) {
+            if (jobId.compareTo(job.getId()) == 0) {
+                if (!AnalysisJobTypeEnum.CMS.getValue().equals(job.getJobType())) {
+                    throw new IllegalStateException("Job Id " + jobId 
+                            + " isn't a Comparative Marker Selection job type");
+                }
+                ComparativeMarkerSelectionAnalysisJob cmsJob = (ComparativeMarkerSelectionAnalysisJob) job;
                 Cai2Util.loadCollection(cmsJob.getResults());
                 getDisplayableWorkspace().setCmsJobResult(
                         new DisplayableCmsJobResult(cmsJob));

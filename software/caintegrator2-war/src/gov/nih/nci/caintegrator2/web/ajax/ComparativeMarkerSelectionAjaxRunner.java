@@ -102,10 +102,10 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
     
     private static final Logger LOGGER = Logger.getLogger(ComparativeMarkerSelectionAjaxRunner.class);
     
-    private final ComparativeMarkerSelectionAjaxUpdater updater;
+    private final PersistedAnalysisJobAjaxUpdater updater;
     private final ComparativeMarkerSelectionAnalysisJob job;
     
-    ComparativeMarkerSelectionAjaxRunner(ComparativeMarkerSelectionAjaxUpdater updater,
+    ComparativeMarkerSelectionAjaxRunner(PersistedAnalysisJobAjaxUpdater updater,
             ComparativeMarkerSelectionAnalysisJob job) {
         this.updater = updater;
         this.job = job;

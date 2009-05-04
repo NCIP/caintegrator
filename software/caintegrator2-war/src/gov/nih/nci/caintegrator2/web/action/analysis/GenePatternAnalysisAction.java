@@ -96,7 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
-import gov.nih.nci.caintegrator2.web.ajax.IGenePatternAjaxUpdater;
+import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -145,7 +145,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
     private StudyManagementService studyManagementService;
-    private IGenePatternAjaxUpdater ajaxUpdater;
+    private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
     private String analysisMethodName;
 
@@ -293,7 +293,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         configureInvocationParameters();
         getCurrentGenePatternAnalysisJob().setCreationDate(new Date());
         getCurrentGenePatternAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        getStudySubscription().getGenePatternAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());
+        getStudySubscription().getAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());
         getCurrentGenePatternAnalysisJob().setSubscription(getStudySubscription());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         ajaxUpdater.runJob(getCurrentGenePatternAnalysisJob());
@@ -366,14 +366,14 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     /**
      * @return the ajaxUpdater
      */
-    public IGenePatternAjaxUpdater getAjaxUpdater() {
+    public IPersistedAnalysisJobAjaxUpdater getAjaxUpdater() {
         return ajaxUpdater;
     }
 
     /**
      * @param ajaxUpdater the ajaxUpdater to set
      */
-    public void setAjaxUpdater(IGenePatternAjaxUpdater ajaxUpdater) {
+    public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
     }
 
