@@ -385,6 +385,7 @@
             <result name="exportGenomicResults" type="temporaryDownloadFileResult">
                 <param name="fileName">genomicResults.csv</param>
                 <param name="contentType">text/plain</param>
+                <param name="deleteFile">true</param>
             </result>
         </action>
         
@@ -409,6 +410,9 @@
             </result>
             <result name="comparativeMarkerSelection" type="redirectAction">
                 <param name="actionName">comparativeMarkerSelectionAnalysis</param>
+            </result>
+            <result name="principalComponentAnalysis" type="redirectAction">
+                <param name="actionName">principalComponentAnalysis</param>
             </result>
             <result name="error" type="tiles">genePatternAnalysisStatus</result>
             <result name="input" type="tiles">genePatternAnalysisStatus</result>
@@ -439,6 +443,24 @@
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
             <result name="input" type="tiles">homepage</result>
+        </action>
+        
+        <action name="principalComponentAnalysis" class="principalComponentAnalysisAction">
+            <result type="tiles">principalComponentAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">principalComponentAnalysis</result>
+        </action>
+        
+        <action name="principalComponentAnalysisResults" class="principalComponentAnalysisResultsAction">
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
+            <result name="downloadResultFile" type="temporaryDownloadFileResult">
+                <param name="fileName">pcaResults.zip</param>
+                <param name="contentType">application/zip</param>
+                <param name="deleteFile">false</param>
+            </result>
         </action>
         
         <!-- Kaplan-Meier Actions -->

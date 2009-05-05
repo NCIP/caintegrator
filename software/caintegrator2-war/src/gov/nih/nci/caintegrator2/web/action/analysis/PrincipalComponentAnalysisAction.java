@@ -87,20 +87,15 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
-import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
-import gridextensions.ComparativeMarkerSelectionParameterSet;
-import gridextensions.PreprocessDatasetParameterSet;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -109,9 +104,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * 
+ * Action that deals with Principal Component Analysis.
  */
-public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedStudyAction {
+public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
 
@@ -155,7 +150,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     @Override
     public void validate() {
         super.validate();
-        validateStudyHasGenomicData("Comparative Marker Selection Analysis");
+        validateStudyHasGenomicData("Principal Component Analysis");
         
         if (EXECUTE_ACTION.equals(getSelectedAction())) {
             validateExecuteAnalysis();
@@ -163,11 +158,12 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
 
     private void validateExecuteAnalysis() {
-        if (StringUtils.isBlank(getCurrentComparativeMarkerSelectionAnalysisJob().getName())) {
-            addFieldError("currentComparativeMarkerSelectionAnalysisJob.name", "Job name required.");
+        if (StringUtils.isBlank(getCurrentPrincipalComponentAnalysisJob().getName())) {
+            addFieldError("currentPrincipalComponentAnalysisJob.name", "Job name required.");
         }
-        if (getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().size() != 2) {
-            addFieldError("comparativeMarkerSelectionAnalysisForm.unselectedQueryIDs", "2 Queries required.");
+        if (getPrincipalComponentAnalysisForm().getSelectedQueryIDs().isEmpty()) {
+            addFieldError("principalComponentAnalysisForm.unselectedQueryIDs", 
+                            "Must select at least one query.");
         }
     }
     
@@ -175,22 +171,21 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
      * @return
      */
     private String open() {
-        resetCurrentComparativeMarkerSelectionAnalysisJob();
+        resetCurrentPrincipalComponentAnalysisJob();
         loadDefaultValues();
         return SUCCESS;
     }
     
     private void loadDefaultValues() {
-        getComparativeMarkerSelectionAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
+        getPrincipalComponentAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
         
         addNonGenomicQueries();
-        getComparativeMarkerSelectionAnalysisForm().setPreprocessDatasetparameters(new PreprocessDatasetParameters());
-        getComparativeMarkerSelectionAnalysisForm().setComparativeMarkerSelectionParameters(
-                new ComparativeMarkerSelectionParameters());
+        getPrincipalComponentAnalysisForm().setPcaParameters(new PCAParameters());
 
-        String fileName = "CMS-" + System.currentTimeMillis();
-        getPreprocessDatasetParameters().setProcessedGctFilename(fileName + ".gct");
-        getComparativeMarkerSelectionParameters().setClassificationFileName(fileName + ".cls");
+        String fileName = "PCA-" + System.currentTimeMillis();
+        getPcaParameters().setGctFileName(fileName + ".gct");
+        getPcaParameters().setClassificationFileName(fileName + ".cls");
+        getPcaParameters().setClusterBy(getPcaParameters().getClusterByOptions().get(0));
     }
 
     private void addNonGenomicQueries() {
@@ -198,72 +193,43 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
                 : getStudySubscription().getQueryCollection()) {
             if (!ResultTypeEnum.GENOMIC.equals(query.getResultType()) 
                 && !Cai2Util.isCompoundCriterionGenomic(query.getCompoundCriterion())) {
-                getComparativeMarkerSelectionAnalysisForm().getUnselectedQueries().put(query.getId().toString(), query);
+                getPrincipalComponentAnalysisForm().getUnselectedQueries().put(query.getId().toString(), query);
             }
         }
     }
     
     private String executeAnalysis() {
-        if (!loadParameters()) {
-            return INPUT;
-        }
-        getCurrentComparativeMarkerSelectionAnalysisJob().setCreationDate(new Date());
-        getCurrentComparativeMarkerSelectionAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
+        loadParameters();
+        getCurrentPrincipalComponentAnalysisJob().setCreationDate(new Date());
+        getCurrentPrincipalComponentAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
         getStudySubscription().getAnalysisJobCollection()
-            .add(getCurrentComparativeMarkerSelectionAnalysisJob());
-        getCurrentComparativeMarkerSelectionAnalysisJob().setSubscription(getStudySubscription());
+            .add(getCurrentPrincipalComponentAnalysisJob());
+        getCurrentPrincipalComponentAnalysisJob().setSubscription(getStudySubscription());
         getWorkspaceService().saveUserWorkspace(getWorkspace());
-        ajaxUpdater.runJob(getCurrentComparativeMarkerSelectionAnalysisJob());
-        resetCurrentComparativeMarkerSelectionAnalysisJob();
+        ajaxUpdater.runJob(getCurrentPrincipalComponentAnalysisJob());
+        resetCurrentPrincipalComponentAnalysisJob();
         return STATUS_ACTION;
     }
     
-    private boolean loadParameters() {
+    private void loadParameters() {
         loadServers();
-        return loadQueries();
+        loadQueries();
     }
     
     private void loadServers() {
         ServerConnectionProfile server = new ServerConnectionProfile();
-        server.setUrl(getCurrentComparativeMarkerSelectionAnalysisJob().getPreprocessDataSetUrl());
-        getPreprocessDatasetParameters().setServer(server);
-        server = new ServerConnectionProfile();
-        server.setUrl(getCurrentComparativeMarkerSelectionAnalysisJob().getComparativeMarkerSelectionUrl());
-        getComparativeMarkerSelectionParameters().setServer(server);
+        server.setUrl(getCurrentPrincipalComponentAnalysisJob().getPcaUrl());
+        getPcaParameters().setServer(server);
     }
     
-    private boolean loadQueries() {
-        if (!getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().isEmpty()) {
-            getPreprocessDatasetParameters().getClinicalQueries().clear();
-            getComparativeMarkerSelectionParameters().getClinicalQueries().clear();
-            for (String id : getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs()) {
+    private void loadQueries() {
+        if (!getPrincipalComponentAnalysisForm().getSelectedQueryIDs().isEmpty()) {
+            getPcaParameters().getClinicalQueries().clear();
+            for (String id : getPrincipalComponentAnalysisForm().getSelectedQueryIDs()) {
                 Query currentQuery = getQuery(id);
-                if (!validateQuerySampleCount(currentQuery)) {
-                    return false;
-                }
-                getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
-                getComparativeMarkerSelectionParameters().getClinicalQueries().add(currentQuery);
+                getPcaParameters().getClinicalQueries().add(currentQuery);
             }
         }
-        return true;
-    }
-
-    private boolean validateQuerySampleCount(Query currentQuery) {
-        int numSamples = 0;
-        QueryResult results = queryManagementService.execute(currentQuery);
-        for (ResultRow row : results.getRowCollection()) {
-            if (!row.getSubjectAssignment().getSampleAcquisitionCollection().isEmpty()) {
-                numSamples++;
-            }
-            if (numSamples >= 2) {
-                break;
-            }
-        }
-        if (numSamples < 2) {
-            addActionError("Query " + currentQuery.getName() + " is invalid because it contains less than 2 samples.");
-            return false;
-        }
-        return true;
     }
     
     private Query getQuery(String id) {
@@ -333,45 +299,19 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         this.selectedAction = selectedAction;
     }
     
-    /**
-     * @return PreprocessDatasetParameters.
-     */
-    public PreprocessDatasetParameters getPreprocessDatasetParameters() {
-        return getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters();
-    }
 
     /**
-     * @return ComparativeMarkerSelectionParameters.
+     * 
+     * @return the pcaParameters.
      */
-    public ComparativeMarkerSelectionParameters getComparativeMarkerSelectionParameters() {
-        return getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters();
+    public PCAParameters getPcaParameters() {
+        return getPrincipalComponentAnalysisForm().getPcaParameters();
     }
     
     /**
-     * @return PreprocessDatasetParameters.
+     * @return available PCA services.
      */
-    public PreprocessDatasetParameterSet getPreprocessDatasetParameterSet() {
-        return getPreprocessDatasetParameters().getDatasetParameters();
-    }
-
-    /**
-     * @return ComparativeMarkerSelectionParameters.
-     */
-    public ComparativeMarkerSelectionParameterSet getComparativeMarkerSelectionParameterSet() {
-        return getComparativeMarkerSelectionParameters().getDatasetParameters();
-    }
-
-    /**
-     * @return available PreprocessDataset services.
-     */
-    public Map<String, String> getPreprocessDatasetServices() {
-        return GridDiscoveryServiceJob.getGridPreprocessServices();
-    }
-
-    /**
-     * @return available ComparativeMarkerSelection services.
-     */
-    public Map<String, String> getComparativeMarkerSelectionServices() {
-        return GridDiscoveryServiceJob.getGridCmsServices();
+    public Map<String, String> getPcaServices() {
+        return GridDiscoveryServiceJob.getGridPcaServices();
     }
 }

@@ -92,7 +92,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 /**
  * 
  */
-public class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
+public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
     implements PersistedJob, Comparable<AbstractPersistedAnalysisJob> {
     
     private String name;

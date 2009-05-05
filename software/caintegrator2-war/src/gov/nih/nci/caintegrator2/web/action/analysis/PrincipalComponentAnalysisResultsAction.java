@@ -83,99 +83,93 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.web.SessionHelper;
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts2.ServletActionContext;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 /**
- * Struts2 result type for downloading any temporary file, and
- * then deleting the file.
+ * Action that deals with downloading Principal Component Analysis results.
  */
-public class TemporaryDownloadFileResult implements Result {
-
+public class PrincipalComponentAnalysisResultsAction  extends AbstractDeployedStudyAction {
+    
     private static final long serialVersionUID = 1L;
-    private static final Integer BUFSIZE = 4096;
-    private String contentType;
-    private String fileName;
-    private boolean deleteFile = false;
+    
+    private static final String DOWNLOAD_RESULTS_FILE = "downloadResultFile";
+    
+    private StudyManagementService studyManagementService;
+    private PrincipalComponentAnalysisJob job = new PrincipalComponentAnalysisJob();
+    private Long jobId;
 
     /**
      * {@inheritDoc}
      */
-    public void execute(ActionInvocation invocation) throws IOException {
-        File tempFile = new File(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setTemporaryDownloadFile(null);
-        HttpServletResponse response = ServletActionContext.getResponse();
-        ServletOutputStream op = response.getOutputStream();
-        response.setContentType(contentType);
-        response.setContentLength((int) tempFile.length());
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\""); 
-        
-        byte[] bbuf = new byte[BUFSIZE];
-        DataInputStream in = new DataInputStream(new FileInputStream(tempFile));
-        int length;
-        while ((length = in.read(bbuf)) != -1) {
-            op.write(bbuf, 0, length);
-        }
-        in.close();
-        op.flush();
-        if (isDeleteFile()) {
-            tempFile.delete();
+    @Override
+    public void prepare() {
+        super.prepare();
+        job.setId(jobId);
+        setJob(studyManagementService.getRefreshedStudyEntity(getJob()));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (jobId == null) {
+            addActionError("No job id for Comparative Marker Selection specified.");
         }
     }
-
+    
     /**
-     * @return the contentType
+     * {@inheritDoc}
      */
-    public String getContentType() {
-        return contentType;
+    public String execute() {
+        if (job.getResultsZipFile() != null) {
+            getDisplayableWorkspace().setTemporaryDownloadFile(getJob().getResultsZipFile().getPath());
+            return DOWNLOAD_RESULTS_FILE;
+        }
+        addActionError("The job doesn't contain a results file");
+        return INPUT;
+    }
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
+    }
+    /**
+     * @return the job
+     */
+    public PrincipalComponentAnalysisJob getJob() {
+        return job;
+    }
+    /**
+     * @param job the job to set
+     */
+    public void setJob(PrincipalComponentAnalysisJob job) {
+        this.job = job;
+    }
+    /**
+     * @return the jobId
+     */
+    public Long getJobId() {
+        return jobId;
+    }
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
-    /**
-     * @param contentType the contentType to set
-     */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    /**
-     * @return the fileName
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * @param fileName the fileName to set
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * @return the deleteFile
-     */
-    public boolean isDeleteFile() {
-        return deleteFile;
-    }
-
-    /**
-     * @param deleteFile the deleteFile to set
-     */
-    public void setDeleteFile(boolean deleteFile) {
-        this.deleteFile = deleteFile;
-    }
+    
 }

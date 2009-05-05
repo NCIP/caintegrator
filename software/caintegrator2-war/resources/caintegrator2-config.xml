@@ -390,11 +390,39 @@
         </property>
     </bean>
     
+    <bean id="principalComponentAnalysisAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisAction">
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="ajaxUpdater">
+            <ref local="persistedAnalysisJobAjaxUpdater"/>
+        </property>
+    </bean>
+    
     <bean id="comparativeMarkerSelectionAnalysisResultsAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisResultsAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
+        </property>
+    </bean>
+    
+    <bean id="principalComponentAnalysisResultsAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisResultsAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+            <ref local="studyManagementService"/>
         </property>
     </bean>
     

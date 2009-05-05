@@ -97,7 +97,7 @@ import java.util.Map;
 /**
  * Used for Struts representation of the currently configured analysis method.
  */
-public class PCAAnalysisForm {
+public class PrincipalComponentAnalysisForm {
     
     private PCAParameters pcaParameters;
     
