@@ -597,9 +597,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    @Transactional(rollbackFor = {ConnectionException.class, IllegalStateException.class })
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ConnectionException {
-        studyConfiguration.getImageDataSources().add(imageSource);
         imageSource.setStudyConfiguration(studyConfiguration);
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
                     imageSource.getCollectionName(), imageSource.getServerProfile());
@@ -607,6 +607,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         for (ImageSeriesAcquisition acquisition : acquisitions) {
             acquisition.setImageDataSource(imageSource);
         }
+        studyConfiguration.getImageDataSources().add(imageSource);
         dao.save(studyConfiguration);
     }
 
