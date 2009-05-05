@@ -85,22 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.web.action.analysis.PCAAnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisForm;
 
 /**
  * Object representing a single gene pattern analysis job.
  */
-public class PCAAnalysisJob extends AbstractPersistedAnalysisJob {
+public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob {
 
     private static final long serialVersionUID = 1L;
     
-    private final transient PCAAnalysisForm form = new PCAAnalysisForm();
+    private final transient PrincipalComponentAnalysisForm form = new PrincipalComponentAnalysisForm();
     private ResultsZipFile resultsZipFile;
+    private String pcaUrl;
 
     /**
      * Default Constructor.
      */
-    public PCAAnalysisJob() {
+    public PrincipalComponentAnalysisJob() {
         this.setJobType(AnalysisJobTypeEnum.PCA.getValue());
     }
 
@@ -121,7 +122,21 @@ public class PCAAnalysisJob extends AbstractPersistedAnalysisJob {
     /**
      * @return the form
      */
-    public PCAAnalysisForm getForm() {
+    public PrincipalComponentAnalysisForm getForm() {
         return form;
+    }
+
+    /**
+     * @return the pcaUrl
+     */
+    public String getPcaUrl() {
+        return pcaUrl;
+    }
+
+    /**
+     * @param pcaUrl the pcaUrl to set
+     */
+    public void setPcaUrl(String pcaUrl) {
+        this.pcaUrl = pcaUrl;
     }
 }

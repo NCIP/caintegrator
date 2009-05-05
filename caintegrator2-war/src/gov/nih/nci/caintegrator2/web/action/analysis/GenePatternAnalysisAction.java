@@ -89,7 +89,6 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -144,7 +143,6 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
-    private StudyManagementService studyManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
     private String analysisMethodName;
@@ -375,20 +373,6 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
-    }
-
-    /**
-     * @return the studyManagementService
-     */
-    public StudyManagementService getStudyManagementService() {
-        return studyManagementService;
-    }
-
-    /**
-     * @param studyManagementService the studyManagementService to set
-     */
-    public void setStudyManagementService(StudyManagementService studyManagementService) {
-        this.studyManagementService = studyManagementService;
     }
 
 }

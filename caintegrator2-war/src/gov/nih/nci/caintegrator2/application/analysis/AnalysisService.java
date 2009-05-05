@@ -85,12 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import java.io.File;
 import java.util.List;
 
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -136,6 +138,15 @@ public interface AnalysisService {
             PreprocessDatasetParameters preprocessParams,
             ComparativeMarkerSelectionParameters comparativeMarkerParams) 
             throws ConnectionException;
+    
+    /**
+     * Executes Principal Component Analysis grid service and returns back the results files.
+     * @param studySubscription current study subscription.
+     * @param parameters for PCA.
+     * @return results file.
+     * @throws ConnectionException if unable to connect to grid.
+     */
+    File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException;
     
     /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.

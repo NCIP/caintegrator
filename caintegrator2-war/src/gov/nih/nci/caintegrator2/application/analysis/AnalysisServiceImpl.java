@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEP
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
@@ -104,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -161,6 +163,14 @@ public class AnalysisServiceImpl implements AnalysisService {
         throws ConnectionException {
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(
                             studySubscription, preprocessParams, comparativeMarkerParams);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) 
+        throws ConnectionException {
+        return genePatternGridRunner.runPCA(studySubscription, parameters);
     }
 
     /**

@@ -83,99 +83,62 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts2.ServletActionContext;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
+import org.apache.log4j.Logger;
 
 /**
- * Struts2 result type for downloading any temporary file, and
- * then deleting the file.
+ * Asynchronous thread that runs PCA Grid based jobs and updates the status of those jobs.  
  */
-public class TemporaryDownloadFileResult implements Result {
-
-    private static final long serialVersionUID = 1L;
-    private static final Integer BUFSIZE = 4096;
-    private String contentType;
-    private String fileName;
-    private boolean deleteFile = false;
+public class PCAAjaxRunner implements Runnable {
+    
+    private static final Logger LOGGER = Logger.getLogger(PCAAjaxRunner.class);
+    
+    private final PersistedAnalysisJobAjaxUpdater updater;
+    private final PrincipalComponentAnalysisJob job;
+    
+    PCAAjaxRunner(PersistedAnalysisJobAjaxUpdater updater,
+            PrincipalComponentAnalysisJob job) {
+        this.updater = updater;
+        this.job = job;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void execute(ActionInvocation invocation) throws IOException {
-        File tempFile = new File(SessionHelper.getInstance().getDisplayableUserWorkspace().getTemporaryDownloadFile());
-        SessionHelper.getInstance().getDisplayableUserWorkspace().setTemporaryDownloadFile(null);
-        HttpServletResponse response = ServletActionContext.getResponse();
-        ServletOutputStream op = response.getOutputStream();
-        response.setContentType(contentType);
-        response.setContentLength((int) tempFile.length());
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\""); 
-        
-        byte[] bbuf = new byte[BUFSIZE];
-        DataInputStream in = new DataInputStream(new FileInputStream(tempFile));
-        int length;
-        while ((length = in.read(bbuf)) != -1) {
-            op.write(bbuf, 0, length);
-        }
-        in.close();
-        op.flush();
-        if (isDeleteFile()) {
-            tempFile.delete();
+    public void run() {
+        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
+        updater.saveAndUpdateJobStatus(job);
+        try {
+            processLocally();
+        } catch (ConnectionException e) {
+            String errorMessage = "Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
+            + " - " + e.getMessage();
+            updater.addError(errorMessage, job);
+            LOGGER.error(errorMessage);
+            job.setStatus(AnalysisJobStatusEnum.ERROR_CONNECTING);
+            updater.saveAndUpdateJobStatus(job);
         }
     }
 
-    /**
-     * @return the contentType
-     */
-    public String getContentType() {
-        return contentType;
+    private void processLocally() throws ConnectionException {
+        File resultFile = updater.getAnalysisService().executeGridPCA(
+                job.getSubscription(),
+                job.getForm().getPcaParameters());
+        job.setStatus(AnalysisJobStatusEnum.COMPLETED);
+        if (resultFile != null) {
+            ResultsZipFile resultZipFile = new ResultsZipFile();
+            resultZipFile.setPath(resultFile.getAbsolutePath());
+            job.setResultsZipFile(resultZipFile);
+        }
+        updater.saveAndUpdateJobStatus(job);
     }
 
-    /**
-     * @param contentType the contentType to set
-     */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    /**
-     * @return the fileName
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * @param fileName the fileName to set
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * @return the deleteFile
-     */
-    public boolean isDeleteFile() {
-        return deleteFile;
-    }
-
-    /**
-     * @param deleteFile the deleteFile to set
-     */
-    public void setDeleteFile(boolean deleteFile) {
-        this.deleteFile = deleteFile;
-    }
 }
