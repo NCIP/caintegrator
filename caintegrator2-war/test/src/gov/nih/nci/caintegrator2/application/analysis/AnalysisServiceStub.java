@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -98,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -172,6 +174,12 @@ public class AnalysisServiceStub implements AnalysisService {
             PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
             throws ConnectionException {
         executeComparativeMarkerSelectionJobCalled = true;
+        return null;
+    }
+
+    public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters)
+            throws ConnectionException {
+        
         return null;
     }
 

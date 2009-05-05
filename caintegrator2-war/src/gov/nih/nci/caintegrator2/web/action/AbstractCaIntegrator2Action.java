@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAn
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -100,6 +101,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionA
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
@@ -327,6 +329,18 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
     
     /**
+     * @return the analysisForm
+     */
+    public PrincipalComponentAnalysisForm getPrincipalComponentAnalysisForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentPrincipalComponentAnalysisJob().
+                getForm();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
      * @return the currentGenePatternAnalysisJob.
      */
     public GenePatternAnalysisJob getCurrentGenePatternAnalysisJob() {
@@ -364,6 +378,26 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         if (getDisplayableWorkspace() != null) {
             getDisplayableWorkspace().setCurrentComparativeMarkerSelectionAnalysisJob(
                                             new ComparativeMarkerSelectionAnalysisJob());
+        }
+    }
+    
+    /**
+     * @return the currentComparativePCAAnalysisJob.
+     */
+    public PrincipalComponentAnalysisJob getCurrentPrincipalComponentAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentPrincipalComponentAnalysisJob();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Resets the current PCA job.
+     */
+    protected void resetCurrentPrincipalComponentAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            getDisplayableWorkspace().setCurrentPrincipalComponentAnalysisJob(new PrincipalComponentAnalysisJob());
         }
     }
 

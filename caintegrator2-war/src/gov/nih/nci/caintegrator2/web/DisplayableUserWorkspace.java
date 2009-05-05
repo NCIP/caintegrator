@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -131,6 +132,7 @@ public class DisplayableUserWorkspace {
     private GenePatternAnalysisJob currentGenePatternAnalysisJob = new GenePatternAnalysisJob();
     private ComparativeMarkerSelectionAnalysisJob currentComparativeMarkerSelectionAnalysisJob
         = new ComparativeMarkerSelectionAnalysisJob();
+    private PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob = new PrincipalComponentAnalysisJob();
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
@@ -448,6 +450,21 @@ public class DisplayableUserWorkspace {
      */
     public void setTemporaryDownloadFile(String temporaryDownloadFile) {
         this.temporaryDownloadFile = temporaryDownloadFile;
+    }
+
+    /**
+     * @return the currentPrincipalComponentAnalysisJob
+     */
+    public PrincipalComponentAnalysisJob getCurrentPrincipalComponentAnalysisJob() {
+        return currentPrincipalComponentAnalysisJob;
+    }
+
+    /**
+     * @param currentPrincipalComponentAnalysisJob the currentPrincipalComponentAnalysisJob to set
+     */
+    public void setCurrentPrincipalComponentAnalysisJob(
+            PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob) {
+        this.currentPrincipalComponentAnalysisJob = currentPrincipalComponentAnalysisJob;
     }
 
 }
