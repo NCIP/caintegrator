@@ -110,10 +110,12 @@ public class DwrUtilFactory {
      */
     public Util retrieveDwrUtil(PersistedJob job) {
         if (job instanceof AbstractPersistedAnalysisJob) {
-            return analysisUsernameUtilityMap.get(getUsername(job));
+            return (analysisUsernameUtilityMap.get(getUsername(job)) == null)
+                    ? new Util() : analysisUsernameUtilityMap.get(getUsername(job));
         }
         if (job instanceof StudyConfiguration) {
-            return studyConfigurationUtilityMap.get(getUsername(job));
+            return (studyConfigurationUtilityMap.get(getUsername(job)) == null)
+                    ? new Util() : studyConfigurationUtilityMap.get(getUsername(job));
         }
         return new Util();
     }

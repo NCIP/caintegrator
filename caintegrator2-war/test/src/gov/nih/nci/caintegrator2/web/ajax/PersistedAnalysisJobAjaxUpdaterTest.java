@@ -157,7 +157,7 @@ public class PersistedAnalysisJobAjaxUpdaterTest {
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(cmsJob));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
     

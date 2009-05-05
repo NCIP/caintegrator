@@ -141,7 +141,7 @@ public class StudyDeploymentAjaxUpdaterTest {
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(studyConfiguration));
-        assertNull(dwrUtilFactory.retrieveDwrUtil(new StudyConfiguration()));
+        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new StudyConfiguration()));
         assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
     }
     
