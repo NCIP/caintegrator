@@ -105,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -131,7 +130,7 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     protected ArrayDataValues retrieveData() throws ConnectionException, DataRetrievalException {
         DataSet dataSet = dataRetrievalService.getDataSet(createRequest());
         if (dataSet.getHybridizationDataList().isEmpty()) {
-            return new ArrayDataValues(new ArrayList<AbstractReporter>());
+            throw new DataRetrievalException("No Chip signal available for this study");
         }
         Hybridization hybridization = dataSet.getHybridizationDataList().iterator().next().getHybridization();
         setPlatformHelper(new PlatformHelper(getPlatform(hybridization)));
