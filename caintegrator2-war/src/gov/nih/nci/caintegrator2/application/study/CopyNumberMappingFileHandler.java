@@ -151,7 +151,7 @@ class CopyNumberMappingFileHandler {
     }
 
     private File getFile() {
-        return genomicSource.getCopyNumberMappingFile().getFile();
+        return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
     private void loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 

@@ -130,7 +130,7 @@ class GenomicDataHelper {
                 arrayDataService.save(probeSetValues);
                 arrayDataService.save(geneValues);
             }
-            if (genomicSource.getCopyNumberMappingFile() != null) {
+            if (genomicSource.getCopyNumberDataConfiguration() != null) {
                 handleCopyNumberData(genomicSource);
             }
         }

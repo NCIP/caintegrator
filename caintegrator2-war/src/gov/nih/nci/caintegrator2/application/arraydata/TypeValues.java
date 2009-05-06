@@ -144,8 +144,11 @@ class TypeValues {
     }
 
     float getFloatValue(ArrayData arrayData, int reporterIndex) {
-        float[] values = (float[]) getValues(arrayData);
-        return values[reporterIndex];
+        return getFloatValues(arrayData)[reporterIndex];
+    }
+
+    float[] getFloatValues(ArrayData arrayData) {
+        return (float[]) getValues(arrayData);
     }
 
     Set<ArrayData> getArrayDatas() {

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Set;
 
@@ -95,7 +96,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
 
 public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGenerator<GenomicDataSourceConfiguration> {
 
-    public static final GenomicDataSourceConfigurationGenerator INSTANCE = new GenomicDataSourceConfigurationGenerator();
+    public static final AbstractTestDataGenerator<GenomicDataSourceConfiguration> INSTANCE = new GenomicDataSourceConfigurationGenerator();
 
     @Override
     public void compareFields(GenomicDataSourceConfiguration original, GenomicDataSourceConfiguration retrieved) {
@@ -106,7 +107,22 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         for (int i = 0; i < original.getSamples().size(); i++) {
             SampleGenerator.INSTANCE.compare(original.getSamples().get(i), retrieved.getSamples().get(i));
         }
-        assertEquals(original.getCopyNumberMappingFile().getPath(), retrieved.getCopyNumberMappingFile().getPath());
+        if (original.getCopyNumberDataConfiguration() == null) {
+            assertNull(retrieved.getCopyNumberDataConfiguration());
+        } else {
+            CopyNumberDataConfiguration originalConfig = original.getCopyNumberDataConfiguration();
+            CopyNumberDataConfiguration retrievedConfig = retrieved.getCopyNumberDataConfiguration();
+            assertEquals(originalConfig.getMappingFilePath(), retrievedConfig.getMappingFilePath());
+            assertEquals(originalConfig.getCalculateSegmentationData(), retrievedConfig.getCalculateSegmentationData());
+            assertEquals(originalConfig.getChangePointSignificanceLevel(), retrievedConfig.getChangePointSignificanceLevel());
+            assertEquals(originalConfig.getEarlyStoppingCriterion(), retrievedConfig.getEarlyStoppingCriterion());
+            assertEquals(originalConfig.getRandomNumberSeed(), retrievedConfig.getRandomNumberSeed());
+            if (originalConfig.getCaDNACopyService() == null) {
+                assertNull(retrievedConfig.getCaDNACopyService());
+            } else {
+                ServerConnectionProfileGenerator.INSTANCE.compare(originalConfig.getCaDNACopyService(), retrievedConfig.getCaDNACopyService());                
+            }
+        }
     }
 
     @Override
@@ -117,8 +133,15 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     @Override
     public void setValues(GenomicDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setExperimentIdentifier(getUniqueString());
-        config.setCopyNumberMappingFile(new CopyNumberMappingFile());
-        config.getCopyNumberMappingFile().setPath(getUniqueString());
+        CopyNumberDataConfiguration cnDataConfig = new CopyNumberDataConfiguration();
+        config.setCopyNumberDataConfiguration(cnDataConfig);
+        cnDataConfig.setMappingFilePath(getUniqueString());
+        cnDataConfig.setCalculateSegmentationData(getChangedBoolean(cnDataConfig.getCalculateSegmentationData()));
+        cnDataConfig.setChangePointSignificanceLevel(getUniqueDouble());
+        cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());
+        cnDataConfig.setPermutationReplicates(getUniqueInt());
+        cnDataConfig.setRandomNumberSeed(getUniqueInt());
+        ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getCaDNACopyService(), nonCascadedObjects);
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
         config.getSamples().clear();
         for (int i = 0; i < 3; i++) {
