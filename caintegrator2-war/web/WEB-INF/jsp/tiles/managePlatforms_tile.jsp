@@ -14,9 +14,9 @@
 <script type="text/javascript">
     function CheckPlatformVendor(vendor) {
         if (vendor != "Agilent") {
+            document.getElementById("platformName").value = " ";
             document.getElementById("platformName").disabled = true;
         } else {
-            document.getElementById("platformName").value = "";
             document.getElementById("platformName").disabled = false;
         }
     }
@@ -29,8 +29,9 @@
             <th colspan="2">
                 <s:select name="platformVendor" label="Vendor"
                     list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
-                    onchange="CheckPlatformVendor(this.form.platformVendor.value);" />
-                <s:textfield id="platformName" name="platformName" label="Platform Name (only needed for Agilent)" />
+                    value="Affymetrix" onchange="CheckPlatformVendor(this.form.platformVendor.value);" />
+                <s:textfield id="platformName" name="platformName" label="Platform Name (only needed for Agilent)"
+                    disabled="true" />
                 <s:file name="platformFile" label="Annotation File" />
                 <s:hidden name="selectedAction" value="addPlatform" />
                 <s:submit value="Add" align="center" />
@@ -53,10 +54,6 @@
         </s:iterator>
     </table>
 </s:form></div>
-    
-<script type="text/javascript">
-    CheckPlatformVendor(this.form.platformVendor.value);
-</script>
 
 <div class="clear"><br />
 </div>
