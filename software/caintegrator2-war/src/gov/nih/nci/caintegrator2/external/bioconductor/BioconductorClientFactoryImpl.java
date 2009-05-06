@@ -83,43 +83,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.external.bioconductor;
 
-import java.io.File;
-import java.io.Serializable;
+import java.rmi.RemoteException;
+
+import org.apache.axis.types.URI.MalformedURIException;
+import org.bioconductor.packages.caDNAcopy.client.CaDNAcopyClient;
+import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
 
 /**
- * Provides persistent access to a file that maps subjects to samples to copy number data files in caArray.
- * 
- * <p>The format of the file should be subject_id,sample_name,cnchp_filename on each line.
+ * Returns Bioconductor grid service instances.
  */
-public class CopyNumberMappingFile implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    
-    private String path;
+public class BioconductorClientFactoryImpl implements BioconductorClientFactory {
 
     /**
-     * @return the path
+     * {@inheritDoc}
      */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * @param path the path to set
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
-     * The file.
-     * 
-     * @return the file.
-     */
-    public File getFile() {
-        return new File(getPath());
+    public CaDNAcopyI getCaDNAcopyI(String url) throws MalformedURIException, RemoteException {
+        return new CaDNAcopyClient(url);
     }
 
 }

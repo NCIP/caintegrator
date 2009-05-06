@@ -241,6 +241,7 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
         }
     }
     
+    @SuppressWarnings("serial")
     private static class TransferServiceContextReferenceStub extends TransferServiceContextReference {
         
         @Override

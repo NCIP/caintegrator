@@ -37,8 +37,14 @@
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" />
         </list>
         
-        <component name="CopyNumberMappingFile">
-            <property name="path" column="COPY_NUMBER_MAPING_FILE_PATH" />
+        <component name="CopyNumberDataConfiguration">
+            <property name="mappingFilePath" type="string" column="COPY_NUMBER_MAPPING_FILE_PATH" />
+            <property name="calculateSegmentationData" type="boolean" column="COPY_NUMBER_CALCULATE_SEGMENTATION_DATA" />
+            <property name="changePointSignificanceLevel" type="double" column="COPY_NUMBER_CHANGE_POINT_SIGNIFICANCE_LEVEL" />
+            <property name="earlyStoppingCriterion" type="double" column="COPY_NUMBER_EARLY_STOPPING_CRITERION" />
+            <property name="permutationReplicates" type="integer" column="COPY_NUMBER_PERMUTATION_REPLICATES" />
+            <property name="randomNumberSeed" type="integer" column="COPY_NUMBER_RANDOM_NUMBER_SEED" />
+            <many-to-one name="caDNACopyService" cascade="all" column="COPY_NUMBER_CADNA_COPY_SERVICE_ID" />
         </component>
         
         

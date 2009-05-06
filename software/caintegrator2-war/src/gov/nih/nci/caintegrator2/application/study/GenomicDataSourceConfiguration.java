@@ -112,7 +112,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String controlSampleMappingCommaSeparatedFileNames;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
-    private CopyNumberMappingFile copyNumberMappingFile;
+    private CopyNumberDataConfiguration copyNumberDataConfiguration;
 
     /**
      * @return the experimentIdentifier
@@ -246,17 +246,17 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
-     * @return the copyNumberMappingFile
+     * @return the copyNumberDataConfiguration
      */
-    public CopyNumberMappingFile getCopyNumberMappingFile() {
-        return copyNumberMappingFile;
+    public CopyNumberDataConfiguration getCopyNumberDataConfiguration() {
+        return copyNumberDataConfiguration;
     }
 
     /**
-     * @param copyNumberMappingFile the copyNumberMappingFile to set
+     * @param copyNumberDataConfiguration the copyNumberDataConfiguration to set
      */
-    public void setCopyNumberMappingFile(CopyNumberMappingFile copyNumberMappingFile) {
-        this.copyNumberMappingFile = copyNumberMappingFile;
+    public void setCopyNumberDataConfiguration(CopyNumberDataConfiguration copyNumberDataConfiguration) {
+        this.copyNumberDataConfiguration = copyNumberDataConfiguration;
     }
     
     /**
@@ -341,9 +341,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return file name.
      */
     public String getCopyNumberMappingFileName() {
-        if (getCopyNumberMappingFile() != null 
-            && getCopyNumberMappingFile().getFile() != null) {
-            return getCopyNumberMappingFile().getFile().getName();
+        if (getCopyNumberDataConfiguration() != null 
+            && getCopyNumberDataConfiguration().getMappingFile() != null) {
+            return getCopyNumberDataConfiguration().getMappingFile().getName();
         }
         return "None Configured";
     }
