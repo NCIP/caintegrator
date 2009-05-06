@@ -85,122 +85,133 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.File;
+import java.io.Serializable;
 
 /**
- * Base class for test data generators. These provide support for creating test objects and comparing two test objects. These were
- * designed principally to test persistence, but may be applicable whenever test data is necessary. 
+ * Provides persistent access to a file that maps subjects to samples to copy number data files in caArray.
  * 
- * <p>Subclasses must provide implementations of:
- * 
- * <ul>
- *  <li><code>createPersistentObject</code>: create an instance of the class handled by the generator.</li>
- *  <li><code>setValues</code>: set a unique or changed set of values on all fields within the instance.</li>
- *  <li><code>compareFields</code>: compare all the fields between two instances asserting that they are equal..</li>
- * </ul>
+ * <p>The format of the file should be subject_id,sample_name,cnchp_filename on each line.
  */
-public abstract class AbstractTestDataGenerator<T> {
+public class CopyNumberDataConfiguration implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
-    private static int uniqueInt;
-    
-    public final void compare(T original, T retrieved) {
-        if (original == null) {
-            assertNull(retrieved);
-        } else {
-            assertEquals(original, retrieved);
-        }
-        if (getId(original) != null) {
-            assertEquals(getId(original), getId(retrieved));
-        }
-        compareFields(original, retrieved);
+    private String mappingFilePath;
+    private Boolean calculateSegmentationData;
+    private Double changePointSignificanceLevel;
+    private Double earlyStoppingCriterion;
+    private Integer permutationReplicates;
+    private Integer randomNumberSeed;
+    private ServerConnectionProfile caDNACopyService = new ServerConnectionProfile();
+
+    /**
+     * @return the mappingFilePath
+     */
+    public String getMappingFilePath() {
+        return mappingFilePath;
     }
 
-    public Long getId(T object) {
-        try {
-            return (Long) object.getClass().getMethod("getId").invoke(object);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Object doesn't have a getId method", e);
-        }
+    /**
+     * @param mappingFilePath the mappingFilePath to set
+     */
+    public void setMappingFilePath(String mappingFilePath) {
+        this.mappingFilePath = mappingFilePath;
     }
 
-    public abstract void compareFields(T original, T retrieved);
-
-    public abstract void setValues(T object, Set<AbstractCaIntegrator2Object> nonCascadedObjects);
-
-    public abstract T createPersistentObject();
-
-    public T createPopulatedPersistentObject(Set <AbstractCaIntegrator2Object> nonCascadedObjects) {
-        T object = createPersistentObject();
-        setValues(object, nonCascadedObjects);
-        return object;
+    /**
+     * The file.
+     * 
+     * @return the file.
+     */
+    public File getMappingFile() {
+        return new File(getMappingFilePath());
     }
 
-    protected String getUniqueString() {
-        return String.valueOf(getUniqueInt());
+    /**
+     * @return the calculateSegmentationData
+     */
+    public Boolean getCalculateSegmentationData() {
+        return calculateSegmentationData;
     }
 
-    protected String getUniqueString(int maxLength) {
-        String value = getUniqueString();
-        if (value.length() > maxLength) {
-            return value.substring(value.length() - maxLength);
-        } else {
-            return value;
-        }
+    /**
+     * @param calculateSegmentationData the calculateSegmentationData to set
+     */
+    public void setCalculateSegmentationData(Boolean calculateSegmentationData) {
+        this.calculateSegmentationData = calculateSegmentationData;
     }
 
-    protected int getUniqueInt() {
-        return uniqueInt++;
-    }
-    
-    protected float getUniqueFloat() {
-        return (float) getUniqueInt();
-    }
-
-    protected Character getUniqueChar() {
-        return (char) (getUniqueInt() % 255);
+    /**
+     * @return the changePointSignificanceLevel
+     */
+    public Double getChangePointSignificanceLevel() {
+        return changePointSignificanceLevel;
     }
 
-    @SuppressWarnings("hiding")
-    protected <T extends Enum<?>> T getNewEnumValue(T enumValue, T[] values) {
-        if (enumValue == null || enumValue.ordinal() == (values.length - 1)) {
-            return values[0];
-        } else {
-            return values[enumValue.ordinal() + 1];
-        }
+    /**
+     * @param changePointSignificanceLevel the changePointSignificanceLevel to set
+     */
+    public void setChangePointSignificanceLevel(Double changePointSignificanceLevel) {
+        this.changePointSignificanceLevel = changePointSignificanceLevel;
     }
 
-    @SuppressWarnings("hiding")
-    protected <T> void compareCollections(Collection<T> originalCollection, Collection<T> retrievedCollection, AbstractTestDataGenerator<T> generator) {
-        assertEquals(originalCollection.size(), retrievedCollection.size());
-        for (Iterator<T> retrievedIterator = retrievedCollection.iterator(); retrievedIterator.hasNext();) {
-            T retrieved = retrievedIterator.next();
-            T original = getOriginal(originalCollection, retrieved);
-            generator.compare(original, retrieved);
-        }
+    /**
+     * @return the earlyStoppingCriterion
+     */
+    public Double getEarlyStoppingCriterion() {
+        return earlyStoppingCriterion;
     }
 
-    @SuppressWarnings("hiding")
-    private <T> T getOriginal(Collection<T> originalCollection, T retrieved) {
-        for (T original : originalCollection) {
-            if (original.equals(retrieved)) {
-                return original;
-            }
-        }
-        return null;
+    /**
+     * @param earlyStoppingCriterion the earlyStoppingCriterion to set
+     */
+    public void setEarlyStoppingCriterion(Double earlyStoppingCriterion) {
+        this.earlyStoppingCriterion = earlyStoppingCriterion;
     }
 
-    protected Boolean getChangedBoolean(Boolean currentValue) {
-        return currentValue == null ? true : !currentValue;
+    /**
+     * @return the permutationReplicates
+     */
+    public Integer getPermutationReplicates() {
+        return permutationReplicates;
     }
 
-    protected double getUniqueDouble() {
-        return getUniqueFloat();
+    /**
+     * @param permutationReplicates the permutationReplicates to set
+     */
+    public void setPermutationReplicates(Integer permutationReplicates) {
+        this.permutationReplicates = permutationReplicates;
+    }
+
+    /**
+     * @return the randomNumberSeed
+     */
+    public Integer getRandomNumberSeed() {
+        return randomNumberSeed;
+    }
+
+    /**
+     * @param randomNumberSeed the randomNumberSeed to set
+     */
+    public void setRandomNumberSeed(Integer randomNumberSeed) {
+        this.randomNumberSeed = randomNumberSeed;
+    }
+
+    /**
+     * @return the caDNACopyService
+     */
+    public ServerConnectionProfile getCaDNACopyService() {
+        return caDNACopyService;
+    }
+
+    /**
+     * @param caDNACopyService the caDNACopyService to set
+     */
+    public void setCaDNACopyService(ServerConnectionProfile caDNACopyService) {
+        this.caDNACopyService = caDNACopyService;
     }
 
 }

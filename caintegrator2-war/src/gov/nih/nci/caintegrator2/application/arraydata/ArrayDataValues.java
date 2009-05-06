@@ -135,7 +135,7 @@ public class ArrayDataValues {
      * @param arrayData the array data the data value is associated to.
      * @param reporter the reporter the data value is associated to.
      * @param type the type of data
-     * @return the value to .
+     * @return the value.
      */
     public float getFloatValue(ArrayData arrayData, AbstractReporter reporter, ArrayDataValueType type) {
         return getFloatValue(arrayData, getReporterIndex(reporter), type);
@@ -147,12 +147,23 @@ public class ArrayDataValues {
      * @param arrayData the array data the data value is associated to.
      * @param reporterIndex the index of the reporter the data value is associated to.
      * @param type the type of data
-     * @return the value to .
+     * @return the value.
      */
     public float getFloatValue(ArrayData arrayData, int reporterIndex, ArrayDataValueType type) {
         return getTypeValues(type).getFloatValue(arrayData, reporterIndex);
     }
-    
+
+    /**
+     * Gets all data for an array / type combination.
+     * 
+     * @param arrayData the array data the data are associated to.
+     * @param type the type of data
+     * @return the values.
+     */
+    public float[] getFloatValues(ArrayData arrayData, ArrayDataValueType type) {
+        return getTypeValues(type).getFloatValues(arrayData);
+    }
+
     /**
      * Sets a single data point for a single reporter / array / type combination.
      * 

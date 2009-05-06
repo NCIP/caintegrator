@@ -38,8 +38,8 @@ public class CopyNumberMappingFileHandlerTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.getOrCreateSubjectAssignment("E09176");
         source.setStudyConfiguration(studyConfiguration);
-        source.setCopyNumberMappingFile(new CopyNumberMappingFile());
-        source.getCopyNumberMappingFile().setPath(TestDataFiles.REMBRANDT_NCRI_COPY_NUMBER_FILE.getAbsolutePath());
+        source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        source.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.REMBRANDT_NCRI_COPY_NUMBER_FILE.getAbsolutePath());
         CopyNumberMappingFileHandler handler = new CopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
         handler.loadCopyNumberData();
         Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);

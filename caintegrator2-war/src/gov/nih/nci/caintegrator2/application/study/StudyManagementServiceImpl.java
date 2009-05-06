@@ -366,7 +366,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
-        if (samples.isEmpty() && genomicSource.getCopyNumberMappingFile() == null) {
+        if (samples.isEmpty() && genomicSource.getCopyNumberDataConfiguration() == null) {
             throw new NoSamplesForExperimentException("There were no samples found for experiment '" 
             + genomicSource.getExperimentIdentifier() + "'");
         }        
@@ -791,8 +791,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration source,
             File mappingFile, String filename) throws IOException {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
-        source.setCopyNumberMappingFile(new CopyNumberMappingFile());
-        source.getCopyNumberMappingFile().setPath(savedFile.getAbsolutePath());
+        source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        source.getCopyNumberDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
         dao.save(source);
     }
 
