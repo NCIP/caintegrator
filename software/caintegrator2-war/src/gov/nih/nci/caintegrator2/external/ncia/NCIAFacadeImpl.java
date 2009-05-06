@@ -162,19 +162,23 @@ public class NCIAFacadeImpl implements NCIAFacade {
         return acquisition;
     }
 
+    @SuppressWarnings("unused") // See "TJ NOTE" below, this should be temporary.
     private ImageSeries convertToImageSeries(Series series, NCIASearchService client) throws ConnectionException {
         ImageSeries imageSeries = new ImageSeries();
         imageSeries.setIdentifier(series.getSeriesInstanceUID());
         imageSeries.setImageCollection(new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>());
-        List<Image> nciaImageList = client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
-        for (Image nciaImage : nciaImageList) {
-            gov.nih.nci.caintegrator2.domain.imaging.Image image = convertToImage(nciaImage);
-            imageSeries.getImageCollection().add(image);
-            image.setSeries(imageSeries);
-        }
+        // TJ NOTE: 5-5-2009
+        // For now we want to hack this out for a demo, don't want to retrieve the images because it times server out.
+//        List<Image> nciaImageList = client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
+//        for (Image nciaImage : nciaImageList) {
+//            gov.nih.nci.caintegrator2.domain.imaging.Image image = convertToImage(nciaImage);
+//            imageSeries.getImageCollection().add(image);
+//            image.setSeries(imageSeries);
+//        }
         return imageSeries;
     }
 
+    @SuppressWarnings("unused") // See "TJ NOTE" above in previous method, this should be temporary.
     private gov.nih.nci.caintegrator2.domain.imaging.Image convertToImage(Image nciaImage) {
         gov.nih.nci.caintegrator2.domain.imaging.Image image = new gov.nih.nci.caintegrator2.domain.imaging.Image();
         image.setIdentifier(nciaImage.getSopInstanceUID());
