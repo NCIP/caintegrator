@@ -102,6 +102,7 @@ import org.apache.log4j.Logger;
 import org.cagrid.transfer.context.client.TransferServiceContextClient;
 import org.cagrid.transfer.context.client.helper.TransferClientHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.Status;
 import org.genepattern.pca.common.PCAI;
 import org.genepattern.pca.context.client.PCAContextClient;
 import org.genepattern.pca.context.stubs.types.AnalysisNotComplete;
@@ -170,6 +171,7 @@ public class PCAGridRunner {
                 bis.close();
             }
         }
+        tClient.setStatus(Status.Staged);
     }
     
     private File downloadResult(StudySubscription studySubscription, PCAContextClient analysisClient) 
