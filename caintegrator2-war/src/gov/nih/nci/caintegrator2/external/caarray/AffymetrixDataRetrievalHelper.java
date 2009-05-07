@@ -130,7 +130,8 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     protected ArrayDataValues retrieveData() throws ConnectionException, DataRetrievalException {
         DataSet dataSet = dataRetrievalService.getDataSet(createRequest());
         if (dataSet.getHybridizationDataList().isEmpty()) {
-            throw new DataRetrievalException("No Chip signal available for this study");
+            throw new DataRetrievalException("No Chip signal available for experiment: "
+                    + getGenomicSource().getExperimentIdentifier());
         }
         Hybridization hybridization = dataSet.getHybridizationDataList().iterator().next().getHybridization();
         setPlatformHelper(new PlatformHelper(getPlatform(hybridization)));
