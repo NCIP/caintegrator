@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -151,13 +152,19 @@ public class FoldChangeCriterionHandlerTest {
     }
 
     @Test
-    public void testGetMatches() {        
+    public void testGetMatches() throws InvalidCriterionException {        
         FoldChangeCriterion criterion = new FoldChangeCriterion();
         criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
         criterion.setFoldsUp(1.0f);
         criterion.setGeneSymbol("Tester");
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
-        Set<ResultRow> rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+        Set<ResultRow> rows = new HashSet<ResultRow>();
+        try {
+            rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+            fail();
+        } catch(InvalidCriterionException e) { }
+        query.getSubscription().getStudy().getDefaultControlSampleSet().getSamples().add(new Sample());
+        rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
         criterion.setRegulationType(RegulationTypeEnum.DOWN);
         criterion.setFoldsDown(1.0f);

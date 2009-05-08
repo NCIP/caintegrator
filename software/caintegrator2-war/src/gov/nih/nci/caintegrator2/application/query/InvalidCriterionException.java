@@ -83,123 +83,32 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.query.form;
-
-import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
-import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
-import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
+package gov.nih.nci.caintegrator2.application.query;
 
 /**
- * Contains and manages a gene expression criterion.
+ * Indicates a problem with a query's criterion.
  */
-public class GeneExpressionCriterionRow extends AbstractCriterionRow {
-    
-    private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
+public class InvalidCriterionException extends Exception {
 
-    GeneExpressionCriterionRow(CriteriaGroup criteriaGroup) {
-        super(criteriaGroup);
-    }
+    private static final long serialVersionUID = 1L;
 
     /**
-     * {@inheritDoc}
+     * Creates a new instance based on an underlying exception.
+     * 
+     * @param message describes the connection problem
+     * @param cause the source exception
      */
-    @Override
-    public List<String> getAvailableFieldNames() {
-        List<String> fieldNames = new ArrayList<String>();
-        fieldNames.add(GeneNameCriterionWrapper.FIELD_NAME);
-        if (hasControlSamples()) {
-            fieldNames.add(FoldChangeCriterionWrapper.FOLD_CHANGE);
-        }
-        return fieldNames;
+    InvalidCriterionException(String message, Throwable cause) {
+        super(message, cause);
     }
     
-    private boolean hasControlSamples() {
-        return getGroup().getForm().isControlSamplesInStudy();
-    }
-
     /**
-     * {@inheritDoc}
+     * Creates a new instance.
+     * 
+     * @param message describes the problem.
      */
-    @Override
-    AbstractCriterion getCriterion() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getCriterion();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getFieldName() {
-        if (getGenomicCriterionWrapper() != null) {
-            return getGenomicCriterionWrapper().getFieldName();
-        } else {
-            return null;
-        }
-    }
-
-    void handleFieldNameChange(String fieldName) {
-        if (StringUtils.isBlank(fieldName)) {
-            setGenomicCriterionWrapper(null);
-        } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
-            setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this));
-        } else if (fieldName.equals(FoldChangeCriterionWrapper.FOLD_CHANGE)) {
-            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(this));
-        } else {
-            throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
-        }
-    }
-
-    private AbstractGenomicCriterionWrapper getGenomicCriterionWrapper() {
-        return genomicCriterionWrapper;
-    }
-
-    private void setGenomicCriterionWrapper(AbstractGenomicCriterionWrapper genomicCriterionWrapper) {
-        if (this.genomicCriterionWrapper != null) {
-            removeCriterionFromQuery();
-        }
-        this.genomicCriterionWrapper = genomicCriterionWrapper;
-        if (genomicCriterionWrapper != null) {
-            addCriterionToQuery();
-        }
-    }
-
-    @Override
-    AbstractCriterionWrapper getCriterionWrapper() {
-        return getGenomicCriterionWrapper();
-    }
-
-    @Override
-    void setCriterion(AbstractCriterion criterion) {
-        this.genomicCriterionWrapper = createCriterionWrapper(criterion);
-    }
-    
-    private AbstractGenomicCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
-        if (criterion instanceof FoldChangeCriterion) {
-            FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterion;
-            return new FoldChangeCriterionWrapper(foldChangeCriterion, this);
-        } else if (criterion instanceof GeneNameCriterion) {
-            GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
-            return new GeneNameCriterionWrapper(geneNameCriterion, this);
-        } else {
-            throw new IllegalArgumentException("Illegal criterion type " + criterion.getClass());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRowType() {
-        return CriterionRowTypeEnum.GENE_EXPRESSION.getValue();
+    InvalidCriterionException(String message) {
+        super(message);
     }
 
 }

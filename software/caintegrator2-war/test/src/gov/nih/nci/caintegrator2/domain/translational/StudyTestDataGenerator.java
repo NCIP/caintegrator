@@ -86,12 +86,12 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+
+import java.util.Set;
 
 public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
     
@@ -105,7 +105,7 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void compareFields(Study original, Study retrieved) {
         assertEquals(original.getLongTitleText(), retrieved.getLongTitleText());
         assertEquals(original.getShortTitleText(), retrieved.getShortTitleText());
-        compareCollections(original.getControlSampleCollection(), retrieved.getControlSampleCollection(), SampleGenerator.INSTANCE);
+        compareCollections(original.getDefaultControlSampleSet().getSamples(), retrieved.getDefaultControlSampleSet().getSamples(), SampleGenerator.INSTANCE);
     }
 
     @Override
@@ -117,9 +117,11 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void setValues(Study study, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         study.setShortTitleText(getUniqueString());
         study.setLongTitleText(getUniqueString());
-        study.getControlSampleCollection().clear();
+        study.getDefaultControlSampleSet().getSamples().clear();
         for (int i = 0; i < 3; i++) {
-            study.getControlSampleCollection().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
+            Sample sample = SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+            nonCascadedObjects.add(sample);
+            study.getDefaultControlSampleSet().getSamples().add(sample);
         }
     }
 

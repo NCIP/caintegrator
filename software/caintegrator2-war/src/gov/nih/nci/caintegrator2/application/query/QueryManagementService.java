@@ -106,16 +106,18 @@ public interface QueryManagementService {
      * Executes a clinical query and returns back the result.
      * @param query item to execute.
      * @return - Result of the query being executed
+     * @throws InvalidCriterionException if criterion is invalid.
      */
-    QueryResult execute(Query query);
+    QueryResult execute(Query query) throws InvalidCriterionException;
     
     /**
      * Executes a query that returns a genomic data set.
      * 
      * @param query the query to execute.
      * @return the resulting data.
+     * @throws InvalidCriterionException if criterion is invalid. 
      */
-    GenomicDataQueryResult executeGenomicDataQuery(Query query);
+    GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException;
     
     /**
      * Creates a Dicom Job object based on the checked rows.

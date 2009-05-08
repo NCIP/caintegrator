@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -133,11 +134,12 @@ public interface AnalysisService {
      * @param comparativeMarkerParams for comparative marker selection.
      * @return Marker Result objects.
      * @throws ConnectionException if unable to connect to grid.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
             PreprocessDatasetParameters preprocessParams,
             ComparativeMarkerSelectionParameters comparativeMarkerParams) 
-            throws ConnectionException;
+            throws ConnectionException, InvalidCriterionException;
     
     /**
      * Executes Principal Component Analysis grid service and returns back the results files.
@@ -145,16 +147,20 @@ public interface AnalysisService {
      * @param parameters for PCA.
      * @return results file.
      * @throws ConnectionException if unable to connect to grid.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
-    File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException;
+    File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
+            InvalidCriterionException;
     
     /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.
      * @param subscription the study subscription that the user wants to create the plot for.
      * @param kmParameters are the input parameters for the KMPlot.
      * @return the plot object.
+     * @throws InvalidCriterionException if the Criterion is no longer valid for queries.
      */
-    KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters);
+    KMPlot createKMPlot(StudySubscription subscription, AbstractKMParameters kmParameters) 
+    throws InvalidCriterionException;
 
     /**
      * Creates the GeneExpressionPlotGroup which is a group of plots based on the input parameters, the plot
@@ -163,8 +169,9 @@ public interface AnalysisService {
      * @param plotParameters input parameters for the plots.
      * @return the plot group object.
      * @throws ControlSamplesNotMappedException when a control sample is not mapped.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription, 
-            AbstractGEPlotParameters plotParameters) throws ControlSamplesNotMappedException;
+            AbstractGEPlotParameters plotParameters) throws ControlSamplesNotMappedException, InvalidCriterionException;
     
 }

@@ -23,7 +23,7 @@
         <property name="sampleMappingCommaSeparatedFileNames" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
         <property name="controlSampleMappingCommaSeparatedFileNames" type="string" column="CONTROL_SAMPLE_MAPPING_FILE_NAME"/>
                 
-        <list name="sampleIdentifiers" lazy="true" inverse="true">
+        <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />
             <key column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" />
             <list-index column="LIST_INDEX"/>

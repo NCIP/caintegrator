@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.KMGeneExpressionBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 
 import java.util.HashMap;
@@ -175,8 +176,13 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
             if (kmPlotParameters.validate()) {
-                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-                SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, plot);
+                try {
+                    KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+                    SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, plot);
+                } catch (InvalidCriterionException e) {
+                    SessionHelper.setKmPlot(PlotTypeEnum.GENE_EXPRESSION, null);
+                    addActionError(e.getMessage());
+                }
             }
             setCreatePlotRunning(false);
         }

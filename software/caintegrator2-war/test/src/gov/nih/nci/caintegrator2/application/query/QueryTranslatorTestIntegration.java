@@ -124,7 +124,7 @@ public class QueryTranslatorTestIntegration extends AbstractTransactionalSpringC
 
     @Test
     @SuppressWarnings({"PMD"})
-    public void testExecute() {
+    public void testExecute() throws InvalidCriterionException {
         StudyHelper studyHelper = new StudyHelper();
         StudySubscription studySubscription = studyHelper.populateAndRetrieveStudy();
         Study study = studySubscription.getStudy();

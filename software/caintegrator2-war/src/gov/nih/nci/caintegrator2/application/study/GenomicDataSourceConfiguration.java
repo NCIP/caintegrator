@@ -180,9 +180,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return the control samples
      */
     public List<Sample> getControlSamples() {
-        if (getStudyConfiguration().getStudy().getControlSampleCollection() != null) {
+        if (!getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples().isEmpty()) {
             List<Sample> controlSamples = new ArrayList<Sample>();
-            controlSamples.addAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+            controlSamples.addAll(getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples());
             controlSamples.retainAll(getSamples());
             return controlSamples;
         } else {
@@ -196,8 +196,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public List<Sample> getUnmappedSamples() {
         List<Sample> unmappedSamples = new ArrayList<Sample>();
         unmappedSamples.addAll(getSamples());
-        if (getStudyConfiguration().getStudy().getControlSampleCollection() != null) {
-            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getControlSampleCollection());
+        if (!getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples().isEmpty()) {
+            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples());
         }
         unmappedSamples.removeAll(getStudyConfiguration().getSamples());
         return unmappedSamples;

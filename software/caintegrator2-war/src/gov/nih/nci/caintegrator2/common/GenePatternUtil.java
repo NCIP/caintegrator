@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -114,9 +115,11 @@ public final class GenePatternUtil {
      * @param queryManagementService to query database.
      * @param clinicalQueries to be turned into sample classifications.
      * @return sample classification.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     public static SampleClassificationParameterValue createSampleClassification(
-            QueryManagementService queryManagementService, List<Query> clinicalQueries) {
+            QueryManagementService queryManagementService, List<Query> clinicalQueries)
+            throws InvalidCriterionException {
         SampleClassificationParameterValue sampleClassifications = new SampleClassificationParameterValue();
         Set<Long> usedSampleIds = new HashSet<Long>();
         for (Query query : clinicalQueries) {
@@ -145,9 +148,10 @@ public final class GenePatternUtil {
      * @param clinicalQueries to be turned into GctDataset. 
      * @param queryManagementService to query database.
      * @return gct dataset for the queries.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     public static GctDataset createGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries, 
-            QueryManagementService queryManagementService) {
+            QueryManagementService queryManagementService) throws InvalidCriterionException {
         Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         return new GctDataset(genomicData);

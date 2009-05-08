@@ -35,6 +35,11 @@ public enum AnalysisJobStatusEnum {
     ERROR_CONNECTING("Error Connecting"),
     
     /**
+     * Local Error.
+     */
+    LOCAL_ERROR("Local Error"),
+    
+    /**
      * Completed.
      */
     COMPLETED("Completed");

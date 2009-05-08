@@ -110,6 +110,15 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     }
     
     /**
+     * Delete a genomic source file.
+     * @return struts string.
+     */
+    public String delete() {
+        getStudyManagementService().delete(getStudyConfiguration(), getGenomicSource());
+        return SUCCESS;
+    }
+    
+    /**
      * @return all platform names
      */
     public List<String> getAgilentPlatformNames() {

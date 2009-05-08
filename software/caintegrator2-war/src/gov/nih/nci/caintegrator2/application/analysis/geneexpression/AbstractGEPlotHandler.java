@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -149,9 +150,10 @@ public abstract class AbstractGEPlotHandler {
      * @param subscription that user is currently using.
      * @return plot group.
      * @throws ControlSamplesNotMappedException when a control sample is not mapped.
+     * @throws InvalidCriterionException if the criterion is not valid for the query.
      */
     public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-    StudySubscription subscription) throws ControlSamplesNotMappedException;
+    StudySubscription subscription) throws ControlSamplesNotMappedException, InvalidCriterionException;
 
     /**
      * @return the dao
@@ -178,7 +180,7 @@ public abstract class AbstractGEPlotHandler {
         CompoundCriterion idCriteria = new CompoundCriterion();
         idCriteria.setBooleanOperator(BooleanOperatorEnum.OR);
         idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
-        for (Sample sample : subscription.getStudy().getControlSampleCollection()) {
+        for (Sample sample : subscription.getStudy().getDefaultControlSampleSet().getSamples()) {
             if (sample.getSampleAcquisition() == null) {
                 throw new ControlSamplesNotMappedException("Sample '" 
                         + sample.getName() + "' is not mapped to a patient.");

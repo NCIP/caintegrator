@@ -205,12 +205,18 @@
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="genomicSource.id" value="id" />
                 </s:url> 
-                <s:a href="%{editGenomicSource}">Edit</s:a> 
+                <s:a href="%{editGenomicSource}">Edit</s:a> | 
                 <s:url id="editSampleMapping" action="editSampleMapping">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="genomicSource.id" value="id" />
                 </s:url> 
-                <s:a href="%{editSampleMapping}">Map Samples</s:a> 
+                <s:a href="%{editSampleMapping}">Map Samples</s:a> | 
+                <s:url id="deleteGenomicSource" action="deleteGenomicSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="genomicSource.id" value="id" />
+                </s:url> 
+                <s:a href="%{deleteGenomicSource}" onclick="return confirm('This genomic source (and all associated Samples) will be permanently deleted.')"> Delete</s:a>
+                
             </td>
         </tr>
         </s:iterator>

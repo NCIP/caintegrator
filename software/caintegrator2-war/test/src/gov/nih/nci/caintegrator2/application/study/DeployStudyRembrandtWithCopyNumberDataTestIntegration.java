@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -115,7 +116,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InvalidCriterionException {
         deployStudy();
         checkCopyNumberData();
     }

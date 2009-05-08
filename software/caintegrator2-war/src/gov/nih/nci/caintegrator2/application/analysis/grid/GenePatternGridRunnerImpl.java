@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
@@ -132,11 +133,12 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     
     /**
      * {@inheritDoc}
+     * @throws InvalidCriterionException 
      */
     public List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
            PreprocessDatasetParameters preprocessParams,
             ComparativeMarkerSelectionParameters comparativeMarkerParams)
-            throws ConnectionException {
+            throws ConnectionException, InvalidCriterionException {
         // Need to validate that the clinical queries in both params are the same.
         String jobInfoString = studySubscription.getUserWorkspace().getUsername() + "_" 
                             + preprocessParams.getProcessedGctFilename().replace(".gct", "") 
@@ -156,7 +158,7 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
      * {@inheritDoc}
      */
     public File runPreprocessDataset(StudySubscription studySubscription,
-            PreprocessDatasetParameters parameters) throws ConnectionException {
+            PreprocessDatasetParameters parameters) throws ConnectionException, InvalidCriterionException {
         PreprocessDatasetMAGEServiceI client = 
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
         PreprocessDatasetGridRunner runner = 
@@ -170,8 +172,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     
     /**
      * {@inheritDoc}
+     * @throws InvalidCriterionException 
      */
-    public File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException {
+    public File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
+            InvalidCriterionException {
         PCAI client = genePatternGridClientFactory.createPCAClient(parameters.getServer());
         PCAGridRunner runner = new PCAGridRunner(client, fileManager);
         Set<Query> querySet = new HashSet<Query>();
@@ -213,14 +217,15 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     }
     
     private File createClassificationFile(StudySubscription studySubscription, List<Query> clinicalQueries,
-            String classificationFileName) {
+            String classificationFileName) throws InvalidCriterionException {
         return ClassificationsToClsConverter.writeAsCls(
                 GenePatternUtil.createSampleClassification(queryManagementService, clinicalQueries), 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + classificationFileName).getAbsolutePath());
     }
     
-    private File createGctFile(StudySubscription studySubscription, Set<Query> clinicalQueries, String fileName) {
+    private File createGctFile(StudySubscription studySubscription, Set<Query> clinicalQueries, String fileName)
+            throws InvalidCriterionException {
         return GctDatasetFileWriter.writeAsGct(
                 GenePatternUtil.createGctDataset(studySubscription, clinicalQueries, queryManagementService), 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 

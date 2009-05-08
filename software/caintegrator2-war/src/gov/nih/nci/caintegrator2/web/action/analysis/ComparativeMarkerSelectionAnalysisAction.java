@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
@@ -204,7 +205,12 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
     }
     
     private String executeAnalysis() {
-        if (!loadParameters()) {
+        try {
+            if (!loadParameters()) {
+                return INPUT;
+            }
+        } catch (InvalidCriterionException e) {
+            addActionError(e.getMessage());
             return INPUT;
         }
         getCurrentComparativeMarkerSelectionAnalysisJob().setCreationDate(new Date());
@@ -218,7 +224,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         return STATUS_ACTION;
     }
     
-    private boolean loadParameters() {
+    private boolean loadParameters() throws InvalidCriterionException {
         loadServers();
         return loadQueries();
     }
@@ -232,7 +238,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         getComparativeMarkerSelectionParameters().setServer(server);
     }
     
-    private boolean loadQueries() {
+    private boolean loadQueries() throws InvalidCriterionException {
         if (!getComparativeMarkerSelectionAnalysisForm().getSelectedQueryIDs().isEmpty()) {
             getPreprocessDatasetParameters().getClinicalQueries().clear();
             getComparativeMarkerSelectionParameters().getClinicalQueries().clear();
@@ -248,7 +254,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         return true;
     }
 
-    private boolean validateQuerySampleCount(Query currentQuery) {
+    private boolean validateQuerySampleCount(Query currentQuery) throws InvalidCriterionException {
         int numSamples = 0;
         QueryResult results = queryManagementService.execute(currentQuery);
         for (ResultRow row : results.getRowCollection()) {

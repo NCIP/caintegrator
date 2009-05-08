@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -155,14 +156,14 @@ public class QueryManagementServiceImplTest {
 
     
     @Test
-    public void testExecute() {
+    public void testExecute() throws InvalidCriterionException {
         QueryResult queryResult = queryManagementService.execute(query);
         assertNotNull(queryResult.getRowCollection());
     }
     
     @Test
     @SuppressWarnings("PMD")
-    public void testExecuteGenomicDataQuery() {
+    public void testExecuteGenomicDataQuery() throws InvalidCriterionException {
         GenomicDataTestDaoStub daoStub = new GenomicDataTestDaoStub();
         queryManagementService.setDao(daoStub);
         Study study = query.getSubscription().getStudy();
@@ -221,6 +222,12 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().getCriterionCollection().clear();
         query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        try {
+            result = queryManagementService.executeGenomicDataQuery(query);
+            fail("Should have caught invalid criterion exception because no control samples in study");
+        } catch (InvalidCriterionException e) {
+        }
+        study.getDefaultControlSampleSet().getSamples().add(new Sample());
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
         foldChangeCriterion.setFoldsDown(1.0f);

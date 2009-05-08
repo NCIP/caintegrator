@@ -133,6 +133,13 @@ public interface StudyManagementService {
     void delete(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSource)
         throws ValidationException;
+    
+    /**
+     * Deletes a genomic source.
+     * @param studyConfiguration of the clinical source.
+     * @param genomicSource to delete.
+     */
+    void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource);
 
     /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the

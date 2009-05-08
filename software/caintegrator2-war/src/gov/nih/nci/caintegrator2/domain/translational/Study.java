@@ -8,6 +8,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class Study extends AbstractCaIntegrator2Object {
     private String shortTitleText;
     private Set<Timepoint> timepointCollection = new HashSet<Timepoint>();
     private Set<SurvivalValueDefinition> survivalValueDefinitionCollection = new HashSet<SurvivalValueDefinition>();
-    private Set<Sample> controlSampleCollection = new HashSet<Sample>();
+    private SampleSet defaultControlSampleSet = new SampleSet();
     private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
     private Set<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
@@ -218,18 +219,18 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the controlSampleCollection
+     * @return the defaultControlSampleSet
      */
-    public Set<Sample> getControlSampleCollection() {
-        return controlSampleCollection;
+    public SampleSet getDefaultControlSampleSet() {
+        return defaultControlSampleSet;
     }
 
     /**
-     * @param controlSampleCollection the controlSampleCollection to set
+     * @param defaultControlSampleSet the defaultControlSampleSet to set
      */
     @SuppressWarnings("unused") // required by Hibernate
-    private void setControlSampleCollection(Set<Sample> controlSampleCollection) {
-        this.controlSampleCollection = controlSampleCollection;
+    private void setDefaultControlSampleSet(SampleSet defaultControlSampleSet) {
+        this.defaultControlSampleSet = defaultControlSampleSet;
     }
     
     /**
@@ -268,8 +269,7 @@ public class Study extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study has Control Samples
      */
     public boolean hasControlSamples() {
-        return controlSampleCollection != null 
-            && !controlSampleCollection.isEmpty();
+        return !defaultControlSampleSet.getSamples().isEmpty();
     }
 
     /**

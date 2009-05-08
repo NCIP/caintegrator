@@ -91,6 +91,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 
@@ -111,7 +112,7 @@ public class GeneExpressionPlotServiceImplTest {
     }
 
     @Test
-    public void testGeneratePlots() {
+    public void testGeneratePlots() throws InvalidCriterionException {
         Query query = studyHelper.createQuery();
         GenomicDataQueryResult result = studyHelper.getQueryManagementService().executeGenomicDataQuery(query);
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();

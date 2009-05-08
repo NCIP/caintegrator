@@ -310,7 +310,7 @@ public final class Cai2Util {
                 if (criterion instanceof SelectedValueCriterion) {
                     loadCollection(((SelectedValueCriterion) criterion).getValueCollection());
                 } else if (criterion instanceof FoldChangeCriterion) {
-                    loadCollection(((FoldChangeCriterion) criterion).getCompareToSamples());
+                    loadCollection(((FoldChangeCriterion) criterion).getCompareToSampleSet().getSamples());
                 }
             }
         }
