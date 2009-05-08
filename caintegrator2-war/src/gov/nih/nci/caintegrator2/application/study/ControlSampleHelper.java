@@ -122,7 +122,7 @@ class ControlSampleHelper {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber 
                     + ", there is no sample with the identifier " + sampleName + " in the study.");
         } else {
-            studyConfiguration.getStudy().getControlSampleCollection().add(sample);
+            studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().add(sample);
         }
     }
 

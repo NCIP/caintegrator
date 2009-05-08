@@ -89,6 +89,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.KMAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -323,8 +324,14 @@ public class KMPlotAnnotationBasedAction extends AbstractKaplanMeierAction {
             loadPermissibleValues();
             if (kmPlotParameters.validate()) {
                 kmPlotParameters.setEntityType(EntityTypeEnum.getByValue(getForm().getAnnotationTypeSelection()));
-                KMPlot plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
-                SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, plot);
+                KMPlot plot;
+                try {
+                    plot = getAnalysisService().createKMPlot(getStudySubscription(), kmPlotParameters);
+                    SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, plot);
+                } catch (InvalidCriterionException e) {
+                    SessionHelper.setKmPlot(PlotTypeEnum.ANNOTATION_BASED, null);
+                    addActionError(e.getMessage());
+                }
             }
             setCreatePlotRunning(false);
         }

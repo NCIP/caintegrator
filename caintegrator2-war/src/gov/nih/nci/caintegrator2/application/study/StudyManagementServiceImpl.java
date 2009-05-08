@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.ValueDomain;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -287,6 +288,29 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         studyConfiguration.getClinicalConfigurationCollection().remove(clinicalSource);
         dao.delete(clinicalSource);
         reLoadClinicalAnnotation(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
+        studyConfiguration.getGenomicDataSources().remove(genomicSource);
+        for (Sample sample : genomicSource.getSamples()) {
+            studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().remove(sample);
+            SampleAcquisition sampleAcquisition = sample.getSampleAcquisition();
+            if (sampleAcquisition != null) {
+                sampleAcquisition.getAssignment().getSampleAcquisitionCollection().remove(sampleAcquisition);
+                sampleAcquisition.setAssignment(null);
+            }
+            for (Array array : sample.getArrayCollection()) {
+                array.getSampleCollection().remove(sample);
+                if (array.getSampleCollection().isEmpty()) {
+                    dao.delete(array);
+                }
+            }
+            sample.getArrayCollection().clear();
+        }
+        dao.delete(genomicSource);
     }
     
     private void persist(StudyConfiguration studyConfiguration) {

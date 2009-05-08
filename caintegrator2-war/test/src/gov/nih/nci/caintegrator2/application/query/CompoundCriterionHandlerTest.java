@@ -108,7 +108,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CompoundCriterionHandlerTest {
     
     @Test
-    public void testGetMatches() {
+    public void testGetMatches() throws InvalidCriterionException {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", CompoundCriterionHandlerTest.class); 
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
         ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");

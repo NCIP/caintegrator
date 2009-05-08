@@ -92,6 +92,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -158,12 +159,19 @@ public class StudyManagementServiceTest {
 
     @Test
     public void testDelete() throws ValidationException {
-        StudyConfiguration configTest = new StudyConfiguration();
+        StudyHelper studyHelper = new StudyHelper();
+        Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
+        
+        StudyConfiguration configTest = study.getStudyConfiguration();
         UserWorkspace userWorkspace = new UserWorkspace();
         configTest.setUserWorkspace(userWorkspace);
         userWorkspace.getStudyConfigurationJobs().add(configTest);
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
         studyManagementService.delete(configTest, clinicalSource);
+        assertTrue(daoStub.deleteCalled);
+        daoStub.deleteCalled = false;
+        GenomicDataSourceConfiguration genomicSource = configTest.getGenomicDataSources().get(0);
+        studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
         daoStub.deleteCalled = false;
         
@@ -433,8 +441,8 @@ public class StudyManagementServiceTest {
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
         studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE);
-        assertTrue(studyConfiguration.getStudy().getControlSampleCollection().contains(sample1));
-        assertTrue(studyConfiguration.getStudy().getControlSampleCollection().contains(sample2));
+        assertTrue(studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().contains(sample1));
+        assertTrue(studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().contains(sample2));
     }
     
     @Test(expected = ValidationException.class)

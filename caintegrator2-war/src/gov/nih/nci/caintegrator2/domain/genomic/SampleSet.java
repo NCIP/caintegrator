@@ -83,56 +83,46 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
+package gov.nih.nci.caintegrator2.domain.genomic;
 
-import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfiguration;
-import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfigurationFactory;
-import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
-import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * GE Plot Handler for Annotation Based GE Plots.
+ * 
  */
-class GenomicQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
-
-    private final GEPlotGenomicQueryBasedParameters parameters;
-        
-    GenomicQueryBasedGEPlotHandler(CaIntegrator2Dao dao, 
-                                 QueryManagementService queryManagementService, 
-                                 GEPlotGenomicQueryBasedParameters parameters) {
-        super(dao, queryManagementService);
-        this.parameters = parameters;
-    }
+public class SampleSet extends AbstractCaIntegrator2Object {
+    private static final long serialVersionUID = 1L;
+    
+    private String name;
+    private Set<Sample> samples = new HashSet<Sample>();
+    
     
     /**
-     * {@inheritDoc}
-     * @throws InvalidCriterionException 
+     * @return the name
      */
-    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, StudySubscription subscription)
-            throws InvalidCriterionException {
-        List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
-        genomicResults.add(retrieveGenomicResults(subscription));
-        GeneExpressionPlotConfiguration configuration = 
-                GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+    public String getName() {
+        return name;
     }
-
-    
-    private GenomicDataQueryResult retrieveGenomicResults(StudySubscription subscription) 
-    throws InvalidCriterionException {
-        Query query = parameters.getQuery();
-        query.setReporterType(parameters.getReporterType());
-        query.setSubscription(subscription);
-        return getQueryManagementService().executeGenomicDataQuery(query);
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
-
+    /**
+     * @return the samples
+     */
+    public Set<Sample> getSamples() {
+        return samples;
+    }
+    /**
+     * @param samples the samples to set
+     */
+    @SuppressWarnings("unused") // required by Hibernate
+    private void setSamples(Set<Sample> samples) {
+        this.samples = samples;
+    }
 }

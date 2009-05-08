@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -124,7 +125,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
      * {@inheritDoc}
      */
     @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
+    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
@@ -134,7 +135,8 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
     }
 
     private void retrieveSubjectGroups(StudySubscription subscription, 
-                                       Collection<SubjectGroup> subjectGroupCollection) {
+                                       Collection<SubjectGroup> subjectGroupCollection) 
+    throws InvalidCriterionException {
         
         for (Query query : kmParameters.getQueries()) {
             query.setResultType(ResultTypeEnum.CLINICAL);
@@ -149,7 +151,7 @@ class QueryBasedKMPlotHandler extends AbstractKMPlotHandler {
         }
     }
     
-    private SubjectGroup retrieveGroup(Query query) {
+    private SubjectGroup retrieveGroup(Query query) throws InvalidCriterionException {
         SubjectGroup group = new SubjectGroup();
         group.setName(query.getName());
         Collection<ResultRow> rows = getQueryManagementService().execute(query).getRowCollection();

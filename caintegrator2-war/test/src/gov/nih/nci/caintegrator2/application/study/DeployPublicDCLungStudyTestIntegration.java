@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -107,7 +108,7 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     private final static Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InvalidCriterionException {
         deployStudy();
     }
     

@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGr
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
@@ -156,11 +157,12 @@ public class AnalysisServiceImpl implements AnalysisService {
     
     /**
      * {@inheritDoc}
+     * @throws InvalidCriterionException 
      */
     public List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
                                              PreprocessDatasetParameters preprocessParams,
                                              ComparativeMarkerSelectionParameters comparativeMarkerParams) 
-        throws ConnectionException {
+        throws ConnectionException, InvalidCriterionException {
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(
                             studySubscription, preprocessParams, comparativeMarkerParams);
     }
@@ -169,7 +171,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      */
     public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) 
-        throws ConnectionException {
+        throws ConnectionException, InvalidCriterionException {
         return genePatternGridRunner.runPCA(studySubscription, parameters);
     }
 
@@ -177,7 +179,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      */
     public KMPlot createKMPlot(StudySubscription subscription,
-                               AbstractKMParameters kmParameters) {
+                               AbstractKMParameters kmParameters) throws InvalidCriterionException {
         AbstractKMPlotHandler kmPlotHandler = AbstractKMPlotHandler.createKMPlotHandler(
                 dao, kmParameters.getSurvivalValueDefinition(), queryManagementService, kmParameters);
         return kmPlotHandler.createPlot(kmPlotService, subscription);
@@ -189,7 +191,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
             AbstractGEPlotParameters plotParameters) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
                 dao, queryManagementService, plotParameters);
         

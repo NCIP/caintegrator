@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameter;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisParameterType;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 
@@ -201,10 +202,11 @@ public abstract class AbstractAnalysisFormParameter {
      * 
      * @param studySubscription current study subscription
      * @param queryManagementService used to retrieve any necessary data.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
     public void configureForInvocation(StudySubscription studySubscription, 
-                                       QueryManagementService queryManagementService) {
+                                       QueryManagementService queryManagementService) throws InvalidCriterionException {
         // default implementation is no-op; override as necessary
     }
     

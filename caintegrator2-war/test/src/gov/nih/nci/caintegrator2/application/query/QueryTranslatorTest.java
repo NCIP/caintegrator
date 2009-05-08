@@ -106,11 +106,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class QueryTranslatorTest {
 
-    /**
-     * Test Case.
-     */
     @Test
-    public void testExecute() {
+    public void testExecute() throws InvalidCriterionException {
         ApplicationContext context = 
             new ClassPathXmlApplicationContext("query-test-config.xml", QueryTranslatorTest.class); 
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");

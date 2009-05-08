@@ -1,9 +1,6 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 /**
  * 
@@ -16,19 +13,8 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     private Float foldsDown;
     private RegulationTypeEnum regulationType;
     private String geneSymbol;
-    private Set<Sample> compareToSamples = new HashSet<Sample>();
+    private SampleSet compareToSampleSet = new SampleSet();
     
-    /**
-     * @return the compareToSamples
-     */
-    public Set<Sample> getCompareToSamples() {
-        return compareToSamples;
-    }
-
-    @SuppressWarnings("unused") // necessary for Hibernate
-    private void setCompareToSamples(Set<Sample> compareToSamples) {
-        this.compareToSamples = compareToSamples;
-    }
 
     /**
      * @return the geneSymbol
@@ -91,16 +77,22 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
      */
     protected FoldChangeCriterion clone() throws CloneNotSupportedException {
         FoldChangeCriterion clone = (FoldChangeCriterion) super.clone();
-        clone.setCompareToSamples(cloneCompareToSamples());
+        clone.setCompareToSampleSet(this.compareToSampleSet);
         return clone;
     }
-    
-    private Set<Sample> cloneCompareToSamples() throws CloneNotSupportedException {
-        Set<Sample> clone = new HashSet<Sample>();
-        for (Sample sample : compareToSamples) {
-            clone.add(sample);
-        }
-        return clone;
+
+    /**
+     * @return the compareToSampleSet
+     */
+    public SampleSet getCompareToSampleSet() {
+        return compareToSampleSet;
+    }
+
+    /**
+     * @param compareToSampleSet the compareToSampleSet to set
+     */
+    public void setCompareToSampleSet(SampleSet compareToSampleSet) {
+        this.compareToSampleSet = compareToSampleSet;
     }
 
 }

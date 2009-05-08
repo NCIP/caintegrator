@@ -92,6 +92,7 @@ import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryStub;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
@@ -161,7 +162,7 @@ public class GenePatternGridRunnerImplTest {
     }
 
     @Test
-    public void testRunPreprocessDataset() throws ConnectionException, IOException {
+    public void testRunPreprocessDataset() throws ConnectionException, IOException, InvalidCriterionException {
         StudySubscription studySubscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
         PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
@@ -174,7 +175,7 @@ public class GenePatternGridRunnerImplTest {
 
 
     @Test
-    public void testRunPreprocessComparativeMarkerSelection() throws ConnectionException, IOException {
+    public void testRunPreprocessComparativeMarkerSelection() throws ConnectionException, IOException, InvalidCriterionException {
         StudySubscription studySubscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
         Query query1 = new Query();

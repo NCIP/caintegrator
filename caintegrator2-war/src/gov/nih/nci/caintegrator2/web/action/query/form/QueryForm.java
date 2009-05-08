@@ -113,6 +113,7 @@ public class QueryForm {
     private CriteriaGroup criteriaGroup;
     private ResultConfiguration resultConfiguration;
     private String orgQueryName = "";
+    private boolean controlSamplesInStudy = false;
     
     /**
      * Configures a new query.
@@ -138,6 +139,7 @@ public class QueryForm {
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
+            controlSamplesInStudy = !study.getDefaultControlSampleSet().getSamples().isEmpty();
         } else {
             criteriaGroup = null;
             resultConfiguration = null;
@@ -288,5 +290,12 @@ public class QueryForm {
      */
     public boolean hasImageDataSources() {
         return query.getSubscription().getStudy().hasImageDataSources();
+    }
+
+    /**
+     * @return the controlSamplesInStudy
+     */
+    public boolean isControlSamplesInStudy() {
+        return controlSamplesInStudy;
     }
 }

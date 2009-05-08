@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.IntegerParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.StringParameterValue;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -231,7 +232,7 @@ public class AnalysisFormTest {
     }
     
     @Test
-    public void testConfigure() {
+    public void testConfigure() throws InvalidCriterionException {
         QueryManagementServiceStub queryManagementService = new QueryManagementServiceStub();
         formParameter3.configureForInvocation(studySubscription, queryManagementService);
         assertTrue(queryManagementService.executeGenomicDataQueryCalled);

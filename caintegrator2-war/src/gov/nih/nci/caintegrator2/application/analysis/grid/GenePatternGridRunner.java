@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -108,10 +109,11 @@ public interface GenePatternGridRunner {
      * @param comparativeMarkerParams for comparative marker selection.
      * @return MarkerResults of the processed dataset.
      * @throws ConnectionException if unable to connect to grid services.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
             PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
-            throws ConnectionException;
+            throws ConnectionException, InvalidCriterionException;
             
     /**
      * Executes the grid service PreprocessDataset.
@@ -119,9 +121,10 @@ public interface GenePatternGridRunner {
      * @param parameters for preprocess dataset.
      * @return preprocessed GCT file.
      * @throws ConnectionException if unable to connect to grid service.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
     File runPreprocessDataset(StudySubscription studySubscription,
-            PreprocessDatasetParameters parameters) throws ConnectionException;
+            PreprocessDatasetParameters parameters) throws ConnectionException, InvalidCriterionException;
     
     /**
      * Executes the grid service PCA.
@@ -129,7 +132,9 @@ public interface GenePatternGridRunner {
      * @param parameters for PCA.
      * @return zip file containing results.
      * @throws ConnectionException if unable to connect to grid service.
+     * @throws InvalidCriterionException if criterion is not valid.
      */
-    File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException; 
+    File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
+            InvalidCriterionException; 
 
 }

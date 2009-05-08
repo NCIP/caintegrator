@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotCo
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotSampleGroup;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -128,7 +129,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
      */
     public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
                                                StudySubscription subscription) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (Query query : parameters.getQueries()) {
             GenomicDataQueryResult queryResults = 
@@ -143,14 +144,15 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     }
 
     private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         if (parameters.isAddPatientsNotInQueriesGroup()) {
             GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
             if (!queryResults.getRowCollection().isEmpty()) {
                 genomicResults.add(0, queryResults);
             }
         }
-        if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().getControlSampleCollection().isEmpty()) {
+        if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().
+                            getDefaultControlSampleSet().getSamples().isEmpty()) {
             genomicResults.add(0, addControlSamplesGroup(subscription));
         }
     }
@@ -166,7 +168,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     }
     
     private GenomicDataQueryResult addControlSamplesGroup(StudySubscription subscription) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         Query query = new Query();
         query.setName(PlotSampleGroup.CONTROL_SAMPLE_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
@@ -175,7 +177,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     }
 
     private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         Query query = new Query();
         query.setName(PlotSampleGroup.ALL_OTHERS_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
@@ -186,7 +188,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     private GenomicDataQueryResult retrieveGenomicResultsForQuery(StudySubscription subscription, 
                                                                   Query query,
                                                                   SampleGroupType groupType) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         CompoundCriterion newCompoundCriterion = new CompoundCriterion();
         newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());

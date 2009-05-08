@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
@@ -119,16 +120,21 @@ public class PCAAjaxRunner implements Runnable {
         try {
             processLocally();
         } catch (ConnectionException e) {
-            String errorMessage = "Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
-            + " - " + e.getMessage();
-            updater.addError(errorMessage, job);
-            LOGGER.error(errorMessage);
-            job.setStatus(AnalysisJobStatusEnum.ERROR_CONNECTING);
-            updater.saveAndUpdateJobStatus(job);
+            addErrorMessage("Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
+                    + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
+        } catch (InvalidCriterionException e) {
+            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         }
     }
 
-    private void processLocally() throws ConnectionException {
+    private void addErrorMessage(String errorMessage, AnalysisJobStatusEnum errorState) {
+        updater.addError(errorMessage, job);
+        LOGGER.error(errorMessage);
+        job.setStatus(errorState);
+        updater.saveAndUpdateJobStatus(job);
+    }
+
+    private void processLocally() throws ConnectionException, InvalidCriterionException {
         File resultFile = updater.getAnalysisService().executeGridPCA(
                 job.getSubscription(),
                 job.getForm().getPcaParameters());

@@ -129,7 +129,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public QueryResult execute(Query query) {
+    public QueryResult execute(Query query) throws InvalidCriterionException {
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         QueryTranslator queryTranslator = new QueryTranslator(query, dao, arrayDataService, resultHandler);
         return queryTranslator.execute();
@@ -139,7 +139,7 @@ public class QueryManagementServiceImpl implements QueryManagementService {
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
+    public GenomicDataQueryResult executeGenomicDataQuery(Query query) throws InvalidCriterionException {
         GenomicQueryHandler handler = new GenomicQueryHandler(query, dao, arrayDataService);
         return handler.execute();
     }

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -132,7 +133,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
      * {@inheritDoc}
      */
     @Override
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
+    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         Collection <SubjectGroup> subjectGroupCollection = new HashSet<SubjectGroup>();
@@ -143,7 +144,8 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
 
 
     private void retrieveSubjectGroups(StudySubscription subscription, 
-                                       Collection<SubjectGroup> subjectGroupCollection) {
+                                       Collection<SubjectGroup> subjectGroupCollection) 
+        throws InvalidCriterionException {
         // Up Regulated
         SubjectGroup upRegulatedGroup = retrieveGroup(kmParameters.getGeneSymbol() + " >= " 
                                                                 + kmParameters.getOverexpressedFoldChangeNumber() 
@@ -171,7 +173,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     }
     
     private SubjectGroup retrieveGroup(String groupName, RegulationTypeEnum regulationType, 
-                                       StudySubscription subscription) {
+                                       StudySubscription subscription) throws InvalidCriterionException {
         SubjectGroup group = new SubjectGroup();
         group.setName(groupName);
         Collection<FoldChangeCriterion> criterionCollection = new HashSet<FoldChangeCriterion>();
@@ -208,7 +210,8 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
     }
     
     private Collection<ResultRow> retrieveFoldChangeRows(StudySubscription subscription, 
-                                  Collection<FoldChangeCriterion> foldChangeCriterionCollection) {
+                                  Collection<FoldChangeCriterion> foldChangeCriterionCollection) 
+                                  throws InvalidCriterionException {
         Query query = new Query();
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         query.setColumnCollection(new HashSet<ResultColumn>());
