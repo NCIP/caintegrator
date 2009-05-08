@@ -544,8 +544,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         assertEquals(1, number2);
         assertEquals(2, numericValues.size());
         assertEquals(3, annotationDefinition2.getAnnotationValueCollection().size());
-        
-        
     }
     
     @Test
@@ -564,8 +562,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         dao.save(study.getStudyConfiguration());
         dao.save(study);
-        int numImages = dao.retrieveNumberImagesForImagingSource(
-                            study.getStudyConfiguration().getImageDataSources().get(0));
+        int numImages = dao.retrieveNumberImages(
+                study.getStudyConfiguration().getImageDataSources().get(0));
         assertEquals(2, numImages);
     }
     
@@ -575,8 +573,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         dao.save(study.getStudyConfiguration());
         dao.save(study);
-        int numImageSeries = dao.retrieveNumberImageSeriesForImagingSource(
-                            study.getStudyConfiguration().getImageDataSources().get(0));
+        int numImageSeries = dao.retrieveNumberImageSeries(
+                study.getStudyConfiguration().getImageDataSources().get(0));
         assertEquals(1, numImageSeries);
     }
     

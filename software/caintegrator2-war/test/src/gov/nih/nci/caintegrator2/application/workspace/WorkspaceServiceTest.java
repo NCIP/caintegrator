@@ -178,9 +178,9 @@ public class WorkspaceServiceTest {
         assertNull(genomicSource.getHostName());
         
         List<DisplayableImageSource> imageSources = summary.getImageDataSources();
-        assertEquals(1, imageSources.size());
+        assertEquals(5, imageSources.size());
         DisplayableImageSource imageSource = imageSources.get(0);
-        assertEquals(2, imageSource.getNumberImages());
+        assertEquals(1, imageSource.getNumberImages());
         assertEquals(1, imageSource.getNumberImageSeries());
         assertEquals(1, imageSource.getNumberImageStudies());
         assertEquals("collection", imageSource.getCollectionName());
