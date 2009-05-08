@@ -167,7 +167,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
         ImageSeries imageSeries = new ImageSeries();
         imageSeries.setIdentifier(series.getSeriesInstanceUID());
         imageSeries.setImageCollection(new HashSet<gov.nih.nci.caintegrator2.domain.imaging.Image>());
-        // TJ NOTE: 5-5-2009
+        //TODO TJ NOTE: 5-5-2009
         // For now we want to hack this out for a demo, don't want to retrieve the images because it times server out.
 //        List<Image> nciaImageList = client.retrieveImageCollectionFromSeries(series.getSeriesInstanceUID());
 //        for (Image nciaImage : nciaImageList) {

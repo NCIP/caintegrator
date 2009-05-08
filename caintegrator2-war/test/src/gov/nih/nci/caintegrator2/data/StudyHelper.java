@@ -267,6 +267,21 @@ public class StudyHelper {
         imageSeries2.setImageCollection(new HashSet<Image>());
         imageSeries2.getImageCollection().add(image2);
         
+        Image image3 = new Image();
+        image3.setSeries(imageSeries3);
+        imageSeries3.setImageCollection(new HashSet<Image>());
+        imageSeries3.getImageCollection().add(image3);
+        
+        Image image4 = new Image();
+        image4.setSeries(imageSeries4);
+        imageSeries4.setImageCollection(new HashSet<Image>());
+        imageSeries4.getImageCollection().add(image4);
+        
+        Image image5 = new Image();
+        image5.setSeries(imageSeries5);
+        imageSeries5.setImageCollection(new HashSet<Image>());
+        imageSeries5.getImageCollection().add(image5);
+        
         /**
          * Add the 5 SubjectAnnotations
          */
@@ -530,6 +545,22 @@ public class StudyHelper {
         sample2.getArrayCollection().add(array1);
         samples.add(sample2);
         genomicDataSourceConfiguration.setSamples(samples);
+        ImageSeriesAcquisition imageSeriesAcquisition = createImageSeriesAcquisition();
+        imageSeriesAcquisition.setImageDataSource(imageDataSourceConfiguration);
+        List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
+        imageSeriesAcquisitions.add(imageSeriesAcquisition);
+        imageDataSourceConfiguration.getImageSeriesAcquisitions().addAll(imageSeriesAcquisitions);
+        
+        for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
+            for (ImageSeriesAcquisition isa : studySubjectAssignment.getImageStudyCollection()) {
+                isa.setImageDataSource(imageDataSourceConfiguration);
+            }
+        }
+        
+        return study;
+    }
+    
+    private ImageSeriesAcquisition createImageSeriesAcquisition() {
         ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
         Set<ImageSeries> seriesCollection = new HashSet<ImageSeries>();
         ImageSeries imageSeries = new ImageSeries();
@@ -541,10 +572,7 @@ public class StudyHelper {
         imageCollection.add(image1);
         imageCollection.add(image2);
         imageSeries.setImageCollection(imageCollection);
-        List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
-        imageSeriesAcquisitions.add(imageSeriesAcquisition);
-        imageDataSourceConfiguration.getImageSeriesAcquisitions().addAll(imageSeriesAcquisitions);
-        return study;
+        return imageSeriesAcquisition;
     }
     
     public CompoundCriterion createCompoundCriterion1() {    

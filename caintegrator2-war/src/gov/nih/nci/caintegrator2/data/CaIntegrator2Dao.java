@@ -99,6 +99,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -302,14 +303,28 @@ public interface CaIntegrator2Dao {
      * @param imageSource to retrieve number of images.
      * @return number of image series for source.
      */
-    int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration imageSource);
+    int retrieveNumberImageSeries(ImageDataSourceConfiguration imageSource);
+    
+    /**
+     * For a collection of image series acquisition, finds the number of image series associated with it.
+     * @param imageSeriesAcquisition to retrieve number of images.
+     * @return number of image series for source.
+     */
+    int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition);
     
     /**
      * For a given image source, finds the number of images associated with it.
      * @param imageSource to retrieve number of images.
      * @return number of images for source.
      */
-    int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration imageSource);
+    int retrieveNumberImages(ImageDataSourceConfiguration imageSource);
+    
+    /**
+     * For a collection of image acquisition, finds the number of images associated with it.
+     * @param imageSeriesAcquisition to retrieve number of images.
+     * @return number of images for source.
+     */
+    int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition);
     
     /**
      * For a given genomic source, retrieves all distinct platforms.
