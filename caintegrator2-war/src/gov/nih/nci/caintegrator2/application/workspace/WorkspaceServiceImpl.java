@@ -86,13 +86,13 @@
 package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
@@ -233,17 +233,21 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     private void addImagingData(DisplayableStudySummary studySummary) {
-        for (ImageDataSourceConfiguration imageSource
-                : studySummary.getStudy().getStudyConfiguration().getImageDataSources()) {
-            DisplayableImageSource displayableImageSource = new DisplayableImageSource(imageSource);
-            displayableImageSource.setNumberImageStudies(imageSource.getImageSeriesAcquisitions().size());
-            displayableImageSource.setNumberImageSeries(dao.retrieveNumberImageSeriesForImagingSource(imageSource));
-            displayableImageSource.setNumberImages(dao.retrieveNumberImagesForImagingSource(imageSource));
-            studySummary.getImageDataSources().add(displayableImageSource);
+        for (StudySubjectAssignment studySubjectAssignment : studySummary.getStudy().getAssignmentCollection()) {
+            if (!studySubjectAssignment.getImageStudyCollection().isEmpty()) {
+                DisplayableImageSource displayableImageSource = new DisplayableImageSource(
+                        studySubjectAssignment.getImageStudyCollection().iterator().next().getImageDataSource());
+                displayableImageSource.setNumberImageStudies(
+                        studySubjectAssignment.getImageStudyCollection().size());
+                displayableImageSource.setNumberImageSeries(
+                        dao.retrieveNumberImageSeries(studySubjectAssignment.getImageStudyCollection()));
+                displayableImageSource.setNumberImages(
+                        dao.retrieveNumberImages(studySubjectAssignment.getImageStudyCollection()));
+                studySummary.getImageDataSources().add(displayableImageSource);
+            }
         }
     }
-
-
+    
     private void addGenomicData(DisplayableStudySummary studySummary) {
         for (GenomicDataSourceConfiguration genomicConfig  
                 : studySummary.getStudy().getStudyConfiguration().getGenomicDataSources()) {
@@ -254,7 +258,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }
             studySummary.getGenomicDataSources().add(displayableGenomicSource);
         }
-        
     }
 
 }

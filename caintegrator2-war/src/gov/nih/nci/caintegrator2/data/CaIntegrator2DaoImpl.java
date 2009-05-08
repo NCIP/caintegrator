@@ -108,6 +108,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
+import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -524,7 +525,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    public int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration imageSource) {
+    public int retrieveNumberImageSeries(ImageDataSourceConfiguration imageSource) {
         Criteria imageSeriesCriteria = getCurrentSession().createCriteria(ImageSeries.class);
         imageSeriesCriteria.createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION)
                      .add(Restrictions.eq("imageDataSource", imageSource));
@@ -535,12 +536,34 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    public int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
+        Criteria imageSeriesCriteria = getCurrentSession().createCriteria(ImageSeries.class);
+        imageSeriesCriteria.add(Restrictions.in(IMAGE_SERIES_ACQUISITION_ASSOCIATION, imageSeriesAcquisition));
+        imageSeriesCriteria.setProjection(Projections.rowCount());
+        return (Integer) imageSeriesCriteria.list().get(0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)
-    public int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration imageSource) {
+    public int retrieveNumberImages(ImageDataSourceConfiguration imageSource) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
         imageCriteria.createCriteria("series")
                      .createCriteria(IMAGE_SERIES_ACQUISITION_ASSOCIATION)
                      .add(Restrictions.eq("imageDataSource", imageSource));
+        imageCriteria.setProjection(Projections.rowCount());
+        return (Integer) imageCriteria.list().get(0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)
+    public int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
+        Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
+        imageCriteria.createCriteria("series")
+                     .add(Restrictions.in(IMAGE_SERIES_ACQUISITION_ASSOCIATION, imageSeriesAcquisition));
         imageCriteria.setProjection(Projections.rowCount());
         return (Integer) imageCriteria.list().get(0);
     }

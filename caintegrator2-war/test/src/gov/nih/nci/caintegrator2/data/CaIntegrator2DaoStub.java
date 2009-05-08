@@ -379,18 +379,26 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         
     }
 
-    public int retrieveNumberImageSeriesForImagingSource(ImageDataSourceConfiguration configuration) {
+    public int retrieveNumberImageSeries(ImageDataSourceConfiguration configuration) {
+        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
+    }
+    
+    public int retrieveNumberImages(ImageDataSourceConfiguration configuration) {
+        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
+    }
+
+    public int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
         int numberImageSeries = 0;
-        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
+        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
             numberImageSeries += imageAcquisition.getSeriesCollection().size();
         }
         retrieveNumberImageSeriesForImagingSourceCalled = true;
         return numberImageSeries;
     }
     
-    public int retrieveNumberImagesForImagingSource(ImageDataSourceConfiguration configuration) {
+    public int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
         int numberImages = 0;
-        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
+        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
             for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
                 if (imageSeries != null && imageSeries.getImageCollection() != null) {
                     numberImages += imageSeries.getImageCollection().size();
