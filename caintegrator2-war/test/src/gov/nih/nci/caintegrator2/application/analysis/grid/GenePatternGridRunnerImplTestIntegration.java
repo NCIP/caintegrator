@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.Com
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
@@ -157,7 +158,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         return new String[] {"classpath*:/**/genepattern-test-config.xml"};
     }
     
-    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException {
+    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException, InvalidCriterionException {
         setupContext();
         StudySubscription subscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
@@ -198,7 +199,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     }
     
     @Test
-    public void testRunPCA() throws ConnectionException {
+    public void testRunPCA() throws ConnectionException, InvalidCriterionException {
         setupContext();
         StudySubscription subscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();

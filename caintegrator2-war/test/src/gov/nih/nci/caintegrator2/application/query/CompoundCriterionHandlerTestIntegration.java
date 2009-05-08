@@ -117,7 +117,7 @@ public class CompoundCriterionHandlerTestIntegration extends AbstractTransaction
 
     @Test
     @SuppressWarnings({"PMD"})
-    public void testGetMatches() {
+    public void testGetMatches() throws InvalidCriterionException {
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         Set<EntityTypeEnum> entityTypesInQuery = new HashSet<EntityTypeEnum>();

@@ -125,8 +125,9 @@ class QueryTranslator {
     /**
      * Executes a query and returns the QueryResult.
      * @return result of the query execution.
+     * @throws InvalidCriterionException if criterion is invalid.
      */
-    QueryResult execute() {
+    QueryResult execute() throws InvalidCriterionException {
         if (query.getCompoundCriterion() != null) {
             CompoundCriterionHandler compoundCriterionHandler = 
                 CompoundCriterionHandler.create(query.getCompoundCriterion());

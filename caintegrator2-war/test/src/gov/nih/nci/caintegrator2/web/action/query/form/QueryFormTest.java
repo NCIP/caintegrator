@@ -250,6 +250,7 @@ public class QueryFormTest {
     
     @Test
     public void testCriterionRow() {
+        subscription.getStudy().getDefaultControlSampleSet().getSamples().add(new Sample());
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
@@ -268,6 +269,20 @@ public class QueryFormTest {
         checkAddImageSeriesCriterion(group);
         checkAddGeneExpressionCriterion(group);
         checkRemoveRow(group);
+        
+    }
+    
+    @Test
+    public void testCriterionRowNoControlSamples() {
+        subscription.getStudy().getDefaultControlSampleSet().getSamples().clear();
+        queryForm.createQuery(subscription);
+        CriteriaGroup group = queryForm.getCriteriaGroup();
+        group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
+        group.addCriterion();
+        GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(0);
+        assertEquals(1, criterionRow.getAvailableFieldNames().size());
+        assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
+        assertFalse(criterionRow.getAvailableFieldNames().contains("Fold Change"));
     }
 
     /**
@@ -359,11 +374,7 @@ public class QueryFormTest {
         assertEquals(3, group.getRows().size());
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(2);
-        assertEquals(1, criterionRow.getAvailableFieldNames().size());
-        assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
-        assertFalse(criterionRow.getAvailableFieldNames().contains("Fold Change"));
         
-        subscription.getStudy().getControlSampleCollection().add(new Sample());
         assertEquals(2, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
         assertTrue(criterionRow.getAvailableFieldNames().contains("Fold Change"));
@@ -417,6 +428,7 @@ public class QueryFormTest {
         assertEquals(4, criterionRow.getParameters().size());
     }
 
+    
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
         group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
         group.addCriterion();

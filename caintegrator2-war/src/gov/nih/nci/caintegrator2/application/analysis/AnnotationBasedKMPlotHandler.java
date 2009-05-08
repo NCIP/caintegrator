@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -134,7 +135,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     /**
      * {@inheritDoc}
      */
-    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) {
+    KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) throws InvalidCriterionException {
         validateSurvivalValueDefinition();
         KMPlotConfiguration configuration = new KMPlotConfiguration();
         AnnotationDefinition groupAnnotationField = kmParameters.getSelectedAnnotation(); 
@@ -191,7 +192,7 @@ class AnnotationBasedKMPlotHandler extends AbstractKMPlotHandler {
     
     private Collection<ResultRow> retrieveSubjectRowsFromDatabase(EntityTypeEnum groupFieldType, 
                                                  AnnotationDefinition groupAnnotationField,
-                                                 StudySubscription subscription) {
+                                                 StudySubscription subscription) throws InvalidCriterionException {
         Query query = new Query();
         ResultColumn column = new ResultColumn();
         column.setAnnotationDefinition(groupAnnotationField);

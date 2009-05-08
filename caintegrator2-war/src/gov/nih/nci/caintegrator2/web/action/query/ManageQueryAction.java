@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.query;
 
 
 import gov.nih.nci.caintegrator2.application.query.GenomicDataResultRowComparator;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
@@ -377,17 +378,22 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
     public String executeQuery() {
         ensureQueryIsLoaded();
         updateSorting();
-        if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
-            GenomicDataQueryResult genomicResult = 
-                queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
-            if (genomicResult.getRowCollection() != null) {
-                Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
+        try {
+            if (ResultTypeEnum.GENOMIC.getValue().equals(getQueryForm().getResultConfiguration().getResultType())) {
+                GenomicDataQueryResult genomicResult;
+                genomicResult = queryManagementService.executeGenomicDataQuery(getQueryForm().getQuery());
+                if (genomicResult.getRowCollection() != null) {
+                    Collections.sort(genomicResult.getRowCollection(), new GenomicDataResultRowComparator());
+                }
+                setGenomicDataQueryResult(genomicResult);
+            } else {
+                QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
+                loadAllImages(result);
+                setQueryResult(new DisplayableQueryResult(result));
             }
-            setGenomicDataQueryResult(genomicResult);
-        } else {
-            QueryResult result = queryManagementService.execute(getQueryForm().getQuery());
-            loadAllImages(result);
-            setQueryResult(new DisplayableQueryResult(result));
+        } catch (InvalidCriterionException e) {
+            addActionError(e.getMessage());
+            return ERROR;
         }
         return SUCCESS;
     }

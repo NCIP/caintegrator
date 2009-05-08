@@ -132,7 +132,7 @@ class GenomicQueryHandler {
         this.arrayDataService = arrayDataService;
     }
 
-    GenomicDataQueryResult execute() {
+    GenomicDataQueryResult execute() throws InvalidCriterionException {
         ArrayDataValues values = getDataValues();
         return createResult(values);
     }
@@ -184,7 +184,7 @@ class GenomicQueryHandler {
         }
     }
 
-    private ArrayDataValues getDataValues() {
+    private ArrayDataValues getDataValues() throws InvalidCriterionException {
         Collection<ArrayData> arrayDatas = getMatchingArrayDatas();
         Collection<AbstractReporter> reporters = getMatchingReporters(arrayDatas);
         return getDataValues(arrayDatas, reporters);              
@@ -204,7 +204,7 @@ class GenomicQueryHandler {
 
     private Collection<ArrayData> getControlArrayDatas() {
         Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
-        for (Sample sample : getFoldChangeCriterion().getCompareToSamples()) {
+        for (Sample sample : getFoldChangeCriterion().getCompareToSampleSet().getSamples()) {
             arrayDatas.addAll(sample.getArrayDatas(query.getReporterType()));
         }
         return arrayDatas;
@@ -239,7 +239,7 @@ class GenomicQueryHandler {
         return null;
     }
 
-    private Collection<ArrayData> getMatchingArrayDatas() {
+    private Collection<ArrayData> getMatchingArrayDatas() throws InvalidCriterionException {
         CompoundCriterionHandler criterionHandler = CompoundCriterionHandler.create(query.getCompoundCriterion());
         if (criterionHandler.hasEntityCriterion()) {
             Set<EntityTypeEnum> samplesOnly = new HashSet<EntityTypeEnum>();

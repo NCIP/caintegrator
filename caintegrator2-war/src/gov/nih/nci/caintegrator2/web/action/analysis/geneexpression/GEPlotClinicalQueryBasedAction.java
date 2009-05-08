@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamp
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
@@ -248,6 +249,9 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
                     SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
                     addActionError("Group selected in step 6 invalid, control samples must all be mapped to patients: "
                             + e.getMessage());
+                } catch (InvalidCriterionException e) {
+                    SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
+                    addActionError(e.getMessage());
                 }
             }
             setCreatePlotRunning(false);

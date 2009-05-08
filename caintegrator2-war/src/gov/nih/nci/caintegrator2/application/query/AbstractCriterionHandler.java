@@ -109,9 +109,10 @@ abstract class AbstractCriterionHandler {
      * @param query the query the criterion belongs to
      * @param entityTypes entityTypes that are in this criterion to use.
      * @return set of ResultRows that match..
+     * @throws InvalidCriterionException if a criterion is not valid.
      */
     abstract Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
-            Set<EntityTypeEnum> entityTypes);
+            Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException;
     
     /**
      * Gets all <code>AbstractReporters</code> matched by this handler.

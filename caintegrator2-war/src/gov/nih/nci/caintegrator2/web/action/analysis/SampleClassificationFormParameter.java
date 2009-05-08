@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AbstractParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
@@ -176,7 +177,7 @@ public class SampleClassificationFormParameter extends AbstractAnalysisFormParam
      */
     @Override
     public void configureForInvocation(StudySubscription studySubscription, 
-                                       QueryManagementService queryManagementService) {
+                                       QueryManagementService queryManagementService) throws InvalidCriterionException {
         SampleClassificationParameterValue parameterValue =
             (SampleClassificationParameterValue) getParameterValue();
         parameterValue.clear();

@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
@@ -288,7 +289,12 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     }
     
     private String executeAnalysis() {
-        configureInvocationParameters();
+        try {
+            configureInvocationParameters();
+        } catch (InvalidCriterionException e) {
+            addActionError(e.getMessage());
+            return ERROR;
+        }
         getCurrentGenePatternAnalysisJob().setCreationDate(new Date());
         getCurrentGenePatternAnalysisJob().setStatus(AnalysisJobStatusEnum.SUBMITTED);
         getStudySubscription().getAnalysisJobCollection().add(getCurrentGenePatternAnalysisJob());
@@ -298,7 +304,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
         return STATUS_ACTION;
     }
 
-    private void configureInvocationParameters() {
+    private void configureInvocationParameters() throws InvalidCriterionException {
         for (AbstractAnalysisFormParameter formParameter : getGenePatternAnalysisForm().getParameters()) {
             formParameter.configureForInvocation(getStudySubscription(), getQueryManagementService());
         }

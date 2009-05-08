@@ -347,4 +347,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
         saveAsynchronousStudyConfigurationJobCalled = true;
     }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#delete(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration)
+     */
+    public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
+        // TODO Auto-generated method stub
+        
+    }
 }

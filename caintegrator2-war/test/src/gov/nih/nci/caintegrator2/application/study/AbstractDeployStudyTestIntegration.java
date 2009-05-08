@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
@@ -168,7 +169,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         this.service = studyManagementService;
     }
     
-    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InvalidCriterionException {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -440,7 +441,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getLoadSamples() && getControlSamplesFile() != null) {
             logStart();
             service.addControlSamples(studyConfiguration, getControlSamplesFile());
-            assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().getControlSampleCollection().size());
+            assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().
+                    getDefaultControlSampleSet().getSamples().size());
             logEnd();
         }
     }
@@ -529,7 +531,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         this.arrayDataService = arrayDataService;
     }
 
-    private void checkQueries() {
+    private void checkQueries() throws InvalidCriterionException {
         checkClinicalQuery();
         checkGenomicQuery();
     }
@@ -541,7 +543,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         logEnd();
     }
 
-    private void checkGenomicQuery() {
+    private void checkGenomicQuery() throws InvalidCriterionException {
         if (getLoadSamples() && getLoadDesign()) {
             logStart();
             Query query = createQuery();

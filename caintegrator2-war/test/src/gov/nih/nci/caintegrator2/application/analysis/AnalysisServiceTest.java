@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.CaIntegratorKMPlotServiceStu
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceCaIntegratorImpl;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceForKMPlotStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -195,7 +196,8 @@ public class AnalysisServiceTest {
         assertEquals("value", genePatternParameter.getValue());
     }
     
-    private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) {
+    private void runKMPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractKMParameters annotationParameters) 
+    throws InvalidCriterionException {
         KMPlot kmPlot = service.createKMPlot(subscription, annotationParameters);
         
         assertNotNull(kmPlot);
@@ -223,7 +225,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateAnnotationBasedKMPlot() {
+    public void testCreateAnnotationBasedKMPlot() throws InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -241,7 +243,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGeneExpressionBasedKMPlot() {
+    public void testCreateGeneExpressionBasedKMPlot() throws InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -259,7 +261,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateQueryBasedKMPlot() {
+    public void testCreateQueryBasedKMPlot() throws InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -285,7 +287,7 @@ public class AnalysisServiceTest {
     }
     
     private void runGEPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractGEPlotParameters annotationParameters) 
-    throws ControlSamplesNotMappedException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException {
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, annotationParameters);
         
         assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
@@ -293,7 +295,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException {
+    public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -311,7 +313,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException {
+    public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -332,7 +334,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException {
+    public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();

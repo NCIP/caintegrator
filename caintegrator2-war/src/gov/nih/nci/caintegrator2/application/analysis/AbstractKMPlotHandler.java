@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.SubjectSurvivalData;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
@@ -142,7 +143,8 @@ abstract class AbstractKMPlotHandler {
         throw new IllegalArgumentException("Unknown Parameter Type");         
     }
     
-    abstract KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription); 
+    abstract KMPlot createPlot(KMPlotService kmPlotService, StudySubscription subscription) 
+        throws InvalidCriterionException; 
 
     protected void filterGroupsWithoutSurvivalData(KMPlotConfiguration configuration,
             Collection<SubjectGroup> subjectGroupCollection) {
