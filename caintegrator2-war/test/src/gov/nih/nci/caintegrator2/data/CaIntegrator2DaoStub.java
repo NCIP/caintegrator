@@ -145,8 +145,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
     public boolean refreshCalled;
-    public boolean retrieveNumberImagesCalled;
-    public boolean retrieveNumberImageSeriesCalled;
+    public boolean retrieveNumberImagesForImagingSourceCalled;
+    public boolean retrieveNumberImageSeriesForImagingSourceCalled;
     public boolean retrievePlatformsForGenomicSourceCalled;
     public boolean retrieveAllSubscribedWorkspacesCalled;
 
@@ -190,8 +190,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformsCalled = false;
         setFlushModeCalled = false;
         refreshCalled = false;
-        retrieveNumberImagesCalled = false;
-        retrieveNumberImageSeriesCalled = false;
+        retrieveNumberImagesForImagingSourceCalled = false;
+        retrieveNumberImageSeriesForImagingSourceCalled = false;
         retrievePlatformsForGenomicSourceCalled = false;
         retrieveAllSubscribedWorkspacesCalled = false;
     }
@@ -380,31 +380,32 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     }
 
     public int retrieveNumberImageSeries(ImageDataSourceConfiguration configuration) {
-        int numberImageSeries = 0;
-        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
-            numberImageSeries += imageAcquisition.getSeriesCollection().size();
-        }
-        retrieveNumberImageSeriesCalled = true;
-        return numberImageSeries;
+        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
     }
     
     public int retrieveNumberImages(ImageDataSourceConfiguration configuration) {
-        int numberImages = 0;
-        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
-            numberImages += retrieveNumberImages(imageAcquisition.getSeriesCollection());
+        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
+    }
+
+    public int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
+        int numberImageSeries = 0;
+        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
+            numberImageSeries += imageAcquisition.getSeriesCollection().size();
         }
-        retrieveNumberImagesCalled = true;
-        return numberImages;
+        retrieveNumberImageSeriesForImagingSourceCalled = true;
+        return numberImageSeries;
     }
     
-    public int retrieveNumberImages(Collection<ImageSeries> imageSeriesCollection) {
+    public int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
         int numberImages = 0;
-        for (ImageSeries imageSeries : imageSeriesCollection) {
-            if (imageSeries != null && imageSeries.getImageCollection() != null) {
-                numberImages += imageSeries.getImageCollection().size();
+        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
+            for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
+                if (imageSeries != null && imageSeries.getImageCollection() != null) {
+                    numberImages += imageSeries.getImageCollection().size();
+                }
             }
         }
-        retrieveNumberImagesCalled = true;
+        retrieveNumberImagesForImagingSourceCalled = true;
         return numberImages;
     }
 
