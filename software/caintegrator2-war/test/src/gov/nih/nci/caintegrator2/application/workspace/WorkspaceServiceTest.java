@@ -156,8 +156,8 @@ public class WorkspaceServiceTest {
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
         assertNotNull(summary);
-        assertTrue(daoStub.retrieveNumberImagesForImagingSourceCalled);
-        assertTrue(daoStub.retrieveNumberImageSeriesForImagingSourceCalled);
+        assertTrue(daoStub.retrieveNumberImagesCalled);
+        assertTrue(daoStub.retrieveNumberImageSeriesCalled);
         assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
         assertEquals(1, summary.getNumberSubjectAnnotationColumns());
         assertEquals(5, summary.getNumberSubjects());
