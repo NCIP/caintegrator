@@ -108,7 +108,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
-import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -536,16 +535,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
-    public int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
-        Criteria imageSeriesCriteria = getCurrentSession().createCriteria(ImageSeries.class);
-        imageSeriesCriteria.add(Restrictions.in(IMAGE_SERIES_ACQUISITION_ASSOCIATION, imageSeriesAcquisition));
-        imageSeriesCriteria.setProjection(Projections.rowCount());
-        return (Integer) imageSeriesCriteria.list().get(0);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings(UNCHECKED)
     public int retrieveNumberImages(ImageDataSourceConfiguration imageSource) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
@@ -560,10 +549,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      * {@inheritDoc}
      */
     @SuppressWarnings(UNCHECKED)
-    public int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
+    public int retrieveNumberImages(Collection<ImageSeries> imageSeries) {
         Criteria imageCriteria = getCurrentSession().createCriteria(Image.class);
-        imageCriteria.createCriteria("series")
-                     .add(Restrictions.in(IMAGE_SERIES_ACQUISITION_ASSOCIATION, imageSeriesAcquisition));
+        imageCriteria.add(Restrictions.in("series", imageSeries));
         imageCriteria.setProjection(Projections.rowCount());
         return (Integer) imageCriteria.list().get(0);
     }
