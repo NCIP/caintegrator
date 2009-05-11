@@ -145,8 +145,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
     public boolean refreshCalled;
-    public boolean retrieveNumberImagesForImagingSourceCalled;
-    public boolean retrieveNumberImageSeriesForImagingSourceCalled;
+    public boolean retrieveNumberImagesCalled;
+    public boolean retrieveNumberImageSeriesCalled;
     public boolean retrievePlatformsForGenomicSourceCalled;
     public boolean retrieveAllSubscribedWorkspacesCalled;
 
@@ -190,8 +190,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         getPlatformsCalled = false;
         setFlushModeCalled = false;
         refreshCalled = false;
-        retrieveNumberImagesForImagingSourceCalled = false;
-        retrieveNumberImageSeriesForImagingSourceCalled = false;
+        retrieveNumberImagesCalled = false;
+        retrieveNumberImageSeriesCalled = false;
         retrievePlatformsForGenomicSourceCalled = false;
         retrieveAllSubscribedWorkspacesCalled = false;
     }
@@ -380,32 +380,31 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     }
 
     public int retrieveNumberImageSeries(ImageDataSourceConfiguration configuration) {
-        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
-    }
-    
-    public int retrieveNumberImages(ImageDataSourceConfiguration configuration) {
-        return retrieveNumberImages(configuration.getImageSeriesAcquisitions());
-    }
-
-    public int retrieveNumberImageSeries(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
         int numberImageSeries = 0;
-        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
+        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
             numberImageSeries += imageAcquisition.getSeriesCollection().size();
         }
-        retrieveNumberImageSeriesForImagingSourceCalled = true;
+        retrieveNumberImageSeriesCalled = true;
         return numberImageSeries;
     }
     
-    public int retrieveNumberImages(Collection<ImageSeriesAcquisition> imageSeriesAcquisition) {
+    public int retrieveNumberImages(ImageDataSourceConfiguration configuration) {
         int numberImages = 0;
-        for (ImageSeriesAcquisition imageAcquisition : imageSeriesAcquisition) {
-            for (ImageSeries imageSeries : imageAcquisition.getSeriesCollection()) {
-                if (imageSeries != null && imageSeries.getImageCollection() != null) {
-                    numberImages += imageSeries.getImageCollection().size();
-                }
+        for (ImageSeriesAcquisition imageAcquisition : configuration.getImageSeriesAcquisitions()) {
+            numberImages += retrieveNumberImages(imageAcquisition.getSeriesCollection());
+        }
+        retrieveNumberImagesCalled = true;
+        return numberImages;
+    }
+    
+    public int retrieveNumberImages(Collection<ImageSeries> imageSeriesCollection) {
+        int numberImages = 0;
+        for (ImageSeries imageSeries : imageSeriesCollection) {
+            if (imageSeries != null && imageSeries.getImageCollection() != null) {
+                numberImages += imageSeries.getImageCollection().size();
             }
         }
-        retrieveNumberImagesForImagingSourceCalled = true;
+        retrieveNumberImagesCalled = true;
         return numberImages;
     }
 
