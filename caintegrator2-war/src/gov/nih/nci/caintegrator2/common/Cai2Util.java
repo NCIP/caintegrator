@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.common;
 
+import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -114,8 +115,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -123,12 +122,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
@@ -141,6 +138,7 @@ import org.hibernate.Hibernate;
 @SuppressWarnings({ "PMD.CyclomaticComplexity" }) // See method retrieveValueFromRowColumn
 public final class Cai2Util {
     private static final Integer BUFFER_SIZE = 4096;
+    private static final String ZIP_FILE_SUFFIX = ".zip";
     
     private Cai2Util() { }
     
@@ -384,7 +382,7 @@ public final class Cai2Util {
         if (entries.length == 0) {
             return null;
         }
-        File zipfile = new File(dir + ".zip");
+        File zipfile = new File(dir + ZIP_FILE_SUFFIX);
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
         addDir(directory, out, index);
         out.close();
@@ -400,42 +398,36 @@ public final class Cai2Util {
      * @throws IOException if unable to add to zip file.
      */
     public static File addFilesToZipFile(File sourceZipfile, File... files) throws IOException {
-        File newZipDirectory = unzipAndDeleteZipFile(sourceZipfile);
-        for (File file : files) {
-            FileUtils.moveFileToDirectory(file, newZipDirectory, false);
-        }
-        return zipAndDeleteDirectory(newZipDirectory.getAbsolutePath());
-    }
-
-    private static File unzipAndDeleteZipFile(File sourceZipfile) throws IOException {
-        if (!sourceZipfile.getAbsolutePath().endsWith(".zip")) {
+        if (!sourceZipfile.getAbsolutePath().endsWith(ZIP_FILE_SUFFIX)) {
             throw new IllegalArgumentException("The zipfile isn't a .zip type.");
         }
-        File newZipDir = new File(sourceZipfile.getAbsolutePath().replace(".zip", ""));
-        ZipFile zipFile = new ZipFile(sourceZipfile, ZipFile.OPEN_READ);
-        Enumeration <? extends ZipEntry> zipFileEntries = zipFile.entries();
-        while (zipFileEntries.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
-            File destFile = new File(newZipDir, entry.getName());
-            File destinationParent = destFile.getParentFile();
-            destinationParent.mkdirs();
-            if (!entry.isDirectory()) {
-                BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
-                int currentByte;
-                byte[] data = new byte[BUFFER_SIZE];
-                FileOutputStream fos = new FileOutputStream(destFile);
-                BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
-                while ((currentByte = is.read(data, 0, BUFFER_SIZE)) != -1) {
-                    dest.write(data, 0, currentByte);
-                }
-                dest.flush();
-                dest.close();
-                is.close();
+        for (File file : files) {
+            ZipUtilities.insertEntry(sourceZipfile, file.getName(), streamFile(file));
+        }
+        return sourceZipfile;
+    }
+    
+    private static byte[] streamFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+        long length = file.length();
+        if (length > Integer.MAX_VALUE) {
+            return null;
+        }
+        byte[] bytes = new byte[(int) length];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length) {
+            numRead = is.read(bytes, offset, bytes.length - offset);
+            offset += numRead;
+            if (numRead <= 0) {
+                break;
             }
         }
-        zipFile.close();
-        FileUtils.deleteQuietly(sourceZipfile);
-        return newZipDir;
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+        is.close();
+        return bytes;
     }
     
     private static void addDir(File dirObj, ZipOutputStream out, int index) throws IOException {

@@ -183,16 +183,23 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         File gctFile = createGctFile(studySubscription, querySet, parameters.getGctFileName());
         File clsFile = createClassificationFile(studySubscription, parameters.getClinicalQueries(), 
                 parameters.getClassificationFileName());
+        File zipFile = null;
         try {
-            File zipFile = runner.execute(studySubscription, parameters, gctFile);
+            zipFile = runner.execute(studySubscription, parameters, gctFile);
             Cai2Util.addFilesToZipFile(zipFile, gctFile, clsFile);
-            return zipFile;
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to add gct/cls files to the zip file.", e);
+            if (zipFile != null) {
+                zipFile.delete();
+            }
+            throw new IllegalStateException("Invalid Zip File retrieved from grid service:  " 
+                                            + "Unable to add gct/cls files to the zip file.", e);
         } catch (InterruptedException e) {
             return null;
+        } finally {
+            gctFile.delete();
+            clsFile.delete();
         }
-
+        return zipFile;
     }
 
     private void populateReporterGeneSymbols(GctDataset gctDataset) {
