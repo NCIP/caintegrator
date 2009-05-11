@@ -156,8 +156,7 @@ public class WorkspaceServiceTest {
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         DisplayableStudySummary summary = workspaceService.createDisplayableStudySummary(study);
         assertNotNull(summary);
-        assertTrue(daoStub.retrieveNumberImagesForImagingSourceCalled);
-        assertTrue(daoStub.retrieveNumberImageSeriesForImagingSourceCalled);
+        assertTrue(daoStub.retrieveNumberImagesCalled);
         assertTrue(daoStub.retrievePlatformsForGenomicSourceCalled);
         assertEquals(1, summary.getNumberSubjectAnnotationColumns());
         assertEquals(5, summary.getNumberSubjects());
@@ -178,9 +177,9 @@ public class WorkspaceServiceTest {
         assertNull(genomicSource.getHostName());
         
         List<DisplayableImageSource> imageSources = summary.getImageDataSources();
-        assertEquals(5, imageSources.size());
+        assertEquals(1, imageSources.size());
         DisplayableImageSource imageSource = imageSources.get(0);
-        assertEquals(1, imageSource.getNumberImages());
+        assertEquals(2, imageSource.getNumberImages());
         assertEquals(1, imageSource.getNumberImageSeries());
         assertEquals(1, imageSource.getNumberImageStudies());
         assertEquals("collection", imageSource.getCollectionName());
