@@ -110,6 +110,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -146,7 +147,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         studyHelper = new StudyHelper();
         StudySubscription subscription = studyHelper.populateAndRetrieveStudy();
         UserWorkspace userWorkspace = new UserWorkspace();
-        userWorkspace.setUsername("testUser");
+        userWorkspace.setUsername("testCaseUser123");
         subscription.setUserWorkspace(userWorkspace);
         assertNull(subscription.getId());
         dao.save(subscription);
@@ -190,16 +191,15 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + preprocessParameters.getProcessedGctFilename());
         checkGctFile(gctFile, 6, 6, 0.2986583f);
-        gctFile.deleteOnExit();
         
         File clsFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + comparativeMarkerParameters.getClassificationFileName());
-        clsFile.deleteOnExit();
         checkClsFile(clsFile);
+        FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
     
     @Test
-    public void testRunPCA() throws ConnectionException, InvalidCriterionException {
+    public void testRunPCA() throws ConnectionException, InvalidCriterionException, IOException {
         setupContext();
         StudySubscription subscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
@@ -217,17 +217,20 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
                                             new HashSet<ResultColumn>(), subscription);
         parameters.getClinicalQueries().add(query1);
         parameters.getClinicalQueries().add(query2);
-        // For now, since the PCA service is up and down, don't fail on this test yet.
-        boolean isConnectionException = false;
+        // For now, since the PCA service is up and down, don't fail on this test yet.  It might throw
+        // a ConnectionException or IOException (when it returns a zip with no data I can't add files to it).
+        boolean isException = false;
         File zipFile = null;
         try {
             zipFile = genePatternGridRunner.runPCA(subscription, parameters);
-        } catch (ConnectionException e) {
-            isConnectionException = true;
+        } catch (Exception e) {
+            isException = true;
         }
-        if (!isConnectionException) {
+        if (!isException) {
             assertNotNull(zipFile);
+            zipFile.deleteOnExit();
         }
+        FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
 
     private void checkClsFile(File clsFile) throws IOException {
