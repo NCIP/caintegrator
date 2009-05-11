@@ -120,9 +120,11 @@ public class PCAAjaxRunner implements Runnable {
         try {
             processLocally();
         } catch (ConnectionException e) {
-            addErrorMessage("Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
+            addErrorMessage("Couldn't execute Principal Component Analysis job: " + job.getName()
                     + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
         } catch (InvalidCriterionException e) {
+            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
+        } catch (RuntimeException e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         }
     }
