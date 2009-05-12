@@ -241,7 +241,7 @@ public class ArrayDataValues {
     }
 
     /**
-     * Returns the <code>ReporterList</code> that data in this values object is assocated iwth.
+     * Returns the <code>ReporterList</code> that data in this values object is associated with.
      * 
      * @return the reporter list.
      */
