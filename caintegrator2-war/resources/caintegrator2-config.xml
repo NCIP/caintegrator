@@ -295,9 +295,9 @@
         </property>
     </bean>
 
-    <bean id="saveCopyNumberFileMappingAction"
+    <bean id="editCopyNumberDataConfigurationAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveCopyNumberFileMappingAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditCopyNumberDataConfigurationAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

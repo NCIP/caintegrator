@@ -41,6 +41,10 @@
     <definition name="editGenomicSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editGenomicSource_tile.jsp" />
     </definition>
+    
+    <definition name="editCopyNumberDataConfiguration" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/editCopyNumberDataConfiguration_tile.jsp" />
+    </definition>
 
 	<definition name="editImagingSource" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/editImagingSource_tile.jsp" />

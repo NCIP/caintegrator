@@ -128,7 +128,12 @@ public enum ConfigurationParameter {
     /**
      * Default PCA URL.
      */
-    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA");
+    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"), 
+    
+    /**
+     * Default CaDNACopy service URL.
+     */
+    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
 
     private String defaultValue;
 

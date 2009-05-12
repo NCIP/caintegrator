@@ -75,9 +75,9 @@
         </property>
     </bean>
 
-    <bean id="saveCopyNumberFileMappingAction"
+    <bean id="editCopyNumberDataConfigurationAction"
         singleton="false"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveCopyNumberFileMappingAction">
+        class="gov.nih.nci.caintegrator2.web.action.study.management.EditCopyNumberDataConfigurationAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
