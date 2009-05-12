@@ -31,6 +31,9 @@
         <property name="workspaceService">
             <ref local="workspaceService" />
         </property>
+        <property name="bioconductorService">
+            <ref local="bioconductorService" />
+        </property>
     </bean>
 
     <bean id="queryManagementService" 
@@ -107,6 +110,9 @@
     
     <bean id="caArrayServiceFactory" 
         class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />
+    
+    <bean id="bioconductorService" 
+        class="gov.nih.nci.caintegrator2.external.bioconductor.BioconductorServiceImpl" />
     
     <bean id="nciaFacade" 
          class="gov.nih.nci.caintegrator2.external.ncia.NCIAFacadeImpl">

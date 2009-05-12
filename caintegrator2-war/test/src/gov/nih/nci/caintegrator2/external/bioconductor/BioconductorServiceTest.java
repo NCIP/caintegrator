@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
@@ -50,8 +51,13 @@ public class BioconductorServiceTest {
         ArrayData arrayData2 = new ArrayData();
         arrayData2.setId(1L);
         copyNumberData.addCopyNumberData(arrayData2, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
-        ServerConnectionProfile server = new ServerConnectionProfile();
-        service.addSegmentationData(copyNumberData, server);
+        CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
+        configuration.setCaDNACopyService(new ServerConnectionProfile());
+        configuration.setChangePointSignificanceLevel(0.0);
+        configuration.setEarlyStoppingCriterion(0.0);
+        configuration.setPermutationReplicates(0);
+        configuration.setRandomNumberSeed(0);
+        service.addSegmentationData(copyNumberData, configuration);
         checkArrayDatas(copyNumberData);
     }
 

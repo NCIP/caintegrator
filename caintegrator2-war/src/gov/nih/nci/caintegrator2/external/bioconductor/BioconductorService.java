@@ -85,8 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 
 /**
@@ -99,9 +99,11 @@ public interface BioconductorService {
      * (via <code>SegmentData</code> objects) to the array datas passed in.
      * 
      * @param copyNumberData retrieve segmentation data 
-     * @param server service to connect to.
+     * @param configuration include service to connect to.
      * @throws ConnectionException if the service couldn't be reached.
      */
-    void addSegmentationData(CopyNumberData copyNumberData, ServerConnectionProfile server) throws ConnectionException;
+    void addSegmentationData(CopyNumberData copyNumberData,
+            CopyNumberDataConfiguration configuration)
+    throws ConnectionException;
 
 }

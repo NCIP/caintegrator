@@ -8,6 +8,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.PublicAffymetrixCopyNumberChpParser;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -45,9 +46,15 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         CopyNumberData copyNumberData = new CopyNumberData(reporters);
         ArrayData arrayData = new ArrayData();
         copyNumberData.addCopyNumberData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
+        CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
-        service.addSegmentationData(copyNumberData, server);
+        configuration.setCaDNACopyService(server);
+        configuration.setChangePointSignificanceLevel(0.0);
+        configuration.setEarlyStoppingCriterion(0.0);
+        configuration.setPermutationReplicates(0);
+        configuration.setRandomNumberSeed(0);
+        service.addSegmentationData(copyNumberData, configuration);
         assertEquals(23, arrayData.getSegmentDatas().size());
     }
 

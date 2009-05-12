@@ -89,6 +89,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -129,18 +131,20 @@ class CopyNumberMappingFileHandler {
                 this.dao = dao;
     }
 
-    void loadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
+    List<ArrayDataValues> loadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
         try {
             CSVReader reader = new CSVReader(new FileReader(getFile()));
             String[] fields;
+            List<ArrayDataValues> arrayDataValues = new ArrayList<ArrayDataValues>();
             while ((fields = reader.readNext()) != null) {
                 String subjectId = fields[0];
                 String sampleName = fields[1];
                 String copyNumberFilename = fields[2];
-                loadCopyNumberData(subjectId, sampleName, copyNumberFilename);
+                arrayDataValues.add(loadCopyNumberData(subjectId, sampleName, copyNumberFilename));
             }
             dao.save(genomicSource.getStudyConfiguration());
             reader.close();
+            return arrayDataValues;
         } catch (FileNotFoundException e) {
             throw new DataRetrievalException("Couldn't read copy number mapping file " 
                     + getFile().getAbsolutePath(), e);
@@ -154,7 +158,7 @@ class CopyNumberMappingFileHandler {
         return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
-    private void loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 
+    private ArrayDataValues loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
         Sample sample = getSample(sampleName);
@@ -174,6 +178,7 @@ class CopyNumberMappingFileHandler {
         parser.parse(values, arrayData);
         arrayDataService.save(values);
         cnchpFile.delete();
+        return values;
     }
 
     private ArrayData createArrayData(Sample sample, ReporterList reporterList, Study study) {
