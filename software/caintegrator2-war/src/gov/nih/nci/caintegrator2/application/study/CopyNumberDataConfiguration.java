@@ -100,11 +100,10 @@ public class CopyNumberDataConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private String mappingFilePath;
-    private Boolean calculateSegmentationData;
-    private Double changePointSignificanceLevel;
-    private Double earlyStoppingCriterion;
-    private Integer permutationReplicates;
-    private Integer randomNumberSeed;
+    private Double changePointSignificanceLevel = 0.0;
+    private Double earlyStoppingCriterion = 0.0;
+    private Integer permutationReplicates = 0;
+    private Integer randomNumberSeed = 0;
     private ServerConnectionProfile caDNACopyService = new ServerConnectionProfile();
 
     /**
@@ -127,21 +126,11 @@ public class CopyNumberDataConfiguration implements Serializable {
      * @return the file.
      */
     public File getMappingFile() {
-        return new File(getMappingFilePath());
-    }
-
-    /**
-     * @return the calculateSegmentationData
-     */
-    public Boolean getCalculateSegmentationData() {
-        return calculateSegmentationData;
-    }
-
-    /**
-     * @param calculateSegmentationData the calculateSegmentationData to set
-     */
-    public void setCalculateSegmentationData(Boolean calculateSegmentationData) {
-        this.calculateSegmentationData = calculateSegmentationData;
+        if (getMappingFilePath() == null) {
+            return null; 
+        } else {
+            return new File(getMappingFilePath());
+        }
     }
 
     /**

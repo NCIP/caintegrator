@@ -39,7 +39,6 @@
         
         <component name="CopyNumberDataConfiguration">
             <property name="mappingFilePath" type="string" column="COPY_NUMBER_MAPPING_FILE_PATH" />
-            <property name="calculateSegmentationData" type="boolean" column="COPY_NUMBER_CALCULATE_SEGMENTATION_DATA" />
             <property name="changePointSignificanceLevel" type="double" column="COPY_NUMBER_CHANGE_POINT_SIGNIFICANCE_LEVEL" />
             <property name="earlyStoppingCriterion" type="double" column="COPY_NUMBER_EARLY_STOPPING_CRITERION" />
             <property name="permutationReplicates" type="integer" column="COPY_NUMBER_PERMUTATION_REPLICATES" />

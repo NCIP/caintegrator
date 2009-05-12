@@ -825,7 +825,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration source,
             File mappingFile, String filename) throws IOException {
         File savedFile = getFileManager().storeStudyFile(mappingFile, filename, source.getStudyConfiguration());
-        source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        if (source.getCopyNumberDataConfiguration() == null) {
+            source.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        }
         source.getCopyNumberDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
         dao.save(source);
     }

@@ -26,8 +26,6 @@
         <s:submit value="Upload Mapping File" />
         <s:file name="controlSampleFile" label="Control Samples File" />
         <s:submit value="Upload Control Samples File" action="saveControlSamples" />
-        <s:file name="copyNumberMappingFile" label="Subject and Sample to Copy Number Mapping File" />
-        <s:submit value="Upload Copy Number Mapping File" action="saveCopyNumberFileMapping" />
     </s:form>
     
     <table class="data">

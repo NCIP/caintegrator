@@ -209,14 +209,19 @@
                 <s:url id="editSampleMapping" action="editSampleMapping">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="genomicSource.id" value="id" />
-                </s:url> 
-                <s:a href="%{editSampleMapping}">Map Samples</s:a> | 
-                <s:url id="deleteGenomicSource" action="deleteGenomicSource">
+                </s:url>
+                <s:a href="%{editSampleMapping}">Map Samples</s:a> |
+                <s:url id="editCopyNumberDataConfiguration" action="editCopyNumberDataConfiguration">
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="genomicSource.id" value="id" />
                 </s:url> 
-                <s:a href="%{deleteGenomicSource}" onclick="return confirm('This genomic source (and all associated Samples) will be permanently deleted.')"> Delete</s:a>
-                
+                <s:a href="%{editCopyNumberDataConfiguration}">Configure Copy Number Data</s:a> | 
+                <s:url id="deleteGenomicSource" action="deleteGenomicSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="genomicSource.id" value="id" />
+                    <s:param name="action" value="edit" />
+                </s:url> 
+                <s:a href="%{deleteGenomicSource}" onclick="return confirm('This genomic source (and all associated Samples) will be permanently deleted.')">Delete</s:a>
             </td>
         </tr>
         </s:iterator>

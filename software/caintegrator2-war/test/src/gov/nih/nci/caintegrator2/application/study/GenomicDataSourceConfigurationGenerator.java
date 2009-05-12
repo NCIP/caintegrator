@@ -113,7 +113,6 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
             CopyNumberDataConfiguration originalConfig = original.getCopyNumberDataConfiguration();
             CopyNumberDataConfiguration retrievedConfig = retrieved.getCopyNumberDataConfiguration();
             assertEquals(originalConfig.getMappingFilePath(), retrievedConfig.getMappingFilePath());
-            assertEquals(originalConfig.getCalculateSegmentationData(), retrievedConfig.getCalculateSegmentationData());
             assertEquals(originalConfig.getChangePointSignificanceLevel(), retrievedConfig.getChangePointSignificanceLevel());
             assertEquals(originalConfig.getEarlyStoppingCriterion(), retrievedConfig.getEarlyStoppingCriterion());
             assertEquals(originalConfig.getRandomNumberSeed(), retrievedConfig.getRandomNumberSeed());
@@ -136,7 +135,6 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         CopyNumberDataConfiguration cnDataConfig = new CopyNumberDataConfiguration();
         config.setCopyNumberDataConfiguration(cnDataConfig);
         cnDataConfig.setMappingFilePath(getUniqueString());
-        cnDataConfig.setCalculateSegmentationData(getChangedBoolean(cnDataConfig.getCalculateSegmentationData()));
         cnDataConfig.setChangePointSignificanceLevel(getUniqueDouble());
         cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());
         cnDataConfig.setPermutationReplicates(getUniqueInt());
