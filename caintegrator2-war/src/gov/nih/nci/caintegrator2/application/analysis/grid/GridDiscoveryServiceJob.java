@@ -113,6 +113,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridPcaServices
         = Collections.synchronizedMap(new HashMap<String, String>());
+    private static Map<String, String> gridCaDnaCopyServices 
+        = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * {@inheritDoc}
@@ -146,12 +148,14 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         gridPreprocessServices.clear();
         gridCmsServices.clear();
         gridPcaServices.clear();
+        gridCaDnaCopyServices.clear();
     }
     
     private static void setDefaultServices() {
         setDefaultPreprocessService();
         setDefaultCmsService();
         setDefaultPcaService();
+        setDefaultCaDnaCopyService();
     }
     
     private static void setDefaultPreprocessService() {
@@ -167,7 +171,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridCmsServices.put(defaultUrl, "Default Broad service - " + defaultUrl);
         }
     }
-    
+
     private static void setDefaultPcaService() {
         if (gridPcaServices.isEmpty()) {
             String defaultUrl = configurationHelper.getString(ConfigurationParameter.PCA_URL);
@@ -175,22 +179,38 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         }
     }
     
+    private static void setDefaultCaDnaCopyService() {
+        if (gridCaDnaCopyServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.CA_DNA_COPY_URL);
+            gridCaDnaCopyServices.put(defaultUrl, "Default Bioconductor service - " + defaultUrl);
+        }
+    }
+    
     private static void extractSelectedServices(String hostingCenter, String url) {
         if (url.contains("MAGES")) {
             extractCmsServices(hostingCenter, url);
-        } else if (url.contains("PCA")
-                && !gridPcaServices.containsKey(url)) {
-            gridPcaServices.put(url, hostingCenter + " - " + url);
+        } else if (shouldAdd(url, "PCA", gridPcaServices)) {
+            gridPcaServices.put(url, buildDisplayName(hostingCenter, url));
+        } else if (shouldAdd(url, "CaDNAcopy", gridCaDnaCopyServices)) {
+            gridCaDnaCopyServices.put(url, buildDisplayName(hostingCenter, url));
         }
+    }
+
+    private static String buildDisplayName(String hostingCenter, String url) {
+        return hostingCenter + " - " + url;
+    }
+
+    private static boolean shouldAdd(String url, String serviceName, Map<String, String> serviceMap) {
+        return url.contains(serviceName) && !serviceMap.containsKey(url);
     }
     
     private static void extractCmsServices(String hostingCenter, String url) {
         if (url.contains("Comparative")
                 && !gridCmsServices.containsKey(url)) {
-            gridCmsServices.put(url, hostingCenter + " - " + url);
+            gridCmsServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (url.contains("Preprocess")
                 && !gridPreprocessServices.containsKey(url)) {
-            gridPreprocessServices.put(url, hostingCenter + " - " + url);
+            gridPreprocessServices.put(url, buildDisplayName(hostingCenter, url));
         }
     }
 
@@ -222,6 +242,16 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             setDefaultPcaService();
         }
         return gridPcaServices;
+    }
+
+    /**
+     * @return the gridCaDnaCopyServices
+     */
+    public static Map<String, String> getGridCaDnaCopyServices() {
+        if (gridCaDnaCopyServices.isEmpty()) {
+            setDefaultCaDnaCopyService();
+        }
+        return gridCaDnaCopyServices;
     }
 
     /**
