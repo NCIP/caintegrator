@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import static gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType.EXPRESSION_SIGNAL;
-
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -99,9 +98,14 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
+import gov.nih.nci.caintegrator2.external.bioconductor.CopyNumberData;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
@@ -114,11 +118,14 @@ class GenomicDataHelper {
     private final CaArrayFacade caArrayFacade;
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
+    private final BioconductorService bioconductorService;
 
-    GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+    GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao,
+            BioconductorService bioconductorService) {
         this.caArrayFacade = caArrayFacade;
         this.arrayDataService = arrayDataService;
         this.dao = dao;
+        this.bioconductorService = bioconductorService;
     }
 
     void loadData(StudyConfiguration studyConfiguration) 
@@ -141,6 +148,31 @@ class GenomicDataHelper {
         CopyNumberMappingFileHandler handler = 
             new CopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
         handler.loadCopyNumberData();
+        retrieveSegmentationData(handler.loadCopyNumberData(), genomicSource.getCopyNumberDataConfiguration());
+    }
+ 
+    private void retrieveSegmentationData(List<ArrayDataValues> arrayDataValuesList,
+            CopyNumberDataConfiguration configuration) throws ConnectionException {
+        Map<ReporterList, CopyNumberData> copyNumberDataMap = createCopyNumberDataMap(arrayDataValuesList);
+        for (ReporterList key : copyNumberDataMap.keySet()) {
+            bioconductorService.addSegmentationData(copyNumberDataMap.get(key), configuration);
+        }
+    }
+    
+    private Map<ReporterList, CopyNumberData> createCopyNumberDataMap(List<ArrayDataValues> arrayDataValuesList) {
+        Map<ReporterList, CopyNumberData> copyNumberDataMap = new HashMap<ReporterList, CopyNumberData>();
+        for (ArrayDataValues value : arrayDataValuesList) {
+            ReporterList reporterList = value.getReporterList();
+            if (!copyNumberDataMap.containsKey(reporterList)) {
+                copyNumberDataMap.put(reporterList, new CopyNumberData(null));
+            }
+            CopyNumberData copyNumberData = copyNumberDataMap.get(reporterList);
+            for (ArrayData arrayData : value.getArrayDatas()) {
+                copyNumberData.addCopyNumberData(arrayData, value.getFloatValues(
+                        arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
+            }
+        }
+        return copyNumberDataMap;
     }
 
     private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
@@ -202,6 +234,13 @@ class GenomicDataHelper {
      */
     public CaArrayFacade getCaArrayFacade() {
         return caArrayFacade;
+    }
+
+    /**
+     * @return the bioconductorService
+     */
+    public BioconductorService getBioconductorService() {
+        return bioconductorService;
     }
 
 }

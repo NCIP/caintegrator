@@ -85,12 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.external.bioconductor;
 
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -117,18 +117,24 @@ public class BioconductorServiceImpl implements BioconductorService {
     /**
      * {@inheritDoc}
      */
-    public void addSegmentationData(CopyNumberData copyNumberData, ServerConnectionProfile server) 
+    public void addSegmentationData(CopyNumberData copyNumberData,
+            CopyNumberDataConfiguration configuration) 
     throws ConnectionException {
+        String url = configuration.getCaDNACopyService().getUrl();
         try {
-            CaDNAcopyI client = getClientFactory().getCaDNAcopyI(server.getUrl());
+            CaDNAcopyI client = getClientFactory().getCaDNAcopyI(url);
             DNAcopyAssays assays = buildAssays(copyNumberData);
             DNAcopyParameter parameter = new DNAcopyParameter();
+            parameter.setChangePointSignificanceLevel(configuration.getChangePointSignificanceLevel());
+            parameter.setEarlyStoppingCriterion(configuration.getEarlyStoppingCriterion());
+            parameter.setPermutationReplicates(configuration.getPermutationReplicates());
+            parameter.setRandomNumberSeed(configuration.getRandomNumberSeed());
             DerivedDNAcopySegment segment = client.getDerivedDNAcopySegment(assays, parameter);
             addSegmenetationData(segment, copyNumberData);
         } catch (MalformedURIException e) {
-            throw new ConnectionException("Couldn't connect to " + server.getUrl(), e);
+            throw new ConnectionException("Invalid URL: " + url, e);
         } catch (RemoteException e) {
-            throw new ConnectionException("Couldn't connect to " + server.getUrl(), e);
+            throw new ConnectionException("Couldn't connect to " + url, e);
         }
     }
 

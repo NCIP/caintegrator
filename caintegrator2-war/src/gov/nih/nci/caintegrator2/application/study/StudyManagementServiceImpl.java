@@ -107,6 +107,7 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.domain.translational.Timepoint;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.bioconductor.BioconductorService;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
@@ -144,6 +145,14 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private CaArrayFacade caArrayFacade;
     private ArrayDataService arrayDataService;
     private WorkspaceService workspaceService;
+    private BioconductorService bioconductorService;
+
+    /**
+     * @param bioconductorService the bioconductorService to set
+     */
+    public void setBioconductorService(BioconductorService bioconductorService) {
+        this.bioconductorService = bioconductorService;
+    }
 
     /**
      * {@inheritDoc}
@@ -365,7 +374,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     throws ConnectionException, DataRetrievalException, ValidationException {
         studyConfiguration.setDeploymentStartDate(new Date());
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
-            new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao).loadData(studyConfiguration);
+            new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao, bioconductorService)
+                .loadData(studyConfiguration);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
         studyConfiguration.setDeploymentFinishDate(new Date());
