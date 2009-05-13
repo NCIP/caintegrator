@@ -25,6 +25,10 @@
 	<classpathentry kind="lib" path="software/lib/external-runtime/CaDNAcopy-client.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/CaDNAcopy-common.jar"/>
 	<classpathentry kind="lib" path="software/lib/external-runtime/CaDNAcopy-stubs.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-service.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-stubs.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-client.jar"/>
+	<classpathentry kind="lib" path="software/lib/external-runtime/Gistic-common.jar"/>
 	<classpathentry kind="src" output="software/caintegrator2-war/target/test-classes" path="software/caintegrator2-war/test/src"/>
 	<classpathentry kind="src" output="software/genepattern-service-jar/target/classes" path="software/genepattern-service-jar/src"/>
 	<classpathentry kind="src" path="software/caintegrator2-war/src"/>
