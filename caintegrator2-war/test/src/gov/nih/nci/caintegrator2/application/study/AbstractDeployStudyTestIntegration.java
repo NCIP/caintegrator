@@ -420,7 +420,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     protected String getCopyNumberCaArrayHostname() {
-        return "array-stage.nci.nih.gov";
+        return "array.nci.nih.gov";
     }
 
     protected String getCaArrayHostname() {

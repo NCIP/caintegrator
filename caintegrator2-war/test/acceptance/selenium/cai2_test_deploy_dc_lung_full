@@ -2037,7 +2037,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
-	<td>array-stage.nci.nih.gov</td>
+	<td>array.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -2047,7 +2047,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
-	<td>liu-00217</td>
+	<td>jacob-00182</td>
 </tr>
 <tr>
 	<td>type</td>
