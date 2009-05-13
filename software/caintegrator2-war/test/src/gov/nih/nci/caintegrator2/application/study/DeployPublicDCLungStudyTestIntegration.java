@@ -139,22 +139,22 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected String getCaArrayHostname() {
-        return "array-stage.nci.nih.gov";
+        return "array.nci.nih.gov";
     }
 
     @Override
     protected String getCaArrayId() {
-        return "liu-00216";
+        return "jacob-00182";
     }
 
     @Override
     protected int getExpectedSampleCount() {
-        return 101;
+        return 443;
     }
 
     @Override
     protected int getExpectedMappedSampleCount() {
-        return 101;
+        return 443;
     }
 
     @Override
@@ -179,11 +179,11 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
 
     @Override
     protected String getStudyName() {
-        return "DC Lung Study (Public)";
+        return "DC Lung Study";
     }
 
     protected String getDescription() {
-        return "DC Lung Study (Public)";
+        return "DC Lung Study";
     }
 
     @Override

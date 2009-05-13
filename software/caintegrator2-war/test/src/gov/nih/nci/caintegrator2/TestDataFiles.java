@@ -143,10 +143,10 @@ public class TestDataFiles {
     public static final File DC_LUNG_SAMPLE_MAPPING_FULL_FILE = getFile(DC_LUNG_SAMPLE_MAPPING_FULL_FILE_PATH);
     public static final File DC_LUNG_ANNOTATION_DEFINITIONS_FILE = getFile(DC_LUNG_ANNOTATION_DEFINITIONS_FILE_PATH);
     
-    // Files for public DC Lung Study (liu-00216 in array-stage.nci.nih.gov)
+    // Files for public DC Lung Study
     public static final String DC_LUNG_PUBLIC_CLINICAL_FILE_PATH = "/dc_lung_clinical_data_public.csv";
-    public static final String DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping.csv";
-    public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_control_samples_moff.csv";
+    public static final String DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping_full.csv";
+    public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_control_samples.csv";
     public static final String DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH = "/dc_lung_public_annotation_definitions.csv";
 
     public static final File DC_LUNG_PUBLIC_CLINICAL_FILE = getFile(DC_LUNG_PUBLIC_CLINICAL_FILE_PATH);
