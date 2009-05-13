@@ -565,7 +565,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         int numImageSeries = dao.retrieveNumberImages(
                 study.getStudyConfiguration().getImageDataSources().get(0)
                     .getImageSeriesAcquisitions().get(0).getSeriesCollection());
-        assertEquals(1, numImageSeries);
+        assertEquals(2, numImageSeries);
     }
     
     @Test
