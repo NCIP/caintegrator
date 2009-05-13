@@ -215,7 +215,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     
     @Override
     protected String getCopyNumberCaArrayId() {
-        return "liu-00215";
+        return "liu-00252";
     }
 
     @Override
