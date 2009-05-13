@@ -217,19 +217,10 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
                                             new HashSet<ResultColumn>(), subscription);
         parameters.getClinicalQueries().add(query1);
         parameters.getClinicalQueries().add(query2);
-        // For now, since the PCA service is up and down, don't fail on this test yet.  It might throw
-        // a ConnectionException or IOException (when it returns a zip with no data I can't add files to it).
-        boolean isException = false;
         File zipFile = null;
-        try {
-            zipFile = genePatternGridRunner.runPCA(subscription, parameters);
-        } catch (Exception e) {
-            isException = true;
-        }
-        if (!isException) {
-            assertNotNull(zipFile);
-            zipFile.deleteOnExit();
-        }
+        zipFile = genePatternGridRunner.runPCA(subscription, parameters);
+        assertNotNull(zipFile);
+        zipFile.deleteOnExit();
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
 
