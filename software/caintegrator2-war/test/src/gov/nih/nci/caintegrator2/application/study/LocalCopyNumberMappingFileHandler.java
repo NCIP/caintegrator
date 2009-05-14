@@ -83,57 +83,37 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.bioconductor;
+package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
 
 /**
- * Used as input for retrieving segmentation data from Bioconductor.
+ * Loads copy number data from locally-available CNCHP files (as opposed to retrieval from caArray) 
+ * for quicker testing.
  */
-public class CopyNumberData implements Serializable {
- 
-    private static final long serialVersionUID = 1L;
-    
-    private final List<DnaAnalysisReporter> reporters;
-    private final Map<ArrayData, float[]> dataToValuesMap = new HashMap<ArrayData, float[]>();
-    
-    /**
-     * Instantiates a new <code>CopyNumberData</code> object.
-     * 
-     * @param reporters data will be associated with these reporters.
-     */
-    public CopyNumberData(List<DnaAnalysisReporter> reporters) {
-        this.reporters = reporters;
-    }
-    
-    /**
-     * Add log2 values for the given array data. Values are in the same order as
-     * the reporters used to initialize the <code>CopyNumberData</code> object.
-     * 
-     * @param arrayData values are for this data.
-     * @param copyNumberValues the data values.
-     */
-    public void addCopyNumberData(ArrayData arrayData, float[] copyNumberValues) {
-        dataToValuesMap.put(arrayData, copyNumberValues);
+class LocalCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+
+    LocalCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
-    List<DnaAnalysisReporter> getReporters() {
-        return reporters;
-    }
-    
-    Set<ArrayData> getArrayDatas() {
-        return dataToValuesMap.keySet();
-    }
-    
-    float[] getValues(ArrayData arrayData) {
-        return dataToValuesMap.get(arrayData);
+    @Override
+    void doneWithFile(File cnchpFile) {
+        // no-op: don't delete
     }
 
+    @Override
+    File getCnChpFile(String copyNumberFilename) throws ConnectionException, DataRetrievalException,
+            ValidationException {
+        return TestDataFiles.getAffymetrixDataFile(copyNumberFilename);
+    }
+    
 }

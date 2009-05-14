@@ -94,7 +94,6 @@ import gov.nih.nci.caarray.services.search.CaArraySearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -117,13 +116,13 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      * {@inheritDoc}
      */
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    throws ConnectionException, ExperimentNotFoundException {
         CaArraySearchService searchService = getServiceFactory().createSearchService(profile);
         return getSamples(searchService, experimentIdentifier);
     }
 
     private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) 
-    throws ExperimentNotFoundException, NoSamplesForExperimentException {
+    throws ExperimentNotFoundException {
         List<Sample> samples = new ArrayList<Sample>();
         for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
                 : getCaArraySamples(experimentIdentifier, searchService)) {

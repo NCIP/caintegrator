@@ -87,7 +87,6 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -109,10 +108,9 @@ public interface CaArrayFacade {
      * @return the samples in the experiment.
      * @throws ConnectionException if the subsystem can't connect to the caArray server.
      * @throws ExperimentNotFoundException if the experiment cannot be found.
-     * @throws NoSamplesForExperimentException if there are no samples for a valid experiment.
      */
     List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
-    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException;
+    throws ConnectionException, ExperimentNotFoundException;
     
     /**
      * Returns the data for the samples contained in the <code>GenomicDataSourceConfiguration</code>.
