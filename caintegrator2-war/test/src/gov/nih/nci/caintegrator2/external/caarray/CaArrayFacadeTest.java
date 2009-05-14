@@ -112,7 +112,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
@@ -147,7 +146,7 @@ public class CaArrayFacadeTest {
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
         List<Sample> samples = caArrayFacade.getSamples("samples", null);
         assertFalse(samples.isEmpty());
         assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));

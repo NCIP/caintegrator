@@ -85,30 +85,21 @@
  */
 package gov.nih.nci.caintegrator2.application.study;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+
 /**
- * Indicates a problem finding samples for a given experiment for caArray.
+ * Returns a local copy number handler for expedited testing.
  */
-public class NoSamplesForExperimentException extends Exception {
-
-    private static final long serialVersionUID = 1L;
+public class LocalCopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
 
     /**
-     * Creates a new instance based on an underlying exception.
-     * 
-     * @param message describes the connection problem
-     * @param cause the source exception
+     * {@inheritDoc}
      */
-    NoSamplesForExperimentException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    
-    /**
-     * Creates a new instance.
-     * 
-     * @param message describes the problem.
-     */
-    NoSamplesForExperimentException(String message) {
-        super(message);
+    public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        return new LocalCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
     }
 
 }

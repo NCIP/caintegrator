@@ -83,57 +83,29 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.bioconductor;
+package gov.nih.nci.caintegrator2.application.study;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
- * Used as input for retrieving segmentation data from Bioconductor.
+ * Creates instances of copy number handlers.
  */
-public class CopyNumberData implements Serializable {
- 
-    private static final long serialVersionUID = 1L;
-    
-    private final List<DnaAnalysisReporter> reporters;
-    private final Map<ArrayData, float[]> dataToValuesMap = new HashMap<ArrayData, float[]>();
-    
-    /**
-     * Instantiates a new <code>CopyNumberData</code> object.
-     * 
-     * @param reporters data will be associated with these reporters.
-     */
-    public CopyNumberData(List<DnaAnalysisReporter> reporters) {
-        this.reporters = reporters;
-    }
-    
-    /**
-     * Add log2 values for the given array data. Values are in the same order as
-     * the reporters used to initialize the <code>CopyNumberData</code> object.
-     * 
-     * @param arrayData values are for this data.
-     * @param copyNumberValues the data values.
-     */
-    public void addCopyNumberData(ArrayData arrayData, float[] copyNumberValues) {
-        dataToValuesMap.put(arrayData, copyNumberValues);
-    }
+public interface CopyNumberHandlerFactory {
 
-    List<DnaAnalysisReporter> getReporters() {
-        return reporters;
-    }
-    
-    Set<ArrayData> getArrayDatas() {
-        return dataToValuesMap.keySet();
-    }
-    
-    float[] getValues(ArrayData arrayData) {
-        return dataToValuesMap.get(arrayData);
-    }
+    /**
+     * Creates a handler instance.
+     * 
+     * @param genomicSource the genomic data source
+     * @param caArrayFacade the interface to caArray
+     * @param arrayDataService the array data storage service
+     * @param dao the data access interface
+     * @return the handler.
+     */
+    AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
+            CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, 
+            CaIntegrator2Dao dao);
 
 }

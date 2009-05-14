@@ -184,7 +184,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, ValidationException{
+    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
@@ -236,7 +236,7 @@ public class StudyManagementServiceTest {
     }
     
     @Test 
-    public void testAddGenomicSource() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testAddGenomicSource() throws ConnectionException, ExperimentNotFoundException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, genomicDataSourceConfiguration);

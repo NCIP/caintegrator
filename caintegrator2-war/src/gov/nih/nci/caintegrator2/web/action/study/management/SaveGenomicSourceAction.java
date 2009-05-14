@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 import org.apache.commons.lang.StringUtils;
 
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
@@ -115,9 +114,6 @@ public class SaveGenomicSourceAction extends AbstractGenomicSourceAction {
                 addActionError("The configured server couldn't be reached. Please check the configuration settings.");
                 return INPUT;
             } catch (ExperimentNotFoundException e) {
-                addActionError(e.getMessage());
-                return INPUT;
-            } catch (NoSamplesForExperimentException e) {
                 addActionError(e.getMessage());
                 return INPUT;
             }

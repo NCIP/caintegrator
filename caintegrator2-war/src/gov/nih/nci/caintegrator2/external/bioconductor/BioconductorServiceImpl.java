@@ -141,10 +141,19 @@ public class BioconductorServiceImpl implements BioconductorService {
     private void addSegmenetationData(DerivedDNAcopySegment segment, CopyNumberData copyNumberData) {
         Map<String, ArrayData> arrayDataMap = getArrayDataMap(copyNumberData);
         for (int segmentIndex = 0;  segmentIndex < segment.getSampleId().length; segmentIndex++) {
-            ArrayData arrayData = arrayDataMap.get(segment.getSampleId(segmentIndex));
+            ArrayData arrayData = arrayDataMap.get(arrayDataKey(segment, segmentIndex));
             SegmentData segmentData = createSegmentData(segment, segmentIndex);
             segmentData.setArrayData(arrayData);
             arrayData.getSegmentDatas().add(segmentData);
+        }
+    }
+
+    private String arrayDataKey(DerivedDNAcopySegment segment, int segmentIndex) {
+        String sampleId = segment.getSampleId(segmentIndex);
+        if (sampleId.charAt(0) == 'X') {
+            return sampleId.substring(1);
+        } else {
+            return sampleId;
         }
     }
 

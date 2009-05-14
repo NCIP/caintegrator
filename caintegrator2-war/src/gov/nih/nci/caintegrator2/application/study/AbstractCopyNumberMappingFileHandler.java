@@ -86,46 +86,153 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.Array;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
- * Reads and retrieves copy number data from a caArray instance.
+ * Provides base handling to retrieve copy number data based on a copy number mapping file.
  */
-class CopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+public abstract class AbstractCopyNumberMappingFileHandler {
 
-    CopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+    private final CaArrayFacade caArrayFacade;
+    private final ArrayDataService arrayDataService;
+    private final CaIntegrator2Dao dao;
+    private final GenomicDataSourceConfiguration genomicSource;
+
+    AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        super(genomicSource, caArrayFacade, arrayDataService, dao);
+                this.genomicSource = genomicSource;
+                this.caArrayFacade = caArrayFacade;
+                this.arrayDataService = arrayDataService;
+                this.dao = dao;
     }
 
-    @Override
-    void doneWithFile(File cnchpFile) {
-        cnchpFile.delete();
-    }
-
-    @Override
-    File getCnChpFile(String copyNumberFilename) 
-    throws ConnectionException, DataRetrievalException, ValidationException {
+    List<ArrayDataValues> loadCopyNumberData() throws DataRetrievalException, ConnectionException, ValidationException {
         try {
-            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
-            File tempFile = File.createTempFile("temp", ".cnchp");
-            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
-            return tempFile;
+            CSVReader reader = new CSVReader(new FileReader(getFile()));
+            String[] fields;
+            List<ArrayDataValues> arrayDataValues = new ArrayList<ArrayDataValues>();
+            while ((fields = reader.readNext()) != null) {
+                String subjectId = fields[0];
+                String sampleName = fields[1];
+                String copyNumberFilename = fields[2];
+                arrayDataValues.add(loadCopyNumberData(subjectId, sampleName, copyNumberFilename));
+            }
+            dao.save(genomicSource.getStudyConfiguration());
+            reader.close();
+            return arrayDataValues;
         } catch (FileNotFoundException e) {
-            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
-                    + " doesn't contain a file named " + copyNumberFilename, e);
+            throw new DataRetrievalException("Couldn't read copy number mapping file " 
+                    + getFile().getAbsolutePath(), e);
         } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't write CNCHP file locally", e);
+            throw new DataRetrievalException("Couldn't read copy number mapping file " 
+                    + getFile().getAbsolutePath(), e);
         }
+    }
+
+    private File getFile() {
+        return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
+    }
+
+    private ArrayDataValues loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+        Sample sample = getSample(sampleName);
+        SampleAcquisition acquisition = new SampleAcquisition();
+        acquisition.setAssignment(assignment);
+        acquisition.setSample(sample);
+        assignment.getSampleAcquisitionCollection().add(acquisition);
+        File cnchpFile = getCnChpFile(copyNumberFilename);
+        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
+        String platformName = parser.getArrayDesignName();
+        Platform platform = dao.getPlatform(platformName);
+        PlatformHelper helper = new PlatformHelper(platform);
+        ReporterList reporterList = helper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        ArrayDataValues values = new ArrayDataValues(reporterList.getReporters());
+        ArrayData arrayData = createArrayData(sample, reporterList, assignment.getStudy());
+        dao.save(arrayData);
+        parser.parse(values, arrayData);
+        arrayDataService.save(values);
+        doneWithFile(cnchpFile);
+        return values;
+    }
+
+    abstract void doneWithFile(File cnchpFile);
+
+    private ArrayData createArrayData(Sample sample, ReporterList reporterList, Study study) {
+        ArrayData arrayData = new ArrayData();
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+        arrayData.setStudy(study);
+        Array array = new Array();
+        array.getArrayDataCollection().add(arrayData);
+        arrayData.setArray(array);
+        array.getSampleCollection().add(sample);
+        sample.getArrayCollection().add(array);
+        arrayData.setReporterList(reporterList);
+        reporterList.getArrayDatas().add(arrayData);
+        array.setPlatform(reporterList.getPlatform());
+        return arrayData;
+    }
+
+    abstract File getCnChpFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException;
+
+    private Sample getSample(String sampleName) {
+        Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
+        if (sample == null) {
+            sample = new Sample();
+            sample.setName(sampleName);
+        }
+        return sample;
+    }
+
+    private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) throws ValidationException {
+        StudySubjectAssignment assignment = 
+            genomicSource.getStudyConfiguration().getSubjectAssignment(subjectIdentifier);
+        if (assignment == null) {
+            throw new ValidationException("Subject identifier " + subjectIdentifier + " in copy number mapping file " 
+                    + getFile().getAbsolutePath() + " doesn't map to a known subject in the study.");
+        }
+        return assignment;
+    }
+
+    CaArrayFacade getCaArrayFacade() {
+        return caArrayFacade;
+    }
+
+    ArrayDataService getArrayDataService() {
+        return arrayDataService;
+    }
+
+    CaIntegrator2Dao getDao() {
+        return dao;
+    }
+
+    GenomicDataSourceConfiguration getGenomicSource() {
+        return genomicSource;
     }
 
 }

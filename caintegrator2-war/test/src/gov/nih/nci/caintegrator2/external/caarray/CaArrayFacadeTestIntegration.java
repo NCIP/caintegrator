@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import static org.junit.Assert.assertFalse;
-import gov.nih.nci.caintegrator2.application.study.NoSamplesForExperimentException;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -110,7 +109,7 @@ public class CaArrayFacadeTestIntegration {
     }
 
     @Test
-    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("array.nci.nih.gov");
         profile.setPort(8080);
@@ -119,7 +118,7 @@ public class CaArrayFacadeTestIntegration {
     }
     
     @Test (expected=ExperimentNotFoundException.class)
-    public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    public void testGetSamplesInvalidExperiment() throws ConnectionException, ExperimentNotFoundException {
         ServerConnectionProfile profile = new ServerConnectionProfile();
         profile.setHostname("array.nci.nih.gov");
         profile.setPort(8080);

@@ -25,7 +25,13 @@
         <property name="workspaceService">
             <ref local="workspaceServiceStub"/>
         </property>
+        <property name="copyNumberHandlerFactory">
+            <ref local="copyNumberHandlerFactory" />
+        </property>
     </bean>
+
+    <bean id="copyNumberHandlerFactory" 
+        class="gov.nih.nci.caintegrator2.application.study.CopyNumberHandlerFactoryImpl" />
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
     

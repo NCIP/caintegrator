@@ -45,6 +45,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         List<DnaAnalysisReporter> reporters = getReporters(platform);
         CopyNumberData copyNumberData = new CopyNumberData(reporters);
         ArrayData arrayData = new ArrayData();
+        arrayData.setId(0L);
         copyNumberData.addCopyNumberData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
         CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
