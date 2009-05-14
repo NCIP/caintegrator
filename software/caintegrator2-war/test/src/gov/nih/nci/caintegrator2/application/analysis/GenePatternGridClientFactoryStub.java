@@ -86,6 +86,9 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.duke.cabig.rproteomics.model.statml.Data;
+import edu.wustl.icr.asrv1.common.GenomeAnnotationInformation;
+import edu.wustl.icr.asrv1.segment.ChromosomalSegment;
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.mageom.domain.bioassay.BioAssay;
@@ -106,6 +109,9 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
+import org.genepattern.gistic.GisticResult;
+import org.genepattern.gistic.Marker;
+import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.PCAResult;
 import org.genepattern.pca.common.PCAI;
 import org.genepattern.pca.context.client.PCAContextClient;
@@ -122,6 +128,8 @@ import org.oasis.wsrf.properties.QueryResourceProperties_Element;
  */
 public class GenePatternGridClientFactoryStub implements GenePatternGridClientFactory {
 
+    public static Marker[] GISTIC_MARKERS_INPUT = null;
+    public static SampleWithChromosomalSegmentSet[] GISTIC_SAMPLES_INPUT = null;
     
     public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server)
             throws ConnectionException {
@@ -250,4 +258,34 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
         }
     }
 
+    public GisticI createGisticClient(ServerConnectionProfile server) throws ConnectionException {
+        return new GisticClientStub();
+    }
+    
+    private static class GisticClientStub implements GisticI {
+        public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(
+                GetMultipleResourceProperties_Element params) throws RemoteException {
+            
+            return null;
+        }
+
+        public GetResourcePropertyResponse getResourceProperty(QName arg0) throws RemoteException {
+            return null;
+        }
+
+        public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
+                throws RemoteException {
+            return null;
+        }
+
+        public GisticResult[] runAnalysis(ParameterList parameterList, ChromosomalSegment[] cnvSegmentsToIgnore,
+                GenomeAnnotationInformation genomeBuild, Marker[] markers, SampleWithChromosomalSegmentSet[] samples)
+                throws RemoteException, org.genepattern.gistic.stubs.types.InvalidParameterException {
+            GISTIC_MARKERS_INPUT = markers;
+            GISTIC_SAMPLES_INPUT = samples;
+            GisticResult[] gisticResult = new GisticResult[1];
+            gisticResult[0] = new GisticResult();
+            return gisticResult;
+        }        
+    }
 }

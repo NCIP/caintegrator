@@ -89,8 +89,11 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
+import edu.wustl.icr.asrv1.dnacopy.ChromosomalSegmentWithMeanAndMarker;
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryStub;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -106,10 +109,16 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
@@ -117,10 +126,12 @@ import gov.nih.nci.caintegrator2.file.FileManagerStub;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.genepattern.gistic.Marker;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -132,7 +143,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public class GenePatternGridRunnerImplTest {
     
     private GenePatternGridRunnerImpl genePatternGridRunner;
-    private QueryManagementServiceGenePatternStub queryManagementServiceStub;
+    private QueryManagementServiceStub queryManagementServiceStub;
     private GenePatternGridClientFactoryStub genePatternGridClientFactoryStub;
     private FileManagerStub fileManager;
 
@@ -206,6 +217,51 @@ public class GenePatternGridRunnerImplTest {
         checkClsFile(clsFile);
     }
     
+    @Test
+    public void testRunGistic() throws ConnectionException, InvalidCriterionException {
+        QueryManagementServiceStub stubForGistic = new QueryManagementServiceStub();
+        stubForGistic.QR = createGisticQueryResult();
+        genePatternGridRunner.setQueryManagementService(stubForGistic);
+        StudySubscription studySubscription = setupStudySubscription();
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        GisticParameters parameters = new GisticParameters();
+        parameters.setServer(server);
+        genePatternGridRunner.runGistic(studySubscription, parameters);
+        checkGisticMarkers(GenePatternGridClientFactoryStub.GISTIC_MARKERS_INPUT);
+        checkGisticSamples(GenePatternGridClientFactoryStub.GISTIC_SAMPLES_INPUT);
+    }
+    
+    private void checkGisticSamples(SampleWithChromosomalSegmentSet[] samples) {
+        SampleWithChromosomalSegmentSet sample = samples[0];
+        assertEquals("name", sample.getName());
+        assertEquals("1", sample.getExternalSampleId());
+        ChromosomalSegmentWithMeanAndMarker chromosomalSegment = (ChromosomalSegmentWithMeanAndMarker) 
+                                                                    sample.getSegments().getChromosomalSegment(0);
+        assertEquals("chromosome", chromosomalSegment.getChromosomeNumber());
+        assertEquals(BigInteger.valueOf(1), chromosomalSegment.getNumberMarkers());
+        assertEquals(BigInteger.valueOf(1), chromosomalSegment.getSegmentStart());
+        assertEquals(BigInteger.valueOf(2), chromosomalSegment.getSegmentEnd());
+        assertEquals(Double.valueOf(1), Double.valueOf(chromosomalSegment.getSegmentMean()));
+    }
+
+    private void checkGisticMarkers(Marker[] markers) {
+        assertEquals("1", markers[0].getChromosome());
+        assertEquals(0, markers[0].getPosition());
+        assertEquals("name", markers[0].getName());
+        
+        assertEquals("1", markers[0].getChromosome());
+        assertEquals(0, markers[0].getPosition());
+        assertEquals("name", markers[0].getName());
+        
+        assertEquals("1", markers[1].getChromosome());
+        assertEquals(5, markers[1].getPosition());
+        assertEquals("name", markers[1].getName());
+        
+        assertEquals("2", markers[2].getChromosome());
+        assertEquals(0, markers[2].getPosition());
+        assertEquals("name", markers[2].getName());
+    }
+
     private void checkClsFile(File clsFile) throws IOException {
         assertTrue(clsFile.exists());
         CSVReader reader = new CSVReader(new FileReader(clsFile), ' ');
@@ -236,6 +292,49 @@ public class GenePatternGridRunnerImplTest {
         addRow(result, "REPORTER1", "GENE1", new float[] {(float) 1.1, (float) 2.2, (float) 3.3});
         addRow(result, "REPORTER2", null, new float[] {(float) 4.4, (float) 5.5, (float) 6.6});
         return result;
+    }
+    
+    private QueryResult createGisticQueryResult() {
+        QueryResult result = new QueryResult();
+        result.setRowCollection(new HashSet<ResultRow>());
+        ResultRow row1 = new ResultRow();
+        List<DnaAnalysisReporter> reporters = new ArrayList<DnaAnalysisReporter>();
+        reporters.add(createReporter("1", 0));
+        reporters.add(createReporter("1", 5));
+        reporters.add(createReporter("2", 0));
+        ArrayData arrayData1 = new ArrayData();
+        arrayData1.setId(0L);
+        ReporterList reporterList = new ReporterList();
+        reporterList.getReporters().addAll(reporters);
+        reporterList.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        arrayData1.setReporterList(reporterList);
+        SegmentData segmentData = new SegmentData();
+        segmentData.setNumberOfMarkers(1);
+        segmentData.setSegmentValue(Float.valueOf(1));
+        ChromosomalLocation location = new ChromosomalLocation();
+        location.setChromosome("chromosome");
+        location.setStartPosition(1);
+        location.setEndPosition(2);
+        segmentData.setLocation(location);
+        arrayData1.getSegmentDatas().add(segmentData);
+        Sample sample1 = new Sample();
+        sample1.setId(Long.valueOf(1));
+        sample1.setName("name");
+        sample1.getArrayDataCollection().add(arrayData1);
+        arrayData1.setSample(sample1);
+        SampleAcquisition sampleAcquisition1 = new SampleAcquisition();
+        sampleAcquisition1.setSample(sample1);
+        row1.setSampleAcquisition(sampleAcquisition1);
+        result.getRowCollection().add(row1);
+        return result;
+    }
+    
+    private DnaAnalysisReporter createReporter(String chromosome, int start) {
+        DnaAnalysisReporter reporter = new DnaAnalysisReporter();
+        reporter.setChromosome(chromosome);
+        reporter.setPosition(start);
+        reporter.setName("name");
+        return reporter;
     }
 
     private void addRow(GenomicDataQueryResult result, String reporterName, String geneName, float[] values) {
