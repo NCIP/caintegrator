@@ -88,7 +88,9 @@ package gov.nih.nci.caintegrator2;
 import java.io.File;
 
 public class TestDataFiles {
-    
+
+    private static final String AFFYMETRIX_DATA_FILE_DIRECTORY_PATH = "/arraydata/affymetrix";
+
     public static final String VALID_FILE_RESOURCE_PATH = "/csvtestclinical.csv";
     public static final String VALID_FILE_TIMEPOINT_RESOURCE_PATH = "/csvtestclinical-timepoint.csv";
     public static final String INVALID_FILE_MISSING_VALUE_RESOURCE_PATH = "/csvtestclinical-missing-value.csv";
@@ -171,11 +173,18 @@ public class TestDataFiles {
     public static final String XBA_COPY_NUMBER_CHP_FILE_PATH = "/arraydata/affymetrix/E07733_T_Xba.CN4.cnchp";
     public static final File XBA_COPY_NUMBER_CHP_FILE = getFile(XBA_COPY_NUMBER_CHP_FILE_PATH);
 
-    public static final String REMBRANDT_NCRI_COPY_NUMBER_FILE_PATH = "/ncri_copy_number_mapping.csv";
-    public static final File REMBRANDT_NCRI_COPY_NUMBER_FILE = getFile(REMBRANDT_NCRI_COPY_NUMBER_FILE_PATH);
-    
+    public static final String REMBRANDT_COPY_NUMBER_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
+    public static final File REMBRANDT_COPY_NUMBER_FILE = getFile(REMBRANDT_COPY_NUMBER_FILE_PATH);
+
+    public static final String SHORT_COPY_NUMBER_FILE_PATH = "/short_copy_number_mapping.csv";
+    public static final File SHORT_COPY_NUMBER_FILE = getFile(SHORT_COPY_NUMBER_FILE_PATH);
+
+    public static File getAffymetrixDataFile(String filename) {
+        return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);
+    }
     public static File getFile(String resourcePath) {
         return new File(TestDataFiles.class.getResource(resourcePath).getFile());
     }
+
 
 }

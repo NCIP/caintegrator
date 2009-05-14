@@ -33,6 +33,7 @@ public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalS
         checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95C_CDF_FILE, TestArrayDesignFiles.HG_U95C_ANNOTATION_FILE);
         checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95D_CDF_FILE, TestArrayDesignFiles.HG_U95D_ANNOTATION_FILE);
         ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE, arrayDataService);
+        ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(TestArrayDesignFiles.MAPPING_50K_XBA_CDF, TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE, arrayDataService);
     }
 
     private void checkLoadAffymetrixArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {

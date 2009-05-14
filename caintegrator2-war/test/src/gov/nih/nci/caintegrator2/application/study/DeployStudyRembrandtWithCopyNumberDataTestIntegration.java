@@ -116,14 +116,19 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InvalidCriterionException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
         deployStudy();
         checkCopyNumberData();
     }
 
+    @Override
+    protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
+        copyNumberDataConfiguration.getCaDNACopyService().setUrl("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+    }
+
     private void checkCopyNumberData() {
         Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        assertEquals(2, arrayDatas.size());
+        assertEquals(44, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
         }
@@ -143,6 +148,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
             }
         }
         assertTrue(nonZeroValueCount > 50000);
+        assertFalse(arrayData.getSegmentDatas().isEmpty());
     }
 
     @Override
@@ -202,7 +208,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     
     @Override
     protected File getCopyNumberFile() {
-        return TestDataFiles.REMBRANDT_NCRI_COPY_NUMBER_FILE;
+        return TestDataFiles.REMBRANDT_COPY_NUMBER_FILE;
     }
     
     @Override

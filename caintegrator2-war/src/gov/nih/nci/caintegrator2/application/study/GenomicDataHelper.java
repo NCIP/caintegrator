@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -103,9 +104,7 @@ import gov.nih.nci.caintegrator2.external.bioconductor.CopyNumberData;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
@@ -119,13 +118,15 @@ class GenomicDataHelper {
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
     private final BioconductorService bioconductorService;
+    private final CopyNumberHandlerFactory copyNumberHandlerFactory;
 
     GenomicDataHelper(CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao,
-            BioconductorService bioconductorService) {
+            BioconductorService bioconductorService, CopyNumberHandlerFactory copyNumberHandlerFactory) {
         this.caArrayFacade = caArrayFacade;
         this.arrayDataService = arrayDataService;
         this.dao = dao;
         this.bioconductorService = bioconductorService;
+        this.copyNumberHandlerFactory = copyNumberHandlerFactory;
     }
 
     void loadData(StudyConfiguration studyConfiguration) 
@@ -145,34 +146,27 @@ class GenomicDataHelper {
 
     private void handleCopyNumberData(GenomicDataSourceConfiguration genomicSource) 
     throws DataRetrievalException, ConnectionException, ValidationException {
-        CopyNumberMappingFileHandler handler = 
-            new CopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
-        handler.loadCopyNumberData();
-        retrieveSegmentationData(handler.loadCopyNumberData(), genomicSource.getCopyNumberDataConfiguration());
+        AbstractCopyNumberMappingFileHandler handler = 
+            copyNumberHandlerFactory.getHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+        for (ArrayDataValues values : handler.loadCopyNumberData()) {
+            retrieveSegmentationData(values, genomicSource.getCopyNumberDataConfiguration());
+        }
     }
  
-    private void retrieveSegmentationData(List<ArrayDataValues> arrayDataValuesList,
+    private void retrieveSegmentationData(ArrayDataValues values,
             CopyNumberDataConfiguration configuration) throws ConnectionException {
-        Map<ReporterList, CopyNumberData> copyNumberDataMap = createCopyNumberDataMap(arrayDataValuesList);
-        for (ReporterList key : copyNumberDataMap.keySet()) {
-            bioconductorService.addSegmentationData(copyNumberDataMap.get(key), configuration);
+        CopyNumberData copyNumberData = new CopyNumberData(convertToDnaAnalysisReporters(values.getReporterList()));
+        for (ArrayData arrayData : values.getArrayDatas()) {
+            copyNumberData.addCopyNumberData(arrayData, 
+                    values.getFloatValues(arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
         }
+        bioconductorService.addSegmentationData(copyNumberData, configuration);
     }
-    
-    private Map<ReporterList, CopyNumberData> createCopyNumberDataMap(List<ArrayDataValues> arrayDataValuesList) {
-        Map<ReporterList, CopyNumberData> copyNumberDataMap = new HashMap<ReporterList, CopyNumberData>();
-        for (ArrayDataValues value : arrayDataValuesList) {
-            ReporterList reporterList = value.getReporterList();
-            if (!copyNumberDataMap.containsKey(reporterList)) {
-                copyNumberDataMap.put(reporterList, new CopyNumberData(null));
-            }
-            CopyNumberData copyNumberData = copyNumberDataMap.get(reporterList);
-            for (ArrayData arrayData : value.getArrayDatas()) {
-                copyNumberData.addCopyNumberData(arrayData, value.getFloatValues(
-                        arrayData, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO));
-            }
-        }
-        return copyNumberDataMap;
+
+    @SuppressWarnings({ "unchecked", "PMD.UnnecessaryLocalBeforeReturn" })  // for efficient conversion of List.
+    private List<DnaAnalysisReporter> convertToDnaAnalysisReporters(ReporterList reporterList) {
+        List reporters = reporterList.getReporters();
+        return reporters;
     }
 
     private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {

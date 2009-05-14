@@ -42,6 +42,7 @@
     </rule>
 
     <rule ref="rulesets/coupling.xml">
+        <exclude name="CouplingBetweenObjects" />
         <exclude name="ExcessiveImports" />
     </rule>
 

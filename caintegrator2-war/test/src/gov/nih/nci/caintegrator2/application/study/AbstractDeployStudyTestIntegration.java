@@ -169,7 +169,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         this.service = studyManagementService;
     }
     
-    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, NoSamplesForExperimentException, InvalidCriterionException {
+    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -198,7 +198,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         checkQueries();
     }
 
-    private void loadCopyNumberMappingFile() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    private void loadCopyNumberMappingFile() throws ConnectionException, ExperimentNotFoundException, IOException {
         if (getCopyNumberFile() != null) {
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname(getCopyNumberCaArrayHostname());
@@ -207,10 +207,14 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
-            genomicSource.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
-            genomicSource.getCopyNumberDataConfiguration().setMappingFilePath(getCopyNumberFile().getAbsolutePath());
             service.addGenomicSource(studyConfiguration, genomicSource);
+            getService().saveCopyNumberMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
+            configureSegmentationDataCalcuation(genomicSource.getCopyNumberDataConfiguration());
         }
+    }
+
+    protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
+        // no-op
     }
 
     protected String getCopyNumberCaArrayId() {
@@ -397,7 +401,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     protected abstract int getExpectedControlSampleCount();
 
-    private void loadSamples() throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    private void loadSamples() throws ConnectionException, ExperimentNotFoundException {
         if (getLoadSamples()) {
             logStart();
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
@@ -630,6 +634,10 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
      */
     public void setWorkspaceService(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
+    }
+
+    protected StudyManagementService getService() {
+        return service;
     }
 
 }

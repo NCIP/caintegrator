@@ -132,7 +132,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Entry point to the StudyManagementService subsystem.
  */
 @Transactional(propagation = Propagation.REQUIRED)
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" })   // see configure study
+@SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength" })   // see configure study
 public class StudyManagementServiceImpl implements StudyManagementService {
 
     @SuppressWarnings("unused")
@@ -146,6 +146,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private ArrayDataService arrayDataService;
     private WorkspaceService workspaceService;
     private BioconductorService bioconductorService;
+    private CopyNumberHandlerFactory copyNumberHandlerFactory;
 
     /**
      * @param bioconductorService the bioconductorService to set
@@ -374,7 +375,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     throws ConnectionException, DataRetrievalException, ValidationException {
         studyConfiguration.setDeploymentStartDate(new Date());
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
-            new GenomicDataHelper(getCaArrayFacade(), getArrayDataService(), dao, bioconductorService)
+            new GenomicDataHelper(getCaArrayFacade(), 
+                    getArrayDataService(), dao, bioconductorService, getCopyNumberHandlerFactory())
                 .loadData(studyConfiguration);
         }
         studyConfiguration.setStatus(Status.DEPLOYED);
@@ -397,13 +399,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void addGenomicSource(StudyConfiguration studyConfiguration,
             GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException {
+    throws ConnectionException, ExperimentNotFoundException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
-        if (samples.isEmpty() && genomicSource.getCopyNumberDataConfiguration() == null) {
-            throw new NoSamplesForExperimentException("There were no samples found for experiment '" 
-            + genomicSource.getExperimentIdentifier() + "'");
-        }        
         studyConfiguration.getGenomicDataSources().add(genomicSource);
         genomicSource.setStudyConfiguration(studyConfiguration);
         genomicSource.setSamples(samples);
@@ -830,6 +828,20 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         }
         source.getCopyNumberDataConfiguration().setMappingFilePath(savedFile.getAbsolutePath());
         dao.save(source);
+    }
+
+    /**
+     * @return the copyNumberHandlerFactory
+     */
+    public CopyNumberHandlerFactory getCopyNumberHandlerFactory() {
+        return copyNumberHandlerFactory;
+    }
+
+    /**
+     * @param copyNumberHandlerFactory the copyNumberHandlerFactory to set
+     */
+    public void setCopyNumberHandlerFactory(CopyNumberHandlerFactory copyNumberHandlerFactory) {
+        this.copyNumberHandlerFactory = copyNumberHandlerFactory;
     }
 
 }

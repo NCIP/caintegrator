@@ -216,10 +216,9 @@ public interface StudyManagementService {
      * @param genomicSource genomic source to add
      * @throws ConnectionException if the configured server couldn't be reached.
      * @throws ExperimentNotFoundException if the experiment cannot be found.
-     * @throws NoSamplesForExperimentException if there are no samples for a valid experiment.
      */
     void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
-    throws ConnectionException, ExperimentNotFoundException, NoSamplesForExperimentException;
+    throws ConnectionException, ExperimentNotFoundException;
 
     /**
      * Adds a new, initialized image data source to the study. The <code>ImageSeriesAcquisition</code> related to this 
