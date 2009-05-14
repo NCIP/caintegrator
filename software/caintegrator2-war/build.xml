@@ -931,7 +931,8 @@
 
     <target name="deploy:rembrandt-copy-number" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test">
+        hibernate.cfg.xml.test,
+        database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
                  <pathelement path="${caintegrator2.war.test.dependencies.path}" />
