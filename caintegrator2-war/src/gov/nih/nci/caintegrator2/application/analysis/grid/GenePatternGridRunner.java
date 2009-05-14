@@ -86,9 +86,11 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -137,4 +139,14 @@ public interface GenePatternGridRunner {
     File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
             InvalidCriterionException; 
 
+    /**
+     * Runs Gistic grid service.
+     * @param studySubscription for current study.
+     * @param parameters for gistic.
+     * @return GisticResults retrieved from grid.
+     * @throws ConnectionException if unable to connect to grid service.
+     * @throws InvalidCriterionException if criterion is not valid.
+     */
+    List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
+        throws ConnectionException, InvalidCriterionException;
 }

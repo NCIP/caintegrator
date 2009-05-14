@@ -95,6 +95,8 @@ import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSe
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.client.PreprocessDatasetMAGEServiceClient;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.gistic.client.GisticClient;
+import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.client.PCAClient;
 import org.genepattern.pca.common.PCAI;
 
@@ -104,6 +106,10 @@ import org.genepattern.pca.common.PCAI;
 @SuppressWarnings("PMD.CyclomaticComplexity") // Error checking.
 public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFactory {
     
+    private static final String MALFORMED_URI = "Malformed URI.";
+    private static final String MUST_SPECIFY_GRID_URL = "Must specify grid URL";
+    private static final String REMOTE_CONNECTION_FAILED = "Remote Connection Failed.";
+    
     /**
      * {@inheritDoc}
      */
@@ -111,14 +117,14 @@ public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFa
     public PreprocessDatasetMAGEServiceI createPreprocessDatasetClient(ServerConnectionProfile server) 
     throws ConnectionException {
         if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
+            throw new IllegalArgumentException(MUST_SPECIFY_GRID_URL);
         }
         try {
             return new PreprocessDatasetMAGEServiceClient(server.getUrl());
         } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
+            throw new ConnectionException(MALFORMED_URI, e);
         } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
         }
     }
     
@@ -129,14 +135,14 @@ public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFa
     public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server) 
     throws ConnectionException {
         if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
+            throw new IllegalArgumentException(MUST_SPECIFY_GRID_URL);
         }
         try {
             return new ComparativeMarkerSelMAGESvcClient(server.getUrl());
         } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
+            throw new ConnectionException(MALFORMED_URI, e);
         } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
         }
     }
 
@@ -145,14 +151,30 @@ public class GenePatternGridClientFactoryImpl implements GenePatternGridClientFa
      */
     public PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException {
         if (server == null || server.getUrl() == null) {
-            throw new IllegalArgumentException("Must specify grid URL");
+            throw new IllegalArgumentException(MUST_SPECIFY_GRID_URL);
         }
         try {
             return new PCAClient(server.getUrl());
         } catch (MalformedURIException e) {
-            throw new ConnectionException("Malformed URI.", e);
+            throw new ConnectionException(MALFORMED_URI, e);
         } catch (RemoteException e) {
-            throw new ConnectionException("Remote Connection Failed.", e);
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public GisticI createGisticClient(ServerConnectionProfile server) throws ConnectionException {
+        if (server == null || server.getUrl() == null) {
+            throw new IllegalArgumentException(MUST_SPECIFY_GRID_URL);
+        }
+        try {
+            return new GisticClient(server.getUrl());
+        } catch (MalformedURIException e) {
+            throw new ConnectionException(MALFORMED_URI, e);
+        } catch (RemoteException e) {
+            throw new ConnectionException(REMOTE_CONNECTION_FAILED, e);
         }
     }
 

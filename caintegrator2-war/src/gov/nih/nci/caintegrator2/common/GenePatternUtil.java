@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -96,11 +97,17 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.cabig.icr.asbp.parameter.FloatParameter;
+import org.cabig.icr.asbp.parameter.IntegerParameter;
+import org.cabig.icr.asbp.parameter.StringParameter;
 
 
 /**
@@ -109,6 +116,51 @@ import java.util.Set;
 public final class GenePatternUtil {
     
     private GenePatternUtil() { }
+    
+    /**
+     * Creates the object which wraps gistic samples and markers from Cai2 objects.
+     * @param queryManagementService to query the database for samples.
+     * @param clinicalQuery is optional, but if given it will restrict the samples returned.
+     * @param studySubscription to run queries against and find samples for.
+     * @return Gistic object which wraps the Cai2 samples and markers found.
+     * @throws InvalidCriterionException if criterion is invalid and query cannot run.
+     */
+    public static GisticSamplesMarkers createGisticSamplesMarkers(QueryManagementService queryManagementService, 
+            Query clinicalQuery, StudySubscription studySubscription) throws InvalidCriterionException {
+        GisticSamplesMarkers gisticSamplesMarkers = new GisticSamplesMarkers();
+        Set<Query> clinicalQueries = new HashSet<Query>();
+        if (clinicalQuery != null) {
+            clinicalQueries.add(clinicalQuery);
+        }
+        Query query = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
+        QueryResult result = queryManagementService.execute(query);
+        convertCai2SamplesToGistic(clinicalQuery, studySubscription, gisticSamplesMarkers, result);
+        return gisticSamplesMarkers;
+    }
+
+    private static void convertCai2SamplesToGistic(Query clinicalQuery, StudySubscription studySubscription,
+            GisticSamplesMarkers gisticSamplesMarkers, QueryResult result) {
+        for (ResultRow row : result.getRowCollection()) {
+            if (row.getSampleAcquisition() != null) {
+                Sample sample = row.getSampleAcquisition().getSample();
+                // Note, if we are using an "ALL SAMPLES" query, don't include control samples.
+                if (clinicalQuery == null 
+                    && studySubscription.getStudy().getDefaultControlSampleSet().getSamples().contains(sample)) {
+                    continue;
+                }
+                addArrayDataToGistic(gisticSamplesMarkers, row, sample);
+            }
+        }
+    }
+
+    private static void addArrayDataToGistic(GisticSamplesMarkers gisticSamplesMarkers, ResultRow row, Sample sample) {
+        for (ArrayData arrayData : row.getSampleAcquisition().getSample().getArrayDataCollection()) {
+            if (ReporterTypeEnum.DNA_ANALYSIS_REPORTER.equals(arrayData.getReporterList().getReporterType())) {
+                gisticSamplesMarkers.addReporterListToGisticMarkers(arrayData.getReporterList());
+                gisticSamplesMarkers.addSegmentDataToGisticSamples(arrayData.getSegmentDatas(), sample);
+            }
+        }
+    }
     
     /**
      * Creates the sample classifications from the clinical queries.
@@ -155,6 +207,45 @@ public final class GenePatternUtil {
         Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         return new GctDataset(genomicData);
+    }
+    
+    /**
+     * Creates a parameter from given name/value pair.
+     * @param name of parameter.
+     * @param value of parameter.
+     * @return parameter based on name/value pair.
+     */
+    public static FloatParameter createParameter(String name, Float value) {
+        FloatParameter floatParameter = new FloatParameter();
+        floatParameter.setName(name);
+        floatParameter.setValue(value);
+        return floatParameter;
+    }
+    
+    /**
+     * Creates a parameter from given name/value pair.
+     * @param name of parameter.
+     * @param value of parameter.
+     * @return parameter based on name/value pair.
+     */
+    public static IntegerParameter createParameter(String name, Integer value) {
+        IntegerParameter integerParameter = new IntegerParameter();
+        integerParameter.setName(name);
+        integerParameter.setValue(value);
+        return integerParameter;
+    }
+    
+    /**
+     * Creates a parameter from given name/value pair.
+     * @param name of parameter.
+     * @param value of parameter.
+     * @return parameter based on name/value pair.
+     */
+    public static StringParameter createParameter(String name, String value) {
+        StringParameter stringParameter = new StringParameter();
+        stringParameter.setName(name);
+        stringParameter.setValue(value);
+        return stringParameter;
     }
     
 }
