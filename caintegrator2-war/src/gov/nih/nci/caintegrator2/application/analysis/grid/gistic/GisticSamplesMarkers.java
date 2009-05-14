@@ -138,7 +138,7 @@ public class GisticSamplesMarkers {
 
     private void addMarkerFromReporter(AbstractReporter reporter) {
         DnaAnalysisReporter dnaReporter = (DnaAnalysisReporter) reporter;
-        if (!usedReporters.contains(dnaReporter)) {
+        if (!usedReporters.contains(dnaReporter) && dnaReporter.hasValidLocation()) {
             usedReporters.add(dnaReporter);
             Marker marker = new Marker();
             marker.setChromosome(dnaReporter.getChromosome());
