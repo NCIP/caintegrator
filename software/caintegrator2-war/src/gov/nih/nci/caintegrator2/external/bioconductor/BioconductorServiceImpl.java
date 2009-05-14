@@ -196,7 +196,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         int index = 0;
         for (int i = 0; i < copyNumberData.getReporters().size(); i++) {
             DnaAnalysisReporter reporter = copyNumberData.getReporters().get(i);
-            if (hasValidLocation(reporter)) {
+            if (reporter.hasValidLocation()) {
                 values[index++] = copyNumberData.getValues(arrayData)[i];
             }
         }
@@ -209,7 +209,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         assays.setMapLocation(new long[reporterCount]);
         int index = 0;
         for (DnaAnalysisReporter reporter : copyNumberData.getReporters()) {
-            if (hasValidLocation(reporter)) {
+            if (reporter.hasValidLocation()) {
                 assays.setChromsomeId(index, getChromosomeAsInt(reporter.getChromosome()));
                 assays.setMapLocation(index++, reporter.getPosition());
             }
@@ -219,15 +219,11 @@ public class BioconductorServiceImpl implements BioconductorService {
     private int getReporterCount(List<DnaAnalysisReporter> reporters) {
        int reporterCount = 0;
        for (DnaAnalysisReporter reporter : reporters) {
-           if (hasValidLocation(reporter)) {
+           if (reporter.hasValidLocation()) {
                reporterCount++;
            }
        } 
        return reporterCount;
-    }
-
-    private boolean hasValidLocation(DnaAnalysisReporter reporter) {
-        return reporter.getChromosome() != null && reporter.getPosition() != null;
     }
 
     private int getChromosomeAsInt(String chromosome) {

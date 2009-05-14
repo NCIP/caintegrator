@@ -204,5 +204,13 @@ public class DnaAnalysisReporter extends AbstractReporter {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
+    
+    /**
+     * Verifies that the reporter has a valid location.
+     * @return T/F value.
+     */
+    public boolean hasValidLocation() {
+        return getChromosome() != null && getPosition() != null;
+    }
 
 }
