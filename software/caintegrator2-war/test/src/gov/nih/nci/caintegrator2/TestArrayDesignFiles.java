@@ -85,8 +85,6 @@
  */
 package gov.nih.nci.caintegrator2;
 
-import static gov.nih.nci.caintegrator2.TestDataFiles.getFile;
-
 import java.io.File;
 
 public class TestArrayDesignFiles {
@@ -145,5 +143,9 @@ public class TestArrayDesignFiles {
     public static final String AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH = "/arraydesign/agilent/AgilentG4502A_07_01.tcga.adf";
     public static final File HUMAN_GENOME_CGH244A_ANNOTATION_FILE = getFile(HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
     public static final File AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE = getFile(AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH);
+    
+    public static File getFile(String resourcePath) {
+        return new File(TestArrayDesignFiles.class.getResource(resourcePath).getFile());
+    }
 
 }

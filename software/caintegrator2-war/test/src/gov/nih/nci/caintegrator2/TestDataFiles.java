@@ -182,6 +182,7 @@ public class TestDataFiles {
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);
     }
+    
     public static File getFile(String resourcePath) {
         return new File(TestDataFiles.class.getResource(resourcePath).getFile());
     }
