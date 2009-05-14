@@ -137,7 +137,7 @@ public class NCIAFacadeTestIntegration {
         NCIADicomJob job = new NCIADicomJob();
         job.getImageSeriesIDs().add(seriesInstanceUID);
         job.getImageStudyIDs().add(studyInstanceUID);
-        job.setServerConnection(devConnection); // for the new retrieval it uses functions currently only on dev.
+        job.setServerConnection(connection);
         job.setImageAggregationType(NCIAImageAggregationTypeEnum.IMAGESERIES);
         File retrievedZip = nciaFacade.retrieveDicomFiles(job);
         File expectedZip = new File(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload" 
