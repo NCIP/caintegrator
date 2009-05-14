@@ -92,6 +92,8 @@ import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactory;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticGridRunner;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
@@ -101,6 +103,7 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -117,6 +120,7 @@ import java.util.Set;
 
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.common.PCAI;
 
 /**
@@ -130,6 +134,18 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     private FileManager fileManager;
     private final Map<String, String> reporterGeneSymbols = new HashMap<String, String>();
     private static final int DESCRIPTION_LENGTH = 200;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
+    throws ConnectionException, InvalidCriterionException {
+        GisticI gisticClient = genePatternGridClientFactory.createGisticClient(parameters.getServer());
+        GisticGridRunner runner = new GisticGridRunner(gisticClient);
+        
+        return runner.execute(parameters, GenePatternUtil.createGisticSamplesMarkers(queryManagementService,
+                                   parameters.getClinicalQuery(), studySubscription));
+    }
     
     /**
      * {@inheritDoc}

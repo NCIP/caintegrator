@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.gistic.common.GisticI;
 import org.genepattern.pca.common.PCAI;
 
 /**
@@ -122,5 +123,13 @@ public interface GenePatternGridClientFactory {
      * @throws ConnectionException if an error occurs connecting to server.
      */
     PCAI createPCAClient(ServerConnectionProfile server) throws ConnectionException;
+    
+    /**
+     * Retrieves client for Gistic.
+     * @param server for grid connection.
+     * @return client for Gistic.
+     * @throws ConnectionException if an error occurs connecting to server.
+     */
+    GisticI createGisticClient(ServerConnectionProfile server) throws ConnectionException;
 
 }

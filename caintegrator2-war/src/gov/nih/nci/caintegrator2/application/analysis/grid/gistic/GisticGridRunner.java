@@ -83,91 +83,92 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.query;
+package gov.nih.nci.caintegrator2.application.analysis.grid.gistic;
 
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
-import gov.nih.nci.caintegrator2.domain.application.Query;
-import gov.nih.nci.caintegrator2.domain.application.QueryResult;
-import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
-import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
+import edu.wustl.icr.asrv1.segment.ChromosomalSegment;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.io.File;
-import java.util.Collections;
+import java.math.BigInteger;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD")
-public class QueryManagementServiceStub implements QueryManagementService {
+import org.genepattern.gistic.common.GisticI;
+import org.genepattern.gistic.common.GisticUtils;
+import org.genepattern.gistic.stubs.types.InvalidParameterException;
 
-    public boolean saveCalled;
-    public boolean deleteCalled;
-    public boolean executeCalled;
-    public QueryResult QR = new QueryResult();
-    public boolean executeGenomicDataQueryCalled;
-    public boolean createCsvFileFromGenomicResultCalled;
-    private GenomicDataQueryResult expectedGenomicResult = new GenomicDataQueryResult();
+/**
+ * Runs the GenePattern grid service Gistic.
+ */
+public class GisticGridRunner {
 
-    public void save(Query query) {
-        query.setId(1L);
-        saveCalled = true;
-    }
-
-    public void delete(Query query) {
-        deleteCalled = true;
-    }
+    private final GisticI client;
     
-    @SuppressWarnings("unchecked")
-    public QueryResult execute(Query query) {
-        executeCalled = true;
-        QR.setQuery(query);
-        if (QR.getRowCollection() == null) {
-            QR.setRowCollection(Collections.EMPTY_SET);
+    /**
+     * Public Constructor.
+     * @param client of grid service.
+     */
+    public GisticGridRunner(GisticI client) {
+        this.client = client;
+    }
+
+    
+    /**
+     * Runs GISTIC based on input parameters.
+     * @param parameters from user input.
+     * @param gisticSamplesMarkers the wrapper object that contains the gistic samples and markers.
+     * @return Gistic Results.
+     * @throws ConnectionException if unable to connect.
+     */
+    public List<GisticResult> execute(GisticParameters parameters, GisticSamplesMarkers gisticSamplesMarkers) 
+    throws ConnectionException {
+        try {
+            ChromosomalSegment[] cnvSegmentsToIgnore = retrieveCnvSegmentsToIgnore(parameters);
+            return retrieveMarkerResultList(client.runAnalysis(parameters.createParameterList(), 
+                    cnvSegmentsToIgnore, parameters.createGenomeBuild(), 
+                    gisticSamplesMarkers.getMarkers(), gisticSamplesMarkers.getSamples()));
+        } catch (InvalidParameterException e) {
+            throw new ConnectionException("The given parameters were invalid.", e);
+        } catch (RemoteException e) {
+            throw new ConnectionException("Unable to connect to server.", e);
         }
-        return QR;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public GenomicDataQueryResult executeGenomicDataQuery(Query query) {
-        executeGenomicDataQueryCalled = true;
-        return expectedGenomicResult;
+    private ChromosomalSegment[] retrieveCnvSegmentsToIgnore(GisticParameters parameters) {
+        ChromosomalSegment[] cnvSegmentsToIgnore;
+        if (parameters.getCnvSegmentsToIgnoreFile() != null) {
+            cnvSegmentsToIgnore = 
+                GisticUtils.readChromosomalSegmentsFile(parameters.getCnvSegmentsToIgnoreFile().getAbsolutePath());
+        } else {
+            // Right now the GISTIC grid service doesn't allow for a null or empty cnvSegments parameter,
+            // so making up fake data so that it doesn't ignore anything.
+            cnvSegmentsToIgnore = new ChromosomalSegment[1];
+            ChromosomalSegment segment1 = new ChromosomalSegment();
+            segment1.setChromosomeNumber("invalidChromosome");
+            segment1.setSegmentEnd(BigInteger.ONE);
+            segment1.setSegmentStart(BigInteger.ZERO);
+            cnvSegmentsToIgnore[0] = segment1;
+        }
+        return cnvSegmentsToIgnore;
     }
 
-    public void clear() {
-        saveCalled = false;
-        executeCalled = false;
-        executeGenomicDataQueryCalled = false;
-        createCsvFileFromGenomicResultCalled = false;
+    private List<GisticResult> retrieveMarkerResultList(org.genepattern.gistic.GisticResult[] gisticResults) {
+        List<GisticResult> gisticResultList = new ArrayList<GisticResult>();
+        for (org.genepattern.gistic.GisticResult gisticResult : gisticResults) {
+            gisticResultList.add(createCai2GisticResult(gisticResult));
+        }
+        return gisticResultList;
     }
 
-
-    public NCIADicomJob createDicomJob(List<DisplayableResultRow> checkedRows) {
-        return new NCIADicomJob();
+    private GisticResult createCai2GisticResult(org.genepattern.gistic.GisticResult gisticResult) {
+        GisticResult cai2GisticResult = new GisticResult();
+        cai2GisticResult.setAmplification(gisticResult.isAmplification());
+        cai2GisticResult.setAmplitude(gisticResult.getAmplitude());
+        cai2GisticResult.setFrequency(gisticResult.getFrequency());
+        cai2GisticResult.setQValue(gisticResult.getQValue());
+        cai2GisticResult.setScore(gisticResult.getScore());
+        return cai2GisticResult;
     }
 
-
-    public NCIABasket createNciaBasket(List<DisplayableResultRow> checkedRows) {
-        return new NCIABasket();
-    }
-
-    /**
-     * @return the expectedGenomicResult
-     */
-    public GenomicDataQueryResult getExpectedGenomicResult() {
-        return expectedGenomicResult;
-    }
-
-    /**
-     * @param expectedGenomicResult the expectedGenomicResult to set
-     */
-    public void setExpectedGenomicResult(GenomicDataQueryResult expectedGenomicResult) {
-        this.expectedGenomicResult = expectedGenomicResult;
-    }
-
-    public File createCsvFileFromGenomicResults(GenomicDataQueryResult result) {
-        createCsvFileFromGenomicResultCalled = true;
-        return new File(System.getProperty("java.io.tmpdir"));
-    }
-    
 }
