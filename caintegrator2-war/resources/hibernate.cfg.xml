@@ -50,6 +50,7 @@
         <mapping resource="gov/nih/nci/caintegrator2/external/caarray/SampleIdentifier.hbm.xml" />        
         <!-- Domain Bean Mappings -->
         <mapping resource="gov/nih/nci/caintegrator2/domain/analysis/MarkerResult.hbm.xml" />
+        <mapping resource="gov/nih/nci/caintegrator2/domain/analysis/GisticResult.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/AnnotationDefinition.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/CommonDataElement.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/ValueDomain.hbm.xml" />

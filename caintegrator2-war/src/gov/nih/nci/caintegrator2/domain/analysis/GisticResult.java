@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.domain.analysis;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 
 /**
  * Wrapped <code>GisticResult</code> object from gene pattern.
@@ -94,22 +93,22 @@ import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 public class GisticResult extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
-    private boolean amplification;
+    private Boolean amplification;
     private Double amplitude;
     private Double score;
-    private Double qValue;
+    private Double qvalue;
     private Double frequency;
-    private SegmentData chromosomalSegment;
+    
     /**
      * @return the amplification
      */
-    public boolean isAmplification() {
+    public Boolean isAmplification() {
         return amplification;
     }
     /**
      * @param amplification the amplification to set
      */
-    public void setAmplification(boolean amplification) {
+    public void setAmplification(Boolean amplification) {
         this.amplification = amplification;
     }
     /**
@@ -137,16 +136,16 @@ public class GisticResult extends AbstractCaIntegrator2Object {
         this.score = score;
     }
     /**
-     * @return the qValue
+     * @return the qvalue
      */
-    public Double getQValue() {
-        return qValue;
+    public Double getQvalue() {
+        return qvalue;
     }
     /**
-     * @param value the qValue to set
+     * @param value the qvalue to set
      */
-    public void setQValue(Double value) {
-        qValue = value;
+    public void setQvalue(Double value) {
+        qvalue = value;
     }
     /**
      * @return the frequency
@@ -159,18 +158,6 @@ public class GisticResult extends AbstractCaIntegrator2Object {
      */
     public void setFrequency(Double frequency) {
         this.frequency = frequency;
-    }
-    /**
-     * @return the chromosomalSegment
-     */
-    public SegmentData getChromosomalSegment() {
-        return chromosomalSegment;
-    }
-    /**
-     * @param chromosomalSegment the chromosomalSegment to set
-     */
-    public void setChromosomalSegment(SegmentData chromosomalSegment) {
-        this.chromosomalSegment = chromosomalSegment;
     }
     
 }
