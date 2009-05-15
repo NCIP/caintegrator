@@ -166,7 +166,7 @@ public class GisticGridRunner {
         cai2GisticResult.setAmplification(gisticResult.isAmplification());
         cai2GisticResult.setAmplitude(gisticResult.getAmplitude());
         cai2GisticResult.setFrequency(gisticResult.getFrequency());
-        cai2GisticResult.setQValue(gisticResult.getQValue());
+        cai2GisticResult.setQvalue(gisticResult.getQValue());
         cai2GisticResult.setScore(gisticResult.getScore());
         return cai2GisticResult;
     }
