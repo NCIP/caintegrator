@@ -307,7 +307,7 @@ public class GenePatternGridRunnerImplTest {
         ReporterList reporterList = new ReporterList();
         reporterList.getReporters().addAll(reporters);
         reporterList.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        arrayData1.setReporterList(reporterList);
+        arrayData1.getReporterLists().add(reporterList);
         SegmentData segmentData = new SegmentData();
         segmentData.setNumberOfMarkers(1);
         segmentData.setSegmentValue(Float.valueOf(1));

@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -266,9 +267,10 @@ class GenomicQueryHandler {
             Collection<ArrayData> candidateArrayDatas,
             ReporterTypeEnum reporterType) {
         for (ArrayData arrayData : candidateArrayDatas) {
-            if (arrayData.getReporterList() != null 
-                    && reporterType.equals(arrayData.getReporterList().getReporterType())) {
-                matchingArrayDatas.add(arrayData);
+            for (ReporterList reporterList : arrayData.getReporterLists()) {
+                if (reporterType.equals(reporterList.getReporterType())) {
+                    matchingArrayDatas.add(arrayData);
+                }
             }
         }
     }
@@ -300,7 +302,7 @@ class GenomicQueryHandler {
     private Collection<AbstractReporter> getAllReporters(Collection<ArrayData> arrayDatas) {
         HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
         for (ArrayData arrayData : arrayDatas) {
-            reporters.addAll(arrayData.getReporterList().getReporters());
+            reporters.addAll(arrayData.getReporters());
         }
         return reporters;
     }

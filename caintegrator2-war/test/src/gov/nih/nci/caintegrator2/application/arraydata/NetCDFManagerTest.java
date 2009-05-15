@@ -93,7 +93,9 @@ import gov.nih.nci.caintegrator2.application.arraydata.NetCDFManager;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -157,7 +159,7 @@ public class NetCDFManagerTest {
         Study study = new Study();
         study.setId(1L);
         ArrayData arrayData = createArrayData(study);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         arrayData.setId(null);
         values.setFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
         manager.storeValues(values);
@@ -180,10 +182,15 @@ public class NetCDFManagerTest {
     
     @Test
     public void testStoreValues() throws IOException {
+        Platform platform = new Platform();
+        platform.setId(1l);
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         ReporterList reporterList = new ReporterList();
+        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setId(1L);
+        reporterList.setPlatform(platform);
+        platform.getReporterLists().add(reporterList);
         reporter1.setReporterList(reporterList);
         reporter1.setIndex(0);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
@@ -199,9 +206,9 @@ public class NetCDFManagerTest {
         Study study = new Study();
         study.setId(1L);
         ArrayData arrayData1 = createArrayData(study);
-        arrayData1.setReporterList(reporterList);
+        arrayData1.getReporterLists().add(reporterList);
         ArrayData arrayData2 = createArrayData(study);
-        arrayData2.setReporterList(reporterList);
+        arrayData2.getReporterLists().add(reporterList);
         
         // Store first set of values
         values.setFloatValue(arrayData1, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 1.1f);
@@ -222,7 +229,7 @@ public class NetCDFManagerTest {
         // Store additional values
         values = new ArrayDataValues(reporters);
         ArrayData arrayData3 = createArrayData(study);
-        arrayData3.setReporterList(reporterList);
+        arrayData3.getReporterLists().add(reporterList);
         values.setFloatValue(arrayData3, reporter1, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 13.13f);
         values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 14.14f);
         values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO, 15.15f);

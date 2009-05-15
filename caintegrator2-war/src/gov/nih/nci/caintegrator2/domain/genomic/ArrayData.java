@@ -1,10 +1,13 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * 
@@ -13,26 +16,12 @@ public class ArrayData extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
-    private ReporterList reporterList;
+    private Set<ReporterList> reporterLists = new HashSet<ReporterList>();
     private Sample sample;
     private Study study;
     private Array array;
     private ArrayDataType type;
     private SortedSet<SegmentData> segmentDatas = new TreeSet<SegmentData>();
-    
-    /**
-     * @return the reporterList
-     */
-    public ReporterList getReporterList() {
-        return reporterList;
-    }
-    
-    /**
-     * @param reporterList the reporterList to set
-     */
-    public void setReporterList(ReporterList reporterList) {
-        this.reporterList = reporterList;
-    }
     
     /**
      * @return the sample
@@ -82,7 +71,10 @@ public class ArrayData extends AbstractCaIntegrator2Object {
      * @return the reporter type.
      */
     public ReporterTypeEnum getReporterType() {
-        return getReporterList().getReporterType();
+        if (!reporterLists.isEmpty()) {
+            return getReporterLists().iterator().next().getReporterType();
+        } 
+        return null;
     }
 
     /**
@@ -121,6 +113,33 @@ public class ArrayData extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // Required by Hibernate
     private void setSegmentDatas(SortedSet<SegmentData> segmentDatas) {
         this.segmentDatas = segmentDatas;
+    }
+
+    /**
+     * @return the reporterLists
+     */
+    public Set<ReporterList> getReporterLists() {
+        return reporterLists;
+    }
+
+    /**
+     * @param reporterLists the reporterLists to set
+     */
+    @SuppressWarnings("unused") // Required by Hibernate
+    private void setReporterLists(Set<ReporterList> reporterLists) {
+        this.reporterLists = reporterLists;
+    }
+
+    /**
+     * Returns all reporters associated with this ArrayData.
+     * @return all abstract reporters found.
+     */
+    public Collection<AbstractReporter> getReporters() {
+        HashSet<AbstractReporter> reporters = new HashSet<AbstractReporter>();
+        for (ReporterList reporterList : getReporterLists()) {
+            reporters.addAll(reporterList.getReporters());
+        }
+        return reporters;
     }
 
 }

@@ -72,7 +72,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
     @SuppressWarnings("unchecked")
     private List<DnaAnalysisReporter> getReporters(Platform platform) {
         PlatformHelper helper = new PlatformHelper(platform);
-        List list = helper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER).getReporters();
+        List list = helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         return list;
     }
 

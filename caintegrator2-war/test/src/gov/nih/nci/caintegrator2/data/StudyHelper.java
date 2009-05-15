@@ -499,7 +499,7 @@ public class StudyHelper {
         reporter.setIndex(0);
         reporter.setName("REPORTER_" + sampleNum);
         reporterList.getReporters().add(reporter);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
     }

@@ -105,7 +105,7 @@ public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayDat
     public void compareFields(ArrayData original, ArrayData retrieved) {
         assertEquals(original.getStudy(), retrieved.getStudy());
         assertEquals(original.getArray(), retrieved.getArray());
-        assertEquals(original.getReporterList(), retrieved.getReporterList());
+        compareCollections(original.getReporterLists(), retrieved.getReporterLists(), ReporterListGenerator.INSTANCE);
         assertEquals(original.getSample(), retrieved.getSample());
         assertEquals(original.getType(), retrieved.getType());
         compareCollections(original.getSegmentDatas(), retrieved.getSegmentDatas(), SegmentDataGenerator.INSTANCE);
@@ -123,6 +123,12 @@ public final class ArrayDataGenerator extends AbstractTestDataGenerator<ArrayDat
             SegmentData segmentData = SegmentDataGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
             segmentData.setArrayData(arrayData);
             arrayData.getSegmentDatas().add(segmentData);
+        }
+        for (int i = 0; i < 3; i++) {
+            ReporterList reporterList = ReporterListGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
+            reporterList.getArrayDatas().add(arrayData);
+            arrayData.getReporterLists().add(reporterList);
+            nonCascadedObjects.add(reporterList);
         }
     }
 
