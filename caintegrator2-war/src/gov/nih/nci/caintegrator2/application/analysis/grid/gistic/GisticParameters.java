@@ -105,6 +105,8 @@ import org.cabig.icr.asbp.parameter.ParameterList;
 public class GisticParameters {
     private static final String REMOVE_X_YES = "Yes";
     private static final String REMOVE_X_NO = "No";
+    private static final int REMOVE_X_YES_VALUE = 1;
+    private static final int REMOVE_X_NO_VALUE = 0;
     private static final Float DEFAULT_AMPLIFICATIONS = .1f;
     private static final Float DEFAULT_DELETIONS = .1f;
     private static final Float DEFAULT_QV_THRESH = .25f;
@@ -118,7 +120,7 @@ public class GisticParameters {
     private Integer joinSegmentSize = 4;
     private Float qvThresh = DEFAULT_QV_THRESH;
     private String extension = ".gp_gistic";
-    private Integer removeX = getRemoveXOptions().get(REMOVE_X_YES);
+    private Integer removeX = REMOVE_X_YES_VALUE;
 
 
     /**
@@ -139,10 +141,10 @@ public class GisticParameters {
      * 
      * @return options list for the "removeX" parameter.
      */
-    public Map<String, Integer> getRemoveXOptions() {
-        Map<String, Integer> options = new HashMap<String, Integer>();
-        options.put(REMOVE_X_YES, 1);
-        options.put(REMOVE_X_NO, 0);
+    public Map<Integer, String> getRemoveXOptions() {
+        Map<Integer, String> options = new HashMap<Integer, String>();
+        options.put(REMOVE_X_YES_VALUE, REMOVE_X_YES);
+        options.put(REMOVE_X_NO_VALUE, REMOVE_X_NO);
         return options;
     }
     

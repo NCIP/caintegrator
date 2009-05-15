@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
@@ -172,6 +173,9 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         case PCA:
             jobRunner = new Thread(new PCAAjaxRunner(this, (PrincipalComponentAnalysisJob) job));
             break;
+        case GISTIC:
+            jobRunner = new Thread(new GisticAjaxRunner(this, (GisticAnalysisJob) job));
+            break;
         default:
             throw new IllegalStateException("Job type doesn't have an associated Runner");
         }
@@ -235,6 +239,11 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         case PCA:
             utilThis.setValue(JOB_URL + jobId, 
                     " - <a href=\"principalComponentAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
+                    false);
+            break;
+        case GISTIC:
+            utilThis.setValue(JOB_URL + jobId, 
+                    " - <a href=\"gisticAnalysisResults.action?jobId=" + jobId + "\">View</a>",
                     false);
             break;
         default:

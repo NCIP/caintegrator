@@ -83,74 +83,69 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.common;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.io.File;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+
+import java.util.List;
 
 /**
- * Configurable properties for caIntegrator 2.
+ * Wraps access to a <code>MarkerResult</code> object for easy use in display JSPs.
  */
-public enum ConfigurationParameter {
+public final class DisplayableGisticJobResult {
+    private static final int DEFAULT_PAGE_SIZE = 50;
+    private final Long jobId;
+    private final String jobName;
+    private final List<GisticResult> rows;
+    private int pageSize = DEFAULT_PAGE_SIZE;
     
-    /**
-     * Determines where Study files (NetCDF, annotation files, etc.) are stored on the system.
-     */
-    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir")),
-    
-    /**
-     * Determines where to store temporary files for download.
-     */
-    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"),
-    
-    /**
-     * 
-     */
-    USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles"),
-    
-    /**
-     * Default Grid index service URL.
-     */
-    GRID_INDEX_URL(
-            "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"),
-    
-    /**
-     * Default Preprocess Dataset service URL.
-     */
-    PREPROCESS_DATASET_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
-    
-    /**
-     * Default Comparative Marker Selection service URL.
-     */
-    COMPARATIVE_MARKER_SELECTION_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
-            
-    /**
-     * Default PCA service URL.
-     */
-    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"),
-            
-    /**
-     * Default GISTIC service URL.
-     */
-    GISTIC_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/Gistic"),
-    
-    /**
-     * Default CaDNACopy service URL.
-     */
-    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+    DisplayableGisticJobResult(GisticAnalysisJob gisticJob) {
+        this.jobId = gisticJob.getId();
+        this.jobName = gisticJob.getName();
+        this.rows = gisticJob.getResults();
+    }
 
-    private String defaultValue;
-
-    ConfigurationParameter(String defaultValue)  {
-        this.defaultValue = defaultValue;
+    /**
+     * @return the rows
+     */
+    public List<GisticResult> getRows() {
+        return rows;
     }
     
     /**
-     * @return the default value for the configuration parameter.
+     * @return the number of rows.
      */
-    public String getDefaultValue() {
-        return defaultValue;
+    public int getNumberOfRows() {
+        return getRows().size();
+    }
+    
+    /**
+     * @return the pageSize
+     */
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    /**
+     * @param pageSize the pageSize to set
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    /**
+     * @return the jobId
+     */
+    public Long getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @return the jobName
+     */
+    public String getJobName() {
+        return jobName;
     }
 
 }

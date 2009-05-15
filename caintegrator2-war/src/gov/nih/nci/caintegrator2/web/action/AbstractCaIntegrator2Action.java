@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAn
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -99,7 +100,9 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
+import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableGisticJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
+import gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
@@ -285,6 +288,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     }
 
     /**
+     * @return the gisticJobResult
+     */
+    public final DisplayableGisticJobResult getGisticJobResult() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getGisticJobResult();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @param queryResult the queryResult to set
      */
     protected final void setQueryResult(DisplayableQueryResult queryResult) {
@@ -335,6 +349,18 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getCurrentPrincipalComponentAnalysisJob().
                 getForm();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * @return the analysisForm
+     */
+    public GisticAnalysisForm getGisticAnalysisForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentGisticAnalysisJob().
+                getGisticAnalysisForm();
         } else {
             return null;
         }
@@ -398,6 +424,26 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     protected void resetCurrentPrincipalComponentAnalysisJob() {
         if (getDisplayableWorkspace() != null) {
             getDisplayableWorkspace().setCurrentPrincipalComponentAnalysisJob(new PrincipalComponentAnalysisJob());
+        }
+    }
+    
+    /**
+     * @return the currentGisticAnalysisJob.
+     */
+    public GisticAnalysisJob getCurrentGisticAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getCurrentGisticAnalysisJob();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Resets the current GISTIC job.
+     */
+    protected void resetCurrentGisticAnalysisJob() {
+        if (getDisplayableWorkspace() != null) {
+            getDisplayableWorkspace().setCurrentGisticAnalysisJob(new GisticAnalysisJob());
         }
     }
 

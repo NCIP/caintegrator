@@ -88,12 +88,15 @@ package gov.nih.nci.caintegrator2.application.analysis;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -111,12 +114,16 @@ public class AnalysisServiceStub implements AnalysisService {
     public boolean createGEPlotCalled;
     public boolean executeGenePatternJobCalled;
     public boolean executeComparativeMarkerSelectionJobCalled;
+    public boolean executePcaJobCalled;
+    public boolean executeGisticJobCalled;
     
     public void clear() {
         createKMPlotCalled = false;
         createGEPlotCalled = false;
         executeGenePatternJobCalled = false;
         executeComparativeMarkerSelectionJobCalled = false;
+        executePcaJobCalled = false;
+        executeGisticJobCalled = false;
     }
 
     /**
@@ -179,7 +186,13 @@ public class AnalysisServiceStub implements AnalysisService {
 
     public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters)
             throws ConnectionException {
-        
+        executePcaJobCalled = true;
+        return null;
+    }
+
+    public List<GisticResult> executeGridGistic(StudySubscription studySubscription, GisticParameters gisticParams)
+            throws ConnectionException, InvalidCriterionException {
+        executeGisticJobCalled = true;
         return null;
     }
 
