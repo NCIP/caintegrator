@@ -424,6 +424,31 @@
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>
+    </bean> 
+    
+    <bean id="gisticAnalysisAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisAction">
+        <property name="analysisService">
+            <ref local="analysisService"/>
+        </property>
+        <property name="queryManagementService">
+            <ref local="queryManagementService"/>
+        </property>
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="ajaxUpdater">
+            <ref local="persistedAnalysisJobAjaxUpdater"/>
+        </property>
+    </bean>
+    
+    <bean id="gisticAnalysisResultsAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisResultsAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
     </bean>
     
    <bean id="kmPlotAnnotationBasedAction"

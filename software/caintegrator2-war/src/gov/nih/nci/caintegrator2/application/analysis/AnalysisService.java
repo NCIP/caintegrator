@@ -92,11 +92,13 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -151,6 +153,18 @@ public interface AnalysisService {
      */
     File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
             InvalidCriterionException;
+    
+    /**
+     * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
+     * @param studySubscription current study subscription.
+     * @param gisticParams for gistic.
+     * @return GisticResult Result objects.
+     * @throws ConnectionException if unable to connect to grid.
+     * @throws InvalidCriterionException if criterion is not valid.
+     */
+    List<GisticResult> executeGridGistic(StudySubscription studySubscription,
+            GisticParameters gisticParams) 
+            throws ConnectionException, InvalidCriterionException;
     
     /**
      * Creates a KMPlot object based on clinical subjects for the given parameters.
