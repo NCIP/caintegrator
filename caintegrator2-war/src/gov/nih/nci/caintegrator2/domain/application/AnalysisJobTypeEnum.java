@@ -22,7 +22,12 @@ public enum AnalysisJobTypeEnum {
     /**
      * PCA.
      */
-    PCA("Principal Component Analysis");
+    PCA("Principal Component Analysis"),
+
+    /**
+     * GISTIC.
+     */
+    GISTIC("Gistic");
     
     private static Map<String, AnalysisJobTypeEnum> valueToTypeMap = 
                     new HashMap<String, AnalysisJobTypeEnum>();

@@ -83,145 +83,97 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
-import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
-import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-
-import javax.servlet.ServletException;
-
-import org.acegisecurity.context.SecurityContextHolder;
-import org.directwebremoting.WebContextFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.opensymphony.xwork2.ActionContext;
-
-
-public class PersistedAnalysisJobAjaxUpdaterTest {
-
-    private PersistedAnalysisJobAjaxUpdater updater;
-    private DwrUtilFactory dwrUtilFactory;
-    private WorkspaceServiceGPJobStub workspaceService;
-    private AnalysisServiceStub analysisService;
-    private ComparativeMarkerSelectionAnalysisJob cmsJob;
-    private GenePatternAnalysisJob gpJob;
-    private PrincipalComponentAnalysisJob pcaJob;
-    private GisticAnalysisJob gisticJob;
-
-    @Before
-    public void setUp() throws Exception {
-        updater = new PersistedAnalysisJobAjaxUpdater();
-        dwrUtilFactory = new DwrUtilFactory();
-        workspaceService = new WorkspaceServiceGPJobStub();
-        analysisService = new AnalysisServiceStub();
-        analysisService.clear();
-        workspaceService.clear();
-        updater.setWorkspaceService(workspaceService);
-        updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setAnalysisService(analysisService);
-        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
-        ActionContext.getContext().setSession(new HashMap<String, Object>());
-        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
-        setupJobs();
-    }
+/**
+ * 
+ */
+public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
     
-    private void setupJobs() {
-        cmsJob = new ComparativeMarkerSelectionAnalysisJob();
-        cmsJob.setName("Job");
-        cmsJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        cmsJob.setCreationDate(new Date());
-        cmsJob.setLastUpdateDate(new Date());
-        cmsJob.setId(Long.valueOf(1));
-        gpJob = new GenePatternAnalysisJob();
-        gpJob.setName("Job");
-        gpJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        gpJob.setCreationDate(new Date());
-        gpJob.setId(Long.valueOf(1));
-        pcaJob = new PrincipalComponentAnalysisJob();
-        pcaJob.setName("Job");
-        pcaJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        pcaJob.setCreationDate(new Date());
-        pcaJob.setId(Long.valueOf(1));
-        gisticJob = new GisticAnalysisJob();
-        gisticJob.setName("Job");
-        gisticJob.setStatus(AnalysisJobStatusEnum.SUBMITTED);
-        gisticJob.setCreationDate(new Date());
-        gisticJob.setId(Long.valueOf(1));
-    }
+    private static final long serialVersionUID = 1L;
 
-    @Test
-    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
-        updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(cmsJob));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
-    }
-    
-    @Test
-    public void testRunJob() throws InterruptedException {
-        
-        updater.runJob(cmsJob);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeComparativeMarkerSelectionJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(cmsJob.getStatus()));
-        
-        updater.runJob(gpJob);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeGenePatternJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(gpJob.getStatus()));
-        
-        updater.runJob(pcaJob);
-        Thread.sleep(500);
-        assertTrue(analysisService.executePcaJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(pcaJob.getStatus()));
-        
-        updater.runJob(gisticJob);
-        Thread.sleep(500);
-        assertTrue(analysisService.executeGisticJobCalled);
-        assertTrue(AnalysisJobStatusEnum.COMPLETED.equals(gisticJob.getStatus()));
+    private static final int DEFAULT_PAGE_SIZE = 50;
+    private Long jobId;
 
-    }
-    
-    private final class WorkspaceServiceGPJobStub extends WorkspaceServiceStub {
-        @Override
-        public UserWorkspace getWorkspace() {
-            UserWorkspace workspace = new UserWorkspace();
-            workspace.setUsername("Test");
-            StudySubscription subscription = new StudySubscription();
-            subscription.setId(Long.valueOf(1));
-            subscription.setUserWorkspace(workspace);
-            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
-            workspace.getSubscriptionCollection().add(subscription);
-            cmsJob.setSubscription(subscription);
-            gpJob.setSubscription(subscription);
-            subscription.getAnalysisJobCollection().add(cmsJob);
-            subscription.getAnalysisJobCollection().add(gpJob);
-            return workspace;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (jobId == null) {
+            addActionError("No job id for GISTIC specified.");
         }
     }
-    private final class PersistedJobStub implements PersistedJob {
 
-        public UserWorkspace getUserWorkspace() {
-            return null;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String execute() {
+        if (getDisplayableWorkspace().getGisticJobResult() == null
+                || jobId.compareTo(getDisplayableWorkspace().getGisticJobResult().getJobId()) != 0) {
+            loadJob();
         }
+        return SUCCESS;
+    }
+    
+    private void loadJob() {
+        for (AbstractPersistedAnalysisJob job
+                : getStudySubscription().getAnalysisJobCollection()) {
+            if (jobId.compareTo(job.getId()) == 0) {
+                if (!AnalysisJobTypeEnum.GISTIC.getValue().equals(job.getJobType())) {
+                    throw new IllegalStateException("Job Id " + jobId 
+                            + " isn't a Gistic job type");
+                }
+                GisticAnalysisJob gisticJob = (GisticAnalysisJob) job;
+                Cai2Util.loadCollection(gisticJob.getResults());
+                getDisplayableWorkspace().setGisticJobResult(
+                        new DisplayableGisticJobResult(gisticJob));
+                return;
+            }
+        }
+        addActionError("GISTIC job not found: " + jobId);
+    }
+
+    /**
+     * @return the jobId
+     */
+    public Long getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+    
+    /**
+     * @return page size
+     */
+    public int getPageSize() {
+        if (getGisticJobResult() != null) {
+            return getGisticJobResult().getPageSize();
+        }
+        return DEFAULT_PAGE_SIZE;
+    }
         
+    /**
+     * Set the page size.
+     * @param pageSize the page size
+     */
+    public void setPageSize(int pageSize) {
+        if (getGisticJobResult() != null) {
+            getGisticJobResult().setPageSize(pageSize);
+        }
     }
 
 }

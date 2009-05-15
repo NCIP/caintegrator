@@ -70,6 +70,9 @@
         <default-interceptor-ref name="cai2ParamsPrepareParamsStack" />
         
         <!--  Navigation Actions -->
+        <!--  Navigation Actions -->
+        <!--  Navigation Actions -->
+        
         <action name="notYetImplemented" class="emptyAction">
             <result type="tiles">notYetImplemented</result>
         </action>
@@ -98,6 +101,8 @@
             <result name="workspaceNoStudy" type="tiles">homepage</result>
         </action>
         
+        <!--  Study Actions -->
+        <!--  Study Actions -->
         <!--  Study Actions -->
    
         <action name="manageStudies" method="manageStudies" class="editStudyAction">
@@ -380,6 +385,8 @@
         </action>
                 
         <!--  Query Actions -->
+        <!--  Query Actions -->
+        <!--  Query Actions -->
         
         <action name="newQuery" class="newQueryAction">
             <result type="redirectAction">
@@ -418,6 +425,8 @@
         </action>
 
         <!--  Analysis Actions -->
+        <!--  Analysis Actions -->
+        <!--  Analysis Actions -->
    
         <action name="selectAnalysis" class="selectAnalysisAction">
             <result name="genePatternModules" type="redirectAction">
@@ -428,6 +437,9 @@
             </result>
             <result name="principalComponentAnalysis" type="redirectAction">
                 <param name="actionName">principalComponentAnalysis</param>
+            </result>
+            <result name="gistic" type="redirectAction">
+                <param name="actionName">gisticAnalysis</param>
             </result>
             <result name="error" type="tiles">genePatternAnalysisStatus</result>
             <result name="input" type="tiles">genePatternAnalysisStatus</result>
@@ -478,13 +490,32 @@
             </result>
         </action>
         
+        <action name="gisticAnalysis" class="gisticAnalysisAction">
+            <result type="tiles">gisticAnalysis</result>
+            <result name="status" type="redirectAction">
+                <param name="actionName">genePatternAnalysisStatus</param>
+            </result>
+            <result name="input" type="tiles">gisticAnalysis</result>
+        </action>
+        
+        <action name="gisticAnalysisResults" class="gisticAnalysisResultsAction">
+            <result type="tiles">gisticAnalysisResults</result>
+            <result name="input" type="tiles">gisticAnalysisResults</result>
+        </action>
+        
         <!-- Kaplan-Meier Actions -->
+        <!-- Kaplan-Meier Actions -->
+        <!-- Kaplan-Meier Actions -->
+        
         <action name="initializeKmPlot" method="initializeKmPlot" class="kmPlotAnnotationBasedAction">
             <result type="tiles">kmPlot</result>
             <result name="input" type="tiles">homepage</result>
         </action>
 
         <!-- Annotation Based Kaplan-Meier Actions -->
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        <!-- Annotation Based Kaplan-Meier Actions -->
+        
         <action name="kmPlotAnnotationBasedInput" method="input" class="kmPlotAnnotationBasedAction">
             <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotAnnotationBased_tab.jsp</result>
@@ -517,6 +548,9 @@
         </action>
         
         <!-- Gene Expression Based Kaplan-Meier Actions -->
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        <!-- Gene Expression Based Kaplan-Meier Actions -->
+        
         <action name="kmPlotGeneExpressionBasedInput" method="input" class="kmPlotGeneExpressionBasedAction">
             <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotGeneExpressionBased_tab.jsp</result>
@@ -539,6 +573,9 @@
         </action>
         
         <!-- Query Based Kaplan-Meier Actions -->
+        <!-- Query Based Kaplan-Meier Actions -->
+        <!-- Query Based Kaplan-Meier Actions -->
+        
         <action name="kmPlotQueryBasedInput" method="input" class="kmPlotQueryBasedAction">
             <result>/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/kmPlot/kmPlotQueryBased_tab.jsp</result>
@@ -563,12 +600,18 @@
         </action>
         
         <!-- GeneExpression Plot Actions -->
+        <!-- GeneExpression Plot Actions -->
+        <!-- GeneExpression Plot Actions -->
+        
         <action name="initializeGePlot" method="initializeGePlot" class="gePlotAnnotationBasedAction">
             <result type="tiles">gePlot</result>
             <result name="input" type="tiles">homepage</result>
         </action>
 
         <!-- Annotation Based GeneExpression Plot Actions -->
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        <!-- Annotation Based GeneExpression Plot Actions -->
+        
         <action name="gePlotAnnotationBasedInput" method="input" class="gePlotAnnotationBasedAction">
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotAnnotationBased_tab.jsp</result>
@@ -625,6 +668,9 @@
         </action>
         
         <!-- Genomic Query based Gene Expression plots -->
+        <!-- Genomic Query based Gene Expression plots -->
+        <!-- Genomic Query based Gene Expression plots -->
+        
         <action name="gePlotGenomicQueryBasedInput" method="input" class="gePlotGenomicQueryBasedAction">
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotGenomicQueryBased_tab.jsp</result>
@@ -669,6 +715,9 @@
         </action>
         
         <!-- Clinical Query based Gene Expression plots -->
+        <!-- Clinical Query based Gene Expression plots -->
+        <!-- Clinical Query based Gene Expression plots -->
+        
         <action name="gePlotClinicalQueryBasedInput" method="input" class="gePlotClinicalQueryBasedAction">
             <result>/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
             <result name="input">/WEB-INF/jsp/tiles/gePlot/gePlotClinicalQueryBased_tab.jsp</result>
@@ -715,6 +764,9 @@
         </action>
                
         <!-- Platform Actions -->
+        <!-- Platform Actions -->
+        <!-- Platform Actions -->
+        
         <action name="managePlatforms" class="managePlatformsAction">
             <param name="selectedAction">managePlatforms</param>
             <result type="tiles">managePlatforms</result>

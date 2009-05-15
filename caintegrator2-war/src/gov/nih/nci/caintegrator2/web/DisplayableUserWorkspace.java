@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -96,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
+import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableGisticJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
@@ -113,6 +115,7 @@ import com.opensymphony.xwork2.util.ValueStack;
 /**
  * Session singleton object used for displaying user workspace items such as Study's, Queries, and Lists.
  */
+@SuppressWarnings("PMD.TooManyFields") // Keep track of all current jobs
 public class DisplayableUserWorkspace {
 
     /**
@@ -126,25 +129,28 @@ public class DisplayableUserWorkspace {
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
     private static final String CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY = "cmsJobResult";
+    private static final String CURRENT_GISTICJOB_RESULT_VALUE_STACK_KEY = "gisticJobResult";
     private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
     private GenePatternAnalysisJob currentGenePatternAnalysisJob = new GenePatternAnalysisJob();
     private ComparativeMarkerSelectionAnalysisJob currentComparativeMarkerSelectionAnalysisJob
         = new ComparativeMarkerSelectionAnalysisJob();
-    private PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob = new PrincipalComponentAnalysisJob();
+    private PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob
+        = new PrincipalComponentAnalysisJob();
+    private GisticAnalysisJob currentGisticAnalysisJob = new GisticAnalysisJob();
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
     private DisplayableQueryResult queryResult;
     private DisplayableCmsJobResult cmsJobResult;
+    private DisplayableGisticJobResult gisticJobResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIADicomJob dicomJob;
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
     private boolean createPlotSelected = false;
     private boolean createPlotRunning = false;
     private String temporaryDownloadFile;
-    
     
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -216,6 +222,7 @@ public class DisplayableUserWorkspace {
             setGenomicDataQueryResult(null);
             getQueryForm().setQuery(null);
             setCmsJobResult(null);
+            setGisticJobResult(null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
         putCurrentStudyOnValueStack();
@@ -261,6 +268,7 @@ public class DisplayableUserWorkspace {
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
         getValueStack().set(CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY, getCmsJobResult());
+        getValueStack().set(CURRENT_GISTICJOB_RESULT_VALUE_STACK_KEY, getGisticJobResult());
     }
 
     /**
@@ -291,6 +299,21 @@ public class DisplayableUserWorkspace {
     public void setCmsJobResult(DisplayableCmsJobResult cmsJobResult) {
         this.cmsJobResult = cmsJobResult;
         getValueStack().set(CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY, cmsJobResult);
+    }
+
+    /**
+     * @return the gisticJobResult
+     */
+    public DisplayableGisticJobResult getGisticJobResult() {
+        return gisticJobResult;
+    }
+
+    /**
+     * @param gisticJobResult the gisticJobResult to set
+     */
+    public void setGisticJobResult(DisplayableGisticJobResult gisticJobResult) {
+        this.gisticJobResult = gisticJobResult;
+        getValueStack().set(CURRENT_GISTICJOB_RESULT_VALUE_STACK_KEY, gisticJobResult);
     }
 
     /**
@@ -465,6 +488,21 @@ public class DisplayableUserWorkspace {
     public void setCurrentPrincipalComponentAnalysisJob(
             PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob) {
         this.currentPrincipalComponentAnalysisJob = currentPrincipalComponentAnalysisJob;
+    }
+
+    /**
+     * @return the currentGisticAnalysisJob
+     */
+    public GisticAnalysisJob getCurrentGisticAnalysisJob() {
+        return currentGisticAnalysisJob;
+    }
+
+    /**
+     * @param currentGisticAnalysisJob the currentGisticAnalysisJob to set
+     */
+    public void setCurrentGisticAnalysisJob(
+            GisticAnalysisJob currentGisticAnalysisJob) {
+        this.currentGisticAnalysisJob = currentGisticAnalysisJob;
     }
 
 }

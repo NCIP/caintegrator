@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEP
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
@@ -101,6 +102,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -165,6 +167,16 @@ public class AnalysisServiceImpl implements AnalysisService {
         throws ConnectionException, InvalidCriterionException {
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(
                             studySubscription, preprocessParams, comparativeMarkerParams);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @throws InvalidCriterionException 
+     */
+    public List<GisticResult> executeGridGistic(StudySubscription studySubscription,
+                                             GisticParameters gisticParams) 
+        throws ConnectionException, InvalidCriterionException {
+        return genePatternGridRunner.runGistic(studySubscription, gisticParams);
     }
     
     /**

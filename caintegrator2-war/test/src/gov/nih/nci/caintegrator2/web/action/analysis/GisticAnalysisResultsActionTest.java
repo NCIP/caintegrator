@@ -83,74 +83,83 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.common;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-/**
- * Configurable properties for caIntegrator 2.
- */
-public enum ConfigurationParameter {
-    
-    /**
-     * Determines where Study files (NetCDF, annotation files, etc.) are stored on the system.
-     */
-    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir")),
-    
-    /**
-     * Determines where to store temporary files for download.
-     */
-    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"),
-    
-    /**
-     * 
-     */
-    USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles"),
-    
-    /**
-     * Default Grid index service URL.
-     */
-    GRID_INDEX_URL(
-            "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"),
-    
-    /**
-     * Default Preprocess Dataset service URL.
-     */
-    PREPROCESS_DATASET_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
-    
-    /**
-     * Default Comparative Marker Selection service URL.
-     */
-    COMPARATIVE_MARKER_SELECTION_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
-            
-    /**
-     * Default PCA service URL.
-     */
-    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"),
-            
-    /**
-     * Default GISTIC service URL.
-     */
-    GISTIC_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/Gistic"),
-    
-    /**
-     * Default CaDNACopy service URL.
-     */
-    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+import java.util.HashMap;
 
-    private String defaultValue;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
 
-    ConfigurationParameter(String defaultValue)  {
-        this.defaultValue = defaultValue;
+import com.opensymphony.xwork2.ActionContext;
+
+public class GisticAnalysisResultsActionTest {
+    
+    private GisticAnalysisResultsAction action;
+
+    @Before
+    public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        StudySubscription subscription = new StudySubscription();
+        Study study = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setStatus(Status.DEPLOYED);
+        study.setStudyConfiguration(studyConfiguration);
+        subscription.setStudy(study);
+        GisticAnalysisJob job = new GisticAnalysisJob();
+        job.setId(1L);
+        subscription.getAnalysisJobCollection().add(job);
+        job = new GisticAnalysisJob();
+        job.setId(2L);
+        subscription.getAnalysisJobCollection().add(job);
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudySubscription(subscription);
+        ActionContext.getContext().getValueStack().setValue("studySubscription", subscription);
+        action = new GisticAnalysisResultsAction();
+        action.setWorkspaceService(new WorkspaceServiceStub());
     }
     
-    /**
-     * @return the default value for the configuration parameter.
-     */
-    public String getDefaultValue() {
-        return defaultValue;
+    @Test
+    public void testValidate() {
+        action.validate();
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.setJobId(1L);
+        action.validate();
+        assertFalse(action.hasErrors());
+    }
+        
+    @Test
+    public void testExecute() {
+        
+        assertEquals(50, action.getPageSize());
+        action.setPageSize(100);
+        assertEquals(50, action.getPageSize());
+        
+        action.setJobId(3L);
+        assertEquals("success", action.execute());
+        assertTrue(action.hasErrors());
+        action.clearErrorsAndMessages();
+        action.setJobId(2L);
+        assertEquals("success", action.execute());
+        assertFalse(action.hasErrors());
+        assertEquals("success", action.execute());
+        assertFalse(action.hasErrors());
+
+        action.setPageSize(100);
+        assertEquals(100, action.getPageSize());
     }
 
 }

@@ -5,7 +5,11 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 
 <tiles-definitions>
+    
     <!-- Templates -->
+    <!-- Templates -->
+    <!-- Templates -->
+    
     <definition name="cssBaseDef" template="/WEB-INF/jsp/cssLayout.jsp">
         <!--  the common criteria  -->
         <put-attribute name="globalHeader" value="/WEB-INF/jsp/tiles/globalHeader_tile.jsp" />
@@ -16,6 +20,8 @@
         <put-attribute name="content" value="" />
     </definition>
 
+    <!-- Pages -->
+    <!-- Pages -->
     <!-- Pages -->
     
     <definition name="editSurvivalValueDefinitions" extends="cssBaseDef">
@@ -112,25 +118,41 @@
     </definition>
 
     <!-- Query Management pages -->
+    <!-- Query Management pages -->
+    <!-- Query Management pages -->
+    
     <definition name="manageQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
+    
     <!-- Needs to open up the Search Results tab -->
+    <!-- Needs to open up the Search Results tab -->
+    <!-- Needs to open up the Search Results tab -->
+    
     <definition name="viewResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
     
     <!-- Needs to open up the Save As... tab -->
+    <!-- Needs to open up the Save As... tab -->
+    <!-- Needs to open up the Save As... tab -->
+    
     <definition name="saveQuery" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/manageQuery_tile.jsp" />
     </definition>
     
     <!-- Needs to open up the Download page -->
+    <!-- Needs to open up the Download page -->
+    <!-- Needs to open up the Download page -->
+    
     <definition name="exportSearchResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/exportSearchResults_tile.jsp" />
     </definition>
 
     <!-- Analysis pages -->
+    <!-- Analysis pages -->
+    <!-- Analysis pages -->
+    
     <definition name="genePatternAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysis_tile.jsp" />
     </definition>
@@ -138,8 +160,7 @@
     <definition name="genePatternAnalysisStatus" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisStatus_tile.jsp" />
     </definition>
-
-    <!-- Analysis pages -->
+    
     <definition name="genePatternAnalysisResults" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/genePatternAnalysisResults_tile.jsp" />
     </definition>
@@ -155,6 +176,18 @@
     <definition name="principalComponentAnalysis" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/principalComponentAnalysis_tile.jsp" />
     </definition>
+    
+    <definition name="gisticAnalysis" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/gisticAnalysis_tile.jsp" />
+    </definition>
+    
+    <definition name="gisticAnalysisResults" extends="cssBaseDef">
+        <put-attribute name="content" value="/WEB-INF/jsp/tiles/gisticAnalysisResults_tile.jsp" />
+    </definition>
+    
+    <!-- Plot pages -->
+    <!-- Plot pages -->
+    <!-- Plot pages -->
 
     <definition name="kmPlot" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/kmPlot/kmPlot_tile.jsp" />
@@ -165,6 +198,9 @@
     </definition>
 
     <!-- Platform pages -->
+    <!-- Platform pages -->
+    <!-- Platform pages -->
+    
     <definition name="managePlatforms" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/managePlatforms_tile.jsp" />
     </definition>

@@ -83,74 +83,75 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.common;
+package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import java.io.File;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
+import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Configurable properties for caIntegrator 2.
+ * Used for Struts representation of the currently configured analysis method.
  */
-public enum ConfigurationParameter {
+public class GisticAnalysisForm {
     
-    /**
-     * Determines where Study files (NetCDF, annotation files, etc.) are stored on the system.
-     */
-    STUDY_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir")),
+    private GisticParameters gisticParameters;
     
-    /**
-     * Determines where to store temporary files for download.
-     */
-    TEMP_DOWNLOAD_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "tmpDownload"),
+    private final ServerConnectionProfile server = new ServerConnectionProfile();
+
+    private String selectedQuery = null;
     
+    // JSP Select List Options
+    private Map<String, String> clinicalQueries = new HashMap<String, String>();
+
     /**
      * 
+     * @return the server.
      */
-    USER_FILE_STORAGE_DIRECTORY(System.getProperty("java.io.tmpdir") + File.separator + "cai2UserFiles"),
-    
-    /**
-     * Default Grid index service URL.
-     */
-    GRID_INDEX_URL(
-            "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"),
-    
-    /**
-     * Default Preprocess Dataset service URL.
-     */
-    PREPROCESS_DATASET_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService"),
-    
-    /**
-     * Default Comparative Marker Selection service URL.
-     */
-    COMPARATIVE_MARKER_SELECTION_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
-            
-    /**
-     * Default PCA service URL.
-     */
-    PCA_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA"),
-            
-    /**
-     * Default GISTIC service URL.
-     */
-    GISTIC_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/Gistic"),
-    
-    /**
-     * Default CaDNACopy service URL.
-     */
-    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
-
-    private String defaultValue;
-
-    ConfigurationParameter(String defaultValue)  {
-        this.defaultValue = defaultValue;
-    }
-    
-    /**
-     * @return the default value for the configuration parameter.
-     */
-    public String getDefaultValue() {
-        return defaultValue;
+    public ServerConnectionProfile getServer() {
+        return server;
     }
 
+    /**
+     * @return the gisticParameters
+     */
+    public GisticParameters getGisticParameters() {
+        return gisticParameters;
+    }
+
+    /**
+     * @param gisticParameters the gisticParameters to set
+     */
+    public void setGisticParameters(GisticParameters gisticParameters) {
+        this.gisticParameters = gisticParameters;
+    }
+
+    /**
+     * @return the selectedQueryIDs
+     */
+    public String getSelectedQuery() {
+        return selectedQuery;
+    }
+
+    /**
+     * @param selectedQuery the selectedQueryIDs to set
+     */
+    public void setSelectedQuery(String selectedQuery) {
+        this.selectedQuery = selectedQuery;
+    }
+
+    /**
+     * @return the unselectedQueries
+     */
+    public Map<String, String> getClinicalQueries() {
+        return clinicalQueries;
+    }
+
+    /**
+     * @param clinicalQueries the clinicalQueries to set
+     */
+    public void setClinicalQueries(Map<String, String> clinicalQueries) {
+        this.clinicalQueries = clinicalQueries;
+    }
 }

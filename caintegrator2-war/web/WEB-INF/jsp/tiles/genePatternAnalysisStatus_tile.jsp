@@ -33,7 +33,8 @@
             <s:select id="analysisType" name="analysisType" label="Analysis Type" value="GPM" 
                 list="#{'genePatternModules':'Gene Pattern Modules', 
                         'comparativeMarkerSelection':'Comparative Marker Selection (Grid Service)',
-                        'principalComponentAnalysis':'Principal Component Analysis (Grid Service)'}" />
+                        'principalComponentAnalysis':'Principal Component Analysis (Grid Service)',
+                        'gistic':'GISTIC (Grid Service)'}" />
         </td>
         <td>
             <s:submit value="New Analysis Job" action="selectAnalysis" />
