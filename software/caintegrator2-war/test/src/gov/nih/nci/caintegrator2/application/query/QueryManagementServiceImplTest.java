@@ -202,11 +202,12 @@ public class QueryManagementServiceImplTest {
         reporterList.getReporters().add(reporter);
         reporter.setReporterList(reporterList);
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
-        arrayData2.setReporterList(new ReporterList());
-        arrayData2.getReporterList().getArrayDatas().add(arrayData2);
-        arrayData2.getReporterList().setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        ReporterList reporterList2 = new ReporterList();
+        arrayData2.getReporterLists().add(reporterList2);
+        reporterList2.getArrayDatas().add(arrayData2);
+        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());

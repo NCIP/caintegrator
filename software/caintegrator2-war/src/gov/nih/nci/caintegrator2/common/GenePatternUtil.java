@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
@@ -155,9 +156,15 @@ public final class GenePatternUtil {
 
     private static void addArrayDataToGistic(GisticSamplesMarkers gisticSamplesMarkers, ResultRow row, Sample sample) {
         for (ArrayData arrayData : row.getSampleAcquisition().getSample().getArrayDataCollection()) {
-            if (ReporterTypeEnum.DNA_ANALYSIS_REPORTER.equals(arrayData.getReporterList().getReporterType())) {
-                gisticSamplesMarkers.addReporterListToGisticMarkers(arrayData.getReporterList());
-                gisticSamplesMarkers.addSegmentDataToGisticSamples(arrayData.getSegmentDatas(), sample);
+            boolean segmentDataAdded = false;
+            for (ReporterList reporterList : arrayData.getReporterLists()) {
+                if (ReporterTypeEnum.DNA_ANALYSIS_REPORTER.equals(reporterList.getReporterType())) {
+                    gisticSamplesMarkers.addReporterListToGisticMarkers(reporterList);
+                    if (!segmentDataAdded) {
+                        gisticSamplesMarkers.addSegmentDataToGisticSamples(arrayData.getSegmentDatas(), sample);
+                    }
+                    segmentDataAdded = true;
+                }
             }
         }
     }

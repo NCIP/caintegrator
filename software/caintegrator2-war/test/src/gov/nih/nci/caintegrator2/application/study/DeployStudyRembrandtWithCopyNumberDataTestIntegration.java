@@ -139,7 +139,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addType(ArrayDataValueType.COPY_NUMBER_LOG2_RATIO);
         request.addArrayData(arrayData);
-        request.addReporters(platformHelper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER).getReporters());
+        request.addReporters(platformHelper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
         ArrayDataValues values = getArrayDataService().getData(request);
         int nonZeroValueCount = 0;
         for (AbstractReporter reporter : values.getReporters()) {

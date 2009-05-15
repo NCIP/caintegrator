@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -108,6 +109,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -169,9 +171,13 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         String platformName = parser.getArrayDesignName();
         Platform platform = dao.getPlatform(platformName);
         PlatformHelper helper = new PlatformHelper(platform);
-        ReporterList reporterList = helper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        ArrayDataValues values = new ArrayDataValues(reporterList.getReporters());
-        ArrayData arrayData = createArrayData(sample, reporterList, assignment.getStudy());
+        Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        for (ReporterList reporterList : reporterLists) {
+            reporters.addAll(reporterList.getReporters());
+        }
+        ArrayDataValues values = new ArrayDataValues(reporters);
+        ArrayData arrayData = createArrayData(sample, reporterLists, assignment.getStudy());
         dao.save(arrayData);
         parser.parse(values, arrayData);
         arrayDataService.save(values);
@@ -181,7 +187,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
 
     abstract void doneWithFile(File cnchpFile);
 
-    private ArrayData createArrayData(Sample sample, ReporterList reporterList, Study study) {
+    private ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists, Study study) {
         ArrayData arrayData = new ArrayData();
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
@@ -191,9 +197,13 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         arrayData.setArray(array);
         array.getSampleCollection().add(sample);
         sample.getArrayCollection().add(array);
-        arrayData.setReporterList(reporterList);
-        reporterList.getArrayDatas().add(arrayData);
-        array.setPlatform(reporterList.getPlatform());
+        if (!reporterLists.isEmpty()) {
+            arrayData.getReporterLists().addAll(reporterLists);
+            for (ReporterList reporterList : reporterLists) {
+                reporterList.getArrayDatas().add(arrayData);    
+            }
+            array.setPlatform(reporterLists.iterator().next().getPlatform());
+        }
         return arrayData;
     }
 

@@ -142,7 +142,7 @@ public class GeneNameCriterionHandlerTest {
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
         ArrayData arrayData2 = new ArrayData();

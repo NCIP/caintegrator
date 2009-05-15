@@ -87,6 +87,9 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -193,6 +196,18 @@ public class DataRetrievalRequest {
     Study getStudy() {
         checkHasStudy();
         return arrayDatas.iterator().next().getStudy();
+    }
+    
+    ReporterTypeEnum getReporterType() {
+        return getFirstReporterList().getReporterType();
+    }
+    
+    Platform getPlatform() {
+        return getFirstReporterList().getPlatform();
+    }
+    
+    private ReporterList getFirstReporterList() {
+        return arrayDatas.iterator().next().getReporterLists().iterator().next();
     }
 
 }

@@ -35,8 +35,7 @@ public class ArrayDesignChecker {
 
     private static void checkSnpReporters(Platform platform, AffymetrixCdfReader cdfReader) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        ReporterList reporters = platformHelper.getReporterList(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        for (AbstractReporter abstractReporter : reporters.getReporters()) {
+        for (AbstractReporter abstractReporter : platformHelper.getAllReportersByType((ReporterTypeEnum.DNA_ANALYSIS_REPORTER))) {
             DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
             assertFalse(StringUtils.isBlank(reporter.getName()));
             assertNotNull(reporter.getAlleleA());
@@ -72,26 +71,30 @@ public class ArrayDesignChecker {
 
     private static void checkGeneReporters(Platform platform) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        ReporterList geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        assertEquals(platform, geneReporters.getPlatform());
-        Set<String> geneSymbols = new HashSet<String>();
-        for (AbstractReporter reporter : geneReporters.getReporters()) {
-            assertEquals(1, reporter.getGenes().size());
-            Gene gene = reporter.getGenes().iterator().next();
-            assertEquals(reporter.getName(), gene.getSymbol());
-            geneSymbols.add(gene.getSymbol());
+        Set<ReporterList> geneReporters = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        for (ReporterList reporterList : geneReporters) {
+            assertEquals(platform, reporterList.getPlatform());
+            Set<String> geneSymbols = new HashSet<String>();
+            for (AbstractReporter reporter : reporterList.getReporters()) {
+                assertEquals(1, reporter.getGenes().size());
+                Gene gene = reporter.getGenes().iterator().next();
+                assertEquals(reporter.getName(), gene.getSymbol());
+                geneSymbols.add(gene.getSymbol());
+            }
+            assertEquals(reporterList.getReporters().size(), geneSymbols.size());
         }
-        assertEquals(geneReporters.getReporters().size(), geneSymbols.size());
     }
 
     private static void checkProbeSetReporters(Platform platform, AffymetrixCdfReader cdfReader) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        ReporterList probeSetReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        assertEquals(platform, probeSetReporters.getPlatform());
-        assertEquals(cdfReader.getCdfData().getHeader().getNumProbeSets(), probeSetReporters.getReporters().size());
-        for (AbstractReporter abstractReporter : probeSetReporters.getReporters()) {
-            GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
-            assertFalse(StringUtils.isBlank(reporter.getName()));
+        Set<ReporterList> probeSetReporters = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        for (ReporterList reporterList : probeSetReporters) {
+            assertEquals(platform, reporterList.getPlatform());
+            assertEquals(cdfReader.getCdfData().getHeader().getNumProbeSets(), reporterList.getReporters().size());
+            for (AbstractReporter abstractReporter : reporterList.getReporters()) {
+                GeneExpressionReporter reporter = (GeneExpressionReporter) abstractReporter;
+                assertFalse(StringUtils.isBlank(reporter.getName()));
+            }
         }
     }
 

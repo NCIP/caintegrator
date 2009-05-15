@@ -142,7 +142,7 @@ public class FoldChangeCriterionHandlerTest {
         Sample sample = new Sample();
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         arrayData.setSample(sample);
         sample.setSampleAcquisition(acquisition);

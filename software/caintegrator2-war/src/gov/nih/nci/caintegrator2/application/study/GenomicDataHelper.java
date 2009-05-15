@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
@@ -172,27 +173,26 @@ class GenomicDataHelper {
     private ArrayDataValues createGeneArrayDataValues(ArrayDataValues probeSetValues) {
         PlatformHelper platformHelper = 
             new PlatformHelper(probeSetValues.getReporterList().getPlatform());
-        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        ArrayDataValues geneValues = 
-            new ArrayDataValues(reporterList.getReporters());
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        ArrayDataValues geneValues = new ArrayDataValues(platformHelper.getAllReportersByType(
+                                                         ReporterTypeEnum.GENE_EXPRESSION_GENE));
         for (ArrayData arrayData : probeSetValues.getArrayDatas()) {
-            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterList);
+            loadGeneArrayDataValues(geneValues, probeSetValues, arrayData, platformHelper, reporterLists);
         }
         return geneValues;
     }
 
     private void loadGeneArrayDataValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, 
             ArrayData arrayData,
-            PlatformHelper platformHelper, ReporterList reporterList) {
-        ArrayData geneArrayData = createGeneArrayData(arrayData, reporterList);
+            PlatformHelper platformHelper, Set<ReporterList> reporterLists) {
+        ArrayData geneArrayData = createGeneArrayData(arrayData, reporterLists);
         loadGeneValues(geneValues, probeSetValues, arrayData, geneArrayData, platformHelper);
     }
 
     private void loadGeneValues(ArrayDataValues geneValues, ArrayDataValues probeSetValues, ArrayData arrayData,
             ArrayData geneArrayData, PlatformHelper platformHelper) {
-        Collection<AbstractReporter> geneReporters = 
-            platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
-        for (AbstractReporter geneReporter : geneReporters) {
+        for (AbstractReporter geneReporter 
+                : platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_GENE)) {
             Collection<AbstractReporter> probeSetReporters = 
                 platformHelper.getReportersForGene(geneReporter.getGenes().iterator().next(), 
                         ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -210,15 +210,19 @@ class GenomicDataHelper {
         return (float) statistics.getPercentile(FIFTIETH_PERCENTILE);
     }
 
-    private ArrayData createGeneArrayData(ArrayData probeSetArrayData, ReporterList reporterList) {
+    private ArrayData createGeneArrayData(ArrayData probeSetArrayData, Set<ReporterList> reporterLists) {
         ArrayData arrayData = new ArrayData();
         arrayData.setType(ArrayDataType.GENE_EXPRESSION);
         arrayData.setStudy(probeSetArrayData.getStudy());
         arrayData.setArray(probeSetArrayData.getArray());
         arrayData.setSample(probeSetArrayData.getSample());
         arrayData.getSample().getArrayDataCollection().add(arrayData);
-        arrayData.setReporterList(reporterList);
-        reporterList.getArrayDatas().add(arrayData);
+        if (!reporterLists.isEmpty()) {
+            arrayData.getReporterLists().addAll(reporterLists);
+            for (ReporterList reporterList : reporterLists) {
+                reporterList.getArrayDatas().add(arrayData);
+            }
+        }
         dao.save(arrayData);
         return arrayData;
     }
