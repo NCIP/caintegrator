@@ -87,7 +87,8 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
@@ -121,7 +122,7 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
     ArrayDataValues retrieveValues() {
         try {
             ArrayDataValues values = new ArrayDataValues(request.getReporters());
-            openNetCdfFile(request.getStudy(), request.getReporters().get(0).getReporterList());
+            openNetCdfFile(request.getStudy(), request.getPlatform(), request.getReporterType());
             for (ArrayDataValueType type : request.getTypes()) {
                 loadValues(values, type);
             }
@@ -134,8 +135,8 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         }
     }
 
-    private void openNetCdfFile(Study study, ReporterList reporterList) throws IOException {
-        reader = NetcdfFile.open(getFile(study, reporterList).getAbsolutePath());
+    private void openNetCdfFile(Study study, Platform platform, ReporterTypeEnum reporterType) throws IOException {
+        reader = NetcdfFile.open(getFile(study, platform, reporterType).getAbsolutePath());
     }
 
     private void closeNetCdfFile() throws IOException {
@@ -171,7 +172,7 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
         Integer offset = getArrayDataOffsets().get(arrayData.getId());
         if (offset == null) {
             String message = "NetCDF file "
-                + getFile(request.getStudy(), request.getReporters().get(0).getReporterList()).getAbsolutePath()
+                + getFile(request.getStudy(), request.getPlatform(), request.getReporterType()).getAbsolutePath()
                 + " doesn't contain data for ArrayData with id " + arrayData.getId();
             LOGGER.error(message + ". ArrayData offsets: " + getArrayDataOffsets());
             throw new ArrayDataStorageException(message);

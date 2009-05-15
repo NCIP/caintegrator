@@ -357,22 +357,26 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getLoadSamples()) {
             logStart();
             PlatformHelper platformHelper = new PlatformHelper(design);
-            ReporterList probeSetReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            DataRetrievalRequest probeSetRequest = new DataRetrievalRequest();
-            probeSetRequest.addArrayDatas(getStudyArrayDatas(probeSetReporterList.getArrayDatas()));
-            probeSetRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-            probeSetRequest.addReporters(probeSetReporterList.getReporters());
-            DataRetrievalRequest geneRequest = new DataRetrievalRequest();
-            ReporterList geneReporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-            geneRequest.addArrayDatas(getStudyArrayDatas(geneReporterList.getArrayDatas()));
-            geneRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
-            geneRequest.addReporters(geneReporterList.getReporters());
-            ArrayDataValues values = arrayDataService.getData(probeSetRequest);
-            assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
-            assertEquals(getExpectedNumberProbeSets(), values.getReporters().size());
-            values = arrayDataService.getData(geneRequest);
-            assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
-            assertEquals(getExpectedNumberOfGeneReporters(), values.getReporters().size());
+            Set<ReporterList> probeSetReporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            for (ReporterList probeSetReporterList : probeSetReporterLists) {
+                DataRetrievalRequest probeSetRequest = new DataRetrievalRequest();
+                probeSetRequest.addArrayDatas(getStudyArrayDatas(probeSetReporterList.getArrayDatas()));
+                probeSetRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
+                probeSetRequest.addReporters(probeSetReporterList.getReporters());
+                DataRetrievalRequest geneRequest = new DataRetrievalRequest();
+                Set<ReporterList> geneReporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_GENE);
+                for (ReporterList geneReporterList : geneReporterLists) {
+                    geneRequest.addArrayDatas(getStudyArrayDatas(geneReporterList.getArrayDatas()));
+                    geneRequest.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
+                    geneRequest.addReporters(geneReporterList.getReporters());
+                    ArrayDataValues values = arrayDataService.getData(probeSetRequest);
+                    assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
+                    assertEquals(getExpectedNumberProbeSets(), values.getReporters().size());
+                    values = arrayDataService.getData(geneRequest);
+                    assertEquals(getExpectedSampleCount(), values.getArrayDatas().size());
+                    assertEquals(getExpectedNumberOfGeneReporters(), values.getReporters().size());
+                }
+            }
             logEnd();
         }
     }

@@ -91,10 +91,13 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides useful methods for working with <code>Platforms</code> and they objects they contain.
@@ -143,10 +146,12 @@ public class PlatformHelper {
 
     private Map<String, AbstractReporter> createReporterMap(ReporterTypeEnum type) {
         Map<String, AbstractReporter> reporterMap = new HashMap<String, AbstractReporter>();
-        ReporterList reporterList = getReporterList(type);
-        if (reporterList != null) {
-            for (AbstractReporter reporter : reporterList.getReporters()) {
-                reporterMap.put(reporter.getName(), reporter);
+        Set<ReporterList> reporterLists = getReporterLists(type);
+        if (!reporterLists.isEmpty()) {
+            for (ReporterList reporterList : reporterLists) {
+                for (AbstractReporter reporter : reporterList.getReporters()) {
+                    reporterMap.put(reporter.getName(), reporter);
+                }
             }
         }
         return reporterMap;
@@ -158,13 +163,27 @@ public class PlatformHelper {
      * @param type return set of this type
      * @return the set.
      */
-    public ReporterList getReporterList(ReporterTypeEnum type) {
+    public Set<ReporterList> getReporterLists(ReporterTypeEnum type) {
+        Set<ReporterList> reporterLists = new HashSet<ReporterList>();
         for (ReporterList reporterList : platform.getReporterLists()) {
             if (type.equals(reporterList.getReporterType())) {
-                return reporterList;
+                reporterLists.add(reporterList);
             }
         }
-        return null;
+        return reporterLists;
+    }
+    
+    /**
+     * Given a Set of ReporterList objects, returns all AbstractReporter.
+     * @param type the reporter type to retrieve reports on for the platform.
+     * @return all AbstractReporters associated with reporterLists.
+     */
+    public List<AbstractReporter> getAllReportersByType(ReporterTypeEnum type) {
+        List<AbstractReporter> geneReporters = new ArrayList<AbstractReporter>();
+        for (ReporterList reporterList : getReporterLists(type)) {
+            geneReporters.addAll(reporterList.getReporters());
+        }
+        return geneReporters;
     }
 
     /**
@@ -191,8 +210,10 @@ public class PlatformHelper {
 
     private Map<Gene, Collection<AbstractReporter>> createGeneReporterMap(ReporterTypeEnum type) {
         Map<Gene, Collection<AbstractReporter>> geneToReporterMap = new HashMap<Gene, Collection<AbstractReporter>>();
-        for (AbstractReporter reporter : getReporterList(type).getReporters()) {
-            addToGenesToReporterMap(reporter, geneToReporterMap);
+        for (ReporterList reporterList : getReporterLists(type)) {
+            for (AbstractReporter reporter : reporterList.getReporters()) {
+                addToGenesToReporterMap(reporter, geneToReporterMap);
+            }
         }
         return geneToReporterMap;
     }

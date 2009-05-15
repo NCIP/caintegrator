@@ -380,7 +380,7 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         ArrayData arrayData = new ArrayData();
         arrayData.setStudy(study);
         sample.getArrayDataCollection().add(arrayData);
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         reporterList.getArrayDatas().add(arrayData);
         dao.save(study);
         dao.save(gene);

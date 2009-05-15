@@ -85,7 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
@@ -122,22 +123,24 @@ abstract class AbstractNetCdfFileHandler {
     }
 
     File getFile(ArrayDataValues values) {
-        Study study = getStudy(values);
-        ReporterList reporterList = getReporterList(values);
-        return getFile(study, reporterList);
+        return getFile(getStudy(values), getPlatform(values), getReporterType(values));
     }
 
-    File getFile(Study study, ReporterList reporterList) {
+    File getFile(Study study, Platform platform, ReporterTypeEnum reporterType) {
         File studyDirectory = fileManager.getStudyDirectory(study);
-        return new File(studyDirectory, getFileName(reporterList));
+        return new File(studyDirectory, getFileName(platform, reporterType));
     }
 
-    private String getFileName(ReporterList reporterList) {
-        return "data" + reporterList.getId() + ".nc";
+    private String getFileName(Platform platform, ReporterTypeEnum reporterType) {
+        return "data" + platform.getId() + "_" + reporterType.getValue() + ".nc";
     }
 
-    private ReporterList getReporterList(ArrayDataValues values) {
-        return values.getArrayDatas().iterator().next().getReporterList();
+    private ReporterTypeEnum getReporterType(ArrayDataValues values) {
+        return values.getArrayDatas().iterator().next().getReporterLists().iterator().next().getReporterType();
+    }
+    
+    private Platform getPlatform(ArrayDataValues values) {
+        return values.getArrayDatas().iterator().next().getReporterLists().iterator().next().getPlatform();
     }
 
     private Study getStudy(ArrayDataValues values) {

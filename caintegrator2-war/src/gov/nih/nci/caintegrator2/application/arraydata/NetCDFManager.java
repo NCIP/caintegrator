@@ -143,8 +143,8 @@ public class NetCDFManager {
             if (arrayData.getId() == null) {
                 throw new IllegalArgumentException("Unsaved ArrayData");
             }
-            if (arrayData.getReporterList() == null) {
-                throw new IllegalArgumentException("ArrayData with id " + arrayData.getId() + " has no ReporterList");
+            if (arrayData.getReporterLists().isEmpty()) {
+                throw new IllegalArgumentException("ArrayData with id " + arrayData.getId() + " has no ReporterLists");
             }
         }
     }

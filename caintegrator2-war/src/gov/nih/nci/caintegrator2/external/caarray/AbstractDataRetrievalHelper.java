@@ -135,8 +135,8 @@ abstract class AbstractDataRetrievalHelper {
     }
     
     protected void init() throws DataRetrievalException {
-        arrayDataValues = new ArrayDataValues(
-                platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET).getReporters());
+        arrayDataValues = new ArrayDataValues(platformHelper.
+                    getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET));
     }
 
     abstract ArrayDataValues retrieveData() throws ConnectionException, DataRetrievalException;
@@ -237,9 +237,13 @@ abstract class AbstractDataRetrievalHelper {
         ArrayData arrayData = new ArrayData();
         arrayData.setType(ArrayDataType.GENE_EXPRESSION);
         arrayData.setArray(array);
-        ReporterList reporterList = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        arrayData.setReporterList(reporterList);
-        reporterList.getArrayDatas().add(arrayData);
+        Set<ReporterList> reporterLists = platformHelper.getReporterLists(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        if (!reporterLists.isEmpty()) {
+            arrayData.getReporterLists().addAll(reporterLists);
+            for (ReporterList reporterList : reporterLists) {
+                reporterList.getArrayDatas().add(arrayData);
+            }
+        }
         array.getArrayDataCollection().add(arrayData);
         arrayData.setSample(sample);
         arrayData.setStudy(getGenomicSource().getStudyConfiguration().getStudy());

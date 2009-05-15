@@ -316,7 +316,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private Set<ReporterList> getStudyReporterLists(Study study, ReporterTypeEnum reporterType) {
         Set<ReporterList> reporterLists = new HashSet<ReporterList>();
         for (ArrayData arrayData : study.getArrayDatas(reporterType)) {
-            reporterLists.add(arrayData.getReporterList());
+            reporterLists.addAll(arrayData.getReporterLists());
         }
         return reporterLists;
     }

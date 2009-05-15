@@ -78,7 +78,7 @@ public class ArrayDataServiceTest {
 
     private void checkGenesForReporters(Platform platform) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
-        Collection<AbstractReporter> geneReporters = platformHelper.getReporterList(ReporterTypeEnum.GENE_EXPRESSION_GENE).getReporters();
+        Collection<AbstractReporter> geneReporters = platformHelper.getAllReportersByType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
         for (AbstractReporter reporter : geneReporters) {
             Gene gene = reporter.getGenes().iterator().next();
             Collection<AbstractReporter> probeSets = platformHelper.getReportersForGene(gene, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
@@ -91,8 +91,13 @@ public class ArrayDataServiceTest {
 
     @Test
     public void testGetFoldChangeValues() throws IOException {
+        Platform platform = new Platform();
+        platform.setId(1l);
         ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
         ReporterList reporterList = new ReporterList();
+        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList.setPlatform(platform);
+        platform.getReporterLists().add(reporterList);
         reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
@@ -112,11 +117,11 @@ public class ArrayDataServiceTest {
         ArrayDataValues values = new ArrayDataValues(reporters);
         Study study = new Study();
         study.setId(1L);
-        ArrayData data1 = createArrayData(1L, study, reporterList);
-        ArrayData data2 = createArrayData(2L, study, reporterList);
-        ArrayData controlData1 = createArrayData(3L, study, reporterList);
-        ArrayData controlData2 = createArrayData(4L, study, reporterList);
-        ArrayData controlData3 = createArrayData(5L, study, reporterList);
+        ArrayData data1 = createArrayData(1L, study, reporterList, platform);
+        ArrayData data2 = createArrayData(2L, study, reporterList, platform);
+        ArrayData controlData1 = createArrayData(3L, study, reporterList, platform);
+        ArrayData controlData2 = createArrayData(4L, study, reporterList, platform);
+        ArrayData controlData3 = createArrayData(5L, study, reporterList, platform);
         
         data1.setArray(new Array());
         data1.getArray().setName("data1");
@@ -164,13 +169,16 @@ public class ArrayDataServiceTest {
         assertEquals(14.5772, (float) foldChangeValues.getFloatValue(data2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0001);
     }
 
-    private ArrayData createArrayData(Long id, Study study, ReporterList reporterList) {
+    private ArrayData createArrayData(Long id, Study study, ReporterList reporterList, Platform platform) {
         ArrayData arrayData = new ArrayData();
+        Array array = new Array();
+        array.setPlatform(platform);
+        arrayData.setArray(array);
         arrayData.setStudy(study);
         arrayData.setId(id);
         arrayData.setSample(new Sample());
         arrayData.setArray(new Array());
-        arrayData.setReporterList(reporterList);
+        arrayData.getReporterLists().add(reporterList);
         arrayData.getSample().setSampleAcquisition(new SampleAcquisition());
         arrayData.getSample().getSampleAcquisition().setAssignment(new StudySubjectAssignment());
         arrayData.getSample().getSampleAcquisition().getAssignment().setStudy(study);
