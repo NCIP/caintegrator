@@ -86,10 +86,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
-import gov.nih.nci.caintegrator2.application.arraydata.NetCDFManager;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
@@ -108,6 +105,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
 
@@ -223,9 +221,12 @@ public class NetCDFManagerTest {
         values.setFloatValue(arrayData2, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 10.10f);
         values.setFloatValue(arrayData2, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 11.11f);
         values.setFloatValue(arrayData2, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 12.12f);
+        File netCdfFile = new File(fileManagerStub.getStudyDirectory(study), 
+                "data" + platform.getId() + "_" + ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue() + ".nc");
+        FileUtils.deleteQuietly(netCdfFile);
         manager.storeValues(values);
-        NCdumpW.print("/tmp/data1.nc", new OutputStreamWriter(System.out), true, true, true, true, null, null);
-        
+        NCdumpW.print(netCdfFile.getAbsolutePath(), new OutputStreamWriter(System.out), true, true, true, true, null, null);
+        assertTrue(netCdfFile.exists());
         // Store additional values
         values = new ArrayDataValues(reporters);
         ArrayData arrayData3 = createArrayData(study);
@@ -237,7 +238,7 @@ public class NetCDFManagerTest {
         values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 17.17f);
         values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 18.18f);
         manager.storeValues(values);
-        NCdumpW.print("/tmp/data1.nc", new OutputStreamWriter(System.out), true, true, true, true, null, null);
+        NCdumpW.print(netCdfFile.getAbsolutePath(), new OutputStreamWriter(System.out), true, true, true, true, null, null);
 
         // Retrieve values and compare
         DataRetrievalRequest request = new DataRetrievalRequest();
@@ -289,6 +290,7 @@ public class NetCDFManagerTest {
         assertEquals(15.15f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.COPY_NUMBER_LOG2_RATIO), 0.0f);
         assertEquals(16.16f, values.getFloatValue(arrayData3, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
         assertEquals(18.18f, values.getFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        FileUtils.deleteQuietly(netCdfFile);
 }
 
     private ArrayData createArrayData(Study study) {
