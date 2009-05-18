@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ $Id: build-junitpdfreport.xml,v 1.6 2006/07/04 21:47:00 jancumps Exp $
+ $Revision: 1.6 $
+ $Date: 2006/07/04 21:47:00 $
+-->
+
+<project name="imported" basedir=".">
+
+  <dirname property="imported.basedir" file="${ant.file.imported}"/>
+
+  <!-- executable target for junitpdfreport -->
+  <macrodef name="junitpdfreport" >
+    <!-- name of the testsuite consolidated results file (see junitreport task) -->
+    <attribute name="tofile" default="TESTS-TestSuites.xml"/>
+    <!-- location of the testsuite consolidated results file (see junitreport task) -->
+    <attribute name="todir"/>
+    <!-- location of the junit-noframes.xls transformation file(see junitreport task) -->
+    <attribute name="styledir" default="./default"/>
+    <!-- location for the resulting pdf output file -->
+    <attribute name="reportdir" default="@{todir}"/>
+    <!-- name of the resulting pdf output file -->
+    <attribute name="outfile" default="junit.pdf"/>
+    <!-- path to fop libraries -->
+    <attribute name="fop.path" default="fop.path"/>
+    <element name="junitpdfreport-elements" implicit="true"/>
+    <sequential>
+      <!-- create temporary working directory -->
+      <tempfile property="temp.dir" prefix="tmp" suffix="tmp" destDir="@{reportdir}" />
+      <mkdir dir="${temp.dir}"/>
+      <!-- If the styledir is not an existing directory,
+           use it to locate the styledir relative to the
+           location of this xml file.
+           This allows users of the junitpdfreport_essentials
+           distribution to just pass the stylename -->
+      <available file="@{styledir}" type="dir" property="styledir.exists"/>
+      <condition property="_styledir" value="@{styledir}">
+        <istrue value="${styledir.exists}"/>
+      </condition>
+      <condition property="_styledir" value="${imported.basedir}/@{styledir}">
+        <not>
+          <istrue value="${styledir.exists}"/>
+        </not>
+      </condition>
+      <!-- generate the testsuite consolidated results file (see junitreport task) -->
+      <!-- and the intermediate fop xml file. -->
+      <junitreport todir="@{toDir}" toFile="@{toFile}">
+        <junitpdfreport-elements/>
+        <report format="noframes" styledir="${_styledir}" todir="${temp.dir}"/>
+      </junitreport>
+      <move file="${temp.dir}/junit-noframes.html" tofile="${temp.dir}/junit.fo"/>
+      <!-- when using the junitpdfreport-essentials distribution, 
+           the fop jars are in ./lib -->
+      <path id="${__fop.path}">
+        <fileset dir="${imported.basedir}/lib" includes="*.jar"/>
+      </path>
+      <!-- when not using the junitpdfreport-essentials distribution, 
+           the fop jars are referenced by attribute @{fop.path} -->
+      <condition property="__fop.path" value="@{fop.path}">
+          <isreference refid="@{fop.path}"/>
+      </condition>
+            
+      <!-- generate the resulting pdf output file -->
+      <taskdef name="junitpdfreport-fop"
+         classname="org.apache.fop.tools.anttasks.Fop" classpathref="${__fop.path}">
+      </taskdef>
+      <junitpdfreport-fop format="application/pdf" 
+          fofile="${temp.dir}/junit.fo"
+          outfile="@{reportdir}/junit.pdf"/>
+      <!-- remove the temporary working dir -->
+      <delete dir="${temp.dir}"/>
+    </sequential>
+  </macrodef>
+
+  
+</project>

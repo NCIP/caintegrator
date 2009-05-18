@@ -1,0 +1,36 @@
+$Header: /cvsroot/junitpdfreport/STATUS,v 1.55 2006/11/19 19:40:19 jancumps Exp $
+$Revision: 1.55 $
+$Date: 2006/11/19 19:40:19 $
+
+release plan
+------------
+next release 1_1
+expected quality: release quality
+
+code changes committed since the last release
+---------------------------------------------
+Compatibility with Ant 1.7 and JUnit 4.2
+
+proposed changes
+----------------
+
+open discussions
+----------------
+none
+
+open bugs
+---------
+
+closed bugs
+-----------
+1551605: 'error type' column overflows for long text
+1557474: WARNING: table-layout="fixed" and column-width unspecified  
+1563583: WARNING: column-width unspecified in theme Structural
+1565266: Errors while applying transformations
+
+open feature requests
+---------------------
+none
+
+closed feature requests
+-----------------------
