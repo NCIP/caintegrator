@@ -132,12 +132,13 @@ public interface GenePatternGridRunner {
      * Executes the grid service PCA.
      * @param studySubscription for current study.
      * @param parameters for PCA.
+     * @param preprocessedGctFile (optional) parameter if needed to run preprocess dataset.
      * @return zip file containing results.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
-            InvalidCriterionException; 
+    File runPCA(StudySubscription studySubscription, PCAParameters parameters, File preprocessedGctFile) 
+        throws ConnectionException, InvalidCriterionException; 
 
     /**
      * Runs Gistic grid service.

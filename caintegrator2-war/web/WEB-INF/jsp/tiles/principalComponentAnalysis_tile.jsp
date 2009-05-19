@@ -21,6 +21,8 @@
             <s:hidden name="selectedAction" />
             
             <s:textfield name="currentPrincipalComponentAnalysisJob.name" label="Job Name" size="50" required="true" />
+            <s:select name="currentPrincipalComponentAnalysisJob.preprocessDataSetUrl"
+                list="preprocessDatasetServices" label="Preprocess Server" required="true" />
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
                 list="pcaServices" label="Principal Component Analysis Server" required="true" />
             
@@ -51,7 +53,20 @@
                 doubleCssStyle="min-width:200px; vertical-align=middle; font-weight:bold; color: #475B82; background-color: #E9E9E9;"
                 buttonCssStyle="min-width:100px; vertical-align=middle;"
                 required="true" />
-            
+                
+            <s:checkbox name="principalComponentAnalysisForm.usePreprocessDataset" label="Enable Preprocess Dataset" labelposition="left" />
+            <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" />
+            <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"
+                list="preprocessDatasetParameters.preprocessingFlagOptions" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.minChange" label="Min Change" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.minDelta" label="Min Delta" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.threshold" label="Threshold" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.ceiling" label="Ceiling" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.maxSigmaBinning" label="Max Sigma Binning" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.probabilityThreshold" label="Probability Threshold" size="50" required="true" />
+            <s:textfield name="preprocessDatasetParameterSet.numExclude" label="Num Exclude" size="50" required="true" />
+            <s:checkbox name="preprocessDatasetParameterSet.logBaseTwo" label="Log Base Two" labelposition="left" />
+            <s:textfield name="preprocessDatasetParameterSet.numberOfColumnsAboveThreshold" label="Number Of Columns Above Threshold" size="50" required="true" />
             <s:select name="pcaParameters.clusterBy" label="Cluster By"
                 list="pcaParameters.clusterByOptions" required="true" />
             <br>

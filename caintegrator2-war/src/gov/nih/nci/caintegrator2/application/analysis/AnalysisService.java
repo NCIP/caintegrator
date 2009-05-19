@@ -146,13 +146,14 @@ public interface AnalysisService {
     /**
      * Executes Principal Component Analysis grid service and returns back the results files.
      * @param studySubscription current study subscription.
-     * @param parameters for PCA.
+     * @param preprocessParams optional parameters for preprocess dataset.
+     * @param pcaParams for PCA.
      * @return results file.
      * @throws ConnectionException if unable to connect to grid.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
-            InvalidCriterionException;
+    File executeGridPCA(StudySubscription studySubscription, PreprocessDatasetParameters preprocessParams,
+            PCAParameters pcaParams) throws ConnectionException, InvalidCriterionException;
     
     /**
      * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
