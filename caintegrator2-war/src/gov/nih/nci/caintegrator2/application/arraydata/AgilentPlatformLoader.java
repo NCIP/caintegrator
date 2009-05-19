@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -152,17 +153,12 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
     @Override
     Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
         Platform platform = createPlatform(PlatformVendorEnum.AGILENT);
-        try {
-            handleAnnotationFile(platform, dao);
-            dao.save(platform);
-        } finally {
-            closeAnnotationFileReader();
-            cleanUp();
-        }
+        loadAnnotationFiles(platform, dao);
         return platform;
     }
 
-    private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
+    void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
+    throws PlatformLoadingException {
         ReporterList geneReporters = new ReporterList();
         geneReporters.setPlatform(platform);
         geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
@@ -172,14 +168,14 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
         probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         platform.getReporterLists().add(probeSetReporters);
         try {
-            setAnnotationFileReader(new CSVReader(new FileReader(getAnnotationFile()), '\t'));
+            setAnnotationFileReader(new CSVReader(new FileReader(annotationFile), '\t'));
             loadHeaders();
             platform.setName(source.getPlatformName());
             loadAnnotations(geneReporters, probeSetReporters, dao);
             probeSetReporters.sortAndLoadReporterIndexes();
             geneReporters.sortAndLoadReporterIndexes();
         } catch (IOException e) {
-            throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFile().getName(), e);
+            throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFileNames(), e);
         }
     }
 
@@ -192,7 +188,7 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
             }
         }        
         throw new PlatformLoadingException("Invalid Agilent annotation file; headers not found in file: " 
-                + getAnnotationFile().getName());
+                + getAnnotationFileNames());
     }
 
     /**

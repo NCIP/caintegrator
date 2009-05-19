@@ -12,12 +12,19 @@
 <!--/Page Help-->
     
 <script type="text/javascript">
-    function CheckPlatformVendor(vendor) {
-        if (vendor != "Agilent") {
-            document.getElementById("platformName").value = " ";
+    function CheckPlatformType(type) {
+        if (type == "Affymetrix GeneEx") {
+            document.getElementById("platformName").value = "N/A";
             document.getElementById("platformName").disabled = true;
-        } else {
+            document.getElementById("platformFile2").disabled = true;
+        } else if (type == "Affymetrix SNP"){
+            document.getElementById("platformName").value = "";
             document.getElementById("platformName").disabled = false;
+            document.getElementById("platformFile2").disabled = false;
+        } else if (type == "Agilent GeneEx"){
+            document.getElementById("platformName").value = "";
+            document.getElementById("platformName").disabled = false;
+            document.getElementById("platformFile2").disabled = true;
         }
     }
 </script>
@@ -27,12 +34,13 @@
     <table class="data">
         <tr>
             <th colspan="2">
-                <s:select name="platformVendor" label="Vendor"
-                    list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
-                    value="Affymetrix" onchange="CheckPlatformVendor(this.form.platformVendor.value);" />
-                <s:textfield id="platformName" name="platformName" label="Platform Name (only needed for Agilent)"
+                <s:select name="platformType" label="Platform Type"
+                    list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
+                    value="Affymetrix" onchange="CheckPlatformType(this.form.platformType.value);" />
+                <s:textfield id="platformName" name="platformName" label="Platform Name"
                     disabled="true" />
                 <s:file name="platformFile" label="Annotation File" />
+                <s:file id="platformFile2" name="platformFile2" label="Second Annotation File" disabled="true"/>
                 <s:hidden name="selectedAction" value="addPlatform" />
                 <s:submit value="Add" align="center" />
             </th>    
@@ -40,6 +48,7 @@
         <tr>
             <th>Name</th>
             <th>Vendor</th>
+            <th>Reporter List</th>
         </tr>
         <s:iterator value="platforms" status="status">
             <s:if test="#status.odd == true">
@@ -50,6 +59,7 @@
             </s:else>            
                 <td><s:property value="name" /></td>
                 <td><s:property value="vendor" /></td>
+                <td><s:property value="reporterListListing" /></td>
             </tr>
         </s:iterator>
     </table>

@@ -12,7 +12,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,14 +23,17 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAffymetrixSnpArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
-        AffymetrixPlatformSource source = new AffymetrixPlatformSource(annotationFile);
+        List<File> annotationFiles = new ArrayList<File>();
+        annotationFiles.add(annotationFile);
+        AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(annotationFiles, "AffyDnaPlatform");
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
         assertNotNull(platform);
-        assertEquals(cdfReader.getCdfData().getChipType(), platform.getName());
+        assertEquals("AffyDnaPlatform", platform.getName());
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
+        assertEquals(cdfReader.getCdfData().getChipType(), platform.getReporterLists().iterator().next().getName());
         checkSnpReporters(platform, cdfReader);
         return platform;
     }
@@ -46,7 +51,7 @@ public class ArrayDesignChecker {
     public static Platform checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
-        AffymetrixPlatformSource source = new AffymetrixPlatformSource(annotationFile);
+        AffymetrixExpressionPlatformSource source = new AffymetrixExpressionPlatformSource(annotationFile);
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);

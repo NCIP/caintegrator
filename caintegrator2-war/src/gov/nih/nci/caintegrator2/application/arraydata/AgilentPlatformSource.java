@@ -120,7 +120,7 @@ public class AgilentPlatformSource extends AbstractPlatformSource {
      */
     @Override
     public String toString() {
-        return "Agilent CSV annotation file: " + getAnnotationFile().getName();
+        return "Agilent CSV annotation file: " + getAnnotationFileNames();
     }
 
     /**

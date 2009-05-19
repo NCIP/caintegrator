@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -124,6 +125,21 @@ abstract class AbstractPlatformLoader {
         platform.setVendor(platformVendor);
         return platform;
     }
+    
+    protected void loadAnnotationFiles(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
+        try {
+            for (File annotationFile : getAnnotationFiles()) {
+                handleAnnotationFile(annotationFile, platform, dao);
+            }
+            dao.save(platform);
+        } finally {
+            closeAnnotationFileReader();
+            cleanUp();
+        }
+    }
+    
+    abstract void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
+    throws PlatformLoadingException;
 
     protected void loadAnnotationHeaders(String[] headers) {
         for (int i = 0; i < headers.length; i++) {
@@ -158,7 +174,9 @@ abstract class AbstractPlatformLoader {
 
     protected void cleanUp() {
         if (getSource().getDeleteFileOnCompletion()) {
-            getSource().getAnnotationFile().delete();
+            for (File file : getSource().getAnnotationFiles()) {
+                file.delete();
+            }
         }
     }
 
@@ -168,7 +186,7 @@ abstract class AbstractPlatformLoader {
                 annotationFileReader.close();
             } catch (IOException e) {
                 getLogger().error("Couldn't close annotation file reader for file " 
-                        + getAnnotationFile().getAbsolutePath());
+                        + getAnnotationFileNames());
             }
         }
     }
@@ -194,8 +212,12 @@ abstract class AbstractPlatformLoader {
         return source;
     }
 
-    final File getAnnotationFile() {
-        return getSource().getAnnotationFile();
+    final List<File> getAnnotationFiles() {
+        return getSource().getAnnotationFiles();
+    }
+
+    final String getAnnotationFileNames() {
+        return getSource().getAnnotationFileNames();
     }
 
 }

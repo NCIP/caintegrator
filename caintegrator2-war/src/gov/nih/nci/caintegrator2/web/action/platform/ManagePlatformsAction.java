@@ -86,16 +86,18 @@
 package gov.nih.nci.caintegrator2.web.action.platform;
 
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jms.JMSException;
@@ -122,10 +124,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private File platformFile;
     private String platformFileContentType;
     private String platformFileFileName;
+    private File platformFile2;
+    private String platformFile2ContentType;
+    private String platformFile2FileName;
     private JmsTemplate jmsTemplate;
     private Queue queue;
     private String platformName;
-    private String platformVendor;
+    private String platformType;
     private String selectedAction;
 
     private static final String ADD_ACTION = "addPlatform";
@@ -156,15 +161,16 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             } else if (platformFile.length() == 0) {
                 setFieldError("File is empty");
             }
-            checkAgilentPlatformName();
+            checkPlatformName();
             prepareValueStack();
         } else {
             super.validate();
         }
     }
     
-    private void checkAgilentPlatformName() {
-        if (PlatformVendorEnum.AGILENT.getValue().equals(platformVendor)
+    private void checkPlatformName() {
+        if ((PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType))
                 && StringUtils.isEmpty(platformName)) {
             setFieldError("Platform name is required for Agilent vendor");
         }
@@ -180,17 +186,21 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     public String addPlatform() {
         try {
             AbstractPlatformSource source;
-            switch (PlatformVendorEnum.getByValue(platformVendor)) {
-            case AFFYMETRIX:
-                source = new AffymetrixPlatformSource(getPlatformFileCopy());
+            switch (PlatformTypeEnum.getByValue(platformType)) {
+            case AFFYMETRIX_GENE_EXPRESSION:
+                source = new AffymetrixExpressionPlatformSource(getPlatformFileCopy());
+                break;
+
+            case AFFYMETRIX_DNA_ANALYSIS:
+                source = new AffymetrixDnaPlatformSource(createPlatformFileCopies(), getPlatformName());
                 break;
                 
-            case AGILENT:
+            case AGILENT_GENE_EXPRESSION:
                 source = new AgilentPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
                 break;
 
             default:
-                addActionError("Invalid platform vendor: " + platformVendor);
+                addActionError("Invalid platform vendor: " + platformType);
                 return ERROR;
             }
             source.setDeleteFileOnCompletion(true);
@@ -198,10 +208,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             return SUCCESS;
         } catch (IOException e) {
             LOGGER.error("Couldn't copy uploaded file", e);
-            addActionError("Please contact the system administrator. Couldn't copy the uploaded file: " 
+            addActionError("Please contact the system administrator. Couldn't copy the uploaded files: " 
                     + e.getMessage());
             return ERROR;
         }
+    }
+    
+    private List<File> createPlatformFileCopies() throws IOException {
+        List<File> files = new ArrayList<File>();
+        files.add(getPlatformFileCopy());
+        files.add(getPlatformFile2Copy());
+        return files;
     }
     
     /**
@@ -213,6 +230,18 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private File getPlatformFileCopy() throws IOException {
         File copy = new File(getFileManager().getNewTemporaryDirectory("platform"), getPlatformFile().getName());
         FileUtils.copyFile(getPlatformFile(), copy);
+        return copy;
+    }
+    
+    /**
+     * Creates a copy of the uploaded file2, as the original is deleted as soon as the action completes.
+     * 
+     * @return the copied file2
+     * @throws IOException if the file2 couldn't be copied
+     */
+    private File getPlatformFile2Copy() throws IOException {
+        File copy = new File(getFileManager().getNewTemporaryDirectory("platform2"), getPlatformFile2().getName());
+        FileUtils.copyFile(getPlatformFile2(), copy);
         return copy;
     }
 
@@ -347,17 +376,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
 
     /**
-     * @return the platformVendor
+     * @return the platformType
      */
-    public String getPlatformVendor() {
-        return platformVendor;
+    public String getPlatformType() {
+        return platformType;
     }
 
     /**
-     * @param platformVendor the platformVendor to set
+     * @param platformType the platformType to set
      */
-    public void setPlatformVendor(String platformVendor) {
-        this.platformVendor = platformVendor;
+    public void setPlatformType(String platformType) {
+        this.platformType = platformType;
     }
 
     /**
@@ -372,6 +401,48 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
+    }
+
+    /**
+     * @return the platformFile2
+     */
+    public File getPlatformFile2() {
+        return platformFile2;
+    }
+
+    /**
+     * @param platformFile2 the platformFile2 to set
+     */
+    public void setPlatformFile2(File platformFile2) {
+        this.platformFile2 = platformFile2;
+    }
+
+    /**
+     * @return the platformFile2ContentType
+     */
+    public String getPlatformFile2ContentType() {
+        return platformFile2ContentType;
+    }
+
+    /**
+     * @param platformFile2ContentType the platformFile2ContentType to set
+     */
+    public void setPlatformFile2ContentType(String platformFile2ContentType) {
+        this.platformFile2ContentType = platformFile2ContentType;
+    }
+
+    /**
+     * @return the platformFile2FileName
+     */
+    public String getPlatformFile2FileName() {
+        return platformFile2FileName;
+    }
+
+    /**
+     * @param platformFile2FileName the platformFile2FileName to set
+     */
+    public void setPlatformFile2FileName(String platformFile2FileName) {
+        this.platformFile2FileName = platformFile2FileName;
     }
 
 }

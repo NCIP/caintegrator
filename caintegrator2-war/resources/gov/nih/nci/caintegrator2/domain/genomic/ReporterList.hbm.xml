@@ -10,7 +10,8 @@
 			<generator class="native" />
 		</id>
 		<!-- Attributes mapping for the ReporterList class -->
-		<property name="reporterType" type="ReporterTypeEnum" column="REPORTER_TYPE"/>
+        <property name="name" type="string" column="NAME"/>
+        <property name="reporterType" type="ReporterTypeEnum" column="REPORTER_TYPE"/>
 		<!-- Associations mapping for the ReporterList class -->
 		<list name="reporters" lazy="true" cascade="all-delete-orphan" inverse="true">
 			<cache usage="read-write" />
