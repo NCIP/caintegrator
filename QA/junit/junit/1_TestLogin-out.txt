@@ -1,4 +1,5 @@
 Test Case = Testlogin
 Test = testManagerUSIDManagerPW
-urlTested = cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
+Summary = log in using 'manager/manager'
+urlTested = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
 
