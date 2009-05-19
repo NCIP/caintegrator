@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.RenderedWebElement;
@@ -17,7 +18,8 @@ public class TestLogin extends TestCase{
 	
 		WebDriver driver = new FirefoxDriver();
 		driver.get("http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/login.action");                
-		
+		WebElement queryFindHTML = 
+			driver.findElement(By.tagName("html"));
 		WebElement queryFindj_username = driver.findElement(By.name("j_username"));        
 		queryFindj_username.sendKeys("manager");        
 		
@@ -38,7 +40,6 @@ public class TestLogin extends TestCase{
 		
 		//Test to see if right userid
 		WebElement queryiduser = driver.findElement(By.id("user"));        
-		System.out.println(queryiduser.getText());
 		assertEquals(queryiduser.getText(), "Welcome, manager | Logout");
 		driver.close();
 	}
