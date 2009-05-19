@@ -228,7 +228,7 @@ index = 1
       <system-err />
 
   </testsuite>
-  <testsuite errors="0" failures="0" hostname="cbwapp-p1001" id="1" name="TestLogin" package="" tests="1" time="5.296" timestamp="2009-05-19T17:13:08">
+  <testsuite errors="0" failures="1" hostname="cbwapp-p1001" id="1" name="TestLogin" package="" tests="2" time="8.297" timestamp="2009-05-19T17:59:04">
       <properties>
           <property name="java.vendor" value="Sun Microsystems Inc." />
 
@@ -434,12 +434,25 @@ index = 1
 
       </properties>
 
-      <testcase classname="TestLogin" name="testManagerUSIDManagerPW" time="5.109" />
+      <testcase classname="TestLogin" name="testManagerUSIDManagerPW" time="5.078" />
+
+      <testcase classname="TestLogin" name="testBlankUSID" time="3.016">
+          <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
+	at TestLogin.testBlankUSID(TestLogin.java:80)
+</failure>
+
+      </testcase>
 
       <system-out><![CDATA[Test Case = Testlogin
 Test = testManagerUSIDManagerPW
 Summary = log in using 'manager/manager'
 urlTested = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
+Test Case = Testlogin
+Test = testBlankUSID
+Summary = log in with blank ID
+urlTested = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
+LINE 78. driver.getCurrentUrl() = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/login.action
+LINE 79. true
 ]]></system-out>
 
       <system-err />
