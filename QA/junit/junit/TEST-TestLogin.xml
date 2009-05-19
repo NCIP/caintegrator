@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="cbwapp-p1001" name="TestLogin" tests="1" time="5.296" timestamp="2009-05-19T17:13:08">
+<testsuite errors="0" failures="1" hostname="cbwapp-p1001" name="TestLogin" tests="2" time="8.547" timestamp="2009-05-19T18:03:34">
   <properties>
     <property name="java.vendor" value="Sun Microsystems Inc." />
     <property name="sun.management.compiler" value="HotSpot Client Compiler" />
@@ -104,11 +104,22 @@
     <property name="java.specification.version" value="1.5" />
     <property name="env.PROCESSOR_LEVEL" value="15" />
   </properties>
-  <testcase classname="TestLogin" name="testManagerUSIDManagerPW" time="5.109" />
+  <testcase classname="TestLogin" name="testManagerUSIDManagerPW" time="5.437" />
+  <testcase classname="TestLogin" name="testBlankUSID" time="2.922">
+    <failure message="null" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: null
+	at TestLogin.testBlankUSID(TestLogin.java:82)
+</failure>
+  </testcase>
   <system-out><![CDATA[Test Case = Testlogin
 Test = testManagerUSIDManagerPW
 Summary = log in using 'manager/manager'
 urlTested = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
+Test Case = Testlogin
+Test = testBlankUSID
+Summary = log in with blank ID
+urlTested = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/
+LINE 78. driver.getCurrentUrl() = http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/login.action
+LINE 79. true
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
