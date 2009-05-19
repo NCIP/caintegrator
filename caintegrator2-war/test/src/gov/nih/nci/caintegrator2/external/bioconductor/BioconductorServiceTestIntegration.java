@@ -2,7 +2,7 @@ package gov.nih.nci.caintegrator2.external.bioconductor;
 
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -79,7 +79,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
     private Platform getOrCreatePlatform() throws PlatformLoadingException {
         Platform platform = dao.getPlatform("Mapping50K_Hind240");
         if (platform == null) {
-            AffymetrixPlatformSource source = new AffymetrixPlatformSource(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+            AffymetrixExpressionPlatformSource source = new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
             platform = getArrayDataService().loadArrayDesign(source);
         }
         return platform;

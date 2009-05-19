@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.DataRetrievalRequest;
@@ -214,8 +214,8 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     @Override
     protected AbstractPlatformSource[] getAdditionalPlatformSources() {
         return new AbstractPlatformSource[] {
-                new AffymetrixPlatformSource(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE),
-                new AffymetrixPlatformSource(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE)
+                new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE),
+                new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE)
         };
     }
     
@@ -247,7 +247,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
 
     @Override
     protected AbstractPlatformSource getPlatformSource() {
-        return new AffymetrixPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
+        return new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
     }
     
     @Override

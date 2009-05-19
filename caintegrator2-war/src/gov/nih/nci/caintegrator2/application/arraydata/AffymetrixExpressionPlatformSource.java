@@ -85,134 +85,45 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Used to load Affymetrix array designs.
  */
-class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
-    
-    private static final Logger LOGGER = Logger.getLogger(AffymetrixExpressionPlatformLoader.class);
-    
-    private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
-    static final String GENE_SYMBOL_HEADER = "Gene Symbol";
-    private static final String ENTREZ_GENE_HEADER = "Entrez Gene";
-    private static final String ENSEMBL_HEADER = "Ensembl";
-    private static final String UNIGENE_ID_HEADER = "UniGene ID";
+public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
 
-    private static final String CHIP_TYPE_HEADER = "chip_type";
-    private static final String NO_VALUE_INDICATOR = "---";
+    private static final long serialVersionUID = 1L;
+    private final PlatformTypeEnum platformType;
 
-    private Map<String, String> fileHeaders;
+    /**
+     * Creates a new instance.
+     * 
+     * @param annotationFile the CSV annotation file.
+     */
+    public AffymetrixExpressionPlatformSource(File annotationFile) {
+        super(annotationFile);
+        this.platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION;
+    }
 
-    AffymetrixExpressionPlatformLoader(AffymetrixExpressionPlatformSource source) {
-        super(source);
+    @Override
+    AbstractPlatformLoader getLoader() throws PlatformLoadingException {
+        return new AffymetrixExpressionPlatformLoader(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
-        Platform platform = createPlatform(PlatformVendorEnum.AFFYMETRIX);
-        loadAnnotationFiles(platform, dao);
-        return platform;
+    public String toString() {
+        return "Affymetrix CSV annotation file: " + getAnnotationFileNames();
     }
 
-    void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
-    throws PlatformLoadingException {
-        ReporterList geneReporters = new ReporterList();
-        geneReporters.setPlatform(platform);
-        geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(geneReporters);
-        ReporterList probeSetReporters = new ReporterList();
-        probeSetReporters.setPlatform(platform);
-        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        platform.getReporterLists().add(probeSetReporters);
-        try {
-            setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
-            loadHeaders();
-            platform.setName(getHeaderValue(CHIP_TYPE_HEADER));
-            probeSetReporters.setName(getHeaderValue(CHIP_TYPE_HEADER));
-            loadAnnotations(geneReporters, probeSetReporters, dao);
-            probeSetReporters.sortAndLoadReporterIndexes();
-            geneReporters.sortAndLoadReporterIndexes();
-        } catch (IOException e) {
-            throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFileNames(), e);
-        }
+    /**
+     * @return the platformType
+     */
+    public PlatformTypeEnum getPlatformType() {
+        return platformType;
     }
 
-    private String getHeaderValue(String headerName) {
-        return fileHeaders.get(headerName);
-    }
-
-    private void loadHeaders() throws PlatformLoadingException, IOException {
-        AffymetrixAnnotationHeaderReader headerReader = new AffymetrixAnnotationHeaderReader(getAnnotationFileReader());
-        fileHeaders = headerReader.getFileHeaders();
-        loadAnnotationHeaders(headerReader.getDataHeaders());
-    }
-    
-    void loadAnnotations(String[] fields, ReporterList geneReporters, ReporterList probeSetReporters, 
-            CaIntegrator2Dao dao) {
-        String[] symbols = getSymbols(fields);
-        String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
-        Set<Gene> genes = handleGeneSymbols(symbols, fields, geneReporters, dao);
-        handleProbeSet(probeSetName, genes, probeSetReporters);
-    }
-
-    @SuppressWarnings("PMD.UseStringBufferForStringAppends")    // Invalid rule violation
-    private String[] getSymbols(String[] fields) {
-        String[] symbols = getAnnotationValue(fields, GENE_SYMBOL_HEADER).split("///");
-        for (int i = 0; i < symbols.length; i++) {
-            symbols[i] = symbols[i].trim();
-        }
-        return symbols;
-    }
-
-    private Set<Gene> handleGeneSymbols(String[] symbols, String[] fields, ReporterList geneReporters, 
-            CaIntegrator2Dao dao) {
-        Set<Gene> genes = new HashSet<Gene>(symbols.length);
-        for (String symbol : symbols) {
-            Gene gene = getSymbolToGeneMap().get(symbol.toUpperCase(Locale.getDefault()));
-            if (gene == null && !symbol.equals(NO_VALUE_INDICATOR)) {
-                gene = lookupOrCreateGene(fields, symbol, dao);
-                addGeneReporter(geneReporters, gene);
-            }
-            if (gene != null) {
-                genes.add(gene);
-            }
-        }
-        return genes;
-    }
-
-    protected Gene createGene(String symbol, String[] fields) {
-        Gene gene = new Gene();
-        gene.setSymbol(symbol);
-        gene.setEntrezgeneID(getAnnotationValue(fields, ENTREZ_GENE_HEADER, NO_VALUE_INDICATOR));
-        gene.setEnsemblgeneID(getAnnotationValue(fields, ENSEMBL_HEADER, NO_VALUE_INDICATOR));
-        gene.setUnigeneclusterID(getAnnotationValue(fields, UNIGENE_ID_HEADER, NO_VALUE_INDICATOR));
-        return gene;
-    }
-
-    @Override
-    Logger getLogger() {
-        return LOGGER;
-    }
 
 }

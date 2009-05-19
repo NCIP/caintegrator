@@ -53,6 +53,20 @@ public class Platform extends AbstractCaIntegrator2Object {
     }
     
     /**
+     * @return the reporterLists
+     */
+    public String getReporterListListing() {
+        StringBuffer listing = new StringBuffer();
+        for (ReporterList reporterList : reporterLists) {
+            if (listing.length() > 0) {
+                listing.append(", ");
+            }
+            listing.append(reporterList.getName());
+        }
+        return listing.toString();
+    }
+    
+    /**
      * @param reporterLists the reporterLists to set
      */
     @SuppressWarnings("unused")     // required by Hibernate

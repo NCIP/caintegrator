@@ -85,16 +85,18 @@
  */
 package gov.nih.nci.caintegrator2.web.action.platform;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
+
+import java.util.HashMap;
 
 import javax.jms.Destination;
 
@@ -132,7 +134,7 @@ public class ManagePlatformsActionTest {
     
     @Test
     public void testAddPlatform() {
-        action.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         action.setJmsTemplate(new JmsTemplate() {
             @Override
@@ -142,7 +144,18 @@ public class ManagePlatformsActionTest {
         });
         assertEquals(ActionSupport.SUCCESS, action.addPlatform());
         
-        action.setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+        action.setPlatformFile2(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
+        action.setJmsTemplate(new JmsTemplate() {
+            @Override
+            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
+                assertNotNull(messageCreator);
+            } 
+        });
+        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+        
+        action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
         action.setJmsTemplate(new JmsTemplate() {
             @Override
@@ -151,12 +164,24 @@ public class ManagePlatformsActionTest {
             } 
         });
         assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+
+        action.setPlatformType("Bad Type");
+        action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        action.setJmsTemplate(new JmsTemplate() {
+            @Override
+            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
+                assertNotNull(messageCreator);
+            } 
+        });
+        assertEquals(ActionSupport.ERROR, action.addPlatform());
     }
     
     @Test
     public void testValidation() {
         action.setSelectedAction("managePlatforms");
         action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
         action.setSelectedAction("addPlatform");
         action.validate();
         assertTrue(action.hasFieldErrors());
@@ -166,6 +191,17 @@ public class ManagePlatformsActionTest {
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformName("Agilent Platform");
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -110,7 +111,7 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisPlatformLoader.class);
-    private static final String PLATFORM_NAME_HEADER = "chip_type";
+    private static final String CHIP_TYPE_HEADER = "chip_type";
     private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
     private static final String GENE_SYMBOL_HEADER = "Associated Gene";
     private static final String NO_VALUE_INDICATOR = "---";
@@ -127,29 +128,25 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     @Override
     Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
         Platform platform = createPlatform(PlatformVendorEnum.AFFYMETRIX);
-        try {
-            handleAnnotationFile(platform, dao);
-            dao.save(platform);
-        } finally {
-            closeAnnotationFileReader();
-            cleanUp();
-        }
+        platform.setName(((AffymetrixDnaPlatformSource) getSource()).getPlatformName());
+        loadAnnotationFiles(platform, dao);
         return platform;
     }
 
-    private void handleAnnotationFile(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
+    void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
+    throws PlatformLoadingException {
         ReporterList reporterList = new ReporterList();
         reporterList.setPlatform(platform);
         reporterList.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         platform.getReporterLists().add(reporterList);
         try {
-            setAnnotationFileReader(new CSVReader(new FileReader(getAnnotationFile())));
+            setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
-            platform.setName(getHeaderValue(PLATFORM_NAME_HEADER));
+            reporterList.setName(getHeaderValue(CHIP_TYPE_HEADER));
             loadAnnotations(reporterList, dao);
             reporterList.sortAndLoadReporterIndexes();
         } catch (IOException e) {
-            throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFile().getName(), e);
+            throw new PlatformLoadingException("Couldn't read annotation file " + annotationFile.getName(), e);
         }
     }
 

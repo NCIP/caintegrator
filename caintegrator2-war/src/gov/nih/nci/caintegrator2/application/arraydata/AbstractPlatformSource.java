@@ -87,6 +87,8 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for platform source specifications.
@@ -94,7 +96,7 @@ import java.io.Serializable;
 public abstract class AbstractPlatformSource implements Serializable {
 
     private boolean deleteFileOnCompletion;
-    private final File annotationFile;
+    private final List<File> annotationFiles = new ArrayList<File>();
     
     abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
 
@@ -108,7 +110,29 @@ public abstract class AbstractPlatformSource implements Serializable {
         if (annotationFile == null || !annotationFile.exists()) {
             throw new IllegalArgumentException("Annotation file must exist.");
         }
-        this.annotationFile = annotationFile;
+        annotationFiles.add(annotationFile);
+    }
+
+    /**
+     * Creates a new instance.
+     * 
+     * @param annotationFiles the list of CSV annotation files.
+     */
+    public AbstractPlatformSource(List<File> annotationFiles) {
+        super();
+        if (annotationFiles.isEmpty() || !filesExisted(annotationFiles)) {
+            throw new IllegalArgumentException("Annotation file must exist.");
+        }
+        this.annotationFiles.addAll(annotationFiles);
+    }
+    
+    private boolean filesExisted(List<File> files) {
+        for (File file : files) {
+            if (file == null || !file.exists()) {
+                return false;
+            }
+        }
+        return true;
     }
     /**
      * @return the deleteFileOnCompletion
@@ -125,10 +149,24 @@ public abstract class AbstractPlatformSource implements Serializable {
     }
 
     /**
-     * @return the annotationFile
+     * @return the list of annotationFiles
      */
-    public File getAnnotationFile() {
-        return annotationFile;
+    public List<File> getAnnotationFiles() {
+        return annotationFiles;
+    }
+
+    /**
+     * @return the annotationFile names
+     */
+    public String getAnnotationFileNames() {
+        StringBuffer names = new StringBuffer();
+        for (File file : annotationFiles) {
+            if (names.length() > 0) {
+                names.append(", ");
+            }
+            names.append(file.getName());
+        }
+        return names.toString();
     }
     
 }

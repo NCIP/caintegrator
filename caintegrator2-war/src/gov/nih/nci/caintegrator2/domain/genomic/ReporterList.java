@@ -15,6 +15,7 @@ public class ReporterList extends AbstractCaIntegrator2Object {
 
     private static final long serialVersionUID = 1L;
     
+    private String name;
     private ReporterTypeEnum reporterType;
     private List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
     private Platform platform;
@@ -86,6 +87,20 @@ public class ReporterList extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // Required by Hibernate
     private void setArrayDatas(Set<ArrayData> arrayDatas) {
         this.arrayDatas = arrayDatas;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
