@@ -45,6 +45,7 @@
                 <property name="path" column="RESULTS_ZIP_FILE_PATH" />
 	        </component>
 	        <property name="pcaUrl" type="string" column="MAIN_GRID_URL"/>
+	        <property name="preprocessDataSetUrl" type="string" column="PREPROCESS_GRID_URL"/>
         </subclass>
         <subclass name="GisticAnalysisJob" lazy="false" discriminator-value="GISTIC">
             <!-- Attributes mapping for the GisticAnalysisJob class -->

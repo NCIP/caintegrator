@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -111,19 +112,23 @@ public class PreprocessDatasetGridRunner {
     private final PreprocessDatasetMAGEServiceI client;
     private final MageBioAssayGenerator mbaGenerator;
     private final FileManager fileManager;
+    private final Map<String, String> reporterGeneSymbols;
     
     /**
      * Public Constructor.
      * @param client of grid service.
      * @param mbaGenerator to generae BioAssay objects.
      * @param fileManager to store gct file.
+     * @param reporterGeneSymbols the reporterGeneSymbols map.
      */
     public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client,
                                 MageBioAssayGenerator mbaGenerator,
-                                FileManager fileManager) {
+                                FileManager fileManager,
+                                Map<String, String> reporterGeneSymbols) {
         this.client = client;
         this.mbaGenerator = mbaGenerator;
         this.fileManager = fileManager;
+        this.reporterGeneSymbols = reporterGeneSymbols;
     }
     
     /**
@@ -137,16 +142,16 @@ public class PreprocessDatasetGridRunner {
     public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters, 
             GctDataset dataset) 
         throws ConnectionException {
-        
+        GctDataset preprocessedDataset = dataset;
         if (dataset.getValues().length > 0) {
-            runPreprocessDataset(parameters, dataset);
+            preprocessedDataset = runPreprocessDataset(parameters, dataset);
         }
-        return GctDatasetFileWriter.writeAsGct(dataset, 
+        return GctDatasetFileWriter.writeAsGct(preprocessedDataset, 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + parameters.getProcessedGctFilename()).getAbsolutePath());
     }
 
-    private void runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
+    private GctDataset runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
     throws ConnectionException {
         try {
             // I was unable to disable logging using log4j.properties for this class, and it is
@@ -159,7 +164,11 @@ public class PreprocessDatasetGridRunner {
             BioAssay[] processedBioAssay = client.performAnalysis(convertGctDatasetToBioAssay(dataset), 
                                                                   parameters.getDatasetParameters());
             timeLogger.stopLog(jobInfoString);
-            dataset.setValues(mbaGenerator.bioAssayArrayToFloat2D(processedBioAssay));
+            if (processedBioAssay == null) {
+                throw new ConnectionException(
+                        "Preprocess Dataset filtered out all rows, change parameters and try again.");
+            }
+            return new GctDataset(processedBioAssay, mbaGenerator, reporterGeneSymbols);
         } catch (InvalidParameterException e) {
             throw new IllegalArgumentException("Invalid parameters.", e);
         } catch (RemoteException e) {

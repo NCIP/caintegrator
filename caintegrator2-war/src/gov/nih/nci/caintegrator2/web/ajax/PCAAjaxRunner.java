@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -137,9 +138,12 @@ public class PCAAjaxRunner implements Runnable {
     }
 
     private void processLocally() throws ConnectionException, InvalidCriterionException {
+        PreprocessDatasetParameters preprocessParams = null;
+        if (job.getForm().isUsePreprocessDataset()) {
+            preprocessParams = job.getForm().getPreprocessParameters();
+        }
         File resultFile = updater.getAnalysisService().executeGridPCA(
-                job.getSubscription(),
-                job.getForm().getPcaParameters());
+                job.getSubscription(), preprocessParams, job.getForm().getPcaParameters());
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         if (resultFile != null) {
             ResultsZipFile resultZipFile = new ResultsZipFile();

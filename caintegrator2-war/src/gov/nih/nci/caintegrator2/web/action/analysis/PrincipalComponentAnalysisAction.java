@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GridDiscoveryServiceJob;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
@@ -96,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
+import gridextensions.PreprocessDatasetParameterSet;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -180,9 +182,11 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         getPrincipalComponentAnalysisForm().setUnselectedQueries(new HashMap<String, Query>());
         
         addNonGenomicQueries();
+        getPrincipalComponentAnalysisForm().setPreprocessParameters(new PreprocessDatasetParameters());
         getPrincipalComponentAnalysisForm().setPcaParameters(new PCAParameters());
 
         String fileName = "PCA-" + System.currentTimeMillis();
+        getPreprocessDatasetParameters().setProcessedGctFilename("PROCESSED-" + fileName + ".gct");
         getPcaParameters().setGctFileName(fileName + ".gct");
         getPcaParameters().setClassificationFileName(fileName + ".cls");
         getPcaParameters().setClusterBy(getPcaParameters().getClusterByOptions().get(0));
@@ -205,6 +209,9 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         getStudySubscription().getAnalysisJobCollection()
             .add(getCurrentPrincipalComponentAnalysisJob());
         getCurrentPrincipalComponentAnalysisJob().setSubscription(getStudySubscription());
+        if (!getCurrentPrincipalComponentAnalysisJob().getForm().isUsePreprocessDataset()) {
+            getCurrentPrincipalComponentAnalysisJob().setPreprocessDataSetUrl(null);
+        }
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         ajaxUpdater.runJob(getCurrentPrincipalComponentAnalysisJob());
         resetCurrentPrincipalComponentAnalysisJob();
@@ -220,14 +227,19 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl(getCurrentPrincipalComponentAnalysisJob().getPcaUrl());
         getPcaParameters().setServer(server);
+        server = new ServerConnectionProfile();
+        server.setUrl(getCurrentPrincipalComponentAnalysisJob().getPreprocessDataSetUrl());
+        getPreprocessDatasetParameters().setServer(server);
     }
     
     private void loadQueries() {
         if (!getPrincipalComponentAnalysisForm().getSelectedQueryIDs().isEmpty()) {
             getPcaParameters().getClinicalQueries().clear();
+            getPreprocessDatasetParameters().getClinicalQueries().clear();
             for (String id : getPrincipalComponentAnalysisForm().getSelectedQueryIDs()) {
                 Query currentQuery = getQuery(id);
                 getPcaParameters().getClinicalQueries().add(currentQuery);
+                getPreprocessDatasetParameters().getClinicalQueries().add(currentQuery);
             }
         }
     }
@@ -313,5 +325,27 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
      */
     public Map<String, String> getPcaServices() {
         return GridDiscoveryServiceJob.getGridPcaServices();
+    }
+    
+    /**
+     * @return available PreprocessDataset services.
+     */
+    public Map<String, String> getPreprocessDatasetServices() {
+        return GridDiscoveryServiceJob.getGridPreprocessServices();
+    }
+    
+    /**
+     * @return PreprocessDatasetParameters.
+     */
+    public PreprocessDatasetParameterSet getPreprocessDatasetParameterSet() {
+        return getPreprocessDatasetParameters().getDatasetParameters();
+    }
+
+    
+    /**
+     * @return PreprocessDatasetParameters.
+     */
+    public PreprocessDatasetParameters getPreprocessDatasetParameters() {
+        return getPrincipalComponentAnalysisForm().getPreprocessParameters();
     }
 }

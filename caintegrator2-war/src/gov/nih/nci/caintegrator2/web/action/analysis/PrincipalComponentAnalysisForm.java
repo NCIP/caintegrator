@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -100,8 +101,10 @@ import java.util.Map;
 public class PrincipalComponentAnalysisForm {
     
     private PCAParameters pcaParameters;
+    private PreprocessDatasetParameters preprocessParameters;
     
     private final ServerConnectionProfile server = new ServerConnectionProfile();
+    private boolean usePreprocessDataset = false;
 
     private List<String> selectedQueryIDs = new ArrayList<String>();
     private List<String> unselectedQueryIDs = new ArrayList<String>();
@@ -187,6 +190,32 @@ public class PrincipalComponentAnalysisForm {
     public void setPcaParameters(PCAParameters pcaParameters) {
         this.pcaParameters = pcaParameters;
     }
-    
-    
+
+    /**
+     * @return the preprocessParameters
+     */
+    public PreprocessDatasetParameters getPreprocessParameters() {
+        return preprocessParameters;
+    }
+
+    /**
+     * @param preprocessParameters the preprocessParameters to set
+     */
+    public void setPreprocessParameters(PreprocessDatasetParameters preprocessParameters) {
+        this.preprocessParameters = preprocessParameters;
+    }
+
+    /**
+     * @return the usePreprocessDataset
+     */
+    public boolean isUsePreprocessDataset() {
+        return usePreprocessDataset;
+    }
+
+    /**
+     * @param usePreprocessDataset the usePreprocessDataset to set
+     */
+    public void setUsePreprocessDataset(boolean usePreprocessDataset) {
+        this.usePreprocessDataset = usePreprocessDataset;
+    }
 }

@@ -182,9 +182,13 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters) 
-        throws ConnectionException, InvalidCriterionException {
-        return genePatternGridRunner.runPCA(studySubscription, parameters);
+    public File executeGridPCA(StudySubscription studySubscription, PreprocessDatasetParameters preprocessParams,
+            PCAParameters pcaParams) throws ConnectionException, InvalidCriterionException {
+        File gctFile = null;
+        if (preprocessParams != null) {
+            gctFile = genePatternGridRunner.runPreprocessDataset(studySubscription, preprocessParams);
+        }
+        return genePatternGridRunner.runPCA(studySubscription, pcaParams, gctFile);
     }
 
     /**
