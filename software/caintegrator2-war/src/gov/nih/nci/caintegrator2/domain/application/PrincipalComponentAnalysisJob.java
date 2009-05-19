@@ -95,6 +95,7 @@ public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob 
     private static final long serialVersionUID = 1L;
     
     private final transient PrincipalComponentAnalysisForm form = new PrincipalComponentAnalysisForm();
+    private String preprocessDataSetUrl;
     private ResultsZipFile resultsZipFile;
     private String pcaUrl;
 
@@ -138,5 +139,19 @@ public class PrincipalComponentAnalysisJob extends AbstractPersistedAnalysisJob 
      */
     public void setPcaUrl(String pcaUrl) {
         this.pcaUrl = pcaUrl;
+    }
+
+    /**
+     * @return the preprocessDataSetUrl
+     */
+    public String getPreprocessDataSetUrl() {
+        return preprocessDataSetUrl;
+    }
+
+    /**
+     * @param preprocessDataSetUrl the preprocessDataSetUrl to set
+     */
+    public void setPreprocessDataSetUrl(String preprocessDataSetUrl) {
+        this.preprocessDataSetUrl = preprocessDataSetUrl;
     }
 }

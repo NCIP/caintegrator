@@ -184,7 +184,8 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public File executeGridPCA(StudySubscription studySubscription, PCAParameters parameters)
+    public File executeGridPCA(StudySubscription studySubscription, PreprocessDatasetParameters preprocessParams,
+            PCAParameters pcaParams)
             throws ConnectionException {
         executePcaJobCalled = true;
         return null;

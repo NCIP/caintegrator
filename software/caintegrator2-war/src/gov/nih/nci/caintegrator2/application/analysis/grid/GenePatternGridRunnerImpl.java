@@ -177,26 +177,28 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
             PreprocessDatasetParameters parameters) throws ConnectionException, InvalidCriterionException {
         PreprocessDatasetMAGEServiceI client = 
             genePatternGridClientFactory.createPreprocessDatasetClient(parameters.getServer());
-        PreprocessDatasetGridRunner runner = 
-            new PreprocessDatasetGridRunner(client, mbaGenerator, fileManager);
         Set<Query> querySet = new HashSet<Query>();
         querySet.addAll(parameters.getClinicalQueries());
         GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet, queryManagementService);
         populateReporterGeneSymbols(gctDataset);
+        PreprocessDatasetGridRunner runner = 
+            new PreprocessDatasetGridRunner(client, mbaGenerator, fileManager, reporterGeneSymbols);
         return runner.execute(studySubscription, parameters, gctDataset);
     }
     
     /**
      * {@inheritDoc}
-     * @throws InvalidCriterionException 
      */
-    public File runPCA(StudySubscription studySubscription, PCAParameters parameters) throws ConnectionException,
-            InvalidCriterionException {
+    public File runPCA(StudySubscription studySubscription, PCAParameters parameters, File preprocessedGctFile)
+        throws ConnectionException, InvalidCriterionException {
         PCAI client = genePatternGridClientFactory.createPCAClient(parameters.getServer());
         PCAGridRunner runner = new PCAGridRunner(client, fileManager);
         Set<Query> querySet = new HashSet<Query>();
         querySet.addAll(parameters.getClinicalQueries());
-        File gctFile = createGctFile(studySubscription, querySet, parameters.getGctFileName());
+        File gctFile = preprocessedGctFile;
+        if (gctFile == null) {
+            gctFile = createGctFile(studySubscription, querySet, parameters.getGctFileName());   
+        }
         File clsFile = createClassificationFile(studySubscription, parameters.getClinicalQueries(), 
                 parameters.getClassificationFileName());
         File zipFile = null;

@@ -218,7 +218,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         parameters.getClinicalQueries().add(query1);
         parameters.getClinicalQueries().add(query2);
         File zipFile = null;
-        zipFile = genePatternGridRunner.runPCA(subscription, parameters);
+        zipFile = genePatternGridRunner.runPCA(subscription, parameters, null);
         assertNotNull(zipFile);
         zipFile.deleteOnExit();
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
