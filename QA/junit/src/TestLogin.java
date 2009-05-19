@@ -17,7 +17,13 @@ public class TestLogin extends TestCase{
 	public void testManagerUSIDManagerPW() {
 	
 		WebDriver driver = new FirefoxDriver();
-		driver.get("http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/login.action");                
+		String urlTested;
+		urlTested = "http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/";
+		System.out.println("Test Case = Testlogin");
+		System.out.println("Test = testManagerUSIDManagerPW");
+		System.out.println("urlTested = cbvapp-q1015.nci.nih.gov:19080/caintegrator2/");
+		driver.get(urlTested);                
+		//driver.get("http://cbvapp-q1015.nci.nih.gov:19080/caintegrator2/login.action");                
 		WebElement queryFindHTML = 
 			driver.findElement(By.tagName("html"));
 		WebElement queryFindj_username = driver.findElement(By.name("j_username"));        
