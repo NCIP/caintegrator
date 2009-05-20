@@ -109,12 +109,7 @@ public enum PlatformTypeEnum {
     /**
      * Agilent Gene Expression platform.
      */
-    AGILENT_GENE_EXPRESSION("Agilent Gene Expression"),
-    
-    /**
-     * Invalid type.
-     */
-    INVALID_TYPE("Invalid type");
+    AGILENT_GENE_EXPRESSION("Agilent Gene Expression");
     
     private static Map<String, PlatformTypeEnum> valueToTypeMap = new HashMap<String, PlatformTypeEnum>();
 
@@ -155,7 +150,7 @@ public enum PlatformTypeEnum {
      * @return the matching type.
      */
     public static PlatformTypeEnum getByValue(String value) {
-        return getValueToTypeMap().containsKey(value) ? getValueToTypeMap().get(value) : INVALID_TYPE;
+        return getValueToTypeMap().get(value);
     }
 
     /**
@@ -178,8 +173,8 @@ public enum PlatformTypeEnum {
      */
     public static List<String> getValuesToDisplay() {
         List<String> list = new ArrayList<String>();
-        for (PlatformTypeEnum vendor : values()) {
-            list.add(vendor.getValue());
+        for (PlatformTypeEnum type : values()) {
+            list.add(type.getValue());
         }
         return list;
     }
