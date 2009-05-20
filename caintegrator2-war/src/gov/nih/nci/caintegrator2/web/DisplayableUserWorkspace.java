@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableGisticJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
+import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchObject;
@@ -139,6 +140,7 @@ public class DisplayableUserWorkspace {
     private PrincipalComponentAnalysisJob currentPrincipalComponentAnalysisJob
         = new PrincipalComponentAnalysisJob();
     private GisticAnalysisJob currentGisticAnalysisJob = new GisticAnalysisJob();
+    private final PlatformForm platformForm = new PlatformForm();
     private final QueryForm queryForm = new QueryForm();
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
@@ -503,6 +505,13 @@ public class DisplayableUserWorkspace {
     public void setCurrentGisticAnalysisJob(
             GisticAnalysisJob currentGisticAnalysisJob) {
         this.currentGisticAnalysisJob = currentGisticAnalysisJob;
+    }
+
+    /**
+     * @return the platformForm
+     */
+    public PlatformForm getPlatformForm() {
+        return platformForm;
     }
 
 }

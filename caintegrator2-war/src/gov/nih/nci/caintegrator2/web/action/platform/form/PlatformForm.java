@@ -83,51 +83,51 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.arraydata;
+package gov.nih.nci.caintegrator2.web.action.platform.form;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 
+ * The form to hold multiple annotation files when creating new Platform.
  */
-public class PlatformTypeEnumTest {
-
+public class PlatformForm {
+    
+    private final List<File> annotationFiles = new ArrayList<File>();
+    private String fileNames;
+    private static final String NEW_LINE = "\n";
+    
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum#getValue()}.
+     * Clear all attributes.
      */
-    @Test
-    public void testGetValue() {
+    public void clear() {
+        annotationFiles.clear();
+        fileNames = "";
+    }
+    
+    /**
+     * Add an annotation file.
+     * @param annotationFile file to add.
+     * @param fileName file name to add.
+     */
+    public void add(File annotationFile, String fileName) {
+        annotationFiles.add(annotationFile);
+        fileNames += fileName + NEW_LINE; 
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#getByValue(java.lang.String)}.
+     * @return the annotationFiles
      */
-    @Test
-    public void testGetByValue() {
-        assertEquals(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue()));
-        assertEquals(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
-        assertEquals(PlatformTypeEnum.AGILENT_GENE_EXPRESSION, PlatformTypeEnum.getByValue(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
+    public List<File> getAnnotationFiles() {
+        return annotationFiles;
     }
 
     /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#checkType(java.lang.String)}.
+     * @return the fileNames
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCheckType() {
-        PlatformTypeEnum.checkType("not found");
-    }
-
-    /**
-     * Test method for {@link gov.nih.nci.caintegrator2.application.arraydata.platformTypeEnum#getValueToDisplay()}.
-     */
-    @Test
-    public void testGetValueToDisplay() {
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue()));
-        assertTrue(PlatformTypeEnum.getValuesToDisplay().contains(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue()));
+    public String getFileNames() {
+        return fileNames;
     }
 
 }

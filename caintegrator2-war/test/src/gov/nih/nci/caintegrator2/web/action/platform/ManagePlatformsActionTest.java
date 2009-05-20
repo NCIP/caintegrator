@@ -133,7 +133,7 @@ public class ManagePlatformsActionTest {
     }
     
     @Test
-    public void testAddPlatform() {
+    public void testCreatePlatform() {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         action.setJmsTemplate(new JmsTemplate() {
@@ -142,18 +142,18 @@ public class ManagePlatformsActionTest {
                 assertNotNull(messageCreator);
             } 
         });
-        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+        assertEquals(ActionSupport.SUCCESS, action.createPlatform());
         
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
-        action.setPlatformFile(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
-        action.setPlatformFile2(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
+        action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+        action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
         action.setJmsTemplate(new JmsTemplate() {
             @Override
             public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
                 assertNotNull(messageCreator);
             } 
         });
-        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
+        assertEquals(ActionSupport.SUCCESS, action.createPlatform());
         
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
@@ -163,26 +163,43 @@ public class ManagePlatformsActionTest {
                 assertNotNull(messageCreator);
             } 
         });
-        assertEquals(ActionSupport.SUCCESS, action.addPlatform());
-
-        action.setPlatformType("Bad Type");
-        action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
-        action.setJmsTemplate(new JmsTemplate() {
-            @Override
-            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
-                assertNotNull(messageCreator);
-            } 
-        });
-        assertEquals(ActionSupport.ERROR, action.addPlatform());
+        assertEquals(ActionSupport.SUCCESS, action.createPlatform());
     }
     
+    @Test
+    public void testAddAnnotationFile() {
+        action.setSelectedAction("addAnnotationFile");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+    }
+
+        
     @Test
     public void testValidation() {
         action.setSelectedAction("managePlatforms");
         action.validate();
         assertFalse(action.hasFieldErrors());
+
+        action.setSelectedAction("addAnnotationFile");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
-        action.setSelectedAction("addPlatform");
+
+        action.setSelectedAction("addAnnotationFile");
+        action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+
+        action.setSelectedAction("addAnnotationFile");
+        action.setPlatformFile(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        
+        action.setSelectedAction("createPlatform");
+        action.setPlatformFile(null);
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

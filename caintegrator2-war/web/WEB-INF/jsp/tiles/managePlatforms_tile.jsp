@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<div id="content">
+<div id="content" >
 
 <!--Page Help-->
 
@@ -13,36 +13,43 @@
     
 <script type="text/javascript">
     function CheckPlatformType(type) {
-        if (type == "Affymetrix GeneEx") {
+        if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformName").value = "N/A";
             document.getElementById("platformName").disabled = true;
-            document.getElementById("platformFile2").disabled = true;
+            document.getElementById("addFileButton").disabled = true;
         } else if (type == "Affymetrix SNP"){
             document.getElementById("platformName").value = "";
             document.getElementById("platformName").disabled = false;
-            document.getElementById("platformFile2").disabled = false;
-        } else if (type == "Agilent GeneEx"){
+            document.getElementById("addFileButton").disabled = false;
+        } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformName").value = "";
             document.getElementById("platformName").disabled = false;
-            document.getElementById("platformFile2").disabled = true;
+            document.getElementById("addFileButton").disabled = true;
         }
+    }
+    
+    function setSelectedAction(selectAction) {
+        document.managePlatformForm.selectedAction.value = selectAction;
     }
 </script>
 
 <h1>Manage Platforms</h1>
-<s:form action="addPlatform" method="post" enctype="multipart/form-data" >
+<s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" >
+    <s:hidden name="selectedAction" />
     <table class="data">
         <tr>
             <th colspan="2">
                 <s:select name="platformType" label="Platform Type"
                     list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
-                    value="Affymetrix" onchange="CheckPlatformType(this.form.platformType.value);" />
+                    onchange="CheckPlatformType(this.form.platformType.value);" />
                 <s:textfield id="platformName" name="platformName" label="Platform Name"
-                    disabled="true" />
+                    disabled="platformNameDisabled" />
                 <s:file name="platformFile" label="Annotation File" />
-                <s:file id="platformFile2" name="platformFile2" label="Second Annotation File" disabled="true"/>
-                <s:hidden name="selectedAction" value="addPlatform" />
-                <s:submit value="Add" align="center" />
+                <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center" action="addAnnotationFile"
+                    onclick="setSelectedAction('addAnnotationFile')" disabled="addButtonDisabled"/>
+                <s:textarea label="Annotation File(s) Selected" name="platformForm.fileNames" rows="3" cols="50" disabled="true"/>
+                <s:submit value="Create Platform" align="center" action="createPlatform"
+                    onclick="setSelectedAction('createPlatform')"/>
             </th>    
         </tr>
         <tr>
