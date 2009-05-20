@@ -31,6 +31,7 @@ public class ArrayDesignChecker {
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
         for (AffymetrixCdfReader affymetrixCdfReader : cdfReaders) {
             assertTrue(platform.getReporterListListing().contains(affymetrixCdfReader.getCdfData().getChipType()));
+            affymetrixCdfReader.close();
         }
         checkSnpReporters(platform);
         return platform;
@@ -65,6 +66,7 @@ public class ArrayDesignChecker {
         checkPlatform(platform, cdfReader);
         checkProbeSetReporters(platform, cdfReader);
         checkGeneReporters(platform);
+        cdfReader.close();
         return platform;
     }
 
