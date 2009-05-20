@@ -114,9 +114,9 @@ import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(timeout = 2880)
-public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
+public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStudyTestIntegration {
     
-    private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtWithCopyNumberDataTestIntegration.class);
+    private final static Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
 
     @Test
     public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
@@ -133,7 +133,7 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
 
     private void checkCopyNumberData() {
         Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        assertEquals(36, arrayDatas.size());
+        assertEquals(2, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
         }
@@ -208,12 +208,12 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
 
     @Override
     protected String getStudyName() {
-        return "Rembrandt with Copy Number Data";
+        return "Rembrandt with Small Copy Number Data";
     }
     
     @Override
     protected File getCopyNumberFile() {
-        return TestDataFiles.REMBRANDT_COPY_NUMBER_FILE;
+        return TestDataFiles.SHORT_COPY_NUMBER_FILE;
     }
     
     @Override

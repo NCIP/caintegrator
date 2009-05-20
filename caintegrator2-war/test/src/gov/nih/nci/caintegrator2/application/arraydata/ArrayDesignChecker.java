@@ -3,6 +3,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
@@ -12,33 +13,38 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
 public class ArrayDesignChecker {
 
-    public static Platform checkLoadAffymetrixSnpArrayDesign(File cdfFile, File annotationFile, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
-        AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
-        List<File> annotationFiles = new ArrayList<File>();
-        annotationFiles.add(annotationFile);
-        AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(annotationFiles, "AffyDnaPlatform");
+    public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixDnaPlatformSource source, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
+        AffymetrixCdfReader cdfReaders[] = getCdfReaders(cdfs);
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
         assertNotNull(platform);
-        assertEquals("AffyDnaPlatform", platform.getName());
+        assertEquals(source.getPlatformName(), platform.getName());
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
-        assertEquals(cdfReader.getCdfData().getChipType(), platform.getReporterLists().iterator().next().getName());
-        checkSnpReporters(platform, cdfReader);
+        for (AffymetrixCdfReader affymetrixCdfReader : cdfReaders) {
+            assertTrue(platform.getReporterListListing().contains(affymetrixCdfReader.getCdfData().getChipType()));
+        }
+        checkSnpReporters(platform);
         return platform;
     }
 
-    private static void checkSnpReporters(Platform platform, AffymetrixCdfReader cdfReader) {
+    private static AffymetrixCdfReader[] getCdfReaders(File[] cdfs) throws AffymetrixCdfReadException {
+        AffymetrixCdfReader[] readers = new AffymetrixCdfReader[cdfs.length];
+        for (int i = 0; i < cdfs.length; i++) {
+            readers[i] = AffymetrixCdfReader.create(cdfs[i]);
+        }
+        return readers;
+    }
+
+    private static void checkSnpReporters(Platform platform) {
         PlatformHelper platformHelper = new PlatformHelper(platform);
         for (AbstractReporter abstractReporter : platformHelper.getAllReportersByType((ReporterTypeEnum.DNA_ANALYSIS_REPORTER))) {
             DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
