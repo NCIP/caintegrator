@@ -750,6 +750,8 @@ DIV.selectorNote
 /** Styles for Annotation Definition page and optionTransferSelect Tag */
 TABLE.currentAnnotationDefinition TD
 { vertical-align:middle;  }
+TABLE.optionTransferSelect TR TD
+{ vertical-align:middle;}
 
 /** Style for Edit Study Page **/
 FORM.editStudyFile TABLE.editStudyFile
