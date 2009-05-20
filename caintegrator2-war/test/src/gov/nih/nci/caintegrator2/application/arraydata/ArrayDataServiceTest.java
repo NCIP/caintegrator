@@ -54,9 +54,15 @@ public class ArrayDataServiceTest {
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
-        checkLoadAffymetrixSnpArrayDesign(TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         checkLoadAgilentArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
-        checkLoadAgilentArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);
+        checkLoadAgilentArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);        
+        List<File> files = new ArrayList<File>();
+        files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+        files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
+        AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "GeneChip Human Mapping 100K Set");
+        File[] cdfs = new File[] {TestArrayDesignFiles.MAPPING_50K_HIND_CDF_FILE, TestArrayDesignFiles.MAPPING_50K_XBA_CDF};
+        checkLoadAffymetrixSnpArrayDesign(cdfs, source);
+
     }
 
     private void checkLoadAffymetrixExpressionArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
@@ -65,8 +71,8 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
     }
 
-    private void checkLoadAffymetrixSnpArrayDesign(File cdfFile, File annotationFile) throws PlatformLoadingException, AffymetrixCdfReadException {
-        ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfFile, annotationFile, service);
+    private void checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixDnaPlatformSource source) throws PlatformLoadingException, AffymetrixCdfReadException {
+        ArrayDesignChecker.checkLoadAffymetrixSnpArrayDesign(cdfs, source, service);
         assertTrue(daoStub.saveCalled);
     }
     
@@ -97,8 +103,7 @@ public class ArrayDataServiceTest {
         ReporterList reporterList = new ReporterList();
         reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setPlatform(platform);
-        platform.getReporterLists().add(reporterList);
-        reporterList.setId(1L);
+        platform.getReporterLists().add(reporterList);        reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
         reporter1.setName("reporter1");
