@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
+import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableQueryResult;
 import gov.nih.nci.caintegrator2.web.action.query.form.QueryForm;
 
@@ -249,6 +250,17 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public QueryForm getQueryForm() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getQueryForm();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the platform form
+     */
+    public PlatformForm getPlatformForm() {
+        if (getDisplayableWorkspace() != null) {
+            return getDisplayableWorkspace().getPlatformForm();
         } else {
             return null;
         }

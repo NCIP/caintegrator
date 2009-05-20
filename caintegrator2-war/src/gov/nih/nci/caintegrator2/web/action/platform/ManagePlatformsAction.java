@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManage
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jms.JMSException;
@@ -124,29 +123,29 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private File platformFile;
     private String platformFileContentType;
     private String platformFileFileName;
-    private File platformFile2;
-    private String platformFile2ContentType;
-    private String platformFile2FileName;
     private JmsTemplate jmsTemplate;
     private Queue queue;
     private String platformName;
     private String platformType;
     private String selectedAction;
 
-    private static final String ADD_ACTION = "addPlatform";
+    private static final String CREATE_PLATFORM_ACTION = "createPlatform";
+    private static final String ADD_FILE_ACTION = "addAnnotationFile";
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected boolean isFileUpload() {
-        return ADD_ACTION.equalsIgnoreCase(selectedAction);
+        return ADD_FILE_ACTION.equalsIgnoreCase(selectedAction)
+            || CREATE_PLATFORM_ACTION.equalsIgnoreCase(selectedAction);
     }
     
     /**
      * @return the Struts result.
      */
     public String execute() {
+        getPlatformForm().clear();
         return SUCCESS;
     }
     
@@ -155,16 +154,23 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     @Override
     public void validate() {
-        if (ADD_ACTION.equalsIgnoreCase(selectedAction)) {
-            if (platformFile == null) {
-                setFieldError("File is required");
-            } else if (platformFile.length() == 0) {
-                setFieldError("File is empty");
-            }
+        if (CREATE_PLATFORM_ACTION.equalsIgnoreCase(selectedAction)) {
+            checkPlatformFile();
             checkPlatformName();
+            prepareValueStack();
+        } else if (ADD_FILE_ACTION.equalsIgnoreCase(selectedAction)) {
+            checkPlatformFile();
             prepareValueStack();
         } else {
             super.validate();
+        }
+    }
+    
+    private void checkPlatformFile() {
+        if (platformFile == null && getPlatformForm().getAnnotationFiles().isEmpty()) {
+            setFileError("File is required");
+        } else if (platformFile != null && platformFile.length() == 0) {
+            setFileError("File is empty");
         }
     }
     
@@ -172,18 +178,33 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         if ((PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
                 || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType))
                 && StringUtils.isEmpty(platformName)) {
-            setFieldError("Platform name is required for Agilent vendor");
+            addFieldError("platformName", "Platform name is required for Agilent vendor");
         }
     }
     
-    private void setFieldError(String errorMessage) {
+    private void setFileError(String errorMessage) {
         addFieldError("platformFile", errorMessage);
     }
     
     /**
+     * Add the annotation file to the platform form.
      * @return the Struts result.
      */
-    public String addPlatform() {
+    public String addAnnotationFile() {
+        try {
+            getPlatformForm().add(getPlatformFileCopy(), platformFileFileName);
+        } catch (IOException e) {
+            addFieldError("platformFile", "Error up load file: " + platformFileFileName);
+            return ERROR;
+        }
+        return INPUT;
+    }
+    
+    /**
+     * Create the platform.
+     * @return the Struts result.
+     */
+    public String createPlatform() {
         try {
             AbstractPlatformSource source;
             switch (PlatformTypeEnum.getByValue(platformType)) {
@@ -192,7 +213,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                 break;
 
             case AFFYMETRIX_DNA_ANALYSIS:
-                source = new AffymetrixDnaPlatformSource(createPlatformFileCopies(), getPlatformName());
+                source = new AffymetrixDnaPlatformSource(getAnnotationFiles(), getPlatformName());
                 break;
                 
             case AGILENT_GENE_EXPRESSION:
@@ -203,8 +224,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                 addActionError("Invalid platform vendor: " + platformType);
                 return ERROR;
             }
-            source.setDeleteFileOnCompletion(true);
-            sendPlatformMessage(source);
+            submitPlatformCreation(source);
             return SUCCESS;
         } catch (IOException e) {
             LOGGER.error("Couldn't copy uploaded file", e);
@@ -214,11 +234,17 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         }
     }
     
-    private List<File> createPlatformFileCopies() throws IOException {
-        List<File> files = new ArrayList<File>();
-        files.add(getPlatformFileCopy());
-        files.add(getPlatformFile2Copy());
-        return files;
+    private void submitPlatformCreation(AbstractPlatformSource source) {
+        source.setDeleteFileOnCompletion(true);
+        sendPlatformMessage(source);
+        getPlatformForm().clear();
+    }
+    
+    private List<File> getAnnotationFiles() throws IOException {
+        if (platformFile != null) {
+            getPlatformForm().getAnnotationFiles().add(getPlatformFileCopy());
+        }
+        return getPlatformForm().getAnnotationFiles();
     }
     
     /**
@@ -230,18 +256,6 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private File getPlatformFileCopy() throws IOException {
         File copy = new File(getFileManager().getNewTemporaryDirectory("platform"), getPlatformFile().getName());
         FileUtils.copyFile(getPlatformFile(), copy);
-        return copy;
-    }
-    
-    /**
-     * Creates a copy of the uploaded file2, as the original is deleted as soon as the action completes.
-     * 
-     * @return the copied file2
-     * @throws IOException if the file2 couldn't be copied
-     */
-    private File getPlatformFile2Copy() throws IOException {
-        File copy = new File(getFileManager().getNewTemporaryDirectory("platform2"), getPlatformFile2().getName());
-        FileUtils.copyFile(getPlatformFile2(), copy);
         return copy;
     }
 
@@ -402,47 +416,29 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
     }
-
+    
     /**
-     * @return the platformFile2
+     * Disable the platform name.
+     * @return true or false to disable the platform name.
      */
-    public File getPlatformFile2() {
-        return platformFile2;
+    public String getPlatformNameDisabled() {
+        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)
+                || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
-
+    
     /**
-     * @param platformFile2 the platformFile2 to set
+     * Disable the add annotation file button.
+     * @return true or false to disable the add button.
      */
-    public void setPlatformFile2(File platformFile2) {
-        this.platformFile2 = platformFile2;
+    public String getAddButtonDisabled() {
+        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
-
-    /**
-     * @return the platformFile2ContentType
-     */
-    public String getPlatformFile2ContentType() {
-        return platformFile2ContentType;
-    }
-
-    /**
-     * @param platformFile2ContentType the platformFile2ContentType to set
-     */
-    public void setPlatformFile2ContentType(String platformFile2ContentType) {
-        this.platformFile2ContentType = platformFile2ContentType;
-    }
-
-    /**
-     * @return the platformFile2FileName
-     */
-    public String getPlatformFile2FileName() {
-        return platformFile2FileName;
-    }
-
-    /**
-     * @param platformFile2FileName the platformFile2FileName to set
-     */
-    public void setPlatformFile2FileName(String platformFile2FileName) {
-        this.platformFile2FileName = platformFile2FileName;
-    }
-
 }
