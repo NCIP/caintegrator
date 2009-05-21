@@ -163,7 +163,7 @@ public abstract class AbstractTestDataGenerator<T> {
     }
 
     protected Character getUniqueChar() {
-        return (char) (getUniqueInt() % 100);
+        return (char) ((getUniqueInt() % 50) + 50);
     }
 
     @SuppressWarnings("hiding")
