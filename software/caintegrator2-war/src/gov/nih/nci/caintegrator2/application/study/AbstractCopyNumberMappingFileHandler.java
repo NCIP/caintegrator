@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -97,7 +96,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -108,7 +106,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -122,6 +123,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
     private final ArrayDataService arrayDataService;
     private final CaIntegrator2Dao dao;
     private final GenomicDataSourceConfiguration genomicSource;
+    private final Map<Sample, List<String>> sampleToFilenamesMap = new HashMap<Sample, List<String>>();
 
     AbstractCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -135,13 +137,13 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         try {
             CSVReader reader = new CSVReader(new FileReader(getFile()));
             String[] fields;
-            List<ArrayDataValues> arrayDataValues = new ArrayList<ArrayDataValues>();
             while ((fields = reader.readNext()) != null) {
                 String subjectId = fields[0];
                 String sampleName = fields[1];
                 String copyNumberFilename = fields[2];
-                arrayDataValues.add(loadCopyNumberData(subjectId, sampleName, copyNumberFilename));
+                parse(subjectId, sampleName, copyNumberFilename);
             }
+            List<ArrayDataValues> arrayDataValues = loadArrayData();
             dao.save(genomicSource.getStudyConfiguration());
             reader.close();
             return arrayDataValues;
@@ -154,44 +156,101 @@ public abstract class AbstractCopyNumberMappingFileHandler {
         }
     }
 
+    private void parse(String subjectIdentifier, String sampleName, String copyNumberFilename) 
+    throws ValidationException {
+        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
+        Sample sample = getSample(sampleName, assignment);
+        addCopyNumberFile(sample, copyNumberFilename);
+    }
+
+    private void addCopyNumberFile(Sample sample, String copyNumberFilename) {
+        List<String> filenames = sampleToFilenamesMap.get(sample);
+        if (filenames == null) {
+            filenames = new ArrayList<String>();
+            sampleToFilenamesMap.put(sample, filenames);
+        }
+        filenames.add(copyNumberFilename);
+    }
+
     private File getFile() {
         return genomicSource.getCopyNumberDataConfiguration().getMappingFile();
     }
 
-    private ArrayDataValues loadCopyNumberData(String subjectIdentifier, String sampleName, String copyNumberFilename) 
+    private List<ArrayDataValues> loadArrayData() 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        StudySubjectAssignment assignment = getSubjectAssignment(subjectIdentifier);
-        Sample sample = getSample(sampleName);
-        SampleAcquisition acquisition = new SampleAcquisition();
-        acquisition.setAssignment(assignment);
-        acquisition.setSample(sample);
-        assignment.getSampleAcquisitionCollection().add(acquisition);
-        File cnchpFile = getCnChpFile(copyNumberFilename);
-        AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
-        String platformName = parser.getArrayDesignName();
-        Platform platform = dao.getPlatform(platformName);
+        List<ArrayDataValues> values = new ArrayList<ArrayDataValues>();
+        for (Sample sample : sampleToFilenamesMap.keySet()) {
+            values.add(loadArrayData(sample));
+        }
+        return values;
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        List<File> cnchpFiles = new ArrayList<File>();
+        try {
+            for (String filename : sampleToFilenamesMap.get(sample)) {
+                cnchpFiles.add(getCnChpFile(filename));
+            }
+            return loadArrayData(sample, cnchpFiles);
+        } finally {
+            for (File file : cnchpFiles) {
+                doneWithFile(file);
+            }
+        }
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
+    throws DataRetrievalException, ValidationException {
+        List<AffymetrixCopyNumberChpParser> parsers = new ArrayList<AffymetrixCopyNumberChpParser>();
+        Set<String> reporterListNames = new HashSet<String>();
+        for (File cnchpFile : cnchpFiles) {
+            AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
+            parsers.add(parser);
+            reporterListNames.add(parser.getArrayDesignName());
+        }
+        Platform platform = getPlatform(reporterListNames);
+        return loadArrayData(sample, platform, parsers);
+    }
+
+    private Platform getPlatform(Set<String> reporterListNames) throws ValidationException {
+        Set<Platform> platforms = new HashSet<Platform>();
+        for (String reporterListName : reporterListNames) {
+            ReporterList reporterList = dao.getReporterList(reporterListName);
+            if (reporterList == null) {
+                throw new ValidationException("There is no platform that supports chip type " + reporterListName);
+            }
+            platforms.add(reporterList.getPlatform());
+        }
+        if (platforms.size() > 1) {
+            throw new ValidationException(
+                    "Copy Number data files for a single sample are mapped to multiple platforms.");
+        }
+        return platforms.iterator().next();
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample, Platform platform, 
+            List<AffymetrixCopyNumberChpParser> parsers) throws DataRetrievalException {
         PlatformHelper helper = new PlatformHelper(platform);
         Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
-        for (ReporterList reporterList : reporterLists) {
-            reporters.addAll(reporterList.getReporters());
-        }
-        ArrayDataValues values = new ArrayDataValues(reporters);
-        ArrayData arrayData = createArrayData(sample, reporterLists, assignment.getStudy());
+        ArrayData arrayData = createArrayData(sample, reporterLists);
         dao.save(arrayData);
-        parser.parse(values, arrayData);
+        ArrayDataValues values = 
+            new ArrayDataValues(helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+        for (AffymetrixCopyNumberChpParser parser : parsers) {
+            parser.parse(values, arrayData);
+        }
         arrayDataService.save(values);
-        doneWithFile(cnchpFile);
         return values;
     }
 
     abstract void doneWithFile(File cnchpFile);
 
-    private ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists, Study study) {
+    private ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists) {
         ArrayData arrayData = new ArrayData();
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
-        arrayData.setStudy(study);
+        arrayData.setStudy(genomicSource.getStudyConfiguration().getStudy());
         Array array = new Array();
         array.getArrayDataCollection().add(arrayData);
         arrayData.setArray(array);
@@ -210,11 +269,16 @@ public abstract class AbstractCopyNumberMappingFileHandler {
     abstract File getCnChpFile(String copyNumberFilename) 
     throws ConnectionException, DataRetrievalException, ValidationException;
 
-    private Sample getSample(String sampleName) {
-        Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
+    private Sample getSample(String sampleName, StudySubjectAssignment assignment) {
+        Sample sample = genomicSource.getSample(sampleName);
         if (sample == null) {
             sample = new Sample();
             sample.setName(sampleName);
+            SampleAcquisition acquisition = new SampleAcquisition();
+            acquisition.setAssignment(assignment);
+            acquisition.setSample(sample);
+            assignment.getSampleAcquisitionCollection().add(acquisition);
+            genomicSource.getSamples().add(sample);
         }
         return sample;
     }

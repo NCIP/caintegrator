@@ -347,4 +347,13 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         }
         return "None Configured";
     }
+
+    Sample getSample(String sampleName) {
+        for (Sample sample : getSamples()) {
+            if (sampleName.equals(sample.getName())) {
+                return sample;
+            }
+        }
+        return null;
+    }
 }

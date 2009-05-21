@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -404,6 +405,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public List<UserWorkspace> retrieveAllSubscribedWorkspaces(Study study) {
         retrieveAllSubscribedWorkspacesCalled = true;
         return new ArrayList<UserWorkspace>();
+    }
+
+    public ReporterList getReporterList(String name) {
+        Platform platform = new Platform();
+        return platform.addReporterList("name", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
     }
 
 }

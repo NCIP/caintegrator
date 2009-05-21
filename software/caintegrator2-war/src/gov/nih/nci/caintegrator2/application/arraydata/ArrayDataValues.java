@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,6 +104,7 @@ import java.util.Set;
 public class ArrayDataValues {
     
     private final List<AbstractReporter> reporters;
+    private Set<ReporterList> reporterLists;
     private final Map<AbstractReporter, Integer> reporterIndexMap = new HashMap<AbstractReporter, Integer>();
     private final Map<ArrayDataValueType, TypeValues> typeValuesMap = new HashMap<ArrayDataValueType, TypeValues>();
 
@@ -251,6 +253,21 @@ public class ArrayDataValues {
         } else {
             return getReporters().iterator().next().getReporterList();
         }
+    }
+
+    /**
+     * Returns all reporter lists for reporters in this values object.
+     * 
+     * @return the reporter lists.
+     */
+    public Set<ReporterList> getReporterLists() {
+        if (reporterLists == null) {
+            reporterLists = new HashSet<ReporterList>();
+            for (AbstractReporter reporter : reporters) {
+                reporterLists.add(reporter.getReporterList());
+            }
+        }
+        return reporterLists;
     }
 
 }

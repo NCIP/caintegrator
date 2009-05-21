@@ -163,7 +163,14 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
 
     private void writeValues() {
         try {
-            writeAllValues();
+            int[] shape = new int[] {1, values.getReporters().size()};
+            Array arrayDataIdArray = Array.factory(DataType.INT, new int[] {1});
+            int[] valuesOrigin = new int[] {0, 0};
+            int[] arrayIdOrigin = new int[] {0};
+            List<ArrayData> arrayDatas = values.getOrderedArrayDatas();
+            for (ArrayData arrayData : arrayDatas) {
+                writeArrayDataValues(shape, arrayDataIdArray, valuesOrigin, arrayIdOrigin, arrayData);
+            }
         } catch (IOException e) {
             throw new ArrayDataStorageException("Couldn't writes values. IOException.", e);
         } catch (InvalidRangeException e) {
@@ -171,30 +178,24 @@ class NetCDFWriter extends AbstractNetCdfFileHandler {
         }
     }
 
-    private void writeAllValues() throws IOException, InvalidRangeException {
-        int[] shape = new int[] {1, values.getReporters().size()};
-        Array arrayDataIdArray = Array.factory(DataType.INT, new int[] {1});
-        int[] valuesOrigin = new int[] {0, 0};
-        int[] arrayIdOrigin = new int[] {0};
-        List<ArrayData> arrayDatas = values.getOrderedArrayDatas();
-        for (ArrayData arrayData : arrayDatas) {
-            valuesOrigin[0] = getArrayDataOffset(arrayData);
-            if (!getArrayDataOffsets().containsKey(arrayData.getId())) {
-                arrayIdOrigin[0] = getArrayDataOffset(arrayData);
-                arrayDataIdArray.setLong(arrayDataIdArray.getIndex(), arrayData.getId());
-                writer.write(ARRAY_DATA_IDS_VARIABLE, arrayIdOrigin, arrayDataIdArray);
-            }
-            for (ArrayDataValueType valueType : values.getTypes()) {
-                Array valuesArray = Array.factory(valueType.getTypeClass(), shape);
-                Index valuesIndex = valuesArray.getIndex();
-                for (AbstractReporter reporter : values.getReporters()) {
-                    valuesIndex.set(0, reporter.getIndex());
-                    setValue(valuesArray, valuesIndex, arrayData, reporter, valueType);
-                }
-                writer.write(valueType.name(), valuesOrigin, valuesArray);
-            }
-          }
+    private void writeArrayDataValues(int[] shape, Array arrayDataIdArray, int[] valuesOrigin, int[] arrayIdOrigin,
+            ArrayData arrayData) throws IOException, InvalidRangeException {
+        valuesOrigin[0] = getArrayDataOffset(arrayData);
+        if (!getArrayDataOffsets().containsKey(arrayData.getId())) {
+            arrayIdOrigin[0] = getArrayDataOffset(arrayData);
+            arrayDataIdArray.setLong(arrayDataIdArray.getIndex(), arrayData.getId());
+            writer.write(ARRAY_DATA_IDS_VARIABLE, arrayIdOrigin, arrayDataIdArray);
         }
+        for (ArrayDataValueType valueType : values.getTypes()) {
+            Array valuesArray = Array.factory(valueType.getTypeClass(), shape);
+            Index valuesIndex = valuesArray.getIndex();
+            for (AbstractReporter reporter : values.getReporters()) {
+                valuesIndex.set(0, reporter.getDataStorageIndex());
+                setValue(valuesArray, valuesIndex, arrayData, reporter, valueType);
+            }
+            writer.write(valueType.name(), valuesOrigin, valuesArray);
+        }
+    }
 
     private void setValue(Array valuesArray, Index valuesIndex, ArrayData arrayData, AbstractReporter reporter, 
             ArrayDataValueType type) {

@@ -488,8 +488,8 @@ public class StudyHelper {
         sample.setName("SAMPLE_" + sampleNum);
         ArrayData arrayData = new ArrayData();
         arrayData.setType(ArrayDataType.GENE_EXPRESSION);
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.getArrayDatas().add(arrayData);
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         Gene gene = new Gene();

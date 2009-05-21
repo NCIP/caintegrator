@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -123,9 +124,9 @@ public class GeneNameCriterionHandlerTest {
     
     @Before
     public void setUp() {
-        daoStub.clear();       
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        daoStub.clear();
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         gene.setSymbol(GENE_NAME);
         reporter.getGenes().add(gene);

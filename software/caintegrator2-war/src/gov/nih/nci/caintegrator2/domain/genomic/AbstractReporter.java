@@ -136,4 +136,13 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
         return buffer.toString();
     }
 
+    /**
+     * Returns the index used for storage and retrieval of array data associated with this reporter.
+     * 
+     * @return the storage index.
+     */
+    public int getDataStorageIndex() {
+        return getReporterList().getFirstDataStorageIndex() + getIndex();
+    }
+
 }

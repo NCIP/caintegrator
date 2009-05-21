@@ -135,14 +135,11 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
 
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException {
-        ReporterList reporterList = new ReporterList();
-        reporterList.setPlatform(platform);
-        reporterList.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        platform.getReporterLists().add(reporterList);
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
-            reporterList.setName(getHeaderValue(CHIP_TYPE_HEADER));
+            ReporterList reporterList = 
+                platform.addReporterList(getHeaderValue(CHIP_TYPE_HEADER), ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
             loadAnnotations(reporterList, dao);
             reporterList.sortAndLoadReporterIndexes();
         } catch (IOException e) {

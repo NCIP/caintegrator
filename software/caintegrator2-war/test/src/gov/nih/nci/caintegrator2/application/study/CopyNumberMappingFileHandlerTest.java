@@ -16,6 +16,7 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import org.junit.Test;
 
 import affymetrix.calvin.data.ProbeSetMultiDataCopyNumberData;
 import affymetrix.calvin.data.CHPMultiDataData.MultiDataType;
+import affymetrix.calvin.exception.UnsignedOutOfLimitsException;
 import affymetrix.fusion.chp.FusionCHPDataReg;
 import affymetrix.fusion.chp.FusionCHPMultiDataData;
 
@@ -43,7 +45,7 @@ public class CopyNumberMappingFileHandlerTest {
         CopyNumberMappingFileHandler handler = new CopyNumberMappingFileHandler(source, caArrayFacade, arrayDataService, dao);
         handler.loadCopyNumberData();
         Set<ArrayData> arrayDatas = studyConfiguration.getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        assertEquals(2, arrayDatas.size());
+        assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkArrayData(arrayData);
         }
@@ -59,30 +61,52 @@ public class CopyNumberMappingFileHandlerTest {
     }
 
     static class LocalCaIntegrator2DaoStub extends CaIntegrator2DaoStub {
+        
+        private Platform platform;
 
         @Override
         public Platform getPlatform(String name) {
+            return getPlatform();
+        }
+
+        private Platform getPlatform() {
+            if (platform != null) {
+                return platform;
+            }
             try {
                 Platform platform = new Platform();
-                ReporterList reporterList = new ReporterList();
-                reporterList.setReporterType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-                platform.getReporterLists().add(reporterList);
-                reporterList.setPlatform(platform);
                 FusionCHPMultiDataData.registerReader();
-                FusionCHPMultiDataData chpData = FusionCHPMultiDataData.fromBase(FusionCHPDataReg.read(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE.getAbsolutePath()));
-                int numProbeSets = chpData.getEntryCount(MultiDataType.CopyNumberMultiDataType);
-                for (int i = 0; i < numProbeSets; i++) {
-                    ProbeSetMultiDataCopyNumberData probeSetData = 
-                        chpData.getCopyNumberEntry(MultiDataType.CopyNumberMultiDataType, i);
-                    DnaAnalysisReporter reporter = new DnaAnalysisReporter();
-                    reporter.setName(probeSetData.getName());
-                    reporterList.getReporters().add(reporter);
-                }
+                addReporterList(platform, TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, "Mapping50K_Hind240");
+                addReporterList(platform, TestDataFiles.XBA_COPY_NUMBER_CHP_FILE, "Mapping50K_Xba240");
                 return platform;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
         }
+
+        private void addReporterList(Platform platform, File chpFile, String reporterListName) throws IOException, UnsignedOutOfLimitsException {
+            FusionCHPMultiDataData chpData = FusionCHPMultiDataData.fromBase(FusionCHPDataReg.read(chpFile.getAbsolutePath()));
+            ReporterList reporterList = platform.addReporterList(reporterListName, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            int numProbeSets = chpData.getEntryCount(MultiDataType.CopyNumberMultiDataType);
+            for (int i = 0; i < numProbeSets; i++) {
+                ProbeSetMultiDataCopyNumberData probeSetData = 
+                    chpData.getCopyNumberEntry(MultiDataType.CopyNumberMultiDataType, i);
+                DnaAnalysisReporter reporter = new DnaAnalysisReporter();
+                reporter.setName(probeSetData.getName());
+                reporterList.getReporters().add(reporter);
+            }
+        }
+
+        @Override
+        public ReporterList getReporterList(String name) {
+            for (ReporterList reporterList : getPlatform().getReporterLists()) {
+                if (name.equals(reporterList.getName())) {
+                    return reporterList;
+                }
+            }
+            return null;
+        }
+        
     }
 
     static class LocalCaArrayFacadeStub extends CaArrayFacadeStub {

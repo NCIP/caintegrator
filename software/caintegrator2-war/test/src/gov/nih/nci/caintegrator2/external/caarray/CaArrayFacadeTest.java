@@ -225,10 +225,8 @@ public class CaArrayFacadeTest {
 
         private Platform createTestPlatform() {
             Platform platform = new Platform();
-            ReporterList reporters = new ReporterList();
+            ReporterList reporters = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             reporters.setId(1L);
-            reporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-            platform.getReporterLists().add(reporters);
             reporters.getReporters().add(reporter1);
             reporters.getReporters().add(reporter2);
             reporter1.setReporterList(reporters);

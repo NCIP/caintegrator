@@ -101,15 +101,12 @@ import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
-
-import ucar.nc2.NCdumpW;
 
 public class NetCDFManagerTest {
     
@@ -135,7 +132,7 @@ public class NetCDFManagerTest {
     public void testStoreValuesMultipleStudies() {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
-        reporter.setReporterList(new ReporterList());
+        reporter.setReporterList(createReporterList());
         reporters.add(reporter);
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData1 = createArrayData(new Study());
@@ -144,12 +141,21 @@ public class NetCDFManagerTest {
         values.setFloatValue(arrayData2, reporter, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
         manager.storeValues(values);
     }
+
+    /**
+     * @return
+     */
+    private ReporterList createReporterList() {
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        return reporterList;
+    }
     
     @Test(expected = IllegalArgumentException.class)
     public void testStoreValuesNullArrayDataIds() {
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter = new GeneExpressionReporter();
-        ReporterList reporterList = new ReporterList();
+        ReporterList reporterList = createReporterList();
         reporter.setReporterList(reporterList);
         reporterList.setId(1L);
         reporters.add(reporter);
@@ -163,19 +169,53 @@ public class NetCDFManagerTest {
         manager.storeValues(values);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testStoreValuesMultipleReporterLists() {
+        Platform platform = new Platform();
+        platform.setId(1l);
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
+        
+        // Unrelated, unused ReporterList to test that it is ignored properly
+        GeneExpressionReporter reporter0 = new GeneExpressionReporter();
+        ReporterList reporterList0 = platform.addReporterList("reporterList0", ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        reporterList0.setId(0L);
+        reporterList0.getReporters().add(reporter0);
+        reporter0.setReporterList(reporterList0);
+        reporter0.setIndex(0);
+
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
-        reporter1.setReporterList(new ReporterList());
+        ReporterList reporterList1 = platform.addReporterList("reporterList1", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        reporterList1.setId(1L);
+        reporterList1.getReporters().add(reporter1);
+        reporter1.setReporterList(reporterList1);
+        reporter1.setIndex(0);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
-        reporter2.setReporterList(new ReporterList());
+        ReporterList reporterList2 = platform.addReporterList("reporterList2", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        reporterList2.setId(2L);
+        reporterList2.getReporters().add(reporter2);
+        reporter2.setReporterList(reporterList2);
+        reporter2.setIndex(0);
         reporters.add(reporter1);
         reporters.add(reporter2);
         ArrayDataValues values = new ArrayDataValues(reporters);
         ArrayData arrayData = createArrayData(new Study());
-        values.setFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 0.0f);
+        arrayData.setId(1L);
+        arrayData.getReporterLists().add(reporterList1);
+        arrayData.getReporterLists().add(reporterList2);
+        arrayData.getStudy().setId(1L);
+        values.setFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL, 1.1f);
+        values.setFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 2.2f);
         manager.storeValues(values);
+        
+        DataRetrievalRequest request = new DataRetrievalRequest();
+        request.addArrayData(arrayData);
+        request.addReporter(reporter1);
+        request.addReporter(reporter2);
+        request.addType(ArrayDataValueType.EXPRESSION_SIGNAL);
+        ArrayDataValues retrieved = manager.retrieveValues(request);
+        assertEquals(2, retrieved.getFloatValues(arrayData, ArrayDataValueType.EXPRESSION_SIGNAL).length);
+        assertEquals(1.1f, retrieved.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
+        assertEquals(2.2f, retrieved.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0.0f);
     }
     
     @Test
@@ -184,11 +224,8 @@ public class NetCDFManagerTest {
         platform.setId(1l);
         List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporterList.setId(1L);
-        reporterList.setPlatform(platform);
-        platform.getReporterLists().add(reporterList);
         reporter1.setReporterList(reporterList);
         reporter1.setIndex(0);
         GeneExpressionReporter reporter2 = new GeneExpressionReporter();
@@ -225,7 +262,6 @@ public class NetCDFManagerTest {
                 "data" + platform.getId() + "_" + ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue() + ".nc");
         FileUtils.deleteQuietly(netCdfFile);
         manager.storeValues(values);
-        NCdumpW.print(netCdfFile.getAbsolutePath(), new OutputStreamWriter(System.out), true, true, true, true, null, null);
         assertTrue(netCdfFile.exists());
         // Store additional values
         values = new ArrayDataValues(reporters);
@@ -238,7 +274,6 @@ public class NetCDFManagerTest {
         values.setFloatValue(arrayData3, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL, 17.17f);
         values.setFloatValue(arrayData3, reporter3, ArrayDataValueType.EXPRESSION_SIGNAL, 18.18f);
         manager.storeValues(values);
-        NCdumpW.print(netCdfFile.getAbsolutePath(), new OutputStreamWriter(System.out), true, true, true, true, null, null);
 
         // Retrieve values and compare
         DataRetrievalRequest request = new DataRetrievalRequest();
