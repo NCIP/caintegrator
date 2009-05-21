@@ -2,15 +2,9 @@ import junit.framework.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-import org.openqa.selenium.RenderedWebElement;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -93,7 +87,7 @@ public class TestLogin extends TestCase{
 				"he should be taken to a new page. If the login page simply reloads again, with no message that the login has failed, then the Test fails.");
 		System.out.println("urlTested = " + urlTested);
 		driver.get(urlTested);                
-		WebElement queryFindj_username = driver.findElement(By.name("j_username"));        
+		//WebElement queryFindj_username = driver.findElement(By.name("j_username"));        
 		//Don't enter a USID
 		//queryFindj_username.sendKeys("manager");        
 		
