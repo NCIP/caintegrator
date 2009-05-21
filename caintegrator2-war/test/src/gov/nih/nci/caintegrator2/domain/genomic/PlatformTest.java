@@ -98,13 +98,9 @@ public class PlatformTest {
     @Test
     public void testGetReporterListListing() {
         Platform platform = new Platform();
-        ReporterList reporterList = new ReporterList();
-        reporterList.setName("Reporter list1");
-        platform.getReporterLists().add(reporterList);
+        platform.addReporterList("Reporter list1", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         assertEquals("Reporter list1", platform.getReporterListListing());
-        reporterList = new ReporterList();
-        reporterList.setName("Reporter list2");
-        platform.getReporterLists().add(reporterList);
+        platform.addReporterList("Reporter list2", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         assertTrue(platform.getReporterListListing().contains("Reporter list1"));
         assertTrue(platform.getReporterListListing().contains("Reporter list2"));
     }

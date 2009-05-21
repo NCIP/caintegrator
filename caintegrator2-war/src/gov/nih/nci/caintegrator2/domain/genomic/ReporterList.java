@@ -7,11 +7,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * 
  */
-public class ReporterList extends AbstractCaIntegrator2Object {
+public class ReporterList extends AbstractCaIntegrator2Object implements Comparable<ReporterList> {
 
     private static final long serialVersionUID = 1L;
     
@@ -20,6 +21,22 @@ public class ReporterList extends AbstractCaIntegrator2Object {
     private List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
     private Platform platform;
     private Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
+
+    ReporterList() {
+        super();
+    }
+
+    ReporterList(String name, ReporterTypeEnum reporterTypeEnum) {
+        this();
+        if (name == null) {
+            throw new IllegalArgumentException("ReporterList name must not be null");
+        }
+        if (reporterTypeEnum == null) {
+            throw new IllegalArgumentException("ReporterList type must not be null");
+        }
+        setName(name);
+        setReporterType(reporterTypeEnum);
+    }
     
     /**
      * @return the platform
@@ -31,7 +48,7 @@ public class ReporterList extends AbstractCaIntegrator2Object {
     /**
      * @param platform the platform to set
      */
-    public void setPlatform(Platform platform) {
+    void setPlatform(Platform platform) {
         this.platform = platform;
     }
 
@@ -60,7 +77,7 @@ public class ReporterList extends AbstractCaIntegrator2Object {
     /**
      * @param reporterType the reporterType to set
      */
-    public void setReporterType(ReporterTypeEnum reporterType) {
+    private void setReporterType(ReporterTypeEnum reporterType) {
         this.reporterType = reporterType;
     }
     
@@ -99,8 +116,41 @@ public class ReporterList extends AbstractCaIntegrator2Object {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
+    }
+
+    Integer getFirstDataStorageIndex() {
+        SortedSet<ReporterList> precedingReporterLists = 
+            getPlatform().getReporterLists(getReporterType()).headSet(this);
+        if (precedingReporterLists.isEmpty()) {
+            return 0;
+        } else {
+            return precedingReporterLists.last().getFirstDataStorageIndex() 
+            + precedingReporterLists.last().getReporters().size();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(ReporterList reporterList) {
+        int nameComparison = getName().compareTo(reporterList.getName());
+        if (nameComparison == 0) {
+            return getReporterType().compareTo(reporterList.getReporterType());
+        } else {
+            return nameComparison;
+        }
+    }
+
+    /**
+     * Adds a new reporter to this <code>ReporterList</code>, creating the necessary associations.
+     * 
+     * @param reporter  the reporter to add
+     */
+    public void addReporter(AbstractReporter reporter) {
+        reporter.setReporterList(this);
+        reporters.add(reporter);
     }
 
 }

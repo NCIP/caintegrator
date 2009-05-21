@@ -137,19 +137,14 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
 
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException {
-        ReporterList geneReporters = new ReporterList();
-        geneReporters.setPlatform(platform);
-        geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(geneReporters);
-        ReporterList probeSetReporters = new ReporterList();
-        probeSetReporters.setPlatform(platform);
-        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        platform.getReporterLists().add(probeSetReporters);
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
-            platform.setName(getHeaderValue(CHIP_TYPE_HEADER));
-            probeSetReporters.setName(getHeaderValue(CHIP_TYPE_HEADER));
+            String chipType = getHeaderValue(CHIP_TYPE_HEADER);
+            platform.setName(chipType);
+            ReporterList geneReporters = platform.addReporterList(chipType, ReporterTypeEnum.GENE_EXPRESSION_GENE);
+            ReporterList probeSetReporters = 
+                platform.addReporterList(chipType, ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             loadAnnotations(geneReporters, probeSetReporters, dao);
             probeSetReporters.sortAndLoadReporterIndexes();
             geneReporters.sortAndLoadReporterIndexes();

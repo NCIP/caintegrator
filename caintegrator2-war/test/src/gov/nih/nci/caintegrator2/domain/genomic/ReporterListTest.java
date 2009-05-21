@@ -114,23 +114,43 @@ public class ReporterListTest {
         GeneExpressionReporter reporter5 = new GeneExpressionReporter();
         reporter5.setName("reporter5");
         
-        ReporterList reporterList = new ReporterList();
-        reporterList.getReporters().add(reporter5);
-        reporterList.getReporters().add(reporter3);
-        reporterList.getReporters().add(reporter4);
-        reporterList.getReporters().add(reporter2);
-        reporterList.getReporters().add(reporter1);
-        reporterList.sortAndLoadReporterIndexes();
-        assertEquals(reporter1, reporterList.getReporters().get(0));
-        assertEquals(0, (int) reporterList.getReporters().get(0).getIndex());
-        assertEquals(reporter2, reporterList.getReporters().get(1));
-        assertEquals(1, (int) reporterList.getReporters().get(1).getIndex());
-        assertEquals(reporter3, reporterList.getReporters().get(2));
-        assertEquals(2, (int) reporterList.getReporters().get(2).getIndex());
-        assertEquals(reporter4, reporterList.getReporters().get(3));
-        assertEquals(3, (int) reporterList.getReporters().get(3).getIndex());
-        assertEquals(reporter5, reporterList.getReporters().get(4));
-        assertEquals(4, (int) reporterList.getReporters().get(4).getIndex());
+        Platform platform = new Platform();
+        ReporterList reporterList1 = platform.addReporterList("reporterList1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList1.setId(1L);
+        reporterList1.addReporter(reporter5);
+        reporterList1.addReporter(reporter3);
+        reporterList1.addReporter(reporter4);
+        reporterList1.addReporter(reporter2);
+        reporterList1.addReporter(reporter1);
+        reporterList1.sortAndLoadReporterIndexes();
+        assertEquals(reporter1, reporterList1.getReporters().get(0));
+        assertEquals(0, (int) reporterList1.getReporters().get(0).getIndex());
+        assertEquals(reporter2, reporterList1.getReporters().get(1));
+        assertEquals(1, (int) reporterList1.getReporters().get(1).getIndex());
+        assertEquals(reporter3, reporterList1.getReporters().get(2));
+        assertEquals(2, (int) reporterList1.getReporters().get(2).getIndex());
+        assertEquals(reporter4, reporterList1.getReporters().get(3));
+        assertEquals(3, (int) reporterList1.getReporters().get(3).getIndex());
+        assertEquals(reporter5, reporterList1.getReporters().get(4));
+        assertEquals(4, (int) reporterList1.getReporters().get(4).getIndex());
+        
+        ReporterList reporterList0 = platform.addReporterList("reporterList0", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList0.setId(0L);
+        GeneExpressionReporter reporter0 = new GeneExpressionReporter();
+        reporter0.getGenes().add(gene1);
+        reporter0.setName("reporter0");
+        reporterList0.addReporter(reporter0);
+        reporterList0.sortAndLoadReporterIndexes();
+        
+        reporterList1.setPlatform(platform);
+        reporterList0.setPlatform(platform);
+
+        assertEquals(0, (int) reporterList0.getReporters().get(0).getDataStorageIndex());
+        assertEquals(1, (int) reporterList1.getReporters().get(0).getDataStorageIndex());
+        assertEquals(2, (int) reporterList1.getReporters().get(1).getDataStorageIndex());
+        assertEquals(3, (int) reporterList1.getReporters().get(2).getDataStorageIndex());
+        assertEquals(4, (int) reporterList1.getReporters().get(3).getDataStorageIndex());
+        assertEquals(5, (int) reporterList1.getReporters().get(4).getDataStorageIndex());
     }
 
 }

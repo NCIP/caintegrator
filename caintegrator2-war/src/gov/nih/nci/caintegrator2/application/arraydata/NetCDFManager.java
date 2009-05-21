@@ -85,9 +85,9 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
@@ -134,7 +134,7 @@ public class NetCDFManager {
     private void checkIsValid(ArrayDataValues values) {
         checkNotEmpty(values);
         checkSingleStudy(values);
-        checkReporterList(values);
+        checkReporterLists(values);
         checkArrayDatas(values);
     }
 
@@ -163,16 +163,17 @@ public class NetCDFManager {
         }
     }
 
-    private void checkReporterList(ArrayDataValues values) {
-        Set<ReporterList> reporterLists = new HashSet<ReporterList>();
-        for (AbstractReporter reporter : values.getReporters()) {
-            reporterLists.add(reporter.getReporterList());
+    private void checkReporterLists(ArrayDataValues values) {
+        Set<ReporterTypeEnum> reporterTypes = new HashSet<ReporterTypeEnum>();
+        for (ReporterList reporterList : values.getReporterLists()) {
+            reporterTypes.add(reporterList.getReporterType());
+            if (reporterList.getId() == null) {
+                throw new IllegalArgumentException("ReporterList is unsaved.");
+            }
         }
-        if (reporterLists.size() != 1) {
-            throw new IllegalArgumentException("Reporters are related to multiple ReporterLists.");
-        }
-        if (reporterLists.iterator().next().getId() == null) {
-            throw new IllegalArgumentException("ReporterList is unsaved.");
+        if (reporterTypes.size() != 1) {
+            throw new IllegalArgumentException("ReporterLists must be of the same type, types were: " 
+                    + reporterTypes.toString());
         }
     }
 

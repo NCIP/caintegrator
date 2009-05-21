@@ -189,7 +189,7 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
     throws IOException, InvalidRangeException {
         int[] origin = new int[2];
         origin[0] = arrayDataIndex;
-        origin[1] = reporters.get(0).getIndex();
+        origin[1] = reporters.get(0).getDataStorageIndex();
         int[] size = new int[2];
         size[0] = 1;
         size[1] = reporters.size();
@@ -203,10 +203,10 @@ class NetCDFReader extends AbstractNetCdfFileHandler {
             int startIndex = 0;
             int endIndex = 0;
             int currentReporterIndex;
-            int previousReporterIndex = request.getReporters().get(0).getIndex();
+            int previousReporterIndex = request.getReporters().get(0).getDataStorageIndex();
             for (int i = 0; i < allReporters.size(); i++) {
                 endIndex = i;
-                currentReporterIndex = allReporters.get(i).getIndex();
+                currentReporterIndex = allReporters.get(i).getDataStorageIndex();
                 if (currentReporterIndex - previousReporterIndex > 1) {
                     sequentialReporterLists.add(allReporters.subList(startIndex, endIndex));
                     startIndex = endIndex;

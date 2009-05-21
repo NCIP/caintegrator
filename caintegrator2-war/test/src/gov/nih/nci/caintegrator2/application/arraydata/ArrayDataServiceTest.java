@@ -100,10 +100,8 @@ public class ArrayDataServiceTest {
         Platform platform = new Platform();
         platform.setId(1l);
         ((ArrayDataServiceImpl) service).setFileManager(new FileManagerStub());
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.setPlatform(platform);
-        platform.getReporterLists().add(reporterList);        reporterList.setId(1L);
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporterList.setId(1L);
         GeneExpressionReporter reporter1 = new GeneExpressionReporter();
         reporter1.setId(1L);
         reporter1.setName("reporter1");

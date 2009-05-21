@@ -365,8 +365,8 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         Gene gene = new Gene();
         gene.setSymbol("TEST");
         GeneExpressionReporter reporter = new GeneExpressionReporter();
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         reporter.setReporterList(reporterList);
         reporterList.getReporters().add(reporter);
         reporter.setIndex(0);

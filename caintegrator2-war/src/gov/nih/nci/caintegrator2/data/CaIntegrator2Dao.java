@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
@@ -237,6 +238,14 @@ public interface CaIntegrator2Dao {
      * @return the matching platform.
      */
     Platform getPlatform(String name);
+
+    /**
+     * Returns the array design reporter list that matches the given name.
+     * 
+     * @param name the reporter list name.
+     * @return the matching platform.
+     */
+    ReporterList getReporterList(String name);
 
     /**
      * Check for duplicate study name.

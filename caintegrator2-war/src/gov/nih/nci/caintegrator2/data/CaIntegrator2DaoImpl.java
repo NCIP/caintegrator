@@ -380,7 +380,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             return (Platform) values.get(0);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public ReporterList getReporterList(String name) {
+        List values = getHibernateTemplate().findByNamedParam("from ReporterList where name = :name", 
+                "name", name);
+        if (values.isEmpty()) {
+            return null;
+        } else {
+            return (ReporterList) values.get(0);
+        }
+    }
+
     private Session getCurrentSession() {
         return getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
