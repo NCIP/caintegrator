@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -248,6 +249,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
 
     private ArrayData createArrayData(Sample sample, Set<ReporterList> reporterLists) {
         ArrayData arrayData = new ArrayData();
+        arrayData.setType(ArrayDataType.COPY_NUMBER);
         arrayData.setSample(sample);
         sample.getArrayDataCollection().add(arrayData);
         arrayData.setStudy(genomicSource.getStudyConfiguration().getStudy());
@@ -277,6 +279,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             SampleAcquisition acquisition = new SampleAcquisition();
             acquisition.setAssignment(assignment);
             acquisition.setSample(sample);
+            sample.setSampleAcquisition(acquisition);
             assignment.getSampleAcquisitionCollection().add(acquisition);
             genomicSource.getSamples().add(sample);
         }
