@@ -115,6 +115,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         = Collections.synchronizedMap(new HashMap<String, String>());
     private static Map<String, String> gridCaDnaCopyServices 
         = Collections.synchronizedMap(new HashMap<String, String>());
+    private static Map<String, String> gridGisticServices 
+        = Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * {@inheritDoc}
@@ -149,6 +151,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         gridCmsServices.clear();
         gridPcaServices.clear();
         gridCaDnaCopyServices.clear();
+        gridGisticServices.clear();
     }
     
     private static void setDefaultServices() {
@@ -156,6 +159,7 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         setDefaultCmsService();
         setDefaultPcaService();
         setDefaultCaDnaCopyService();
+        setDefaultGisticService();
     }
     
     private static void setDefaultPreprocessService() {
@@ -186,6 +190,13 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
         }
     }
     
+    private static void setDefaultGisticService() {
+        if (gridGisticServices.isEmpty()) {
+            String defaultUrl = configurationHelper.getString(ConfigurationParameter.GISTIC_URL);
+            gridGisticServices.put(defaultUrl, "Default GISTIC service - " + defaultUrl);
+        }
+    }
+    
     private static void extractSelectedServices(String hostingCenter, String url) {
         if (url.contains("MAGES")) {
             extractCmsServices(hostingCenter, url);
@@ -193,6 +204,8 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             gridPcaServices.put(url, buildDisplayName(hostingCenter, url));
         } else if (shouldAdd(url, "CaDNAcopy", gridCaDnaCopyServices)) {
             gridCaDnaCopyServices.put(url, buildDisplayName(hostingCenter, url));
+        } else if (shouldAdd(url, "Gistic", gridGisticServices)) {
+            gridGisticServices.put(url, buildDisplayName(hostingCenter, url));
         }
     }
 
@@ -252,6 +265,16 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             setDefaultCaDnaCopyService();
         }
         return gridCaDnaCopyServices;
+    }
+
+    /**
+     * @return the gridGisticServices
+     */
+    public static Map<String, String> getGridGisticServices() {
+        if (gridGisticServices.isEmpty()) {
+            setDefaultGisticService();
+        }
+        return gridGisticServices;
     }
 
     /**

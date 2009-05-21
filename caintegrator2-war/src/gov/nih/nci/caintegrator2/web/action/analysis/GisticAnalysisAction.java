@@ -326,6 +326,6 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
      * @return available Gistic services.
      */
     public Map<String, String> getGisticServices() {
-        return GridDiscoveryServiceJob.getGridCmsServices();
+        return GridDiscoveryServiceJob.getGridGisticServices();
     }
 }

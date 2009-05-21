@@ -129,7 +129,7 @@ public class GisticGridRunner {
                     cnvSegmentsToIgnore, parameters.createGenomeBuild(), 
                     gisticSamplesMarkers.getMarkers(), gisticSamplesMarkers.getSamples()));
         } catch (InvalidParameterException e) {
-            throw new ConnectionException("The given parameters were invalid.", e);
+            throw new ConnectionException("The given parameters were invalid: " + e.getMessage(), e);
         } catch (RemoteException e) {
             throw new ConnectionException("Unable to connect to server.", e);
         }
