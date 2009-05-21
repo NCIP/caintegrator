@@ -100,6 +100,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Records sample and array data retrieval information.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
@@ -348,9 +349,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         return "None Configured";
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // best way to do check
     Sample getSample(String sampleName) {
         for (Sample sample : getSamples()) {
-            if (sampleName.equals(sample.getName())) {
+            if (sampleName == null && sample.getName() == null) {
+                return sample;
+            } else if (sampleName == null && sample.getName() != null) {
+                continue;
+            } else if (sampleName.equals(sample.getName())) {
                 return sample;
             }
         }
