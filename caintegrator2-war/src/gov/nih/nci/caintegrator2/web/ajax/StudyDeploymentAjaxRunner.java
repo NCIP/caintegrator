@@ -87,14 +87,15 @@ package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.ValidationException;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
  */
 public class StudyDeploymentAjaxRunner implements Runnable {
+    
+    private static final Logger LOGGER = Logger.getLogger(StudyDeploymentAjaxRunner.class);
         
     private final StudyDeploymentAjaxUpdater updater;
     private final StudyConfiguration job;
@@ -113,21 +114,16 @@ public class StudyDeploymentAjaxRunner implements Runnable {
         try {
             updater.getStudyManagementService().deployStudy(job);
             updater.updateJobStatus(job);
-        } catch (ConnectionException e) {
-            addError(e.getMessage());
-        } catch (DataRetrievalException e) {
-            addError(e.getMessage());
-        } catch (ValidationException e) {
-            addError(e.getMessage());
-        } catch (RuntimeException e) {
-            addError(e.getMessage());
+        } catch (Exception e) {
+            addError(e);
         }
     }
 
-    private void addError(String message) {
-        updater.addError(message, job);
+    private void addError(Exception e) {
+        LOGGER.error("Deployment of study " + job.getStudy().getShortTitleText() + " failed.", e);
+        updater.addError(e.getMessage(), job);
         job.setStatus(Status.ERROR);
-        job.setStatusDescription(message);
+        job.setStatusDescription(e.getMessage());
         updater.saveAndUpdateJobStatus(job);
     }
 }

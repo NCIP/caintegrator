@@ -159,18 +159,14 @@ class AgilentPlatformLoader extends AbstractExpressionPlatformLoader {
 
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException {
-        ReporterList geneReporters = new ReporterList();
-        geneReporters.setPlatform(platform);
-        geneReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(geneReporters);
-        ReporterList probeSetReporters = new ReporterList();
-        probeSetReporters.setPlatform(platform);
-        probeSetReporters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        platform.getReporterLists().add(probeSetReporters);
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile), '\t'));
             loadHeaders();
             platform.setName(source.getPlatformName());
+            ReporterList geneReporters = 
+                platform.addReporterList(source.getPlatformName(), ReporterTypeEnum.GENE_EXPRESSION_GENE);
+            ReporterList probeSetReporters = 
+                platform.addReporterList(source.getPlatformName(), ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
             loadAnnotations(geneReporters, probeSetReporters, dao);
             probeSetReporters.sortAndLoadReporterIndexes();
             geneReporters.sortAndLoadReporterIndexes();

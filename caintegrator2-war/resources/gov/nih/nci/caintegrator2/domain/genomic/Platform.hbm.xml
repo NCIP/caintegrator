@@ -16,7 +16,7 @@
 		<property name="name" type="string" column="NAME"/>
 		<property name="vendor" type="Vendor" column="VENDOR"/>
 		<!-- Associations mapping for the Platform class -->
-		<set name="reporterLists" lazy="true" cascade="save-update,merge" >
+		<set name="reporterListsInternal" lazy="true" sort="natural" cascade="save-update,merge" >
 			<cache usage="read-write" />
 			<key column="PLATFORM_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ReporterList"/>

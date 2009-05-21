@@ -119,16 +119,11 @@ public class CaArrayFacadeStub implements CaArrayFacade {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         reporters.add(reporter);
         ArrayDataValues values = new ArrayDataValues(reporters);
-        ReporterList reporterList = new ReporterList();
-        reporter.setReporterList(reporterList);
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        reporterList.getReporters().addAll(reporters);
         Platform platform = new Platform();
-        platform.getReporterLists().add(reporterList);
-        reporterList.setPlatform(platform);
-        ReporterList reporterList2 = new ReporterList();
-        reporterList2.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.getReporterLists().add(reporterList2);
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        reporter.setReporterList(reporterList);
+        reporterList.getReporters().addAll(reporters);
+        platform.addReporterList("reporterList2", ReporterTypeEnum.GENE_EXPRESSION_GENE);
         return values;
     }
 

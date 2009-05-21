@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -125,8 +126,8 @@ public class FoldChangeCriterionHandlerTest {
     
     @Before
     public void setUp() {
-        ReporterList reporterList = new ReporterList();
-        reporterList.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        Platform platform = new Platform();
+        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
         gene = new Gene();
         reporter.getGenes().add(gene);
         

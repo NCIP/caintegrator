@@ -133,7 +133,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     private void checkCopyNumberData() {
         Set<ArrayData> arrayDatas = getStudyConfiguration().getStudy().getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        assertEquals(2, arrayDatas.size());
+        assertEquals(1, arrayDatas.size());
         for (ArrayData arrayData : arrayDatas) {
             checkCopyNumberData(arrayData);
         }
