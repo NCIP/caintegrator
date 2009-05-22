@@ -168,7 +168,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
     public void configureForInvocation(StudySubscription studySubscription, 
                                        QueryManagementService queryManagementService) throws InvalidCriterionException {
         if (getSelectedQuery() == null) {
-            setSelectedQuery(Cai2Util.createAllDataQuery(studySubscription, null));
+            setSelectedQuery(Cai2Util.createAllGenomicDataQuery(studySubscription, null));
         } else {
             refreshSelectedQuery(studySubscription);
         }

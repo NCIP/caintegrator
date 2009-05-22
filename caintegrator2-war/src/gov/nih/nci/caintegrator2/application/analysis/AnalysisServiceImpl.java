@@ -114,9 +114,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Implementation of the AnalysisService subsystem.
  */
+@Transactional(propagation = Propagation.REQUIRED)
 public class AnalysisServiceImpl implements AnalysisService {
     
     private CaIntegrator2Dao dao;
@@ -178,7 +182,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     public List<GisticResult> executeGridGistic(StudySubscription studySubscription,
                                              GisticParameters gisticParams) 
         throws ConnectionException, InvalidCriterionException, ParameterException {
-        return genePatternGridRunner.runGistic(studySubscription, gisticParams);
+        StudySubscription subscriptionAttached = dao.get(studySubscription.getId(), StudySubscription.class);
+        return genePatternGridRunner.runGistic(subscriptionAttached, gisticParams);
     }
     
     /**
