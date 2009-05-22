@@ -128,34 +128,36 @@ public final class GenePatternUtil {
      */
     public static GisticSamplesMarkers createGisticSamplesMarkers(QueryManagementService queryManagementService, 
             Query clinicalQuery, StudySubscription studySubscription) throws InvalidCriterionException {
+        Set<Sample> samples = getSamplesForGistic(studySubscription, queryManagementService, clinicalQuery);
         GisticSamplesMarkers gisticSamplesMarkers = new GisticSamplesMarkers();
-        Set<Query> clinicalQueries = new HashSet<Query>();
-        if (clinicalQuery != null) {
-            clinicalQueries.add(clinicalQuery);
-        }
-        Query query = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
-        QueryResult result = queryManagementService.execute(query);
-        convertCai2SamplesToGistic(clinicalQuery, studySubscription, gisticSamplesMarkers, result);
+        convertCai2SamplesToGistic(gisticSamplesMarkers, samples);
         return gisticSamplesMarkers;
     }
 
-    private static void convertCai2SamplesToGistic(Query clinicalQuery, StudySubscription studySubscription,
-            GisticSamplesMarkers gisticSamplesMarkers, QueryResult result) {
-        for (ResultRow row : result.getRowCollection()) {
-            if (row.getSampleAcquisition() != null) {
-                Sample sample = row.getSampleAcquisition().getSample();
-                // Note, if we are using an "ALL SAMPLES" query, don't include control samples.
-                if (clinicalQuery == null 
-                    && studySubscription.getStudy().getDefaultControlSampleSet().getSamples().contains(sample)) {
-                    continue;
-                }
-                addArrayDataToGistic(gisticSamplesMarkers, row, sample);
-            }
+    private static Set<Sample> getSamplesForGistic(StudySubscription studySubscription, 
+            QueryManagementService queryManagementService, Query clinicalQuery) throws InvalidCriterionException {
+        if (clinicalQuery == null) {
+            return getAllNonControlSamples(studySubscription);
+        } else {
+            return queryManagementService.execute(clinicalQuery).getAllSamples();
         }
     }
 
-    private static void addArrayDataToGistic(GisticSamplesMarkers gisticSamplesMarkers, ResultRow row, Sample sample) {
-        for (ArrayData arrayData : row.getSampleAcquisition().getSample().getArrayDataCollection()) {
+    private static Set<Sample> getAllNonControlSamples(StudySubscription studySubscription) {
+        Set<Sample> samples = new HashSet<Sample>();
+        samples.addAll(studySubscription.getStudy().getSamples());
+        samples.removeAll(studySubscription.getStudy().getDefaultControlSampleSet().getSamples());
+        return samples;
+    }
+
+    private static void convertCai2SamplesToGistic(GisticSamplesMarkers gisticSamplesMarkers, Set<Sample> samples) {
+        for (Sample sample : samples) {
+            addArrayDataToGistic(gisticSamplesMarkers, sample);
+        }
+    }
+
+    private static void addArrayDataToGistic(GisticSamplesMarkers gisticSamplesMarkers, Sample sample) {
+        for (ArrayData arrayData : sample.getArrayDataCollection()) {
             boolean segmentDataAdded = false;
             for (ReporterList reporterList : arrayData.getReporterLists()) {
                 if (ReporterTypeEnum.DNA_ANALYSIS_REPORTER.equals(reporterList.getReporterType())) {
@@ -211,7 +213,7 @@ public final class GenePatternUtil {
      */
     public static GctDataset createGctDataset(StudySubscription studySubscription, Set<Query> clinicalQueries, 
             QueryManagementService queryManagementService) throws InvalidCriterionException {
-        Query allGenomicDataQuery = Cai2Util.createAllDataQuery(studySubscription, clinicalQueries);
+        Query allGenomicDataQuery = Cai2Util.createAllGenomicDataQuery(studySubscription, clinicalQueries);
         GenomicDataQueryResult genomicData = queryManagementService.executeGenomicDataQuery(allGenomicDataQuery);
         return new GctDataset(genomicData);
     }

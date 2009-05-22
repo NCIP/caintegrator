@@ -228,6 +228,7 @@ public class GenePatternGridRunnerImplTest {
         ServerConnectionProfile server = new ServerConnectionProfile();
         GisticParameters parameters = new GisticParameters();
         parameters.setServer(server);
+        parameters.setClinicalQuery(new Query());
         genePatternGridRunner.runGistic(studySubscription, parameters);
         checkGisticMarkers(GenePatternGridClientFactoryStub.GISTIC_MARKERS_INPUT);
         checkGisticSamples(GenePatternGridClientFactoryStub.GISTIC_SAMPLES_INPUT);
