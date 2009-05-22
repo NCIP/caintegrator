@@ -21,8 +21,6 @@
             <s:hidden name="selectedAction" />
             
             <s:textfield name="currentPrincipalComponentAnalysisJob.name" label="Job Name" size="50" required="true" />
-            <s:select name="currentPrincipalComponentAnalysisJob.preprocessDataSetUrl"
-                list="preprocessDatasetServices" label="Preprocess Server" required="true" />
             <s:select name="currentPrincipalComponentAnalysisJob.pcaUrl"
                 list="pcaServices" label="Principal Component Analysis Server" required="true" />
             
@@ -55,6 +53,9 @@
                 required="true" />
                 
             <s:checkbox name="principalComponentAnalysisForm.usePreprocessDataset" label="Enable Preprocess Dataset" labelposition="left" />
+            <s:select name="currentPrincipalComponentAnalysisJob.preprocessDataSetUrl"
+                list="preprocessDatasetServices" label="Preprocess Server" required="true" />
+            
             <s:checkbox name="preprocessDatasetParameterSet.filterFlag" label="Filter flag" labelposition="left" />
             <s:select name="preprocessDatasetParameters.preprocessingFlag" label="Preprocessing Flag"
                 list="preprocessDatasetParameters.preprocessingFlagOptions" required="true" />
@@ -67,8 +68,11 @@
             <s:textfield name="preprocessDatasetParameterSet.numExclude" label="Num Exclude" size="50" required="true" />
             <s:checkbox name="preprocessDatasetParameterSet.logBaseTwo" label="Log Base Two" labelposition="left" />
             <s:textfield name="preprocessDatasetParameterSet.numberOfColumnsAboveThreshold" label="Number Of Columns Above Threshold" size="50" required="true" />
+            <!-- Currently we don't want the user to choose this options, use default rows.  If we do, uncomment this -->
+            <!-- 
             <s:select name="pcaParameters.clusterBy" label="Cluster By"
                 list="pcaParameters.clusterByOptions" required="true" />
+            -->
             <br>
             <s:submit value="Perform Analysis" align="center"
                 onclick="this.form.selectedAction.value = 'execute'; return true;" />
