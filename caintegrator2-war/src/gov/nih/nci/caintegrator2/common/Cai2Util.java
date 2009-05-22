@@ -558,15 +558,10 @@ public final class Cai2Util {
      * @param clinicalQueries to limit genomic data returned based.
      * @return a Query which contains all genomic data for all clinical queries given (if any).
      */
-    public static Query createAllDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries) {
-        Query query = new Query();
+    public static Query createAllGenomicDataQuery(StudySubscription studySubscription, Set<Query> clinicalQueries) {
+        Query query = createQuery(studySubscription);
         query.setResultType(ResultTypeEnum.GENOMIC);
         query.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        query.setColumnCollection(new HashSet<ResultColumn>());
-        query.setCompoundCriterion(new CompoundCriterion());
-        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
-        query.setSubscription(studySubscription);
         if (clinicalQueries != null && !clinicalQueries.isEmpty()) {
             CompoundCriterion clinicalCompoundCriterions = new CompoundCriterion();
             clinicalCompoundCriterions.setBooleanOperator(BooleanOperatorEnum.OR);
@@ -579,6 +574,16 @@ public final class Cai2Util {
             }
             query.getCompoundCriterion().getCriterionCollection().add(clinicalCompoundCriterions);
         }
+        return query;
+    }
+
+    private static Query createQuery(StudySubscription studySubscription) {
+        Query query = new Query();
+        query.setColumnCollection(new HashSet<ResultColumn>());
+        query.setCompoundCriterion(new CompoundCriterion());
+        query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
+        query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
+        query.setSubscription(studySubscription);
         return query;
     }
 

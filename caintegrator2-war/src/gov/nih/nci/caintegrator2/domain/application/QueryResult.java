@@ -1,8 +1,11 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -40,6 +43,21 @@ public class QueryResult extends AbstractCaIntegrator2Object {
      */
     public void setRowCollection(Collection<ResultRow> rowCollection) {
         this.rowCollection = rowCollection;
+    }
+
+    /**
+     * Returns all samples in this query result.
+     * 
+     * @return all samples.
+     */
+    public Set<Sample> getAllSamples() {
+        Set<Sample> samples = new HashSet<Sample>();
+        for (ResultRow row : getRowCollection()) {
+            if (row.getSampleAcquisition() != null) {
+                samples.add(row.getSampleAcquisition().getSample());
+            }
+        }
+        return samples;
     }
 
 }
