@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.gistic;
 import edu.wustl.icr.asrv1.segment.ChromosomalSegment;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 
 import java.math.BigInteger;
 import java.rmi.RemoteException;
@@ -97,6 +98,7 @@ import java.util.List;
 import org.genepattern.gistic.common.GisticI;
 import org.genepattern.gistic.common.GisticUtils;
 import org.genepattern.gistic.stubs.types.InvalidParameterException;
+import org.oasis.wsrf.faults.BaseFaultTypeDescription;
 
 /**
  * Runs the GenePattern grid service Gistic.
@@ -119,20 +121,33 @@ public class GisticGridRunner {
      * @param parameters from user input.
      * @param gisticSamplesMarkers the wrapper object that contains the gistic samples and markers.
      * @return Gistic Results.
+     * @throws ConnectionException 
+     * @throws ParameterException if have invalid parameter.
      * @throws ConnectionException if unable to connect.
      */
     public List<GisticResult> execute(GisticParameters parameters, GisticSamplesMarkers gisticSamplesMarkers) 
-    throws ConnectionException {
+    throws ParameterException, ConnectionException {
         try {
             ChromosomalSegment[] cnvSegmentsToIgnore = retrieveCnvSegmentsToIgnore(parameters);
             return retrieveMarkerResultList(client.runAnalysis(parameters.createParameterList(), 
                     cnvSegmentsToIgnore, parameters.createGenomeBuild(), 
                     gisticSamplesMarkers.getMarkers(), gisticSamplesMarkers.getSamples()));
         } catch (InvalidParameterException e) {
-            throw new ConnectionException("The given parameters were invalid: " + e.getMessage(), e);
+            throw new ParameterException("The given parameters were invalid: " + getDescription(e), e);
         } catch (RemoteException e) {
             throw new ConnectionException("Unable to connect to server.", e);
         }
+    }
+    
+    private String getDescription(InvalidParameterException e) {
+        StringBuffer description = new StringBuffer();
+        for (BaseFaultTypeDescription typeDescription : e.getDescription()) {
+            if (description.length() > 0) {
+                description.append(", ");
+            }
+            description.append(typeDescription.get_value());
+        }
+        return description.toString();
     }
 
     private ChromosomalSegment[] retrieveCnvSegmentsToIgnore(GisticParameters parameters) {

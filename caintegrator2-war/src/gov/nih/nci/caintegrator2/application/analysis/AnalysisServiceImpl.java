@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
@@ -172,10 +173,11 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * {@inheritDoc}
      * @throws InvalidCriterionException 
+     * @throws ParameterException if parameter is invalid
      */
     public List<GisticResult> executeGridGistic(StudySubscription studySubscription,
                                              GisticParameters gisticParams) 
-        throws ConnectionException, InvalidCriterionException {
+        throws ConnectionException, InvalidCriterionException, ParameterException {
         return genePatternGridRunner.runGistic(studySubscription, gisticParams);
     }
     

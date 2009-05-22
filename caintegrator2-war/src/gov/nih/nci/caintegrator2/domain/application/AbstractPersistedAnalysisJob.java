@@ -101,8 +101,27 @@ public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2
     private Date lastUpdateDate;
     private String jobType;
     private StudySubscription subscription;
+    private String statusDescription;
+    private static final int DESCRIPTION_LENGTH = 250;
     
-    
+    /**
+     * @return the statusDescription
+     */
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    /**
+     * @param statusDescription the statusDescription to set
+     */
+    public void setStatusDescription(String statusDescription) {
+        if (statusDescription != null && statusDescription.length() > DESCRIPTION_LENGTH) {
+            this.statusDescription = statusDescription.substring(0, DESCRIPTION_LENGTH);
+        } else {
+            this.statusDescription = statusDescription;
+        }
+    }
+
     /**
      * @return the name
      */
