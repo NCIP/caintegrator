@@ -189,7 +189,7 @@ public class PrincipalComponentAnalysisAction  extends AbstractDeployedStudyActi
         getPreprocessDatasetParameters().setProcessedGctFilename("PROCESSED-" + fileName + ".gct");
         getPcaParameters().setGctFileName(fileName + ".gct");
         getPcaParameters().setClassificationFileName(fileName + ".cls");
-        getPcaParameters().setClusterBy(getPcaParameters().getClusterByOptions().get(0));
+        getPcaParameters().setClusterBy(getPcaParameters().getClusterByOptions().get(1));
     }
 
     private void addNonGenomicQueries() {
