@@ -16,6 +16,7 @@
 		<discriminator column="TYPE" />
 		<property name="name" type="string" column="NAME"/>
         <property name="status" type="AnalysisJobStatusEnum" column="STATUS"/>
+        <property name="statusDescription" type="string" column="STATUS_DESCRIPTION"/>
         <property name="creationDate" type="java.util.Date" column="CREATION_DATE"/>
         <property name="lastUpdateDate" type="java.util.Date" column="LAST_UPDATE_DATE"/>
 

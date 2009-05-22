@@ -121,6 +121,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
@@ -219,7 +220,7 @@ public class GenePatternGridRunnerImplTest {
     }
     
     @Test
-    public void testRunGistic() throws ConnectionException, InvalidCriterionException {
+    public void testRunGistic() throws ConnectionException, InvalidCriterionException, ParameterException {
         QueryManagementServiceStub stubForGistic = new QueryManagementServiceStub();
         stubForGistic.QR = createGisticQueryResult();
         genePatternGridRunner.setQueryManagementService(stubForGistic);

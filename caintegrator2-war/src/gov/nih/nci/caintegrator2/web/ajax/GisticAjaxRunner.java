@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 
 import java.util.List;
 
@@ -123,6 +124,9 @@ public class GisticAjaxRunner implements Runnable {
         } catch (ConnectionException e) {
             addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
             + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
+        } catch (ParameterException e) {
+            addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
+            + " - " + e.getMessage(), e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
         } catch (InvalidCriterionException e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         }
@@ -134,8 +138,13 @@ public class GisticAjaxRunner implements Runnable {
         job.setStatus(errorState);
         updater.saveAndUpdateJobStatus(job);
     }
+    
+    private void addErrorMessage(String errorMessage, String statusDescription, AnalysisJobStatusEnum errorState) {
+        job.setStatusDescription(statusDescription);
+        addErrorMessage(errorMessage, errorState);
+    }
 
-    private void processLocally() throws ConnectionException, InvalidCriterionException {
+    private void processLocally() throws ConnectionException, InvalidCriterionException, ParameterException {
         List<GisticResult> results = updater.getAnalysisService().executeGridGistic(
                 job.getSubscription(),
                 job.getGisticAnalysisForm().getGisticParameters());

@@ -108,6 +108,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
@@ -137,9 +138,10 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     
     /**
      * {@inheritDoc}
+     * @throws ParameterException 
      */
     public List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
-    throws ConnectionException, InvalidCriterionException {
+    throws ConnectionException, InvalidCriterionException, ParameterException {
         GisticI gisticClient = genePatternGridClientFactory.createGisticClient(parameters.getServer());
         GisticGridRunner runner = new GisticGridRunner(gisticClient);
         
