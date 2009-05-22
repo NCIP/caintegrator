@@ -35,6 +35,11 @@ public enum AnalysisJobStatusEnum {
     ERROR_CONNECTING("Error Connecting"),
     
     /**
+     * Error Connecting.
+     */
+    INVALID_PARAMETER("Invalid Parameter"),
+    
+    /**
      * Local Error.
      */
     LOCAL_ERROR("Local Error"),

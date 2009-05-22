@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.ParameterException;
 
 import java.io.File;
 import java.util.List;
@@ -147,7 +148,8 @@ public interface GenePatternGridRunner {
      * @return GisticResults retrieved from grid.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
+     * @throws ParameterException id parameter is invalid.
      */
     List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
-        throws ConnectionException, InvalidCriterionException;
+        throws ConnectionException, InvalidCriterionException, ParameterException;
 }
