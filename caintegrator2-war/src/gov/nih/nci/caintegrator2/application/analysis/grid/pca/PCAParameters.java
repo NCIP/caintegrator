@@ -102,7 +102,7 @@ public class PCAParameters {
     
     private final List<Query> clinicalQueries = new ArrayList<Query>();
     private ServerConnectionProfile server;
-    private String clusterBy = getClusterByOptions().get(0);
+    private String clusterBy = getClusterByOptions().get(1); // rows is default
     private String classificationFileName;
     private String gctFileName;
     
