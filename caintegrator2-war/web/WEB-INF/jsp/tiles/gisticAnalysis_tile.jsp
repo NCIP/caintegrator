@@ -16,7 +16,7 @@
     <div class="box2">   
     <div class="whitebg">   
         <s:actionerror/>
-        <s:form id="gisticAnalysisForm" action="gisticAnalysis">
+        <s:form id="gisticAnalysisForm" action="gisticAnalysis" method="post" enctype="multipart/form-data">
         
             <s:hidden name="selectedAction" />
             
@@ -27,7 +27,7 @@
             <s:select name="gisticParameters.refgeneFile"
                 list="gisticParameters.refgeneFileOptions" label="Refgene File" required="true" />
             <s:select name="gisticAnalysisForm.selectedQuery"
-                headerKey="" headerValue="-- None --"
+                headerKey="" headerValue="All non-control Samples"
                 list="gisticAnalysisForm.clinicalQueries" label="Clinical query" />
             
             <s:textfield name="gisticParameters.amplificationsThreshold" label="Amplifications Threshold" size="50" required="true" />
