@@ -105,7 +105,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -149,14 +148,7 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     }
 
     private void addHybridizations(DataRetrievalRequest request) {
-        Set<Sample> samplesToRetrieve = new HashSet<Sample>();
-        if (!getGenomicSource().getMappedSamples().isEmpty()) {
-            samplesToRetrieve.addAll(getGenomicSource().getMappedSamples());
-            samplesToRetrieve.addAll(getGenomicSource().getControlSamples());
-        } else {
-            samplesToRetrieve.addAll(getGenomicSource().getSamples());
-        }
-        for (Sample sample : samplesToRetrieve) {
+        for (Sample sample : getGenomicSource().getSamples()) {
             gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
                     getGenomicSource().getExperimentIdentifier());
             Set<Hybridization> hybridizations = getHybridizations(caArraySample);
