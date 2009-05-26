@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.ByteArrayInputStream;
@@ -104,7 +103,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -182,18 +180,6 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
             return populatedArrayData.getDataFile();
         }
         return null;
-    }
-
-    private Set<Hybridization> getAllHybridizations() {
-        Set<Hybridization> hybridizationSet = new HashSet<Hybridization>();
-        for (Sample sample : getGenomicSource().getSamples()) {
-            gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
-                    getGenomicSource().getExperimentIdentifier());
-            Set<Hybridization> hybridizations = getHybridizations(caArraySample);
-            addToSampleMap(sample, hybridizations);
-            hybridizationSet.addAll(hybridizations);
-        }
-        return hybridizationSet;
     }
 
     private void parseDataFile(CaArrayFile dataFile) throws DataRetrievalException {

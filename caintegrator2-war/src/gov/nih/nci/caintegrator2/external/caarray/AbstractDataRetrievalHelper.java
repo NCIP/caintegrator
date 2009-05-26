@@ -193,6 +193,18 @@ abstract class AbstractDataRetrievalHelper {
         return platform;
     }
 
+    protected Set<Hybridization> getAllHybridizations() {
+        Set<Hybridization> hybridizationSet = new HashSet<Hybridization>();
+        for (Sample sample : getGenomicSource().getSamples()) {
+            gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
+                    getGenomicSource().getExperimentIdentifier());
+            Set<Hybridization> hybridizations = getHybridizations(caArraySample);
+            addToSampleMap(sample, hybridizations);
+            hybridizationSet.addAll(hybridizations);
+        }
+        return hybridizationSet;
+    }
+
     protected Set<Hybridization> getHybridizations(gov.nih.nci.caarray.domain.sample.Sample caArraySample) {
         Set<Hybridization> hybridizations = new HashSet<Hybridization>();
         Set<Extract> extracts = getLoadedCaArrayObjects(caArraySample.getExtracts());

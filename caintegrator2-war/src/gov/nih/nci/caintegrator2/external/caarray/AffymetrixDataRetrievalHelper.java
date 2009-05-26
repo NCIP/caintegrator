@@ -101,12 +101,10 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -143,18 +141,8 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private DataRetrievalRequest createRequest() {
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addQuantitationType(getSignal());
-        addHybridizations(request);
+        request.getHybridizations().addAll(getAllHybridizations());
         return request;
-    }
-
-    private void addHybridizations(DataRetrievalRequest request) {
-        for (Sample sample : getGenomicSource().getSamples()) {
-            gov.nih.nci.caarray.domain.sample.Sample caArraySample = getCaArraySample(sample, 
-                    getGenomicSource().getExperimentIdentifier());
-            Set<Hybridization> hybridizations = getHybridizations(caArraySample);
-            addToSampleMap(sample, hybridizations);
-            request.getHybridizations().addAll(hybridizations);
-        }
     }
 
     private QuantitationType getSignal() {
