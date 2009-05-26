@@ -36,7 +36,7 @@
 	<classpathentry kind="src" path="software/caintegrator2-war/resources"/>
 	<classpathentry kind="src" output="software/kaplan-meier-jar/target/classes" path="software/kaplan-meier-jar/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar"/>
+	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/acegi-security-1.0.4.jar" sourcepath="software/lib/src/acegi-security-1.0.4-src.zip"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/activation-1.0.2.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="software/lib/caintegrator2-compile/ant-contrib-1.0b3.jar"/>
