@@ -12,6 +12,9 @@
     <!--/Page Help-->        
     
     <!--ADD CONTENT HERE-->
+    <s:if test="#session['ACEGI_SECURITY_LAST_EXCEPTION'] != null">
+        <font color="red">Invalid username/password. Please try again.</font>
+    </s:if>
     
     <h1>Login</h1>
    
