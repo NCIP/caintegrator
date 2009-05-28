@@ -268,7 +268,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -304,7 +304,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -370,7 +370,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -445,7 +445,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -580,7 +580,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -660,7 +660,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -715,7 +715,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -810,7 +810,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -885,7 +885,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -945,7 +945,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1030,7 +1030,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1115,7 +1115,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1210,7 +1210,7 @@
 <tr>
 	<td>type</td>
 	<td>addImagingFile_url</td>
-	<td>http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
+	<td>http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1301,7 +1301,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1341,7 +1341,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1426,7 +1426,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1466,7 +1466,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1511,7 +1511,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>

@@ -256,7 +256,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -292,7 +292,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -358,7 +358,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -433,7 +433,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -463,7 +463,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -568,7 +568,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -648,7 +648,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -703,7 +703,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -798,7 +798,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -873,7 +873,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -938,7 +938,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1018,7 +1018,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1103,7 +1103,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1286,7 +1286,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1341,7 +1341,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1381,7 +1381,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1426,7 +1426,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1461,7 +1461,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1516,7 +1516,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1556,7 +1556,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1596,7 +1596,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//input[@value=' &lt; Add']</td>
+	<td>//input[@value=' Add &gt; ']</td>
 	<td></td>
 </tr>
 <tr>
