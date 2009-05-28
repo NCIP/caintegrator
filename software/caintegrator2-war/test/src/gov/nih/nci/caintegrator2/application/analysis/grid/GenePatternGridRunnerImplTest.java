@@ -94,6 +94,7 @@ import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryStub;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
@@ -227,6 +228,7 @@ public class GenePatternGridRunnerImplTest {
         StudySubscription studySubscription = setupStudySubscription();
         ServerConnectionProfile server = new ServerConnectionProfile();
         GisticParameters parameters = new GisticParameters();
+        parameters.setRefgeneFile(GisticRefgeneFileEnum.HUMAN_HG16);
         parameters.setServer(server);
         parameters.setClinicalQuery(new Query());
         genePatternGridRunner.runGistic(studySubscription, parameters);

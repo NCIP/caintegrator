@@ -91,9 +91,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.cabig.icr.asbp.parameter.Parameter;
@@ -114,7 +112,7 @@ public class GisticParameters {
     private Query clinicalQuery;
     private File cnvSegmentsToIgnoreFile;
     private ServerConnectionProfile server;
-    private String refgeneFile = getRefgeneFileOptions().get(0);
+    private GisticRefgeneFileEnum refgeneFile;
     private Float amplificationsThreshold = DEFAULT_AMPLIFICATIONS;
     private Float deletionsThreshold = DEFAULT_DELETIONS;
     private Integer joinSegmentSize = 4;
@@ -149,19 +147,6 @@ public class GisticParameters {
     }
     
     /**
-     * 
-     * @return options list for refgeneFileOptions.
-     */
-    public List<String> getRefgeneFileOptions() {
-        List<String> options = new ArrayList<String>();
-        options.add("Human Hg16");
-        options.add("Human Hg17");
-        options.add("Human Hg18");
-        return options;
-    }
-
-    
-    /**
      * Creates the parameter list from the parameters given by user.
      * @return parameters to run grid job.
      */
@@ -186,7 +171,7 @@ public class GisticParameters {
     public GenomeAnnotationInformation createGenomeBuild() {
         GenomeAnnotationInformation genomeBuild = new GenomeAnnotationInformation();
         genomeBuild.setSource("NCBI"); // Unsure what this means.  Got it from the demo client.
-        genomeBuild.setBuild(refgeneFile);
+        genomeBuild.setBuild(refgeneFile.getValue());
         return genomeBuild;
     }
 
@@ -202,20 +187,6 @@ public class GisticParameters {
      */
     public void setAmplificationsThreshold(Float amplificationsThreshold) {
         this.amplificationsThreshold = amplificationsThreshold;
-    }
-
-    /**
-     * @return the refgeneFile
-     */
-    public String getRefgeneFile() {
-        return refgeneFile;
-    }
-
-    /**
-     * @param refgeneFile the refgeneFile to set
-     */
-    public void setRefgeneFile(String refgeneFile) {
-        this.refgeneFile = refgeneFile;
     }
 
     /**
@@ -314,5 +285,19 @@ public class GisticParameters {
      */
     public void setCnvSegmentsToIgnoreFile(File cnvSegmentsToIgnoreFile) {
         this.cnvSegmentsToIgnoreFile = cnvSegmentsToIgnoreFile;
+    }
+
+    /**
+     * @return the refgeneFile
+     */
+    public GisticRefgeneFileEnum getRefgeneFile() {
+        return refgeneFile;
+    }
+
+    /**
+     * @param refgeneFile the refgeneFile to set
+     */
+    public void setRefgeneFile(GisticRefgeneFileEnum refgeneFile) {
+        this.refgeneFile = refgeneFile;
     }
 }

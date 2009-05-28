@@ -29,6 +29,10 @@ public class ArrayDesignChecker {
         assertNotNull(platform);
         assertEquals(source.getPlatformName(), platform.getName());
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
+        for (ReporterList reporterList : platform.getReporterLists()) {
+            assertNotNull(reporterList.getName());
+            assertNotNull(reporterList.getGenomeVersion());
+        }
         for (AffymetrixCdfReader affymetrixCdfReader : cdfReaders) {
             assertTrue(platform.getReporterListListing().contains(affymetrixCdfReader.getCdfData().getChipType()));
             affymetrixCdfReader.close();
