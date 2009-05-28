@@ -108,7 +108,9 @@ public class NCIASearchServiceTestIntegration {
     public void testRetrieveRealObjects() throws ConnectionException {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        // TODO - 5/27/09 Ngoc, temporary pointing Dev because retrieveRepresentativeImageBySeries is only available on Dev
+        //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaDevServerConnectionProfile");
         NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         
         NCIASearchService searchService;
@@ -128,10 +130,22 @@ public class NCIASearchServiceTestIntegration {
         
         List<Image> images = searchService.retrieveImageCollectionFromSeries(series.get(0).getSeriesInstanceUID());
         assertNotNull(images);
-
+        
+        Image image = searchService.retrieveRepresentativeImageBySeries(series.get(0).getSeriesInstanceUID());
+        assertTrue(contains(images, image));
+        
         assertTrue(searchService.validate(series.get(0).getSeriesInstanceUID()));
         
         assertFalse(searchService.validate("INVALID SERIES UID"));
+    }
+    
+    private boolean contains(List<Image> images, Image checkImage) {
+        for (Image image : images) {
+            if (image.getSopInstanceUID().equalsIgnoreCase(checkImage.getSopInstanceUID())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
