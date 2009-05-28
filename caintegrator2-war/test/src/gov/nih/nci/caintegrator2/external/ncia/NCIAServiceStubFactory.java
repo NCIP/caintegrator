@@ -109,6 +109,13 @@ public class NCIAServiceStubFactory implements NCIAServiceFactory {
             return true;
             
         }
+
+        public Image retrieveRepresentativeImageBySeries(String seriesInstanceUID) throws ConnectionException {
+            Image image = new Image();
+            image.setId(456);
+            return image;
+        }
+        
         public List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException {
             Image i = new Image();
             i.setId(123);
