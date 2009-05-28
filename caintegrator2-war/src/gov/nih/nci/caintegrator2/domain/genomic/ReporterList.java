@@ -18,6 +18,7 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
     
     private String name;
     private ReporterTypeEnum reporterType;
+    private String genomeVersion;
     private List<AbstractReporter> reporters = new ArrayList<AbstractReporter>();
     private Platform platform;
     private Set<ArrayData> arrayDatas = new HashSet<ArrayData>();
@@ -151,6 +152,20 @@ public class ReporterList extends AbstractCaIntegrator2Object implements Compara
     public void addReporter(AbstractReporter reporter) {
         reporter.setReporterList(this);
         reporters.add(reporter);
+    }
+
+    /**
+     * @return the genomeVersion
+     */
+    public String getGenomeVersion() {
+        return genomeVersion;
+    }
+
+    /**
+     * @param genomeVersion the genomeVersion to set
+     */
+    public void setGenomeVersion(String genomeVersion) {
+        this.genomeVersion = genomeVersion;
     }
 
 }

@@ -23,9 +23,6 @@
             <s:textfield name="currentGisticAnalysisJob.name" label="Job Name" size="50" required="true" />
             <s:select name="currentGisticAnalysisJob.gisticUrl"
                 list="gisticServices" label="GISTIC Server" required="true" />
-            
-            <s:select name="gisticParameters.refgeneFile"
-                list="gisticParameters.refgeneFileOptions" label="Refgene File" required="true" />
             <s:select name="gisticAnalysisForm.selectedQuery"
                 headerKey="" headerValue="All non-control Samples"
                 list="gisticAnalysisForm.clinicalQueries" label="Clinical query" />

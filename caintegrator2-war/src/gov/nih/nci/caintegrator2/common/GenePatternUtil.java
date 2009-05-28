@@ -134,7 +134,16 @@ public final class GenePatternUtil {
         return gisticSamplesMarkers;
     }
 
-    private static Set<Sample> getSamplesForGistic(StudySubscription studySubscription, 
+    /**
+     * Returns the samples that match the given query or all non control samples if no query is selected.
+     * 
+     * @param studySubscription the current study
+     * @param queryManagementService used to run the query
+     * @param clinicalQuery the query to select samples, or null
+     * @return the matching samples
+     * @throws InvalidCriterionException if the query was invalid.
+     */
+    public static Set<Sample> getSamplesForGistic(StudySubscription studySubscription, 
             QueryManagementService queryManagementService, Query clinicalQuery) throws InvalidCriterionException {
         if (clinicalQuery == null) {
             return getAllNonControlSamples(studySubscription);
