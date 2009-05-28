@@ -56,7 +56,6 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
         super(conn.getUrl(), proxy);
         serverConnection = conn;
     }
-
     
     /**
      * {@inheritDoc}
@@ -192,7 +191,30 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
 
         return imageSeriesCollection;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public Image retrieveRepresentativeImageBySeries(String seriesInstanceUID)
+    throws ConnectionException {
+        try {
+            return getClient().getRepresentativeImageBySeries(seriesInstanceUID);
+        } catch (RemoteException e) {
+            // TODO - 5/27/09 Ngoc, temporary ignore this exception because this method is only available on Dev
+            return null;
+            //throw new ConnectionException("Remote Connection Failed.", e);
+        }
+    }
+
+    private NCIACoreServiceClient getClient() throws ConnectionException {
+        try {
+            return new NCIACoreServiceClient(serverConnection.getUrl());
+        } catch (RemoteException e) {
+            throw new ConnectionException("Remote Connection Failed.", e);
+        } catch (MalformedURIException e) {
+          throw new ConnectionException("Malformed URI.", e);
+        }
+    }
        
     /**
      * {@inheritDoc}
@@ -245,15 +267,13 @@ public class NCIASearchServiceImpl extends ServiceSecurityClient implements NCIA
     
     private CQLQueryResults connectAndExecuteQuery(CQLQuery cqlQuery) throws ConnectionException {
         try {
-            return new NCIACoreServiceClient(serverConnection.getUrl()).query(cqlQuery);
+            return getClient().query(cqlQuery);
         } catch (QueryProcessingExceptionType e) {
             throw new IllegalStateException("Error Processing Query.", e);
         } catch (MalformedQueryExceptionType e) {
             throw new IllegalStateException("Malformed Query.", e);
         } catch (RemoteException e) {
             throw new ConnectionException("Remote Connection Failed.", e);
-        } catch (MalformedURIException e) {
-          throw new ConnectionException("Malformed URI.", e);
         }
     }
 

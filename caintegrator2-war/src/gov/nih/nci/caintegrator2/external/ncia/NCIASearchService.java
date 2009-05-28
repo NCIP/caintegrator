@@ -139,6 +139,14 @@ public interface NCIASearchService {
     List<Image> retrieveImageCollectionFromSeries(String seriesInstanceUID) throws ConnectionException;
     
     /**
+     * Retrieves a representative image given a series ID.
+     * @param seriesInstanceUID series ID to find image from.
+     * @return Image metadata
+     * @throws ConnectionException if there's a problem connecting to the NCIA server.
+     */
+    Image retrieveRepresentativeImageBySeries(String seriesInstanceUID) throws ConnectionException;
+
+    /**
      * Given a seriesInstanceUID we validate whether the series object exists or not.
      * @param seriesInstanceUID sent to see whether the UID is present or not 
      * @return true or false
