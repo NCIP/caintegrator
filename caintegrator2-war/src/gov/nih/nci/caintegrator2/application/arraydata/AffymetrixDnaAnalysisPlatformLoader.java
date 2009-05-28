@@ -112,6 +112,7 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     static final String DBSNP_RS_ID_HEADER = "dbSNP RS ID";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDnaAnalysisPlatformLoader.class);
     private static final String CHIP_TYPE_HEADER = "chip_type";
+    private static final String GENOME_VERSION_HEADER = "genome-version";
     private static final String PROBE_SET_ID_HEADER = "Probe Set ID";
     private static final String GENE_SYMBOL_HEADER = "Associated Gene";
     private static final String NO_VALUE_INDICATOR = "---";
@@ -140,6 +141,7 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
             loadHeaders();
             ReporterList reporterList = 
                 platform.addReporterList(getHeaderValue(CHIP_TYPE_HEADER), ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            reporterList.setGenomeVersion(getHeaderValue(GENOME_VERSION_HEADER));
             loadAnnotations(reporterList, dao);
             reporterList.sortAndLoadReporterIndexes();
         } catch (IOException e) {

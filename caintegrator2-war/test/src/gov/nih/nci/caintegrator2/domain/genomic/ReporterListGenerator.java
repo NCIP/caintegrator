@@ -104,6 +104,8 @@ public final class ReporterListGenerator extends AbstractTestDataGenerator<Repor
     @Override
     public void compareFields(ReporterList original, ReporterList retrieved) {
         assertEquals(original.getId(), retrieved.getId());
+        assertEquals(original.getName(), retrieved.getName());
+        assertEquals(original.getGenomeVersion(), retrieved.getGenomeVersion());
         AbstractReporterGenerator.compare(original.getReporters(), retrieved.getReporters());
     }
 
@@ -116,6 +118,7 @@ public final class ReporterListGenerator extends AbstractTestDataGenerator<Repor
 
     @Override
     public void setValues(ReporterList reporterList, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
+        reporterList.setGenomeVersion(getUniqueString());
         if (reporterList.getReporters() != null) {
             for (AbstractReporter reporter : reporterList.getReporters()) {
                 reporter.setReporterList(null);
