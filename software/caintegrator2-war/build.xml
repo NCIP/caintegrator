@@ -358,6 +358,7 @@
     <property name="caintegrator2.war.instrumented.integration.classes.dir" location="${caintegrator2.war.target.dir}/instrumented-classes/integration" />
     <property name="caintegrator2.war.test.classes.dir" location="${caintegrator2.war.target.dir}/test-classes" />
     <property name="caintegrator2.war" location="${caintegrator2.war.target.dir}/caintegrator2.war" />
+    <property name="caintegrator2.jar" location="${caintegrator2.war.target.dir}/caintegrator2.jar" />
 
     <target name="path:caintegrator2.war.dependencies" depends="ivy:setup-compile">
         <path id="caintegrator2.war.dependencies.path">
@@ -438,6 +439,12 @@
                 <exclude name="web.xml"/>
             </webinf>
         </war>
+    </target>
+    
+    <target name="caintegrator2.jar" depends="compile:caintegrator2.war,hibernate.cfg.xml.test">
+        <delete file="${caintegrator2.jar}"/>
+        <copy file="${hibernate.cfg.xml.test}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true" />
+        <jar destfile="${caintegrator2.jar}" basedir="${caintegrator2.war.java.classes.dir}" />
     </target>
 
     <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies">
