@@ -90,7 +90,7 @@
     <dependency org="apache" name="xerces" rev="2.6.2" conf="compile"/>
     <dependency org="c3p0" name="c3p0" rev="0.9.0" conf="runtime"/>
     <dependency org="org.codehaus.castor" name="castor" rev="1.0.2" conf="runtime"/>
-    <dependency org="ncicb" name="csm" rev="4.0" conf="runtime->master"/>
+    <dependency org="ncicb" name="csm" rev="4.1.0.2" conf="runtime->master"/>
     <dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.1" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate-annotations" rev="1.0" conf="runtime"/>
     <dependency org="org.hibernate" name="hibernate" rev="3.2.0.ga" conf="runtime"/>
@@ -99,7 +99,7 @@
     <dependency org="jakarta" name="commons-collections" rev="3.2" conf="runtime"/>
     <dependency org="jakarta" name="commons-logging" rev="1.0.4" conf="compile"/>
     <dependency org="jakarta" name="oro" rev="2.0.8" conf="runtime->master"/>
-    <dependency org="ncicb" name="clm" rev="3.2" conf="runtime"/>
+    <dependency org="ncicb" name="clm" rev="4.1" conf="runtime"/>
     <dependency org="org.jdom" name="jdom" rev="1.0" conf="runtime->master"/>
     <dependency org="oracle" name="ojdbc14" rev="10.2.0.3.0" conf="runtime"/>
     <dependency org="displaytag" name="displaytag" rev="1.2" conf="runtime"/>
