@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost:8080/" />
+<link rel="selenium.base" href="http://caintegrator2-dev.nci.nih.gov/" />
 <title>Manage Cai2 - Load platforms</title>
 </head>
 <body>
@@ -23,12 +23,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133_Plus_2.na26.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -38,12 +38,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133A.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,8 +53,8 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>addPlatform_platformVendor</td>
-	<td>label=Agilent</td>
+	<td>managePlatformForm_platformType</td>
+	<td>label=Agilent Gene Expression</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -63,12 +63,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\agilent\AgilentG4502A_07_01.tcga.adf</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,12 +78,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133B.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -93,12 +93,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95Av2.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -108,12 +108,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95B.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -123,12 +123,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95C.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 <tr>
@@ -138,12 +138,12 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>addPlatform_platformFile</td>
+	<td>managePlatformForm_platformFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95D.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>addPlatform_0</td>
+	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
 
