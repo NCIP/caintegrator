@@ -71,6 +71,48 @@
 	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
+<!--// add Affymetrix copy number platforms-->
+<tr>
+	<td>open</td>
+	<td>/caintegrator2/managePlatforms.action</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>managePlatformForm_platformType</td>
+	<td>label=Affymetrix SNP</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>platformName</td>
+	<td>GeneChip Human Mapping 100K Set</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\Mapping50K_Hind240.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addFileButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\Mapping50K_Xba240.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addFileButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<!--// end add Affymetrix Copy Number Platform-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Manage Platforms</td>
