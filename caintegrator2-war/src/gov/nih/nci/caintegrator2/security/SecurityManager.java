@@ -83,78 +83,29 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.security;
 
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.security.exceptions.CSException;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
- * Saves basic study information.
+ * Interface to manage authentication and authorization data.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") //Validate the study name
-public class SaveStudyAction extends AbstractStudyAction {
-
-    private static final long serialVersionUID = 1L;
+public interface SecurityManager {
     
-    private static final int NAME_LENGTH = 50;
-    private static final int DESC_LENGTH = 200;
+    
+    /**
+     * Creates the protectionElement on a Study given the StudyConfiguration.
+     * @param studyConfiguration for which to create protection element on.
+     * @throws CSException If there's a problem creating the PE.
+     */
+    void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException; 
 
     /**
-     * {@inheritDoc}
+     * Deletes a proteectionElement on a study given the Study Configuration.
+     * @param studyConfiguration to delete the protection element for.
+     * @throws CSException If there's a problem deleting the PE.
      */
-    @Override
-    public String execute() {
-        if (SessionHelper.getInstance().isAuthenticated()) {
-            if (getStudyConfiguration().getId() == null) {
-                return createStudy();
-            } else {
-                getStudyManagementService().save(getStudyConfiguration());
-            }
-            return SUCCESS;
-        } else {
-            addActionError("User is unauthenticated");
-            return ERROR;
-        }
-    }
-
-    private String createStudy() {
-        getStudyConfiguration().setUserWorkspace(getWorkspace());
-        getWorkspace().getStudyConfigurationJobs().add(getStudyConfiguration());
-        getStudyManagementService().save(getStudyConfiguration());   
-        getWorkspaceService().saveUserWorkspace(getWorkspace());
-        try {
-            getStudyManagementService().createProtectionElement(getStudyConfiguration());
-        } catch (CSException e) {
-            addActionError("Problem trying to create instance level security on Study " 
-                    + getStudyConfiguration().getStudy().getShortTitleText());
-            return ERROR;
-        }
-        return SUCCESS;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Validate the study name
-    public void validate() {
-        String studyName = getStudyConfiguration().getStudy().getShortTitleText();
-        if (StringUtils.isEmpty(studyName)) {
-            addFieldError("study.shortTitleText", "Study Name is required");
-        } else if (studyName.length() > NAME_LENGTH) {
-            addFieldError("study.shortTitleText",
-                    "Study name exceeds maximum length of 50 characters, please shorten it.");
-        } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy())) {
-            addFieldError("study.shortTitleText", "There is already a study named '" + studyName
-                    + "', please use a different name.");
-        }
-        if (!StringUtils.isEmpty(getStudyConfiguration().getStudy().getLongTitleText())
-                && getStudyConfiguration().getStudy().getLongTitleText().length() > DESC_LENGTH) {
-            addFieldError("study.longTitleText",
-                    "Study description exceeds maximum length of 200 characters, please shorten it.");
-        }
-    }
+    void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException; 
 
 }

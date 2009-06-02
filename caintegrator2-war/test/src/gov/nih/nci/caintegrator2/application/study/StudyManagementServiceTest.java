@@ -115,6 +115,8 @@ import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.security.SecurityManagerStub;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -135,6 +137,7 @@ public class StudyManagementServiceTest {
     private CaDSRFacadeStub caDSRFacadeStub;
     private FileManagerStub fileManagerStub;
     private WorkspaceServiceStub workspaceServiceStub;
+    private SecurityManagerStub securityManagerStub;
 
     @Before
     public void setUp() throws Exception {
@@ -148,6 +151,8 @@ public class StudyManagementServiceTest {
         fileManagerStub.clear();
         workspaceServiceStub = (WorkspaceServiceStub) context.getBean("workspaceServiceStub");
         workspaceServiceStub.clear();
+        securityManagerStub = (SecurityManagerStub) context.getBean("securityManagerStub");
+        securityManagerStub.clear();
     }
 
     @Test
@@ -158,7 +163,7 @@ public class StudyManagementServiceTest {
     }
 
     @Test
-    public void testDelete() throws ValidationException {
+    public void testDelete() throws ValidationException, CSException {
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         
@@ -179,6 +184,7 @@ public class StudyManagementServiceTest {
         studyManagementService.delete(configTest);
         assertFalse(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         assertTrue(daoStub.deleteCalled);
+        assertTrue(securityManagerStub.deleteProtectionElementCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);
         assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
     }

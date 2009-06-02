@@ -475,7 +475,7 @@
 
     <target name="test:integration:caintegrator2.war" depends="test:compile:caintegrator2.war.test.classes,
         test:instrument:integration:caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
@@ -485,7 +485,7 @@
     
     <target name="test:integration:master.build" depends="test:compile:caintegrator2.war.test.classes,
         test:instrument:integration:caintegrator2.war,
-        hibernate.cfg.xml.test">
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test">
         <run-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
@@ -494,7 +494,7 @@
     
     <target name="test:nondeploy-integration" depends="test:compile:caintegrator2.war.test.classes,
         test:instrument:integration:caintegrator2.war,
-        hibernate.cfg.xml.test">
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test">
         <run-nondeploy-integration-junit-tests test.src.dir="${caintegrator2.war.test.src.dir}" 
             xml.output.dir="${caintegrator2.war.target.dir}/junit" 
             instrumented.classes="${caintegrator2.war.instrumented.integration.classes.dir}" 
@@ -609,7 +609,7 @@
         </hibernatetool>
     </target>
     
-    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes,hibernate.cfg.xml.test">
+    <target name="database:test-data" depends="database:reinitialize,test:compile:caintegrator2.war.test.classes,hibernate.cfg.xml.test, caintegrator2.csm.xml.test">
         <java classname="gov.nih.nci.caintegrator2.data.DataGenerator" classpathref="caintegrator2.war.test.dependencies.path" />
     </target>
     
@@ -640,6 +640,17 @@
 
     <property name="caintegrator2.csm.xml.src" value="${caintegrator2.war.resources.src.dir}/caintegrator2.csm.new.hibernate.cfg.xml" />
     <property name="caintegrator2.csm.xml.deploy" value="${caintegrator2.war.java.classes.dir}/caintegrator2.csm.new.hibernate.cfg.xml" />
+    <property name="caintegrator2.csm.xml.test" value="${caintegrator2.war.test.classes.dir}/caintegrator2.csm.new.hibernate.cfg.xml" />
+    
+    <target name="caintegrator2.csm.xml.test">
+        <copy file="${caintegrator2.csm.xml.src}" tofile="${caintegrator2.csm.xml.test}" overwrite="true">
+            <filterset refid="caintegrator2.filterset" />
+            <filterset>
+                <filter token="HIBERNATE_CONFIG_START" value="${comment.end}" />
+                <filter token="HIBERNATE_CONFIG_END" value="${comment.start}" />
+            </filterset>
+        </copy>
+    </target>
 
     <target name="caintegrator2.csm.xml.deploy">
         <copy file="${caintegrator2.csm.xml.src}" tofile="${caintegrator2.csm.xml.deploy}" overwrite="true">
@@ -887,7 +898,7 @@
 
     <target name="deploy:vasari" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
@@ -904,7 +915,7 @@
     
     <target name="deploy:dc-lung-public" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
@@ -921,7 +932,7 @@
 
     <target name="deploy:rembrandt-ncri" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
@@ -938,7 +949,7 @@
 
     <target name="deploy:rembrandt-copy-number" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
@@ -955,7 +966,7 @@
 
     <target name="deploy:small-copy-number" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>
@@ -972,7 +983,7 @@
     
     <target name="deploy:affy-designs" depends="test:compile:caintegrator2.war.test.classes,
         caintegrator2.war,
-        hibernate.cfg.xml.test,
+        hibernate.cfg.xml.test, caintegrator2.csm.xml.test,
         database:reinitialize">
         <junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="1024m">
              <classpath>

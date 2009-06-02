@@ -113,6 +113,8 @@ import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacade;
 import gov.nih.nci.caintegrator2.external.ncia.NCIAFacade;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.security.SecurityManager;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -147,6 +149,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     private WorkspaceService workspaceService;
     private BioconductorService bioconductorService;
     private CopyNumberHandlerFactory copyNumberHandlerFactory;
+    private SecurityManager securityManager;
 
     /**
      * @param bioconductorService the bioconductorService to set
@@ -169,6 +172,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
+    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        securityManager.createProtectionElement(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
         dao.save(studyConfiguration);
     }
@@ -176,7 +186,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      *  {@inheritDoc}
      */
-    public void delete(StudyConfiguration studyConfiguration) {
+    public void delete(StudyConfiguration studyConfiguration) throws CSException {
+        securityManager.deleteProtectionElement(studyConfiguration);
         fileManager.deleteStudyDirectory(studyConfiguration);
         getWorkspaceService().unsubscribeAll(studyConfiguration.getStudy());
         studyConfiguration.getUserWorkspace().getStudyConfigurationJobs().remove(studyConfiguration);
@@ -842,6 +853,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void setCopyNumberHandlerFactory(CopyNumberHandlerFactory copyNumberHandlerFactory) {
         this.copyNumberHandlerFactory = copyNumberHandlerFactory;
+    }
+
+    /**
+     * @param securityManager the securityManager to set
+     */
+    public void setSecurityManager(SecurityManager securityManager) {
+        this.securityManager = securityManager;
     }
 
 }

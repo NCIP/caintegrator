@@ -83,171 +83,30 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.security;
 
-import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
-import gov.nih.nci.caintegrator2.TestDataFiles;
-import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
-import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
-import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.security.exceptions.CSException;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional(timeout = 2880)
-public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyTestIntegration {
+/**
+ * 
+ */
+public class SecurityManagerStub implements SecurityManager {
     
-    private final static Logger LOGGER = Logger.getLogger(DeployPublicDCLungStudyTestIntegration.class);
-
-    @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
-        deployStudy();
+    public boolean createProtectionElementCalled;
+    public boolean deleteProtectionElementCalled;
+    
+    public void clear() {
+        createProtectionElementCalled = false;
+        deleteProtectionElementCalled = false;
     }
     
-    @Override
-    protected boolean getMapImages() {
-        return false;
-    }
-    
-    @Override
-    protected boolean getLoadImages() {
-        return false;
-    }
-    
-    @Override
-    protected boolean getLoadImageAnnotation() {
-        return false;
+    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        createProtectionElementCalled = true;
     }
 
-    @Override
-    protected boolean getLoadDesign() {
-        return true;
-    }
-    
-    @Override
-    protected boolean getLoadSamples() {
-        return true;
-    }
-
-    @Override
-    protected String getCaArrayHostname() {
-        return "array.nci.nih.gov";
-    }
-
-    @Override
-    protected String getCaArrayId() {
-        return "jacob-00182";
-    }
-
-    @Override
-    protected int getExpectedSampleCount() {
-        return 443;
-    }
-
-    @Override
-    protected int getExpectedMappedSampleCount() {
-        return 443;
-    }
-
-    @Override
-    protected int getExpectedControlSampleCount() {
-        return 4;
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
-    protected String getNCIAServerUrl() {
-        return null;
-    }
-    
-    @Override
-    protected String getNCIATrialId() {
-        return null;
-    }
-
-    @Override
-    protected String getStudyName() {
-        return "DC Lung Study";
-    }
-
-    protected String getDescription() {
-        return "DC Lung Study";
-    }
-
-    @Override
-    protected File getAnnotationDefinitionsFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE;
-    }
-
-    protected File getImageAnnotationFile() {
-        return null;
-    }
-
-    @Override
-    protected File getImageMappingFile() {
-        return null;
-    }
-    @Override
-    protected File getSampleMappingFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE;
-    }
-
-    @Override
-    protected File getControlSamplesFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE;
-    }
-
-    @Override
-    protected File getSubjectAnnotationFile() {
-        return TestDataFiles.DC_LUNG_PUBLIC_CLINICAL_FILE;
-    }
-
-    @Override
-    protected AbstractPlatformSource getPlatformSource() {
-        return new AffymetrixExpressionPlatformSource(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-    }
-
-    @Override
-    protected String getDeathDateName() {
-        return "DEATH_DATE";
-    }
-
-    @Override
-    protected String getLastFollowupDateName() {
-        return "LAST_CONTACT_DATE";
-    }
-
-    @Override
-    protected String getSurvivalStartDateName() {
-        return "ENROLLMENT_DATE";
-    }
-
-    @Override
-    protected int getExpectedNumberOfGeneReporters() {
-        return 13796;
-    }
-
-    @Override
-    protected int getExpectedNumberProbeSets() {
-        return 22283;
-    }
-
-    @Override
-    protected String getPlatformVendor() {
-        return "Affymetrix";
+    public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        deleteProtectionElementCalled = true;
     }
 
 }

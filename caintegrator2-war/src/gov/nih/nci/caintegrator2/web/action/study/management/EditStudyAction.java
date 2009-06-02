@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.security.exceptions.CSException;
 
 
 /**
@@ -119,9 +120,11 @@ public class EditStudyAction extends AbstractStudyAction {
         if (SessionHelper.getInstance().isAuthenticated()) {
             try {
                 getStudyManagementService().delete(getStudyConfiguration());
+            } catch (CSException e) {
+                addActionError("There was a problem deleting the Study ProtectionElement from the CSM tables.");
             } catch (RuntimeException e) {
                 addActionError("Study does not exist or cannot be deleted.");
-            }
+            } 
         } else {
             addActionError("User is unauthenticated");
         }
