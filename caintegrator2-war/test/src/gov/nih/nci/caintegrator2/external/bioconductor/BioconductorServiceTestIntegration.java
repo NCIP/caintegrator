@@ -50,7 +50,7 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
         copyNumberData.addCopyNumberData(arrayData, getValues(TestDataFiles.HIND_COPY_NUMBER_CHP_FILE, reporters));
         CopyNumberDataConfiguration configuration = new CopyNumberDataConfiguration();
         ServerConnectionProfile server = new ServerConnectionProfile();
-        server.setUrl("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+        server.setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         configuration.setCaDNACopyService(server);
         configuration.setChangePointSignificanceLevel(0.0);
         configuration.setEarlyStoppingCriterion(0.0);
