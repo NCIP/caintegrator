@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 
@@ -104,7 +105,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     private final static Logger LOGGER = Logger.getLogger(DeployVasariTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
+    public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         deployStudy();
     }
     

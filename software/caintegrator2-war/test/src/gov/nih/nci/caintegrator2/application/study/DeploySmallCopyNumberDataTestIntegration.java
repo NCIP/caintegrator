@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,7 +120,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     private final static Logger LOGGER = Logger.getLogger(DeploySmallCopyNumberDataTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         deployStudy();
         checkCopyNumberData();
     }

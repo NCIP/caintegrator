@@ -124,6 +124,7 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -170,7 +171,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         this.service = studyManagementService;
     }
     
-    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
+    public void deployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         AcegiAuthenticationStub authentication = new AcegiAuthenticationStub();
         authentication.setUsername("manager");
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -183,6 +184,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration.setUserWorkspace(userWorkspace);
         service.save(studyConfiguration);
         workspaceService.saveUserWorkspace(userWorkspace);
+        service.createProtectionElement(studyConfiguration);
         clearStudyDirectory(studyConfiguration.getStudy());
         loadAnnotationDefinitions();
         loadClinicalData();

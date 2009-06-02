@@ -640,6 +640,9 @@
         <property name="copyNumberHandlerFactory">
             <ref local="copyNumberHandlerFactory" />
         </property>
+        <property name="securityManager">
+            <ref local="securityManager" />
+        </property>
     </bean>
 
     <bean id="copyNumberHandlerFactory" 
@@ -816,6 +819,14 @@
             <ref local="configurationHelper" />
         </property>
     </bean>
+    
+    <bean id="securityManager" class="gov.nih.nci.caintegrator2.security.SecurityManagerImpl"> 
+        <property name="authorizationManagerFactory">
+            <ref local="authorizationManagerFactory" />
+        </property>
+    </bean>
+    
+    <bean id="authorizationManagerFactory" class="gov.nih.nci.caintegrator2.security.AuthorizationManagerFactoryImpl"/>
     
     <bean id="logoRenderingServlet" 
         class="gov.nih.nci.caintegrator2.web.LogoRenderingServlet">
