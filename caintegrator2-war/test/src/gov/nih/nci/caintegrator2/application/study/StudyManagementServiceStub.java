@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -348,11 +349,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveAsynchronousStudyConfigurationJobCalled = true;
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.caintegrator2.application.study.StudyManagementService#delete(gov.nih.nci.caintegrator2.application.study.StudyConfiguration, gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration)
-     */
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
-        // TODO Auto-generated method stub
+        
+    }
+
+    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         
     }
 }

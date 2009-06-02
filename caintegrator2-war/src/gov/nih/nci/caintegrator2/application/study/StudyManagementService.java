@@ -93,6 +93,7 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -111,6 +112,13 @@ public interface StudyManagementService {
     void save(StudyConfiguration studyConfiguration);
     
     /**
+     * Creates a protection element for the Study Configuration.
+     * @param studyConfiguration to create protection element for.
+     * @throws CSException if there's a problem creating the protection element.
+     */
+    void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException;
+    
+    /**
      * Saves a study configuration asynchronous job.
      * @param studyConfiguration study configuraiton to save.
      */
@@ -120,8 +128,9 @@ public interface StudyManagementService {
      * Deletes a study.
      * 
      * @param studyConfiguration study to delete
+     * @throws CSException if there's a problem deleting the protection element from CSM api.
      */
-    void delete(StudyConfiguration studyConfiguration);
+    void delete(StudyConfiguration studyConfiguration) throws CSException;
     
     /**
      * Deletes a clinical source.

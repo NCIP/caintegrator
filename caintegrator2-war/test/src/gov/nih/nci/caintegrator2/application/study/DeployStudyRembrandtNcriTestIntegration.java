@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,7 +109,7 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     private final static Logger LOGGER = Logger.getLogger(DeployStudyRembrandtNcriTestIntegration.class);
 
     @Test
-    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException {
+    public void testDeployStudy() throws ValidationException, IOException, ConnectionException, PlatformLoadingException, DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
         deployStudy();
     }
 

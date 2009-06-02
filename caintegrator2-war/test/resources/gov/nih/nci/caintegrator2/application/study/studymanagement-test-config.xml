@@ -28,6 +28,9 @@
         <property name="copyNumberHandlerFactory">
             <ref local="copyNumberHandlerFactory" />
         </property>
+        <property name="securityManager">
+            <ref local="securityManagerStub" />
+        </property>
     </bean>
 
     <bean id="copyNumberHandlerFactory" 
@@ -60,5 +63,7 @@
         
     <bean id="workspaceServiceStub"
         class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub" />
+        
+    <bean id="securityManagerStub" class="gov.nih.nci.caintegrator2.security.SecurityManagerStub"/>
 
 </beans>

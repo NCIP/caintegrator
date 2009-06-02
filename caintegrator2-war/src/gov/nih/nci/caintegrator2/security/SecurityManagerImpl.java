@@ -83,78 +83,109 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.study.management;
+package gov.nih.nci.caintegrator2.security;
 
-import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.authorization.domainobjects.Role;
+import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
+import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Saves basic study information.
+ * Providers methods to access authentication and authorization data.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") //Validate the study name
-public class SaveStudyAction extends AbstractStudyAction {
-
-    private static final long serialVersionUID = 1L;
+public class SecurityManagerImpl implements SecurityManager {
     
-    private static final int NAME_LENGTH = 50;
-    private static final int DESC_LENGTH = 200;
+    private static final String APPLICATION_CONTEXT_NAME = "caintegrator2";
+    private static final String STUDY_MANAGER_ROLE = "STUDY_MANAGER_ROLE";
+    private static final String STUDY_OBJECT = "gov.nih.nci.caintegrator2.domain.translational.Study";
+    private static final String STUDY_ATTRIBUTE = "id";
+    
+    private AuthorizationManagerFactory authorizationManagerFactory;
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public String execute() {
-        if (SessionHelper.getInstance().isAuthenticated()) {
-            if (getStudyConfiguration().getId() == null) {
-                return createStudy();
-            } else {
-                getStudyManagementService().save(getStudyConfiguration());
+    public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        User user = getAuthorizationManager().getUser(studyConfiguration.getUserWorkspace().getUsername());
+        String userId = String.valueOf(user.getUserId());
+        ProtectionElement element = createProtectionElementInstance(studyConfiguration);
+        element.setProtectionElementName(studyConfiguration.getStudy().getShortTitleText());
+        Set<User> owners = new HashSet<User>();
+        owners.add(user);
+        element.setOwners(owners);
+        element.setProtectionGroups(retrieveStudyManagerProtectionGroups(userId));
+        
+        getAuthorizationManager().createProtectionElement(element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        ProtectionElement element = createProtectionElementInstance(studyConfiguration);
+        SearchCriteria elementCriteria = new ProtectionElementSearchCriteria(element);
+        List<ProtectionElement> retrievedElements = getAuthorizationManager().getObjects(elementCriteria);
+        for (ProtectionElement pe : retrievedElements) {
+            getAuthorizationManager().removeProtectionElement(String.valueOf(pe.getProtectionElementId()));
+        }
+    }
+    
+    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    private Set<ProtectionGroup> retrieveStudyManagerProtectionGroups(String userId) 
+    throws CSException {
+        Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
+        Set<Group> groups = getAuthorizationManager().getGroups(userId);
+        for (Group group : groups) {
+            Set<ProtectionGroupRoleContext> pgrcs = 
+                getAuthorizationManager().getProtectionGroupRoleContextForGroup(String.valueOf(group.getGroupId()));
+            for (ProtectionGroupRoleContext pgrc : pgrcs) {
+                for (Role role : (Set<Role>) pgrc.getRoles()) {
+                    if (STUDY_MANAGER_ROLE.equals(role.getName())) {
+                        protectionGroups.add(pgrc.getProtectionGroup());
+                        break;
+                    }
+                }
             }
-            return SUCCESS;
-        } else {
-            addActionError("User is unauthenticated");
-            return ERROR;
         }
+        return protectionGroups;
     }
 
-    private String createStudy() {
-        getStudyConfiguration().setUserWorkspace(getWorkspace());
-        getWorkspace().getStudyConfigurationJobs().add(getStudyConfiguration());
-        getStudyManagementService().save(getStudyConfiguration());   
-        getWorkspaceService().saveUserWorkspace(getWorkspace());
-        try {
-            getStudyManagementService().createProtectionElement(getStudyConfiguration());
-        } catch (CSException e) {
-            addActionError("Problem trying to create instance level security on Study " 
-                    + getStudyConfiguration().getStudy().getShortTitleText());
-            return ERROR;
-        }
-        return SUCCESS;
+    private ProtectionElement createProtectionElementInstance(StudyConfiguration studyConfiguration) {
+        ProtectionElement element = new ProtectionElement();
+        element.setAttribute(STUDY_ATTRIBUTE);
+        element.setObjectId(STUDY_OBJECT);
+        element.setValue(String.valueOf(studyConfiguration.getStudy().getId()));
+        return element;
+    }
+    
+    private AuthorizationManager getAuthorizationManager() throws CSException {
+        return authorizationManagerFactory.getAuthorizationManager(APPLICATION_CONTEXT_NAME);
     }
 
     /**
-     * {@inheritDoc}
+     * @return the authorizationManagerFactory
      */
-    @Override
-    @SuppressWarnings("PMD.CyclomaticComplexity") // Validate the study name
-    public void validate() {
-        String studyName = getStudyConfiguration().getStudy().getShortTitleText();
-        if (StringUtils.isEmpty(studyName)) {
-            addFieldError("study.shortTitleText", "Study Name is required");
-        } else if (studyName.length() > NAME_LENGTH) {
-            addFieldError("study.shortTitleText",
-                    "Study name exceeds maximum length of 50 characters, please shorten it.");
-        } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy())) {
-            addFieldError("study.shortTitleText", "There is already a study named '" + studyName
-                    + "', please use a different name.");
-        }
-        if (!StringUtils.isEmpty(getStudyConfiguration().getStudy().getLongTitleText())
-                && getStudyConfiguration().getStudy().getLongTitleText().length() > DESC_LENGTH) {
-            addFieldError("study.longTitleText",
-                    "Study description exceeds maximum length of 200 characters, please shorten it.");
-        }
+    public AuthorizationManagerFactory getAuthorizationManagerFactory() {
+        return authorizationManagerFactory;
+    }
+
+    /**
+     * @param authorizationManagerFactory the authorizationManagerFactory to set
+     */
+    public void setAuthorizationManagerFactory(AuthorizationManagerFactory authorizationManagerFactory) {
+        this.authorizationManagerFactory = authorizationManagerFactory;
     }
 
 }
