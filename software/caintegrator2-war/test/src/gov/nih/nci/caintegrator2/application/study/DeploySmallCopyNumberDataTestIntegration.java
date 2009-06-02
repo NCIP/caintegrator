@@ -127,7 +127,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
 
     @Override
     protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
-        copyNumberDataConfiguration.getCaDNACopyService().setUrl("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+        copyNumberDataConfiguration.getCaDNACopyService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         copyNumberDataConfiguration.setChangePointSignificanceLevel(0.01);
         copyNumberDataConfiguration.setPermutationReplicates(10);
     }
