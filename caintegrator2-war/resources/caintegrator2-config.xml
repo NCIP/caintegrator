@@ -653,6 +653,9 @@
         <property name="dao">
             <ref local="caIntegrator2Dao"/>
         </property>
+        <property name="securityManager">
+            <ref local="securityManager" />
+        </property>
     </bean>
     
     <bean id="queryManagementService" 
@@ -716,6 +719,9 @@
         class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
         <property name="sessionFactory">
             <ref local="sessionFactory" />
+        </property>
+        <property name="securityManager" >
+            <ref local="securityManager" />
         </property>
     </bean>
 
@@ -875,13 +881,17 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
     
     <bean id="sessionFactory" 
-        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        class="gov.nih.nci.caintegrator2.data.SecureSessionFactory">
         <property name="dataSource">
             <ref local="dataSource"/>
         </property>
         <property name="configLocation">
             <value>classpath:hibernate.cfg.xml</value>
         </property>
+        <property name="securityManager">
+            <ref local="securityManager" />
+        </property>
+        <property name="securityType" value="group" />
     </bean>
     
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">

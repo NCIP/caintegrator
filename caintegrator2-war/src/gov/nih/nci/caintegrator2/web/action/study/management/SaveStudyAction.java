@@ -121,7 +121,6 @@ public class SaveStudyAction extends AbstractStudyAction {
 
     private String createStudy() {
         getStudyConfiguration().setUserWorkspace(getWorkspace());
-        getWorkspace().getStudyConfigurationJobs().add(getStudyConfiguration());
         getStudyManagementService().save(getStudyConfiguration());   
         getWorkspaceService().saveUserWorkspace(getWorkspace());
         try {

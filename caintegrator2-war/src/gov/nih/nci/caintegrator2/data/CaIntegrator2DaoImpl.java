@@ -110,6 +110,8 @@ import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
+import gov.nih.nci.caintegrator2.security.SecurityManager;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,6 +141,7 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     private static final String STUDY_SUBJECT_ASSIGNMENT_ASSOCIATION = "assignment";
     private static final String IMAGE_SERIES_ACQUISITION_ASSOCIATION = "imageStudy";
     private static final String STUDY_ASSOCIATION = "study";
+    private SecurityManager securityManager;
     
     /**
      * {@inheritDoc}
@@ -411,6 +414,16 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<Study> getStudies(String username) {
+        secureCurrentSession(username);
+        Query query = getCurrentSession().createQuery("from Study order by shortTitleText");
+        return query.list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED)
     public boolean isDuplicateStudyName(Study study) {
         long id;
@@ -582,11 +595,35 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return null;
     }
+    
+    private void secureCurrentSession(String username) {
+        if (securityManager != null) {
+            try {
+                securityManager.initializeFiltersForUserGroups(username, getCurrentSession());
+            } catch (CSException e) {
+                throw new IllegalStateException("Unable to use instance level filters.");
+            }
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     public void setFlushMode(int mode) {
         getHibernateTemplate().setFlushMode(mode);
+    }
+
+    /**
+     * @return the securityManager
+     */
+    public SecurityManager getSecurityManager() {
+        return securityManager;
+    }
+
+    /**
+     * @param securityManager the securityManager to set
+     */
+    public void setSecurityManager(SecurityManager securityManager) {
+        this.securityManager = securityManager;
     }
 }

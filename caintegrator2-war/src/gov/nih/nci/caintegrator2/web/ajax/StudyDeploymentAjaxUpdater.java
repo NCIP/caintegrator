@@ -122,7 +122,7 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     protected void initializeDynamicTable(DisplayableUserWorkspace workspace) {
         int counter = 0;
         List <StudyConfiguration> studyConfigurationList = new ArrayList<StudyConfiguration>();
-        studyConfigurationList.addAll(workspace.getUserWorkspace().getStudyConfigurationJobs());
+        studyConfigurationList.addAll(workspace.getManagedStudies());
         Comparator<StudyConfiguration> nameComparator = new Comparator<StudyConfiguration>() {
             public int compare(StudyConfiguration configuration1, StudyConfiguration configuration2) {
                 return configuration1.getStudy().getShortTitleText().
@@ -130,11 +130,12 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
             }
         };
         Collections.sort(studyConfigurationList, nameComparator);
+        String username = workspace.getUserWorkspace().getUsername();
         for (StudyConfiguration studyConfiguration : studyConfigurationList) {
-            retrieveDwrUtility(studyConfiguration).addRows(STATUS_TABLE, 
+            getDwrUtil(username).addRows(STATUS_TABLE, 
                                             createRow(studyConfiguration), 
                                             retrieveRowOptions(counter));
-            updateJobStatus(studyConfiguration);
+            updateJobStatus(username, studyConfiguration);
             counter++;
         }
     }
@@ -178,25 +179,35 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      * @param studyConfiguration to associate JSP script session to.
      */
     public void addError(String errorMessage, StudyConfiguration studyConfiguration) {
-        retrieveDwrUtility(studyConfiguration).setValue("errorMessages", errorMessage);
+        getDwrUtil(studyConfiguration.getUserWorkspace().getUsername()).setValue("errorMessages", errorMessage);
+    }
+
+    /**
+     * @param username
+     * @return
+     */
+    private Util getDwrUtil(String username) {
+        return getDwrUtilFactory().retrieveStudyConfigurationUtil(username);
     }
     
     /**
      * Saves studyConfiguration to database, then updates the status to JSP.
+     * @param username to update the status to.
      * @param studyConfiguration to save and update.
      */
-    public void saveAndUpdateJobStatus(StudyConfiguration studyConfiguration) {
+    public void saveAndUpdateJobStatus(String username, StudyConfiguration studyConfiguration) {
         studyConfiguration.setDeploymentFinishDate(new Date());
         getStudyManagementService().saveAsynchronousStudyConfigurationJob(studyConfiguration);
-        updateJobStatus(studyConfiguration);
+        updateJobStatus(username, studyConfiguration);
     }
 
     /**
      * Updates studyConfiguration status.
+     * @param username to update the status to.
      * @param studyConfiguration to update.
      */
-    public void updateJobStatus(StudyConfiguration studyConfiguration) {
-        Util utilThis = retrieveDwrUtility(studyConfiguration);
+    public void updateJobStatus(String username, StudyConfiguration studyConfiguration) {
+        Util utilThis = getDwrUtil(username);
         String studyConfigurationId = studyConfiguration.getId().toString();
         utilThis.setValue(JOB_STUDY_NAME + studyConfigurationId, 
                           studyConfiguration.getStudy().getShortTitleText());

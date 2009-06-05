@@ -86,7 +86,6 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -109,7 +108,7 @@ import java.util.Set;
 /**
  * Holds data about the sources of study data and authorization for access to data.
  */
-public class StudyConfiguration extends AbstractCaIntegrator2Object implements PersistedJob {
+public class StudyConfiguration extends AbstractCaIntegrator2Object {
     
     private static final long serialVersionUID = 1L;
     private Visibility visibility;

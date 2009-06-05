@@ -326,7 +326,15 @@ public interface CaIntegrator2Dao {
      * @return the platforms.
      */
     List<Platform> getPlatforms();
-
+    
+    
+    /**
+     * Returns all studies ordered by name.
+     * @param username for adding instance level security.
+     * @return the studies.
+     */
+    List<Study> getStudies(String username);
+    
     /**
      * Sets the Hibernate flush mode.
      * 

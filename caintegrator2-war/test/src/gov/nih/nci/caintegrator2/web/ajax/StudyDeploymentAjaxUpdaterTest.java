@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 
@@ -139,13 +138,12 @@ public class StudyDeploymentAjaxUpdaterTest {
     @Test
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(studyConfiguration));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new StudyConfiguration()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
+        assertNotNull(dwrUtilFactory.retrieveStudyConfigurationUtil("Test"));
     }
     
     @Test
     public void testRunJob() throws InterruptedException {
+        studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
         updater.runJob(studyConfiguration);
         Thread.sleep(500);
         assertTrue(studyManagementServiceStub.deployStudyCalled);
@@ -158,16 +156,8 @@ public class StudyDeploymentAjaxUpdaterTest {
             workspace.setUsername("Test");
             workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
             studyConfiguration.setUserWorkspace(workspace);
-            workspace.getStudyConfigurationJobs().add(studyConfiguration);
             return workspace;
         }
-    }
-    private final class PersistedJobStub implements PersistedJob {
-
-        public UserWorkspace getUserWorkspace() {
-            return null;
-        }
-        
     }
 
 }

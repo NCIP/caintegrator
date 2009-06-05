@@ -95,9 +95,6 @@ import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotMapper
 
 import java.util.Map;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
 
@@ -107,12 +104,12 @@ import com.opensymphony.xwork2.util.ValueStack;
 public final class SessionHelper {
     private static final String UNCHECKED = "unchecked";
     private static final String SESSION_HELPER_SESSION_KEY = "sessionHelper"; 
-    private static final String MODIFY_STUDY_ROLE = "MODIFY_STUDY_UPDATE";
     private static final String DISPLAYABLE_USER_WORKSPACE_SESSION_KEY = "displayableWorkspace";
     private static final String DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY = "displayableWorkspace";
     private static final String KM_PLOT_SESSION_KEY = "kmPlot";
     private static final String GE_PLOT_SESSION_KEY = "gePlot";
-    private boolean studyManager = false;
+    private Boolean studyManager = null;
+    private Boolean platformManager = null;
     
     private SessionHelper() {
         
@@ -152,11 +149,6 @@ public final class SessionHelper {
      */
     @SuppressWarnings(UNCHECKED) // sessionMap is not parameterized in struts2.
     public void refresh(WorkspaceService workspaceService) {
-        if (SecurityContextHolder.getContext() != null 
-            && SecurityContextHolder.getContext().getAuthentication() != null) {
-            setStudyManager(
-                    hasManagerPriveleges(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
-        }
         if (isAuthenticated()) {
             getDisplayableUserWorkspace().refresh(workspaceService);
             getValueStack().set(DISPLAYABLE_USER_WORKSPACE_VALUE_STACK_KEY, getDisplayableUserWorkspace());
@@ -199,24 +191,35 @@ public final class SessionHelper {
         return ActionContext.getContext().getValueStack();
     }
 
-    private boolean hasManagerPriveleges(GrantedAuthority[] authorities) {
-        for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equalsIgnoreCase(MODIFY_STUDY_ROLE)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * @return the studyManager
      */
     public boolean isStudyManager() {
+        if (studyManager == null) {
+            setStudyManager(SecurityHelper.isStudyManager(getUsername()));
+        }
         return studyManager;
     }
 
     private void setStudyManager(boolean studyManager) {
         this.studyManager = studyManager;
+    }
+
+    /**
+     * @return the platformManager
+     */
+    public boolean isPlatformManager() {
+        if (platformManager == null) {
+            setPlatformManager(SecurityHelper.isPlatformManager(getUsername()));
+        }
+        return platformManager;
+    }
+
+    /**
+     * @param platformManager the platformManager to set
+     */
+    public void setPlatformManager(Boolean platformManager) {
+        this.platformManager = platformManager;
     }
     
     

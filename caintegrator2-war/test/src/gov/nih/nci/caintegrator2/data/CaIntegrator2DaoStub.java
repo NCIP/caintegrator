@@ -143,6 +143,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveValueForAnnotationSubjectCalled;
     public boolean mergeCalled;
     public boolean getPlatformsCalled;
+    public boolean getStudiesCalled;
+    public boolean getStudyConfigurationsCalled;
     public boolean retrieveImagingDataSourceForStudyCalled;
     public boolean setFlushModeCalled;
     public boolean refreshCalled;
@@ -188,6 +190,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         mergeCalled = false;
         retrieveImagingDataSourceForStudyCalled = false;
         getPlatformsCalled = false;
+        getStudiesCalled = false;
+        getStudyConfigurationsCalled = false;
         setFlushModeCalled = false;
         refreshCalled = false;
         retrieveNumberImagesCalled = false;
@@ -352,6 +356,19 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public List<Platform> getPlatforms() {
         getPlatformsCalled = true;
         return Collections.emptyList();
+    }
+    
+    public List<StudyConfiguration> getStudyConfigurations(String username) {
+        getStudyConfigurationsCalled = true;
+        return Collections.emptyList();
+    }
+
+    public List<Study> getStudies(String username) {
+        getStudiesCalled = true;
+        Study study = new Study();
+        List<Study> studies = new ArrayList<Study>();
+        studies.add(study);
+        return studies;
     }
 
     /**

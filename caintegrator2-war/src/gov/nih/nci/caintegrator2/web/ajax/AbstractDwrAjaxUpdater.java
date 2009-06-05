@@ -85,13 +85,12 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -134,18 +133,6 @@ public abstract class AbstractDwrAjaxUpdater {
      * @param workspace current users workspace.
      */
     protected abstract void initializeDynamicTable(DisplayableUserWorkspace workspace);
-    
-    /**
-     * Retrieves the DWR Util for a PersistedJob.
-     * @param job to retrieve Util object for.
-     * @return DWR util object.
-     */
-    protected Util retrieveDwrUtility(PersistedJob job) {
-        if (job.getUserWorkspace() != null) {
-            return getDwrUtilFactory().retrieveDwrUtil(job);
-        }
-        return new Util();
-    }
     
     /**
      * Retreives table options for DWR created tables.
