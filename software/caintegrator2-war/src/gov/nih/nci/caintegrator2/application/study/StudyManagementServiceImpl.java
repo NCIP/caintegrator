@@ -190,7 +190,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         securityManager.deleteProtectionElement(studyConfiguration);
         fileManager.deleteStudyDirectory(studyConfiguration);
         getWorkspaceService().unsubscribeAll(studyConfiguration.getStudy());
-        studyConfiguration.getUserWorkspace().getStudyConfigurationJobs().remove(studyConfiguration);
         dao.save(studyConfiguration.getUserWorkspace());
         studyConfiguration.setUserWorkspace(null);
         dao.delete(studyConfiguration);

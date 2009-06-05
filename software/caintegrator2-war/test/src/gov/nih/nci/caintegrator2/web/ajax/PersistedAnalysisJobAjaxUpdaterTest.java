@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
@@ -169,14 +168,18 @@ public class PersistedAnalysisJobAjaxUpdaterTest {
     @Test
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
         updater.initializeJsp();
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(cmsJob));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new ComparativeMarkerSelectionAnalysisJob()));
-        assertNotNull(dwrUtilFactory.retrieveDwrUtil(new PersistedJobStub()));
+        assertNotNull(dwrUtilFactory.retrieveAnalysisJobUtil("Test"));
     }
     
     @Test
     public void testRunJob() throws InterruptedException {
-        
+        UserWorkspace workspace = workspaceService.getWorkspace();
+        StudySubscription subscription = new StudySubscription();
+        subscription.setUserWorkspace(workspace);
+        cmsJob.setSubscription(subscription);
+        gpJob.setSubscription(subscription);
+        pcaJob.setSubscription(subscription);
+        gisticJob.setSubscription(subscription);
         updater.runJob(cmsJob);
         Thread.sleep(500);
         assertTrue(analysisService.executeComparativeMarkerSelectionJobCalled);
@@ -215,13 +218,6 @@ public class PersistedAnalysisJobAjaxUpdaterTest {
             subscription.getAnalysisJobCollection().add(gpJob);
             return workspace;
         }
-    }
-    private final class PersistedJobStub implements PersistedJob {
-
-        public UserWorkspace getUserWorkspace() {
-            return null;
-        }
-        
     }
 
 }

@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.security;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
@@ -93,13 +94,19 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.math.NumberUtils;
+import org.hibernate.Session;
 
 /**
  * Providers methods to access authentication and authorization data.
@@ -110,6 +117,8 @@ public class SecurityManagerImpl implements SecurityManager {
     private static final String STUDY_MANAGER_ROLE = "STUDY_MANAGER_ROLE";
     private static final String STUDY_OBJECT = "gov.nih.nci.caintegrator2.domain.translational.Study";
     private static final String STUDY_ATTRIBUTE = "id";
+    private static final String UNUSED = "unused";
+    private static final String UNCHECKED = "unchecked";
     
     private AuthorizationManagerFactory authorizationManagerFactory;
 
@@ -117,7 +126,7 @@ public class SecurityManagerImpl implements SecurityManager {
      * {@inheritDoc}
      */
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
-        User user = getAuthorizationManager().getUser(studyConfiguration.getUserWorkspace().getUsername());
+        User user = retrieveCsmUser(studyConfiguration.getUserWorkspace().getUsername());
         String userId = String.valueOf(user.getUserId());
         ProtectionElement element = createProtectionElementInstance(studyConfiguration);
         element.setProtectionElementName(studyConfiguration.getStudy().getShortTitleText());
@@ -132,7 +141,7 @@ public class SecurityManagerImpl implements SecurityManager {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
     public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         ProtectionElement element = createProtectionElementInstance(studyConfiguration);
         SearchCriteria elementCriteria = new ProtectionElementSearchCriteria(element);
@@ -142,7 +151,63 @@ public class SecurityManagerImpl implements SecurityManager {
         }
     }
     
-    @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
+        List<String> groupNames = new ArrayList<String>();
+        String userId = String.valueOf(retrieveCsmUser(username).getUserId());
+        for (Group group : (Set<Group>) getAuthorizationManager().getGroups(userId)) {
+            groupNames.add(group.getGroupName());
+        }
+        InstanceLevelSecurityHelper.initializeFiltersForGroups(groupNames.toArray(new String[groupNames.size()]), 
+                                                               session, getAuthorizationManager());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies) 
+        throws CSException {
+        Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
+        Set<ProtectionGroup> studyManagerProtectionGroups = 
+            retrieveStudyManagerProtectionGroups(String.valueOf(retrieveCsmUser(username).getUserId()));
+        Set<Long> managedStudyIds = retrieveStudyIds(studyManagerProtectionGroups);
+        for (Study study : studies) {
+            // I think there's a bug with this function, so having to do it the hard way.
+//            if (getAuthorizationManager().checkPermission(username, STUDY_OBJECT, STUDY_ATTRIBUTE, 
+//                                String.valueOf(study.getId()), Constants.CSM_UPDATE_PRIVILEGE)) {
+//                managedStudies.add(study.getStudyConfiguration());
+//            }
+            if (managedStudyIds.contains(study.getId())) {
+                managedStudies.add(study.getStudyConfiguration());
+            }
+        }
+        return managedStudies;
+    }
+    
+    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
+    private Set<Long> retrieveStudyIds(Set<ProtectionGroup> protectionGroups) throws CSException {
+        Set<Long> managedStudyIds = new HashSet<Long>();
+        for (ProtectionGroup group : protectionGroups) {
+            Set<ProtectionElement> elements = 
+                getAuthorizationManager().getProtectionElements(String.valueOf(group.getProtectionGroupId()));
+            for (ProtectionElement element : elements) {
+                if (STUDY_OBJECT.equals(element.getObjectId()) && NumberUtils.isNumber(element.getValue())) {
+                    managedStudyIds.add(Long.valueOf(element.getValue()));
+                }
+            }
+        }
+        return managedStudyIds;
+    }
+    
+    private User retrieveCsmUser(String username) throws CSException {
+        return getAuthorizationManager().getUser(username);
+    }
+    
+    @SuppressWarnings({ UNUSED, UNCHECKED }) // CSM API is untyped
     private Set<ProtectionGroup> retrieveStudyManagerProtectionGroups(String userId) 
     throws CSException {
         Set<ProtectionGroup> protectionGroups = new HashSet<ProtectionGroup>();
@@ -170,7 +235,10 @@ public class SecurityManagerImpl implements SecurityManager {
         return element;
     }
     
-    private AuthorizationManager getAuthorizationManager() throws CSException {
+    /**
+     * {@inheritDoc}
+     */
+    public AuthorizationManager getAuthorizationManager() throws CSException {
         return authorizationManagerFactory.getAuthorizationManager(APPLICATION_CONTEXT_NAME);
     }
 

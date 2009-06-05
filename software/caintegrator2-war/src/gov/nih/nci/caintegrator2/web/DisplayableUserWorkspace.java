@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
@@ -108,7 +109,9 @@ import gov.nih.nci.caintegrator2.web.action.study.management.DataElementSearchOb
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.util.ValueStack;
@@ -153,6 +156,7 @@ public class DisplayableUserWorkspace {
     private boolean createPlotSelected = false;
     private boolean createPlotRunning = false;
     private String temporaryDownloadFile;
+    private final Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
     
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -161,6 +165,7 @@ public class DisplayableUserWorkspace {
      */
     public void refresh(WorkspaceService workspaceService) {
         setUserWorkspace(workspaceService.getWorkspace());
+        workspaceService.subscribeAll(getUserWorkspace());
         if (getCurrentStudySubscriptionId() == null  && getUserWorkspace().getDefaultSubscription() != null) {
             currentStudySubscriptionId = getUserWorkspace().getDefaultSubscription().getId();
         }
@@ -242,8 +247,7 @@ public class DisplayableUserWorkspace {
                 currentStudy = subscription.getStudy();
             }
         }
-        
-        
+
         getValueStack().set(CURRENT_STUDY_SUBSCRIPTION_VALUE_STACK_KEY, currentStudySubscription);
         getValueStack().set(CURRENT_STUDY_VALUE_STACK_KEY, currentStudy);
     }
@@ -512,6 +516,13 @@ public class DisplayableUserWorkspace {
      */
     public PlatformForm getPlatformForm() {
         return platformForm;
+    }
+
+    /**
+     * @return the managedStudies
+     */
+    public Set<StudyConfiguration> getManagedStudies() {
+        return managedStudies;
     }
 
 }

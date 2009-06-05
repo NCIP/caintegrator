@@ -83,17 +83,69 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.application;
+package gov.nih.nci.caintegrator2.data;
+
+import gov.nih.nci.caintegrator2.security.SecurityManager;
+import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
+import gov.nih.nci.security.exceptions.CSException;
+
+import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 /**
- * Interface for PersistedJob objects, used by the DwrUtilFactory to associate Job's with Users.
+ * Allows for Instance Level security filtering for this session factory.
  */
-public interface PersistedJob {
+public class SecureSessionFactory extends LocalSessionFactoryBean {
+    
+    private SecurityManager securityManager;
+    private Resource configLocation;
+    private String securityType;
     
     /**
-     * Retrieves user workspace for the job.
-     * @return the user workspace.
+     * {@inheritDoc}
      */
-    UserWorkspace getUserWorkspace();
+    @Override
+    @SuppressWarnings("PMD")
+    protected SessionFactory buildSessionFactory() throws Exception {
+        Configuration configuration = new Configuration().configure(configLocation.getURL());
+        try {
+            if ("group".equals(securityType)) {
+                InstanceLevelSecurityHelper.addFiltersForGroups(securityManager.getAuthorizationManager(), 
+                        configuration);
+            } else {
+                InstanceLevelSecurityHelper.addFilters(securityManager.getAuthorizationManager(), 
+                        configuration);
+            }
+        } catch (CSException e) {
+            Logger.getLogger(SecureSessionFactory.class).error("Unable to add instance level security");
+        }
+        return newSessionFactory(configuration);
+    }
+
+    /**
+     * @param securityManager the securityManager to set
+     */
+    public void setSecurityManager(SecurityManager securityManager) {
+        this.securityManager = securityManager;
+    }
+
+    /**
+     * @param configLocation the configLocation to set
+     */
+    public void setConfigLocation(Resource configLocation) {
+        this.configLocation = configLocation;
+        super.setConfigLocation(configLocation);
+    }
+
+
+    /**
+     * @param securityType the securityType to set
+     */
+    public void setSecurityType(String securityType) {
+        this.securityType = securityType;
+    }
 
 }

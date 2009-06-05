@@ -127,14 +127,15 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         jobList.addAll(workspace.getCurrentStudySubscription().getAnalysisJobCollection());
         Collections.sort(jobList);
         for (AbstractPersistedAnalysisJob job : jobList) {
-            retrieveDwrUtility(job).addRows(STATUS_TABLE, 
+            getDwrUtil(workspace.getUserWorkspace().getUsername())
+                                            .addRows(STATUS_TABLE, 
                                             createRow(job), 
                                             retrieveRowOptions(counter));
             updateJobStatus(job);
             counter++;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -188,7 +189,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      * @param job to associate JSP script session to.
      */
     public void addError(String errorMessage, AbstractPersistedAnalysisJob job) {
-        retrieveDwrUtility(job).setValue("errors", errorMessage);
+        getDwrUtil(job.getUserWorkspace().getUsername()).setValue("errors", errorMessage);
     }
     
     /**
@@ -206,7 +207,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      * @param job to update.
      */
     public void updateJobStatus(AbstractPersistedAnalysisJob job) {
-        Util utilThis = retrieveDwrUtility(job);
+        Util utilThis = getDwrUtil(job.getUserWorkspace().getUsername());
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
         utilThis.setValue(JOB_TYPE + jobId, job.getJobType());
@@ -258,6 +259,10 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
             return AJAX_LOADING_GIF + " " + jobStatus.getValue();
         }
         return jobStatus.getValue();
+    }
+    
+    private Util getDwrUtil(String username) {
+        return getDwrUtilFactory().retrieveAnalysisJobUtil(username);
     }
 
 

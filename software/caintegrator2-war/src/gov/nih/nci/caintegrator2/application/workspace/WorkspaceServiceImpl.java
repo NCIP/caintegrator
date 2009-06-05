@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -95,12 +96,16 @@ import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.security.SecurityHelper;
+import gov.nih.nci.caintegrator2.security.SecurityManager;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.security.exceptions.CSException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,6 +117,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkspaceServiceImpl implements WorkspaceService {
     
     private CaIntegrator2Dao dao;
+    private SecurityManager securityManager;
 
     /**
      * {@inheritDoc}
@@ -163,6 +169,42 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             dao.save(job);
         } else {
             dao.merge(job);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void subscribeAll(UserWorkspace userWorkspace) {
+        List<Study> myStudies = dao.getStudies(userWorkspace.getUsername());
+        removeOldSubscriptions(userWorkspace, myStudies);
+        subscribeAll(userWorkspace, myStudies);
+    }
+    
+    private void subscribeAll(UserWorkspace userWorkspace, List<Study> myStudies) {
+        for (Study study : myStudies) {
+            subscribe(userWorkspace, study);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
+        throws CSException {
+        return securityManager.retrieveManagedStudyConfigurations(userWorkspace.getUsername(), 
+                        dao.getStudies(userWorkspace.getUsername()));
+    }
+    
+    private void removeOldSubscriptions(UserWorkspace userWorkspace, List<Study> myStudies) {
+        List<Study> oldStudies = new ArrayList<Study>();
+        for (StudySubscription studySubscription : userWorkspace.getSubscriptionCollection()) {
+            if (!myStudies.contains(studySubscription.getStudy())) {
+                oldStudies.add(studySubscription.getStudy());
+            }
+        }
+        for (Study study : oldStudies) {
+            unsubscribe(userWorkspace, study);
         }
     }
 
@@ -260,6 +302,20 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }
             studySummary.getGenomicDataSources().add(displayableGenomicSource);
         }
+    }
+
+    /**
+     * @return the securityManager
+     */
+    public SecurityManager getSecurityManager() {
+        return securityManager;
+    }
+
+    /**
+     * @param securityManager the securityManager to set
+     */
+    public void setSecurityManager(SecurityManager securityManager) {
+        this.securityManager = securityManager;
     }
 
 }

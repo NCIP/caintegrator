@@ -443,8 +443,20 @@ public class AuthorizationManagerStub implements AuthorizationManager {
     }
     @SuppressWarnings({ "unused", "unchecked" }) // CSM API is untyped
     public Set getProtectionElements(String protectionGroupId) throws CSObjectNotFoundException {
-        
-        return null;
+        Set<ProtectionElement> protectionElements = new HashSet<ProtectionElement>();
+        ProtectionElement element1 = new ProtectionElement();
+        element1.setObjectId("gov.nih.nci.caintegrator2.domain.translational.Study");
+        element1.setAttribute("id");
+        element1.setValue("1");
+        protectionElements.add(element1);
+        ProtectionElement element2 = new ProtectionElement();
+        element2.setObjectId("Invalid");
+        protectionElements.add(element2);
+        ProtectionElement element3 = new ProtectionElement();
+        element3.setObjectId("gov.nih.nci.caintegrator2.domain.translational.Study");
+        element3.setValue("invalidId");
+        protectionElements.add(element3);
+        return protectionElements;
     }
 
     public ProtectionGroup getProtectionGroupById(String protectionGroupId) throws CSObjectNotFoundException {

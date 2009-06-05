@@ -85,7 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.security;
 
+import java.util.Collection;
+import java.util.Set;
+
+import org.hibernate.Session;
+
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.exceptions.CSException;
 
 /**
@@ -95,10 +102,12 @@ public class SecurityManagerStub implements SecurityManager {
     
     public boolean createProtectionElementCalled;
     public boolean deleteProtectionElementCalled;
+    public boolean isStudyManagerCalled;
     
     public void clear() {
         createProtectionElementCalled = false;
         deleteProtectionElementCalled = false;
+        isStudyManagerCalled = false;
     }
     
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
@@ -107,6 +116,24 @@ public class SecurityManagerStub implements SecurityManager {
 
     public void deleteProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
         deleteProtectionElementCalled = true;
+    }
+
+    public AuthorizationManager getAuthorizationManager() throws CSException {
+        return new AuthorizationManagerStub();
+    }
+
+    public void initializeFiltersForUserGroups(String username, Session session) throws CSException {
+        
+    }
+
+    public boolean isStudyManager(String userName) {
+        isStudyManagerCalled = true;
+        return false;
+    }
+
+    public Set<StudyConfiguration> retrieveManagedStudyConfigurations(String username, Collection<Study> studies)
+            throws CSException {
+        return null;
     }
 
 }

@@ -85,10 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.PersistedJob;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,20 +100,26 @@ public class DwrUtilFactory {
     private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
     
     /**
-     * Retrieves the DWR Util object for a given job.
-     * @param job used to figure out which Util object to retrieve.
-     * @return - DWR Util.
+     * Retrieves the DWR utility object for an Analysis Job.
+     * @param username to retrieve utility for.
+     * @return DWR Utility
      */
-    public Util retrieveDwrUtil(PersistedJob job) {
-        if (job instanceof AbstractPersistedAnalysisJob) {
-            return (analysisUsernameUtilityMap.get(getUsername(job)) == null)
-                    ? new Util() : analysisUsernameUtilityMap.get(getUsername(job));
-        }
-        if (job instanceof StudyConfiguration) {
-            return (studyConfigurationUtilityMap.get(getUsername(job)) == null)
-                    ? new Util() : studyConfigurationUtilityMap.get(getUsername(job));
-        }
-        return new Util();
+    public Util retrieveAnalysisJobUtil(String username) {
+        return retrieveDwrUtil(username, analysisUsernameUtilityMap);
+    }
+    
+    /**
+     * Retrieves the DWR utility object for a Study Configuration job.
+     * @param username to retrieve utility for.
+     * @return DWR Utility
+     */
+    public Util retrieveStudyConfigurationUtil(String username) {
+        return retrieveDwrUtil(username, studyConfigurationUtilityMap);
+    }
+    
+    private Util retrieveDwrUtil(String username, Map<String, Util> map) {
+        return (map.get(username) == null) 
+            ? new Util() : map.get(username);
     }
     
     /**
@@ -137,13 +139,6 @@ public class DwrUtilFactory {
      */
     public void associateStudyConfigurationJobWithSession(String username, Util util) {
         studyConfigurationUtilityMap.put(username, util);
-    }
-    
-    private String getUsername(PersistedJob job) {
-        if (job.getUserWorkspace() != null) {
-            return job.getUserWorkspace().getUsername();
-        }
-        return "";
     }
 
 }

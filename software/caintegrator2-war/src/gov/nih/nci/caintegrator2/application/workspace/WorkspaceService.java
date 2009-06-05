@@ -85,10 +85,14 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import java.util.Set;
+
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
+import gov.nih.nci.security.exceptions.CSException;
 
 /**
  * Provides <code>UserWorkspace</code> access and management functionality.
@@ -103,13 +107,29 @@ public interface WorkspaceService {
     UserWorkspace getWorkspace();
     
     /**
-     * Subscribes a user to a study.
+     * Retrieves the studyConfigurationJobs for the user workspace.
+     * 
+     * @param userWorkspace workspace of the user.
+     * @return all study configuraiton jobs for this users workspace.
+     * @throws CSException if there's a problem accessing CSM.
+    */
+    Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
+        throws CSException;
+   
+   /**
+    * Subscribes a user to a study.
      * 
      * @param workspace workspace of the user.
      * @param study - study to subscribe to.
      */
     void subscribe(UserWorkspace workspace, Study study);
-    
+        
+    /**
+     * Subscribe to all studies that the user has read access.
+     * @param userWorkspace - object to use.
+     */
+    void subscribeAll(UserWorkspace userWorkspace);
+
     /**
      * Unsubscribes a user to a study.
      * 
@@ -142,4 +162,5 @@ public interface WorkspaceService {
      * @return - DisplayableStudySummary object created from the study.
      */
     DisplayableStudySummary createDisplayableStudySummary(Study study);
+
 }

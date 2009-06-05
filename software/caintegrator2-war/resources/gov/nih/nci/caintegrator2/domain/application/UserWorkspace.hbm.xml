@@ -15,10 +15,5 @@
 			<key column="USER_WORKSPACE_ID" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.application.StudySubscription"/>
 		</set>
-		    <set name="studyConfigurationJobs" lazy="true" cascade="none" >
-            <cache usage="read-write" />
-            <key column="USER_WORKSPACE_ID" />
-            <one-to-many class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"/>
-        </set>
 	</class>
 </hibernate-mapping>

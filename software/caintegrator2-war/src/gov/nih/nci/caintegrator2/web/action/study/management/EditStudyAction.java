@@ -109,6 +109,13 @@ public class EditStudyAction extends AbstractStudyAction {
      * @return Struts result.
      */
     public String manageStudies() {
+        try {
+            getDisplayableWorkspace().getManagedStudies().clear();
+            getDisplayableWorkspace().getManagedStudies().addAll(
+                    getWorkspaceService().retrieveStudyConfigurationJobs(getDisplayableWorkspace().getUserWorkspace()));
+        } catch (CSException e) {
+            addActionError("Error accessing CSM to determine user privileges.");
+        }
         return SUCCESS;
     }
     
