@@ -110,6 +110,8 @@
                     <a href="${createStudyUrl}">Create New Study</a></li>
                 </ul>
             </li>
+        </s:if>
+        <s:if test="#sessionHelper.platformManager">
             <li class="stdnav"><div>Application Management</div>
                 <ul>
                     <li><s:url id="managePlatformsUrl" includeParams="none" action="managePlatforms" />

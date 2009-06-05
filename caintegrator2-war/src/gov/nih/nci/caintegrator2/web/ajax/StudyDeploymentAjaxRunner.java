@@ -99,21 +99,23 @@ public class StudyDeploymentAjaxRunner implements Runnable {
         
     private final StudyDeploymentAjaxUpdater updater;
     private final StudyConfiguration job;
+    private final String username;
     
     StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater,
             StudyConfiguration job) {
         this.updater = updater;
         this.job = job;
+        this.username = job.getUserWorkspace().getUsername();
     }
 
     /**
      * {@inheritDoc}
      */
     public void run() {
-        updater.updateJobStatus(job);
+        updater.updateJobStatus(username, job);
         try {
             updater.getStudyManagementService().deployStudy(job);
-            updater.updateJobStatus(job);
+            updater.updateJobStatus(username, job);
         } catch (Exception e) {
             addError(e);
         }
@@ -124,6 +126,6 @@ public class StudyDeploymentAjaxRunner implements Runnable {
         updater.addError(e.getMessage(), job);
         job.setStatus(Status.ERROR);
         job.setStatusDescription(e.getMessage());
-        updater.saveAndUpdateJobStatus(job);
+        updater.saveAndUpdateJobStatus(username, job);
     }
 }

@@ -180,7 +180,6 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         studyConfiguration = new StudyConfiguration();
         studyConfiguration.getStudy().setShortTitleText(getStudyName());
         studyConfiguration.getStudy().setLongTitleText(getDescription());
-        userWorkspace.getStudyConfigurationJobs().add(studyConfiguration);
         studyConfiguration.setUserWorkspace(userWorkspace);
         service.save(studyConfiguration);
         workspaceService.saveUserWorkspace(userWorkspace);

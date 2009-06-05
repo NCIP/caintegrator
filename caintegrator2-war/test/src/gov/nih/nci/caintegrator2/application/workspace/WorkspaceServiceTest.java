@@ -93,12 +93,14 @@ import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableGenomicSource;
 import gov.nih.nci.caintegrator2.web.DisplayableImageSource;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -128,6 +130,19 @@ public class WorkspaceServiceTest {
         workspaceService2.setDao(new DaoStubNoWorkspace());
         workspace = workspaceService2.getWorkspace();
         assertNotNull(workspace);
+    }
+    
+    @Test
+    public void testSubscribeAllStudies() {
+        UserWorkspace workspace = workspaceService.getWorkspace();
+        workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+        StudySubscription studySubscription = new StudySubscription();
+        studySubscription.setStudy(new Study());
+        workspace.getSubscriptionCollection().add(studySubscription);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
+        workspaceService.subscribeAll(workspace);
+        assertEquals(1, workspace.getSubscriptionCollection().size());
+        assertFalse(workspace.getSubscriptionCollection().contains(studySubscription));
     }
     
     @Test

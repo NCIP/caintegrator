@@ -80,14 +80,13 @@
 
     <mkdir dir="${build.lib.dir}" />
     <ant inheritAll="false" inheritRefs="false" dir="${software.dir}/common/bda-download"
-	    antfile="bda-ivy-build.xml" target="retrieve-bda">
+	    antfile="bda-ivy-build.xml" target="retrieve-bda"> 
         <property name="bda-utils.dir" location="${bda-utils.dir}" />
         <property name="lib.dir" location="${build.lib.dir}" />
         <property name="software.dir" location="${software.dir}" />
 	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
 	<property name="bda.version" value="${bda.version}"/>
     </ant>
-
     <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
 
     <!-- Cobertura -->
@@ -444,7 +443,9 @@
     <target name="caintegrator2.jar" depends="compile:caintegrator2.war,hibernate.cfg.xml.test">
         <delete file="${caintegrator2.jar}"/>
         <copy file="${hibernate.cfg.xml.test}" tofile="${hibernate.cfg.xml.deploy}" overwrite="true" />
-        <jar destfile="${caintegrator2.jar}" basedir="${caintegrator2.war.java.classes.dir}" />
+        <jar destfile="${caintegrator2.jar}" basedir="${caintegrator2.war.java.classes.dir}" >
+            <fileset dir="${caintegrator2.war.resources.src.dir}" excludes="*hibernate.cfg.xml"/>
+        </jar>
     </target>
 
     <target name="compile:caintegrator2.war" depends="path:caintegrator2.war.dependencies">
@@ -513,6 +514,7 @@
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/pca/PCAGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/security/SecurityHelper.class" />
              </fileset>
          </cobertura-instrument>
      </target>

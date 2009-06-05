@@ -85,15 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import java.util.Date;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
+import java.util.Date;
 
 /**
  * 
  */
 public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
-    implements PersistedJob, Comparable<AbstractPersistedAnalysisJob> {
+    implements Comparable<AbstractPersistedAnalysisJob> {
     
     private String name;
     private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;

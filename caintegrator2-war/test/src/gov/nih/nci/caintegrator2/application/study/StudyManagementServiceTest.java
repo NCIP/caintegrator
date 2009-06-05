@@ -170,7 +170,6 @@ public class StudyManagementServiceTest {
         StudyConfiguration configTest = study.getStudyConfiguration();
         UserWorkspace userWorkspace = new UserWorkspace();
         configTest.setUserWorkspace(userWorkspace);
-        userWorkspace.getStudyConfigurationJobs().add(configTest);
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
         studyManagementService.delete(configTest, clinicalSource);
         assertTrue(daoStub.deleteCalled);
@@ -180,9 +179,7 @@ public class StudyManagementServiceTest {
         assertTrue(daoStub.deleteCalled);
         daoStub.deleteCalled = false;
         
-        assertTrue(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         studyManagementService.delete(configTest);
-        assertFalse(userWorkspace.getStudyConfigurationJobs().contains(configTest));
         assertTrue(daoStub.deleteCalled);
         assertTrue(securityManagerStub.deleteProtectionElementCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);

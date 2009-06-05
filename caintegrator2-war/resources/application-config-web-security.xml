@@ -84,8 +84,6 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**/createstudy.action/**=MODIFY_STUDY_CREATE
-				/**/managestudies.action/**=MODIFY_STUDY_UPDATE
 				/**=IS_AUTHENTICATED_FULLY
 			</value>
 		</property>

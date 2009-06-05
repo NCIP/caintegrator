@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -92,7 +93,10 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Stubbed implementation of WorkspaceService for testing.
@@ -101,6 +105,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     private StudySubscription subscription;
     public boolean subscribeCalled;
+    public boolean subscribeAllCalled;
+    public boolean retrieveStudyConfigurationJobsCalled;
     public boolean unSubscribeCalled;
     public boolean unSubscribeAllCalled;
     public boolean saveUserWorspaceCalled;
@@ -110,6 +116,8 @@ public class WorkspaceServiceStub implements WorkspaceService {
     
     public void clear() {
         subscribeCalled = false;
+        retrieveStudyConfigurationJobsCalled = false;
+        subscribeAllCalled = false;
         unSubscribeCalled = false;
         saveUserWorspaceCalled = false;
         refreshAnnotationDefinitionsCalled = false;
@@ -131,6 +139,15 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public void saveUserWorkspace(UserWorkspace workspace) {
         saveUserWorspaceCalled = true; 
+    }
+
+    public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace workspace) {
+        retrieveStudyConfigurationJobsCalled = true;
+        return new HashSet<StudyConfiguration>();
+    }
+    
+    public void subscribeAll(UserWorkspace userWorkspace) {
+        subscribeAllCalled = true;
     }
 
     public void subscribe(UserWorkspace workspace, Study study) {
@@ -160,6 +177,13 @@ public class WorkspaceServiceStub implements WorkspaceService {
         }
         return subscription;
     }
+    
+    public List<StudySubscription> getStudySubscriptions() {
+        List<StudySubscription> studySubscriptions = new ArrayList<StudySubscription>();
+        studySubscriptions.add(getSubscription());
+        return studySubscriptions;
+    }
+
 
     public void refreshAnnotationDefinitions() {
         refreshAnnotationDefinitionsCalled = true;
@@ -174,7 +198,5 @@ public class WorkspaceServiceStub implements WorkspaceService {
     public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
         savePersistedAnalysisJobCalled = true;
     }
-
-
 
 }
