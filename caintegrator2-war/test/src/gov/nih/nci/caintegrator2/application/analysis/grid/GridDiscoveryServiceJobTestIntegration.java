@@ -114,9 +114,13 @@ public class GridDiscoveryServiceJobTestIntegration {
         assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridPcaServices().isEmpty());
+        assertFalse(GridDiscoveryServiceJob.getGridCaDnaCopyServices().isEmpty());
+        assertFalse(GridDiscoveryServiceJob.getGridGisticServices().isEmpty());
         job.executeInternal(null);
         assertFalse(GridDiscoveryServiceJob.getGridPreprocessServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridCmsServices().isEmpty());
         assertFalse(GridDiscoveryServiceJob.getGridPcaServices().isEmpty());
+        assertFalse(GridDiscoveryServiceJob.getGridCaDnaCopyServices().isEmpty());
+        assertFalse(GridDiscoveryServiceJob.getGridGisticServices().isEmpty());
     }
 }
