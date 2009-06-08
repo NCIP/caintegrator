@@ -98,6 +98,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.log4j.Logger;
 import org.bioconductor.cagrid.cadnacopy.DNAcopyAssays;
 import org.bioconductor.cagrid.cadnacopy.DNAcopyParameter;
 import org.bioconductor.cagrid.cadnacopy.DerivedDNAcopySegment;
@@ -108,6 +109,8 @@ import org.bioconductor.packages.caDNAcopy.common.CaDNAcopyI;
  * Implementation that uses Bioconductor grid services.
  */
 public class BioconductorServiceImpl implements BioconductorService {
+    
+    private static final Logger LOGGER = Logger.getLogger(BioconductorServiceImpl.class);
     
     private static final int X_CHROMOSOME_VALUE = 23;
     private static final int Y_CHROMOSOME_VALUE = 24;
@@ -134,6 +137,7 @@ public class BioconductorServiceImpl implements BioconductorService {
         } catch (MalformedURIException e) {
             throw new ConnectionException("Invalid URL: " + url, e);
         } catch (RemoteException e) {
+            LOGGER.error("Couldn't complete CaDNACopy job", e);
             throw new ConnectionException("Couldn't connect to " + url, e);
         }
     }
