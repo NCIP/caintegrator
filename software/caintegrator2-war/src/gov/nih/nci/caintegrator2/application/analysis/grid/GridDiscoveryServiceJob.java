@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
+import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException;
 import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 
@@ -93,6 +94,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -134,16 +136,28 @@ public class GridDiscoveryServiceJob extends QuartzJobBean {
             if (searchedServices != null) {
                 clearServices();
                 for (EndpointReferenceType epr : searchedServices) {
-                    String url = gridDiscoveryClient.getAddress(epr);
-                    String hostingCenter = gridDiscoveryClient.getHostinCenter(epr);
-                    extractSelectedServices(hostingCenter, url);
+                    extractSelectedServices(epr);
                 }
             }
             setDefaultServices();
-        } catch (Exception e) {
-            LOGGER.error("Error getting directory from GridDiscoveryClient: " + e.getMessage());
+        } catch (MalformedURIException e) {
+            LOGGER.error("Error getting directory from GridDiscoveryClient", e);
+            setDefaultServices();
+        } catch (ResourcePropertyRetrievalException e) {
+            LOGGER.error("Error getting directory from GridDiscoveryClient", e);
             setDefaultServices();
         }
+    }
+
+    private static void extractSelectedServices(EndpointReferenceType epr)  {
+        String url = gridDiscoveryClient.getAddress(epr);
+        String hostingCenter = "Unknown hosting center";
+        try {
+            hostingCenter = gridDiscoveryClient.getHostinCenter(epr);
+        } catch (ResourcePropertyRetrievalException e) {
+            LOGGER.warn("Error getting hosting center for grid service URL" + url + ": " + e.getMessage());
+        }
+        extractSelectedServices(hostingCenter, url);
     }
     
     private static void clearServices() {
