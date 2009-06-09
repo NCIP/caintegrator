@@ -110,7 +110,7 @@ public class AnnotationCriterionHandlerTestIntegration extends AbstractTransacti
     }
 
     @Test
-    public void testGetMatches() {
+    public void testGetMatches() throws InvalidCriterionException {
         StudyHelper studyHelper = new StudyHelper();
         Study study = studyHelper.populateAndRetrieveStudy().getStudy();
         dao.save(study);

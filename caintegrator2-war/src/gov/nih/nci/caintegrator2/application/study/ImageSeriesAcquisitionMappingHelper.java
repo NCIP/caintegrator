@@ -138,7 +138,7 @@ class ImageSeriesAcquisitionMappingHelper {
     private ImageSeriesAcquisition getImageSeriesAcquisition(String identifier) {
         ImageSeriesAcquisition acquisition = getImageSeriesAcquisitionIdentifierMap().get(identifier);
         if (acquisition == null) {
-            LOGGER.warn("No ImageSeriesAcquisition found for identifier " + identifier);
+            LOGGER.warn(new String("No ImageSeriesAcquisition found for identifier " + identifier));
         }
         return acquisition;
     }
@@ -163,7 +163,7 @@ class ImageSeriesAcquisitionMappingHelper {
     private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
         StudySubjectAssignment assignment = studyConfiguration.getSubjectAssignment(subjectIdentifier);
         if (assignment == null) {
-            LOGGER.warn("No StudySubjectAssigment found for identifier " + subjectIdentifier);
+            LOGGER.warn(new String("No StudySubjectAssigment found for identifier " + subjectIdentifier));
         }
         return assignment;
     }

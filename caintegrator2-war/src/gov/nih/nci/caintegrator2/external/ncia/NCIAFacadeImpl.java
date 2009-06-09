@@ -126,7 +126,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
      */
     public List<ImageSeriesAcquisition> getImageSeriesAcquisitions(String collectionNameProject, 
             ServerConnectionProfile profile) throws ConnectionException {
-        LOGGER.info("Retrieving ImageSeriesAcquisitions for " + collectionNameProject);
+        LOGGER.info(new String("Retrieving ImageSeriesAcquisitions for " + collectionNameProject));
         NCIASearchService client = nciaServiceFactory.createNCIASearchService(profile);
         List<ImageSeriesAcquisition> imageSeriesAcquisitions = new ArrayList<ImageSeriesAcquisition>();
         List<Patient> patientCollection = 
@@ -134,7 +134,7 @@ public class NCIAFacadeImpl implements NCIAFacade {
         for (Patient patient : patientCollection) {
             imageSeriesAcquisitions.addAll(createImageSeriesAcquisitions(patient, client));
         }
-        LOGGER.info("Completed retrieving ImageSeriesAcquisitions for " + collectionNameProject);
+        LOGGER.info(new String("Completed retrieving ImageSeriesAcquisitions for " + collectionNameProject));
         return imageSeriesAcquisitions;
     }
 

@@ -274,7 +274,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         addImageSourceCalled = true;
     }
 
-    public void loadImageAnnotation(StudyConfiguration studyConfiguration) {
+    public void loadImageAnnotation(ImageDataSourceConfiguration imageSource) {
         loadImageAnnotationCalled = true;
     }
 
@@ -354,6 +354,11 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
+        
+    }
+
+    public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
+            throws ValidationException {
         
     }
 }

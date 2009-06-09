@@ -86,8 +86,10 @@
 package gov.nih.nci.caintegrator2.application.query;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -105,7 +107,7 @@ public class AnnotationCriterionHandlerTest {
 
     
     @Test
-    public void testGetMatches() {
+    public void testGetMatches() throws InvalidCriterionException {
         ApplicationContext context = new ClassPathXmlApplicationContext("query-test-config.xml", AnnotationCriterionHandlerTest.class); 
         CaIntegrator2DaoStub daoStub = (CaIntegrator2DaoStub) context.getBean("daoStub");
         ArrayDataServiceStub arrayDataServiceStub = (ArrayDataServiceStub) context.getBean("arrayDataServiceStub");
@@ -125,6 +127,11 @@ public class AnnotationCriterionHandlerTest {
         
         daoStub.clear();
         abstractAnnotationCriterion.setEntityType(EntityTypeEnum.IMAGESERIES);
+        try {
+            annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
+            fail("Expecting invalid criterion becuase the study has no imageSeries data.");
+        } catch (InvalidCriterionException e) { }
+        study.getImageSeriesAnnotationCollection().add(new AnnotationDefinition());
         annotationCriterionHandler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertTrue(daoStub.findMatchingImageSeriesCalled);
         

@@ -100,7 +100,21 @@ private static final long serialVersionUID = 1L;
     @Override
     public String execute() {
         try {
-            getStudyManagementService().loadImageAnnotation(getStudyConfiguration());
+            getStudyManagementService().loadImageAnnotation(getImageSourceConfiguration());
+        } catch (ValidationException e) {
+            addActionError(e.getResult().getInvalidMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+    
+    /**
+     * Delete an imaging source file.
+     * @return string
+     */
+    public String delete() {
+        try {
+            getStudyManagementService().delete(getStudyConfiguration(), getImageSourceConfiguration());
         } catch (ValidationException e) {
             addActionError(e.getResult().getInvalidMessage());
             return ERROR;
