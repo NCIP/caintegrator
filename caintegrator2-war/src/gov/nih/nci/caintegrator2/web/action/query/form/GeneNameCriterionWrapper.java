@@ -112,6 +112,7 @@ class GeneNameCriterionWrapper extends AbstractGenomicCriterionWrapper {
                                                                    criterion.getGeneSymbol());
         valueParameter.setLabel("in list (comma separated: EGFR, BRCA1, etc. )");
         valueParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
+        valueParameter.setGeneSymbol(true);
         ValueHandler valueHandler = new ValueHandlerAdapter() {
             /**
              * {@inheritDoc}

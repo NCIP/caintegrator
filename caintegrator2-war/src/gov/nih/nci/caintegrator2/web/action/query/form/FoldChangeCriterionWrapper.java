@@ -185,6 +185,7 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
                                                                         criterion.getGeneSymbol());
         geneSymbolParameter.setLabel(SYMBOL_LABEL);
         geneSymbolParameter.setTitle("Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )");
+        geneSymbolParameter.setGeneSymbol(true);
         ValueHandler geneSymbolHandler = new ValueHandlerAdapter() {
             
             public boolean isValid(String value) {

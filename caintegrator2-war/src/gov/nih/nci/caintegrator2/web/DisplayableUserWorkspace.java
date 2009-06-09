@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -349,6 +350,14 @@ public class DisplayableUserWorkspace {
             return LOGO_SERVLET_URL;
         }
                             
+    }
+    
+    /**
+     * Retrieve the URL for CGAP.
+     * @return - URL for CGAP.
+     */
+    public String getCgapUrl() {
+        return ConfigurationParameter.CGAP_URL.getDefaultValue();
     }
 
     /**

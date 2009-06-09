@@ -17,7 +17,12 @@
                     Gene Symbol:  <br>
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
-                <td class="value_inline"><s:textfield name="kmPlotForm.geneExpressionBasedForm.geneSymbol" theme="simple" />                
+                <td class="value_inline">
+                    <s:textfield id="kmGeneSymbolsId" name="kmPlotForm.geneExpressionBasedForm.geneSymbol" theme="simple" />
+                    &nbsp;
+                    <s:a href=""
+                        cssStyle="background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll 0 0; padding:0px 70px 5px 8px;"
+                        title="Open CGAP" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','kmGeneSymbolsId')"/>
 		        </td>
 	        </tr>
 	        

@@ -138,7 +138,12 @@ public enum ConfigurationParameter {
     /**
      * Default CaDNACopy service URL.
      */
-    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy");
+    CA_DNA_COPY_URL("http://cabig.bioconductor.org:80/wsrf/services/cagrid/CaDNAcopy"),
+    
+    /**
+     * Default CaDNACopy service URL.
+     */
+    CGAP_URL("http://cgap.nci.nih.gov/Genes/RunUniGeneQuery?PAGE=1&SYM=&PATH=&ORG=Hs&TERM=");
 
     private String defaultValue;
 
