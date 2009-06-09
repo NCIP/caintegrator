@@ -95,6 +95,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.genepattern.gistic.common.GisticI;
 import org.genepattern.gistic.common.GisticUtils;
 import org.genepattern.gistic.stubs.types.InvalidParameterException;
@@ -104,6 +105,8 @@ import org.oasis.wsrf.faults.BaseFaultTypeDescription;
  * Runs the GenePattern grid service Gistic.
  */
 public class GisticGridRunner {
+    
+    private static final Logger LOGGER = Logger.getLogger(GisticGridRunner.class);
 
     private final GisticI client;
     
@@ -135,6 +138,7 @@ public class GisticGridRunner {
         } catch (InvalidParameterException e) {
             throw new ParameterException("The given parameters were invalid: " + getDescription(e), e);
         } catch (RemoteException e) {
+            LOGGER.error("Couldn't complete GISTIC job", e);
             throw new ConnectionException("Unable to connect to server.", e);
         }
     }
@@ -170,8 +174,10 @@ public class GisticGridRunner {
 
     private List<GisticResult> retrieveMarkerResultList(org.genepattern.gistic.GisticResult[] gisticResults) {
         List<GisticResult> gisticResultList = new ArrayList<GisticResult>();
-        for (org.genepattern.gistic.GisticResult gisticResult : gisticResults) {
-            gisticResultList.add(createCai2GisticResult(gisticResult));
+        if (gisticResults != null) {
+            for (org.genepattern.gistic.GisticResult gisticResult : gisticResults) {
+                gisticResultList.add(createCai2GisticResult(gisticResult));
+            }
         }
         return gisticResultList;
     }
