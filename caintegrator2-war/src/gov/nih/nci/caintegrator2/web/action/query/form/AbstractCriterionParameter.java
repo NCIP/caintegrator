@@ -114,6 +114,7 @@ public abstract class AbstractCriterionParameter {
     
     private String label = "";
     private String title = "";
+    private boolean geneSymbol = false;
     private List<String> availableOperators = new ArrayList<String>();
     private OperatorHandler operatorHandler;
     private final int parameterIndex;
@@ -242,5 +243,19 @@ public abstract class AbstractCriterionParameter {
      */
     public int getParameterIndex() {
         return parameterIndex;
+    }
+
+    /**
+     * @return the geneSymbol
+     */
+    public boolean isGeneSymbol() {
+        return geneSymbol;
+    }
+
+    /**
+     * @param geneSymbol the geneSymbol to set
+     */
+    public void setGeneSymbol(boolean geneSymbol) {
+        this.geneSymbol = geneSymbol;
     }
 }

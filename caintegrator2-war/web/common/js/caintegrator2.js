@@ -14,3 +14,8 @@ function prepareFormForSubmit(form, actionParameter, selectedTab){
     // add the tab name selection to the form action
     form.action = holdFormAction + "#" + selectedTab;
 }
+
+function gotoCGAP(cgapUrl, geneSymbols) {
+    var url = cgapUrl + document.getElementById(geneSymbols).value;
+    window.open(url, 'cai2_CGAP');
+}
