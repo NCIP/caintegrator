@@ -288,21 +288,21 @@
                         <s:param name="imageSourceConfiguration.id" value="id" />
                     </s:url> 
                     <s:a href="%{editImagingSource}">Edit</s:a> 
-                    <s:if test="%{imageAnnotationConfiguration.loadable}" > |
-                        <s:url id="loadImagingSource" action="loadImagingSource">
-                            <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                            <s:param name="imageSourceConfiguration.id" value="id" />
-                        </s:url> 
-                        <s:a href="%{loadImagingSource}">
-                            <s:if test="%{!imageAnnotationConfiguration.currentlyLoaded}">
-                                Load All Imaging
-                            </s:if>
-                            <s:else>
-                                Reload All Imaging
-                            </s:else>
-                        </s:a> 
-                    </s:if>
+                     | 
                 </s:if>
+                <s:if test="%{imageAnnotationConfiguration.loadable && !imageAnnotationConfiguration.currentlyLoaded}" >
+                    <s:url id="loadImagingSource" action="loadImagingSource">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="imageSourceConfiguration.id" value="id" />
+                    </s:url> 
+                    <s:a href="%{loadImagingSource}">Load Source</s:a>
+                     | 
+                </s:if>
+                <s:url id="deleteImagingSource" action="deleteImagingSource">
+                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                        <s:param name="imageSourceConfiguration.id" value="id" />
+                </s:url> 
+                <s:a href="%{deleteImagingSource}" onclick="return confirm('This imaging source file will be permanently deleted.')"> Delete</s:a> 
             </td>
         </tr>
         </s:iterator>

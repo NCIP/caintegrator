@@ -128,6 +128,12 @@ public class ImageAnnotationConfiguration extends AbstractCaIntegrator2Object {
         this.annotationFile = annotationFile;
     }
 
+    void reLoadAnnontation() throws ValidationException {
+        if (isCurrentlyLoaded()) {
+            getAnnotationFile().loadAnnontation(new ImageAnnotationHandler(this));
+        }
+    }
+    
     void loadAnnontation() throws ValidationException {
         getAnnotationFile().loadAnnontation(new ImageAnnotationHandler(this));
     }

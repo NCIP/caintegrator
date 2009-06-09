@@ -332,7 +332,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
                         getImageAnnotationFile().getName());
             imageSource.setImageAnnotationConfiguration(imageAnnotationConfiguration);
             imageAnnotationConfiguration.getAnnotationFile().setIdentifierColumnIndex(0);
-            service.loadImageAnnotation(studyConfiguration);
+            for (ImageDataSourceConfiguration configuration : studyConfiguration.getImageDataSources()) {
+                service.loadImageAnnotation(configuration);    
+            }
             logEnd();
         }
     }

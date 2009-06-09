@@ -119,12 +119,15 @@ class AnnotationCriterionHandler extends AbstractCriterionHandler {
      */
     @Override
     Set<ResultRow> getMatches(CaIntegrator2Dao dao, ArrayDataService arrayDataService, Query query, 
-            Set<EntityTypeEnum> entityTypes) {
+            Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
         Study study = query.getSubscription().getStudy();
         EntityTypeEnum entityType = abstractAnnotationCriterion.getEntityType();
         Set<ResultRow> resultRows = new HashSet<ResultRow>();
         switch(entityType) {
         case IMAGESERIES:
+            if (!study.hasImageSeriesData()) {
+                throw new InvalidCriterionException("Invalid criterion exist due to no Imaging data in Study.");
+            }
             handleImageSeriesRow(dao, study, entityTypes, resultRows);
             break;
         case SAMPLE:

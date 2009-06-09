@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.query;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -118,6 +119,7 @@ public class CompoundCriterionHandlerTest {
         Query query = new Query();
         StudySubscription subscription = new StudySubscription();
         subscription.setStudy(study);
+        study.getImageSeriesAnnotationCollection().add(new AnnotationDefinition());
         query.setSubscription(subscription);
         study.setDefaultTimepoint(new Timepoint());
         CompoundCriterion compoundCriterion = new CompoundCriterion();
