@@ -333,6 +333,41 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         dao.delete(genomicSource);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+        throws ValidationException {
+        studyConfiguration.getImageDataSources().remove(imageSource);
+        dao.delete(imageSource);
+        
+        reLoadImageAnnotation(studyConfiguration);
+    }
+    
+    private void deleteImageAnnotation(StudyConfiguration studyConfiguration) {
+        Study study = studyConfiguration.getStudy();
+        for (StudySubjectAssignment studySubjectAssignment : study.getAssignmentCollection()) {
+            for (ImageSeriesAcquisition imageSeriesAcquisition : studySubjectAssignment.getImageStudyCollection()) {
+                dao.delete(imageSeriesAcquisition);
+            }
+            studySubjectAssignment.getImageStudyCollection().clear();
+        }
+        studyConfiguration.getStudy().getImageSeriesAnnotationCollection().clear();
+    }
+    
+    private void reLoadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
+        deleteImageAnnotation(studyConfiguration);
+        for (ImageDataSourceConfiguration configuration 
+                : studyConfiguration.getImageDataSources()) {
+            if (configuration.getImageAnnotationConfiguration() != null) {
+                configuration.getImageAnnotationConfiguration().reLoadAnnontation();
+            }
+        }
+        dao.removeObjects(studyConfiguration.removeObsoleteSubjectAssignment());
+        refreshAnnotationDefinitions(studyConfiguration.getStudy());
+        save(studyConfiguration);
+    }
+    
     private void persist(StudyConfiguration studyConfiguration) {
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             saveSubjectAnnotations(assignment.getSubjectAnnotationCollection());
@@ -656,14 +691,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException {
-        for (ImageDataSourceConfiguration configuration 
-                : studyConfiguration.getImageDataSources()) {
-            if (configuration.getImageAnnotationConfiguration() != null) {
-                configuration.getImageAnnotationConfiguration().loadAnnontation();
-            }
-        }
-        save(studyConfiguration);
+    public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
+        imageDataSource.getImageAnnotationConfiguration().loadAnnontation();
+        dao.save(imageDataSource);
     }
 
     /**

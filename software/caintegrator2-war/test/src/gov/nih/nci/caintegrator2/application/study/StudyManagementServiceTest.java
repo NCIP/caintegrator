@@ -168,6 +168,7 @@ public class StudyManagementServiceTest {
         Study study = studyHelper.populateAndRetrieveStudyWithSourceConfigurations();
         
         StudyConfiguration configTest = study.getStudyConfiguration();
+        configTest.setStudy(study);
         UserWorkspace userWorkspace = new UserWorkspace();
         configTest.setUserWorkspace(userWorkspace);
         DelimitedTextClinicalSourceConfiguration clinicalSource = new DelimitedTextClinicalSourceConfiguration();
@@ -177,6 +178,7 @@ public class StudyManagementServiceTest {
         GenomicDataSourceConfiguration genomicSource = configTest.getGenomicDataSources().get(0);
         studyManagementService.delete(configTest, genomicSource);
         assertTrue(daoStub.deleteCalled);
+        deleteImageDataSource(study, configTest);
         daoStub.deleteCalled = false;
         
         studyManagementService.delete(configTest);
@@ -184,6 +186,28 @@ public class StudyManagementServiceTest {
         assertTrue(securityManagerStub.deleteProtectionElementCalled);
         assertTrue(workspaceServiceStub.unSubscribeAllCalled);
         assertTrue(fileManagerStub.deleteStudyDirectoryCalled);
+    }
+    
+    @SuppressWarnings("deprecation")
+    private void deleteImageDataSource(Study study, StudyConfiguration configTest) throws ValidationException {
+        daoStub.deleteCalled = false;
+        ImageDataSourceConfiguration imageSourceToKeep = new ImageDataSourceConfiguration();
+        ImageDataSourceConfiguration imageSourceToDelete = configTest.getImageDataSources().get(0);
+        ImageSeriesAcquisition imageSeriesAcquisition = new ImageSeriesAcquisition();
+        imageSourceToDelete.getImageSeriesAcquisitions().add(imageSeriesAcquisition);
+        StudySubjectAssignment ssa = new StudySubjectAssignment();
+        study.getAssignmentCollection().add(ssa);
+        ssa.getImageStudyCollection().add(imageSeriesAcquisition);
+        ImageAnnotationConfiguration imageAnnotationConfig = new ImageAnnotationConfiguration();
+        imageAnnotationConfig.setAnnotationFile(new AnnotationFile());
+        imageAnnotationConfig.getAnnotationFile().setCurrentlyLoaded("false");
+        imageSourceToKeep.setImageAnnotationConfiguration(imageAnnotationConfig);
+        configTest.getImageDataSources().add(imageSourceToKeep);
+        studyManagementService.delete(configTest, imageSourceToDelete);
+        assertFalse(ssa.getImageStudyCollection().contains(imageSeriesAcquisition));
+        assertFalse(configTest.getImageDataSources().contains(imageSourceToDelete));
+        assertTrue(configTest.getImageDataSources().contains(imageSourceToKeep));
+        assertTrue(daoStub.deleteCalled);
     }
     
     @Test
@@ -510,7 +534,7 @@ public class StudyManagementServiceTest {
         definition.setType(AnnotationTypeEnum.STRING.getValue());
         imageAnnotationConfiguration.getAnnotationFile().getColumns().get(3).getFieldDescriptor().setDefinition(definition);
         imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
-        studyManagementService.loadImageAnnotation(studyConfiguration); 
+        studyManagementService.loadImageAnnotation(imageDataSourceConfiguration); 
         assertEquals(3, series1.getAnnotationCollection().size());
         assertEquals(3, series2.getAnnotationCollection().size());
     }

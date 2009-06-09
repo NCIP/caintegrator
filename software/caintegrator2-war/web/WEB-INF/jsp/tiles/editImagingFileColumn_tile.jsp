@@ -17,7 +17,7 @@
         }
         
         dwr.engine.setActiveReverseAjax(true);
-        DataElementSearchAjaxUpdater.runSearch("subject", studyConfigurationId, fileColumnId,
+        DataElementSearchAjaxUpdater.runSearch("image", studyConfigurationId, fileColumnId,
             keywords, searchResultJsp);
     }
   

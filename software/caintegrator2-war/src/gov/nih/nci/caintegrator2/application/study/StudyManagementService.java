@@ -149,6 +149,15 @@ public interface StudyManagementService {
      * @param genomicSource to delete.
      */
     void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource);
+    
+    /**
+     * Delete an imaging source.
+     * @param studyConfiguration of the imaging source.
+     * @param imageSource to delete.
+     * @throws ValidationException fail to reload.
+     */
+    void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+    throws ValidationException;
 
     /**
      * Adds a clinical annotation file for use. The file given will be copied to permanent storage allowing the
@@ -256,12 +265,12 @@ public interface StudyManagementService {
             File annotationFile, String filename) throws ValidationException, IOException;
 
     /**
-     * Loads image annotations given a study configuration.
+     * Loads image annotations given an image data source configuration.
      * 
-     * @param studyConfiguration study configuration to load
+     * @param imageDataSource to load
      * @throws ValidationException fail to load
      */
-    void loadImageAnnotation(StudyConfiguration studyConfiguration) throws ValidationException;
+    void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException;
 
     /**
      * Returns the refreshed entity attached to the current Hibernate session.

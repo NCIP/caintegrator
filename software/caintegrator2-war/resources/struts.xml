@@ -380,6 +380,12 @@
             <result name="error" type="tiles">editStudy</result>
         </action>
         
+        <action name="deleteImagingSource" class="loadImagingSourceAction" method="delete">
+            <result type="tiles">editStudy</result>
+            <result name="input" type="tiles">editStudy</result>
+            <result name="error" type="tiles">editStudy</result>
+        </action>
+        
         <action name="saveImagingSource" class="saveImagingSourceAction">
             <result type="tiles">editStudy</result>
         </action>
