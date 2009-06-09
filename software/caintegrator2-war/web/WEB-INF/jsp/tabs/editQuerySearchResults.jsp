@@ -64,7 +64,9 @@
                 <s:else>
                     <tr class="even">
                 </s:else>
-                <td><b><s:property value="reporter.geneSymbols" /></b></td>
+                <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Open CGAP">
+                    <b><s:property value="reporter.geneSymbols" /></b>
+                </a></td>
                 <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
                     <td><b><s:property value="reporter.name" /></b></td>
                 </s:if>

@@ -1,5 +1,8 @@
 package gov.nih.nci.caintegrator2.domain.genomic;
 
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,15 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-
 /**
  * 
  */
 public abstract class AbstractReporter extends AbstractCaIntegrator2Object implements Comparable<AbstractReporter> {
 
     private static final long serialVersionUID = 1L;
-
+    
     /**
      * Comparator that sorts reporters by index.
      */
@@ -134,6 +135,15 @@ public abstract class AbstractReporter extends AbstractCaIntegrator2Object imple
             buffer.append(gene.getSymbol());
         }
         return buffer.toString();
+    }
+    
+    /**
+     * Provides a URL to CGAP for the gene symbols.
+     * 
+     * @return symbols of all associated genes.
+     */
+    public String getGeneSymbolsCgapUrl() {
+        return ConfigurationParameter.CGAP_URL.getDefaultValue() + getGeneSymbols();
     }
 
     /**

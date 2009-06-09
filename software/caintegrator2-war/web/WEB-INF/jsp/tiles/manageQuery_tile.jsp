@@ -84,7 +84,6 @@
         document.manageQueryForm.submit();
     }
     
-    
 </script>
 
 

@@ -21,7 +21,13 @@
                     Gene Symbol(s) (comma separated list):<br>
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
-                <td class="value_inline"><s:textfield name="gePlotForm.annotationBasedForm.geneSymbol" theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>                
+                <td class="value_inline">
+                    <s:textfield id="annotationGeneSymbolsId" name="gePlotForm.annotationBasedForm.geneSymbol"
+                        theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
+                    &nbsp;
+                    <s:a href=""
+                        cssStyle="background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll 0 0; padding:0px 70px 5px 8px;"
+                        title="Open CGAP" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','annotationGeneSymbolsId')"/>
                 </td>
                 <td class="value_inline"></td>
                 <td class="value_inline"></td>

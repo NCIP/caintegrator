@@ -67,13 +67,19 @@
                                                 theme="simple" />
                                         </s:if>
                                     </td>
-                                    <td class="criterion">
+                                    <td class="criterion" style="white-space:nowrap">
                                         <s:if test="fieldType == 'text'">
-                                            <s:textfield name="%{formFieldName}.value"
+                                            <s:textfield id="%{formFieldName}.value" name="%{formFieldName}.value"
                                                 size="30"
                                                 cssClass="keyword"
                                                 theme="simple"
                                                 title="%{title}" />
+                                            <s:if test="geneSymbol">
+                                                &nbsp;
+                                                <s:a href=""
+                                                    cssStyle="background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll 0 0; padding:0px 70px 5px 8px;"
+                                                    title="Open CGAP" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','%{formFieldName}.value')"/>
+                                            </s:if>
                                         </s:if>
                                         <s:elseif test="fieldType == 'select'">
                                             <s:select name="%{formFieldName}.value"
