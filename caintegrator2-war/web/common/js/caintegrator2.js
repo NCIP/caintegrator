@@ -1,18 +1,20 @@
-// prepareFormForSubmit
+// checkanddisplay
 //
-// This function modifies the html form prior
-// to submission. 
-function prepareFormForSubmit(form, actionParameter, selectedTab){
-
-    var holdFormAction;
-    
-    holdFormAction = form.action;
-    
-    // set the value for the selectedAction parameter
-    form.selectedAction.value = actionParameter;
-    
-    // add the tab name selection to the form action
-    form.action = holdFormAction + "#" + selectedTab;
+// This function used by the pca submission form to display
+// and hide a section of the form.
+// 
+function checkanddisplay(chk){
+  if (chk.checked == 1)
+  {
+    document.getElementById('principalComponentAnalysisForm_collapsiblediv').style.display = 'block';
+    // alert("It is checked.  Thank You");
+  }
+  else
+  {
+    // alert("You didn't check it!");
+    document.getElementById('principalComponentAnalysisForm_collapsiblediv').style.display = 'none';
+    chk.checked = 0;
+  }
 }
 
 function gotoCGAP(cgapUrl, geneSymbols) {
