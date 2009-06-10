@@ -738,6 +738,10 @@ DIV.reporterTypeSelector
 { margin-top: 10px; }
 DIV.selectorNote
 { margin-left: 20px; margin-top: 5px; font-size:85%; font-style: italic; }
+DIV.inlinehelp_form_element
+{ margin-left: 0px; margin-right: 10px; margin-top: 5px; font-size:85%; font-style: italic; text-align: right; padding-bottom: 14px;}
+DIV.inlinehelp_form_top
+{ font-size:85%; font-style: italic; margin-left:30px; margin-right:30px; margin-top:5px; padding-bottom:14px; text-align:center;}
 
 
 /* Styles for the DisplayTag.  These class definitions should match those that are */
@@ -758,3 +762,13 @@ FORM.editStudyFile TABLE.editStudyFile
 { border-style: none; border:0px solid #ccc; float: left; }
 TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 { border-style: none; border:0px solid #ccc; float: left; }
+
+/** Styles css_xhtml base forms **/
+.wwgrp
+{position: relative; white-space: nowrap; margin-top: 10px; margin-bottom: 10px;}
+#wwgrp_allQueries
+{margin: 2% 0 15% 0}
+.wwlbl
+{position: relative; float: left; clear: left; width: 264px; text-align: right; padding: 0 5px 0 0;}
+.wwctrl
+{position: relative; float: left; clear: right; text-align: center;}
