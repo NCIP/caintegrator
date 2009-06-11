@@ -57,6 +57,7 @@
     <dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.0.0.GA" conf="compile"/>
     <dependency org="org.hibernate" name="hibernate-tools" rev="3.2.2.beta1" conf="compile"/>
     <dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.GA" conf="runtime"/>
+    <dependency org="org.hibernate" name="hibernate-search" rev="3.1.1.GA" conf="compile"/>
     <dependency org="org.bouncycastle" name="bcprov" rev="1.38" conf="compile"/>
     <dependency org="ucar" name="nccore" rev="4.0.34" conf="runtime"/>
     <dependency org="opencsv" name="opencsv" rev="1.8" conf="runtime"/>
