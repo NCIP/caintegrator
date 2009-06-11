@@ -25,8 +25,8 @@
                         theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
                     &nbsp;
                     <s:a href=""
-                        cssStyle="background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll 0 0; padding:0px 70px 5px 8px;"
-                        title="Open CGAP" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','clinicalGeneSymbolsId')"/>
+                        cssClass="cgapLogo"
+                        title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','clinicalGeneSymbolsId')">&nbsp;</s:a>
                 </td>
             </tr>
             <tr>

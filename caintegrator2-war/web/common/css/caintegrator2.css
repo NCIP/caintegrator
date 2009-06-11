@@ -763,6 +763,10 @@ FORM.editStudyFile TABLE.editStudyFile
 TABLE.data TBODY TR TH FORM TABLE.editStudyFile TBODY TR TD
 { border-style: none; border:0px solid #ccc; float: left; }
 
+/** style for link to CGAP site **/
+A.cgapLogo
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll left top; padding:1px 70px 5px 8px;}
+
 /** Styles css_xhtml base forms **/
 .wwgrp
 {position: relative; white-space: nowrap; margin-top: 10px; margin-bottom: 10px;}
