@@ -1210,7 +1210,7 @@
 <tr>
 	<td>type</td>
 	<td>addImagingFile_url</td>
-	<td>http://imaging.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
+	<td>http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1527,7 +1527,7 @@
 <!--// end assign imaging annotation-->
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Load All Imaging</td>
+	<td>link=Load Source</td>
 	<td></td>
 </tr>
 <!--// begin Save and Deploy-->
