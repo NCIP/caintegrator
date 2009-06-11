@@ -77,8 +77,8 @@
                                             <s:if test="geneSymbol">
                                                 &nbsp;
                                                 <s:a href=""
-                                                    cssStyle="background:transparent url('/caintegrator2/images/cgaplogo.gif') no-repeat scroll 0 0; padding:0px 70px 5px 8px;"
-                                                    title="Open CGAP" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','%{formFieldName}.value')"/>
+                                                    cssClass="cgapLogo"
+                                                    title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','%{formFieldName}.value')">&nbsp;</s:a>
                                             </s:if>
                                         </s:if>
                                         <s:elseif test="fieldType == 'select'">
