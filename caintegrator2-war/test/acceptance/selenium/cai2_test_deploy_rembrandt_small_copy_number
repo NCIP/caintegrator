@@ -1248,6 +1248,11 @@
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\short_copy_number_mapping.csv</td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>saveCopyNumberDataConfiguration_copyNumberDataConfiguration_permutationReplicates</td>
+	<td>1000</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>saveCopyNumberDataConfiguration_0</td>
 	<td></td>
