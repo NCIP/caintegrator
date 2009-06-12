@@ -12,7 +12,7 @@
     <!--/Page Help-->
     
     <h1>Edit Imaging Data Source</h1>
-    <h2>Enter a NCIA Data Source and Image Mapping Data From file</h2>
+    <h2>Enter a NBIA Data Source and Image Mapping Data From file</h2>
     <br>
  
     <table>
@@ -25,9 +25,9 @@
     <tr>
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imageSourceConfiguration.id" />
-        <s:textfield label=" NCIA Server Grid URL " name="url" />
-        <s:textfield label=" NCIA Username " name="imageSourceConfiguration.serverProfile.username" />
-        <s:password label=" NCIA Password " name="imageSourceConfiguration.serverProfile.password" />
+        <s:textfield label=" NBIA Server Grid URL " name="url" />
+        <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" />
+        <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" />
         <s:textfield label=" Collection Name " name="collectionName" />
         
     </tr>
