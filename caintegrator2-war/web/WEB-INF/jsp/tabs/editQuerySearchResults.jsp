@@ -16,15 +16,20 @@
         </s:else>        
     </h2>
 
-    <div class="tableheader">
-        <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
-        <s:else>
-	        <label>Results per Page:</label>
-	        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
-	        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
-	            <span class="btn_img">Apply</span>
-	        </s:a>
-        </s:else>
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div style="float: left; position: relative; width: 100px; margin-top: 0.3em;">
+            <s:if test='%{query.resultType.value.equals("genomic")}'></s:if>
+            <s:else>
+    	        <label>Results per Page:</label>
+    	        <s:select name="pageSize" list="{'10', '20', '50', '100'}" />
+    	        <s:a href="#" onclick="submitForm('updateResultsPerPage')">
+    	            <span class="btn_img">Apply</span>
+    	        </s:a>
+            </s:else>
+        </div>
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;"><a href="javascript:openHelpWindowWithNavigation('query_results_help')" class="help">
+   (draft)</a>
+        </div>
     </div>
 
     <div id="queryResultsDiv" >
@@ -64,7 +69,7 @@
                 <s:else>
                     <tr class="even">
                 </s:else>
-                <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Open CGAP">
+                <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
                     <b><s:property value="reporter.geneSymbols" /></b>
                 </a></td>
                 <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
@@ -113,7 +118,7 @@
                                 value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).imageSeries.identifier}" />
                             <a
                                 href='<s:property value="%{queryResult.rows.get(#attr.queryResultRows_rowNum - 1).nciaLink}" escape="false"/>'
-                                target="_">View in NCIA</a>
+                                target="_">View in NBIA</a>
                         </s:if>
                     </display:column>
                 </s:if>
@@ -144,7 +149,7 @@
         <s:if test="queryForm.hasImageDataSources()">
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='forwardToNcia';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
-                <span class="btn_img"><span class="add">Forward To NCIA</span></span>
+                <span class="btn_img"><span class="add">Forward To NBIA</span></span>
             </s:a></li>
             <li><s:a href="#" cssClass="btn" 
                 onclick="document.manageQueryForm.target='_blank';document.manageQueryForm.selectedAction.value='retrieveDicomImages';document.manageQueryForm.submit();document.manageQueryForm.target='_self'">
