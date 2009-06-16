@@ -38,3 +38,19 @@ function trimIt (str) {
     return str.slice(0, i + 1);
 }
 
+function showCaBioInputForm(inputForm) {
+    inputForm.showCaBioSearch.value = 'true';
+    dojo.event.topic.publish('caBioSearchInput');
+}
+
+function captureCaBioCheckBoxes(inputForm, geneSymbolsTextbox) {
+    var cbResults = '';
+    var cb_symbols_length = inputForm.cb_symbols.length;
+    for (var i = 0; i < inputForm.cb_symbols.length; i++ ) {
+        if (inputForm.cb_symbols[i].checked == true) {
+            cbResults += inputForm.cb_symbols[i].value + ',';
+        }
+    }
+    geneSymbolsTextbox.value = cbResults;
+    inputForm.showCaBioSearch.value = false;
+}

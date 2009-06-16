@@ -5,6 +5,10 @@
                 
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
+    <!-- The hidden variables for caBio search form. -->
+    <s:hidden name="formName" value="geneExpressionAnnotationInputForm" />
+    <s:hidden name="showCaBioSearch" value="false" />
+    <s:hidden name="geneSymbolElementId" value="annotationGeneSymbolsId" />
        
     <!-- Gene Expression Inputs -->
     <h2>Annotation Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
@@ -21,16 +25,25 @@
                     Gene Symbol(s) (comma separated list):<br>
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
-                <td class="value_inline">
+                <td class="value_inline" colspan="3">
                     <s:textfield id="annotationGeneSymbolsId" name="gePlotForm.annotationBasedForm.geneSymbol"
                         theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
                     &nbsp;
                     <s:a href=""
                         cssClass="cgapLogo"
                         title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','annotationGeneSymbolsId')">&nbsp;</s:a>
+                    <s:a href=""
+                        cssClass="caBioLogo"
+                        title="Click to search caBio for genes based on keywords." onclick="showCaBioInputForm(geneExpressionAnnotationInputForm)">&nbsp;</s:a>
+                    <br>
+                    <s:url id="caBioGeneSearchInput" action="caBioGeneSearchInput"/>
+                    <s:div id="caBioGeneSearchInputDiv" 
+                            theme="ajax" 
+                            href="%{caBioGeneSearchInput}" 
+                            formId="geneExpressionAnnotationInputForm" 
+                            loadingText="<img src='images/ajax-loader.gif'/>"
+                            listenTopics="caBioSearchInput" refreshOnShow="true"/>
                 </td>
-                <td class="value_inline"></td>
-                <td class="value_inline"></td>
             </tr>
 
             <tr>

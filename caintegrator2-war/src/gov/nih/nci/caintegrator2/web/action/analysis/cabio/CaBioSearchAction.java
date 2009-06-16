@@ -83,123 +83,165 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.cabio;
+package gov.nih.nci.caintegrator2.web.action.analysis.cabio;
 
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
-import gov.nih.nci.system.query.cql.CQLQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayableGene;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioFacade;
+import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
+import org.apache.commons.lang.StringUtils;
 
-@SuppressWarnings("unchecked")
-public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServiceFactory {
+/**
+ * 
+ */
+public class CaBioSearchAction extends AbstractCaIntegrator2Action {
+    
+    private CaBioFacade caBioFacade;
+    private String geneKeywords;
+    private List<CaBioDisplayableGene> caBioGenes;
 
-    public ApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException {
-        
-        return new ApplicationServiceStub();
+    // JSP Form Hidden Variables
+    private String formName;
+    private String geneSymbolElementId;
+    private boolean showCaBioSearch = false;
+    private boolean runSearchSelected = false;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String input() {
+        return SUCCESS;
     }
     
-    static class ApplicationServiceStub implements ApplicationService {
-
-        public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
-            return null;
+    /**
+     * Searches caBio for genes.
+     * @return struts result.
+     */
+    public String searchForGenes() {
+        if (runSearchSelected) {
+            runSearchSelected = false;
+            if (StringUtils.isBlank(geneKeywords)) {
+                addActionError("Must enter keywords to search on.");
+                return INPUT;
+            }
+            try {
+                caBioGenes = caBioFacade.retrieveGeneSymbolsFromKeywords(geneKeywords);
+            } catch (ConnectionException e) {
+                addActionError("Unable to connect to caBio.");
+                return ERROR;
+            }
         }
+        return SUCCESS;
+    }
 
-        public Integer getMaxRecordsCount() throws ApplicationException {
-            return null;
-        }
+    /**
+     * @return the caBioFacade
+     */
+    public CaBioFacade getCaBioFacade() {
+        return caBioFacade;
+    }
 
-        public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @param caBioFacade the caBioFacade to set
+     */
+    public void setCaBioFacade(CaBioFacade caBioFacade) {
+        this.caBioFacade = caBioFacade;
+    }
 
-        public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @return the geneKeywords
+     */
+    public String getGeneKeywords() {
+        return geneKeywords;
+    }
 
-        public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @param geneKeywords the geneKeywords to set
+     */
+    public void setGeneKeywords(String geneKeywords) {
+        this.geneKeywords = geneKeywords;
+    }
 
-        public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
-            List<Object> objects = new ArrayList<Object>();
-            Object[] object1 = new Object[4];
-            Long id1 = 1l;
-            String symbol1 = "EGFR";
-            String fullName1 = "Fullname Test";
-            String taxon1 = "human";
-            object1[0] = symbol1;
-            object1[1] = id1;
-            object1[2] = fullName1;
-            object1[3] = taxon1;
-            objects.add(object1);
-            
-            Object[] object2 = new Object[4];
-            Long id2 = 2l;
-            String symbol2 = "brca1";
-            String fullName2 = "Fullname Test";
-            String taxon2 = "human";
-            object2[0] = symbol2;
-            object2[1] = id2;
-            object2[2] = fullName2;
-            object2[3] = taxon2;
-            objects.add(object2);
-            
-            Object[] object3 = new Object[4];
-            Long id3 = 3l;
-            String symbol3 = "egfr";
-            String fullName3 = "Fullname Test";
-            String taxon3 = "mouse";
-            object3[0] = symbol3;
-            object3[1] = id3;
-            object3[2] = fullName3;
-            object3[3] = taxon3;
-            objects.add(object3);
-            
-            return objects;
-        }
+    /**
+     * @return the caBioGenes
+     */
+    public List<CaBioDisplayableGene> getCaBioGenes() {
+        return caBioGenes;
+    }
 
-        public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @param caBioGenes the caBioGenes to set
+     */
+    public void setCaBioGenes(List<CaBioDisplayableGene> caBioGenes) {
+        this.caBioGenes = caBioGenes;
+    }
 
-        public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
+    /**
+     * @return the runSearchSelected
+     */
+    public boolean isRunSearchSelected() {
+        return runSearchSelected;
+    }
 
-        public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @param runSearchSelected the runSearchSelected to set
+     */
+    public void setRunSearchSelected(boolean runSearchSelected) {
+        this.runSearchSelected = runSearchSelected;
+    }
 
-        public List<Object> query(Object criteria, Integer firstRow, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
+    /**
+     * @return the formName
+     */
+    public String getFormName() {
+        return formName;
+    }
 
+    /**
+     * @param formName the formName to set
+     */
+    public void setFormName(String formName) {
+        this.formName = formName;
+    }
+    
+    /**
+     * @return the showCaBioSearch
+     */
+    public boolean isShowCaBioSearch() {
+        return showCaBioSearch;
+    }
 
-        public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @param showCaBioSearch the showCaBioSearch to set
+     */
+    public void setShowCaBioSearch(boolean showCaBioSearch) {
+        this.showCaBioSearch = showCaBioSearch;
+    }
+    
+    /**
+     * The string used by the "Search" button's onclick function on the caBioGeneSearch jsp. 
+     * @return onclick search string.
+     */
+    public String getSearchOnclick() {
+        return "document." + formName + ".runSearchSelected.value = 'true';"
+            + " dojo.event.topic.publish('searchCaBio')";
+    }
 
-        public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
-            return null;
-        }
+    /**
+     * @return the geneSymbolElementId
+     */
+    public String getGeneSymbolElementId() {
+        return geneSymbolElementId;
+    }
 
-        public List<Object> search(String path, List<?> objList) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> search(String path, Object obj) throws ApplicationException {
-            return null;
-        }
-        
-        
+    /**
+     * @param geneSymbolElementId the geneSymbolElementId to set
+     */
+    public void setGeneSymbolElementId(String geneSymbolElementId) {
+        this.geneSymbolElementId = geneSymbolElementId;
     }
 
 }

@@ -554,6 +554,17 @@
             <ref local="fileManager"/>
         </property>  
     </bean>   
+    
+    <bean id="caBioSearchAction"
+        scope="prototype"
+        class="gov.nih.nci.caintegrator2.web.action.analysis.cabio.CaBioSearchAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="caBioFacade">
+            <ref local="caBioFacade"/>
+        </property>
+    </bean>
 
     <!-- ******************************************************************* -->
     <!-- ** DWR AJAX Beans                                                ** -->
@@ -715,6 +726,16 @@
         
     <bean id="caDsrApplicationServiceFactoryImpl" class="gov.nih.nci.caintegrator2.external.cadsr.CaDSRApplicationServiceFactoryImpl"/>
 
+    <bean id="caBioFacade" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeImpl">
+        <property name="caBioUrl" value="http://cabioapi.nci.nih.gov/cabio42/"/>
+        <property name="caBioApplicationServiceFactory">
+            <ref bean="caBioApplicationServiceFactory"/>
+        </property>
+    </bean>
+    
+    <bean id="caBioApplicationServiceFactory" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryImpl"/>    
+    
+    
     <bean id="caIntegrator2Dao"
         class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl">
         <property name="sessionFactory">

@@ -108,8 +108,11 @@ public class CaBioFacadeImplTest {
 
     @Test
     public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
-        List<String> symbols = caBioFacade.retrieveGeneSymbolsFromKeywords("test");
-        assertEquals(2, symbols.size());
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGeneSymbolsFromKeywords("test");
+        assertEquals("BRCA1", genes.get(0).getSymbol());
+        assertEquals("EGFR", genes.get(1).getSymbol());
+        assertEquals("EGFR", genes.get(2).getSymbol());
+        
     }
 
 }
