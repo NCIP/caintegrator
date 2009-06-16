@@ -116,12 +116,21 @@ public class CaBioFacadeImplTestIntegration {
 
     @Test
     public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
-        List<String> dataElements = caBioFacade.retrieveGeneSymbolsFromKeywords("heart");
-        assertTrue(dataElements.contains("CDH13"));
-        assertTrue(dataElements.contains("LOC128102"));
-        assertTrue(dataElements.contains("HAND2"));
-        assertTrue(dataElements.contains("FABP3"));
-        assertTrue(dataElements.contains("HAND1"));
-        assertTrue(dataElements.contains("LBH"));
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGeneSymbolsFromKeywords("heart");
+        assertTrue(checkSymbolExists("CDH13", genes));
+        assertTrue(checkSymbolExists("FABP3", genes));
+        assertTrue(checkSymbolExists("HAND1", genes));
+        assertTrue(checkSymbolExists("HAND2", genes));
+        assertTrue(checkSymbolExists("LBH", genes));
+        assertTrue(checkSymbolExists("LOC128102", genes));
+    }
+    
+    private boolean checkSymbolExists(String symbol, List<CaBioDisplayableGene> genes) {
+        for (CaBioDisplayableGene gene : genes) {
+            if (symbol.equals(gene.getSymbol())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

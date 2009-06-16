@@ -11,6 +11,15 @@
     default-dependency-check="none" 
     default-autowire="no">
     
+    <bean id="caBioSearchAction" class="gov.nih.nci.caintegrator2.web.action.analysis.cabio.CaBioSearchAction">
+        <property name="workspaceService">
+            <ref local="workspaceService"/>
+        </property>
+        <property name="caBioFacade">
+            <ref local="caBioFacadeStub"/>
+        </property>
+    </bean>
+    
     <bean id="caBioFacade" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeImpl">
         <property name="caBioUrl" value="http://cabioapi.nci.nih.gov/cabio42/"/>
         <property name="caBioApplicationServiceFactory">
@@ -23,6 +32,8 @@
             <ref bean="caBioApplicationServiceFactoryStub"/>
         </property>
     </bean>
+    
+    <bean id="caBioFacadeStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub" />
 
     <!-- Services -->
             
@@ -30,4 +41,5 @@
 
     <bean id="caBioApplicationServiceFactoryStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryStub"/>    
 
+    <bean id="workspaceService" class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub"/>
 </beans>

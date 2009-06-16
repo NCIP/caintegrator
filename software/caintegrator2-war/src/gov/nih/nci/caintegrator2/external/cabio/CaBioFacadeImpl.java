@@ -92,12 +92,11 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
 
 /**
  * Facade to retrieve data from CaBio.
@@ -110,36 +109,45 @@ public class CaBioFacadeImpl implements CaBioFacade {
     /**
      * {@inheritDoc}
      */
-    public List<String> retrieveGeneSymbolsFromKeywords(String keywords) throws ConnectionException {
+    public List<CaBioDisplayableGene> retrieveGeneSymbolsFromKeywords(String keywords) throws ConnectionException {
+        // When using an ApplicationService must store our context and re-set it so that the user still has old
+        // authentication.
+        SecurityContext originalContext = SecurityContextHolder.getContext();
         ApplicationService caBioApplicationService = 
             caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
-        List<String> symbols = new ArrayList<String>();
-        symbols.addAll(queryForGeneSymbols(keywords, caBioApplicationService));
-        Collections.sort(symbols);
-        return symbols;
-    }
-
-    private Set<String> queryForGeneSymbols(String keywords, ApplicationService caBioApplicationService) {
-        String hqlString = "SELECT DISTINCT g.symbol " 
+        String hqlString = "SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName " 
             + " FROM gov.nih.nci.cabio.domain.Gene g"
-            + " WHERE g.taxon.abbreviation = 'Hs' and lower(g.fullName) LIKE '%" 
-            + keywords.toLowerCase(Locale.getDefault()) + "%'";
-        HQLCriteria hqlCriteria = new HQLCriteria(hqlString);
+            + " WHERE g.symbol is not null and lower(g.fullName) LIKE ?";
+        List<String> params = new ArrayList<String>();
+        params.add("%" + keywords.toLowerCase(Locale.getDefault()) + "%");
+        HQLCriteria hqlCriteria = new HQLCriteria(hqlString, params);
         List<Object> geneResults;
         try {
             geneResults = caBioApplicationService.query(hqlCriteria);
         } catch (ApplicationException e) {
             throw new IllegalStateException("HQL Query Failed", e);
+        } finally {
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
         }
-        Set<String> uniqueSymbols = new HashSet<String>();
-        for (Object geneObj : geneResults) {
-            String symbol = (String) geneObj;
-            if (StringUtils.isNotBlank(symbol)) {
-                uniqueSymbols.add(symbol.toUpperCase(Locale.getDefault()));
-            }
-        }
-        return uniqueSymbols;
+        return createCaBioDisplayableGenes(geneResults);
     }
+
+    private List<CaBioDisplayableGene> createCaBioDisplayableGenes(List<Object> geneResults) {
+        List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
+        for (Object result : geneResults) {
+            Object[] geneObject = (Object[]) result;
+            CaBioDisplayableGene gene = new CaBioDisplayableGene();
+            gene.setSymbol(((String) geneObject[0]).toUpperCase(Locale.getDefault()));
+            gene.setId(String.valueOf((Long) geneObject[1]));
+            gene.setFullName((String) geneObject[2]);
+            gene.setTaxonCommonName((String) geneObject[3]);
+            genes.add(gene);
+        }
+        Collections.sort(genes);
+        return genes;
+    }
+
 
     /**
      * @return the caBioApplicationServiceFactory

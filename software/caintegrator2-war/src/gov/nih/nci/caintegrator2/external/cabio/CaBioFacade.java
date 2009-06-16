@@ -95,11 +95,11 @@ import java.util.List;
 public interface CaBioFacade {
     
     /**
-     * Retrieves gene symbols from caBio given keywords.
+     * Retrieves genes from caBio given keywords.
      * @param keywords to search genes for.
-     * @return list of genes symbols.
+     * @return list of displayable genes.
      * @throws ConnectionException if unable to connect to caBio.
      */
-    List<String> retrieveGeneSymbolsFromKeywords(String keywords) throws ConnectionException;
+    List<CaBioDisplayableGene> retrieveGeneSymbolsFromKeywords(String keywords) throws ConnectionException;
 
 }
