@@ -83,123 +83,71 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.external.cabio;
+package gov.nih.nci.caintegrator2.web.action.analysis.cabio;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
-import gov.nih.nci.system.query.cql.CQLQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-import org.hibernate.criterion.DetachedCriteria;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SuppressWarnings("unchecked")
-public class CaBioApplicationServiceFactoryStub implements CaBioApplicationServiceFactory {
+import com.opensymphony.xwork2.ActionContext;
 
-    public ApplicationService retrieveCaBioApplicationService(String caBioUrl) throws ConnectionException {
-        
-        return new ApplicationServiceStub();
-    }
+
+public class CaBioSearchActionTest {
     
-    static class ApplicationServiceStub implements ApplicationService {
+    private CaBioSearchAction action;
+    private CaBioFacadeStub caBioFacade;
 
-        public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
-            return null;
-        }
+    @Before
+    public void setUp() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("cabio-test-config.xml", CaBioFacadeStub.class);
 
-        public Integer getMaxRecordsCount() throws ApplicationException {
-            return null;
-        }
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
 
-        public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
-            List<Object> objects = new ArrayList<Object>();
-            Object[] object1 = new Object[4];
-            Long id1 = 1l;
-            String symbol1 = "EGFR";
-            String fullName1 = "Fullname Test";
-            String taxon1 = "human";
-            object1[0] = symbol1;
-            object1[1] = id1;
-            object1[2] = fullName1;
-            object1[3] = taxon1;
-            objects.add(object1);
-            
-            Object[] object2 = new Object[4];
-            Long id2 = 2l;
-            String symbol2 = "brca1";
-            String fullName2 = "Fullname Test";
-            String taxon2 = "human";
-            object2[0] = symbol2;
-            object2[1] = id2;
-            object2[2] = fullName2;
-            object2[3] = taxon2;
-            objects.add(object2);
-            
-            Object[] object3 = new Object[4];
-            Long id3 = 3l;
-            String symbol3 = "egfr";
-            String fullName3 = "Fullname Test";
-            String taxon3 = "mouse";
-            object3[0] = symbol3;
-            object3[1] = id3;
-            object3[2] = fullName3;
-            object3[3] = taxon3;
-            objects.add(object3);
-            
-            return objects;
-        }
-
-        public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> query(Object criteria, Integer firstRow, String targetClassName)
-                throws ApplicationException {
-            return null;
-        }
+        action = (CaBioSearchAction) context.getBean("caBioSearchAction");
+        caBioFacade = (CaBioFacadeStub) context.getBean("caBioFacadeStub");
+                
+    }
 
 
-        public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
-            return null;
-        }
+    @Test
+    public void testInput() {
+        assertEquals(CaBioSearchAction.SUCCESS, action.input());
+    }
 
-        public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
-            return null;
-        }
 
-        public List<Object> search(String path, List<?> objList) throws ApplicationException {
-            return null;
-        }
-
-        public List<Object> search(String path, Object obj) throws ApplicationException {
-            return null;
-        }
+    @Test
+    public void testSearchForGenes() {
+        // If it's not "runSearchSelected" set to true it returns success.
+        assertEquals(CaBioSearchAction.SUCCESS, action.searchForGenes());
         
+        // If no keywords.
+        assertFalse(caBioFacade.retrieveGeneSymbolsFromKeywordsCalled);
+        action.setRunSearchSelected(true);
+        assertEquals(CaBioSearchAction.INPUT, action.searchForGenes());
         
+        // If keywords exist.
+        action.setRunSearchSelected(true);
+        action.setGeneKeywords("keywords");
+        assertEquals(CaBioSearchAction.SUCCESS, action.searchForGenes());
+        assertTrue(caBioFacade.retrieveGeneSymbolsFromKeywordsCalled);
+        assertFalse(action.isRunSearchSelected());
+        
+        // Now do a connection exception.
+        action.setRunSearchSelected(true);
+        action.setGeneKeywords("keywords");
+        caBioFacade.isConnectionException = true;
+        assertEquals(CaBioSearchAction.ERROR, action.searchForGenes());
     }
 
 }
