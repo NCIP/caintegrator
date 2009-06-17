@@ -4,21 +4,25 @@
 
 <s:hidden name="runSearchSelected" value="false" />
 
-<s:if test="showCaBioSearch" >
+
 
 <!-- caBio Inputs -->
+<s:div id="TB_ajaxWindowTitle"/>
+<s:div id="TB_closeAjaxWindow">
+        <s:a href="" id="TB_closeWindowButton" title="Click to close." onclick="hideCaBioInputForm(geneExpressionAnnotationInputForm)">Close</s:a>
+</s:div>
 <h2>caBio Gene Search</h2>
+
     <tr>
-        <td>
-            <s:textfield label="Keywords" name="geneKeywords" id="geneKeywords"  />
-        </td>
-        <td> 
-        
+
+        <s:textfield label="Keywords" name="geneKeywords" id="geneKeywords" />
+
+        <td style="border:0px"> 
         <button type="button" 
             onclick="<s:property value='searchOnclick' />"> Search 
             </button>
         </td>
-        <td>
+        <td style="border:0px">
             <em>Search caBio for genes based on keyword string.</em>
         </td>
     </tr>
@@ -33,5 +37,5 @@
         formId="%{formName}" 
         loadingText="<img src='images/ajax-loader.gif'/>"
         listenTopics="searchCaBio" />
-</s:if>
+
         
