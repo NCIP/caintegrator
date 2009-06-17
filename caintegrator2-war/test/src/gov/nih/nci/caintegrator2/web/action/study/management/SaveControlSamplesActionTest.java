@@ -85,33 +85,42 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
+import java.util.HashMap;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SaveControlSamplesActionTest {
     
-    private SaveControlSamplesAction action = new SaveControlSamplesAction();
+    private SaveControlSamplesAction action;
     StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
+    Study study = new Study();
     
     @Before
     public void setUp() {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
-        action.setStudyManagementService(studyManagementServiceStub);
-        action.setWorkspaceService(new WorkspaceServiceStub());
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", SaveSampleMappingActionTest.class); 
+        action = (SaveControlSamplesAction) context.getBean("saveControlSamplesAction");
+        studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
+        studyManagementServiceStub.clear();
     }
 
     @Test
@@ -120,14 +129,28 @@ public class SaveControlSamplesActionTest {
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        action.setStudyConfiguration(studyConfiguration);
+        action.setControlSampleSetName("ControlSampleSet1");
+        action.validate();
         assertFalse(action.hasFieldErrors());
+        SampleSet controlSampleSet = new SampleSet();
+        controlSampleSet.setName("ControlSampleSet1");
+        studyConfiguration.getStudy().getControlSampleSetCollection().add(controlSampleSet);
+        study.getControlSampleSetCollection();
+        action.validate();
+        assertTrue(action.hasFieldErrors());
     }
 
     @Test
     public void testExecute() {
         action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        action.setControlSampleSetName("ControlSampleSet1");
         assertEquals(ActionSupport.SUCCESS, action.execute());
-        assertTrue(studyManagementServiceStub.addControlSamplesCalled);
+        assertTrue(studyManagementServiceStub.addControlSampleSetCalled);
     }
 
 }

@@ -116,7 +116,10 @@
                 5.)
                 </td>
                 <td class="value_inline" colspan="4">
-                <s:checkbox name="gePlotForm.annotationBasedForm.addControlSamplesGroup" disabled="%{!hasControlSamples()}" theme="simple"/>Add additional group containing all control samples for this study.
+                <s:checkbox name="gePlotForm.annotationBasedForm.addControlSamplesGroup" disabled="%{!hasControlSamples()}"
+                    theme="simple"/>Add additional group containing all control samples for this study.
+                    <s:select name="gePlotForm.annotationBasedForm.controlSampleSetName" list="controlSampleSets"
+                        disabled="%{!hasControlSamples()}"/>
                 </td>
             </tr>
             

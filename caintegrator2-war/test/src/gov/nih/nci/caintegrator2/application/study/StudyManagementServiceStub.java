@@ -92,6 +92,8 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
 import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.security.exceptions.CSException;
@@ -123,7 +125,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean loadImageAnnotationCalled;
     public boolean mapImageSeriesCalled;
     public boolean createDefinitionCalled;
-    public boolean addControlSamplesCalled;
+    public boolean addControlSampleSetCalled;
     public boolean isDuplicateStudyNameCalled;
     public boolean addStudyLogoCalled;
     public boolean retrieveStudyLogoCalled;
@@ -193,7 +195,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadImageAnnotationCalled = false;
         mapImageSeriesCalled = false;
         createDefinitionCalled = false;
-        addControlSamplesCalled = false;
+        addControlSampleSetCalled = false;
         isDuplicateStudyNameCalled = false;
         addStudyLogoCalled = false;
         retrieveStudyLogoCalled = false;
@@ -291,9 +293,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
+    public void addControlSampleSet(StudyConfiguration studyConfiguration,
+            String controlSampleSetName, File controlSampleFile)
             throws ValidationException {
-        addControlSamplesCalled = true;
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName(controlSampleSetName);
+        sampleSet.getSamples().add(new Sample());
+        studyConfiguration.getStudy().getControlSampleSetCollection().add(sampleSet);
+        addControlSampleSetCalled = true;
     }
 
     /**

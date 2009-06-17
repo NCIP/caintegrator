@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,9 +101,11 @@ import org.apache.commons.lang.StringUtils;
 public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     
     private AbstractGenomicCriterionWrapper genomicCriterionWrapper;
+    private final Study study;
 
-    GeneExpressionCriterionRow(CriteriaGroup criteriaGroup) {
+    GeneExpressionCriterionRow(Study study, CriteriaGroup criteriaGroup) {
         super(criteriaGroup);
+        this.study = study;
     }
 
     /**
@@ -152,7 +155,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
         } else if (fieldName.equals(GeneNameCriterionWrapper.FIELD_NAME)) {
             setGenomicCriterionWrapper(new GeneNameCriterionWrapper(this));
         } else if (fieldName.equals(FoldChangeCriterionWrapper.FOLD_CHANGE)) {
-            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(this));
+            setGenomicCriterionWrapper(new FoldChangeCriterionWrapper(study, this));
         } else {
             throw new IllegalArgumentException("Unsupported genomic field name " + fieldName);
         }
@@ -185,7 +188,7 @@ public class GeneExpressionCriterionRow extends AbstractCriterionRow {
     private AbstractGenomicCriterionWrapper createCriterionWrapper(AbstractCriterion criterion) {
         if (criterion instanceof FoldChangeCriterion) {
             FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterion;
-            return new FoldChangeCriterionWrapper(foldChangeCriterion, this);
+            return new FoldChangeCriterionWrapper(study, foldChangeCriterion, this);
         } else if (criterion instanceof GeneNameCriterion) {
             GeneNameCriterion geneNameCriterion = (GeneNameCriterion) criterion;
             return new GeneNameCriterionWrapper(geneNameCriterion, this);

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,18 +118,18 @@ public class CriteriaGroup {
         }
         this.form = form;
         this.compoundCriterion = form.getQuery().getCompoundCriterion();
-        initializeCriteria(compoundCriterion.getCriterionCollection());
+        initializeCriteria(form.getQuery().getSubscription().getStudy(), compoundCriterion.getCriterionCollection());
     }
 
-    private void initializeCriteria(Collection<AbstractCriterion> criterionCollection) {
+    private void initializeCriteria(Study study, Collection<AbstractCriterion> criterionCollection) {
         Iterator<AbstractCriterion> iterator = criterionCollection.iterator();
         while (iterator.hasNext()) {            
-            addCriterionRow(iterator.next());
+            addCriterionRow(study, iterator.next());
         }
     }
 
-    private AbstractCriterionRow addCriterionRow(AbstractCriterion criterion) {
-        AbstractCriterionRow row = createRow(getCriterionRowType(criterion));
+    private AbstractCriterionRow addCriterionRow(Study study, AbstractCriterion criterion) {
+        AbstractCriterionRow row = createRow(study, getCriterionRowType(criterion));
         rows.add(row);
         row.setCriterion(criterion);
         return row;
@@ -183,12 +184,13 @@ public class CriteriaGroup {
 
     /**
      * Adds a new criterion of the currently selected type.
+     * @param study to populate the controlSampleSet options
      */
-    public void addCriterion() {
-        rows.add(createRow(criterionType));
+    public void addCriterion(Study study) {
+        rows.add(createRow(study, criterionType));
     }
 
-    private AbstractCriterionRow createRow(CriterionRowTypeEnum rowType) {
+    private AbstractCriterionRow createRow(Study study, CriterionRowTypeEnum rowType) {
         AbstractCriterionRow criterionRow;
         if (rowType == null) {
             throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);
@@ -201,7 +203,7 @@ public class CriteriaGroup {
             criterionRow = new ImageSeriesCriterionRow(this);
             break;
         case GENE_EXPRESSION:
-            criterionRow = new GeneExpressionCriterionRow(this);
+            criterionRow = new GeneExpressionCriterionRow(study, this);
             break;
         default:
             throw new IllegalStateException("Invalid CriterionRowTypeEnum " + rowType);

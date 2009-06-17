@@ -112,6 +112,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
@@ -336,6 +337,18 @@ public final class Cai2Util {
             for (SampleAcquisition sampleAcquisition : assignment.getSampleAcquisitionCollection()) {
                 loadSampleCollections(sampleAcquisition.getSample());
             }
+        }
+        loadSampleSets(studyConfiguration.getStudy().getControlSampleSetCollection());
+    }
+    
+    /**
+     * Loads the sample set collection, as well as the subcollections.
+     * @param sampleSets to load.
+     */
+    
+    public static void loadSampleSets(Collection<SampleSet> sampleSets) {
+        for (SampleSet sampleSet : sampleSets) {
+            loadSamples(sampleSet.getSamples());
         }
     }
     

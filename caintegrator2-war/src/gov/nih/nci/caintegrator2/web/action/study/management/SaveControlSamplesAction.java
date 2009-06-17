@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * Action called to create or edit a <code>GenomicDataSourceConfiguration</code>.
@@ -97,7 +99,8 @@ import java.io.IOException;
 public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
 
     private static final long serialVersionUID = 1L;
-    
+
+    private String controlSampleSetName;
     private File controlSampleFile;
     private String controlSampleFileContentType;
     private String controlSampleFileFileName;
@@ -117,7 +120,8 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
     @Override
     public String execute() {
         try {
-            getStudyManagementService().addControlSamples(getStudyConfiguration(), getControlSampleFile());
+            getStudyManagementService().addControlSampleSet(getStudyConfiguration(),
+                    getControlSampleSetName(), getControlSampleFile());
             persistFileName();
             return SUCCESS;
         } catch (ValidationException e) {
@@ -132,6 +136,8 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
 
     private void persistFileName() {
         getGenomicSource().addControlSampleMappingFileName(getControlSampleFileFileName());
+        getGenomicSource().addControlSampleSetName(getControlSampleSetName(),
+                getStudyConfiguration().getStudy().getControlSampleSet(getControlSampleSetName()).getSamples().size());
         getStudyManagementService().save(getStudyConfiguration());
     }
     
@@ -140,8 +146,13 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
      */
     @Override
     public void validate() {
+        if (StringUtils.isEmpty(getControlSampleSetName())) {
+            addFieldError("controlSampleSetName", "Name is required");
+        } else if (getStudyConfiguration().getStudy().getControlSampleSet(getControlSampleSetName()) != null) {
+            addFieldError("controlSampleSetName", "Duplicate name, please enter a new name.");
+        }
         if (getControlSampleFile() == null) {
-            setFieldError("File is required");
+                setFieldError("File is required");
         } else if (getControlSampleFile().length() == 0) {
             setFieldError("File is empty");
         }
@@ -192,6 +203,20 @@ public class SaveControlSamplesAction extends AbstractGenomicSourceAction {
      */
     public void setControlSampleFileFileName(String controlSampleFileFileName) {
         this.controlSampleFileFileName = controlSampleFileFileName;
+    }
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 
 }

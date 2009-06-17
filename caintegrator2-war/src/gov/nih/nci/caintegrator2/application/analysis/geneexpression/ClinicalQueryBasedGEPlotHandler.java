@@ -152,7 +152,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
             }
         }
         if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().
-                            getDefaultControlSampleSet().getSamples().isEmpty()) {
+                getControlSampleSet(parameters.getControlSampleSetName()).getSamples().isEmpty()) {
             genomicResults.add(0, addControlSamplesGroup(subscription));
         }
     }
@@ -208,7 +208,8 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
         geneNameCompoundCriterion.getCriterionCollection().add(geneNameCriterion);
         geneNameCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         if (SampleGroupType.CONTROL_GROUP.equals(groupType)) {
-            geneNameCompoundCriterion.getCriterionCollection().add(retrieveControlGroupCriterion(subscription));
+            geneNameCompoundCriterion.getCriterionCollection().add(
+                    retrieveControlGroupCriterion(subscription, parameters.getControlSampleSetName()));
         } else if (parameters.isExclusiveGroups() || SampleGroupType.OTHERS_GROUP.equals(groupType)) {
             geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion(usedSubjects));
         }

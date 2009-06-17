@@ -102,7 +102,10 @@
                     6.)
                 </td>
                 <td colspan="2" class="value_inline">
-                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addControlSamplesGroup" disabled="%{!hasControlSamples()}" />Add additional group containing all control samples for this study.
+                    <s:checkbox name="gePlotForm.clinicalQueryBasedForm.addControlSamplesGroup"
+                        disabled="%{!hasControlSamples()}" />Add additional group containing all control samples for this study.
+                    <s:select name="gePlotForm.clinicalQueryBasedForm.controlSampleSetName" list="controlSampleSets"
+                        disabled="%{!hasControlSamples()}"/>
                 </td>
             </tr>
         </table>

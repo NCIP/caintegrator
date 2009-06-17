@@ -22,6 +22,7 @@
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
         <property name="sampleMappingCommaSeparatedFileNames" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
         <property name="controlSampleMappingCommaSeparatedFileNames" type="string" column="CONTROL_SAMPLE_MAPPING_FILE_NAME"/>
+        <property name="controlSampleSetCommaSeparatedNames" type="string" column="CONTROL_SAMPLE_SET_NAME"/>
                 
         <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />

@@ -94,6 +94,7 @@ import java.util.List;
 public abstract class AbstractGEPlotParameters {
     private String geneSymbol;
     private boolean addControlSamplesGroup;
+    private String controlSampleSetName;
     private final List<String> errorMessages = new ArrayList<String>();
     
     /**
@@ -141,6 +142,20 @@ public abstract class AbstractGEPlotParameters {
      */
     public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
         this.addControlSamplesGroup = addControlSamplesGroup;
+    }
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 
 }
