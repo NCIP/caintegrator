@@ -13,6 +13,7 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
     private Float foldsDown;
     private RegulationTypeEnum regulationType;
     private String geneSymbol;
+    private String controlSampleSetName;
     private SampleSet compareToSampleSet = new SampleSet();
     
 
@@ -42,6 +43,20 @@ public class FoldChangeCriterion extends AbstractGenomicCriterion implements Clo
      */
     public void setRegulationType(RegulationTypeEnum regulationType) {
         this.regulationType = regulationType;
+    }
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 
     /**

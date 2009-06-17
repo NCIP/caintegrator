@@ -114,6 +114,7 @@ import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.WildCardTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.ArrayList;
@@ -218,7 +219,7 @@ public class QueryFormTest {
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
         setFieldName(criterionRow, "numericClinicalAnnotation");
         TextFieldParameter parameter = (TextFieldParameter) criterionRow.getParameters().get(0);
@@ -244,17 +245,20 @@ public class QueryFormTest {
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
         assertEquals(CriterionRowTypeEnum.CLINICAL.getValue(), group.getCriterionTypeName());
         assertEquals(0, group.getRows().size());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         assertEquals(1, group.getRows().size());
     }
     
     @Test
     public void testCriterionRow() {
-        subscription.getStudy().getDefaultControlSampleSet().getSamples().add(new Sample());
+        SampleSet sampleSet1 = new SampleSet();
+        sampleSet1.setName("ControlSampleSet1");
+        sampleSet1.getSamples().add(new Sample());
+        subscription.getStudy().getControlSampleSetCollection().add(sampleSet1);
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         ClinicalCriterionRow criterionRow = (ClinicalCriterionRow) group.getRows().get(0);
         checkNewCriterionRow(group, criterionRow);
 
@@ -274,11 +278,11 @@ public class QueryFormTest {
     
     @Test
     public void testCriterionRowNoControlSamples() {
-        subscription.getStudy().getDefaultControlSampleSet().getSamples().clear();
+        subscription.getStudy().getControlSampleSetCollection().clear();
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(0);
         assertEquals(1, criterionRow.getAvailableFieldNames().size());
         assertTrue(criterionRow.getAvailableFieldNames().contains("Gene Name"));
@@ -370,7 +374,7 @@ public class QueryFormTest {
     @SuppressWarnings("unchecked")
     private void checkAddGeneExpressionCriterion(CriteriaGroup group) {
         group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         assertEquals(3, group.getRows().size());
         assertEquals(2, group.getCompoundCriterion().getCriterionCollection().size());
         GeneExpressionCriterionRow criterionRow = (GeneExpressionCriterionRow) group.getRows().get(2);
@@ -390,22 +394,25 @@ public class QueryFormTest {
         setFieldName(criterionRow, "Fold Change");
         assertEquals(0, criterionRow.getParameters().get(0).getAvailableOperators().size());
         assertTrue(criterionRow.getCriterion() instanceof FoldChangeCriterion);
-        assertEquals(3, criterionRow.getParameters().size());
+        assertEquals(4, criterionRow.getParameters().size());
         TextFieldParameter geneSymbolParameter = ((TextFieldParameter) criterionRow.getParameters().get(0));
-        SelectListParameter<RegulationTypeEnum> regulationParameter = ((SelectListParameter<RegulationTypeEnum>) criterionRow.getParameters().get(1));
+        SelectListParameter<String> controlSampleSetNameParameter = ((SelectListParameter<String>) criterionRow.getParameters().get(1));
+        SelectListParameter<RegulationTypeEnum> regulationParameter = ((SelectListParameter<RegulationTypeEnum>) criterionRow.getParameters().get(2));
+        TextFieldParameter foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(3));
         geneSymbolParameter.setValue("EGFR");
+        controlSampleSetNameParameter.setValue("ControlSampleSet1");
         regulationParameter.setValue(RegulationTypeEnum.UP.getValue());
-        TextFieldParameter foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
         foldsUpParameter.setValue("2.0");
         FoldChangeCriterion foldChangeCriterion = (FoldChangeCriterion) criterionRow.getCriterion();
         assertEquals("EGFR", foldChangeCriterion.getGeneSymbol());
+        assertEquals("ControlSampleSet1", foldChangeCriterion.getControlSampleSetName());
         assertEquals(RegulationTypeEnum.UP, foldChangeCriterion.getRegulationType());
         assertEquals(2.0, foldChangeCriterion.getFoldsUp(), 0.0);
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         
         regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
-        TextFieldParameter foldsDownParameter = ((TextFieldParameter) criterionRow.getParameters().get(2));
-        foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(3));
+        TextFieldParameter foldsDownParameter = ((TextFieldParameter) criterionRow.getParameters().get(3));
+        foldsUpParameter = ((TextFieldParameter) criterionRow.getParameters().get(4));
         ValidationAwareSupport validationAware = new ValidationAwareSupport();
         queryForm.validate(validationAware);
         assertFalse(validationAware.hasFieldErrors());
@@ -421,17 +428,17 @@ public class QueryFormTest {
         regulationParameter.setValue(RegulationTypeEnum.UP.getValue());
         assertEquals(3, group.getCompoundCriterion().getCriterionCollection().size());
         regulationParameter.setValue(RegulationTypeEnum.UP_OR_DOWN.getValue());
-        assertEquals(4, criterionRow.getParameters().size());
+        assertEquals(5, criterionRow.getParameters().size());
         regulationParameter.setValue(RegulationTypeEnum.DOWN.getValue());
-        assertEquals(3, criterionRow.getParameters().size());
-        regulationParameter.setValue(RegulationTypeEnum.UNCHANGED.getValue());
         assertEquals(4, criterionRow.getParameters().size());
+        regulationParameter.setValue(RegulationTypeEnum.UNCHANGED.getValue());
+        assertEquals(5, criterionRow.getParameters().size());
     }
 
     
     private void checkAddImageSeriesCriterion(CriteriaGroup group) {
         group.setCriterionTypeName(CriterionRowTypeEnum.IMAGE_SERIES.getValue());
-        group.addCriterion();
+        group.addCriterion(subscription.getStudy());
         ImageSeriesCriterionRow imageSeriesCriterionRow = (ImageSeriesCriterionRow) group.getRows().get(1);
         assertEquals(2, imageSeriesCriterionRow.getAvailableFieldNames().size());
         assertTrue(imageSeriesCriterionRow.getAvailableFieldNames().contains("testImageSeriesAnnotation"));
@@ -547,6 +554,8 @@ public class QueryFormTest {
         compoundCriterion.getCriterionCollection().add(stringCriterion);
 
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
+        foldChangeCriterion.setGeneSymbol("EGFR");
+        foldChangeCriterion.setControlSampleSetName("controlSampleSet1");
         foldChangeCriterion.setFoldsDown(3.0f);
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.DOWN);
         foldChangeCriterion.setId(2L);
@@ -594,15 +603,19 @@ public class QueryFormTest {
         GeneExpressionCriterionRow foldChangeRow = (GeneExpressionCriterionRow) group.getRows().get(1);
         assertEquals(foldChangeCriterion, foldChangeRow.getCriterion());
         assertEquals(FoldChangeCriterionWrapper.FOLD_CHANGE, foldChangeRow.getFieldName());
-        SelectListParameter<String> regulationParameter = (SelectListParameter<String>) foldChangeRow.getParameters().get(1);
-        TextFieldParameter foldsParameter = (TextFieldParameter) foldChangeRow.getParameters().get(2);
+        TextFieldParameter geneNameParameter = (TextFieldParameter) foldChangeRow.getParameters().get(0);
+        assertEquals("EGFR", geneNameParameter.getValue());
+        SelectListParameter<String> controlSampleSetNameParameter = (SelectListParameter<String>) foldChangeRow.getParameters().get(1);
+        SelectListParameter<String> regulationParameter = (SelectListParameter<String>) foldChangeRow.getParameters().get(2);
+        TextFieldParameter foldsParameter = (TextFieldParameter) foldChangeRow.getParameters().get(3);
+        assertEquals(null, controlSampleSetNameParameter.getValue());
         assertEquals("Down", regulationParameter.getValue());
         assertEquals("3.0", foldsParameter.getValue());
         
         GeneExpressionCriterionRow geneNameRow = (GeneExpressionCriterionRow) group.getRows().get(2);
         assertEquals(geneNameCriterion, geneNameRow.getCriterion());
         assertEquals(GeneNameCriterionWrapper.FIELD_NAME, geneNameRow.getFieldName());
-        TextFieldParameter geneNameParameter = (TextFieldParameter) geneNameRow.getParameters().get(0);
+        geneNameParameter = (TextFieldParameter) geneNameRow.getParameters().get(0);
         assertEquals("EGFR", geneNameParameter.getValue());
         
         assertEquals(3, queryForm.getResultConfiguration().getSelectedColumns().size());
@@ -645,7 +658,7 @@ public class QueryFormTest {
         queryForm.getQuery().setResultType(ResultTypeEnum.GENOMIC);
         assertTrue(queryForm.isPotentiallyLargeQuery());
         queryForm.getCriteriaGroup().setCriterionTypeName("Gene Expression");
-        queryForm.getCriteriaGroup().addCriterion();
+        queryForm.getCriteriaGroup().addCriterion(subscription.getStudy());
         queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new GeneNameCriterion());
         assertFalse(queryForm.isPotentiallyLargeQuery());
         queryForm.getCriteriaGroup().getRows().get(0).setCriterion(new FoldChangeCriterion());

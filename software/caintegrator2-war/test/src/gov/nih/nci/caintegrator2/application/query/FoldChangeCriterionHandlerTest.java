@@ -105,6 +105,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -158,13 +159,17 @@ public class FoldChangeCriterionHandlerTest {
         criterion.setRegulationType(RegulationTypeEnum.getByValue("Up"));
         criterion.setFoldsUp(1.0f);
         criterion.setGeneSymbol("Tester");
+        criterion.setControlSampleSetName("controlSampleSet1");
         FoldChangeCriterionHandler handler = FoldChangeCriterionHandler.create(criterion);
         Set<ResultRow> rows = new HashSet<ResultRow>();
         try {
             rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
             fail();
         } catch(InvalidCriterionException e) { }
-        query.getSubscription().getStudy().getDefaultControlSampleSet().getSamples().add(new Sample());
+        SampleSet sampleSet1 = new SampleSet();
+        sampleSet1.setName("controlSampleSet1");
+        sampleSet1.getSamples().add(new Sample());
+        query.getSubscription().getStudy().getControlSampleSetCollection().add(sampleSet1);
         rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
         criterion.setRegulationType(RegulationTypeEnum.DOWN);

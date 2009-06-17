@@ -139,7 +139,7 @@ public class QueryForm {
             imageSeriesAnnotations = new AnnotationDefinitionList(study.getImageSeriesAnnotationCollection(), true);
             criteriaGroup = new CriteriaGroup(this);
             resultConfiguration = new ResultConfiguration(this);
-            controlSamplesInStudy = !study.getDefaultControlSampleSet().getSamples().isEmpty();
+            controlSamplesInStudy = study.hasControlSamples();
         } else {
             criteriaGroup = null;
             resultConfiguration = null;

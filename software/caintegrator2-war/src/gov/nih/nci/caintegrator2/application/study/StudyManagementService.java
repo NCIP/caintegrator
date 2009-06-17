@@ -358,15 +358,16 @@ public interface StudyManagementService {
     AnnotationDefinition createDefinition(AnnotationFieldDescriptor descriptor, Study study, EntityTypeEnum entityType);
 
     /**
-     * Adds the samples specified by identifier in the file to the set of control samples in the
+     * Adds the samples specified by identifier in the file to a new set of control samples in the
      * study.
      * 
      * @param studyConfiguration add controls for this study
+     * @param controlSampleSetName the controlSampleSet name
      * @param controlSampleFile file containing the sample identifiers, one per line
      * @throws ValidationException if the file is invalid.
      * @throws IOException unexpected IO exception
      */
-    void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
+    void addControlSampleSet(StudyConfiguration studyConfiguration, String controlSampleSetName, File controlSampleFile)
         throws ValidationException, IOException;
 
     /**

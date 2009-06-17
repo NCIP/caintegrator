@@ -104,6 +104,7 @@ public class GEPlotAnnotationBasedActionForm {
     private boolean permissibleValuesNeedUpdate = false;
     private boolean addPatientsNotInQueriesGroup = false;
     private boolean addControlSamplesGroup = false;
+    private String controlSampleSetName;
     private String geneSymbol;
     private String reporterType;
     
@@ -284,6 +285,20 @@ public class GEPlotAnnotationBasedActionForm {
      */
     public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
         this.addControlSamplesGroup = addControlSamplesGroup;
+    }
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 
 }

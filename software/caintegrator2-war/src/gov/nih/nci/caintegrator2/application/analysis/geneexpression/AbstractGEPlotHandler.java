@@ -153,7 +153,8 @@ public abstract class AbstractGEPlotHandler {
      * @throws InvalidCriterionException if the criterion is not valid for the query.
      */
     public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-    StudySubscription subscription) throws ControlSamplesNotMappedException, InvalidCriterionException;
+            StudySubscription subscription)
+        throws ControlSamplesNotMappedException, InvalidCriterionException;
 
     /**
      * @return the dao
@@ -172,15 +173,17 @@ public abstract class AbstractGEPlotHandler {
     /**
      * Retrieves the control group criterion for the study subscription.
      * @param subscription to get control samples for.
+     * @param controlSampleSetName to retrieve for.
      * @return criterion on the ID's of the control samples. 
      * @throws ControlSamplesNotMappedException when a control sample is not mapped.
      */
-    protected AbstractCriterion retrieveControlGroupCriterion(StudySubscription subscription) 
+    protected AbstractCriterion retrieveControlGroupCriterion(StudySubscription subscription,
+            String controlSampleSetName) 
     throws ControlSamplesNotMappedException {
         CompoundCriterion idCriteria = new CompoundCriterion();
         idCriteria.setBooleanOperator(BooleanOperatorEnum.OR);
         idCriteria.setCriterionCollection(new HashSet<AbstractCriterion>());
-        for (Sample sample : subscription.getStudy().getDefaultControlSampleSet().getSamples()) {
+        for (Sample sample : subscription.getStudy().getControlSampleSet(controlSampleSetName).getSamples()) {
             if (sample.getSampleAcquisition() == null) {
                 throw new ControlSamplesNotMappedException("Sample '" 
                         + sample.getName() + "' is not mapped to a patient.");

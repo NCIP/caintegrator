@@ -40,9 +40,12 @@
             <key column="STUDY_ID" />
             <one-to-many class="gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition"/>
         </set>
+        <set name="controlSampleSetCollection" lazy="true" cascade="all">
+            <cache usage="read-write" />
+            <key column="STUDY_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleSet" />
+        </set>
         <many-to-one name="defaultTimepoint" class="gov.nih.nci.caintegrator2.domain.translational.Timepoint" column="DEFAULT_TIMEPOINT_ID"
-            unique="true" lazy="proxy" cascade="all"/>
-        <many-to-one name="defaultControlSampleSet" class="gov.nih.nci.caintegrator2.domain.genomic.SampleSet" column="DEFAULT_CONTROL_SAMPLE_SET_ID"
             unique="true" lazy="proxy" cascade="all"/>
         <one-to-one name="studyConfiguration" class="gov.nih.nci.caintegrator2.application.study.StudyConfiguration"
             property-ref="study"/>

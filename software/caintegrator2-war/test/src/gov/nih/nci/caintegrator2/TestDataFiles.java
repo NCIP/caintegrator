@@ -100,9 +100,12 @@ public class TestDataFiles {
     public static final String REMBRANDT_CLINICAL_FILE_PATH = "/rembrandt_clinical_Aug08_subset.csv";
     public static final String REMBRANDT_ANNOTATION_DEFINITIONS_FILE_PATH = "/rembrandt_annotation_definitions.csv";
     public static final String REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/rembrandt_caarray_sample_mapping.csv";
+    public static final String REMBRANDT_CONTROL_SAMPLE_SET_NAME = "Rembrandt Control Sample Set";
     public static final String REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/rembrandt_control_samples.csv";
+    public static final String SHORT_REMBRANDT_CONTROL_SAMPLE_SET_NAME = "Short Rembrandt Control Sample Set";
     public static final String SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH = "/short_rembrandt_control_samples.csv";
     public static final String SHORT_REMBRANDT_SAMPLE_MAPPING_FILE_PATH = "/short_rembrandt_sample_mapping.csv";
+    public static final String JAGLA_00034_CONTROL_SAMPLES_SET_NAME = "JAGLA 00034 Control Sample Set";
     public static final String JAGLA_00034_CONTROL_SAMPLES_FILE_PATH = "/jagla_0034_control_samples.csv";
     public static final String VASARI_IMAGE_ANNOTATION_FILE_PATH = "/vasari_image_annotation_mapped.csv";
     public static final String REMBRANDT_IMAGE_STUDIES_TO_SUBJECT_FILE_PATH = "/rembrandt_ncia_image_studies.csv";
@@ -148,6 +151,7 @@ public class TestDataFiles {
     // Files for public DC Lung Study
     public static final String DC_LUNG_PUBLIC_CLINICAL_FILE_PATH = "/dc_lung_clinical_data_public.csv";
     public static final String DC_LUNG_PUBLIC_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_sample_mapping_full.csv";
+    public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_SET_NAME = "/DC Lung Control_Sample Set";
     public static final String DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE_PATH = "/dc_lung_control_samples.csv";
     public static final String DC_LUNG_PUBLIC_ANNOTATION_DEFINITIONS_FILE_PATH = "/dc_lung_public_annotation_definitions.csv";
 

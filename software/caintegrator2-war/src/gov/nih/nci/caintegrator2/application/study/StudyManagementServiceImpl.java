@@ -101,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
@@ -315,8 +316,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
         studyConfiguration.getGenomicDataSources().remove(genomicSource);
+        for (String controlSampleSetName : genomicSource.getControlSampleSetNames()) {
+            SampleSet sampleSet = studyConfiguration.getStudy().getControlSampleSet(controlSampleSetName);
+            studyConfiguration.getStudy().getAllControlSamples().remove(sampleSet);
+            dao.delete(sampleSet);
+        }
         for (Sample sample : genomicSource.getSamples()) {
-            studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().remove(sample);
             SampleAcquisition sampleAcquisition = sample.getSampleAcquisition();
             if (sampleAcquisition != null) {
                 sampleAcquisition.getAssignment().getSampleAcquisitionCollection().remove(sampleAcquisition);
@@ -405,11 +410,11 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     /**
      * {@inheritDoc}
-     * @throws IOException 
      */
-    public void addControlSamples(StudyConfiguration studyConfiguration, File controlSampleFile)
+    public void addControlSampleSet(StudyConfiguration studyConfiguration,
+            String controlSampleSetName, File controlSampleFile)
             throws ValidationException, IOException {
-        new ControlSampleHelper(studyConfiguration, controlSampleFile).addControlSamples();
+        new ControlSampleHelper(studyConfiguration, controlSampleFile).addControlSamples(controlSampleSetName);
         save(studyConfiguration);
     }
 

@@ -138,6 +138,8 @@ public class StudyManagementServiceTest {
     private FileManagerStub fileManagerStub;
     private WorkspaceServiceStub workspaceServiceStub;
     private SecurityManagerStub securityManagerStub;
+    
+    private static final String CONTROL_SAMPLE_SET_NAME = "Control Sample Set 1";
 
     @Before
     public void setUp() throws Exception {
@@ -467,15 +469,15 @@ public class StudyManagementServiceTest {
         sample2.setName("GeneratedSample.Normal_L_20070227_14-01-17-731_HF0120_U133P2");
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE);
-        assertTrue(studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().contains(sample1));
-        assertTrue(studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().contains(sample2));
+        studyManagementService.addControlSampleSet(studyConfiguration, CONTROL_SAMPLE_SET_NAME, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE);
+        assertTrue(studyConfiguration.getStudy().getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample1));
+        assertTrue(studyConfiguration.getStudy().getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample2));
     }
     
     @Test(expected = ValidationException.class)
     public void testAddControlSamplesValidation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyManagementService.addControlSamples(studyConfiguration, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        studyManagementService.addControlSampleSet(studyConfiguration, CONTROL_SAMPLE_SET_NAME, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
     }
 
     @Test

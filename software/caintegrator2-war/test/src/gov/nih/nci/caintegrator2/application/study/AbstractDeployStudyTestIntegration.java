@@ -190,7 +190,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         loadSurvivalValueDefinition();
         loadSamples();
         mapSamples();
-        loadControlSamples();
+        loadControlSamples(0);
         loadCopyNumberMappingFile();
         ImageDataSourceConfiguration imageSource = loadImages();
         mapImages();
@@ -424,9 +424,6 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             if (getSampleMappingFile() != null) {
                 genomicSource.addSampleMappingFileName(getSampleMappingFile().getName());
             }
-            if (getControlSamplesFile() != null) {
-                genomicSource.addControlSampleMappingFileName(getControlSamplesFile().getName());
-            }
             service.addGenomicSource(studyConfiguration, genomicSource);
             assertTrue(genomicSource.getSamples().size() > 0);
             logEnd();
@@ -451,17 +448,23 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
-    private void loadControlSamples() throws ValidationException, IOException {
+    private void loadControlSamples(int genomicSourceIndex) throws ValidationException, IOException {
         if (getLoadSamples() && getControlSamplesFile() != null) {
             logStart();
-            service.addControlSamples(studyConfiguration, getControlSamplesFile());
+            service.addControlSampleSet(studyConfiguration, getControlSampleSetName(), getControlSamplesFile());
+            GenomicDataSourceConfiguration genomicSource = studyConfiguration.getGenomicDataSources().get(genomicSourceIndex);
+            genomicSource.addControlSampleMappingFileName(getControlSamplesFile().getName());
+            genomicSource.addControlSampleSetName(getControlSampleSetName(),
+                    getStudyConfiguration().getStudy().getControlSampleSet(getControlSampleSetName()).getSamples().size());
             assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().
-                    getDefaultControlSampleSet().getSamples().size());
+                    getControlSampleSet(getControlSampleSetName()).getSamples().size());
             logEnd();
         }
     }
 
     abstract protected File getSampleMappingFile();
+
+    abstract protected String getControlSampleSetName();
 
     abstract protected File getControlSamplesFile();
     

@@ -134,6 +134,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
         plotParameters.setExclusiveGroups(getForm().isExclusiveGroups());
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
+        plotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
         if (!getForm().getSelectedQueryIDs().isEmpty()) {
             plotParameters.getQueries().clear();
             for (String id : getForm().getSelectedQueryIDs()) {

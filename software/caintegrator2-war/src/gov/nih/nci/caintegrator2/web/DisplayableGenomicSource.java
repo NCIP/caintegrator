@@ -119,6 +119,14 @@ public class DisplayableGenomicSource {
     }
     
     /**
+     * Number of control samples per control sample set associated with this source.
+     * @return number of control samples.
+     */
+    public String getNumberControlSampleSetSamples() {
+        return genomicDataSourceConfiguration.getControlSampleSetCommaSeparatedNames();
+    }
+    
+    /**
      * Number of control samples associated with this source.
      * @return number of control samples.
      */

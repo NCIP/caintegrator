@@ -111,6 +111,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String platformName;
     private String sampleMappingCommaSeparatedFileNames;
     private String controlSampleMappingCommaSeparatedFileNames;
+    private String controlSampleSetCommaSeparatedNames;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
     private CopyNumberDataConfiguration copyNumberDataConfiguration;
@@ -181,9 +182,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return the control samples
      */
     public List<Sample> getControlSamples() {
-        if (!getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples().isEmpty()) {
+        if (!getStudyConfiguration().getStudy().getAllControlSamples().isEmpty()) {
             List<Sample> controlSamples = new ArrayList<Sample>();
-            controlSamples.addAll(getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples());
+            controlSamples.addAll(getStudyConfiguration().getStudy().getAllControlSamples());
             controlSamples.retainAll(getSamples());
             return controlSamples;
         } else {
@@ -197,8 +198,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public List<Sample> getUnmappedSamples() {
         List<Sample> unmappedSamples = new ArrayList<Sample>();
         unmappedSamples.addAll(getSamples());
-        if (!getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples().isEmpty()) {
-            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getDefaultControlSampleSet().getSamples());
+        if (!getStudyConfiguration().getStudy().getAllControlSamples().isEmpty()) {
+            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getAllControlSamples());
         }
         unmappedSamples.removeAll(getStudyConfiguration().getSamples());
         return unmappedSamples;
@@ -304,10 +305,24 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void addControlSampleMappingFileName(String filename) {
         if (controlSampleMappingCommaSeparatedFileNames == null) {
-            setControlSampleMappingCommaSeparatedFileNames(filename);    
+            setControlSampleMappingCommaSeparatedFileNames(filename);
         } else {
             setControlSampleMappingCommaSeparatedFileNames(controlSampleMappingCommaSeparatedFileNames 
-                                                    + "," + filename);
+                    + "," + filename);
+        }
+    }
+    
+    /**
+     * Adds the filename to the comma separated list of file names.
+     * @param controlSampleSetName to add to the list
+     * @param count number of samples in the set
+     */
+    public void addControlSampleSetName(String controlSampleSetName, int count) {
+        if (controlSampleSetCommaSeparatedNames == null) { 
+            setControlSampleSetCommaSeparatedNames(controlSampleSetName + ":" + count);    
+        } else {
+            setControlSampleSetCommaSeparatedNames(controlSampleSetCommaSeparatedNames 
+                    + "," + controlSampleSetName + ":" + count);
         }
     }
     
@@ -320,6 +335,17 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
 
     private void setControlSampleMappingCommaSeparatedFileNames(String controlSampleMappingCommaSeparatedFileNames) {
         this.controlSampleMappingCommaSeparatedFileNames = controlSampleMappingCommaSeparatedFileNames;
+    }
+    
+    /**
+     * @return the controlSampleSetCommaSeparatedName
+     */
+    public String getControlSampleSetCommaSeparatedNames() {
+        return controlSampleSetCommaSeparatedNames;
+    }
+
+    private void setControlSampleSetCommaSeparatedNames(String controlSampleSetCommaSeparatedNames) {
+        this.controlSampleSetCommaSeparatedNames = controlSampleSetCommaSeparatedNames;
     }
 
     /**
@@ -335,6 +361,20 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
                     StringUtils.split(controlSampleMappingCommaSeparatedFileNames, ",")));
         }
         return controlSampleMappingFileNames;
+    }
+
+    /**
+     * Get all control sample set names.
+     * @return list of control sample set names.
+     */
+    public List<String> getControlSampleSetNames() {
+        List<String> controlSampleSetNames = new ArrayList<String>();
+        if (!StringUtils.isBlank(controlSampleSetCommaSeparatedNames)) {
+            for (String string : StringUtils.split(controlSampleSetCommaSeparatedNames, ",")) {
+                controlSampleSetNames.add(StringUtils.split(string, ":")[0]);
+            }
+        }
+        return controlSampleSetNames;
     }
     
     /**

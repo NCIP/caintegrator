@@ -194,6 +194,11 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     }
 
     @Override
+    protected String getControlSampleSetName() {
+        return TestDataFiles.REMBRANDT_CONTROL_SAMPLE_SET_NAME;
+    }
+
+    @Override
     protected File getControlSamplesFile() {
         return TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE;
     }

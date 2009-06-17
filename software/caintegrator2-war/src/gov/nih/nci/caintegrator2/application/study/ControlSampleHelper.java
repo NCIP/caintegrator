@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.io.File;
 import java.io.FileReader;
@@ -105,24 +106,37 @@ class ControlSampleHelper {
         this.controlSampleFile = controlSampleFile;
     }
 
-    void addControlSamples() throws ValidationException, IOException {
+    void addControlSamples(String controlSampleSetName) throws ValidationException, IOException {
+        if (studyConfiguration.getStudy().getControlSampleSet(controlSampleSetName) != null) {
+            throw new ValidationException("Duplicate Control Sample Set Name.");
+        }
+        SampleSet newControlSampleSet = addControlSampleSet(controlSampleSetName);
         FileReader fileReader = new FileReader(controlSampleFile);
         LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
         String sampleName;
         while ((sampleName = lineNumberReader.readLine()) != null) {
-            addControlSample(sampleName, lineNumberReader.getLineNumber());
+            addControlSample(newControlSampleSet, sampleName, lineNumberReader.getLineNumber());
         }
+        studyConfiguration.getStudy().getControlSampleSetCollection().add(newControlSampleSet);
         lineNumberReader.close();
         fileReader.close();
     }
+    
+    private SampleSet addControlSampleSet(String name) {
+        SampleSet newControlSampleSet = new SampleSet();
+        newControlSampleSet.setName(name);
+        studyConfiguration.getStudy().getControlSampleSetCollection().add(newControlSampleSet);
+        return newControlSampleSet;
+    }
 
-    private void addControlSample(String sampleName, int lineNumber) throws ValidationException {
+    private void addControlSample(SampleSet newControlSampleSet, String sampleName,
+            int lineNumber) throws ValidationException {
         Sample sample = studyConfiguration.getSample(sampleName);
         if (sample == null) {
-            throw new ValidationException("Invalid sample identifier on line " + lineNumber 
+            throw new ValidationException("Invalid sample identifier on line " + lineNumber
                     + ", there is no sample with the identifier " + sampleName + " in the study.");
         } else {
-            studyConfiguration.getStudy().getDefaultControlSampleSet().getSamples().add(sample);
+            newControlSampleSet.getSamples().add(sample);
         }
     }
 

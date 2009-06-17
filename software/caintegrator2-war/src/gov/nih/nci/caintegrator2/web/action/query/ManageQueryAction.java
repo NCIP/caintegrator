@@ -361,7 +361,7 @@ public class ManageQueryAction extends AbstractCaIntegrator2Action implements Pa
      * @return the Struts result.
      */
     public String addCriterionRow() {
-        getQueryForm().getCriteriaGroup().addCriterion();
+        getQueryForm().getCriteriaGroup().addCriterion(getCurrentStudy());
         return SUCCESS;
     }
     

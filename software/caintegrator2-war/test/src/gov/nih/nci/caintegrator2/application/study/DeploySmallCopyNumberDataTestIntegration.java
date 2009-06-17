@@ -244,6 +244,11 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
+    protected String getControlSampleSetName() {
+        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_SET_NAME;
+    }
+
+    @Override
     protected File getControlSamplesFile() {
         return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE;
     }

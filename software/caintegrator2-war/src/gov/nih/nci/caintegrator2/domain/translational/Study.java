@@ -26,7 +26,7 @@ public class Study extends AbstractCaIntegrator2Object {
     private String shortTitleText;
     private Set<Timepoint> timepointCollection = new HashSet<Timepoint>();
     private Set<SurvivalValueDefinition> survivalValueDefinitionCollection = new HashSet<SurvivalValueDefinition>();
-    private SampleSet defaultControlSampleSet = new SampleSet();
+    private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
     private Set<AnnotationDefinition> imageSeriesAnnotationCollection = new HashSet<AnnotationDefinition>();
     private Set<StudySubjectAssignment> assignmentCollection = new HashSet<StudySubjectAssignment>();
     private Set<AnnotationDefinition> subjectAnnotationCollection = new HashSet<AnnotationDefinition>();
@@ -219,18 +219,45 @@ public class Study extends AbstractCaIntegrator2Object {
     }
 
     /**
-     * @return the defaultControlSampleSet
+     * @param name the controlSampleSet name
+     * @return the requested controlSampleSet
      */
-    public SampleSet getDefaultControlSampleSet() {
-        return defaultControlSampleSet;
+    public SampleSet getControlSampleSet(String name) {
+        if (name != null) {
+            for (SampleSet controlSampleSet : controlSampleSetCollection) {
+                if (name.equalsIgnoreCase(controlSampleSet.getName())) {
+                    return controlSampleSet;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Get all control samples.
+     * @return set of all control samples
+     */
+    public Set<Sample> getAllControlSamples() {
+        Set<Sample> controlSamples = new HashSet<Sample>();
+        for (SampleSet sampleSet : controlSampleSetCollection) {
+            controlSamples.addAll(sampleSet.getSamples());
+        }
+        return controlSamples;
+    }
+
+    /**
+     * @return the controlSampleSetCollection
+     */
+    public Set<SampleSet> getControlSampleSetCollection() {
+        return controlSampleSetCollection;
     }
 
     /**
      * @param defaultControlSampleSet the defaultControlSampleSet to set
      */
     @SuppressWarnings("unused") // required by Hibernate
-    private void setDefaultControlSampleSet(SampleSet defaultControlSampleSet) {
-        this.defaultControlSampleSet = defaultControlSampleSet;
+    private void setControlSampleSetCollection(Set<SampleSet> controlSampleSetCollection) {
+        this.controlSampleSetCollection = controlSampleSetCollection;
     }
     
     /**
@@ -269,7 +296,12 @@ public class Study extends AbstractCaIntegrator2Object {
      * @return the boolean of whether the study has Control Samples
      */
     public boolean hasControlSamples() {
-        return !defaultControlSampleSet.getSamples().isEmpty();
+        for (SampleSet sampleSet : controlSampleSetCollection) {
+            if (!sampleSet.getSamples().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -133,7 +133,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
      * @throws InvalidCriterionException 
      */
     public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                               StudySubscription subscription) 
+            StudySubscription subscription) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
@@ -142,23 +142,24 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
             fillUsedSubjects(result);
             genomicResults.add(result);
         }
-        addOptionalGroups(subscription, genomicResults);
+        addOptionalGroups(subscription, genomicResults, parameters.getControlSampleSetName());
         GeneExpressionPlotConfiguration configuration = 
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
         return gePlotService.generatePlots(configuration);
     }
 
-    private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults) 
+    private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults,
+            String controlSampleSetName) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         if (parameters.isAddPatientsNotInQueriesGroup()) {
-            GenomicDataQueryResult queryResults = addAllOthersGroup(subscription);
+            GenomicDataQueryResult queryResults = addAllOthersGroup(subscription, controlSampleSetName);
             if (!queryResults.getRowCollection().isEmpty()) {
                 genomicResults.add(0, queryResults);
             }
         }
         if (parameters.isAddControlSamplesGroup() && !subscription.getStudy().
-                            getDefaultControlSampleSet().getSamples().isEmpty()) {
-            genomicResults.add(0, addControlSamplesGroup(subscription));
+                            getControlSampleSet(controlSampleSetName).getSamples().isEmpty()) {
+            genomicResults.add(0, addControlSamplesGroup(subscription, controlSampleSetName));
         }
     }
 
@@ -172,22 +173,24 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         }
     }
 
-    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription) 
+    private GenomicDataQueryResult addAllOthersGroup(StudySubscription subscription, String controlSampleSetName) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         Query query = new Query();
         query.setName(PlotSampleGroup.ALL_OTHERS_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        return retrieveOptionalGroupGenomicResults(subscription, query, SampleGroupType.OTHERS_GROUP);
+        return retrieveOptionalGroupGenomicResults(subscription, query,
+                SampleGroupType.OTHERS_GROUP, controlSampleSetName);
     }
     
-    private GenomicDataQueryResult addControlSamplesGroup(StudySubscription subscription) 
+    private GenomicDataQueryResult addControlSamplesGroup(StudySubscription subscription, String controlSampleSetName) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         Query query = new Query();
         query.setName(PlotSampleGroup.CONTROL_SAMPLE_GROUP_NAME);
         query.setCompoundCriterion(new CompoundCriterion());
         query.getCompoundCriterion().setBooleanOperator(BooleanOperatorEnum.AND);
-        return retrieveOptionalGroupGenomicResults(subscription, query, SampleGroupType.CONTROL_GROUP);
+        return retrieveOptionalGroupGenomicResults(subscription, query,
+                SampleGroupType.CONTROL_GROUP, controlSampleSetName);
     }
 
     private GenomicDataQueryResult retrieveGenomicResults(AbstractPermissibleValue permissibleValue,
@@ -212,20 +215,21 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
     }
 
     private GenomicDataQueryResult retrieveOptionalGroupGenomicResults(StudySubscription subscription, Query query,
-            SampleGroupType groupType) throws ControlSamplesNotMappedException, InvalidCriterionException {
+            SampleGroupType groupType, String controlSampleSetName)
+        throws ControlSamplesNotMappedException, InvalidCriterionException {
         CompoundCriterion newCompoundCriterion = new CompoundCriterion();
         newCompoundCriterion.setBooleanOperator(BooleanOperatorEnum.AND);
         newCompoundCriterion.getCriterionCollection().add(query.getCompoundCriterion());
         newCompoundCriterion.getCriterionCollection().add(
-                    retrieveOptionalGroupCompoundCriterion(subscription, groupType));
+                    retrieveOptionalGroupCompoundCriterion(subscription, groupType, controlSampleSetName));
         query.setCompoundCriterion(newCompoundCriterion);
         query.setReporterType(parameters.getReporterType());
         query.setSubscription(subscription);
         return getQueryManagementService().executeGenomicDataQuery(query);
     }
 
-    private CompoundCriterion retrieveOptionalGroupCompoundCriterion(StudySubscription subscription, 
-                                                                     SampleGroupType groupType) 
+    private CompoundCriterion retrieveOptionalGroupCompoundCriterion(StudySubscription subscription,
+            SampleGroupType groupType, String controlSampleSetName) 
         throws ControlSamplesNotMappedException {
         CompoundCriterion geneNameCompoundCriterion = new CompoundCriterion();
         geneNameCompoundCriterion.getCriterionCollection().add(retrieveGeneNameCriterion());
@@ -233,7 +237,8 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         if (SampleGroupType.OTHERS_GROUP.equals(groupType)) {
             geneNameCompoundCriterion.getCriterionCollection().add(retrieveUsedSubjectsCriterion(usedSubjects));
         } else if (SampleGroupType.CONTROL_GROUP.equals(groupType)) {
-            geneNameCompoundCriterion.getCriterionCollection().add(retrieveControlGroupCriterion(subscription));
+            geneNameCompoundCriterion.getCriterionCollection().add(
+                    retrieveControlGroupCriterion(subscription, controlSampleSetName));
         }
         return geneNameCompoundCriterion;
     }
