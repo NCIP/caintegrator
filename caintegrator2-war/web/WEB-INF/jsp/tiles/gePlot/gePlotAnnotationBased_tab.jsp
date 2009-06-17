@@ -7,7 +7,6 @@
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
     <!-- The hidden variables for caBio search form. -->
     <s:hidden name="formName" value="geneExpressionAnnotationInputForm" />
-    <s:hidden name="showCaBioSearch" value="false" />
     <s:hidden name="geneSymbolElementId" value="annotationGeneSymbolsId" />
        
     <!-- Gene Expression Inputs -->
@@ -36,13 +35,16 @@
                         cssClass="caBioLogo"
                         title="Click to search caBio for genes based on keywords." onclick="showCaBioInputForm(geneExpressionAnnotationInputForm)">&nbsp;</s:a>
                     <br>
+                    <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
                     <s:url id="caBioGeneSearchInput" action="caBioGeneSearchInput"/>
                     <s:div id="caBioGeneSearchInputDiv" 
                             theme="ajax" 
                             href="%{caBioGeneSearchInput}" 
                             formId="geneExpressionAnnotationInputForm" 
                             loadingText="<img src='images/ajax-loader.gif'/>"
-                            listenTopics="caBioSearchInput" refreshOnShow="true"/>
+                            listenTopics="caBioSearchInput" 
+                            refreshOnShow="true"
+                            cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:500px;max-height: 300px; overflow:auto;"/>
                 </td>
             </tr>
 
@@ -54,10 +56,10 @@
                     Select Reporter Type:
                 </td>
                 <td class="value_inline">
-	                <s:radio name="gePlotForm.annotationBasedForm.reporterType"
-	                list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
-	                listKey="key" 
-	                listValue="value" />                
+                    <s:radio name="gePlotForm.annotationBasedForm.reporterType"
+                    list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
+                    listKey="key" 
+                    listValue="value" />                
                 </td>
                 <td class="value_inline"></td>
                 <td class="value_inline"></td>

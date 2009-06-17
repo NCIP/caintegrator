@@ -39,8 +39,15 @@ function trimIt (str) {
 }
 
 function showCaBioInputForm(inputForm) {
-    inputForm.showCaBioSearch.value = 'true';
+    document.getElementById('TB_overlay').style.display = 'block';
+    document.getElementById('caBioGeneSearchInputDiv').style.display = 'block';
+    document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'visible';
     dojo.event.topic.publish('caBioSearchInput');
+}
+
+function hideCaBioInputForm(inputForm) {
+    document.getElementById('TB_overlay').style.display = 'none';
+    document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'hidden';
 }
 
 function captureCaBioCheckBoxes(inputForm, geneSymbolsTextbox) {
@@ -52,5 +59,5 @@ function captureCaBioCheckBoxes(inputForm, geneSymbolsTextbox) {
         }
     }
     geneSymbolsTextbox.value = cbResults;
-    inputForm.showCaBioSearch.value = false;
+    hideCaBioInputForm(inputForm);
 }
