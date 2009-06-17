@@ -684,6 +684,11 @@
         <fail if="cobertura.failure" message="Test coverage was insufficient (see Cobertura report)." />
     </target>
 
+    <target name="test:integration:rembrandt-ncri" depends="deploy:rembrandt-ncri,
+        test:junit-report-integration">
+        <fail if="junit.failure" message="There were JUnit failures." />
+    </target>
+
     <target name="test:integration" depends="test:integration:caintegrator2.war,
         test:junit-report-integration">
         <fail if="junit.failure" message="There were JUnit failures." />

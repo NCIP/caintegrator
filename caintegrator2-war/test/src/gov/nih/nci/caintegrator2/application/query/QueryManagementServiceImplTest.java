@@ -113,6 +113,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ncia.NCIABasket;
@@ -218,6 +219,7 @@ public class QueryManagementServiceImplTest {
         FoldChangeCriterion foldChangeCriterion = new FoldChangeCriterion();
         foldChangeCriterion.setFoldsUp(1.0f);
         foldChangeCriterion.setGeneSymbol("GENE");
+        foldChangeCriterion.setControlSampleSetName("controlSampleSet1");
         foldChangeCriterion.setRegulationType(RegulationTypeEnum.UP);
         query.getCompoundCriterion().getCriterionCollection().clear();
         query.getCompoundCriterion().getCriterionCollection().add(foldChangeCriterion);
@@ -227,7 +229,10 @@ public class QueryManagementServiceImplTest {
             fail("Should have caught invalid criterion exception because no control samples in study");
         } catch (InvalidCriterionException e) {
         }
-        study.getDefaultControlSampleSet().getSamples().add(new Sample());
+        SampleSet sampleSet1 = new SampleSet();
+        sampleSet1.setName("controlSampleSet1");
+        sampleSet1.getSamples().add(new Sample());
+        study.getControlSampleSetCollection().add(sampleSet1);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
         foldChangeCriterion.setFoldsDown(1.0f);

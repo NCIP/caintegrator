@@ -132,15 +132,9 @@
 	            <td />
             </tr>
             <tr>
-                <td align="right">Number of Control Samples:</td>
-                <td> <b><s:property value="numberControlSamples"/> </b></td>
-                <td />
-                <td />
-            </tr>
-            <tr>
                 <td align="right">Control Samples Set:</td>
                 <td> <b> <s:if test="%{numberControlSamples > 0}" >
-                        Yes
+                        <s:property value="numberControlSampleSetSamples"/>
                      </s:if>
                      <s:else>
                         Not Configured.

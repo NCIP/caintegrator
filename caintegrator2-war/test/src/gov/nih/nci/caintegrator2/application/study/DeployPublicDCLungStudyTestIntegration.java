@@ -206,6 +206,11 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
+    protected String getControlSampleSetName() {
+        return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_SET_NAME;
+    }
+
+    @Override
     protected File getControlSamplesFile() {
         return TestDataFiles.DC_LUNG_PUBLIC_CONTROL_SAMPLE_MAPPING_FILE;
     }

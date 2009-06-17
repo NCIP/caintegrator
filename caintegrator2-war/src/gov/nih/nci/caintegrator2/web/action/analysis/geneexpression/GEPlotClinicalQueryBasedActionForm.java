@@ -105,6 +105,7 @@ public class GEPlotClinicalQueryBasedActionForm {
     private boolean exclusiveGroups = false;
     private boolean addPatientsNotInQueriesGroup = false;
     private boolean addControlSamplesGroup = false;
+    private String controlSampleSetName;
     private boolean resetSelected = false;
     
     // JSP Select List Options
@@ -306,5 +307,23 @@ public class GEPlotClinicalQueryBasedActionForm {
      */
     public void setAddControlSamplesGroup(boolean addControlSamplesGroup) {
         this.addControlSamplesGroup = addControlSamplesGroup;
+    }
+
+
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 }

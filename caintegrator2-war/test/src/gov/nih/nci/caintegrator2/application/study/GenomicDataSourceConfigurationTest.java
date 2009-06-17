@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -108,7 +109,9 @@ public class GenomicDataSourceConfigurationTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         Study study = new Study();
         studyConfiguration.setStudy(study);
-        study.getDefaultControlSampleSet().getSamples().add(sample3);
+        SampleSet controlSampleSet1 = new SampleSet();
+        study.getControlSampleSetCollection().add(controlSampleSet1);
+        controlSampleSet1.getSamples().add(sample3);
         studyConfiguration.getGenomicDataSources().add(configuration);
         configuration.setStudyConfiguration(studyConfiguration);
         StudySubjectAssignment assignment = new StudySubjectAssignment();

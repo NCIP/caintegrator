@@ -90,12 +90,14 @@ import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.Set;
 
 public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
     
     public static final StudyTestDataGenerator INSTANCE = new StudyTestDataGenerator();
+    private static final String controlSampleSetName = "ControlSampleSet1";
 
     private StudyTestDataGenerator() {
         super();
@@ -105,7 +107,8 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void compareFields(Study original, Study retrieved) {
         assertEquals(original.getLongTitleText(), retrieved.getLongTitleText());
         assertEquals(original.getShortTitleText(), retrieved.getShortTitleText());
-        compareCollections(original.getDefaultControlSampleSet().getSamples(), retrieved.getDefaultControlSampleSet().getSamples(), SampleGenerator.INSTANCE);
+        compareCollections(original.getControlSampleSet(controlSampleSetName).getSamples(),
+                retrieved.getControlSampleSet(controlSampleSetName).getSamples(), SampleGenerator.INSTANCE);
     }
 
     @Override
@@ -117,11 +120,14 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void setValues(Study study, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         study.setShortTitleText(getUniqueString());
         study.setLongTitleText(getUniqueString());
-        study.getDefaultControlSampleSet().getSamples().clear();
+        study.getControlSampleSetCollection().clear();
+        SampleSet sampleSet1 = new SampleSet();
+        sampleSet1.setName(controlSampleSetName);
+        study.getControlSampleSetCollection().add(sampleSet1);
         for (int i = 0; i < 3; i++) {
             Sample sample = SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
             nonCascadedObjects.add(sample);
-            study.getDefaultControlSampleSet().getSamples().add(sample);
+            sampleSet1.getSamples().add(sample);
         }
     }
 

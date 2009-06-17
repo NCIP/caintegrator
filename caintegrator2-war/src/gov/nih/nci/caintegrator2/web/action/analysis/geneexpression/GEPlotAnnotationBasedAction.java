@@ -137,6 +137,7 @@ public class GEPlotAnnotationBasedAction extends AbstractGeneExpressionAction {
         plotParameters.setGeneSymbol(getGePlotForm().getAnnotationBasedForm().getGeneSymbol());
         plotParameters.setAddPatientsNotInQueriesGroup(getForm().isAddPatientsNotInQueriesGroup());
         plotParameters.setAddControlSamplesGroup(getForm().isAddControlSamplesGroup());
+        plotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
         plotParameters.setReporterType(ReporterTypeEnum.
                         getByValue(getGePlotForm().getAnnotationBasedForm().getReporterType()));
         if (getForm().getSelectedAnnotationId() != null 

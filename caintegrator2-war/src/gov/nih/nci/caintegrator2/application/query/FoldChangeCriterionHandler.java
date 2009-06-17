@@ -130,7 +130,7 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
             Set<EntityTypeEnum> entityTypes) throws InvalidCriterionException {
         Study study = query.getSubscription().getStudy();
         ReporterTypeEnum reporterType = query.getReporterType();
-        configureCompareToSamples(study);
+        configureCompareToSamples(study, criterion.getControlSampleSetName());
         Set<AbstractReporter> reporters = getReporterMatches(dao, study, reporterType);
         DataRetrievalRequest request = new DataRetrievalRequest();
         request.addReporters(reporters);
@@ -203,13 +203,14 @@ final class FoldChangeCriterionHandler extends AbstractCriterionHandler {
         return compareToDatas;
     }
 
-    private void configureCompareToSamples(Study study) throws InvalidCriterionException {
-        if (study.getDefaultControlSampleSet().getSamples().isEmpty()) {
+    private void configureCompareToSamples(Study study, String controlSampleSetName) throws InvalidCriterionException {
+        if (study.getControlSampleSet(controlSampleSetName) == null
+                || study.getControlSampleSet(controlSampleSetName).getSamples().isEmpty()) {
             throw new InvalidCriterionException(
                     "FoldChangeCriterion is invalid because there are no control samples for study '"
                             + study.getShortTitleText() + "'");
         }
-        criterion.setCompareToSampleSet(study.getDefaultControlSampleSet());
+        criterion.setCompareToSampleSet(study.getControlSampleSet(controlSampleSetName));
     }
 
     /**

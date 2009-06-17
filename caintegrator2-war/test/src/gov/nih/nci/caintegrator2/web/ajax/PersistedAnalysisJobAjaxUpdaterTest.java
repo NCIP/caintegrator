@@ -97,6 +97,7 @@ import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.io.IOException;
 import java.util.Date;
@@ -216,6 +217,7 @@ public class PersistedAnalysisJobAjaxUpdaterTest {
             gpJob.setSubscription(subscription);
             subscription.getAnalysisJobCollection().add(cmsJob);
             subscription.getAnalysisJobCollection().add(gpJob);
+            subscription.setStudy(new Study());
             return workspace;
         }
     }
