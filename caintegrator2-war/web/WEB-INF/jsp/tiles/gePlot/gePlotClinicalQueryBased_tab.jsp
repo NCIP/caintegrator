@@ -5,7 +5,9 @@
 <s:form name="geneExpressionClinicalQueryInputForm" id="geneExpressionClinicalQueryInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
-          
+    <!-- For caBio to know which form element to publish gene symbols to. -->
+    <s:hidden name="geneSymbolElementId" />
+
     <!-- Gene Expression Inputs -->
     <h2>Clinical Query Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_clin_queries_help')" class="help">
    (draft)</a>
@@ -21,12 +23,14 @@
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
                 <td class="value_inline">
-                    <s:textfield id="clinicalGeneSymbolsId" name="gePlotForm.clinicalQueryBasedForm.geneSymbol"
-                        theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
-                    &nbsp;
-                    <s:a href=""
-                        cssClass="cgapLogo"
-                        title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','clinicalGeneSymbolsId')">&nbsp;</s:a>
+                    <s:component template="genetextfield.ftl" theme="cai2simple">
+                        <s:param name="createTextField" value="true" />
+                        <s:param name="dojoEventTopic" value="%{'caBioSearchInputForClinical'}" />
+                        <s:param name="textFieldId" value="%{'clinicalGeneSymbolsId'}"/>
+                        <s:param name="textFieldName" value="%{'gePlotForm.clinicalQueryBasedForm.geneSymbol'}"/>
+                        <s:param name="formId" value="%{'geneExpressionClinicalQueryInputForm'}"/>
+                        <s:param name="refreshOnShow" value="%{'true'}" />
+                    </s:component>
                 </td>
             </tr>
             <tr>

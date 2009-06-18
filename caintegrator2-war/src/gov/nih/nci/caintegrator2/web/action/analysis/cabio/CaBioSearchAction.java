@@ -106,7 +106,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     // JSP Form Hidden Variables
     private String formName;
     private String geneSymbolElementId;
-    private boolean showCaBioSearch = false;
     private boolean runSearchSelected = false;
     
     /**
@@ -205,20 +204,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setFormName(String formName) {
         this.formName = formName;
-    }
-    
-    /**
-     * @return the showCaBioSearch
-     */
-    public boolean isShowCaBioSearch() {
-        return showCaBioSearch;
-    }
-
-    /**
-     * @param showCaBioSearch the showCaBioSearch to set
-     */
-    public void setShowCaBioSearch(boolean showCaBioSearch) {
-        this.showCaBioSearch = showCaBioSearch;
     }
     
     /**

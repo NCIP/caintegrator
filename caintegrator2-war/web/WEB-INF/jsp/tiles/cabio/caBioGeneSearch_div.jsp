@@ -9,7 +9,7 @@
 <!-- caBio Inputs -->
 <s:div id="TB_ajaxWindowTitle"/>
 <s:div id="TB_closeAjaxWindow">
-        <s:a href="" id="TB_closeWindowButton" title="Click to close." onclick="hideCaBioInputForm(geneExpressionAnnotationInputForm)">Close</s:a>
+        <s:a href="" id="TB_closeWindowButton" title="Click to close." onclick="hideCaBioInputForm()">Close</s:a>
 </s:div>
 <h2>caBio Gene Search</h2>
 
