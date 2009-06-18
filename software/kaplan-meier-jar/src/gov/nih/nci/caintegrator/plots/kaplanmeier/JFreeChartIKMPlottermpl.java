@@ -37,7 +37,7 @@ public class JFreeChartIKMPlottermpl implements KMPlotter {
             if (imgType == ImageTypes.PNG) ChartUtilities.writeBufferedImageAsPNG(out, image);
             else if (imgType == ImageTypes.JPEG) ChartUtilities.writeBufferedImageAsJPEG(out, image);
             else {
-                logger.debug("UnSupported File Format: " + imgType.getValue());
+                logger.debug(new String("UnSupported File Format: " + imgType.getValue()));
                 throw new KMException( "UnSupported File Format: " + imgType.getValue());
             }
         } catch (IOException ioe) {

@@ -40,10 +40,10 @@ public class DefaultKMAlgorithmImpl implements KMAlgorithm {
         int r = samples.size();
         int left = samples.size();
         ArrayList<XYCoordinate> points = new ArrayList<XYCoordinate>();
-        logger.debug("Sorted input data: ");
+        logger.debug(new String("Sorted input data: "));
         for (int i = 0; i < samples.size(); i++) {
             curSurvTime = samples.get(i).getSurvivalLength();
-            logger.debug("Survival survivalLength: " + curSurvTime + "\tcensor:" + (samples.get(i)).getCensor());
+            logger.debug(new String("Survival survivalLength: " + curSurvTime + "\tcensor:" + (samples.get(i)).getCensor()));
             if (curSurvTime > prevSurvTime) {
                 if (c>0) {
                     points.add(new XYCoordinate(new Float(prevSurvTime), new Float(surv), true));
