@@ -20,7 +20,7 @@
 	        </tr>
 	    </s:iterator>
     </table>
-    <button type="button" onclick="captureCaBioCheckBoxes(<s:property value='formName' />, <s:property value='geneSymbolElementId' />)">Use Genes</button>
+    <button type="button" onclick="captureCaBioCheckBoxes(<s:property value='formName' />, '<s:property value='geneSymbolElementId' />')">Use Genes</button>
     </s:if>
     <!-- /CaBio Gene Results -->
 

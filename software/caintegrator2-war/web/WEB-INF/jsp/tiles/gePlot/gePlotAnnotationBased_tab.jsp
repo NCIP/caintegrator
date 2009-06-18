@@ -5,10 +5,9 @@
                 
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
-    <!-- The hidden variables for caBio search form. -->
-    <s:hidden name="formName" value="geneExpressionAnnotationInputForm" />
-    <s:hidden name="geneSymbolElementId" value="annotationGeneSymbolsId" />
-       
+    <!-- For caBio to know which form element to publish gene symbols to. -->
+    <s:hidden name="geneSymbolElementId" />
+    
     <!-- Gene Expression Inputs -->
     <h2>Annotation Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
    (draft)</a>
@@ -25,26 +24,15 @@
                     <div style="font-size: 75%; color: #666666;"></div>
                 </td>
                 <td class="value_inline" colspan="3">
-                    <s:textfield id="annotationGeneSymbolsId" name="gePlotForm.annotationBasedForm.geneSymbol"
-                        theme="simple" title="Enter a comma separated list of gene symbols ( Ex: EGFR, BRCA1, etc. )"/>
-                    &nbsp;
-                    <s:a href=""
-                        cssClass="cgapLogo"
-                        title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)" onclick="gotoCGAP('%{displayableWorkspace.cgapUrl}','annotationGeneSymbolsId')">&nbsp;</s:a>
-                    <s:a href=""
-                        cssClass="caBioLogo"
-                        title="Click to search caBio for genes based on keywords." onclick="showCaBioInputForm(geneExpressionAnnotationInputForm)">&nbsp;</s:a>
-                    <br>
-                    <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
-                    <s:url id="caBioGeneSearchInput" action="caBioGeneSearchInput"/>
-                    <s:div id="caBioGeneSearchInputDiv" 
-                            theme="ajax" 
-                            href="%{caBioGeneSearchInput}" 
-                            formId="geneExpressionAnnotationInputForm" 
-                            loadingText="<img src='images/ajax-loader.gif'/>"
-                            listenTopics="caBioSearchInput" 
-                            refreshOnShow="true"
-                            cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:500px;max-height: 300px; overflow:auto;"/>
+                
+                    <s:component template="genetextfield.ftl" theme="cai2simple">
+                        <s:param name="createTextField" value="true" />
+                        <s:param name="dojoEventTopic" value="%{'caBioSearchInputForAnnotations'}" />
+                        <s:param name="textFieldId" value="%{'annotationGeneSymbolsId'}"/>
+                        <s:param name="textFieldName" value="%{'gePlotForm.annotationBasedForm.geneSymbol'}"/>
+                        <s:param name="formId" value="%{'geneExpressionAnnotationInputForm'}"/>
+                        <s:param name="refreshOnShow" value="%{'true'}" />
+                    </s:component>
                 </td>
             </tr>
 
@@ -56,10 +44,10 @@
                     Select Reporter Type:
                 </td>
                 <td class="value_inline">
-                    <s:radio name="gePlotForm.annotationBasedForm.reporterType"
-                    list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
-                    listKey="key" 
-                    listValue="value" />                
+	                <s:radio name="gePlotForm.annotationBasedForm.reporterType"
+	                list="@gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum@getValueToDisplayableMap()"
+	                listKey="key" 
+	                listValue="value" />                
                 </td>
                 <td class="value_inline"></td>
                 <td class="value_inline"></td>
