@@ -7,6 +7,21 @@
 
 <div id="content">
 
+	    <!-- Begin caBioGeneSearchForm -->
+	    <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
+	    <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm">
+	        <!-- For caBio to know which form element to publish gene symbols to. -->
+	        <s:hidden name="geneSymbolElementId" />
+	        <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
+	        <s:div theme="ajax" 
+	            id="caBioGeneSearchInputDiv"
+	            href="caBioGeneSearchInput.action"
+	            loadingText="<img src='images/ajax-loader.gif'/>"
+	            listenTopics="caBioGeneSearchTopic"
+	            refreshOnShow="false" 
+	            cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:500px;max-height: 300px; overflow:auto;"/>
+	    </s:form>
+	    <!-- End caBioGeneSearchForm -->
         <!--Page Help-->
 
         <div class="pagehelp"><a href="javascript:openHelpWindowWithNavigation('KM_annotation_help')" class="help">

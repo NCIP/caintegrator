@@ -4,8 +4,6 @@
 <s:form name="kaplanMeierGeneExpressionInputForm" id="kaplanMeierGeneExpressionInputForm" theme="simple">
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="resetSelected" value="false" />
-    <!-- For caBio to know which form element to publish gene symbols to. -->
-    <s:hidden name="geneSymbolElementId" />
     
     <!-- Kaplan-Meier Inputs -->
     <h2>Gene Expression Based Kaplan-Meier Survival Plots</h2>
@@ -22,11 +20,8 @@
                 <td class="value_inline">
                     <s:component template="genetextfield.ftl" theme="cai2simple">
                         <s:param name="createTextField" value="true" />
-                        <s:param name="dojoEventTopic" value="%{'caBioSearchInputForGeneExpression'}" />
                         <s:param name="textFieldId" value="%{'kmGeneSymbolsId'}"/>
                         <s:param name="textFieldName" value="%{'kmPlotForm.geneExpressionBasedForm.geneSymbol'}"/>
-                        <s:param name="formId" value="%{'kaplanMeierGeneExpressionInputForm'}"/>
-                        <s:param name="refreshOnShow" value="%{'true'}" />
                     </s:component>
 		        </td>
 	        </tr>

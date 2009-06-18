@@ -16,8 +16,6 @@
 
     <s:hidden name="selectedAction" value="" />
     <s:hidden name="rowNumber" />
-    <!-- For caBio to know which form element to publish gene symbols to. -->
-    <s:hidden name="geneSymbolElementId" />
 
     <!-- Add query criterion row selection -->
     <table class="data">
@@ -79,9 +77,7 @@
                                             <s:if test="geneSymbol">
                                                 <s:component template="genetextfield.ftl" theme="cai2simple">
 							                        <s:param name="textFieldId" value="%{'%{formFieldName}.value'}"/>
-							                        <s:param name="dojoEventTopic" value="%{'caBioSearchInput_%{#rowStatus.index}'}" />
 							                        <s:param name="textFieldName" value="%{'%{formFieldName}.value'}"/>
-							                        <s:param name="formId" value="%{'manageQueryForm'}"/>
 							                        <s:param name="refreshOnShow" value="%{'true'}" />
 							                    </s:component>
                                             </s:if>
