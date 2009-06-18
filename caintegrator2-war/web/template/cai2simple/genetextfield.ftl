@@ -1,8 +1,5 @@
 <#include "/${parameters.templateDir}/simple/controlheader.ftl" />
 
-<@s.hidden name="formName" value="${parameters.formId}" />
-<!-- <@s.hidden name="geneSymbolElementId" value="${parameters.textFieldId}" /> -->
-
 
 <#if parameters.createTextField?exists>
     <@s.textfield theme="simple" id="${parameters.textFieldId}" name="${parameters.textFieldName}"
@@ -22,19 +19,11 @@
 <@s.a theme="simple" href="" 
     cssClass="caBioLogo" 
     title="Click to search caBio for genes based on keywords." 
-    onclick="showCaBioInputForm(${parameters.formId}, '${parameters.dojoEventTopic}', '${parameters.textFieldId}')">
+    onclick="showCaBioInputForm('${parameters.textFieldId}')">
     &nbsp;
 </@s.a>
 
 <br>
-<@s.div id="TB_overlay" cssClass="TB_overlayBG"/>
-<@s.div theme="ajax" 
-    id="caBioGeneSearchInputDiv"
-    href="caBioGeneSearchInput.action"
-    formId="${parameters.formId}"
-    loadingText="<img src='images/ajax-loader.gif'/>"
-    listenTopics="${parameters.dojoEventTopic}"
-    refreshOnShow="${parameters.refreshOnShow?default('true')}" 
-    cssStyle="display:none;visibility:hidden;margin-left:-140px;margin-top:-62px;width:500px;max-height: 300px; overflow:auto;"/>
+
 
 <#include "/${parameters.templateDir}/simple/controlfooter.ftl" />

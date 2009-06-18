@@ -38,12 +38,16 @@ function trimIt (str) {
     return str.slice(0, i + 1);
 }
 
-function showCaBioInputForm(inputForm, dojoEventTopic, geneSymbolElementIdValue) {
+function showCaBioInputForm(geneSymbolElementIdValue) {
     document.getElementById('TB_overlay').style.display = 'block';
     document.getElementById('caBioGeneSearchInputDiv').style.display = 'block';
     document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'visible';
-    dojo.event.topic.publish(dojoEventTopic);
-    inputForm.geneSymbolElementId.value = geneSymbolElementIdValue;
+    if (document.caBioGeneSearchForm.caBioGeneSearchTopicPublished.value == 'false') {
+        document.caBioGeneSearchForm.caBioGeneSearchTopicPublished.value = true;
+        dojo.event.topic.publish('caBioGeneSearchTopic');    
+    }
+    document.caBioGeneSearchForm.geneSymbolElementId.value = geneSymbolElementIdValue;
+
 }
 
 function hideCaBioInputForm() {
@@ -51,8 +55,9 @@ function hideCaBioInputForm() {
     document.getElementById('caBioGeneSearchInputDiv').style.visibility = 'hidden';
 }
 
-function captureCaBioCheckBoxes(inputForm, geneSymbolsTextbox) {
+function captureCaBioCheckBoxes(geneSymbolsTextbox) {
     var cbResults = '';
+    var inputForm = document.caBioGeneSearchForm;
     var cb_symbols_length = inputForm.cb_symbols.length;
     for (var i = 0; i < inputForm.cb_symbols.length; i++ ) {
         if (inputForm.cb_symbols[i].checked == true) {
