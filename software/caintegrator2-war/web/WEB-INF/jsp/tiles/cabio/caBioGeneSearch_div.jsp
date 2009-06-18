@@ -4,8 +4,6 @@
 
 <s:hidden name="runSearchSelected" value="false" />
 
-
-
 <!-- caBio Inputs -->
 <s:div id="TB_ajaxWindowTitle"/>
 <s:div id="TB_closeAjaxWindow">
@@ -19,7 +17,7 @@
 
         <td style="border:0px"> 
         <button type="button" 
-            onclick="<s:property value='searchOnclick' />"> Search 
+            onclick="document.caBioGeneSearchForm.runSearchSelected.value = 'true';dojo.event.topic.publish('searchCaBio')"> Search 
             </button>
         </td>
         <td style="border:0px">
@@ -34,8 +32,7 @@
 <s:div id="caBioGeneSearchResultsDiv" 
         theme="ajax" 
         href="%{caBioGeneSearch}" 
-        formId="%{formName}" 
+        formId="caBioGeneSearchForm" 
         loadingText="<img src='images/ajax-loader.gif'/>"
-        listenTopics="searchCaBio" />
-
-        
+        listenTopics="searchCaBio" 
+        refreshOnShow="false" />

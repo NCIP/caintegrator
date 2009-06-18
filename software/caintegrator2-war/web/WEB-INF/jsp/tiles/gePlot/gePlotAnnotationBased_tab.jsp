@@ -5,8 +5,6 @@
                 
     <s:hidden name="createPlotSelected" value="false" />
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
-    <!-- For caBio to know which form element to publish gene symbols to. -->
-    <s:hidden name="geneSymbolElementId" />
     
     <!-- Gene Expression Inputs -->
     <h2>Annotation Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
@@ -27,11 +25,8 @@
                 
                     <s:component template="genetextfield.ftl" theme="cai2simple">
                         <s:param name="createTextField" value="true" />
-                        <s:param name="dojoEventTopic" value="%{'caBioSearchInputForAnnotations'}" />
                         <s:param name="textFieldId" value="%{'annotationGeneSymbolsId'}"/>
                         <s:param name="textFieldName" value="%{'gePlotForm.annotationBasedForm.geneSymbol'}"/>
-                        <s:param name="formId" value="%{'geneExpressionAnnotationInputForm'}"/>
-                        <s:param name="refreshOnShow" value="%{'true'}" />
                     </s:component>
                 </td>
             </tr>

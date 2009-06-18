@@ -25,11 +25,8 @@
                 <td class="value_inline">
                     <s:component template="genetextfield.ftl" theme="cai2simple">
                         <s:param name="createTextField" value="true" />
-                        <s:param name="dojoEventTopic" value="%{'caBioSearchInputForClinical'}" />
                         <s:param name="textFieldId" value="%{'clinicalGeneSymbolsId'}"/>
                         <s:param name="textFieldName" value="%{'gePlotForm.clinicalQueryBasedForm.geneSymbol'}"/>
-                        <s:param name="formId" value="%{'geneExpressionClinicalQueryInputForm'}"/>
-                        <s:param name="refreshOnShow" value="%{'true'}" />
                     </s:component>
                 </td>
             </tr>

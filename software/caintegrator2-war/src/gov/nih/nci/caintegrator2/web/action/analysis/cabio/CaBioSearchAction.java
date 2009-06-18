@@ -104,8 +104,8 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     private List<CaBioDisplayableGene> caBioGenes;
 
     // JSP Form Hidden Variables
-    private String formName;
     private String geneSymbolElementId;
+    private boolean caBioGeneSearchTopicPublished = false;
     private boolean runSearchSelected = false;
     
     /**
@@ -193,29 +193,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     }
 
     /**
-     * @return the formName
-     */
-    public String getFormName() {
-        return formName;
-    }
-
-    /**
-     * @param formName the formName to set
-     */
-    public void setFormName(String formName) {
-        this.formName = formName;
-    }
-    
-    /**
-     * The string used by the "Search" button's onclick function on the caBioGeneSearch jsp. 
-     * @return onclick search string.
-     */
-    public String getSearchOnclick() {
-        return "document." + formName + ".runSearchSelected.value = 'true';"
-            + " dojo.event.topic.publish('searchCaBio')";
-    }
-
-    /**
      * @return the geneSymbolElementId
      */
     public String getGeneSymbolElementId() {
@@ -227,6 +204,20 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setGeneSymbolElementId(String geneSymbolElementId) {
         this.geneSymbolElementId = geneSymbolElementId;
+    }
+
+    /**
+     * @return the caBioGeneSearchTopicPublished
+     */
+    public boolean isCaBioGeneSearchTopicPublished() {
+        return caBioGeneSearchTopicPublished;
+    }
+
+    /**
+     * @param caBioGeneSearchTopicPublished the caBioGeneSearchTopicPublished to set
+     */
+    public void setCaBioGeneSearchTopicPublished(boolean caBioGeneSearchTopicPublished) {
+        this.caBioGeneSearchTopicPublished = caBioGeneSearchTopicPublished;
     }
 
 }
