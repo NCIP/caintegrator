@@ -15,7 +15,7 @@
 
         <td style="border:0px"> 
         <button type="button" 
-            onclick="document.caBioGeneSearchForm.runSearchSelected.value = 'true';dojo.event.topic.publish('searchCaBio')"> Search 
+            onclick="runCaBioSearch();"> Search 
             </button>
         </td>
         <td style="border:0px">
