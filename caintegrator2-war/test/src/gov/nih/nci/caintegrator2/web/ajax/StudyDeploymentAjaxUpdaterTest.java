@@ -155,7 +155,9 @@ public class StudyDeploymentAjaxUpdaterTest {
             UserWorkspace workspace = new UserWorkspace();
             workspace.setUsername("Test");
             workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            workspace.getSubscriptionCollection().add(getSubscription());
             studyConfiguration.setUserWorkspace(workspace);
+            
             return workspace;
         }
     }

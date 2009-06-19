@@ -90,6 +90,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.AbstractCriterion;
 import gov.nih.nci.caintegrator2.domain.application.BooleanOperatorEnum;
@@ -153,7 +155,11 @@ public class QueryManagementServiceImplTest {
         query.getCompoundCriterion().setCriterionCollection(new HashSet<AbstractCriterion>());
         query.setColumnCollection(new HashSet<ResultColumn>());
         query.setSubscription(new StudySubscription());
-        query.getSubscription().setStudy(new Study());
+        Study study = new Study();
+        query.getSubscription().setStudy(study);
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        study.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
     }
 
     
@@ -232,7 +238,7 @@ public class QueryManagementServiceImplTest {
         SampleSet sampleSet1 = new SampleSet();
         sampleSet1.setName("controlSampleSet1");
         sampleSet1.getSamples().add(new Sample());
-        study.getControlSampleSetCollection().add(sampleSet1);
+        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
         result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
         foldChangeCriterion.setFoldsDown(1.0f);

@@ -150,6 +150,8 @@ public class QueryFormTest {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         studyConfiguration.setStatus(Status.DEPLOYED);
         study.setStudyConfiguration(studyConfiguration);
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
         
         subscription.setStudy(study);
         stringClinicalAnnotation1 = createDefinition("stringClinicalAnnotation1", AnnotationTypeEnum.STRING);
@@ -199,7 +201,7 @@ public class QueryFormTest {
         assertEquals("numericClinicalAnnotation", queryForm.getClinicalAnnotations().getNames().get(1));
         assertEquals(stringClinicalAnnotation1, queryForm.getClinicalAnnotations().getDefinition("stringClinicalAnnotation1"));
 
-        
+        queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().clear();
         assertEquals(2, queryForm.getCriteriaTypeOptions().size());
         queryForm.getQuery().getSubscription().getStudy().getStudyConfiguration().getGenomicDataSources().add(new GenomicDataSourceConfiguration());
         assertEquals(3, queryForm.getCriteriaTypeOptions().size());
@@ -254,7 +256,7 @@ public class QueryFormTest {
         SampleSet sampleSet1 = new SampleSet();
         sampleSet1.setName("ControlSampleSet1");
         sampleSet1.getSamples().add(new Sample());
-        subscription.getStudy().getControlSampleSetCollection().add(sampleSet1);
+        getFirstGenomicSource(subscription).getControlSampleSetCollection().add(sampleSet1);
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.CLINICAL.getValue());
@@ -276,9 +278,13 @@ public class QueryFormTest {
         
     }
     
+    private GenomicDataSourceConfiguration getFirstGenomicSource(StudySubscription subscription) {
+        return subscription.getStudy().getStudyConfiguration().getGenomicDataSources().get(0);
+    }
+    
     @Test
     public void testCriterionRowNoControlSamples() {
-        subscription.getStudy().getControlSampleSetCollection().clear();
+        getFirstGenomicSource(subscription).getControlSampleSetCollection().clear();
         queryForm.createQuery(subscription);
         CriteriaGroup group = queryForm.getCriteriaGroup();
         group.setCriterionTypeName(CriterionRowTypeEnum.GENE_EXPRESSION.getValue());

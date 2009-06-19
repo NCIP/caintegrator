@@ -361,13 +361,15 @@ public interface StudyManagementService {
      * Adds the samples specified by identifier in the file to a new set of control samples in the
      * study.
      * 
-     * @param studyConfiguration add controls for this study
+     * @param genomicSource add controls for this genomicSource
      * @param controlSampleSetName the controlSampleSet name
      * @param controlSampleFile file containing the sample identifiers, one per line
+     * @param controlSampleFileName the controlSampleFile file name
      * @throws ValidationException if the file is invalid.
      * @throws IOException unexpected IO exception
      */
-    void addControlSampleSet(StudyConfiguration studyConfiguration, String controlSampleSetName, File controlSampleFile)
+    void addControlSampleSet(GenomicDataSourceConfiguration genomicSource, String controlSampleSetName,
+            File controlSampleFile, String controlSampleFileName)
         throws ValidationException, IOException;
 
     /**

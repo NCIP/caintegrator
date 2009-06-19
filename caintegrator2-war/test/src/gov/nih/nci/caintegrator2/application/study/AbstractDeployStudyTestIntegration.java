@@ -451,12 +451,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private void loadControlSamples(int genomicSourceIndex) throws ValidationException, IOException {
         if (getLoadSamples() && getControlSamplesFile() != null) {
             logStart();
-            service.addControlSampleSet(studyConfiguration, getControlSampleSetName(), getControlSamplesFile());
             GenomicDataSourceConfiguration genomicSource = studyConfiguration.getGenomicDataSources().get(genomicSourceIndex);
-            genomicSource.addControlSampleMappingFileName(getControlSamplesFile().getName());
-            genomicSource.addControlSampleSetName(getControlSampleSetName(),
-                    getStudyConfiguration().getStudy().getControlSampleSet(getControlSampleSetName()).getSamples().size());
-            assertEquals(getExpectedControlSampleCount(), studyConfiguration.getStudy().
+            service.addControlSampleSet(genomicSource, getControlSampleSetName(), getControlSamplesFile(), getControlSamplesFile().getName());
+            assertEquals(getExpectedControlSampleCount(), studyConfiguration.
                     getControlSampleSet(getControlSampleSetName()).getSamples().size());
             logEnd();
         }
@@ -467,6 +464,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     abstract protected String getControlSampleSetName();
 
     abstract protected File getControlSamplesFile();
+
+    abstract protected String getControlSamplesFileName();
     
     private void deploy() throws ConnectionException, DataRetrievalException, ValidationException {
         logStart();

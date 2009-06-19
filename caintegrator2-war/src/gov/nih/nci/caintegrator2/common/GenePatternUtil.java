@@ -155,7 +155,7 @@ public final class GenePatternUtil {
     private static Set<Sample> getAllNonControlSamples(StudySubscription studySubscription) {
         Set<Sample> samples = new HashSet<Sample>();
         samples.addAll(studySubscription.getStudy().getSamples());
-        samples.removeAll(studySubscription.getStudy().getAllControlSamples());
+        samples.removeAll(studySubscription.getStudy().getStudyConfiguration().getAllControlSamples());
         return samples;
     }
 

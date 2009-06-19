@@ -123,7 +123,7 @@ public class DisplayableGenomicSource {
      * @return number of control samples.
      */
     public String getNumberControlSampleSetSamples() {
-        return genomicDataSourceConfiguration.getControlSampleSetCommaSeparatedNames();
+        return genomicDataSourceConfiguration.getControlSampleSetCommaSeparated();
     }
     
     /**

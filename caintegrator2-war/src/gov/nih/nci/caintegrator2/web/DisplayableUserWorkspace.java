@@ -247,7 +247,7 @@ public class DisplayableUserWorkspace {
             if (subscription.getId().equals(getCurrentStudySubscriptionId())) {
                 currentStudySubscription = subscription;
                 currentStudy = subscription.getStudy();
-                Cai2Util.loadSampleSets(currentStudy.getControlSampleSetCollection());
+                Cai2Util.loadGenomicSources(subscription.getStudy().getStudyConfiguration().getGenomicDataSources());
             }
         }
 

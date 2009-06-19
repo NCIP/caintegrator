@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.web.action.query.form;
 import gov.nih.nci.caintegrator2.domain.application.AbstractGenomicCriterion;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import org.apache.commons.lang.StringUtils;
@@ -212,8 +211,8 @@ class FoldChangeCriterionWrapper extends AbstractGenomicCriterionWrapper {
 
     private SelectListParameter<String> createControlSampleSetParameter(Study study) {
         OptionList<String> options = new OptionList<String>();
-        for (SampleSet controlSampleSet : study.getControlSampleSetCollection()) {
-            options.addOption(controlSampleSet.getName(), controlSampleSet.getName());
+        for (String name : study.getStudyConfiguration().getControlSampleSetNames()) {
+            options.addOption(name, name);
         }
         ValueSelectedHandler<String> handler = new ValueSelectedHandler<String>() {
             public void valueSelected(String value) {
