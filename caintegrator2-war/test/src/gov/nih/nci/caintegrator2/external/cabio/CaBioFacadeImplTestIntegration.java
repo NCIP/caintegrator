@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.cabio;
 
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -116,13 +117,31 @@ public class CaBioFacadeImplTestIntegration {
 
     @Test
     public void testRetrieveGeneSymbolsFromKeywords() throws ConnectionException {
-        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGeneSymbolsFromKeywords("heart");
+        CaBioGeneSearchParameters params = new CaBioGeneSearchParameters();
+        params.setKeywords("heart");
+        params.setTaxon("human");
+        List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertTrue(checkSymbolExists("CDH13", genes));
         assertTrue(checkSymbolExists("FABP3", genes));
         assertTrue(checkSymbolExists("HAND1", genes));
         assertTrue(checkSymbolExists("HAND2", genes));
         assertTrue(checkSymbolExists("LBH", genes));
         assertTrue(checkSymbolExists("LOC128102", genes));
+        
+        params.setTaxon("mouse");
+        genes = caBioFacade.retrieveGenes(params);
+        assertFalse(checkSymbolExists("CDH13", genes));
+        assertTrue(checkSymbolExists("FABP3", genes));
+        
+        params.setTaxon(CaBioGeneSearchParameters.ALL_TAXONS);
+        genes = caBioFacade.retrieveGenes(params);
+        assertTrue(!genes.isEmpty());
+    }
+    
+    @Test
+    public void testRetrieveAllTaxons() throws ConnectionException {
+        List<String> taxons = caBioFacade.retrieveAllTaxons();
+        assertFalse(taxons.isEmpty());
     }
     
     private boolean checkSymbolExists(String symbol, List<CaBioDisplayableGene> genes) {
