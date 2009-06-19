@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -481,5 +482,56 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      */
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    /**
+     * @param name the controlSampleSet name
+     * @return the requested controlSampleSet
+     */
+    public SampleSet getControlSampleSet(String name) {
+        SampleSet controlSampleSet = null;
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            controlSampleSet = genomicDataSourceConfiguration.getControlSampleSet(name);
+            if (controlSampleSet != null) {
+                return controlSampleSet;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Get all control samples.
+     * @return set of all control samples
+     */
+    public Set<Sample> getAllControlSamples() {
+        Set<Sample> controlSamples = new HashSet<Sample>();
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            controlSamples.addAll(genomicDataSourceConfiguration.getAllControlSamples());
+        }
+        return controlSamples;
+    }
+
+    /**
+     * @return the boolean of whether the study has Control Samples
+     */
+    public boolean hasControlSamples() {
+        for (GenomicDataSourceConfiguration genomicDataSourceConfiguration : genomicDataSources) {
+            if (!genomicDataSourceConfiguration.getAllControlSamples().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get all control sample set names.
+     * @return list of control sample set names.
+     */
+    public List<String> getControlSampleSetNames() {
+        List<String> controlSampleSetNames = new ArrayList<String>();
+            for (GenomicDataSourceConfiguration genomicSource : genomicDataSources) {
+                controlSampleSetNames.addAll(genomicSource.getControlSampleSetNames());
+            }
+        return controlSampleSetNames;
     }
 }

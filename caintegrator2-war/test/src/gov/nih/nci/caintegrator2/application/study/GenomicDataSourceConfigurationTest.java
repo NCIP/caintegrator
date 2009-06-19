@@ -110,9 +110,9 @@ public class GenomicDataSourceConfigurationTest {
         Study study = new Study();
         studyConfiguration.setStudy(study);
         SampleSet controlSampleSet1 = new SampleSet();
-        study.getControlSampleSetCollection().add(controlSampleSet1);
-        controlSampleSet1.getSamples().add(sample3);
         studyConfiguration.getGenomicDataSources().add(configuration);
+        studyConfiguration.getGenomicDataSources().get(0).getControlSampleSetCollection().add(controlSampleSet1);
+        controlSampleSet1.getSamples().add(sample3);
         configuration.setStudyConfiguration(studyConfiguration);
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         study.getAssignmentCollection().add(assignment);

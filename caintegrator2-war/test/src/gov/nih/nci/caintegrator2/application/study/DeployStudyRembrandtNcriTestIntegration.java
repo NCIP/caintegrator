@@ -208,6 +208,11 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     }
 
     @Override
+    protected String getControlSamplesFileName() {
+        return TestDataFiles.JAGLA_00034_CONTROL_SAMPLES_FILE_PATH;
+    }
+
+    @Override
     protected File getSubjectAnnotationFile() {
         return TestDataFiles.REMBRANDT_NCRI_CLINICAL_FILE;
     }

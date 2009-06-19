@@ -85,9 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.action;
 
-import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -131,10 +128,6 @@ public abstract class AbstractDeployedStudyAction extends AbstractCaIntegrator2A
      * @return all control sample set names.
      */
     public List<String> getControlSampleSets() {
-        List<String> list = new ArrayList<String>();
-        for (SampleSet sampleSet : getStudy().getControlSampleSetCollection()) {
-            list.add(sampleSet.getName());
-        }
-        return list;
+        return getStudy().getStudyConfiguration().getControlSampleSetNames();
     }
 }

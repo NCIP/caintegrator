@@ -173,6 +173,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
             subscription.setId(Long.valueOf(1));
             subscription.setStudy(new Study());
             subscription.getStudy().setShortTitleText("Study Name");
+            subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
             subscription.setQueryCollection(new HashSet<Query>());
         }
         return subscription;

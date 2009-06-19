@@ -90,10 +90,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
-import gov.nih.nci.caintegrator2.domain.translational.Study;
 
 import java.util.HashMap;
 
@@ -110,7 +110,6 @@ public class SaveControlSamplesActionTest {
     
     private SaveControlSamplesAction action;
     StudyManagementServiceStub studyManagementServiceStub = new StudyManagementServiceStub();
-    Study study = new Study();
     
     @Before
     public void setUp() {
@@ -125,22 +124,25 @@ public class SaveControlSamplesActionTest {
 
     @Test
     public void testValidate() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        action.setStudyConfiguration(studyConfiguration);
+
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setControlSampleSetName("ControlSampleSet1");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setControlSampleFile(TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
         action.validate();
-        assertTrue(action.hasFieldErrors());
-        action.clearErrorsAndMessages();
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        action.setStudyConfiguration(studyConfiguration);
-        action.setControlSampleSetName("ControlSampleSet1");
-        action.validate();
         assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
         SampleSet controlSampleSet = new SampleSet();
         controlSampleSet.setName("ControlSampleSet1");
-        studyConfiguration.getStudy().getControlSampleSetCollection().add(controlSampleSet);
-        study.getControlSampleSetCollection();
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
+        genomicSource.getControlSampleSetCollection().add(controlSampleSet);
         action.validate();
         assertTrue(action.hasFieldErrors());
     }

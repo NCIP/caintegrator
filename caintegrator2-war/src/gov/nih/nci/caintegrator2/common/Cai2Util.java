@@ -128,6 +128,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -318,19 +319,13 @@ public final class Cai2Util {
         }
         loadCollection(query.getColumnCollection());
     }
-    
+
     /**
      * Make sure all persistent collections are loaded.
      * @param studyConfiguration to load from hibernate.
      */
     public static void loadCollection(StudyConfiguration studyConfiguration) {
-        loadCollection(studyConfiguration.getGenomicDataSources());
-        for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            loadSamples(genomicSource.getSamples());
-            loadSamples(genomicSource.getControlSamples());
-            loadSamples(genomicSource.getMappedSamples());
-            Hibernate.initialize(genomicSource.getServerProfile());
-        }
+        loadGenomicSources(studyConfiguration.getGenomicDataSources());
         Cai2Util.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
             loadCollection(assignment.getSampleAcquisitionCollection());
@@ -338,7 +333,21 @@ public final class Cai2Util {
                 loadSampleCollections(sampleAcquisition.getSample());
             }
         }
-        loadSampleSets(studyConfiguration.getStudy().getControlSampleSetCollection());
+    }
+
+    /**
+     * Make sure all persistent collections are loaded.
+     * @param genomicSources List of GenomicDataSourceConfiguration to load from hibernate.
+     */
+    public static void loadGenomicSources(List<GenomicDataSourceConfiguration> genomicSources) {
+        loadCollection(genomicSources);
+        for (GenomicDataSourceConfiguration genomicSource : genomicSources) {
+            loadSamples(genomicSource.getSamples());
+            loadSamples(genomicSource.getControlSamples());
+            loadSamples(genomicSource.getMappedSamples());
+            loadSampleSets(genomicSource.getControlSampleSetCollection());
+            Hibernate.initialize(genomicSource.getServerProfile());
+        }
     }
     
     /**

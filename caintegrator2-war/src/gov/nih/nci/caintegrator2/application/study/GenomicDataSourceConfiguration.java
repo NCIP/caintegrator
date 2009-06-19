@@ -87,13 +87,16 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -110,10 +113,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private String platformVendor;
     private String platformName;
     private String sampleMappingCommaSeparatedFileNames;
-    private String controlSampleMappingCommaSeparatedFileNames;
-    private String controlSampleSetCommaSeparatedNames;
     private List<SampleIdentifier> sampleIdentifiers = new ArrayList<SampleIdentifier>();
     private List<Sample> samples = new ArrayList<Sample>();
+    private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
     private CopyNumberDataConfiguration copyNumberDataConfiguration;
 
     /**
@@ -182,9 +184,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return the control samples
      */
     public List<Sample> getControlSamples() {
-        if (!getStudyConfiguration().getStudy().getAllControlSamples().isEmpty()) {
+        if (!getStudyConfiguration().getAllControlSamples().isEmpty()) {
             List<Sample> controlSamples = new ArrayList<Sample>();
-            controlSamples.addAll(getStudyConfiguration().getStudy().getAllControlSamples());
+            controlSamples.addAll(getStudyConfiguration().getAllControlSamples());
             controlSamples.retainAll(getSamples());
             return controlSamples;
         } else {
@@ -198,8 +200,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public List<Sample> getUnmappedSamples() {
         List<Sample> unmappedSamples = new ArrayList<Sample>();
         unmappedSamples.addAll(getSamples());
-        if (!getStudyConfiguration().getStudy().getAllControlSamples().isEmpty()) {
-            unmappedSamples.removeAll(getStudyConfiguration().getStudy().getAllControlSamples());
+        if (!getStudyConfiguration().getAllControlSamples().isEmpty()) {
+            unmappedSamples.removeAll(getStudyConfiguration().getAllControlSamples());
         }
         unmappedSamples.removeAll(getStudyConfiguration().getSamples());
         return unmappedSamples;
@@ -298,55 +300,6 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         }
         return sampleMappingFileNames;
     }
-    
-    /**
-     * Adds the filename to the comma separated list of file names.
-     * @param filename to add to the list.
-     */
-    public void addControlSampleMappingFileName(String filename) {
-        if (controlSampleMappingCommaSeparatedFileNames == null) {
-            setControlSampleMappingCommaSeparatedFileNames(filename);
-        } else {
-            setControlSampleMappingCommaSeparatedFileNames(controlSampleMappingCommaSeparatedFileNames 
-                    + "," + filename);
-        }
-    }
-    
-    /**
-     * Adds the filename to the comma separated list of file names.
-     * @param controlSampleSetName to add to the list
-     * @param count number of samples in the set
-     */
-    public void addControlSampleSetName(String controlSampleSetName, int count) {
-        if (controlSampleSetCommaSeparatedNames == null) { 
-            setControlSampleSetCommaSeparatedNames(controlSampleSetName + ":" + count);    
-        } else {
-            setControlSampleSetCommaSeparatedNames(controlSampleSetCommaSeparatedNames 
-                    + "," + controlSampleSetName + ":" + count);
-        }
-    }
-    
-    /**
-     * @return the controlSampleMappingCommaSeparatedFileName
-     */
-    public String getControlSampleMappingCommaSeparatedFileNames() {
-        return controlSampleMappingCommaSeparatedFileNames;
-    }
-
-    private void setControlSampleMappingCommaSeparatedFileNames(String controlSampleMappingCommaSeparatedFileNames) {
-        this.controlSampleMappingCommaSeparatedFileNames = controlSampleMappingCommaSeparatedFileNames;
-    }
-    
-    /**
-     * @return the controlSampleSetCommaSeparatedName
-     */
-    public String getControlSampleSetCommaSeparatedNames() {
-        return controlSampleSetCommaSeparatedNames;
-    }
-
-    private void setControlSampleSetCommaSeparatedNames(String controlSampleSetCommaSeparatedNames) {
-        this.controlSampleSetCommaSeparatedNames = controlSampleSetCommaSeparatedNames;
-    }
 
     /**
      * Used for the visual display of the control sample mapping file names.
@@ -354,11 +307,12 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public List<String> getControlSampleMappingFileNames() {
         List<String> controlSampleMappingFileNames = new ArrayList<String>();
-        if (StringUtils.isBlank(controlSampleMappingCommaSeparatedFileNames)) {
+        if (controlSampleSetCollection.isEmpty()) {
             controlSampleMappingFileNames.add("None Configured");
         } else {
-            controlSampleMappingFileNames.addAll(Arrays.asList(
-                    StringUtils.split(controlSampleMappingCommaSeparatedFileNames, ",")));
+            for (SampleSet controlSampleSet : controlSampleSetCollection) {
+                controlSampleMappingFileNames.add(controlSampleSet.getFileName());
+            }
         }
         return controlSampleMappingFileNames;
     }
@@ -369,11 +323,9 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public List<String> getControlSampleSetNames() {
         List<String> controlSampleSetNames = new ArrayList<String>();
-        if (!StringUtils.isBlank(controlSampleSetCommaSeparatedNames)) {
-            for (String string : StringUtils.split(controlSampleSetCommaSeparatedNames, ",")) {
-                controlSampleSetNames.add(StringUtils.split(string, ":")[0]);
+            for (SampleSet controlSampleSet : controlSampleSetCollection) {
+                controlSampleSetNames.add(controlSampleSet.getName());
             }
-        }
         return controlSampleSetNames;
     }
     
@@ -401,5 +353,62 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
             }
         }
         return null;
+    }
+
+    /**
+     * @return the controlSampleSetCollection
+     */
+    public Set<SampleSet> getControlSampleSetCollection() {
+        return controlSampleSetCollection;
+    }
+
+    /**
+     * @param defaultControlSampleSet the defaultControlSampleSet to set
+     */
+    @SuppressWarnings("unused") // required by Hibernate
+    private void setControlSampleSetCollection(Set<SampleSet> controlSampleSetCollection) {
+        this.controlSampleSetCollection = controlSampleSetCollection;
+    }
+
+    /**
+     * @param name the controlSampleSet name
+     * @return the requested controlSampleSet
+     */
+    public SampleSet getControlSampleSet(String name) {
+        for (SampleSet controlSampleSet : controlSampleSetCollection) {
+            if (controlSampleSet.getName().equalsIgnoreCase(name)) {
+                return controlSampleSet;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Get all control samples.
+     * @return set of all control samples
+     */
+    public Set<Sample> getAllControlSamples() {
+        Set<Sample> controlSamples = new HashSet<Sample>();
+        for (SampleSet sampleSet : controlSampleSetCollection) {
+            controlSamples.addAll(sampleSet.getSamples());
+        }
+        return controlSamples;
+    }
+    
+    /**
+     * Get comma separated Control sample set name and number of samples in the each set.
+     * @return a string of comma separated values.
+     */
+    public String getControlSampleSetCommaSeparated() {
+        StringBuffer resultBuffer = new StringBuffer();
+        for (SampleSet controlSampleSet : controlSampleSetCollection) {
+            if (resultBuffer.length() > 0) {
+                resultBuffer.append(", ");
+            }
+            resultBuffer.append(controlSampleSet.getName());
+            resultBuffer.append(':');
+            resultBuffer.append(controlSampleSet.getSamples().size());
+        }
+        return resultBuffer.toString();
     }
 }

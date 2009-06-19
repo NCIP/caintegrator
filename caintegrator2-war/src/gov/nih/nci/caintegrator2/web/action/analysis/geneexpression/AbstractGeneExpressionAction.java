@@ -341,7 +341,7 @@ public abstract class AbstractGeneExpressionAction extends AbstractDeployedStudy
      * @return T/F value.
      */
     public boolean hasControlSamples() {
-        return getStudySubscription() != null ? getStudySubscription().getStudy().hasControlSamples() : false;
+        return getStudy().getStudyConfiguration().hasControlSamples();
     }
     
 }

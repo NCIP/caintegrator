@@ -99,39 +99,41 @@ import java.io.LineNumberReader;
 class ControlSampleHelper {
 
     private final File controlSampleFile;
-    private final StudyConfiguration studyConfiguration;
+    private final GenomicDataSourceConfiguration genomicSource;
 
-    ControlSampleHelper(StudyConfiguration studyConfiguration, File controlSampleFile) {
-        this.studyConfiguration = studyConfiguration;
+    ControlSampleHelper(GenomicDataSourceConfiguration genomicSource, File controlSampleFile) {
+        this.genomicSource = genomicSource;
         this.controlSampleFile = controlSampleFile;
     }
 
-    void addControlSamples(String controlSampleSetName) throws ValidationException, IOException {
-        if (studyConfiguration.getStudy().getControlSampleSet(controlSampleSetName) != null) {
+    void addControlSamples(String controlSampleSetName, String controlFileName)
+            throws ValidationException, IOException {
+        if (genomicSource.getStudyConfiguration().getControlSampleSet(controlSampleSetName) != null) {
             throw new ValidationException("Duplicate Control Sample Set Name.");
         }
-        SampleSet newControlSampleSet = addControlSampleSet(controlSampleSetName);
+        SampleSet newControlSampleSet = addControlSampleSet(controlSampleSetName, controlFileName);
         FileReader fileReader = new FileReader(controlSampleFile);
         LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
         String sampleName;
         while ((sampleName = lineNumberReader.readLine()) != null) {
             addControlSample(newControlSampleSet, sampleName, lineNumberReader.getLineNumber());
         }
-        studyConfiguration.getStudy().getControlSampleSetCollection().add(newControlSampleSet);
+        genomicSource.getControlSampleSetCollection().add(newControlSampleSet);
         lineNumberReader.close();
         fileReader.close();
     }
     
-    private SampleSet addControlSampleSet(String name) {
+    private SampleSet addControlSampleSet(String name, String controlFileName) {
         SampleSet newControlSampleSet = new SampleSet();
         newControlSampleSet.setName(name);
-        studyConfiguration.getStudy().getControlSampleSetCollection().add(newControlSampleSet);
+        newControlSampleSet.setFileName(controlFileName);
+        genomicSource.getControlSampleSetCollection().add(newControlSampleSet);
         return newControlSampleSet;
     }
 
     private void addControlSample(SampleSet newControlSampleSet, String sampleName,
             int lineNumber) throws ValidationException {
-        Sample sample = studyConfiguration.getSample(sampleName);
+        Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
         if (sample == null) {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber
                     + ", there is no sample with the identifier " + sampleName + " in the study.");

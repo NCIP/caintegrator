@@ -106,6 +106,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -460,6 +461,7 @@ public class StudyManagementServiceTest {
     public void testAddControlSamples() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration genomicDataSourceConfiguration = new GenomicDataSourceConfiguration();
+        genomicDataSourceConfiguration.setStudyConfiguration(studyConfiguration);
         Sample sample1 = new Sample();
         sample1.setId(1L);
         sample1.setName("GeneratedSample.Normal_L_20070227_14-01-17-731_HF0088_U133P2");
@@ -469,15 +471,32 @@ public class StudyManagementServiceTest {
         sample2.setName("GeneratedSample.Normal_L_20070227_14-01-17-731_HF0120_U133P2");
         genomicDataSourceConfiguration.getSamples().add(sample2);
         studyConfiguration.getGenomicDataSources().add(genomicDataSourceConfiguration);
-        studyManagementService.addControlSampleSet(studyConfiguration, CONTROL_SAMPLE_SET_NAME, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE);
-        assertTrue(studyConfiguration.getStudy().getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample1));
-        assertTrue(studyConfiguration.getStudy().getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample2));
+        studyManagementService.addControlSampleSet(genomicDataSourceConfiguration, CONTROL_SAMPLE_SET_NAME,
+                TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE, TestDataFiles.SHORT_REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
+        assertTrue(studyConfiguration.getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample1));
+        assertTrue(studyConfiguration.getControlSampleSet(CONTROL_SAMPLE_SET_NAME).getSamples().contains(sample2));
+    }
+    
+    @Test(expected = ValidationException.class)
+    public void testAddControlSamplesDuplicate() throws ValidationException, IOException {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
+        SampleSet controlSampleSet = new SampleSet();
+        controlSampleSet.setName(CONTROL_SAMPLE_SET_NAME);
+        genomicSource.getControlSampleSetCollection().add(controlSampleSet);
+        studyManagementService.addControlSampleSet(genomicSource, CONTROL_SAMPLE_SET_NAME,
+                TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     }
     
     @Test(expected = ValidationException.class)
     public void testAddControlSamplesValidation() throws ValidationException, IOException {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        studyManagementService.addControlSampleSet(studyConfiguration, CONTROL_SAMPLE_SET_NAME, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE);
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setStudyConfiguration(studyConfiguration);
+        studyManagementService.addControlSampleSet(genomicSource, CONTROL_SAMPLE_SET_NAME,
+                TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE, TestDataFiles.REMBRANDT_CONTROL_SAMPLES_FILE_PATH);
     }
 
     @Test
