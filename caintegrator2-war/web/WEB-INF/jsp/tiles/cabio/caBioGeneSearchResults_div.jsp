@@ -5,7 +5,7 @@
     <!-- CaBio Gene Results -->
     <s:if test="%{!caBioGenes.empty}">
         <tr>
-        <th> </th>
+        <th> <input type="checkbox" name="checkall" onclick="checkUncheckAll(this);" checked="checked"/> </th>
         <th> Symbol </th>
         <th> Taxon </th>
         <th> Full Name </th>
