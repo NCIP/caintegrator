@@ -132,20 +132,28 @@ public class CaBioSearchActionTest {
         assertEquals(CaBioSearchAction.SUCCESS, action.searchForGenes());
         
         // If no keywords.
-        assertFalse(caBioFacade.retrieveGeneSymbolsFromKeywordsCalled);
+        assertFalse(caBioFacade.retrieveGenesCalled);
         action.setRunSearchSelected(true);
         assertEquals(CaBioSearchAction.INPUT, action.searchForGenes());
         
-        // If keywords exist.
+        // If keywords exist but nothing is returned.
         action.setRunSearchSelected(true);
-        action.setGeneKeywords("keywords");
+        action.getGeneSearchParams().setKeywords("keywords");
+        assertEquals(CaBioSearchAction.INPUT, action.searchForGenes());
+        assertTrue(caBioFacade.retrieveGenesCalled);
+        assertFalse(action.isRunSearchSelected());
+        
+        // If keywords exist and something is returned.
+        action.setRunSearchSelected(true);
+        action.getGeneSearchParams().setKeywords("keywords");
+        caBioFacade.isReturnResults = true;
         assertEquals(CaBioSearchAction.SUCCESS, action.searchForGenes());
-        assertTrue(caBioFacade.retrieveGeneSymbolsFromKeywordsCalled);
+        assertTrue(caBioFacade.retrieveGenesCalled);
         assertFalse(action.isRunSearchSelected());
         
         // Now do a connection exception.
         action.setRunSearchSelected(true);
-        action.setGeneKeywords("keywords");
+        action.getGeneSearchParams().setKeywords("keywords");
         caBioFacade.isConnectionException = true;
         assertEquals(CaBioSearchAction.ERROR, action.searchForGenes());
     }

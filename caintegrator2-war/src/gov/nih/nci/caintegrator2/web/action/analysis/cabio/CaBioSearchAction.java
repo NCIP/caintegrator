@@ -88,8 +88,10 @@ package gov.nih.nci.caintegrator2.web.action.analysis.cabio;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioDisplayableGene;
 import gov.nih.nci.caintegrator2.external.cabio.CaBioFacade;
+import gov.nih.nci.caintegrator2.external.cabio.CaBioGeneSearchParameters;
 import gov.nih.nci.caintegrator2.web.action.AbstractCaIntegrator2Action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -100,8 +102,9 @@ import org.apache.commons.lang.StringUtils;
 public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     
     private CaBioFacade caBioFacade;
-    private String geneKeywords;
+    private CaBioGeneSearchParameters geneSearchParams = new CaBioGeneSearchParameters();
     private List<CaBioDisplayableGene> caBioGenes;
+    private final List<String> taxonList = new ArrayList<String>();
 
     // JSP Form Hidden Variables
     private String geneSymbolElementId;
@@ -112,7 +115,19 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      * {@inheritDoc}
      */
     public String input() {
+        try {
+            reset();
+        } catch (ConnectionException e) {
+            addActionError("Unable to connect to caBio.");
+        }
         return SUCCESS;
+    }
+
+    private void reset() throws ConnectionException {
+        taxonList.clear();
+        taxonList.add(CaBioGeneSearchParameters.ALL_TAXONS);
+        taxonList.addAll(caBioFacade.retrieveAllTaxons());
+        geneSearchParams = new CaBioGeneSearchParameters();
     }
     
     /**
@@ -122,16 +137,25 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
     public String searchForGenes() {
         if (runSearchSelected) {
             runSearchSelected = false;
-            if (StringUtils.isBlank(geneKeywords)) {
+            if (StringUtils.isBlank(geneSearchParams.getKeywords())) {
                 addActionError("Must enter keywords to search on.");
                 return INPUT;
             }
-            try {
-                caBioGenes = caBioFacade.retrieveGeneSymbolsFromKeywords(geneKeywords);
-            } catch (ConnectionException e) {
-                addActionError("Unable to connect to caBio.");
-                return ERROR;
+            return retrieveGenesFromCaBio();
+        }
+        return SUCCESS;
+    }
+
+    private String retrieveGenesFromCaBio() {
+        try {
+            caBioGenes = caBioFacade.retrieveGenes(geneSearchParams);
+            if (caBioGenes.isEmpty()) {
+                addActionError("No results were returned from search.");
+                return INPUT;
             }
+        } catch (ConnectionException e) {
+            addActionError("Unable to connect to caBio.");
+            return ERROR;
         }
         return SUCCESS;
     }
@@ -148,20 +172,6 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setCaBioFacade(CaBioFacade caBioFacade) {
         this.caBioFacade = caBioFacade;
-    }
-
-    /**
-     * @return the geneKeywords
-     */
-    public String getGeneKeywords() {
-        return geneKeywords;
-    }
-
-    /**
-     * @param geneKeywords the geneKeywords to set
-     */
-    public void setGeneKeywords(String geneKeywords) {
-        this.geneKeywords = geneKeywords;
     }
 
     /**
@@ -218,6 +228,27 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
      */
     public void setCaBioGeneSearchTopicPublished(boolean caBioGeneSearchTopicPublished) {
         this.caBioGeneSearchTopicPublished = caBioGeneSearchTopicPublished;
+    }
+
+    /**
+     * @return the geneSearchParams
+     */
+    public CaBioGeneSearchParameters getGeneSearchParams() {
+        return geneSearchParams;
+    }
+
+    /**
+     * @param geneSearchParams the geneSearchParams to set
+     */
+    public void setGeneSearchParams(CaBioGeneSearchParameters geneSearchParams) {
+        this.geneSearchParams = geneSearchParams;
+    }
+
+    /**
+     * @return the taxonList
+     */
+    public List<String> getTaxonList() {
+        return taxonList;
     }
 
 }
