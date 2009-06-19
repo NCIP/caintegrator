@@ -59,9 +59,13 @@ function captureCaBioCheckBoxes(geneSymbolsTextbox) {
     var cbResults = '';
     var inputForm = document.caBioGeneSearchForm;
     var cb_symbols_length = inputForm.cb_symbols.length;
-    for (var i = 0; i < inputForm.cb_symbols.length; i++ ) {
-        if (inputForm.cb_symbols[i].checked == true) {
-            cbResults += inputForm.cb_symbols[i].value + ',';
+    if (cb_symbols_length == 0 || cb_symbols_length == null) { // Only 1 checkbox
+        cbResults = inputForm.cb_symbols.value;
+    } else { // Multiple checkboxes.
+        for (var i = 0; i < inputForm.cb_symbols.length; i++ ) {
+            if (inputForm.cb_symbols[i].checked == true) {
+                cbResults += inputForm.cb_symbols[i].value + ',';
+            }
         }
     }
     document.getElementById(geneSymbolsTextbox).value = cbResults;

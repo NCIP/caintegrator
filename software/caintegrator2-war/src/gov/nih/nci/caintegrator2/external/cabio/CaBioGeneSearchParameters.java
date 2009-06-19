@@ -85,44 +85,46 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
-import gov.nih.nci.caintegrator2.external.ConnectionException;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * 
  */
-public class CaBioFacadeStub implements CaBioFacade {
+public class CaBioGeneSearchParameters {
+    /**
+     * To use all taxons.
+     */
+    public static final String ALL_TAXONS = "ALL";
+    
+    /**
+     * Human taxon (default).
+     */
+    public static final String HUMAN_TAXON = "human";
+    
+    private String keywords;
+    private String taxon = HUMAN_TAXON;
+    
+    /**
+     * @return the keywords
+     */
+    public String getKeywords() {
+        return keywords;
+    }
+    /**
+     * @param keywords the keywords to set
+     */
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+    /**
+     * @return the taxon
+     */
+    public String getTaxon() {
+        return taxon;
+    }
+    /**
+     * @param taxon the taxon to set
+     */
+    public void setTaxon(String taxon) {
+        this.taxon = taxon;
+    }
 
-    public boolean retrieveGenesCalled;
-    public boolean isConnectionException;
-    public boolean retrieveAllTaxonsCalled;
-    public boolean isReturnResults;
-    
-    public void clear() {
-        retrieveGenesCalled = false;
-        isConnectionException = false;
-        retrieveAllTaxonsCalled = false;
-        isReturnResults = false;
-    }
-    
-    public List<CaBioDisplayableGene> retrieveGenes(CaBioGeneSearchParameters params) throws ConnectionException {
-        retrieveGenesCalled = true;
-        if (isConnectionException) {
-            throw new ConnectionException("");
-        }
-        List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
-        if (isReturnResults) {
-            genes.add(new CaBioDisplayableGene());
-        }
-        return genes;
-    }
-
-    public List<String> retrieveAllTaxons() throws ConnectionException {
-        retrieveAllTaxonsCalled = true;
-        return Collections.emptyList();
-    }
-    
 }

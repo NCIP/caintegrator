@@ -1,7 +1,6 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-
 <s:hidden name="runSearchSelected" value="false" />
 
 <!-- caBio Inputs -->
@@ -12,8 +11,7 @@
 <h2>caBio Gene Search</h2>
 
     <tr>
-
-        <s:textfield label="Keywords" name="geneKeywords" id="geneKeywords" />
+        <s:textfield label="Keywords" name="geneSearchParams.keywords" id="geneKeywords" />
 
         <td style="border:0px"> 
         <button type="button" 
@@ -21,8 +19,12 @@
             </button>
         </td>
         <td style="border:0px">
-            <em>Search caBio for genes based on keyword string.</em>
+            <em>Search caBio for genes</em>
         </td>
+    </tr>
+    
+    <tr><br>
+        <s:select name="geneSearchParams.taxon" list="taxonList" label="Choose Taxon"/>
     </tr>
 
 <!-- /caBio Inputs -->

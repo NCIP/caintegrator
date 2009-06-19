@@ -109,18 +109,25 @@ public class CaBioFacadeImpl implements CaBioFacade {
     /**
      * {@inheritDoc}
      */
-    public List<CaBioDisplayableGene> retrieveGeneSymbolsFromKeywords(String keywords) throws ConnectionException {
+    public List<CaBioDisplayableGene> retrieveGenes(CaBioGeneSearchParameters searchParams) 
+    throws ConnectionException {
         // When using an ApplicationService must store our context and re-set it so that the user still has old
         // authentication.
         SecurityContext originalContext = SecurityContextHolder.getContext();
         ApplicationService caBioApplicationService = 
             caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
-        String hqlString = "SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName " 
-            + " FROM gov.nih.nci.cabio.domain.Gene g"
-            + " WHERE g.symbol is not null and lower(g.fullName) LIKE ?";
+        StringBuffer hqlString = 
+            new StringBuffer("SELECT DISTINCT g.symbol, g.id, g.fullName, g.taxon.commonName " 
+                                + " FROM gov.nih.nci.cabio.domain.Gene g"
+                                + " WHERE g.symbol is not null and lower(g.fullName) LIKE ? ");
         List<String> params = new ArrayList<String>();
-        params.add("%" + keywords.toLowerCase(Locale.getDefault()) + "%");
-        HQLCriteria hqlCriteria = new HQLCriteria(hqlString, params);
+        params.add("%" + searchParams.getKeywords().toLowerCase(Locale.getDefault()) + "%");
+        // Filter out based on TAXON if that is what is selected.
+        if (!CaBioGeneSearchParameters.ALL_TAXONS.equals(searchParams.getTaxon())) {
+            hqlString.append(" and g.taxon.commonName LIKE ?");
+            params.add(searchParams.getTaxon());
+        }
+        HQLCriteria hqlCriteria = new HQLCriteria(hqlString.toString(), params);
         List<Object> geneResults;
         try {
             geneResults = caBioApplicationService.query(hqlCriteria);
@@ -131,6 +138,31 @@ public class CaBioFacadeImpl implements CaBioFacade {
             SecurityContextHolder.setContext(originalContext);
         }
         return createCaBioDisplayableGenes(geneResults);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> retrieveAllTaxons() throws ConnectionException {
+        SecurityContext originalContext = SecurityContextHolder.getContext();
+        ApplicationService caBioApplicationService = 
+            caBioApplicationServiceFactory.retrieveCaBioApplicationService(caBioUrl);
+        String hqlString = "SELECT DISTINCT t.commonName " 
+            + " FROM gov.nih.nci.cabio.domain.Taxon t";
+        HQLCriteria hqlCriteria = new HQLCriteria(hqlString);
+        List<String> taxonResults = new ArrayList<String>();
+        try {
+            List<Object> queryResults = caBioApplicationService.query(hqlCriteria);
+            for (Object taxonObj : queryResults) {
+                taxonResults.add((String) taxonObj);
+            }
+        } catch (ApplicationException e) {
+            throw new IllegalStateException("HQL Query Failed", e);
+        } finally {
+            // Restore context as described above.
+            SecurityContextHolder.setContext(originalContext);
+        }
+        return taxonResults;
     }
 
     private List<CaBioDisplayableGene> createCaBioDisplayableGenes(List<Object> geneResults) {
