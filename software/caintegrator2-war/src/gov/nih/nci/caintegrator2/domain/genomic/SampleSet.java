@@ -97,6 +97,7 @@ public class SampleSet extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private String name;
+    private String fileName;
     private Set<Sample> samples = new HashSet<Sample>();
     
     
@@ -124,5 +125,17 @@ public class SampleSet extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused") // required by Hibernate
     private void setSamples(Set<Sample> samples) {
         this.samples = samples;
+    }
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
+    }
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

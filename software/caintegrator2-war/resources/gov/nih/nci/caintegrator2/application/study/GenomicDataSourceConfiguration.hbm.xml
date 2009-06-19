@@ -21,8 +21,6 @@
         <property name="platformVendor" type="string" column="PLATFORM_VENDOR"/>
         <property name="platformName" type="string" column="PLATFORM_NAME"/>
         <property name="sampleMappingCommaSeparatedFileNames" type="string" column="SAMPLE_MAPPING_FILE_NAME"/>
-        <property name="controlSampleMappingCommaSeparatedFileNames" type="string" column="CONTROL_SAMPLE_MAPPING_FILE_NAME"/>
-        <property name="controlSampleSetCommaSeparatedNames" type="string" column="CONTROL_SAMPLE_SET_NAME"/>
                 
         <list name="sampleIdentifiers" lazy="true" inverse="true" cascade="all">
             <cache usage="read-write" />
@@ -33,10 +31,16 @@
         
         <list name="samples" lazy="true" cascade="all">
             <cache usage="read-write" />
-            <key column="GENOMIC_DATA_SOURCE_ID" />
+            <key column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" />
             <list-index column="GENOMIC_DATA_SOURCE_INDEX"/>
             <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.Sample" />
         </list>
+        
+        <set name="controlSampleSetCollection" lazy="true" cascade="all">
+            <cache usage="read-write" />
+            <key column="GENOMIC_DATA_SOURCE_CONFIGURATION_ID" />
+            <one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.SampleSet" />
+        </set>
         
         <component name="CopyNumberDataConfiguration">
             <property name="mappingFilePath" type="string" column="COPY_NUMBER_MAPPING_FILE_PATH" />

@@ -8,6 +8,7 @@
         </id>
         <!-- Attributes mapping for the Sample class -->
         <property name="name" type="string" column="NAME"/>
+        <property name="fileName" type="string" column="FILE_NAME"/>
         <!-- Associations mapping for the Sample class -->
         <set name="samples" table="SAMPLE_SET_SAMPLES" lazy="true" cascade="none" >
             <cache usage="read-write" />

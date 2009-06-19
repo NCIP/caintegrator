@@ -89,6 +89,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisServiceStub;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
@@ -218,6 +219,7 @@ public class PersistedAnalysisJobAjaxUpdaterTest {
             subscription.getAnalysisJobCollection().add(cmsJob);
             subscription.getAnalysisJobCollection().add(gpJob);
             subscription.setStudy(new Study());
+            subscription.getStudy().setStudyConfiguration(new StudyConfiguration());
             return workspace;
         }
     }

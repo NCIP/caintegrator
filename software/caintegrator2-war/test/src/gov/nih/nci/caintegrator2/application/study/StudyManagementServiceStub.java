@@ -293,13 +293,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void addControlSampleSet(StudyConfiguration studyConfiguration,
-            String controlSampleSetName, File controlSampleFile)
+    public void addControlSampleSet(GenomicDataSourceConfiguration genomicSource,
+            String controlSampleSetName, File controlSampleFile, String controlFileName)
             throws ValidationException {
         SampleSet sampleSet = new SampleSet();
         sampleSet.setName(controlSampleSetName);
         sampleSet.getSamples().add(new Sample());
-        studyConfiguration.getStudy().getControlSampleSetCollection().add(sampleSet);
+        genomicSource.getControlSampleSetCollection().add(sampleSet);
         addControlSampleSetCalled = true;
     }
 

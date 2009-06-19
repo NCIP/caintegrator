@@ -89,6 +89,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
@@ -151,6 +153,9 @@ public class FoldChangeCriterionHandlerTest {
         sample.getArrayDataCollection().add(arrayData);
         acquisition.setSample(sample);
         assignment.getSampleAcquisitionCollection().add(acquisition);
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getGenomicDataSources().add(new GenomicDataSourceConfiguration());
+        study.setStudyConfiguration(studyConfiguration);
     }
 
     @Test
@@ -169,7 +174,7 @@ public class FoldChangeCriterionHandlerTest {
         SampleSet sampleSet1 = new SampleSet();
         sampleSet1.setName("controlSampleSet1");
         sampleSet1.getSamples().add(new Sample());
-        query.getSubscription().getStudy().getControlSampleSetCollection().add(sampleSet1);
+        study.getStudyConfiguration().getGenomicDataSources().get(0).getControlSampleSetCollection().add(sampleSet1);
         rows = handler.getMatches(daoStub, arrayDataServiceStub, query, new HashSet<EntityTypeEnum>());
         assertEquals(1, rows.size());
         criterion.setRegulationType(RegulationTypeEnum.DOWN);
