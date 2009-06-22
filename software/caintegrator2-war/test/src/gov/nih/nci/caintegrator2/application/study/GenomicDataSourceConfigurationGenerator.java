@@ -87,12 +87,12 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
-import java.util.Set;
-
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfileGenerator;
+
+import java.util.Set;
 
 public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGenerator<GenomicDataSourceConfiguration> {
 
@@ -122,6 +122,11 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
                 ServerConnectionProfileGenerator.INSTANCE.compare(originalConfig.getCaDNACopyService(), retrievedConfig.getCaDNACopyService());                
             }
         }
+        if (original.getControlSampleSetCollection() == null) {
+            assertNull(retrieved.getControlSampleSetCollection());
+        } else {
+            assertEquals(original.getControlSampleSetCollection().size(), retrieved.getControlSampleSetCollection().size());
+        }
     }
 
     @Override
@@ -145,6 +150,7 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
         for (int i = 0; i < 3; i++) {
             config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
+        config.getControlSampleSetCollection().add(new SampleSet());
     }
 
 
