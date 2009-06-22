@@ -8,7 +8,8 @@
 <s:div id="TB_closeAjaxWindow">
         <s:a href="" id="TB_closeWindowButton" title="Click to close." onclick="hideCaBioInputForm()">Close</s:a>
 </s:div>
-<h2>caBio Gene Search</h2>
+
+<h2><img style="vertical-align: middle" src="/caintegrator2/images/cabiologo.gif"> caBio Gene Search</h2>
 
     <tr>
         <s:textfield label="Keywords" name="geneSearchParams.keywords" id="geneKeywords" />
