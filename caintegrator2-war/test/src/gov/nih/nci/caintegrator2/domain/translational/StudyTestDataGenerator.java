@@ -87,18 +87,13 @@ package gov.nih.nci.caintegrator2.domain.translational;
 
 import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleGenerator;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 
 import java.util.Set;
 
 public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Study> {
     
     public static final StudyTestDataGenerator INSTANCE = new StudyTestDataGenerator();
-    private static final String controlSampleSetName = "ControlSampleSet1";
 
     private StudyTestDataGenerator() {
         super();
@@ -108,8 +103,6 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void compareFields(Study original, Study retrieved) {
         assertEquals(original.getLongTitleText(), retrieved.getLongTitleText());
         assertEquals(original.getShortTitleText(), retrieved.getShortTitleText());
-        compareCollections(original.getControlSampleSet(controlSampleSetName).getSamples(),
-                retrieved.getControlSampleSet(controlSampleSetName).getSamples(), SampleGenerator.INSTANCE);
     }
 
     @Override
@@ -121,17 +114,6 @@ public final class StudyTestDataGenerator extends AbstractTestDataGenerator<Stud
     public void setValues(Study study, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         study.setShortTitleText(getUniqueString());
         study.setLongTitleText(getUniqueString());
-        study.getStudyConfiguration().getGenomicDataSources().clear();
-        SampleSet sampleSet1 = new SampleSet();
-        sampleSet1.setName(controlSampleSetName);
-        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
-        genomicSource.getControlSampleSetCollection().add(sampleSet1);
-        study.getStudyConfiguration().getGenomicDataSources().add(genomicSource);
-        for (int i = 0; i < 3; i++) {
-            Sample sample = SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects);
-            nonCascadedObjects.add(sample);
-            sampleSet1.getSamples().add(sample);
-        }
     }
 
 }
