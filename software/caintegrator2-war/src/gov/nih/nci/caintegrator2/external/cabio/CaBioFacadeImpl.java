@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
@@ -92,8 +94,10 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -104,6 +108,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 public class CaBioFacadeImpl implements CaBioFacade {
 
     private CaBioApplicationServiceFactory caBioApplicationServiceFactory;
+    private CaIntegrator2Dao dao;
     private String caBioUrl;
     
     /**
@@ -137,7 +142,7 @@ public class CaBioFacadeImpl implements CaBioFacade {
             // Restore context as described above.
             SecurityContextHolder.setContext(originalContext);
         }
-        return createCaBioDisplayableGenes(geneResults);
+        return createCaBioDisplayableGenes(geneResults, searchParams);
     }
     
     /**
@@ -165,7 +170,8 @@ public class CaBioFacadeImpl implements CaBioFacade {
         return taxonResults;
     }
 
-    private List<CaBioDisplayableGene> createCaBioDisplayableGenes(List<Object> geneResults) {
+    private List<CaBioDisplayableGene> createCaBioDisplayableGenes(List<Object> geneResults, 
+            CaBioGeneSearchParameters searchParams) {
         List<CaBioDisplayableGene> genes = new ArrayList<CaBioDisplayableGene>();
         for (Object result : geneResults) {
             Object[] geneObject = (Object[]) result;
@@ -176,10 +182,27 @@ public class CaBioFacadeImpl implements CaBioFacade {
             gene.setTaxonCommonName((String) geneObject[3]);
             genes.add(gene);
         }
+        if (searchParams.isFilterGenesOnStudy() && !genes.isEmpty()) {
+            genes = filterGenesNotInStudy(genes, searchParams.getStudy());
+        }
         Collections.sort(genes);
         return genes;
     }
-
+    
+    private List<CaBioDisplayableGene> filterGenesNotInStudy(List<CaBioDisplayableGene> genes, Study study) {
+        List<CaBioDisplayableGene> genesInStudy = new ArrayList<CaBioDisplayableGene>();
+        Set<String> symbols = new HashSet<String>();
+        for (CaBioDisplayableGene gene : genes) {
+            symbols.add(gene.getSymbol());
+        }
+        symbols = dao.retrieveGeneSymbolsInStudy(symbols, study);
+        for (CaBioDisplayableGene gene : genes) {
+            if (symbols.contains(gene.getSymbol())) {
+                genesInStudy.add(gene);
+            }
+        }
+        return genesInStudy;
+    }
 
     /**
      * @return the caBioApplicationServiceFactory
@@ -207,6 +230,20 @@ public class CaBioFacadeImpl implements CaBioFacade {
      */
     public void setCaBioUrl(String caBioUrl) {
         this.caBioUrl = caBioUrl;
+    }
+
+    /**
+     * @return the dao
+     */
+    public CaIntegrator2Dao getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(CaIntegrator2Dao dao) {
+        this.dao = dao;
     }
 
 }

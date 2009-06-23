@@ -731,6 +731,9 @@
         <property name="caBioApplicationServiceFactory">
             <ref bean="caBioApplicationServiceFactory"/>
         </property>
+        <property name="dao">
+            <ref local="caIntegrator2Dao"/>
+        </property>
     </bean>
     
     <bean id="caBioApplicationServiceFactory" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryImpl"/>    

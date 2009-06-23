@@ -85,6 +85,8 @@
  */
 package gov.nih.nci.caintegrator2.external.cabio;
 
+import gov.nih.nci.caintegrator2.domain.translational.Study;
+
 /**
  * 
  */
@@ -101,6 +103,8 @@ public class CaBioGeneSearchParameters {
     
     private String keywords;
     private String taxon = HUMAN_TAXON;
+    private Study study;
+    private boolean filterGenesOnStudy = false;
     
     /**
      * @return the keywords
@@ -125,6 +129,30 @@ public class CaBioGeneSearchParameters {
      */
     public void setTaxon(String taxon) {
         this.taxon = taxon;
+    }
+    /**
+     * @return the study
+     */
+    public Study getStudy() {
+        return study;
+    }
+    /**
+     * @param study the study to set
+     */
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+    /**
+     * @return the filterGenesOnStudy
+     */
+    public boolean isFilterGenesOnStudy() {
+        return filterGenesOnStudy;
+    }
+    /**
+     * @param filterGenesOnStudy the filterGenesOnStudy to set
+     */
+    public void setFilterGenesOnStudy(boolean filterGenesOnStudy) {
+        this.filterGenesOnStudy = filterGenesOnStudy;
     }
 
 }

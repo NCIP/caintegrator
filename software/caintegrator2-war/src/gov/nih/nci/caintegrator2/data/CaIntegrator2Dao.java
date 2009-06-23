@@ -230,6 +230,15 @@ public interface CaIntegrator2Dao {
      * @return the matching gene or null.
      */
     Gene getGene(String symbol);
+    
+    
+    /**
+     * Given a collection of gene symbols, it will return back all the ones that exist for given study.
+     * @param symbols the gene symbols.
+     * @param study the study to check gene symbols existance for.
+     * @return a subset of the given symbols that exist in the study (in UPPERCASE).
+     */
+    Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study);
 
     /**
      * Returns the array design platform that matches the given name.

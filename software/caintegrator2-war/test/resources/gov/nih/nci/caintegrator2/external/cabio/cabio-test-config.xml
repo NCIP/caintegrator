@@ -31,6 +31,9 @@
         <property name="caBioApplicationServiceFactory">
             <ref bean="caBioApplicationServiceFactoryStub"/>
         </property>
+        <property name="dao">
+            <ref bean="caIntegrator2DaoStub" />
+        </property>
     </bean>
     
     <bean id="caBioFacadeStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioFacadeStub" />
@@ -42,4 +45,6 @@
     <bean id="caBioApplicationServiceFactoryStub" class="gov.nih.nci.caintegrator2.external.cabio.CaBioApplicationServiceFactoryStub"/>    
 
     <bean id="workspaceService" class="gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub"/>
+    
+    <bean id="caIntegrator2DaoStub" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
 </beans>
