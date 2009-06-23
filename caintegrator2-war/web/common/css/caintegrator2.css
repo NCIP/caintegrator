@@ -769,7 +769,7 @@ A.cgapLogo
 
 /** style for link to caBio site **/
 A.caBioLogo
-{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll left top; padding:8px 20px 18px 3px;}
+{ visibility: visible; cursor: pointer; background:transparent url('/caintegrator2/images/cabiologo.gif') no-repeat scroll left top; padding:8px 21px 18px 3px;}
 /** Styles when using struts css_xhtml theme **/
 .wwgrp
 {position: relative; white-space: nowrap; margin-top: 10px; margin-bottom: 10px;}
