@@ -2086,6 +2086,11 @@
 </tr>
 <tr>
 	<td>type</td>
+	<td>saveSampleMapping_controlSampleSetName</td>
+	<td>Control Set 1</td>
+</tr>
+<tr>
+	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
 	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\DCLungStudy_full_control_samples_load.csv</td>
 </tr>
