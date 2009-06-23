@@ -129,7 +129,9 @@ public class DeployStudyRembrandtWithCopyNumberDataTestIntegration extends Abstr
     protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
         copyNumberDataConfiguration.getCaDNACopyService().setUrl("http://ncias-d227-v.nci.nih.gov:8080/wsrf/services/cagrid/CaDNAcopy");
         copyNumberDataConfiguration.setChangePointSignificanceLevel(0.01);
-        copyNumberDataConfiguration.setPermutationReplicates(1000);
+        copyNumberDataConfiguration.setPermutationReplicates(10000);
+        copyNumberDataConfiguration.setEarlyStoppingCriterion(0.05);
+        copyNumberDataConfiguration.setRandomNumberSeed(1234567);
     }
 
     private void checkCopyNumberData() {
