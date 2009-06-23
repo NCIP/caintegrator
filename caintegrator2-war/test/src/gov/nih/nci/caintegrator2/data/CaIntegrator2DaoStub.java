@@ -429,4 +429,11 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return platform.addReporterList("name", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
     }
 
+    public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
+        Set<String> symbolsSet = new HashSet<String>();
+        symbolsSet.addAll(symbols);
+        symbolsSet.remove("EGFR");
+        return symbolsSet;
+    }
+
 }

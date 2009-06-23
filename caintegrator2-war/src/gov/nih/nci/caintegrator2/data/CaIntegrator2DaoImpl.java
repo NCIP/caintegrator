@@ -119,6 +119,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -132,6 +133,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 /**
  * Implementation of the DAO.
  */
+@SuppressWarnings("PMD.ExcessiveClassLength") // Until we refactor into multiple DAOs, it will be excessive.
 public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaIntegrator2Dao  {
     
     private static final String UNCHECKED = "unchecked";
@@ -382,6 +384,34 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         } else {
             return (Platform) values.get(0);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED)  // Hibernate operations are untyped
+    public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
+        Criteria reporterCriteria = getCurrentSession().createCriteria(AbstractReporter.class);
+        reporterCriteria.createCriteria("reporterList").
+                         createCriteria("arrayDatas").
+                         createCriteria("sample").
+                         createCriteria("genomicDataSource").
+                         createCriteria("studyConfiguration").
+                             add(Restrictions.eq(STUDY_ASSOCIATION, study));
+        reporterCriteria.createCriteria("genes").
+                        add(Restrictions.in("symbol", symbols));
+        Set<AbstractReporter> reporterSet = new HashSet<AbstractReporter>();
+        reporterSet.addAll(reporterCriteria.list());
+        Set<String> geneSymbols = new HashSet<String>();
+        for (AbstractReporter reporter : reporterSet) {
+            for (Gene gene : reporter.getGenes()) {
+                String symbol = gene.getSymbol();
+                if (Cai2Util.containsIgnoreCase(symbols, symbol)) {
+                    geneSymbols.add(symbol.toUpperCase(Locale.US));
+                }
+            }
+        }
+        return geneSymbols;
     }
 
     /**
