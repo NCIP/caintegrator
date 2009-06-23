@@ -28,7 +28,7 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>Rembrandt</td>
+	<td>Rembrandt2</td>
 	<td>Cai2ShortStudyName</td>
 </tr>
 <tr>
@@ -1207,9 +1207,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForValue</td>
+	<td>waitForElementPresent</td>
 	<td>//tbody[@id='studyDeploymentJobStatusTable']//span[text()='${Cai2StudyName}']/parent::td/parent::tr//a[text()='Edit']</td>
-	<td></td>
+	<td>true</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1236,6 +1236,11 @@
 	<td>clickAndWait</td>
 	<td>link=Map Samples</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>saveSampleMapping_controlSampleSetName</td>
+	<td>control set 1</td>
 </tr>
 <tr>
 	<td>type</td>

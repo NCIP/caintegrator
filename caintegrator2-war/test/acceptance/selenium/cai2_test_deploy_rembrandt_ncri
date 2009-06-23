@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>Rembrandt with NCRI</td>
+	<td>Rembrandt and NCRI</td>
 	<td>Cai2StudyName</td>
 </tr>
 <tr>
@@ -1143,7 +1143,7 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
-	<td>array-stage.nci.nih.gov</td>
+	<td>array.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1190,6 +1190,12 @@
 	<td>link=Map Samples</td>
 	<td></td>
 </tr>
+<!--// add a set of control samples-->
+<tr>
+	<td>type</td>
+	<td>saveSampleMapping_controlSampleSetName</td>
+	<td>control set 1</td>
+</tr>
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
@@ -1210,7 +1216,7 @@
 <tr>
 	<td>type</td>
 	<td>addImagingFile_url</td>
-	<td>http://imaging-dev.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
+	<td>http://imaging-stage.nci.nih.gov/wsrf/services/cagrid/NCIACoreService</td>
 </tr>
 <tr>
 	<td>type</td>
