@@ -115,6 +115,10 @@ public class CaBioFacadeImplTest {
         assertEquals("EGFR", genes.get(1).getSymbol());
         assertEquals("EGFR", genes.get(2).getSymbol());
         
+        params.setFilterGenesOnStudy(true);
+        genes = caBioFacade.retrieveGenes(params);
+        assertEquals(1, genes.size());
+        assertEquals("BRCA1", genes.get(0).getSymbol());
     }
 
 }

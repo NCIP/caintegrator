@@ -148,6 +148,7 @@ public class CaBioSearchAction extends AbstractCaIntegrator2Action {
 
     private String retrieveGenesFromCaBio() {
         try {
+            geneSearchParams.setStudy(getCurrentStudy());
             caBioGenes = caBioFacade.retrieveGenes(geneSearchParams);
             if (caBioGenes.isEmpty()) {
                 addActionError("No results were returned from search.");

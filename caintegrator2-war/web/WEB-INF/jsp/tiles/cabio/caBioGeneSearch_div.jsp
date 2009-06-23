@@ -27,6 +27,9 @@
     <tr><br>
         <s:select name="geneSearchParams.taxon" list="taxonList" label="Choose Taxon"/>
     </tr>
+    <tr><br>
+        <s:checkbox name="geneSearchParams.filterGenesOnStudy" label="Show only genes that are part of this study" />
+    </tr>
 
 <!-- /caBio Inputs -->
 <s:url id="caBioGeneSearch" action="caBioGeneSearch"/>
