@@ -184,7 +184,7 @@ LEGEND INPUT, LEGEND SELECT
 #leftnav UL.menu LI.treenav UL.pde LI
 { color:#333; padding:3px 0 3px 5px; cursor:default }
 #leftnav UL.menu LI.treenav UL.pde LI LI
-{ padding:3px 0 3px 10px }
+{ padding:3px 0 3px 9px; max-height:150px; overflow-x:hidden; overflow-y:auto }
 #leftnav UL.menu LI.treenav UL.pde A
 { color:#333; padding:3px }
 #leftnav UL.menu LI.treenav UL.pde A.parent_img
