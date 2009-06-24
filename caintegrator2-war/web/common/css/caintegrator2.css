@@ -94,7 +94,7 @@ LEGEND INPUT, LEGEND SELECT
 #mainlogo
 { padding:10px 0 0 10px; float:left; width:260px; }
 #versioninfo
-{   style=color:#BFD5D5;
+{   color:#BFD5D5;
     font-family:arial,helvetica,sans-serif;
     font-size:75%;
     color:#BFD5D5;
@@ -112,7 +112,6 @@ LEGEND INPUT, LEGEND SELECT
 { color:#bfd5d5 }
 #mystudies SELECT
 { width:12em }
-{ color:#bfd5d5 }
 #main
 { float:left; width:100%; min-height:400px; min-width:770px;  }
 #leftnav
@@ -608,7 +607,7 @@ TABLE.criterion TD.criterion
 #content .value_inline P
 {margin:0; padding:2px 0 3px 0; text-align:center; font-size:10pt }
 TABLE.data TD.tableheader
-{ background:#f8f8f8 url("../../images/bg_grayfade2.gif") repeat-x bottom; border-bottom:0; border-right:0; }
+{ background:#f8f8f8; border-bottom:0; border-right:0; }
 DIV.tableheader
 { width:25em; float:right; margin-top:-3em; padding:5px; text-align:right }
 .tablefooter
