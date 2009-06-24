@@ -11,14 +11,12 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="common/css/caintegrator2.css" />
-		<script type="text/javascript" src="common/js/pde.js"></script>
+        <s:head theme="ajax"/>
+        <script type="text/javascript" src="common/js/pde.js"></script>
         <script type="text/javascript" src="common/js/prototype.js"></script>
-        <script type="text/javascript" src="common/js/scriptaculous.js"></script>
-        <script type="text/javascript" src="common/js/checklist.js"></script>
         <script type="text/javascript" src="common/js/caintegrator2.js"></script>
         <script type="text/javascript" src="common/js/onlinehelp.js"></script>
-        <script type="text/javascript" src="./struts/optiontransferselect.js"></script> 
-        <s:head theme="ajax"/>
+        <script type="text/javascript" src="./struts/optiontransferselect.js"></script>      
 	</head>
 	<body>
 		
