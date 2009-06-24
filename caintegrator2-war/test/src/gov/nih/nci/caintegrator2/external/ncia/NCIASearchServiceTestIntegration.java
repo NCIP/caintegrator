@@ -110,7 +110,7 @@ public class NCIASearchServiceTestIntegration {
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
         // TODO - 5/27/09 Ngoc, temporary pointing Dev because retrieveRepresentativeImageBySeries is only available on Dev
         //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaDevServerConnectionProfile");
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaStageServerConnectionProfile");
         NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         
         NCIASearchService searchService;
