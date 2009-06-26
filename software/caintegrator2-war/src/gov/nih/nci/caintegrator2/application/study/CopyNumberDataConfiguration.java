@@ -98,11 +98,14 @@ import java.io.Serializable;
 public class CopyNumberDataConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Double DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL = 0.01;
+    private static final Double DEFAULT_EARLY_STOPPING_CRITERION = 0.05;
+    private static final Integer DEFAULT_PERMUTATION_REPLICATES = 10000;
     
     private String mappingFilePath;
-    private Double changePointSignificanceLevel = 0.0;
-    private Double earlyStoppingCriterion = 0.0;
-    private Integer permutationReplicates = 0;
+    private Double changePointSignificanceLevel = DEFAULT_CHANGE_POINT_SIGNIFICANCE_LEVEL;
+    private Double earlyStoppingCriterion = DEFAULT_EARLY_STOPPING_CRITERION;
+    private Integer permutationReplicates = DEFAULT_PERMUTATION_REPLICATES;
     private Integer randomNumberSeed = 0;
     private ServerConnectionProfile caDNACopyService = new ServerConnectionProfile();
 
