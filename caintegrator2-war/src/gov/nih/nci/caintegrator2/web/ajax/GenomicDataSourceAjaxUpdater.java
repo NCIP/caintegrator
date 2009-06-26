@@ -132,7 +132,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
                     counter++;
                 }
             } 
-        }finally {
+        } finally {
             getDwrUtil(username).setValue(GENOMIC_SOURCES_LOADER, "");
         }
     }
