@@ -116,7 +116,7 @@ class ControlSampleHelper {
         LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
         String sampleName;
         while ((sampleName = lineNumberReader.readLine()) != null) {
-            addControlSample(newControlSampleSet, sampleName, lineNumberReader.getLineNumber());
+            addControlSample(newControlSampleSet, sampleName.trim(), lineNumberReader.getLineNumber());
         }
         genomicSource.getControlSampleSetCollection().add(newControlSampleSet);
         lineNumberReader.close();
@@ -132,7 +132,6 @@ class ControlSampleHelper {
 
     private void addControlSample(SampleSet newControlSampleSet, String sampleName,
             int lineNumber) throws ValidationException {
-        sampleName = sampleName.trim();
         Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
         if (sample == null) {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber
