@@ -127,12 +127,12 @@ class ControlSampleHelper {
         SampleSet newControlSampleSet = new SampleSet();
         newControlSampleSet.setName(name);
         newControlSampleSet.setFileName(controlFileName);
-        genomicSource.getControlSampleSetCollection().add(newControlSampleSet);
         return newControlSampleSet;
     }
 
     private void addControlSample(SampleSet newControlSampleSet, String sampleName,
             int lineNumber) throws ValidationException {
+        sampleName = sampleName.trim();
         Sample sample = genomicSource.getStudyConfiguration().getSample(sampleName);
         if (sample == null) {
             throw new ValidationException("Invalid sample identifier on line " + lineNumber
