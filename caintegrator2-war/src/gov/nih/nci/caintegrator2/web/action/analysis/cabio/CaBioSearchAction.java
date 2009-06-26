@@ -100,6 +100,8 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class CaBioSearchAction extends AbstractCaIntegrator2Action {
+
+    private static final long serialVersionUID = 1L;
     
     private CaBioFacade caBioFacade;
     private CaBioGeneSearchParameters geneSearchParams = new CaBioGeneSearchParameters();
