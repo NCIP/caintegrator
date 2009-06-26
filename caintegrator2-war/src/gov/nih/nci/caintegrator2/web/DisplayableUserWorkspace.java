@@ -159,6 +159,7 @@ public class DisplayableUserWorkspace {
     private boolean createPlotRunning = false;
     private String temporaryDownloadFile;
     private final Set<StudyConfiguration> managedStudies = new HashSet<StudyConfiguration>();
+    private StudyConfiguration currentStudyConfiguration;
     
     /**
      * Refreshes the workspace for this session, ensuring it is attached to the current Hibernate request.
@@ -534,6 +535,20 @@ public class DisplayableUserWorkspace {
      */
     public Set<StudyConfiguration> getManagedStudies() {
         return managedStudies;
+    }
+
+    /**
+     * @return the currentStudyConfiguration
+     */
+    public StudyConfiguration getCurrentStudyConfiguration() {
+        return currentStudyConfiguration;
+    }
+
+    /**
+     * @param currentStudyConfiguration the currentStudyConfiguration to set
+     */
+    public void setCurrentStudyConfiguration(StudyConfiguration currentStudyConfiguration) {
+        this.currentStudyConfiguration = currentStudyConfiguration;
     }
 
 }

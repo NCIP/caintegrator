@@ -19,13 +19,33 @@
                 document.getElementById("platformName").disabled = false;
             }
         }
+        
+        function showConfirmMessage() {
+            if (document.genomicSourceForm.genomicSourceId.value != null && document.genomicSourceForm.genomicSourceId.value != "") {
+                if (confirm('You are about to update the configuration information for this data source.  Doing so will require you to remap your samples. Please click OK to update the data source or click Cancel to go back.')) {
+                    document.genomicSourceForm.submit();                
+                }
+            } else {
+                document.genomicSourceForm.submit();
+            }
+        }
     </script>
     
     <h1>Edit Genomic Data Source</h1>
     <s:actionerror/>
-    <s:form action="saveGenomicSource">
+    <s:form id="genomicSourceForm" name="genomicSourceForm" action="saveGenomicSource">
         <s:hidden name="studyConfiguration.id" />
-        <s:hidden name="genomicSource.id" />
+        <s:hidden name="genomicSource.id" id="genomicSourceId"/>
+        <s:if test="genomicSource.statusDescription != null && genomicSource.statusDescription.length() > 0">
+	        <tr>
+	            <td class="tdLabel" align="right">
+	                <label class="label">Status Description:</label>
+	            </td>
+	            <td>
+	                <s:property value="genomicSource.statusDescription"/>
+	            </td>
+	        </tr>
+        </s:if>
         <s:textfield label="caArray Server Hostname" name="genomicSource.serverProfile.hostname" />
         <s:textfield label="caArray server JNDI Port" name="genomicSource.serverProfile.port" />
         <!-- NOTE - using custom struts theme to turn off autocomplete -->
@@ -37,7 +57,17 @@
             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
             onchange="CheckPlatformVendor(this.form.platformVendor.value);"/>
         <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)" list="agilentPlatformNames" />
-        <s:submit value="Save" />
+        
+        <tr> 
+        <td></td>
+        <td>
+        <button type="button" 
+                onclick="document.genomicSourceForm.action = 'cancelGenomicSource.action';
+                document.genomicSourceForm.submit();"> Cancel 
+        </button>
+        <button type="button" onclick="showConfirmMessage()"> Save </button>
+        </td> 
+        </tr>
     </s:form>
     
     <script type="text/javascript">

@@ -117,6 +117,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private List<Sample> samples = new ArrayList<Sample>();
     private Set<SampleSet> controlSampleSetCollection = new HashSet<SampleSet>();
     private CopyNumberDataConfiguration copyNumberDataConfiguration;
+    private Status status = Status.NOT_LOADED;
+    private String statusDescription;
 
     /**
      * @return the experimentIdentifier
@@ -410,5 +412,33 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
             resultBuffer.append(controlSampleSet.getSamples().size());
         }
         return resultBuffer.toString();
+    }
+
+    /**
+     * @return the status
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the statusDescription
+     */
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    /**
+     * @param statusDescription the statusDescription to set
+     */
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 }

@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.io.File;
@@ -135,6 +136,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean retrieveImageDataSourceCalled;
     public boolean saveCopyNumberMappingFileCalled;
     public boolean saveAsynchronousStudyConfigurationJobCalled;
+    public boolean loadGenomicSourceCalled;
+    public boolean saveGenomicSourceCalled;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -205,6 +208,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveCopyNumberMappingFileCalled = false;       
         retrieveImageDataSourceCalled = false;
         saveAsynchronousStudyConfigurationJobCalled = false;
+        loadGenomicSourceCalled = false;
+        saveGenomicSourceCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -357,7 +362,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     }
 
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
-        
+        deleteCalled = true;
     }
 
     public void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException {
@@ -367,5 +372,18 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ValidationException {
         
+    }
+
+    public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration,
+            GenomicDataSourceConfiguration genomicSource) {
+    }
+
+    public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) throws ConnectionException,
+            ExperimentNotFoundException {
+        loadGenomicSourceCalled = true;
+    }
+
+    public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
+        saveGenomicSourceCalled = true;
     }
 }

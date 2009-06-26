@@ -96,6 +96,11 @@ public enum Status {
     NOT_DEPLOYED("Not Deployed"),
     
     /**
+     * Not yet loaded.
+     */
+    NOT_LOADED("Not Loaded"),
+    
+    /**
      * Processing.
      */
     PROCESSING("Processing"),
@@ -108,7 +113,12 @@ public enum Status {
     /**
      * Currently deployed.
      */
-    DEPLOYED("Deployed");
+    DEPLOYED("Deployed"),
+    
+    /**
+     * Currently loaded (for data sources).
+     */
+    LOADED("Loaded");
     
     private String value;
     

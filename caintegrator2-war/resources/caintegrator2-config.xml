@@ -249,16 +249,8 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
-    </bean>
-
-    <bean id="saveGenomicSourceAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveGenomicSourceAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
+        <property name="updater">
+            <ref local="genomicDataSourceAjaxUpdater"/>
         </property>
     </bean>
 
@@ -604,6 +596,20 @@
     
     <bean id="studyDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.StudyDeploymentAjaxUpdater">
         <dwr:remote javascript="StudyDeploymentAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+          <ref local="studyManagementService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="genomicDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.GenomicDataSourceAjaxUpdater">
+        <dwr:remote javascript="GenomicDataSourceAjaxUpdater" />
         <property name="workspaceService">
           <ref local="workspaceService"/>
         </property>

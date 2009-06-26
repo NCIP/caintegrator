@@ -108,7 +108,6 @@ import org.directwebremoting.proxy.dwr.Util;
 public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     implements IPersistedAnalysisJobAjaxUpdater {
     
-    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
     private static final String STATUS_TABLE = "analysisJobStatusTable";
     private static final String JOB_NAME = "jobName_";
     private static final String JOB_TYPE = "jobType_";

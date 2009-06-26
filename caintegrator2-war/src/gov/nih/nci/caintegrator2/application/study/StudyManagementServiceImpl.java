@@ -182,6 +182,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
         dao.save(studyConfiguration);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
+        dao.save(genomicSource);
+    }
 
     /**
      *  {@inheritDoc}
@@ -438,22 +445,39 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setDao(CaIntegrator2Dao dao) {
         this.dao = dao;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource)
+        throws ConnectionException, ExperimentNotFoundException {
+        addGenomicSourceToStudy(studyConfiguration, genomicSource);
+        loadGenomicSource(genomicSource);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration, 
+                                        GenomicDataSourceConfiguration genomicSource) {
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
+        genomicSource.setStudyConfiguration(studyConfiguration);
+        dao.save(studyConfiguration);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void addGenomicSource(StudyConfiguration studyConfiguration,
-            GenomicDataSourceConfiguration genomicSource) 
+    public void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException {
         List<Sample> samples = getCaArrayFacade().getSamples(genomicSource.getExperimentIdentifier(), 
                 genomicSource.getServerProfile());
-        studyConfiguration.getGenomicDataSources().add(genomicSource);
-        genomicSource.setStudyConfiguration(studyConfiguration);
         genomicSource.setSamples(samples);
         for (Sample sample : samples) {
             sample.setGenomicDataSource(genomicSource);
         }
-        dao.save(studyConfiguration);
+        genomicSource.setStatus(Status.LOADED);
+        dao.save(genomicSource);
     }
 
     /**

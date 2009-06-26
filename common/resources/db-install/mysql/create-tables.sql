@@ -51,6 +51,8 @@ create table GENOMIC_DATA_SOURCE_CONFIGURATION (
     EXPERIMENT_IDENTIFIER varchar(255), 
     PLATFORM_VENDOR varchar(50),
     PLATFORM_NAME varchar(255),
+    STATUS varchar(255), 
+    STATUS_DESCRIPTION varchar(255),
     STUDY_CONFIGURATION_ID bigint, 
     LIST_INDEX integer,
     COPY_NUMBER_MAPPING_FILE_PATH varchar(255),
