@@ -87,14 +87,23 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
+import java.util.HashMap;
+
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 @SuppressWarnings("PMD")
 public class EditGenomicSourceActionTest {
@@ -108,6 +117,9 @@ public class EditGenomicSourceActionTest {
         action = (EditGenomicSourceAction) context.getBean("editGenomicSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
+        action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
     }
 
     @Test
@@ -121,9 +133,47 @@ public class EditGenomicSourceActionTest {
     }
     
     @Test
+    public void testSave() {
+        assertEquals(Action.SUCCESS, action.save());
+        GenomicDataSourceAjaxUpdaterStub updaterStub = (GenomicDataSourceAjaxUpdaterStub) action.getUpdater();
+        assertTrue(updaterStub.runJobCalled);
+        updaterStub.runJobCalled = false;
+        studyManagementServiceStub.clear();
+        action.getGenomicSource().setId(1L);
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.getGenomicDataSources().add(action.getGenomicSource());
+        action.getGenomicSource().setStudyConfiguration(studyConfiguration);
+        action.setStudyConfiguration(studyConfiguration);
+        assertEquals(Action.SUCCESS, action.save());
+        assertTrue(studyManagementServiceStub.deleteCalled);
+        assertTrue(updaterStub.runJobCalled);
+        
+        action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
+        action.getGenomicSource().setPlatformName("");
+        assertEquals(Action.INPUT, action.save());
+        action.getGenomicSource().setPlatformName("Name");
+        assertEquals(Action.SUCCESS, action.save());
+        
+    }
+    
+    @Test
     public void testPrepare() {
         action.getGenomicSource().setId(1L);
         action.prepare();
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+    }
+    
+    private static class GenomicDataSourceAjaxUpdaterStub implements IGenomicDataSourceAjaxUpdater {
+        
+        public boolean runJobCalled = false;
+        
+        public void initializeJsp() {
+            
+        }
+        
+        public void runJob(GenomicDataSourceConfiguration genomicSource) {
+            runJobCalled = true;
+        }
+        
     }
 }

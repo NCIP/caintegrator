@@ -1,7 +1,26 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-            
+
+<script type='text/javascript' src='dwr/interface/GenomicDataSourceAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+
 <div id="content">                      
+    
+    <script type="text/javascript">
+    
+    initializeJsp();
+
+    function initializeJsp() {
+        dwr.engine.setActiveReverseAjax(true);
+        GenomicDataSourceAjaxUpdater.initializeJsp();
+    }
+    
+    function enableDeployButton() {
+        document.studyDeploymentForm.deployButton.disabled = false;
+    }
+    
+    </script>
     
     <!--Page Help-->
 
@@ -30,7 +49,7 @@
         }
     </script>
 
-    <s:form onsubmit="return verifyName(nameId.value)">
+    <s:form id="studyDeploymentForm" name="studyDeploymentForm" onsubmit="return verifyName(nameId.value)">
         <s:fielderror />
         <s:hidden name="studyConfiguration.id"  />
         <s:textfield label="Study Name" name="studyConfiguration.study.shortTitleText" id="nameId"/>
@@ -55,10 +74,10 @@
         <s:submit action="saveStudy" value="Save" />
         <s:if test="%{studyConfiguration.id != null}">
             <s:if test="%{studyConfiguration.deployable}">
-                <s:submit action="deployStudy" value="Save and Deploy" />
+                <s:submit id="deployButton" action="deployStudy" value="Save and Deploy" />
             </s:if>
             <s:else>
-                <s:submit disabled="true" action="deployStudy" value="Save and Deploy" />
+                <s:submit id="deployButton" disabled="true" action="deployStudy" value="Save and Deploy" />
             </s:else>
         </s:if>
     </s:form>
@@ -178,56 +197,21 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="4">Genomic Data Sources</th>
+            <th colspan="5">Genomic Data Sources <span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
         </tr>
         <tr>
             <th>Host Name</th>
             <th>Experiment Identifier</th>
             <th>File Description</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
-        <s:iterator value="studyConfiguration.genomicDataSources" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-            <td><s:property value="serverProfile.hostname" /></td>
-            <td><s:property value="experimentIdentifier" /></td>
-            <td> 
-            <i>Mapping File(s):</i> <s:iterator value="sampleMappingFileNames"> <s:property /> <br> </s:iterator>
-            <i>Control Sample Mapping File(s):</i> <s:iterator value="controlSampleMappingFileNames"> <s:property /> <br> </s:iterator>
-            <i>Copy Number Mapping File:</i> <s:property value="copyNumberMappingFileName"/> 
-            </td>
-            <td>
-                <s:url id="editGenomicSource" action="editGenomicSource">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="genomicSource.id" value="id" />
-                </s:url> 
-                <s:a href="%{editGenomicSource}">Edit</s:a> | 
-                <s:url id="editSampleMapping" action="editSampleMapping">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="genomicSource.id" value="id" />
-                </s:url>
-                <s:a href="%{editSampleMapping}">Map Samples</s:a> |
-                <s:url id="editCopyNumberDataConfiguration" action="editCopyNumberDataConfiguration">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="genomicSource.id" value="id" />
-                </s:url> 
-                <s:a href="%{editCopyNumberDataConfiguration}">Configure Copy Number Data</s:a> | 
-                <s:url id="deleteGenomicSource" action="deleteGenomicSource">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="genomicSource.id" value="id" />
-                    <s:param name="action" value="edit" />
-                </s:url> 
-                <s:a href="%{deleteGenomicSource}" onclick="return confirm('This genomic source (and all associated Samples) will be permanently deleted.')">Delete</s:a>
-            </td>
-        </tr>
-        </s:iterator>
-        <tr>
-            <th colspan="4"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
-        </tr>
+        <tbody id="genomicSourceJobStatusTable" />
+    </table>
+    <table class="data">
+	    <tr>
+	        <th colspan="5"><s:submit action="addGenomicSource" value="Add" theme="simple" /></th>
+	    </tr>
     </table>
     </s:form>
     

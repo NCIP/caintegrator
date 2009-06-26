@@ -331,9 +331,19 @@
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="saveGenomicSource" class="saveGenomicSourceAction">
-            <result type="tiles">editStudy</result>
+        <action name="saveGenomicSource" method="save" class="editGenomicSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
             <result name="input" type="tiles">editGenomicSource</result>
+        </action>
+        
+        <action name="cancelGenomicSource" method="cancel" class="editGenomicSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
         </action>
         
         <action name="editSampleMapping" class="editSampleMappingAction">
