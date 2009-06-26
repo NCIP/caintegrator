@@ -21,7 +21,9 @@ import org.hibernate.stat.Statistics;
 
 @SuppressWarnings("unchecked")
 public class SessionFactoryStub implements SessionFactory {
-    
+
+    private static final long serialVersionUID = 1L;
+
     public boolean getDefinedFilterNamesCalled;
     
     public void clear() {

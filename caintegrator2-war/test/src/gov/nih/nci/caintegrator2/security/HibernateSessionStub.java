@@ -106,6 +106,8 @@ import org.hibernate.stat.SessionStatistics;
 @SuppressWarnings("unchecked")
 public class HibernateSessionStub implements Session {
 
+    private static final long serialVersionUID = 1L;
+
     public SessionFactoryStub sessionFactory = new SessionFactoryStub();
     
     public Transaction beginTransaction() throws HibernateException {
