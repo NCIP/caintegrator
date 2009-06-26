@@ -104,7 +104,6 @@ import org.directwebremoting.proxy.dwr.Util;
 public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     implements IStudyDeploymentAjaxUpdater {
     
-    private static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
     private static final String STATUS_TABLE = "studyDeploymentJobStatusTable";
     private static final String JOB_STUDY_NAME = "studyName_";
     private static final String JOB_STUDY_DESCRIPTION = "studyDescription_";

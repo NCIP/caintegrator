@@ -120,9 +120,15 @@ public interface StudyManagementService {
     
     /**
      * Saves a study configuration asynchronous job.
-     * @param studyConfiguration study configuraiton to save.
+     * @param studyConfiguration study configuration to save.
      */
     void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration);
+    
+    /**
+     * Saves a genomic source.
+     * @param genomicSource to save.
+     */
+    void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource);
     
     /**
      * Deletes a study.
@@ -236,6 +242,25 @@ public interface StudyManagementService {
      * @throws ExperimentNotFoundException if the experiment cannot be found.
      */
     void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, ExperimentNotFoundException;
+    
+    
+    /**
+     * Adds a new genomic data source to the study.
+     * @param studyConfiguration to add source to.
+     * @param genomicSource to add.
+     */
+    void addGenomicSourceToStudy(StudyConfiguration studyConfiguration, 
+            GenomicDataSourceConfiguration genomicSource);
+    
+    /**
+     * Samples related to this data source are retrieved from the source and added to the study.
+     * 
+     * @param genomicSource genomic source to add
+     * @throws ConnectionException if the configured server couldn't be reached.
+     * @throws ExperimentNotFoundException if the experiment cannot be found.
+     */
+    void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException;
 
     /**

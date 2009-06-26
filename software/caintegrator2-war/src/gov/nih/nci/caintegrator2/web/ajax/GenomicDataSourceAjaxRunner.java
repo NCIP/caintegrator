@@ -85,117 +85,50 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.proxy.dwr.Util;
+import org.apache.log4j.Logger;
 
 /**
- * Abstract class for creating dynamically updated reverse-ajax pages.
+ * Asynchronous thread that runs Genomic Source Loading jobs and updates the status of those jobs.
  */
-public abstract class AbstractDwrAjaxUpdater {
+public class GenomicDataSourceAjaxRunner implements Runnable {
     
-    /**
-     * Used to show a loading symbol.
-     */
-    protected static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
-    private WorkspaceService workspaceService;
-    private DwrUtilFactory dwrUtilFactory;
+    private static final Logger LOGGER = Logger.getLogger(GenomicDataSourceAjaxRunner.class);
+        
+    private final GenomicDataSourceAjaxUpdater updater;
+    private final GenomicDataSourceConfiguration genomicSource;
+    private final String username;
     
+    GenomicDataSourceAjaxRunner(GenomicDataSourceAjaxUpdater updater,
+            GenomicDataSourceConfiguration genomicSource) {
+        this.updater = updater;
+        this.genomicSource = genomicSource;
+        this.username = genomicSource.getStudyConfiguration().getUserWorkspace().getUsername();
+    }
+
     /**
      * {@inheritDoc}
      */
-    public void initializeJsp() {
-        WebContext wctx = WebContextFactory.get();
-        DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
-                        wctx.getSession().getAttribute("displayableWorkspace");
-        workspace.refresh(workspaceService);
-        associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
-                                new Util(wctx.getScriptSession()));
-        initializeDynamicTable(workspace);
-    }
-    
-    /**
-     * Abstract class which is used when initializing the JSP to associate a job type with 
-     * a username on the session.
-     * @param utilFactory global object which stores the map of username -> Util objects.
-     * @param username current users username.
-     * @param util dwr util object.
-     */
-    protected abstract void associateJobWithSession(DwrUtilFactory utilFactory, 
-                                                     String username,
-                                                     Util util);
-    
-    /**
-     * For the dynamic table to initialize which shows the status of the objects.
-     * @param workspace current users workspace.
-     */
-    protected abstract void initializeDynamicTable(DisplayableUserWorkspace workspace);
-    
-    /**
-     * Retreives table options for DWR created tables.
-     * @param counter - to switch it from odd/even rows in a table.
-     * @return dwr table row options.
-     */
-    protected String retrieveRowOptions(int counter) {
-        String bgcolor = "#dcdcdc";
-        if (counter % 2 == 0) {
-            bgcolor = "fff";
+    public void run() {
+        updater.updateJobStatus(username, genomicSource, true);
+        try {
+            updater.getStudyManagementService().loadGenomicSource(genomicSource);
+            updater.updateJobStatus(username, genomicSource, true);
+        } catch (ConnectionException e) {
+            addError("The configured server couldn't be reached. Please check the configuration settings.", e);
+        } catch (ExperimentNotFoundException e) {
+            addError(e.getMessage(), e);
         }
-        return "{ rowCreator:function(options) { "
-            + " var row = document.createElement(\"tr\");"
-            + " row.style.background=\"" + bgcolor + "\";"
-            + "return row;"
-            + "},"
-            + "cellCreator:function(options) { "
-            + "var td = document.createElement(\"td\");"
-            + "if (options.cellNum == 1) { td.style.whiteSpace=\"nowrap\"; }"
-            + "return td;"
-            + "},"
-            + " escapeHtml:false }";
-    }
-    
-    /**
-     * Given a date it returns the formatted date string.
-     * @param date to convert to string.
-     * @return string conversion.
-     */
-    protected String getDateString(Date date) {
-        return date == null ? null : new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date);
     }
 
-    /**
-     * @return the workspaceService
-     */
-    public WorkspaceService getWorkspaceService() {
-        return workspaceService;
+    private void addError(String message, Exception e) {
+        LOGGER.error("Deployment of genomic source failed.", e);
+        genomicSource.setStatus(Status.ERROR);
+        genomicSource.setStatusDescription(message);
+        updater.saveAndUpdateJobStatus(username, genomicSource);
     }
-
-    /**
-     * @param workspaceService the workspaceService to set
-     */
-    public void setWorkspaceService(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
-    }
-
-    /**
-     * @return the dwrUtilFactory
-     */
-    public DwrUtilFactory getDwrUtilFactory() {
-        return dwrUtilFactory;
-    }
-
-    /**
-     * @param dwrUtilFactory the dwrUtilFactory to set
-     */
-    public void setDwrUtilFactory(DwrUtilFactory dwrUtilFactory) {
-        this.dwrUtilFactory = dwrUtilFactory;
-    }
-
 }

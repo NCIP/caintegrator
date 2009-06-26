@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -85,117 +85,23 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.proxy.dwr.Util;
 
 /**
- * Abstract class for creating dynamically updated reverse-ajax pages.
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-public abstract class AbstractDwrAjaxUpdater {
+public interface IGenomicDataSourceAjaxUpdater {
     
     /**
-     * Used to show a loading symbol.
+     * Initializes the web context to this JSP so the update messages stream here.
      */
-    protected static final String AJAX_LOADING_GIF = "<img src=\"images/ajax-loader.gif\"/>";
-    private WorkspaceService workspaceService;
-    private DwrUtilFactory dwrUtilFactory;
+    void initializeJsp();
     
     /**
-     * {@inheritDoc}
+     * Used to run the GenomicDataSource Job.
+     * @param genomicSource to retrieve genomic data for (asynchronously).
      */
-    public void initializeJsp() {
-        WebContext wctx = WebContextFactory.get();
-        DisplayableUserWorkspace workspace = (DisplayableUserWorkspace) 
-                        wctx.getSession().getAttribute("displayableWorkspace");
-        workspace.refresh(workspaceService);
-        associateJobWithSession(dwrUtilFactory, workspace.getUserWorkspace().getUsername(), 
-                                new Util(wctx.getScriptSession()));
-        initializeDynamicTable(workspace);
-    }
-    
-    /**
-     * Abstract class which is used when initializing the JSP to associate a job type with 
-     * a username on the session.
-     * @param utilFactory global object which stores the map of username -> Util objects.
-     * @param username current users username.
-     * @param util dwr util object.
-     */
-    protected abstract void associateJobWithSession(DwrUtilFactory utilFactory, 
-                                                     String username,
-                                                     Util util);
-    
-    /**
-     * For the dynamic table to initialize which shows the status of the objects.
-     * @param workspace current users workspace.
-     */
-    protected abstract void initializeDynamicTable(DisplayableUserWorkspace workspace);
-    
-    /**
-     * Retreives table options for DWR created tables.
-     * @param counter - to switch it from odd/even rows in a table.
-     * @return dwr table row options.
-     */
-    protected String retrieveRowOptions(int counter) {
-        String bgcolor = "#dcdcdc";
-        if (counter % 2 == 0) {
-            bgcolor = "fff";
-        }
-        return "{ rowCreator:function(options) { "
-            + " var row = document.createElement(\"tr\");"
-            + " row.style.background=\"" + bgcolor + "\";"
-            + "return row;"
-            + "},"
-            + "cellCreator:function(options) { "
-            + "var td = document.createElement(\"td\");"
-            + "if (options.cellNum == 1) { td.style.whiteSpace=\"nowrap\"; }"
-            + "return td;"
-            + "},"
-            + " escapeHtml:false }";
-    }
-    
-    /**
-     * Given a date it returns the formatted date string.
-     * @param date to convert to string.
-     * @return string conversion.
-     */
-    protected String getDateString(Date date) {
-        return date == null ? null : new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date);
-    }
-
-    /**
-     * @return the workspaceService
-     */
-    public WorkspaceService getWorkspaceService() {
-        return workspaceService;
-    }
-
-    /**
-     * @param workspaceService the workspaceService to set
-     */
-    public void setWorkspaceService(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
-    }
-
-    /**
-     * @return the dwrUtilFactory
-     */
-    public DwrUtilFactory getDwrUtilFactory() {
-        return dwrUtilFactory;
-    }
-
-    /**
-     * @param dwrUtilFactory the dwrUtilFactory to set
-     */
-    public void setDwrUtilFactory(DwrUtilFactory dwrUtilFactory) {
-        this.dwrUtilFactory = dwrUtilFactory;
-    }
+    void runJob(GenomicDataSourceConfiguration genomicSource);
 
 }
