@@ -325,6 +325,7 @@ public final class Cai2Util {
      * @param studyConfiguration to load from hibernate.
      */
     public static void loadCollection(StudyConfiguration studyConfiguration) {
+        loadCollection(studyConfiguration.getClinicalConfigurationCollection());
         loadGenomicSources(studyConfiguration.getGenomicDataSources());
         Cai2Util.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
         for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
