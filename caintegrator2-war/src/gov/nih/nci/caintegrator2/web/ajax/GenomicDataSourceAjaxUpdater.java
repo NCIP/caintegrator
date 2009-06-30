@@ -209,9 +209,12 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         updateRowFileDescriptions(utilThis, genomicSource, genomicSourceId);
         utilThis.setValue(JOB_DEPLOYMENT_STATUS + genomicSourceId, getStatusMessage(genomicSource.getStatus()));
         updateRowActions(genomicSource, utilThis, genomicSourceId);
-        if (checkDeployButton && genomicSource.getStudyConfiguration().isDeployable()) {
-            utilThis.addFunctionCall("enableDeployButton");
-        }
+        // TJNOTE: this is checking to see if we can enable the button, but the "isDeployable()" function
+        // on the study configuration is throwing lazy initialization exception (only on dev, not localhost).
+        // for now disabling, but need to come back and debug this.
+//        if (checkDeployButton && genomicSource.getStudyConfiguration().isDeployable()) {
+//            utilThis.addFunctionCall("enableDeployButton");
+//        }
     }
 
     private void updateRowFileDescriptions(Util utilThis, GenomicDataSourceConfiguration genomicSource,
