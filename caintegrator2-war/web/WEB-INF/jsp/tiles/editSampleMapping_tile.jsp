@@ -71,21 +71,18 @@
                
     <table class="data">
         <tr>
-            <th colspan="2">Control Samples</th>
+            <th colspan="2">Control Sample Set</th>
         </tr>
-        <tr>
-            <th>Sample Name</th>
-        </tr>
-        <s:iterator value="genomicSource.controlSamples" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-            <td><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
-            </tr>
+        <tr><td>
+        <s:iterator value="genomicSource.controlSampleSetCollection" status="status">
+            <li><s:property value="name" />
+            <ul>
+            <s:iterator value="samples" status="status">
+                <li><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></li>
+            </s:iterator>
+            </ul></li>
         </s:iterator>
+        </td></tr>
    </table>
             
 </div>
