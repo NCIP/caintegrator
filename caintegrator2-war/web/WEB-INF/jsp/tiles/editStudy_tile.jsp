@@ -7,7 +7,7 @@
 
 <div id="content">                      
     
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
     
     initializeJsp();
 
