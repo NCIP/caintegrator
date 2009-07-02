@@ -80,10 +80,10 @@
         </tr>
 
         <s:iterator value="genomicSource.controlSampleSetCollection" status="status">
-            <tr><td colspan="2" style="font-weight:bold; border-bottom: 0px; border-top: 1px solid #aaaaaa;"><s:property value="name" /></td></tr>
+            <tr><td colspan="2" style="font-weight:bold; border-top: 1px solid #aaaaaa; border-bottom: 0px;; border-left: 1px solid #aaaaaa;"><s:property value="name" /></td></tr>
 
             <s:iterator value="samples" status="status">
-                    <tr style="border-bottom: 0px; border-top: 0px;"><td style="border-bottom: 0px;">&nbsp;</td>
+                    <tr style="border-top: 0px; border-bottom: 0px;"><td style="border-bottom: 0px; border-left: 1px solid #aaaaaa;">&nbsp;</td>
                     <s:if test="#status.odd == true">
                       <td class="odd">
                     </s:if>
