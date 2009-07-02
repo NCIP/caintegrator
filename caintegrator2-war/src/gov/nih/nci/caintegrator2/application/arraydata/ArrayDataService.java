@@ -129,11 +129,19 @@ public interface ArrayDataService {
      */
      Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException;
 
-    /**
-     * Returns all platforms in alphabetical order.
-     * 
-     * @return the platforms.
-     */
-    List<Platform> getPlatforms();
+     /**
+      * Returns the platform of name.
+      * 
+      * @param name the platform name to get.
+      * @return the platform.
+      */
+     Platform getPlatform(String name);
+
+     /**
+      * Returns all platforms in alphabetical order.
+      * 
+      * @return the platforms.
+      */
+     List<Platform> getPlatforms();
     
 }

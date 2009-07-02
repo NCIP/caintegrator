@@ -139,6 +139,13 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
+    public Platform getPlatform(String name) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public List<Platform> getPlatforms() {
         List<Platform> platforms = new ArrayList<Platform>();
         Platform platform = new Platform();

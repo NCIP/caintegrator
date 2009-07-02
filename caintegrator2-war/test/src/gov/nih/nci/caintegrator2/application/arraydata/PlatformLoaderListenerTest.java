@@ -76,12 +76,12 @@ public class PlatformLoaderListenerTest {
         testMessage.setObject("A String");
         listener.onMessage(testMessage);
         assertFalse(arrayDataServiceStub.loadArrayDesignCalled);
-        testMessage.setObject(new AgilentPlatformSource(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE,
+        testMessage.setObject(new AgilentExpressionPlatformSource(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE,
                 "AgilentPlatform", "agilent_annotation.csv"));
         listener.onMessage(testMessage);
         assertTrue(arrayDataServiceStub.loadArrayDesignCalled);
         try{
-            new AgilentPlatformSource(null, "", "");
+            new AgilentExpressionPlatformSource(null, "", "");
         } catch (IllegalArgumentException e){
             assertEquals("Annotation file must exist.", e.getMessage());
         }

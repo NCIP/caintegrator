@@ -109,7 +109,12 @@ public enum PlatformTypeEnum {
     /**
      * Agilent Gene Expression platform.
      */
-    AGILENT_GENE_EXPRESSION("Agilent Gene Expression");
+    AGILENT_GENE_EXPRESSION("Agilent Gene Expression"),
+    
+    /**
+     * Agilent Copy Number platform.
+     */
+    AGILENT_DNA_ANALYSIS("Agilent Copy Number");
     
     private static Map<String, PlatformTypeEnum> valueToTypeMap = new HashMap<String, PlatformTypeEnum>();
 
