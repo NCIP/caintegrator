@@ -93,7 +93,6 @@ import java.io.File;
 public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
 
     private static final long serialVersionUID = 1L;
-    private final PlatformTypeEnum platformType;
 
     /**
      * Creates a new instance.
@@ -102,7 +101,6 @@ public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
      */
     public AffymetrixExpressionPlatformSource(File annotationFile) {
         super(annotationFile);
-        this.platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION;
     }
 
     @Override
@@ -117,13 +115,5 @@ public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
     public String toString() {
         return "Affymetrix CSV annotation file: " + getAnnotationFileNames();
     }
-
-    /**
-     * @return the platformType
-     */
-    public PlatformTypeEnum getPlatformType() {
-        return platformType;
-    }
-
 
 }

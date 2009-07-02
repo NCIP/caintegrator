@@ -76,7 +76,7 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAgilentArrayDesign(File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException {
-        AgilentPlatformSource source = new AgilentPlatformSource(annotationFile, "Agilent platform",
+        AgilentExpressionPlatformSource source = new AgilentExpressionPlatformSource(annotationFile, "Agilent platform",
                 annotationFile.getName());
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {

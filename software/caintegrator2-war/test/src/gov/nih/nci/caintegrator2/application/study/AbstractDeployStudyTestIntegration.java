@@ -89,7 +89,7 @@ import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AgilentPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
@@ -284,8 +284,8 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     private String getPlatformName(AbstractPlatformSource platformSource) {
-        if (platformSource instanceof AgilentPlatformSource) {
-            return ((AgilentPlatformSource) platformSource).getPlatformName();
+        if (platformSource instanceof AgilentExpressionPlatformSource) {
+            return ((AgilentExpressionPlatformSource) platformSource).getPlatformName();
         } else if (platformSource instanceof AffymetrixExpressionPlatformSource) {
             return platformSource.getAnnotationFiles().get(0).getName().split("\\.")[0];
         } else if (platformSource instanceof AffymetrixDnaPlatformSource) {

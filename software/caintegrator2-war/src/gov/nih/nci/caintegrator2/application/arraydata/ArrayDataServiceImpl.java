@@ -140,6 +140,13 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
+    public Platform getPlatform(String name) {
+        return dao.getPlatform(name);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public List<Platform> getPlatforms() {
         return dao.getPlatforms();
     }
