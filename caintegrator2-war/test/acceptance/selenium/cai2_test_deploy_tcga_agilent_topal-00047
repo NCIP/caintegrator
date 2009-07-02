@@ -43,14 +43,26 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>createStudy_studyConfiguration_study_longTitleText</td>
+	<td>studyDeploymentForm_studyConfiguration_study_longTitleText</td>
 	<td>${Cai2StudyName}.&nbsp;&nbsp;Study created via selenium.</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>createStudy_saveStudy</td>
+	<td>studyDeploymentForm_saveStudy</td>
 	<td></td>
 </tr>
+<!--// add logo-->
+<tr>
+	<td>type</td>
+	<td>addStudyLogo_studyLogoFile</td>
+	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_logo.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addStudyLogo_addStudyLogo</td>
+	<td></td>
+</tr>
+<!--// add clinical data-->
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
@@ -93,7 +105,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -123,7 +135,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -153,7 +165,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -183,7 +195,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -218,7 +230,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -248,7 +260,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -278,7 +290,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -313,7 +325,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -868,7 +880,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -908,7 +920,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -973,7 +985,7 @@
 <tr>
 	<td>type</td>
 	<td>updateDefinition_fileColumn_fieldDescriptor_definition_preferredDefinition</td>
-	<td>Created via selenium for ${Cai2StudyName}.</td>
+	<td>Created via selenium for ${Cai2StudyName} on ${dateAndTime}.</td>
 </tr>
 <tr>
 	<td>addSelection</td>
@@ -1015,27 +1027,27 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
 	<td>array.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveGenomicSource_genomicSource_serverProfile_port</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
 	<td>8080</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
+	<td>genomicSourceForm_genomicSource_experimentIdentifier</td>
 	<td>topal-00047</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveGenomicSource_genomicSource_serverProfile_username</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_username</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>saveGenomicSource_genomicSource_serverProfile_password</td>
+	<td>genomicSourceForm_genomicSource_serverProfile_password</td>
 	<td></td>
 </tr>
 <!--//select vendor-->
@@ -1051,7 +1063,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>saveGenomicSource_0</td>
+	<td>//button[@type='button' and @onclick='showConfirmMessage()']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
 	<td></td>
 </tr>
 <tr>
@@ -1067,6 +1084,11 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>saveSampleMapping_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Map Samples</td>
 	<td></td>
 </tr>
 <tr>
@@ -1090,24 +1112,13 @@
 	<td></td>
 </tr>
 <!--// end map samples-->
-<!--// add logo-->
-<tr>
-	<td>type</td>
-	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_logo.jpg</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addStudyLogo_addStudyLogo</td>
-	<td></td>
-</tr>
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>
-	<td>addStudyLogo_deployStudy</td>
+	<td>deployButton</td>
 	<td></td>
 </tr>
-<!--// scratch-->
+<!--// end of test case-->
 
 </tbody></table>
 </body>

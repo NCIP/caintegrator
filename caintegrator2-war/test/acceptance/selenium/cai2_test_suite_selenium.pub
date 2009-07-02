@@ -9,7 +9,6 @@
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="cai2_test_load_platforms">Manage Cai2 - Load platforms</a></td></tr>
-<tr><td><a href="cai2_test_wait_for_platforms_to_be_loaded">Manage Cai2 -  Wait for platforms to be loaded</a></td></tr>
 <tr><td><a href="cai2_test_deploy_rembrandt_ncri">Manage Studies - Load Rembrandt with NCRI images</a></td></tr>
 <tr><td><a href="cai2_test_deploy_rembrandt_noimages">Manage Studies - Load Rembrandt</a></td></tr>
 <tr><td><a href="cai2_test_deploy_dc_lung_full">Manage Studies - Load DC Lung Full</a></td></tr>
