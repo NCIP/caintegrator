@@ -458,6 +458,10 @@ TABLE.data TD A IMG.thumbnail
 { display:block; border:1px solid #ccc; padding:4px; width:90px }
 TABLE.data TD A IMG.thumbnail:hover
 { background:#386ebf }
+.odd
+{ background:#ffffff }
+.even
+{ background:#dcdcdc }
 
 
 /* Details Pages */

@@ -68,21 +68,34 @@
             </tr>
         </s:iterator>
     </table>
+
+<br><br>
                
     <table class="data">
         <tr>
-            <th colspan="2">Control Sample Set</th>
+            <th colspan="2">Control Sample Sets</th>
         </tr>
-        <tr><td>
+        <tr>
+            <th>Set Name</th><th>Sample Name</th>
+        </tr>
+
         <s:iterator value="genomicSource.controlSampleSetCollection" status="status">
-            <li><s:property value="name" />
-            <ul>
+            <tr><td colspan="2" style="font-weight:bold; border-bottom: 0px; border-top: 1px solid #aaaaaa;"><s:property value="name" /></td></tr>
+
             <s:iterator value="samples" status="status">
-                <li><s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></li>
+                    <tr style="border-bottom: 0px; border-top: 0px;"><td style="border-bottom: 0px;">&nbsp;</td>
+                    <s:if test="#status.odd == true">
+                      <td class="odd">
+                    </s:if>
+                    <s:else>
+                      <td class="even">
+                    </s:else> 
+                    <s:div title="cai2 ID = %{id}"><s:property value="name" /></s:div></td>
+                    </tr>
             </s:iterator>
-            </ul></li>
+
         </s:iterator>
-        </td></tr>
+
    </table>
             
 </div>
