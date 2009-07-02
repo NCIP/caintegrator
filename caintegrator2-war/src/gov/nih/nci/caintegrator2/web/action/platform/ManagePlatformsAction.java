@@ -88,7 +88,8 @@ package gov.nih.nci.caintegrator2.web.action.platform;
 import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixDnaPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.AgilentPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentDnaPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -114,6 +115,7 @@ import org.springframework.jms.core.MessageCreator;
 /**
  * Provides functionality to list and add array designs.
  */
+@SuppressWarnings("PMD") // See createPlatform method
 public class ManagePlatformsAction extends AbstractStudyManagementAction {
 
     private static final long serialVersionUID = 1L;
@@ -175,10 +177,14 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
     
     private void checkPlatformName() {
-        if ((PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType))
-                && StringUtils.isEmpty(platformName)) {
-            addFieldError("platformName", "Platform name is required for Agilent vendor");
+        if (PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
+                || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)
+                || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+            if (StringUtils.isEmpty(platformName)) {
+                addFieldError("platformName", "Platform name is required for this platform type.");
+            } else if (getArrayDataService().getPlatform(platformName) != null) {
+                addFieldError("platformName", "Platform name is duplicate, please enter another name.");
+            }
         }
     }
     
@@ -204,6 +210,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * Create the platform.
      * @return the Struts result.
      */
+    @SuppressWarnings("PMD") // Check for different platform types
     public String createPlatform() {
         try {
             AbstractPlatformSource source;
@@ -217,7 +224,11 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                 break;
                 
             case AGILENT_GENE_EXPRESSION:
-                source = new AgilentPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
+                source = new AgilentExpressionPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
+                break;
+                
+            case AGILENT_DNA_ANALYSIS:
+                source = new AgilentDnaPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
                 break;
 
             default:
@@ -423,7 +434,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public String getPlatformNameDisabled() {
         if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)
-                || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)) {
+                || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
+                || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)) {
             return "false";
         } else {
             return "true";

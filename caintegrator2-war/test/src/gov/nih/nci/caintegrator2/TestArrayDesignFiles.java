@@ -141,8 +141,11 @@ public class TestArrayDesignFiles {
     // Agilent files
     public static final String HUMAN_GENOME_CGH244A_ANNOTATION_PATH = "/arraydesign/agilent/014693_D_GeneList_20070207.txt";
     public static final String AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH = "/arraydesign/agilent/AgilentG4502A_07_01.tcga.adf";
+    public static final String AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_PATH = "/arraydesign/agilent/mskcc.org_TCGA_HG-CGH-244A_v081008.ADF";
+    
     public static final File HUMAN_GENOME_CGH244A_ANNOTATION_FILE = getFile(HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
     public static final File AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE = getFile(AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_PATH);
+    public static final File AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_FILE = getFile(AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_PATH);
     
     public static File getFile(String resourcePath) {
         return new File(TestArrayDesignFiles.class.getResource(resourcePath).getFile());

@@ -25,6 +25,10 @@
             document.getElementById("platformName").value = "";
             document.getElementById("platformName").disabled = false;
             document.getElementById("addFileButton").disabled = true;
+        } else if (type == "Agilent Copy Number"){
+            document.getElementById("platformName").value = "";
+            document.getElementById("platformName").disabled = false;
+            document.getElementById("addFileButton").disabled = true;
         }
     }
     
@@ -34,7 +38,7 @@
 </script>
 
 <h1>Manage Platforms</h1>
-<s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" >
+<s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data">
     <s:hidden name="selectedAction" />
     <table class="data">
         <tr>

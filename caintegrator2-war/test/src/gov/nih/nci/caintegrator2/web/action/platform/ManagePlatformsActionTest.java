@@ -164,6 +164,16 @@ public class ManagePlatformsActionTest {
             } 
         });
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
+        
+        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        action.setPlatformFile(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_FILE);
+        action.setJmsTemplate(new JmsTemplate() {
+            @Override
+            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
+                assertNotNull(messageCreator);
+            } 
+        });
+        assertEquals(ActionSupport.SUCCESS, action.createPlatform());
     }
     
     @Test
@@ -219,6 +229,12 @@ public class ManagePlatformsActionTest {
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         action.setPlatformName("Agilent Platform");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.clearErrorsAndMessages();
+        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        action.validate();
+        action.setPlatformName("Agilent Copy Number Platform");
         action.validate();
         assertFalse(action.hasFieldErrors());
     }
