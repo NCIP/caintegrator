@@ -367,10 +367,13 @@ public interface StudyManagementService {
      * 
      * @param studyConfiguration study containing the subjects and image series
      * @param mappingFile comma-separated value file that maps subject identifiers to image series identifiers
+     * @param mappingType the type of mapping file it is.
+     * @param imageSource the imageSource to map images.
      * @throws IOException unexpected IO exception
      * @throws ValidationException validation exception
      */
-    void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile)
+    void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource,  
+            File mappingFile, ImageDataSourceMappingTypeEnum mappingType)
         throws ValidationException, IOException;
     
     /**

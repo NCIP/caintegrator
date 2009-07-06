@@ -13,9 +13,28 @@
     
     <h1>Define Fields for Imaging Data</h1>
     <h2>Study Name: <s:property value="studyConfiguration.study.shortTitleText" /></h2>
-    <s:form action="saveImagingSource">
+    <s:form id="imagingSourceForm" name="imagingSourceForm" action="saveImagingSourceAnnotations"
+        method="post" enctype="multipart/form-data">
     <s:hidden name="studyConfiguration.id" />
     <s:hidden name="imageSourceConfiguration.id" />
+    
+    <s:if test="imageSourceConfiguration.imageAnnotationConfiguration == null">
+        <s:file name="imageAnnotationFile" label="Image Series Annotation File" />
+        <tr> 
+        <td></td>
+        <td>
+        <button type="button" 
+                onclick="document.imagingSourceForm.action = 'cancelImagingSource.action';
+                document.imagingSourceForm.submit();"> Cancel 
+        </button>
+        <button type="button" 
+                onclick="document.imagingSourceForm.action = 'addImagingSourceAnnotations.action';
+                document.imagingSourceForm.submit();"> Add </button>
+        </td> 
+    </tr>
+    </s:if>
+    
+    <s:else>
     <table class="data">
         <tr>
             <th>Field Definition</th>
@@ -54,7 +73,9 @@
             </tr>
         </s:iterator>
     </table>
-    <s:submit value="Save" />
+    <s:submit value="Done" />
+    </s:else>
+    
     </s:form>
             
 </div>

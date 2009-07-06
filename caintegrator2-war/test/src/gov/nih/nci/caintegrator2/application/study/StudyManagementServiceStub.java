@@ -285,7 +285,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadImageAnnotationCalled = true;
     }
 
-    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile) {
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration,
+            ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType) 
+        throws ValidationException, IOException {
         mapImageSeriesCalled = true;
     }
 
@@ -386,4 +388,5 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
         saveGenomicSourceCalled = true;
     }
+
 }

@@ -16,6 +16,7 @@ public class ImageSeriesAcquisition extends AbstractCaIntegrator2Object {
     
     private String identifier;
     private String nciaTrialIdentifier;
+    private String patientIdentifier;
     private ImageDataSourceConfiguration imageDataSource;
     private Collection<ImageSeries> seriesCollection;
     private StudySubjectAssignment assignment;
@@ -103,6 +104,20 @@ public class ImageSeriesAcquisition extends AbstractCaIntegrator2Object {
      */
     public void setImageDataSource(ImageDataSourceConfiguration imageDataSource) {
         this.imageDataSource = imageDataSource;
+    }
+
+    /**
+     * @return the patientIdentifier
+     */
+    public String getPatientIdentifier() {
+        return patientIdentifier;
+    }
+
+    /**
+     * @param patientIdentifier the patientIdentifier to set
+     */
+    public void setPatientIdentifier(String patientIdentifier) {
+        this.patientIdentifier = patientIdentifier;
     }
 
 }

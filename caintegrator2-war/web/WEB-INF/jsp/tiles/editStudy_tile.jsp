@@ -266,20 +266,24 @@
                 </s:else>
             </td>
             <td>
-                <s:if test="%{imageAnnotationConfiguration != null}">
-                    <s:url id="editImagingSource" action="editImagingSource">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imageSourceConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{editImagingSource}">Edit</s:a> 
-                     | 
-                </s:if>
+               <s:url id="editImagingSource" action="editImagingSource">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="imageSourceConfiguration.id" value="id" />
+                </s:url> 
+                <s:a href="%{editImagingSource}">Edit</s:a> 
+                 | 
+                <s:url id="editImagingSourceAnnotations" action="editImagingSourceAnnotations">
+                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
+                    <s:param name="imageSourceConfiguration.id" value="id" />
+                </s:url> 
+                <s:a href="%{editImagingSourceAnnotations}">Edit Annotations</s:a> 
+                 |                 
                 <s:if test="%{imageAnnotationConfiguration.loadable && !imageAnnotationConfiguration.currentlyLoaded}" >
                     <s:url id="loadImagingSource" action="loadImagingSource">
                         <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                         <s:param name="imageSourceConfiguration.id" value="id" />
                     </s:url> 
-                    <s:a href="%{loadImagingSource}">Load Source</s:a>
+                    <s:a href="%{loadImagingSource}">Load Annotations</s:a>
                      | 
                 </s:if>
                 <s:url id="deleteImagingSource" action="deleteImagingSource">

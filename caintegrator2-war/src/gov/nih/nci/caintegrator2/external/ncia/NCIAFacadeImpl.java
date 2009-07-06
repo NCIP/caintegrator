@@ -143,16 +143,18 @@ public class NCIAFacadeImpl implements NCIAFacade {
         List<Study> studies = client.retrieveStudyCollectionFromPatient(patient.getPatientId());
         List<ImageSeriesAcquisition> acquisitions = new ArrayList<ImageSeriesAcquisition>(studies.size());
         for (Study study : studies) {
-            acquisitions.add(convertToImageSeriesAcquisition(study, client));
+            acquisitions.add(convertToImageSeriesAcquisition(study, client, patient.getPatientId()));
         }
         return acquisitions;
     }
 
-    private ImageSeriesAcquisition convertToImageSeriesAcquisition(Study study, NCIASearchService client) 
+    private ImageSeriesAcquisition convertToImageSeriesAcquisition(Study study, NCIASearchService client, 
+            String patientId) 
     throws ConnectionException {
         ImageSeriesAcquisition acquisition = new ImageSeriesAcquisition();
         acquisition.setIdentifier(study.getStudyInstanceUID());
         acquisition.setSeriesCollection(new HashSet<ImageSeries>());
+        acquisition.setPatientIdentifier(patientId);
         List<Series> seriesList = client.retrieveImageSeriesCollectionFromStudy(study.getStudyInstanceUID());
         for (Series series : seriesList) {
             ImageSeries imageSeries = convertToImageSeries(series, client);
