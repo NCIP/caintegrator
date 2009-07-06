@@ -262,9 +262,9 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             return INPUT;
         }
         if (!StringUtils.isBlank(imageClinicalMappingFileFileName)) {
-            getImageSourceConfiguration().addMappingFileName(imageClinicalMappingFileFileName);
+            getImageSourceConfiguration().setMappingFileName(imageClinicalMappingFileFileName);
         } else {
-            getImageSourceConfiguration().addMappingFileName(ImageDataSourceConfiguration.AUTOMATIC_MAPPING);
+            getImageSourceConfiguration().setMappingFileName(ImageDataSourceConfiguration.AUTOMATIC_MAPPING);
         }
         try {
             getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),

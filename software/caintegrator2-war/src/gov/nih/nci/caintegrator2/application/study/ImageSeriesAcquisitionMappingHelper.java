@@ -151,6 +151,7 @@ class ImageSeriesAcquisitionMappingHelper {
         }
         for (ImageSeriesAcquisition acquisition : acquisitions) {
             subjectAssignment.getImageStudyCollection().add(acquisition);
+            acquisition.setAssignment(subjectAssignment);
         }
     }
 

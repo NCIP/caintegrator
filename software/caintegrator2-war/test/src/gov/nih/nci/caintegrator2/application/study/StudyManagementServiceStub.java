@@ -138,6 +138,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean saveAsynchronousStudyConfigurationJobCalled;
     public boolean loadGenomicSourceCalled;
     public boolean saveGenomicSourceCalled;
+    public boolean throwConnectionException = false;
+    public boolean throwValidationException = false;
+    public boolean throwIOException = false;
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -210,6 +213,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         saveAsynchronousStudyConfigurationJobCalled = false;
         loadGenomicSourceCalled = false;
         saveGenomicSourceCalled = false;
+        throwConnectionException = false;
+        throwValidationException = false;
+        throwIOException = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -279,16 +285,28 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ConnectionException {
         addImageSourceCalled = true;
+        if (throwConnectionException) {
+            throw new ConnectionException("");
+        }
     }
 
-    public void loadImageAnnotation(ImageDataSourceConfiguration imageSource) {
+    public void loadImageAnnotation(ImageDataSourceConfiguration imageSource) throws ValidationException {
         loadImageAnnotationCalled = true;
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
     }
 
     public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration,
             ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType) 
         throws ValidationException, IOException {
         mapImageSeriesCalled = true;
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
+        if (throwIOException) {
+            throw new IOException();
+        }
     }
 
 
@@ -373,7 +391,10 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void delete(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
             throws ValidationException {
-        
+        deleteCalled = true;
+        if (throwValidationException) {
+            throw new ValidationException("");
+        }
     }
 
     public void addGenomicSourceToStudy(StudyConfiguration studyConfiguration,

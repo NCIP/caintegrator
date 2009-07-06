@@ -90,10 +90,7 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Contains configuration information for retrieving images, etc. from NCIA.
@@ -167,35 +164,6 @@ public class ImageDataSourceConfiguration extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused")
     private void setImageSeriesAcquisitions(List<ImageSeriesAcquisition> imageSeriesAcquisitions) {
         this.imageSeriesAcquisitions = imageSeriesAcquisitions;
-    }
-    
-    /**
-     * Adds the filename to the list of mapping files.
-     * @param filename to add.
-     */
-    public void addMappingFileName(String filename) {
-        if (AUTOMATIC_MAPPING.equals(filename) && getMappingFileNames().contains(AUTOMATIC_MAPPING)) {
-            return;
-        }
-        if (mappingFileName == null) {
-            setMappingFileName(filename);
-        } else {
-            setMappingFileName(mappingFileName + "," + filename);
-        }
-    }
-    
-    /**
-     * Used for the visual display of the mapping file names.
-     * @return list of sample mapping file names.
-     */
-    public List<String> getMappingFileNames() {
-        List<String> mappingFileNames = new ArrayList<String>();
-        if (StringUtils.isBlank(mappingFileName)) {
-            mappingFileNames.add("None Configured");
-        } else {
-            mappingFileNames.addAll(Arrays.asList(StringUtils.split(mappingFileName, ",")));
-        }
-        return mappingFileNames;
     }
 
     /**
