@@ -42,6 +42,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
+    <property name="bda.local.repo.dir" location="${local.repo.dir}" />
 	<property name="target.dir" location="${software.dir}/target" />
 	<property name="bda-download.dir" location="${common.dir}/bda-download" />
 	<property name="ivy.settings.dir" location="${common.dir}/ivy" />
@@ -713,7 +714,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.proxy.port" value="4444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
-		<property name="selenium.test.suite" value="${software.dir}/cai2TestSuite.html"/>
+		<property name="selenium.test.suite" value="${software.dir}/caintegrator2-war/test/acceptance/selenium/cai2_test_suite_functional_tests"/>
 		<property name="selenium.url" value="http://localhost:46210"/>
 
 		<mkdir dir="${selenium.report.dir}"/>
@@ -763,10 +764,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			suite="${selenium.test.suite}"
 			browser="${selenium.browser}"
 			results="${selenium.report.dir}/${selenium.report.file}"
-			multiWindow="falsE"
+			multiWindow="false"
 			timeoutInSeconds="60"
 			port="${selenium.proxy.port}"
 			startURL="${selenium.url}"
-		      	/>
+		/>
 	</target>
 </project>
