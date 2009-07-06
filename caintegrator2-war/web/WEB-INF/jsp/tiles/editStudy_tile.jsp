@@ -135,7 +135,7 @@
                     <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
                     <s:param name="clinicalSource.id" value="id" />
                 </s:url> 
-                <s:a href="%{editClinicalSource}">Edit</s:a> 
+                <s:a href="%{editClinicalSource}">Edit Annotations</s:a> 
                 <s:if test="%{loadable}" > |
                     <s:if test="%{currentlyLoaded}">
                        <s:url id="reLoadClinicalSource" action="reLoadClinicalSource">

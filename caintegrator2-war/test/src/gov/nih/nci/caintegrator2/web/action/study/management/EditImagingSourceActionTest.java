@@ -121,6 +121,7 @@ public class EditImagingSourceActionTest {
         action = (EditImagingSourceAction) context.getBean("editImagingSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
+        action.clearErrorsAndMessages();
     }
 
     @Test
@@ -160,6 +161,13 @@ public class EditImagingSourceActionTest {
         action.clearErrorsAndMessages();
         action.saveImagingSource();
         assertTrue(action.hasFieldErrors());         
+        
+        action.setImageClinicalMappingFile(null);
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());         
+        
 
         // test with valid input files
         action.getImageSourceConfiguration().setCollectionName("Fake Collection Name");
@@ -178,10 +186,18 @@ public class EditImagingSourceActionTest {
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+        action.getImageSourceConfiguration().setId(1l);
+        assertEquals(Action.SUCCESS, action.saveImagingSource());
+        assertTrue(studyManagementServiceStub.deleteCalled);
+        
+        studyManagementServiceStub.throwConnectionException = true;
+        assertEquals(Action.INPUT, action.saveImagingSource());
+        
     }
     
     @Test
     public void testAddImageAnnotations() {
+        action.clearErrorsAndMessages();
         action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
         action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
         assertEquals(Action.SUCCESS, action.addImageAnnotations());
@@ -190,7 +206,60 @@ public class EditImagingSourceActionTest {
 
         action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
         assertEquals(Action.INPUT, action.addImageAnnotations());
+        action.clearErrorsAndMessages();
         action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        assertEquals(Action.ERROR, action.addImageAnnotations());
+        action.clearErrorsAndMessages();
+        action.setImageAnnotationFile(null);
         assertEquals(Action.INPUT, action.addImageAnnotations());
+    }
+    
+    @Test
+    public void testLoadImageAnnotations() {
+        assertEquals(Action.SUCCESS, action.loadImageAnnotations());
+        assertTrue(studyManagementServiceStub.loadImageAnnotationCalled);
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.loadImageAnnotations());   
+    }
+    
+    @Test
+    public void testDelete() {
+        assertEquals(Action.SUCCESS, action.delete());
+        assertTrue(studyManagementServiceStub.deleteCalled);
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.ERROR, action.delete());
+    }
+    
+    @Test
+    public void testMapImagingSource() {
+        action.setImageClinicalMappingFile(null);
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
+        assertEquals(Action.INPUT, action.mapImagingSource());
+        
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        action.setImageClinicalMappingFileFileName("valid");
+        action.clearErrorsAndMessages();
+        studyManagementServiceStub.throwValidationException = true;
+        assertEquals(Action.INPUT, action.mapImagingSource());
+        
+        action.clearErrorsAndMessages();
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwIOException = true;
+        assertEquals(Action.ERROR, action.mapImagingSource());
+        
+        action.clearErrorsAndMessages();
+        studyManagementServiceStub.clear();
+        assertEquals(Action.SUCCESS, action.mapImagingSource());
+        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+    }
+    
+    @Test
+    public void testGetSetMappingType() {
+        action.setMappingType(null);
+        assertEquals("", action.getMappingType());
+        action.setMappingType("invalid");
+        assertEquals("", action.getMappingType());
+        action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
+        assertEquals(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue(), action.getMappingType());
     }
 }
