@@ -86,16 +86,24 @@
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 
+import java.util.HashMap;
+
+import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * 
@@ -107,6 +115,8 @@ public class EditImagingSourceActionTest {
 
     @Before
     public void setUp() {
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
         ApplicationContext context = new ClassPathXmlApplicationContext("study-management-action-test-config.xml", EditClinicalSourceActionTest.class); 
         action = (EditImagingSourceAction) context.getBean("editImagingSourceAction");
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
@@ -124,6 +134,63 @@ public class EditImagingSourceActionTest {
         action.getImageSourceConfiguration().setId(1L);
         action.getImageSourceConfiguration().getImageAnnotationConfiguration().setId(1L);
         action.prepare();
+        assertTrue(action.isFileUpload());
+        assertFalse(action.hasActionErrors());
         assertTrue(studyManagementServiceStub.getRefreshedStudyEntityCalled);
+    }
+    
+    private void validateAddSource() {
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());
+        
+        action.getImageSourceConfiguration().getServerProfile().setUrl("Fake URL");
+        action.setMappingType(ImageDataSourceMappingTypeEnum.AUTO.getValue());
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());
+
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());         
+
+        // test with INvalid input files
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertTrue(action.hasFieldErrors());         
+
+        // test with valid input files
+        action.getImageSourceConfiguration().setCollectionName("Fake Collection Name");
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        action.clearErrorsAndMessages();
+        action.saveImagingSource();
+        assertFalse(action.hasFieldErrors());
+    }
+
+
+    @Test
+    public void testSaveImagingSource() {
+        validateAddSource();
+        action.setImageAnnotationFile(null);
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        assertEquals(Action.SUCCESS, action.saveImagingSource());
+        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+    }
+    
+    @Test
+    public void testAddImageAnnotations() {
+        action.setImageAnnotationFile(TestDataFiles.VALID_FILE);
+        action.setImageAnnotationFileFileName(TestDataFiles.VALID_FILE.getName());
+        assertEquals(Action.SUCCESS, action.addImageAnnotations());
+        action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
+        assertTrue(studyManagementServiceStub.addImageAnnotationFileCalled);
+
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_MISSING_VALUE);
+        assertEquals(Action.INPUT, action.addImageAnnotations());
+        action.setImageAnnotationFile(TestDataFiles.INVALID_FILE_DOESNT_EXIST);
+        assertEquals(Action.INPUT, action.addImageAnnotations());
     }
 }

@@ -193,7 +193,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         loadControlSamples(0);
         loadCopyNumberMappingFile();
         ImageDataSourceConfiguration imageSource = loadImages();
-        mapImages();
+        mapImages(imageSource);
         loadImageAnnotation(imageSource);
         deploy();
         checkArrayData();
@@ -345,10 +345,11 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     protected abstract File getImageAnnotationFile();
 
-    private void mapImages() throws ValidationException, IOException {
+    private void mapImages(ImageDataSourceConfiguration imageSource) throws ValidationException, IOException {
         if (getMapImages()) {
             logStart();
-            service.mapImageSeriesAcquisitions(studyConfiguration, getImageMappingFile());
+            service.mapImageSeriesAcquisitions(studyConfiguration, imageSource, 
+                    getImageMappingFile(), ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
             logEnd();
         }
     }

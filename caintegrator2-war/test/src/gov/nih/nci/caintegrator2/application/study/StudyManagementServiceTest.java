@@ -581,7 +581,8 @@ public class StudyManagementServiceTest {
         imageDataSourceConfiguration.getImageSeriesAcquisitions().add(acquisition2);
         studyConfiguration.getImageDataSources().add(imageDataSourceConfiguration);
         studyManagementService.save(studyConfiguration);
-        studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE);
+        studyManagementService.mapImageSeriesAcquisitions(studyConfiguration, imageDataSourceConfiguration, 
+                TestDataFiles.SIMPLE_IMAGE_MAPPING_FILE, ImageDataSourceMappingTypeEnum.IMAGE_SERIES);
         assertEquals("100", assignment1.getImageStudyCollection().iterator().next().getIdentifier());
         assertEquals("101", assignment2.getImageStudyCollection().iterator().next().getIdentifier());
     }

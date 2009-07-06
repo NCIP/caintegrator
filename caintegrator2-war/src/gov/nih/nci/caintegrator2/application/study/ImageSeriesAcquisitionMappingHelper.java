@@ -92,7 +92,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -106,58 +108,86 @@ class ImageSeriesAcquisitionMappingHelper {
     private static final Logger LOGGER = Logger.getLogger(ImageSeriesAcquisitionMappingHelper.class);
 
     private final StudyConfiguration studyConfiguration;
+    private final ImageDataSourceConfiguration imageSource;
     private final File mappingFile;
-    private Map<String, ImageSeriesAcquisition> imageSeriesAcquisitionIdentifierMap;
+    private final ImageDataSourceMappingTypeEnum mappingType;
+    private Map<String, Set<ImageSeriesAcquisition>> nbiaIdentifierMap;
+    
 
-    ImageSeriesAcquisitionMappingHelper(StudyConfiguration studyConfiguration, File mappingFile) {
+    ImageSeriesAcquisitionMappingHelper(StudyConfiguration studyConfiguration, File mappingFile,
+            ImageDataSourceMappingTypeEnum mappingType, ImageDataSourceConfiguration imageSource) {
         this.studyConfiguration = studyConfiguration;
         this.mappingFile = mappingFile;
+        this.mappingType = mappingType;
+        this.imageSource = imageSource;
     }
 
     void mapImageSeries() throws ValidationException, IOException {
+        if (ImageDataSourceMappingTypeEnum.AUTO.equals(mappingType)) {
+            mapImageSeriesAutomatically();
+            return;
+        }
         CSVReader reader = new CSVReader(new FileReader(mappingFile));
         String[] values;
         while ((values = reader.readNext()) != null) {
             if (values.length != 2) {
                 throw new ValidationException("Invalid file format - Expect 2 columns but has " + values.length);
             }
-            String subjectIdentifier = values[0].trim();
-            String acquisitionIdentifier = values[1].trim();
-            map(getSubjectAssignment(subjectIdentifier), getImageSeriesAcquisition(acquisitionIdentifier));
+            map(getSubjectAssignment(values[0].trim()), getImageSeriesAcquisition(values[1].trim()));
         }
     }
 
-    private void map(StudySubjectAssignment subjectAssignment, ImageSeriesAcquisition acquisition) {
-        if (subjectAssignment == null || acquisition == null) {
+    private void mapImageSeriesAutomatically() {
+        for (ImageSeriesAcquisition imageSeriesAcquisition : imageSource.getImageSeriesAcquisitions()) {
+            String patientIdentifier = imageSeriesAcquisition.getPatientIdentifier();
+            map(getSubjectAssignment(patientIdentifier), getImageSeriesAcquisition(patientIdentifier));
+        }
+    }
+
+    private void map(StudySubjectAssignment subjectAssignment, Set<ImageSeriesAcquisition> acquisitions) {
+        if (subjectAssignment == null || acquisitions == null || acquisitions.isEmpty()) {
             LOGGER.warn("Couldn't map ImageSeriesAcquisition to StudySubjectAssignment due to null entity");
             return;
         }
-        subjectAssignment.getImageStudyCollection().add(acquisition);
+        for (ImageSeriesAcquisition acquisition : acquisitions) {
+            subjectAssignment.getImageStudyCollection().add(acquisition);
+        }
     }
 
-    private ImageSeriesAcquisition getImageSeriesAcquisition(String identifier) {
-        ImageSeriesAcquisition acquisition = getImageSeriesAcquisitionIdentifierMap().get(identifier);
-        if (acquisition == null) {
+    private Set<ImageSeriesAcquisition> getImageSeriesAcquisition(String identifier) {
+        Set<ImageSeriesAcquisition> acquisition = getNbiaIdentifierMap().get(identifier);
+        if (acquisition == null || acquisition.isEmpty()) {
             LOGGER.warn(new String("No ImageSeriesAcquisition found for identifier " + identifier));
         }
         return acquisition;
     }
 
-    private Map<String, ImageSeriesAcquisition> getImageSeriesAcquisitionIdentifierMap() {
-        if (imageSeriesAcquisitionIdentifierMap == null) {
-            imageSeriesAcquisitionIdentifierMap = createImageSeriesAcquisitionIdentifierMap();
+    private Map<String, Set<ImageSeriesAcquisition>> getNbiaIdentifierMap() {
+        if (nbiaIdentifierMap == null) {
+            createNbiaIdentifierMap();
         }
-        return imageSeriesAcquisitionIdentifierMap;
+        return nbiaIdentifierMap;
     }
 
-    private Map<String, ImageSeriesAcquisition> createImageSeriesAcquisitionIdentifierMap() {
-        imageSeriesAcquisitionIdentifierMap = new HashMap<String, ImageSeriesAcquisition>();
-        for (ImageDataSourceConfiguration sourceConfiguration : studyConfiguration.getImageDataSources()) {
-            for (ImageSeriesAcquisition acquisition : sourceConfiguration.getImageSeriesAcquisitions()) {
-                imageSeriesAcquisitionIdentifierMap.put(acquisition.getIdentifier(), acquisition);
+    private void createNbiaIdentifierMap() {
+        nbiaIdentifierMap = new HashMap<String, Set<ImageSeriesAcquisition>>();
+        for (ImageSeriesAcquisition acquisition : imageSource.getImageSeriesAcquisitions()) {
+            if (ImageDataSourceMappingTypeEnum.IMAGE_SERIES.equals(mappingType)) {
+                addToNbiaIdentifierMap(acquisition.getIdentifier(), acquisition);
+            } else {
+                addToNbiaIdentifierMap(acquisition.getPatientIdentifier(), acquisition);
             }
         }
-        return imageSeriesAcquisitionIdentifierMap;
+    }
+
+    private void addToNbiaIdentifierMap(String identifier, ImageSeriesAcquisition acquisition) {
+        Set<ImageSeriesAcquisition> imageSeriesSet = new HashSet<ImageSeriesAcquisition>();
+        if (nbiaIdentifierMap.containsKey(identifier)) {
+            imageSeriesSet = nbiaIdentifierMap.get(identifier);
+        }
+        imageSeriesSet.add(acquisition);
+        nbiaIdentifierMap.put(identifier, imageSeriesSet);
+        
     }
 
     private StudySubjectAssignment getSubjectAssignment(String subjectIdentifier) {
