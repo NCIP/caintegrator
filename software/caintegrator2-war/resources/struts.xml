@@ -150,10 +150,6 @@
         <action name="editClinicalSource" class="editClinicalSourceAction">
             <result type="tiles">editClinicalFile</result>
         </action>
-       
-       <action name="editImagingSource" class="editImagingSourceAction">
-            <result type="tiles">editImagingFile</result>
-        </action>
         
         <action name="saveClinicalSource" class="saveClinicalSourceAction">
             <result type="tiles">editStudy</result>
@@ -303,7 +299,7 @@
         
         <action name="updateImagingFileColumn" method="updateFileColumn" class="defineImagingFileColumnAction">
             <result type="redirectAction">
-                <param name="actionName">editImagingSource</param>
+                <param name="actionName">editImagingSourceAnnotations</param>
                 <param name="studyConfiguration.id">${studyConfiguration.id}</param>
                 <param name="imageSourceConfiguration.id">${imageSourceConfiguration.id}</param>
             </result>
@@ -379,25 +375,62 @@
             <result type="tiles">editImagingSource</result>
         </action>
         
-        <action name="addImagingFile" class="addImagingFileAction">
-            <result type="tiles">editImagingFile</result>
+        <action name="editImagingSource" class="editImagingSourceAction">
+            <result type="tiles">editImagingSource</result>
+        </action>
+        
+        <action name="saveImagingSource" class="editImagingSourceAction" method="saveImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="editImageAnnotations" type="tiles">editImagingFile</result>
             <result name="input" type="tiles">editImagingSource</result>
         </action>
         
-        <action name="loadImagingSource" class="loadImagingSourceAction">
+       <action name="mapImagingSource" class="editImagingSourceAction" method="mapImagingSource" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+            <result name="input" type="tiles">editImagingSource</result>
+            <result name="error" type="tiles">editImagingSource</result>
+        </action>
+        
+       <action name="cancelImagingSource" class="editGenomicSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
+        </action>
+        
+        <action name="loadImagingSource" class="editImagingSourceAction" method="loadImageAnnotations">
             <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="deleteImagingSource" class="loadImagingSourceAction" method="delete">
+        <action name="deleteImagingSource" class="editImagingSourceAction" method="delete">
             <result type="tiles">editStudy</result>
             <result name="input" type="tiles">editStudy</result>
             <result name="error" type="tiles">editStudy</result>
         </action>
         
-        <action name="saveImagingSource" class="saveImagingSourceAction">
-            <result type="tiles">editStudy</result>
+        <action name="editImagingSourceAnnotations" class="editImagingSourceAction">
+            <result type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="addImagingSourceAnnotations" class="editImagingSourceAction" method="addImageAnnotations">
+            <result type="tiles">editImagingFile</result>
+            <result name="input" type="tiles">editImagingFile</result>
+            <result name="error" type="tiles">editImagingFile</result>
+        </action>
+        
+        <action name="saveImagingSourceAnnotations" class="editImagingSourceAction">
+            <result type="redirectAction">
+                <param name="actionName">editStudy</param>
+                <param name="studyConfiguration.id">${studyConfiguration.id}</param>
+            </result>
         </action>
                 
         <!--  Query Actions -->

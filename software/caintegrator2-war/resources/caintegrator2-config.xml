@@ -126,17 +126,6 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-
-    <bean id="addImagingFileAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.AddImageFileAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>
     
     <bean id="editImagingSourceAction"
         scope="prototype"
@@ -170,32 +159,10 @@
             <ref local="workspaceService"/>
         </property>
     </bean>
-
-	<bean id="saveImagingSourceAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.SaveImagingSourceAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>
     
     <bean id="loadClinicalSourceAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.study.management.LoadClinicalSourceAction">
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>
-
-	<bean id="loadImagingSourceAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.study.management.LoadImagingSourceAction">
         <property name="studyManagementService">
             <ref local="studyManagementService"/>
         </property>

@@ -8,6 +8,7 @@
 		</id>
 		<!-- Attributes mapping for the ImageSeriesAcquisition class -->
         <property name="identifier" type="string" column="IDENTIFIER"/>
+        <property name="patientIdentifier" type="string" column="PATIENT_IDENTIFIER"/>
         <property name="nciaTrialIdentifier" type="string" column="NCIA_TRIAL_IDENTIFIER"/>
 		<!-- Associations mapping for the ImageSeriesAcquisition class -->
         <many-to-one name="imageDataSource" 

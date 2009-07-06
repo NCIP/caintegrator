@@ -691,6 +691,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         AnnotationFile annotationFile = AnnotationFile.load(permanentFile, dao);
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
+        imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
         dao.save(imageAnnotationConfiguration);
         return imageAnnotationConfiguration;
     }
@@ -722,12 +723,12 @@ public class StudyManagementServiceImpl implements StudyManagementService {
 
     /**
      * {@inheritDoc}
-     * @throws IOException 
-     * @throws ValidationException 
      */
-    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, File mappingFile)
+    public void mapImageSeriesAcquisitions(StudyConfiguration studyConfiguration, 
+            ImageDataSourceConfiguration imageSource, File mappingFile, ImageDataSourceMappingTypeEnum mappingType)
         throws ValidationException, IOException {
-        new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile).mapImageSeries();
+        new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile, 
+                mappingType, imageSource).mapImageSeries();
         save(studyConfiguration);
     }
 

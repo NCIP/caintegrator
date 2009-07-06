@@ -110,7 +110,7 @@ public class NCIASearchServiceTestIntegration {
         ApplicationContext context = new ClassPathXmlApplicationContext("ncia-test-config.xml", NCIASearchServiceTestIntegration.class); 
         // TODO - 5/27/09 Ngoc, temporary pointing Dev because retrieveRepresentativeImageBySeries is only available on Dev
         //ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
-        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaStageServerConnectionProfile");
+        ServerConnectionProfile profile = (ServerConnectionProfile) context.getBean("nciaServerConnectionProfile");
         NCIAServiceFactoryImpl nciaServiceClient = (NCIAServiceFactoryImpl) context.getBean("nciaServiceFactoryIntegration");
         
         NCIASearchService searchService;
@@ -119,7 +119,7 @@ public class NCIASearchServiceTestIntegration {
 
         assertNotNull(searchService.retrieveAllCollectionNameProjects());
 
-        List<Patient> patients = searchService.retrievePatientCollectionFromCollectionNameProject("RIDER"); 
+        List<Patient> patients = searchService.retrievePatientCollectionFromCollectionNameProject("NCRI"); 
         assertNotNull(patients);
         
         List<Study> studies = searchService.retrieveStudyCollectionFromPatient(patients.get(0).getPatientId());

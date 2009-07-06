@@ -10,7 +10,7 @@
         
         <many-to-one name="imageDataSourceConfiguration" 
             class="gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration" 
-            column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" lazy="proxy" cascade="all" />
+            column="IMAGE_DATA_SOURCE_CONFIGURATION_ID" lazy="proxy" cascade="none" />
         
         <many-to-one name="annotationFile"
             class="gov.nih.nci.caintegrator2.application.study.AnnotationFile"
