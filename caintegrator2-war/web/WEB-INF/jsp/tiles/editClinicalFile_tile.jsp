@@ -54,7 +54,7 @@
             </tr>
         </s:iterator>
     </table>
-    <s:submit value="Save" />
+    <s:submit value="Done" />
     </s:form>
             
 </div>
