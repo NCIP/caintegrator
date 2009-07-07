@@ -77,6 +77,7 @@
 
     <!-- BDA -->
     <property name="bda-utils.dir" location="${software.dir}/target/bda-utils" />
+    <property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.8.jar"/>
 
     <mkdir dir="${build.lib.dir}" />
     <ant inheritAll="false" inheritRefs="false" dir="${software.dir}/common/bda-download"

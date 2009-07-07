@@ -55,7 +55,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri logo.jpg</td>
+	<td>${selenium.test.resources.dir}ncri logo.jpg</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -66,7 +66,7 @@
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
+	<td>${selenium.test.resources.dir}rembrandt_clinical_Aug08_subset_mod_for_NCRI.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1188,7 +1188,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_sample_mapping.csv</td>
+	<td>${selenium.test.resources.dir}ncri_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1214,7 +1214,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\jagla_0034_control_samples.csv</td>
+	<td>${selenium.test.resources.dir}jagla_0034_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1256,7 +1256,7 @@
 <tr>
 	<td>type</td>
 	<td>imagingSourceForm_imageClinicalMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_image_mapping.csv</td>
+	<td>${selenium.test.resources.dir}ncri_image_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1273,7 +1273,7 @@
 <tr>
 	<td>type</td>
 	<td>imagingSourceForm_imageAnnotationFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\ncri_image_annotations.csv</td>
+	<td>${selenium.test.resources.dir}ncri_image_annotations.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
