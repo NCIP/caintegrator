@@ -21,6 +21,38 @@
         }
     
     }
+    
+    // 
+    // disableFormElement - this script is called by an html element and
+    //                      is used to disable a second html element.  If
+    //                      the value of "obj" matches "valueToBeMatched",
+    //                      then "elementToDisable" is disabled.
+    //
+    // obj - the html element that is asking for something to be disabled.
+    // valueToBeMatched - the value of the html element that must be matched
+    //                    for the disabling to take place.
+    // formContainingElementToDisable- the name of the form containing the
+    //                                 element that is to be disabled.
+    // elementToDisable - the element to be disabled.
+    //
+    function disableFormElement(obj, valueToBeMatched, formContainingElementToDisable, elementToDisable)
+    {
+        var nameOfCallingElement = obj.name;
+        var arrayOfElements=document.getElementsByName(nameOfCallingElement);
+        var elementIdToBeDisabled = formContainingElementToDisable.name + '_' + elementToDisable.name;
+        
+        for (var i = 0; i < arrayOfElements.length; i++){
+            if (arrayOfElements[i].value == valueToBeMatched &&
+                   arrayOfElements[i].checked==true ) {
+                 document.getElementById(elementIdToBeDisabled).value = "";  
+                 document.getElementById(elementIdToBeDisabled).disabled = true;
+                 break;
+            } else {
+                document.getElementById(elementIdToBeDisabled).disabled = false;
+            }
+        } 
+        
+    }   
 
 </script>            
 
@@ -75,8 +107,9 @@
     		</s:if>
     		<s:radio name="mappingType" 
                 list="@gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum@getStringValues()"
-                required="true" label="Select Mapping File Type:" />
-    		<s:file name="imageClinicalMappingFile" label="Clinical/Imaging Mapping File" />
+                required="true" label="Select Mapping File Type:"
+                onclick="disableFormElement(this, 'Auto (No File Required)', document.imagingSourceForm, imageClinicalMappingFile)"/>
+    		<s:file name="imageClinicalMappingFile" label="Clinical/Imaging Mapping File" size="40" disabled="true"/>
     </tr>
     <tr> 
 	    <td></td>
