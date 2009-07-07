@@ -111,7 +111,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     
     @Override
     protected boolean getMapImages() {
-        return true;
+        return false;
     }
     
     @Override
