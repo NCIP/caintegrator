@@ -49,7 +49,7 @@
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung_clinical_data_public.csv</td>
+	<td>${selenium.test.resources.dir}dc_lung_clinical_data_public.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -2067,7 +2067,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung_sample_mapping.csv</td>
+	<td>${selenium.test.resources.dir}dc_lung_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -2082,7 +2082,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung_control_samples_moff.csv</td>
+	<td>${selenium.test.resources.dir}dc_lung_control_samples_moff.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -2094,7 +2094,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\dc_lung.jpg</td>
+	<td>${selenium.test.resources.dir}dc_lung.jpg</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

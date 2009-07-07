@@ -65,7 +65,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_vasari_logo.gif</td>
+	<td>${selenium.test.resources.dir}rembrandt_vasari_logo.gif</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -76,7 +76,7 @@
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_clinical_Aug08_subset.csv</td>
+	<td>${selenium.test.resources.dir}rembrandt_clinical_Aug08_subset.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1231,7 +1231,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_caarray_sample_mapping.csv</td>
+	<td>${selenium.test.resources.dir}rembrandt_caarray_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1256,7 +1256,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\rembrandt_control_samples.csv</td>
+	<td>${selenium.test.resources.dir}rembrandt_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

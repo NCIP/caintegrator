@@ -715,7 +715,35 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			dest="${temp.dir}/reslut.txt" ignoreerrors="true"/>
 	</target>
 
-	<target name="test:selenium:init">
+    <property name="selenium.test.src.dir" value="${software.dir}/caintegrator2-war/test/acceptance/selenium"/>
+    <property name="selenium.test.target.dir" value="${software.dir}/caintegrator2-war/target/selenium"/>
+    <property name="selenium.test.suite" value="${selenium.test.target.dir}/cai2_test_suite_functional_tests"/>
+
+    <target name="test:selenium:copy-tests">
+        <property name="caintegrator2-war.test.resources.dir" value="${caintegrator2-war.base.dir}/test/resources" />
+        <pathconvert property="selenium.test.resources.dir.noseperator">
+            <path location="${caintegrator2-war.test.resources.dir}" />
+        </pathconvert>
+        <property name="selenium.test.resources.dir" value="${selenium.test.resources.dir.noseperator}${file.separator}}" />
+        <pathconvert property="selenium.test.affymetrix.design.dir.noseperator">
+            <path location="${caintegrator2-war.test.resources.dir}/arraydesign/affymetrix" />
+        </pathconvert>
+        <property name="selenium.test.affymetrix.design.dir" value="${selenium.test.affymetrix.design.dir.noseperator}${file.separator}" />
+        <pathconvert property="selenium.test.agilent.design.dir.noseperator">
+            <path location="${caintegrator2-war.test.resources.dir}/arraydesign/agilent" />
+        </pathconvert>
+        <property name="selenium.test.agilent.design.dir" value="${selenium.test.agilent.design.dir.noseperator}${file.separator}" />
+        <copy todir="${selenium.test.target.dir}" overwrite="true">
+            <fileset dir="${selenium.test.src.dir}" />
+            <filterset begintoken="$${" endtoken="}">
+                <filter token="selenium.test.resources.dir" value="${selenium.test.resources.dir}" />
+                <filter token="selenium.test.affymetrix.design.dir" value="${selenium.test.affymetrix.design.dir}" />
+                <filter token="selenium.test.agilent.design.dir" value="${selenium.test.agilent.design.dir}" />
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="test:selenium:init" depends="test:selenium:copy-tests">
 		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
 		<property name="selenium.browser" value="*firefox"/>
 		<!--  What you would need for a ci server, recommend setting in local.properties
@@ -724,7 +752,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.proxy.port" value="4444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
-		<property name="selenium.test.suite" value="${software.dir}/caintegrator2-war/test/acceptance/selenium/cai2_test_suite_functional_tests"/>
 		<property name="selenium.url" value="http://localhost:46210"/>
 
 		<mkdir dir="${selenium.report.dir}"/>
