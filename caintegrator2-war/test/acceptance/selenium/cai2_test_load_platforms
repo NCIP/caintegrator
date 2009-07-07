@@ -24,7 +24,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133_Plus_2.na26.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG-U133_Plus_2.na26.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -39,7 +39,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133A.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG-U133A.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -64,7 +64,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\agilent\AgilentG4502A_07_01.tcga.adf</td>
+	<td>${selenium.test.agilent.design.dir}AgilentG4502A_07_01.tcga.adf</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -90,7 +90,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\Mapping50K_Hind240.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}Mapping50K_Hind240.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -100,7 +100,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\Mapping50K_Xba240.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}Mapping50K_Xba240.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -121,7 +121,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG-U133B.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG-U133B.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -136,7 +136,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95Av2.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG_U95Av2.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -151,7 +151,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95B.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG_U95B.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -166,7 +166,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95C.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG_U95C.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -181,7 +181,7 @@
 <tr>
 	<td>type</td>
 	<td>managePlatformForm_platformFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\arraydesign\affymetrix\HG_U95D.na27.annot.csv</td>
+	<td>${selenium.test.affymetrix.design.dir}HG_U95D.na27.annot.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

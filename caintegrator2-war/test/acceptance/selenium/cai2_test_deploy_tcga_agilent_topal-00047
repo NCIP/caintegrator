@@ -60,7 +60,7 @@
 <tr>
 	<td>type</td>
 	<td>addStudyLogo_studyLogoFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_logo.jpg</td>
+	<td>${selenium.test.resources.dir}cancer_genome_atlas_logo.jpg</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -71,7 +71,7 @@
 <tr>
 	<td>type</td>
 	<td>addClinicalFile_clinicalFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_clinical.csv</td>
+	<td>${selenium.test.resources.dir}cancer_genome_atlas_clinical.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1084,7 +1084,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_sampleMappingFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_atlas_sample_mapping.csv</td>
+	<td>${selenium.test.resources.dir}cancer_genome_atlas_sample_mapping.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -1109,7 +1109,7 @@
 <tr>
 	<td>type</td>
 	<td>saveSampleMapping_controlSampleFile</td>
-	<td>C:\ncicb_svn\caintegrator2\software\caintegrator2-war\test\resources\cancer_genome_control_samples.csv</td>
+	<td>${selenium.test.resources.dir}cancer_genome_control_samples.csv</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
