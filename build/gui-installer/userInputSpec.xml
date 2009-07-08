@@ -49,10 +49,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<spec txt="JBoss Home:" size="25" set="c:/apps/caintegrator2/${jboss.binaries.relative.dir}"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Home is a required field" />
 		</field>
-		<field type="dir" variable="tomcat.home">
+		<!-- <field type="dir" variable="tomcat.home">
 			<spec txt="Tomcat Home:" size="25" set="c:/apps/caintegrator2/${tomcat.binaries.relative.dir}"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Tomcat Home is a required field" />
-		</field>
+		</field> -->
 		<field type="text" variable="jboss.server.name">
 			<spec txt="JBoss Server name:" size="15" set="default"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="JBoss Server Name is a required field" />
@@ -65,7 +65,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<!-- Upgrade container.all -->
 	<panel order="3">
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
-		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
+		<panelreader classname="pre-install/install.xml" methodname="init:upgrade" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
