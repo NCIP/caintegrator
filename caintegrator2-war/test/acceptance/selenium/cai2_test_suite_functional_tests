@@ -7,7 +7,6 @@
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="cai2_test_check_login_page">cai2_test_check_login_page</a></td></tr>
-<tr><td><a href="cai2_test_deploy_rembrandt_noimages">Manage Studies - Load Rembrandt</a></td></tr>
 </tbody></table>
 </body>
 </html>
