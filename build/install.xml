@@ -69,7 +69,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	<mkdir dir="${working.dir}" />
 
 	<!-- Start logging moved out of target so all targets are logged -->
-	<property name="install-logs.dir" location="${application.base.path}/change-logs"/>
+	<property name="install-logs.dir" location="${log.dir}"/>
 	<!--<property name="install-logs.dir" location="${log.dir}"/>-->
 	<mkdir dir="${install-logs.dir}"/>
 	<tstamp>
