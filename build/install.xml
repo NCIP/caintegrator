@@ -48,6 +48,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
     <property name="caintegrator2.jms.file" value="caintegrator2-jms-destinations-service.xml" />
 	<property name="caintegrator2-war.ds.file" value="caintegrator2-mysql-ds.xml" />
 	<property name="caintegrator2-war.war.file" value="caintegrator2.war" />
+    <property name="exclude.jboss.backup" value="true" />
 
 	<!-- Paths -->
 	<path id="bda-utils.classpath">
