@@ -231,11 +231,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     </target>
 
 	<!-- Produces all distributions: installer, upgrader and source -->
-	<target name="dist" description="Makes all distributions: installer, upgrader and source" depends="
-		build:all,
-		dist:installer,
-		dist:upgrader,
-		dist:src" />
+    <target name="dist" description="Makes all distributions: installer, upgrader and source"
+            depends="
+            build:all,
+            dist:installer,
+            dist:upgrader,
+            dist:src,
+            dist:gui-installer
+            "/>
 
 	<target name="dist:src">
 		<!-- Add tasks here to zip up src into a distribution, may require some additoinal properties for distribution name" -->
@@ -278,22 +281,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<get src="${jboss-bindings.src.url}" dest="${dist.exploded.dir}/${jboss-bindings.file}" />
 	</target>
 
-	<target name="dist:gui-installer" description="Makes Gui-Installer distribution">
-		<delete>        
-			<fileset dir="${dist.dir}">
-				<include name="*.jar"/>         
-			</fileset>              
-		</delete>       
-		<gui-installer-prep
-			/>                      
-		<ant inheritAll="false" inheritRefs="false" 
-			antfile="install.xml"   
-			target="build:installer"
-			dir="${build.dir}/gui-installer"
-			>                       
-			<property name="compile.jar.dir" value="${target.dir}/izpack-4.0.1"/>
-		</ant>          
-	</target>
+    <target name="dist:gui-installer" description="Makes Gui-Installer distribution">
+        <delete>
+            <fileset dir="${dist.dir}">
+                <include name="*.jar" /> 
+            </fileset>
+        </delete>
+        <gui-installer-prep product.name="${caintegrator2.install.name}" product.version="${caintegrator2.version}" /> 
+        <ant inheritAll="false" inheritRefs="false" antfile="install.xml" target="build:installer" dir="${build.dir}/gui-installer">
+            <property name="compile.jar.dir" value="${target.dir}/izpack-4.3" /> 
+        </ant>
+    </target>
 
 
 	<!-- Copies install time resources into distribution tree -->
@@ -366,12 +364,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 	</target>
 	<target name="dist:upgrade:tier:db" depends="dist:installer:prep">
-		<delete file="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-db.zip"/>
-		<zip destfile="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-db.zip">
+		<delete file="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-db.zip"/>
+		<zip destfile="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-db.zip">
 			<zipfileset dir="${db-install.dist.dir}" prefix="${db-install.dist.relative.dir}" />
 			<zipfileset dir="${db-upgrade.dist.dir}" prefix="${db-upgrade.dist.relative.dir}" />
 			<!-- not needed for this target
-			<zipfileset dir="${bda-blueprints-webapp.dist.dir}" prefix="${bda-blueprints-webapp.dist.relative.dir}"/>
+			<zipfileset dir="${caintegrator2.dist.dir}" prefix="${caintegrator2.dist.relative.dir}"/>
 			<zipfileset dir="${grid-sample.dist.dir}" prefix="${grid-sample.dist.relative.dir}"/>
 			<zipfileset dir="${tools.dist.dir}" prefix="${tools.dist.relative.dir}"/>
 			<zipfileset dir="${common.dist.dir}" prefix="${common.dist.relative.dir}"/>
@@ -392,9 +390,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="dist:upgrade:tier:jboss" depends="dist:installer:prep">
-		<delete file="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-jboss.zip"/>
-		<zip destfile="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-jboss.zip">
-			<zipfileset dir="${bda-blueprints-webapp.dist.dir}" prefix="${bda-blueprints-webapp.dist.relative.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-jboss.zip"/>
+		<zip destfile="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-jboss.zip">
+			<zipfileset dir="${caintegrator2.dist.dir}" prefix="${caintegrator2.dist.relative.dir}"/>
 			<zipfileset dir="${grid-sample.dist.dir}" prefix="${grid-sample.dist.relative.dir}"/>
 			<zipfileset dir="${tools.dist.dir}" prefix="${tools.dist.relative.dir}">
 				<include name="*jboss*"/>
@@ -411,9 +409,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="dist:upgrade:tier:tomcat" depends="dist:installer:prep">
-		<delete file="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-tomcat.zip"/>
-		<zip destfile="${dist.dir}/${bda-blueprints-webapp.install.name}_${bda-blueprints-webapp.version}-tomcat.zip">
-			<zipfileset dir="${bda-blueprints-webapp.dist.dir}" prefix="${bda-blueprints-webapp.dist.relative.dir}"/>
+		<delete file="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-tomcat.zip"/>
+		<zip destfile="${dist.dir}/${caintegrator2.install.name}_${caintegrator2.version}-tomcat.zip">
+			<zipfileset dir="${caintegrator2.dist.dir}" prefix="${caintegrator2.dist.relative.dir}"/>
 			<zipfileset dir="${grid-sample.dist.dir}" prefix="${grid-sample.dist.relative.dir}"/>
 			<zipfileset dir="${tools.dist.dir}" prefix="${tools.dist.relative.dir}">
 				<include name="*tomcat*"/>
@@ -895,7 +893,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</path>
 		<generate-uml   
 			uml.dir="${uml.dir}"    
-			src.java.dir="${bda-blueprints-webapp.base.dir}/src/java"
+			src.java.dir="${caintegrator2.base.dir}/src/java"
 			uml.source.path="bda-blueprints.classpath.ref"
 			/>
 	</target>
