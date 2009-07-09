@@ -456,16 +456,9 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
      */
     @SuppressWarnings(UNCHECKED)
     public boolean isDuplicateStudyName(Study study) {
-        long id;
-        if (study.getId() == null) {
-            id = 0;
-        } else {
-            id = study.getId().longValue();
-        }
-
-        List<Study> result = getHibernateTemplate().find("from Study where shortTitleText = ? and id != ?",
-                new Object[] {study.getShortTitleText(), id });
-
+        unsecureCurrentSession(); // To get all studies, regardless of visibility.
+        List<Study> result = getCurrentSession().createCriteria(Study.class).add(
+                Restrictions.eq("shortTitleText", study.getShortTitleText())).list();
         return !result.isEmpty();
     }
     
@@ -633,6 +626,13 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
             } catch (CSException e) {
                 throw new IllegalStateException("Unable to use instance level filters.");
             }
+        }
+    }
+    
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped 
+    private void unsecureCurrentSession() {
+        for (String filterName : (Set<String>) getCurrentSession().getSessionFactory().getDefinedFilterNames()) {
+            getCurrentSession().disableFilter(filterName);
         }
     }
 
