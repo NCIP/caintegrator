@@ -470,13 +470,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	</target>
 
 	<!-- Generic targets to call appropriate upgrade path targets, just change the depends to use alternate ugprade path -->
-	<target name="upgrade:jboss" description="Wrapper target to call all targets required to upgrade jboss container." unless="exclude.jboss" depends="init:upgrade:jboss,init:common,upgrade-dac:jboss">
+	<target name="upgrade:jboss" description="Wrapper target to call all targets required to upgrade jboss container." unless="exclude.jboss" depends="init:upgrade:jboss,init:common,upgrade-ncm:jboss">
 	</target>
 
-	<target name="upgrade" description="Upgrades JBoss and Database" depends="init:upgrade,init:common,upgrade-dac">
+	<target name="upgrade" description="Upgrades JBoss and Database" depends="init:upgrade,init:common,upgrade-ncm">
 	</target>
 
-	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="init:upgrade,init:common,upgrade-dac:with-dbinstall">
+	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="init:upgrade,init:common,upgrade-ncm:with-dbinstall">
 	</target>
 
 	<!-- Upgrade with Disposable Application Conttainer (DAC) -->
