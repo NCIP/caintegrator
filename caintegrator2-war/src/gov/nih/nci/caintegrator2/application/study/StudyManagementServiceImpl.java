@@ -843,8 +843,8 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
-    public boolean isDuplicateStudyName(Study study) {
-        return dao.isDuplicateStudyName(study);
+    public boolean isDuplicateStudyName(Study study, String username) {
+        return dao.isDuplicateStudyName(study, username);
     }
     
     /**
