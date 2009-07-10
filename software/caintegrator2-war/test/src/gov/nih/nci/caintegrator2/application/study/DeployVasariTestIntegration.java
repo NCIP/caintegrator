@@ -141,7 +141,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Override
     protected int getExpectedSampleCount() {
-        return 463;
+        return 506;
     }
 
     @Override
