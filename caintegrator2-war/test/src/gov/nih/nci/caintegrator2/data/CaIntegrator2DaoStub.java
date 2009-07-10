@@ -301,7 +301,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     /**
      * {@inheritDoc}
      */
-    public boolean isDuplicateStudyName(Study study) {
+    public boolean isDuplicateStudyName(Study study, String username) {
         isDuplicateStudyNameCalled =true;
         return false;
     }

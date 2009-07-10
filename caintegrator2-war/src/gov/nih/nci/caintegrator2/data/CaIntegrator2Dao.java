@@ -261,9 +261,11 @@ public interface CaIntegrator2Dao {
      * 
      * @param study
      *            the study object
+     * @param username the user checking to see if it's a duplicate, because it is based
+     * on that users UserGroup privileges.
      * @return true or false.
      */
-    boolean isDuplicateStudyName(Study study);
+    boolean isDuplicateStudyName(Study study, String username);
     
     /**
      * To retrieve studyLogo based on ID and Name.

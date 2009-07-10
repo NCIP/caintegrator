@@ -331,7 +331,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public boolean isDuplicateStudyName(Study study) {
+    public boolean isDuplicateStudyName(Study study, String username) {
         isDuplicateStudyNameCalled = true;
         return study.getShortTitleText().equals("Duplicate");
     }

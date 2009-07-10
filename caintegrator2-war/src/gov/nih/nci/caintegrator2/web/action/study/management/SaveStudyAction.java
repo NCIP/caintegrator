@@ -146,7 +146,8 @@ public class SaveStudyAction extends AbstractStudyAction {
         } else if (studyName.length() > NAME_LENGTH) {
             addFieldError("study.shortTitleText",
                     "Study name exceeds maximum length of 50 characters, please shorten it.");
-        } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy())) {
+        } else if (getStudyManagementService().isDuplicateStudyName(getStudyConfiguration().getStudy(),
+                getWorkspace().getUsername())) {
             addFieldError("study.shortTitleText", "There is already a study named '" + studyName
                     + "', please use a different name.");
         }

@@ -606,7 +606,7 @@ public class StudyManagementServiceTest {
     public void testIsDuplicateStudyName() {
         Study study = new Study();
         study.setShortTitleText("studyName");
-        assertFalse(studyManagementService.isDuplicateStudyName(study));
+        assertFalse(studyManagementService.isDuplicateStudyName(study, ""));
         assertTrue(daoStub.isDuplicateStudyNameCalled);
     }
     
