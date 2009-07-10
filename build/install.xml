@@ -387,12 +387,26 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<validate-ports-preinstall />
 	</target>
 	<target name="install:validation:post-install" depends="init:install,init:common">
+        <!--OS Property Backup dir -->
+        <condition property="propertyfile.backup.location" value="/local/content/caintegrator2/bda-property-backups">
+            <or>
+                <os family="unix" />
+                <os family="mac" />
+            </or>
+        </condition>
+
+        <condition property="propertyfile.backup.location" value="c:/temp">
+            <os family="windows" />
+        </condition>
+    
 		<if>
 			<not>
 				<isset property="exclude.start.servers"/>
 			</not>
 			<then>
-				<validate-post-install />
+                <validate-post-install
+                 propertyfile.backup.location="${propertyfile.backup.location}"
+                />
 			</then>
 		</if>
 	</target>
