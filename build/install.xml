@@ -236,7 +236,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 		<database-tag/>
     </target>
     
-    <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database">
+    <target name="upgrade:initdb" description="Runs database initialization scripts." unless="exclude.database" depends="init:common">
         <!-- Run script to initialize application properties table -->
         <mkdir dir="${db-install.dir.dest}/${database.type}" />
         <copy todir="${db-install.dir.dest}/${database.type}" overwrite="true">
