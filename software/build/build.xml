@@ -795,12 +795,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</then>
 		</if>
 		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
-		<selenese 
+		<selenese  
 			suite="${selenium.test.suite}"
 			browser="${selenium.browser}"
 			results="${selenium.report.dir}/${selenium.report.file}"
 			multiWindow="false"
-			timeoutInSeconds="60"
+			timeoutInSeconds="3600"
 			port="${selenium.proxy.port}"
 			startURL="${selenium.url}"
 		      	/>
