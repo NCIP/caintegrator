@@ -388,7 +388,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/caintegrator2-war/trunk/software/ins
 	</target>
 	<target name="install:validation:post-install" depends="init:install,init:common">
         <!--OS Property Backup dir -->
-        <condition property="propertyfile.backup.location" value="/local/content/caintegrator2/bda-property-backups">
+        <condition property="propertyfile.backup.location" value="/tmp/caintegrator2/bda-property-backups">
             <or>
                 <os family="unix" />
                 <os family="mac" />
