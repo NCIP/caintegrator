@@ -159,6 +159,34 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         return new String[] {"classpath*:/**/genepattern-test-config.xml"};
     }
     
+    @Test
+    public void testRunPreprocessDataset() throws ConnectionException, InvalidCriterionException, IOException {
+        setupContext();
+        StudySubscription subscription = setupStudySubscription();
+        ServerConnectionProfile server = new ServerConnectionProfile();
+        server.setUrl(PREPROCESS_DATASET_URL);
+        PreprocessDatasetParameters preprocessParameters = new PreprocessDatasetParameters();
+        preprocessParameters.setServer(server);
+        
+        // Narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
+        // a 6th sample, so combined it should produce 6 sample rows.
+        Query query1 = studyHelper.createQuery(studyHelper.createCompoundCriterion4(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        Query query2 = studyHelper.createQuery(studyHelper.createCompoundCriterion5(), 
+                                            new HashSet<ResultColumn>(), subscription);
+        preprocessParameters.setProcessedGctFilename("test2.gct");
+        preprocessParameters.getDatasetParameters().setLogBaseTwo(true);
+        preprocessParameters.getClinicalQueries().add(query1);
+        query1.setName("Query 1");
+        preprocessParameters.getClinicalQueries().add(query2);
+        query2.setName("Query  2");
+        genePatternGridRunner.runPreprocessDataset(subscription, preprocessParameters);
+        File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
+                + preprocessParameters.getProcessedGctFilename());
+        checkGctFile(gctFile, 6, 6, "0.29865831556451516");
+    }
+    
+    @Test
     public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException, InvalidCriterionException {
         setupContext();
         StudySubscription subscription = setupStudySubscription();
@@ -190,7 +218,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         assertEquals(6, results.size());
         File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + preprocessParameters.getProcessedGctFilename());
-        checkGctFile(gctFile, 6, 6, 0.2986583f);
+        checkGctFile(gctFile, 6, 6, "0.29865831556451516");
         
         File clsFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + comparativeMarkerParameters.getClassificationFileName());
@@ -233,7 +261,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     }
 
     
-    private void checkGctFile(File gctFile, int numSamples, int numReporters, float value) throws IOException {
+    private void checkGctFile(File gctFile, int numSamples, int numReporters, String value) throws IOException {
         assertTrue(gctFile.exists());
         CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
         checkLine(reader.readNext(), "#1.2");
@@ -242,8 +270,8 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         checkValue(reader.readNext(), value); // Row values
     }
 
-    private void checkValue(String[] readNext, float f) {
-        assertEquals(String.valueOf(f), readNext[2]);
+    private void checkValue(String[] readNext, String f) {
+        assertEquals(f, readNext[2]);
     }
 
     private void checkLine(String[] line, String... expecteds) {

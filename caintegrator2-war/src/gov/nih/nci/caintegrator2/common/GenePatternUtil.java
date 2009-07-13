@@ -265,5 +265,18 @@ public final class GenePatternUtil {
         stringParameter.setValue(value);
         return stringParameter;
     }
+
+    /**
+     * Creates a parameter from given name/value pair.
+     * @param name of parameter.
+     * @param value of parameter.
+     * @return parameter based on name/value pair.
+     */
+    public static StringParameter createBoolean0or1Parameter(String name, boolean value) {
+        StringParameter stringParameter = new StringParameter();
+        stringParameter.setName(name);
+        stringParameter.setValue(value ? "1" : "0");
+        return stringParameter;
+    }
     
 }

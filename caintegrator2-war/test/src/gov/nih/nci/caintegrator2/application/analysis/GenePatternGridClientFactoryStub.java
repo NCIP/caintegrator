@@ -108,6 +108,7 @@ import org.cabig.icr.asbp.parameter.ParameterList;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.cagrid.service.preprocessdataset.mage.context.client.PreprocessDatasetMAGEServiceContextClient;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
 import org.genepattern.gistic.GisticResult;
 import org.genepattern.gistic.Marker;
@@ -158,7 +159,30 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
                 throws RemoteException {
             return null;
         }
+
+        public PreprocessDatasetMAGEServiceContextClient createAnalysis() throws RemoteException, MalformedURIException {
+            return new PreprocessContextClientStub("http://test");
+        }
         
+    }
+    
+    private static class PreprocessContextClientStub extends PreprocessDatasetMAGEServiceContextClient {
+        
+        public PreprocessContextClientStub(String url) throws MalformedURIException, RemoteException {
+            super(url);
+        }
+        
+        @Override
+        public TransferServiceContextReference submitData(ParameterList parameterList) throws RemoteException,
+                org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types.CannotLocateResource {
+            return new TransferServiceContextReferenceStub();
+        }
+        
+        @Override
+        public TransferServiceContextReference getResult() throws RemoteException ,org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types.CannotLocateResource ,org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types.AnalysisNotComplete {
+            return new TransferServiceContextReferenceStub();
+            
+        }
     }
 
     public ComparativeMarkerSelMAGESvcI createComparativeMarkerSelClient(ServerConnectionProfile server)
