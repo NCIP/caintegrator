@@ -85,21 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
 import edu.wustl.icr.asrv1.dnacopy.ChromosomalSegmentWithMeanAndMarker;
 import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
 import gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryStub;
-import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
-import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
@@ -126,9 +124,6 @@ import gov.nih.nci.caintegrator2.external.ParameterException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -137,8 +132,6 @@ import java.util.List;
 import org.genepattern.gistic.Marker;
 import org.junit.Before;
 import org.junit.Test;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * 
@@ -173,51 +166,6 @@ public class GenePatternGridRunnerImplTest {
         userWorkspace.setUsername("testUser");
         studySubscription.setUserWorkspace(userWorkspace);
         return studySubscription;
-    }
-
-    @Test
-    public void testRunPreprocessDataset() throws ConnectionException, IOException, InvalidCriterionException {
-        StudySubscription studySubscription = setupStudySubscription();
-        ServerConnectionProfile server = new ServerConnectionProfile();
-        PreprocessDatasetParameters parameters = new PreprocessDatasetParameters();
-        parameters.setServer(server);
-        parameters.setProcessedGctFilename("testFile.gct");
-        File gctFile = genePatternGridRunner.runPreprocessDataset(studySubscription, parameters);
-        gctFile.deleteOnExit();
-        checkGctFile(gctFile);
-    }
-
-
-    @Test
-    public void testRunPreprocessComparativeMarkerSelection() throws ConnectionException, IOException, InvalidCriterionException {
-        StudySubscription studySubscription = setupStudySubscription();
-        ServerConnectionProfile server = new ServerConnectionProfile();
-        Query query1 = new Query();
-        query1.setName("query1");
-        query1.setCompoundCriterion(new CompoundCriterion());
-        Query query2 = new Query();
-        query2.setName("query2");
-        query2.setCompoundCriterion(new CompoundCriterion());
-        PreprocessDatasetParameters preprocessParams = new PreprocessDatasetParameters();
-        preprocessParams.setServer(server);
-        preprocessParams.setProcessedGctFilename("testFile.gct");
-        preprocessParams.getClinicalQueries().add(query1);
-        preprocessParams.getClinicalQueries().add(query2);
-        ComparativeMarkerSelectionParameters comparativeMarkerParams = new ComparativeMarkerSelectionParameters();
-        comparativeMarkerParams.setServer(server);
-        comparativeMarkerParams.setClassificationFileName("testFile.cls");
-        comparativeMarkerParams.getClinicalQueries().addAll(preprocessParams.getClinicalQueries());
-        List<MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(studySubscription, preprocessParams, comparativeMarkerParams);
-        //assertEquals("test", results.get(0).getFeature());
-        assertEquals(null, results.get(0).getFeature());
-        File gctFile = new File(fileManager.getUserDirectory(null) + File.separator 
-                + preprocessParams.getProcessedGctFilename());
-        checkGctFile(gctFile);
-        gctFile.deleteOnExit();
-        File clsFile = new File(fileManager.getUserDirectory(null) + File.separator 
-                + comparativeMarkerParams.getClassificationFileName());
-        clsFile.deleteOnExit();
-        checkClsFile(clsFile);
     }
     
     @Test
@@ -267,27 +215,6 @@ public class GenePatternGridRunnerImplTest {
         assertEquals("name", markers[2].getName());
     }
 
-    private void checkClsFile(File clsFile) throws IOException {
-        assertTrue(clsFile.exists());
-        CSVReader reader = new CSVReader(new FileReader(clsFile), ' ');
-        checkLine(reader.readNext(), "3", "2", "1");
-        checkLine(reader.readNext(), "#", "query1", "query2");
-        checkLine(reader.readNext(), "0", "0", "1");
-    }
-    
-    private void checkGctFile(File gctFile) throws IOException {
-        assertTrue(gctFile.exists());
-        CSVReader reader = new CSVReader(new FileReader(gctFile), '\t');
-        checkLine(reader.readNext(), "#1.2");
-        checkLine(reader.readNext(), "2", "3");
-        checkLine(reader.readNext(), "NAME", "Description", "SAMPLE1", "SAMPLE2", "SAMPLE3");
-        checkLine(reader.readNext(), "REPORTER1", "Gene: GENE1", "1.1", "2.2", "3.3");
-        checkLine(reader.readNext(), "REPORTER2", "N/A", "4.4", "5.5", "6.6");
-    }
-
-    private void checkLine(String[] line, String... expecteds) {
-        assertArrayEquals(expecteds, line);
-    }
     
     private GenomicDataQueryResult createTestResult() {
         GenomicDataQueryResult result = new GenomicDataQueryResult();
@@ -370,6 +297,25 @@ public class GenePatternGridRunnerImplTest {
         column.getSampleAcquisition().setSample(new Sample());
         column.getSampleAcquisition().getSample().setName(sampleName);
         result.getColumnCollection().add(column);
+    }
+    
+    @Test
+    public void testGenePatternUtil() throws InvalidCriterionException {
+        Query query1 = new Query();
+        query1.setName("query1");
+        query1.setCompoundCriterion(new CompoundCriterion());
+        Query query2 = new Query();
+        query2.setName("query2");
+        query2.setCompoundCriterion(new CompoundCriterion());
+        List<Query> queries = new ArrayList<Query>();
+        queries.add(query1);
+        queries.add(query2);
+        SampleClassificationParameterValue value = 
+            GenePatternUtil.createSampleClassification(queryManagementServiceStub, queries);
+        assertNotNull(value);
+        
+        assertEquals("1", GenePatternUtil.createBoolean0or1Parameter("name", true).getValue());
+        assertEquals("0", GenePatternUtil.createBoolean0or1Parameter("name", false).getValue());
     }
     
     private static class QueryManagementServiceGenePatternStub extends QueryManagementServiceStub {

@@ -85,50 +85,53 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
-import java.io.File;
-import java.rmi.RemoteException;
-import java.util.Map;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
-import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
-
-import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
-import edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl;
+import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
-import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+
+import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.Status;
+import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
+import org.genepattern.cagrid.service.preprocessdataset.mage.context.client.PreprocessDatasetMAGEServiceContextClient;
+import org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types.AnalysisNotComplete;
+import org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types.CannotLocateResource;
+
 
 /**
  * Runs the GenePattern grid service PreprocessDataset (MAGE).
  */
 public class PreprocessDatasetGridRunner {
-
+    private static final Logger LOGGER = Logger.getLogger(PreprocessDatasetGridRunner.class);
+    private static final int DOWNLOAD_REFRESH_INTERVAL = 1000;
+    private static final int TIMEOUT_SECONDS = 60;
     private final PreprocessDatasetMAGEServiceI client;
-    private final MageBioAssayGenerator mbaGenerator;
     private final FileManager fileManager;
-    private final Map<String, String> reporterGeneSymbols;
     
     /**
      * Public Constructor.
      * @param client of grid service.
-     * @param mbaGenerator to generae BioAssay objects.
      * @param fileManager to store gct file.
-     * @param reporterGeneSymbols the reporterGeneSymbols map.
      */
     public PreprocessDatasetGridRunner(PreprocessDatasetMAGEServiceI client,
-                                MageBioAssayGenerator mbaGenerator,
-                                FileManager fileManager,
-                                Map<String, String> reporterGeneSymbols) {
+                                FileManager fileManager) {
         this.client = client;
-        this.mbaGenerator = mbaGenerator;
         this.fileManager = fileManager;
-        this.reporterGeneSymbols = reporterGeneSymbols;
     }
     
     /**
@@ -138,49 +141,113 @@ public class PreprocessDatasetGridRunner {
      * @param dataset the GctDataset to run preprocess on.
      * @return preprocessed GCT file.
      * @throws ConnectionException if unable to connect to grid service.
+     * @throws InterruptedException if thread is interrupted while waiting for file download.
      */
     public File execute(StudySubscription studySubscription, PreprocessDatasetParameters parameters, 
             GctDataset dataset) 
-        throws ConnectionException {
-        GctDataset preprocessedDataset = dataset;
+        throws ConnectionException, InterruptedException {
+        File gctFile = createGctFile(studySubscription, parameters, dataset);
         if (dataset.getValues().length > 0) {
-            preprocessedDataset = runPreprocessDataset(parameters, dataset);
+            return runPreprocessDataset(parameters, gctFile);
         }
-        return GctDatasetFileWriter.writeAsGct(preprocessedDataset, 
+        return gctFile;
+    }
+
+    private File createGctFile(StudySubscription studySubscription, PreprocessDatasetParameters parameters,
+            GctDataset dataset) {
+        return GctDatasetFileWriter.writeAsGct(dataset, 
                 new File(fileManager.getUserDirectory(studySubscription) + File.separator 
                         + parameters.getProcessedGctFilename()).getAbsolutePath());
     }
-
-    private GctDataset runPreprocessDataset(PreprocessDatasetParameters parameters, GctDataset dataset) 
-    throws ConnectionException {
+    
+    private File runPreprocessDataset(PreprocessDatasetParameters parameters, File unprocessedGctFile) 
+    throws ConnectionException, InterruptedException {
         try {
-            // I was unable to disable logging using log4j.properties for this class, and it is
-            // very verbose, so using this as a workaround to not spam the log file.
-            Logger.getLogger(MageBioAssayGeneratorImpl.class).setLevel(Level.WARN);
-            String jobInfoString = parameters.getProcessedGctFilename().replace(".gct", "") 
-            + " -- PreProcess Dataset Grid Task";
-            TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());
-            timeLogger.startLog(jobInfoString);
-            BioAssay[] processedBioAssay = client.performAnalysis(convertGctDatasetToBioAssay(dataset), 
-                                                                  parameters.getDatasetParameters());
-            timeLogger.stopLog(jobInfoString);
-            if (processedBioAssay == null) {
-                throw new ConnectionException(
-                        "Preprocess Dataset filtered out all rows, change parameters and try again.");
-            }
-            return new GctDataset(processedBioAssay, mbaGenerator, reporterGeneSymbols);
-        } catch (InvalidParameterException e) {
-            throw new IllegalArgumentException("Invalid parameters.", e);
+            PreprocessDatasetMAGEServiceContextClient analysis = client.createAnalysis();
+            postUpload(analysis, parameters, unprocessedGctFile);
+            return downloadResult(unprocessedGctFile, analysis);
         } catch (RemoteException e) {
             throw new ConnectionException("Remote Connection Failed.", e);
+        } catch (MalformedURIException e) {
+            throw new ConnectionException("Malformed URI.", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to read GCT file.");
+        }
+    }
+
+    private void postUpload(PreprocessDatasetMAGEServiceContextClient analysis, PreprocessDatasetParameters parameters,
+            File unprocessedGctFile) throws IOException, ConnectionException {
+        TransferServiceContextReference up = analysis.submitData(parameters.createParameterList());
+        TransferServiceContextClient tClient = new TransferServiceContextClient(up.getEndpointReference());
+        BufferedInputStream bis = null;
+        try {
+            long size = unprocessedGctFile.length();
+            bis = new BufferedInputStream(new FileInputStream(unprocessedGctFile));
+            TransferClientHelper.putData(bis, size, tClient.getDataTransferDescriptor());
+        } catch (Exception e) {
+         // For some reason TransferClientHelper throws "Exception", going to rethrow a connection exception.
+            throw new ConnectionException("Unable to transfer gct data to the server.", e);
+        } finally {
+            if (bis != null) {
+                bis.close();
+            }
+        }
+        tClient.setStatus(Status.Staged);
+    }
+    
+    private File downloadResult(File gctFile, PreprocessDatasetMAGEServiceContextClient analysisClient) 
+    throws ConnectionException, InterruptedException, IOException {
+        TransferServiceContextReference tscr = null;
+        int callCount = 0;
+        while (tscr == null) {
+            try {
+                callCount++;
+                tscr = analysisClient.getResult();
+            } catch (AnalysisNotComplete e) {
+                LOGGER.info("Preprocess - " + callCount + " - Analysis not complete");
+                checkTimeout(callCount);
+            } catch (CannotLocateResource e) {
+                LOGGER.info("Preprocess - " + callCount + " - Cannot locate resource");
+                checkTimeout(callCount);
+            } catch (RemoteException e) {
+                throw new ConnectionException("Unable to connect to server to download result.", e);
+            }
+            Thread.sleep(DOWNLOAD_REFRESH_INTERVAL);
+        }
+        File zipFile = retrieveFileFromTscr(gctFile.getAbsolutePath() + ".zip", tscr); 
+        return replaceGctFileWithPreprocessed(gctFile, zipFile);
+    }
+
+    private File replaceGctFileWithPreprocessed(File gctFile, File zipFile) throws IOException {
+        File zipFileDirectory = new File(zipFile.getParent(), "tempPreprocessedZipDir");
+        FileUtils.deleteDirectory(zipFileDirectory);
+        ZipUtilities.unzip(zipFile, zipFileDirectory);
+        if (zipFileDirectory.list().length != 1) {
+            throw new IllegalStateException("The zip file returned from PreprocessDataset should have exactly 1 file.");
+        }
+        String[] files = zipFileDirectory.list();
+        File preprocessedFile = new File(zipFileDirectory, files[0]);
+        FileUtils.deleteQuietly(gctFile); // Remove the non-preprocessed file
+        FileUtils.moveFile(preprocessedFile, gctFile); // move to gctFile
+        FileUtils.deleteQuietly(zipFile);
+        FileUtils.deleteDirectory(zipFileDirectory);
+        return gctFile;
+    }
+    
+    private File retrieveFileFromTscr(String filename, TransferServiceContextReference tscr)
+            throws MalformedURIException, RemoteException, ConnectionException {
+        TransferServiceContextClient tclient = new TransferServiceContextClient(tscr.getEndpointReference());
+        try {
+            InputStream stream = (InputStream) TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+            return Cai2Util.storeFileFromInputStream(stream, filename);
+        } catch (Exception e) {
+            throw new ConnectionException("Unable to download stream data from server.", e);
         }
     }
     
-    private BioAssay[] convertGctDatasetToBioAssay(GctDataset dataset) {
-        BioAssay[] bioassay = mbaGenerator.float2DToBioAssayArray(dataset.getValues(), 
-                dataset.getRowReporterNames().toArray(new String[dataset.getRowReporterNames().size()]), 
-                dataset.getColumnSampleNames().toArray(new String[dataset.getColumnSampleNames().size()]));
-        return bioassay;
+    private void checkTimeout(int callCount) throws ConnectionException {
+        if (callCount >= TIMEOUT_SECONDS) {
+            throw new ConnectionException("Timed out trying to download preprocess dataset results");
+        }
     }
-
 }

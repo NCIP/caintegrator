@@ -183,9 +183,12 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
         querySet.addAll(parameters.getClinicalQueries());
         GctDataset gctDataset = GenePatternUtil.createGctDataset(studySubscription, querySet, queryManagementService);
         populateReporterGeneSymbols(gctDataset);
-        PreprocessDatasetGridRunner runner = 
-            new PreprocessDatasetGridRunner(client, mbaGenerator, fileManager, reporterGeneSymbols);
-        return runner.execute(studySubscription, parameters, gctDataset);
+        PreprocessDatasetGridRunner runner = new PreprocessDatasetGridRunner(client, fileManager);
+        try {
+            return runner.execute(studySubscription, parameters, gctDataset);
+        } catch (InterruptedException e) {
+            return null;
+        }
     }
     
     /**

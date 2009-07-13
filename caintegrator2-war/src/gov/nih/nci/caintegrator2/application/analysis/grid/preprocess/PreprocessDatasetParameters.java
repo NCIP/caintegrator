@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gridextensions.PreprocessDatasetParameterSet;
@@ -92,13 +93,16 @@ import gridextensions.PreprocessDatasetParameterSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cabig.icr.asbp.parameter.Parameter;
+import org.cabig.icr.asbp.parameter.ParameterList;
+
 import valuedomain.PreprocessDatasetPreprocessingFlag;
 
 /**
  * Parameters used for PreprocessDataset gene pattern grid service.
  */
 public class PreprocessDatasetParameters {
-    
+    private static final int NUM_PARAMETERS = 11;
     private static final Float DEFAULT_MIN_CHANGE = 3f;
     private static final Float DEFAULT_MIN_DELTA = 100f;
     private static final Float DEFAULT_THRESHOLD = 20f;
@@ -197,6 +201,53 @@ public class PreprocessDatasetParameters {
         options.add(PreprocessDatasetPreprocessingFlag._value2);
         options.add(PreprocessDatasetPreprocessingFlag._value3);
         return options;
+    }
+    
+    /**
+     * Creates the parameter list from the parameters given by user.
+     * @return parameters to run grid job.
+     */
+    public ParameterList createParameterList() {
+        ParameterList parameterList = new ParameterList();
+        Parameter[] params = new Parameter[NUM_PARAMETERS];
+        parameterList.setParameterCollection(params);
+        params[0] = GenePatternUtil.createBoolean0or1Parameter("filter.flag", datasetParameters.isFilterFlag());
+        params[1] = GenePatternUtil.createParameter("preprocessing.flag", getPreprocessingOptionNumber());
+        params[2] = GenePatternUtil.createParameter("minchange", String.valueOf(datasetParameters.getMinChange()));
+        params[3] = GenePatternUtil.createParameter("mindelta", String.valueOf(datasetParameters.getMinDelta()));
+        params[4] = GenePatternUtil.createParameter("threshold", String.valueOf(datasetParameters.getThreshold()));
+        params[5] = GenePatternUtil.createParameter("ceiling", String.valueOf(datasetParameters.getCeiling()));
+        params[6] = GenePatternUtil.createParameter("max.sigma.binning", String.valueOf(datasetParameters
+                .getMaxSigmaBinning()));
+        params[7] = GenePatternUtil.createParameter("prob.thres", String.valueOf(datasetParameters
+                .getProbabilityThreshold()));
+        params[8] = GenePatternUtil.createParameter("num.excl", String.valueOf(datasetParameters.getNumExclude())); 
+        params[9] = GenePatternUtil.createParameter("log.base.two", String.valueOf(datasetParameters.isLogBaseTwo()));
+        params[10] = GenePatternUtil.createParameter("number.of.columns.above.threshold", String
+                .valueOf(datasetParameters.getNumberOfColumnsAboveThreshold()));
+
+        return parameterList;
+    }
+
+    /**
+     * Because of how odd the mapping is, have to decode it here.
+     * no-disc    = value2    = 0
+     * discretize = value1    = 1
+     * row-norm   = value3    = 2
+     * @return the int value representation.
+     */
+    private String getPreprocessingOptionNumber() {
+        String preprocessingFlag = datasetParameters.getPreprocessingFlag().getValue();
+        if (PreprocessDatasetPreprocessingFlag.value1.getValue().equals(preprocessingFlag)) {
+            return "1";
+        }
+        if (PreprocessDatasetPreprocessingFlag.value2.getValue().equals(preprocessingFlag)) {
+            return "0";
+        }
+        if (PreprocessDatasetPreprocessingFlag.value3.getValue().equals(preprocessingFlag)) {
+            return "2";
+        }
+        return "0";
     }
     
 }
