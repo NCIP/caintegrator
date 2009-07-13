@@ -728,7 +728,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <pathconvert property="selenium.test.resources.dir.noseperator">
             <path location="${caintegrator2-war.test.resources.dir}" />
         </pathconvert>
-        <property name="selenium.test.resources.dir" value="${selenium.test.resources.dir.noseperator}${file.separator}}" />
+        <property name="selenium.test.resources.dir" value="${selenium.test.resources.dir.noseperator}${file.separator}" />
         <pathconvert property="selenium.test.affymetrix.design.dir.noseperator">
             <path location="${caintegrator2-war.test.resources.dir}/arraydesign/affymetrix" />
         </pathconvert>
