@@ -86,7 +86,9 @@
 package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
@@ -98,8 +100,17 @@ public class CopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
      * {@inheritDoc}
      */
     public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        return new CopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao)
+    throws DataRetrievalException {
+        switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
+        case AFFYMETRIX:
+            return new AffymetrixCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+        case AGILENT:
+            return new AgilentCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+        default:
+            throw new DataRetrievalException("Unknown platform vendor.");
+        }
+
     }
 
 }

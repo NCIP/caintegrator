@@ -99,16 +99,12 @@ import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Responsible for retrieving array data from caArray.
@@ -117,13 +113,6 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
 
     private static final Logger LOGGER = Logger.getLogger(AgilentDataRetrievalHelper.class);
     private final FileRetrievalService fileRetrievalService;
-    private CSVReader dataFileReader;
-    private Map<String, Float> agilentDataMap;
-    private static final String FEATURES_HEADER = "FEATURES";
-    private static final String DATA_HEADER = "DATA";
-    private static final String PROBE_NAME = "ProbeName";
-    private static final String LOG_RATIO = "LogRatio";
-    private final Map<String, Integer> headerToIndexMap = new HashMap<String, Integer>();
     
     AgilentDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
             FileRetrievalService fileRetrievalService,
@@ -146,13 +135,14 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private void populateArrayDataValues(Set<Hybridization> hybridizationSet) throws DataRetrievalException {
         for (Hybridization hybridization : hybridizationSet) {
             CaArrayFile dataFile = downloadDataFile(hybridization);
-            parseDataFile(dataFile);
             ArrayData arrayData = createArrayData(hybridization);
-            loadArrayDataValues(arrayData);
+            Map<String, Float> agilentDataMap = AgilentRawDataFileParser.INSTANCE.extractData(
+                    new InputStreamReader(new ByteArrayInputStream(fileRetrievalService.readFile(dataFile))));
+            loadArrayDataValues(agilentDataMap, arrayData);
         }
     }
     
-    private void loadArrayDataValues(ArrayData arrayData) {
+    private void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
         for (String probeName : agilentDataMap.keySet()) {
             AbstractReporter reporter = getReporter(probeName);
             if (reporter == null) {
@@ -180,56 +170,6 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
             return populatedArrayData.getDataFile();
         }
         return null;
-    }
-
-    private void parseDataFile(CaArrayFile dataFile) throws DataRetrievalException {
-        byte[] byteArray = fileRetrievalService.readFile(dataFile);
-        try {
-            dataFileReader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(byteArray)), '\t');
-            loadHeaders();
-            loadData();
-        } catch (IOException e) {
-            throw new DataRetrievalException("Couldn't read Agilent data file.", e);
-        }
-    }
-    
-    private void loadData() throws IOException {
-        agilentDataMap = new HashMap<String, Float>();
-        String[] fields;
-        while ((fields = dataFileReader.readNext()) != null) {
-            if (isDataLine(fields)) {
-                String probeName = fields[headerToIndexMap.get(PROBE_NAME)];
-                if (probeName.startsWith("A_")) {
-                    Float logRatio = new Float(fields[headerToIndexMap.get(LOG_RATIO)]);
-                    agilentDataMap.put(probeName, logRatio);
-                }
-            }
-        }
-    }
-
-    private void loadHeaders() throws IOException, DataRetrievalException {
-        String[] fields;
-        while ((fields = dataFileReader.readNext()) != null) {
-            if (isFeatutreHeadersLine(fields)) {
-                loadFeatutreHeaders(fields);
-                return;
-            }
-        }        
-        throw new DataRetrievalException("Invalid Agilent data file; headers not found in file.");
-    }
-
-    private void loadFeatutreHeaders(String[] headers) {
-        for (int i = 0; i < headers.length; i++) {
-            headerToIndexMap.put(headers[i], i);
-        }
-    }
-    
-    private boolean isFeatutreHeadersLine(String[] fields) {
-        return fields.length > 0 && FEATURES_HEADER.equals(fields[0]);
-    }
-    
-    private boolean isDataLine(String[] fields) {
-        return fields.length > 0 && DATA_HEADER.equals(fields[0]);
     }
 
 }

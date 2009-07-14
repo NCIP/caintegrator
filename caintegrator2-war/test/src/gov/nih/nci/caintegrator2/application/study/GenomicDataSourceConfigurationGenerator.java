@@ -137,20 +137,24 @@ public class GenomicDataSourceConfigurationGenerator extends AbstractTestDataGen
     @Override
     public void setValues(GenomicDataSourceConfiguration config, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
         config.setExperimentIdentifier(getUniqueString());
-        CopyNumberDataConfiguration cnDataConfig = new CopyNumberDataConfiguration();
-        config.setCopyNumberDataConfiguration(cnDataConfig);
-        cnDataConfig.setMappingFilePath(getUniqueString());
-        cnDataConfig.setChangePointSignificanceLevel(getUniqueDouble());
-        cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());
-        cnDataConfig.setPermutationReplicates(getUniqueInt());
-        cnDataConfig.setRandomNumberSeed(getUniqueInt());
-        ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getCaDNACopyService(), nonCascadedObjects);
         ServerConnectionProfileGenerator.INSTANCE.setValues(config.getServerProfile(), nonCascadedObjects);
+        config.setCopyNumberDataConfiguration(null);
         config.getSamples().clear();
-        for (int i = 0; i < 3; i++) {
-            config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
+        if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.COPY_NUMBER)) {
+            CopyNumberDataConfiguration cnDataConfig = new CopyNumberDataConfiguration();
+            config.setCopyNumberDataConfiguration(cnDataConfig);
+            cnDataConfig.setMappingFilePath(getUniqueString());
+            cnDataConfig.setChangePointSignificanceLevel(getUniqueDouble());
+            cnDataConfig.setEarlyStoppingCriterion(getUniqueDouble());
+            cnDataConfig.setPermutationReplicates(getUniqueInt());
+            cnDataConfig.setRandomNumberSeed(getUniqueInt());
+            ServerConnectionProfileGenerator.INSTANCE.setValues(cnDataConfig.getCaDNACopyService(), nonCascadedObjects);
+        } else if (config.getDataType().equals(GenomicDataSourceDataTypeEnum.EXPRESSION)) {
+            for (int i = 0; i < 3; i++) {
+                config.getSamples().add(SampleGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
+            }
+            config.getControlSampleSetCollection().add(new SampleSet());
         }
-        config.getControlSampleSetCollection().add(new SampleSet());
     }
 
 

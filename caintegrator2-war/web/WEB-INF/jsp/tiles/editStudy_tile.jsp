@@ -197,12 +197,13 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="5">Genomic Data Sources <span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
+            <th colspan="6">Genomic Data Sources <span id="genomicSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
         </tr>
         <tr>
             <th>Host Name</th>
             <th>Experiment Identifier</th>
             <th>File Description</th>
+            <th>Data Type</th>
             <th>Status</th>
             <th>Action</th>
         </tr>

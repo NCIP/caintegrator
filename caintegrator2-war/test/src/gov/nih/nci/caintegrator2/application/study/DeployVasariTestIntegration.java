@@ -248,4 +248,9 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
         return "Affymetrix";
     }
 
+    @Override
+    protected GenomicDataSourceDataTypeEnum getDataType() {
+        return GenomicDataSourceDataTypeEnum.EXPRESSION;
+    }
+
 }

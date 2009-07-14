@@ -176,12 +176,18 @@ public class TestDataFiles {
     public static final File HIND_COPY_NUMBER_CHP_FILE = getFile(HIND_COPY_NUMBER_CHP_FILE_PATH);
     public static final String XBA_COPY_NUMBER_CHP_FILE_PATH = "/arraydata/affymetrix/E07733_T_Xba.CN4.cnchp";
     public static final File XBA_COPY_NUMBER_CHP_FILE = getFile(XBA_COPY_NUMBER_CHP_FILE_PATH);
+    
+    public static final String AGILENT_COPY_NUMBER_RAW_FILE_PATH = "/arraydata/agilent/MSK_0344-1_251469338762_S01_CGH-v4_91.txt";
+    public static final File AGILENT_COPY_NUMBER_RAW_FILE = getFile(AGILENT_COPY_NUMBER_RAW_FILE_PATH);
 
     public static final String REMBRANDT_COPY_NUMBER_FILE_PATH = "/rembrandt_copy_number_mapping.csv";
     public static final File REMBRANDT_COPY_NUMBER_FILE = getFile(REMBRANDT_COPY_NUMBER_FILE_PATH);
 
     public static final String SHORT_COPY_NUMBER_FILE_PATH = "/short_copy_number_mapping.csv";
     public static final File SHORT_COPY_NUMBER_FILE = getFile(SHORT_COPY_NUMBER_FILE_PATH);
+    
+    public static final String SHORT_AGILENT_COPY_NUMBER_FILE_PATH = "/short_agilent_copy_number_mapping.csv";
+    public static final File SHORT_AGILENT_COPY_NUMBER_FILE = getFile(SHORT_AGILENT_COPY_NUMBER_FILE_PATH);
 
     public static File getAffymetrixDataFile(String filename) {
         return getFile(AFFYMETRIX_DATA_FILE_DIRECTORY_PATH + "/" + filename);

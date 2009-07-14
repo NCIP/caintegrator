@@ -260,4 +260,9 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
         return "Affymetrix";
     }
 
+    @Override
+    protected GenomicDataSourceDataTypeEnum getDataType() {
+        return GenomicDataSourceDataTypeEnum.EXPRESSION;
+    }
+
 }

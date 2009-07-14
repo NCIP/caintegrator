@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.study;
 
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 /**
@@ -102,10 +103,11 @@ public interface CopyNumberHandlerFactory {
      * @param arrayDataService the array data storage service
      * @param dao the data access interface
      * @return the handler.
+     * @exception DataRetrievalException for invalid platform vendor.
      */
     AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource, 
             CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, 
-            CaIntegrator2Dao dao);
+            CaIntegrator2Dao dao) throws DataRetrievalException;
 
 }

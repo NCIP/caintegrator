@@ -209,6 +209,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
+            genomicSource.setDataType(getDataType());
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveCopyNumberMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getCopyNumberDataConfiguration());
@@ -422,6 +423,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
+            genomicSource.setDataType(getDataType());
             if (getSampleMappingFile() != null) {
                 genomicSource.addSampleMappingFileName(getSampleMappingFile().getName());
             }
@@ -591,6 +593,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     abstract protected String getPlatformVendor();
+    abstract protected GenomicDataSourceDataTypeEnum getDataType();
 
     /**
      * @return the queryManagementService

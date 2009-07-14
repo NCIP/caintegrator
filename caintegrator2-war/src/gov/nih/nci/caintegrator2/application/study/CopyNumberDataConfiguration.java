@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 /**
@@ -127,10 +128,11 @@ public class CopyNumberDataConfiguration implements Serializable {
      * The file.
      * 
      * @return the file.
+     * @throws FileNotFoundException when file path is null.
      */
-    public File getMappingFile() {
+    public File getMappingFile() throws FileNotFoundException {
         if (getMappingFilePath() == null) {
-            return null; 
+            throw new FileNotFoundException("File path is null.");
         } else {
             return new File(getMappingFilePath());
         }

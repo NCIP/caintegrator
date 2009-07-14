@@ -56,6 +56,8 @@
         <s:select id="platformVendor" name="genomicSource.platformVendor" label="Vendor"
             list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum@getValuesToDisplay()"
             onchange="CheckPlatformVendor(this.form.platformVendor.value);"/>
+        <s:select id="dataType" name="genomicSource.dataTypeString" label="Data Type"
+            list="@gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum@getStringValues()"/>
         <s:select id="platformName" name="genomicSource.platformName" label="Platform (only needed for Agilent)" list="agilentPlatformNames" />
         
         <tr> 
