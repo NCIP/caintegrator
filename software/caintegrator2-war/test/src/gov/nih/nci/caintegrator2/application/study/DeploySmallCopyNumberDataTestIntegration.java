@@ -298,6 +298,11 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     }
 
     @Override
+    protected GenomicDataSourceDataTypeEnum getDataType() {
+        return GenomicDataSourceDataTypeEnum.COPY_NUMBER;
+    }
+
+    @Override
     protected File getImageAnnotationFile() {
         return null;
     }

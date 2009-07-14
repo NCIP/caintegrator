@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.external.caarray.SampleIdentifier;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,6 +111,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private StudyConfiguration studyConfiguration;
     private ServerConnectionProfile serverProfile = new ServerConnectionProfile();
     private String experimentIdentifier;
+    private GenomicDataSourceDataTypeEnum dataType = GenomicDataSourceDataTypeEnum.EXPRESSION;
     private String platformVendor;
     private String platformName;
     private String sampleMappingCommaSeparatedFileNames;
@@ -119,6 +121,8 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     private CopyNumberDataConfiguration copyNumberDataConfiguration;
     private Status status = Status.NOT_LOADED;
     private String statusDescription;
+    
+    private static final String NONE_CONFIGURED = "None Configured";
 
     /**
      * @return the experimentIdentifier
@@ -238,6 +242,42 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     }
 
     /**
+     * @return the dataType
+     */
+    public GenomicDataSourceDataTypeEnum getDataType() {
+        return dataType;
+    }
+
+    /**
+     * @param dataType the dataType to set
+     */
+    public void setDataType(GenomicDataSourceDataTypeEnum dataType) {
+        this.dataType = dataType;
+    }
+
+    /**
+     * @return the resultType
+     */
+    public String getDataTypeString() {
+        if (dataType == null) {
+            return "";
+        } else {
+            return dataType.getValue();
+        }
+    }
+
+    /**
+     * @param dataTypeString the dataType string value to set
+     */
+    public void setDataTypeString(String dataTypeString) {
+        if (StringUtils.isBlank(dataTypeString)) {
+            this.dataType = null;
+        } else {
+            this.dataType = GenomicDataSourceDataTypeEnum.getByValue(dataTypeString);
+        }
+    }
+
+    /**
      * @return the platformName
      */
     public String getPlatformName() {
@@ -296,7 +336,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public List<String> getSampleMappingFileNames() {
         List<String> sampleMappingFileNames = new ArrayList<String>();
         if (StringUtils.isBlank(sampleMappingCommaSeparatedFileNames)) {
-            sampleMappingFileNames.add("None Configured");
+            sampleMappingFileNames.add(NONE_CONFIGURED);
         } else {
             sampleMappingFileNames.addAll(Arrays.asList(StringUtils.split(sampleMappingCommaSeparatedFileNames, ",")));
         }
@@ -310,7 +350,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
     public List<String> getControlSampleMappingFileNames() {
         List<String> controlSampleMappingFileNames = new ArrayList<String>();
         if (controlSampleSetCollection.isEmpty()) {
-            controlSampleMappingFileNames.add("None Configured");
+            controlSampleMappingFileNames.add(NONE_CONFIGURED);
         } else {
             for (SampleSet controlSampleSet : controlSampleSetCollection) {
                 controlSampleMappingFileNames.add(controlSampleSet.getFileName());
@@ -336,11 +376,15 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      * @return file name.
      */
     public String getCopyNumberMappingFileName() {
-        if (getCopyNumberDataConfiguration() != null 
-            && getCopyNumberDataConfiguration().getMappingFile() != null) {
-            return getCopyNumberDataConfiguration().getMappingFile().getName();
+        try {
+            if (getCopyNumberDataConfiguration() != null 
+                && getCopyNumberDataConfiguration().getMappingFile() != null) {
+                return getCopyNumberDataConfiguration().getMappingFile().getName();
+            }
+        } catch (FileNotFoundException e) {
+            return NONE_CONFIGURED;
         }
-        return "None Configured";
+        return NONE_CONFIGURED;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")   // best way to do check
@@ -440,5 +484,21 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
      */
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+    
+    /**
+     * Check for dataType is Expression.
+     * @return boolean.
+     */
+    public boolean isExpressionData() {
+        return GenomicDataSourceDataTypeEnum.EXPRESSION.equals(dataType);
+    }
+    
+    /**
+     * Check for data type is CopyNumber.
+     * @return boolean.
+     */
+    public boolean isCopyNumberData() {
+        return GenomicDataSourceDataTypeEnum.COPY_NUMBER.equals(dataType);
     }
 }

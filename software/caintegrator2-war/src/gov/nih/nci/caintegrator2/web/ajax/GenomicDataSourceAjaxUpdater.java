@@ -102,6 +102,7 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String STATUS_TABLE = "genomicSourceJobStatusTable";
     private static final String JOB_HOST_NAME = "genomicSourceHostName_";
     private static final String JOB_EXPERIMENT_IDENTIFIER = "genomicSourceExperimentId_";
+    private static final String JOB_DATA_TYPE = "genomicSourceDataType_";
     private static final String JOB_DEPLOYMENT_STATUS = "genomicSourceStatus_";
     private static final String JOB_EDIT_URL = "genomicSourceEditUrl_";
     private static final String JOB_MAP_SAMPLES_URL = "genomicSourceMapSamplesUrl_";
@@ -110,7 +111,6 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     private static final String JOB_FILE_DESCRIPTION = "genomicSourceFileDescription_";
     private static final String JOB_ACTION_BAR1 = "genomicSourceActionBar1_";
     private static final String JOB_ACTION_BAR2 = "genomicSourceActionBar2_";
-    private static final String JOB_ACTION_BAR3 = "genomicSourceActionBar3_";
     private static final String GENOMIC_SOURCES_LOADER = "genomicSourceLoader";
     
     private StudyManagementService studyManagementService;
@@ -146,23 +146,30 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     }
 
     private String[][] createRow(GenomicDataSourceConfiguration genomicSource) {
-        String[][] rowString = new String[1][5];
+        String[][] rowString = new String[1][6];
         String id = genomicSource.getId().toString();
         String startSpan = "<span id=\"";
         String endSpan = "\"> </span>";
         rowString[0][0] = startSpan + JOB_HOST_NAME + id + endSpan;
         rowString[0][1] = startSpan + JOB_EXPERIMENT_IDENTIFIER + id + endSpan;
         rowString[0][2] = startSpan + JOB_FILE_DESCRIPTION + id + endSpan;
-        rowString[0][3] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
-        rowString[0][4] = startSpan + JOB_EDIT_URL + id + endSpan
+        rowString[0][3] = startSpan + JOB_DATA_TYPE + id + endSpan;
+        rowString[0][4] = startSpan + JOB_DEPLOYMENT_STATUS + id + endSpan;
+        rowString[0][5] = startSpan + JOB_EDIT_URL + id + endSpan
                           + startSpan + JOB_ACTION_BAR1 + id + endSpan
-                          + startSpan + JOB_MAP_SAMPLES_URL + id + endSpan
+                          + startSpan + getMappingActionUrl(genomicSource) + id + endSpan
                           + startSpan + JOB_ACTION_BAR2 + id + endSpan
-                          + startSpan + JOB_CONFIGURE_COPY_NUMBER_URL + id + endSpan
-                          + startSpan + JOB_ACTION_BAR3 + id + endSpan
                           + startSpan + JOB_DELETE_URL + id + endSpan;
         
         return rowString;
+    }
+    
+    private String getMappingActionUrl(GenomicDataSourceConfiguration genomicSource) {
+        if (genomicSource.isExpressionData()) {
+            return JOB_MAP_SAMPLES_URL;
+        } else {
+            return JOB_CONFIGURE_COPY_NUMBER_URL;
+        }
     }
 
     /**
@@ -207,6 +214,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_EXPERIMENT_IDENTIFIER + genomicSourceId, 
                             genomicSource.getExperimentIdentifier());
         updateRowFileDescriptions(utilThis, genomicSource, genomicSourceId);
+        utilThis.setValue(JOB_DATA_TYPE + genomicSourceId, 
+                genomicSource.getDataTypeString());
         utilThis.setValue(JOB_DEPLOYMENT_STATUS + genomicSourceId, getStatusMessage(genomicSource.getStatus()));
         updateRowActions(genomicSource, utilThis, genomicSourceId);
         // TJNOTE: this is checking to see if we can enable the button, but the "isDeployable()" function
@@ -221,18 +230,22 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             String genomicSourceId) {
         StringBuffer fileDescriptionString = new StringBuffer();
         String brString = "<br>";
-        fileDescriptionString.append("<i>Mapping FIle(s): </i>");
-        for (String fileName : genomicSource.getSampleMappingFileNames()) {
-            fileDescriptionString.append(fileName);
-            fileDescriptionString.append(brString);
+        if (genomicSource.isExpressionData()) {
+            fileDescriptionString.append("<i>Mapping FIle(s): </i>");
+            for (String fileName : genomicSource.getSampleMappingFileNames()) {
+                fileDescriptionString.append(fileName);
+                fileDescriptionString.append(brString);
+            }
+            fileDescriptionString.append("<i>Control Sample Mapping File(s): </i>");
+            for (String fileName : genomicSource.getControlSampleMappingFileNames()) {
+                fileDescriptionString.append(fileName);
+                fileDescriptionString.append(brString);
+            }
         }
-        fileDescriptionString.append("<i>Control Sample Mapping File(s): </i>");
-        for (String fileName : genomicSource.getControlSampleMappingFileNames()) {
-            fileDescriptionString.append(fileName);
-            fileDescriptionString.append(brString);
+        if (genomicSource.isCopyNumberData()) {
+            fileDescriptionString.append("<i>Copy Number Mapping File: </i>");
+            fileDescriptionString.append(genomicSource.getCopyNumberMappingFileName());
         }
-        fileDescriptionString.append("<i>Copy Number Mapping File: </i>");
-        fileDescriptionString.append(genomicSource.getCopyNumberMappingFileName());
         utilThis.setValue(JOB_FILE_DESCRIPTION + genomicSourceId, fileDescriptionString.toString());
     }
 
@@ -241,12 +254,10 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
             addNonProcessingActions(genomicSource, utilThis, genomicSourceId);
         } else { // Processing has no actions.
             utilThis.setValue(JOB_EDIT_URL + genomicSourceId, "");
-            utilThis.setValue(JOB_MAP_SAMPLES_URL + genomicSourceId, "");
-            utilThis.setValue(JOB_CONFIGURE_COPY_NUMBER_URL + genomicSourceId, "");
+            utilThis.setValue(getMappingActionUrl(genomicSource) + genomicSourceId, "");
             utilThis.setValue(JOB_DELETE_URL + genomicSourceId, "");
             utilThis.setValue(JOB_ACTION_BAR1 + genomicSourceId, "");
             utilThis.setValue(JOB_ACTION_BAR2 + genomicSourceId, "");
-            utilThis.setValue(JOB_ACTION_BAR3 + genomicSourceId, "");
         }
     }
 
@@ -267,14 +278,16 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
 
     private void addNonErrorActions(GenomicDataSourceConfiguration genomicSource, 
                     Util utilThis, String genomicSourceId, String jobActionBarString) {
-        utilThis.setValue(JOB_MAP_SAMPLES_URL + genomicSourceId, 
+        if (genomicSource.isExpressionData()) {
+            utilThis.setValue(JOB_MAP_SAMPLES_URL + genomicSourceId, 
                 retrieveUrl(genomicSource, "editSampleMapping", "Map Samples", false),
                 false);
-        utilThis.setValue(JOB_ACTION_BAR2 + genomicSourceId, jobActionBarString, false);
-        utilThis.setValue(JOB_CONFIGURE_COPY_NUMBER_URL + genomicSourceId, 
+        } else {
+            utilThis.setValue(JOB_CONFIGURE_COPY_NUMBER_URL + genomicSourceId, 
                 retrieveUrl(genomicSource, "editCopyNumberDataConfiguration", "ConfigureCopyNumberData", false),
                 false);
-        utilThis.setValue(JOB_ACTION_BAR3 + genomicSourceId, jobActionBarString, false);
+        }
+        utilThis.setValue(JOB_ACTION_BAR2 + genomicSourceId, jobActionBarString, false);
     }
 
     private String retrieveUrl(GenomicDataSourceConfiguration genomicSource, String actionName, 
