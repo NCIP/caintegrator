@@ -133,15 +133,28 @@ class GenomicDataHelper {
     void loadData(StudyConfiguration studyConfiguration) 
     throws ConnectionException, DataRetrievalException, ValidationException {
         for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
-            if (!genomicSource.getSamples().isEmpty()) {
-                ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
-                ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
-                arrayDataService.save(probeSetValues);
-                arrayDataService.save(geneValues);
+            if (genomicSource.isCopyNumberData()) {
+                loadCopyNumberData(genomicSource);
+            } else if (genomicSource.isExpressionData()) {
+                loadExpressionData(genomicSource);
             }
-            if (genomicSource.getCopyNumberDataConfiguration() != null) {
+        }
+    }
+    
+    private void loadCopyNumberData(GenomicDataSourceConfiguration genomicSource)
+    throws DataRetrievalException, ConnectionException, ValidationException {
+        if (genomicSource.getCopyNumberDataConfiguration() != null) {
                 handleCopyNumberData(genomicSource);
-            }
+        }
+    }
+    
+    private void loadExpressionData(GenomicDataSourceConfiguration genomicSource)
+    throws ConnectionException, DataRetrievalException {
+        if (!genomicSource.getSamples().isEmpty()) {
+            ArrayDataValues probeSetValues = caArrayFacade.retrieveData(genomicSource);
+            ArrayDataValues geneValues = createGeneArrayDataValues(probeSetValues);
+            arrayDataService.save(probeSetValues);
+            arrayDataService.save(geneValues);
         }
     }
 

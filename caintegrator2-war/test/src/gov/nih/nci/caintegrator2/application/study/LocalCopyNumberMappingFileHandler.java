@@ -98,7 +98,7 @@ import java.io.File;
  * Loads copy number data from locally-available CNCHP files (as opposed to retrieval from caArray) 
  * for quicker testing.
  */
-class LocalCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
+class LocalCopyNumberMappingFileHandler extends AffymetrixCopyNumberMappingFileHandler {
 
     LocalCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
             ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
@@ -111,7 +111,7 @@ class LocalCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHan
     }
 
     @Override
-    File getCnChpFile(String copyNumberFilename) throws ConnectionException, DataRetrievalException,
+    File getDataFile(String copyNumberFilename) throws ConnectionException, DataRetrievalException,
             ValidationException {
         return TestDataFiles.getAffymetrixDataFile(copyNumberFilename);
     }

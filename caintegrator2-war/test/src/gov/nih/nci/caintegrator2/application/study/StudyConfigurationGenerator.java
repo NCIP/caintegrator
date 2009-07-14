@@ -150,6 +150,14 @@ public final class StudyConfigurationGenerator extends AbstractTestDataGenerator
             GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
             studyConfiguration.getGenomicDataSources().add(config);
             config.setStudyConfiguration(studyConfiguration);
+            config.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+            GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
+        }
+        for (int i = 0; i < 3; i++) {
+            GenomicDataSourceConfiguration config = new GenomicDataSourceConfiguration();
+            studyConfiguration.getGenomicDataSources().add(config);
+            config.setStudyConfiguration(studyConfiguration);
+            config.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
             GenomicDataSourceConfigurationGenerator.INSTANCE.setValues(config, nonCascadedObjects);
         }
         for (int i = 0; i < 3; i++) {

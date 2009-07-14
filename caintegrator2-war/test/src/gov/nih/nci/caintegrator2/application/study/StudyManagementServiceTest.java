@@ -214,11 +214,24 @@ public class StudyManagementServiceTest {
     }
     
     @Test
-    public void testDeploy() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
+    public void testDeployAffymetrix() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
         StudyConfiguration studyConfiguration = new StudyConfiguration();
         GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
         studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
-        sourceConfig.setId(Long.valueOf(1));        
+        sourceConfig.setId(Long.valueOf(1));
+        sourceConfig.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
+        studyManagementService.deployStudy(studyConfiguration);
+        assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    @Test
+    public void testDeployAgilent() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
+        studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
+        sourceConfig.setId(Long.valueOf(1));
+        sourceConfig.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
         studyManagementService.deployStudy(studyConfiguration);
         assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
         assertTrue(daoStub.saveCalled);

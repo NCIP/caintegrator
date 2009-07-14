@@ -252,4 +252,9 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
         return "Affymetrix";
     }
 
+    @Override
+    protected GenomicDataSourceDataTypeEnum getDataType() {
+        return GenomicDataSourceDataTypeEnum.EXPRESSION;
+    }
+
 }
