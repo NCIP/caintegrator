@@ -1263,6 +1263,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>select</td>
+	<td>platformVendor</td>
+	<td>label=Affymetrix</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>dataType</td>
+	<td>label=Copy Number</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//button[@type='button' and @onclick='showConfirmMessage()']</td>
 	<td></td>
