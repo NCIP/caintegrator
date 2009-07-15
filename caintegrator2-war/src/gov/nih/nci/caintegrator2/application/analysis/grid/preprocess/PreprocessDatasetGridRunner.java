@@ -119,7 +119,7 @@ import org.genepattern.cagrid.service.preprocessdataset.mage.context.stubs.types
 public class PreprocessDatasetGridRunner {
     private static final Logger LOGGER = Logger.getLogger(PreprocessDatasetGridRunner.class);
     private static final int DOWNLOAD_REFRESH_INTERVAL = 1000;
-    private static final int TIMEOUT_SECONDS = 60;
+    private static final int TIMEOUT_SECONDS = 300;
     private final PreprocessDatasetMAGEServiceI client;
     private final FileManager fileManager;
     
