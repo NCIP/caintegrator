@@ -115,7 +115,7 @@ public class PCAGridRunner {
 
     private static final Logger LOGGER = Logger.getLogger(PCAGridRunner.class);
     private static final int DOWNLOAD_REFRESH_INTERVAL = 1000;
-    private static final int TIMEOUT_SECONDS = 60;
+    private static final int TIMEOUT_SECONDS = 300;
     private final PCAI client;
     private final FileManager fileManager;
     
