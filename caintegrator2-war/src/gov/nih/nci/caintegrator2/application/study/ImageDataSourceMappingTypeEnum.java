@@ -19,7 +19,7 @@ public enum ImageDataSourceMappingTypeEnum {
     /**
      * Patient.
      */
-    PATIENT("By Patient"),
+    PATIENT("By Subject"),
 
     /**
      * Image Series.
