@@ -46,7 +46,7 @@
                 <s:select name="platformType" label="Platform Type"
                     list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
                     onchange="CheckPlatformType(this.form.platformType.value);" />
-                <s:textfield id="platformName" name="platformName" label="Platform Name"
+                <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
                     disabled="platformNameDisabled" />
                 <s:file name="platformFile" label="Annotation File" />
                 <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center" action="addAnnotationFile"
