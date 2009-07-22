@@ -118,11 +118,9 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
     private static final String NO_GENE_SYMBOL = "unmapped";
     private static final String NA_COORDS = "NA-NA";
 
-    private final Set<String> probeSetNames;
 
     AgilentTcgaAdfCghPlatformLoader(AgilentDnaPlatformSource source) {
         super(source);
-        probeSetNames = new HashSet<String>();
     }
 
     /**
@@ -174,7 +172,7 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
             CaIntegrator2Dao dao) {
         String[] symbols = getSymbols(fields);
         String probeSetName = getAnnotationValue(fields, PROBE_SET_ID_HEADER);
-        if (probeSetName.startsWith("A_") && !probeSetNames.contains(probeSetName)) {
+        if (probeSetName.startsWith("A_")) {
             Set<Gene> genes = getGenes(symbols, fields, dao);
             handleProbeSet(probeSetName, genes, fields, reporterList);
         }

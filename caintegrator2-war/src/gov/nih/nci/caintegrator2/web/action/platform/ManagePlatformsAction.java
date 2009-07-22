@@ -156,6 +156,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     @Override
     public void validate() {
+        clearErrorsAndMessages();
         if (CREATE_PLATFORM_ACTION.equalsIgnoreCase(selectedAction)) {
             checkPlatformFile();
             checkPlatformName();
@@ -180,7 +181,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         if (PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
                 || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)
                 || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
-            if (StringUtils.isEmpty(platformName)) {
+            if (StringUtils.isEmpty(platformName)
+                    && !platformFileFileName.endsWith(".xml")) {
                 addFieldError("platformName", "Platform name is required for this platform type.");
             } else if (getArrayDataService().getPlatform(platformName) != null) {
                 addFieldError("platformName", "Platform name is duplicate, please enter another name.");
