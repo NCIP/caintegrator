@@ -112,6 +112,9 @@ public class AgilentDnaPlatformSource extends AbstractPlatformSource {
 
     @Override
     AbstractPlatformLoader getLoader() {
+        if (platformFileName.endsWith(".xml")) {
+            return new AgilentGemlCghPlatformLoader(this);
+        }
         return new AgilentTcgaAdfCghPlatformLoader(this);
     }
     

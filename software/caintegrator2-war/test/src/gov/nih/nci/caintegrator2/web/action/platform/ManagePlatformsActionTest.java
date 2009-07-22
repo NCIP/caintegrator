@@ -221,6 +221,10 @@ public class ManagePlatformsActionTest {
         action.validate();
         assertFalse(action.hasFieldErrors());
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        action.setPlatformFileFileName("abc.xml");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        action.setPlatformFileFileName("abc.adf");
         action.validate();
         assertTrue(action.hasFieldErrors());
         action.clearErrorsAndMessages();

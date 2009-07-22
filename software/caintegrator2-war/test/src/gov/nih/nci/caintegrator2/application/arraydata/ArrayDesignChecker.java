@@ -74,9 +74,9 @@ public class ArrayDesignChecker {
         return platform;
     }
 
-    public static Platform checkLoadAgilentArrayDesign(File annotationFile, ArrayDataService service) 
+    public static Platform checkLoadAgilentExpressionArrayDesign(String platformName, File annotationFile, ArrayDataService service) 
     throws PlatformLoadingException {
-        AgilentExpressionPlatformSource source = new AgilentExpressionPlatformSource(annotationFile, "Agilent platform",
+        AgilentExpressionPlatformSource source = new AgilentExpressionPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
         Platform platform = service.loadArrayDesign(source);
         if (platform.getId() == null) {
@@ -84,6 +84,26 @@ public class ArrayDesignChecker {
         }
         checkGeneReporters(platform);
         return platform;
+    }
+
+    public static Platform checkLoadAgilentCopyNumberArrayDesign(String platformName, File annotationFile, ArrayDataService service) 
+    throws PlatformLoadingException {
+        AgilentDnaPlatformSource source = new AgilentDnaPlatformSource(annotationFile, platformName,
+                annotationFile.getName());
+        Platform platform = service.loadArrayDesign(source);
+        if (platform.getId() == null) {
+            platform.setId(1L);
+        }
+        checkDnaReporters(platform);
+        return platform;
+    }
+
+    private static void checkDnaReporters(Platform platform) {
+        PlatformHelper platformHelper = new PlatformHelper(platform);
+        for (AbstractReporter abstractReporter : platformHelper.getAllReportersByType((ReporterTypeEnum.DNA_ANALYSIS_REPORTER))) {
+            DnaAnalysisReporter reporter = (DnaAnalysisReporter) abstractReporter;
+            assertFalse(StringUtils.isBlank(reporter.getName()));
+        }
     }
 
     private static void checkGeneReporters(Platform platform) {
