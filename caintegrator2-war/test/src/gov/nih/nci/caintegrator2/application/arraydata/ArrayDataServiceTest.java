@@ -1,6 +1,7 @@
 package gov.nih.nci.caintegrator2.application.arraydata;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
@@ -54,8 +55,9 @@ public class ArrayDataServiceTest {
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         checkLoadAffymetrixExpressionArrayDesign(TestArrayDesignFiles.YEAST_2_CDF_FILE, TestArrayDesignFiles.YEAST_2_ANNOTATION_FILE);
-        checkLoadAgilentArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
-        checkLoadAgilentArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE);        
+        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        checkLoadAgilentExpressionArrayDesign(TestArrayDesignFiles.AGILENT_G4502A_07_01_TCGA_ADF_ANNOTATION_FILE); 
+        checkLoadAgilentCopyNumberArrayDesign(TestArrayDesignFiles.AGILENT_014693_XML_ANNOTATION_FILE);        
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
@@ -76,9 +78,18 @@ public class ArrayDataServiceTest {
         assertTrue(daoStub.saveCalled);
     }
     
-    private void checkLoadAgilentArrayDesign(File annotationFile) throws PlatformLoadingException {
-        Platform platform = ArrayDesignChecker.checkLoadAgilentArrayDesign(annotationFile, service);
+    private void checkLoadAgilentExpressionArrayDesign(File annotationFile) throws PlatformLoadingException {
+        Platform platform = ArrayDesignChecker.checkLoadAgilentExpressionArrayDesign(
+                "Agilent Expression Platform", annotationFile, service);
         checkGenesForReporters(platform);
+        assertTrue(daoStub.saveCalled);
+    }
+    
+    private void checkLoadAgilentCopyNumberArrayDesign(File annotationFile) throws PlatformLoadingException {
+        Platform platform = ArrayDesignChecker.checkLoadAgilentCopyNumberArrayDesign(
+                "Agilent CN Platform", annotationFile, service);
+        assertFalse(platform.getReporterLists().isEmpty());
+        assertTrue(platform.getVendor().equals(PlatformVendorEnum.AGILENT));
         assertTrue(daoStub.saveCalled);
     }
 
