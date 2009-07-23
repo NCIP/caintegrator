@@ -94,6 +94,7 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
 
     private Float underexpressedFoldChangeNumber;
     private Float overexpressedFoldChangeNumber;
+    private String controlSampleSetName;
     private String geneSymbol;
 
     /**
@@ -176,6 +177,22 @@ public class KMGeneExpressionBasedParameters extends AbstractKMParameters {
      */
     public void setGeneSymbol(String geneSymbol) {
         this.geneSymbol = geneSymbol;
+    }
+
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
     
 

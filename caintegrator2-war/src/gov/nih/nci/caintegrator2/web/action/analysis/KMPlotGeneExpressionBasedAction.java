@@ -125,6 +125,7 @@ public class KMPlotGeneExpressionBasedAction extends AbstractKaplanMeierAction {
             kmPlotParameters.setUnderexpressedFoldChangeNumber(Float.valueOf(getForm().getUnderexpressedNumber()));
         }
         kmPlotParameters.setGeneSymbol(getForm().getGeneSymbol());
+        kmPlotParameters.setControlSampleSetName(getForm().getControlSampleSetName());
     }
 
     /**

@@ -205,6 +205,7 @@ class GeneExpressionBasedKMPlotHandler extends AbstractKMPlotHandler {
         } else {
             criterion.setFoldsDown(kmParameters.getUnderexpressedFoldChangeNumber().floatValue());
         }
+        criterion.setControlSampleSetName(kmParameters.getControlSampleSetName());
         criterion.setGeneSymbol(kmParameters.getGeneSymbol());
         return criterion;
     }
