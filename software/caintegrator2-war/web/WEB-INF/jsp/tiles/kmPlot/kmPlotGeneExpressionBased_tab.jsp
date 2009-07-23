@@ -61,6 +61,18 @@
                       theme="simple"/>
                 </td>
             </tr>
+            <tr>
+                <td class="value_inline" style="min-width: 5px; width: 10px; padding-left: 10px;">
+                5.)
+                </td>
+                <td class="value_inline" style="min-width: 5px; width: 150px;">
+                    Select Control Sample Set:<br>
+                </td>
+                <td class="value_inline">
+                    <s:select name="kmPlotForm.geneExpressionBasedForm.controlSampleSetName"
+                        list="controlSampleSets" theme="simple"/>
+                </td>
+            </tr>
         </table>
         <br>
         <div>
