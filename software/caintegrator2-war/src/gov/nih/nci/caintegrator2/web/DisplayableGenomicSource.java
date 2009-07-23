@@ -171,4 +171,27 @@ public class DisplayableGenomicSource {
         return genomicDataSourceConfiguration.getServerProfile().getHostname();
     }
 
+    /**
+     * @return the data type
+     */
+    public String getDataType() {
+        return genomicDataSourceConfiguration.getDataTypeString();
+    }
+
+    /**
+     * Check for dataType is Expression.
+     * @return boolean.
+     */
+    public boolean isExpressionData() {
+        return genomicDataSourceConfiguration.isExpressionData();
+    }
+
+    /**
+     * Check for dataType is Copy Number.
+     * @return boolean.
+     */
+    public boolean isCopyNumberData() {
+        return genomicDataSourceConfiguration.isCopyNumberData();
+    }
+
 }

@@ -124,26 +124,38 @@
                 <td />
                 <td />
             </tr>
-            
             <tr>
-	            <td align="right">Number of Samples:</td>
-	            <td> <b><s:property value="numberSamples"/> </b></td>
-	            <td />
-	            <td />
+                <td align="right">Data Type:</td>
+                <td> <b><s:property value="dataType"/> </b></td>
+                <td />
+                <td />
             </tr>
-            <tr>
-                <td align="right">Control Samples Set:</td>
-                <td> <b> <s:if test="%{numberControlSamples > 0}" >
-                        <s:property value="numberControlSampleSetSamples"/>
-                     </s:if>
-                     <s:else>
+                <s:if test="expressionData">
+                    <tr>
+                        <td align="right">Number of Samples:</td>
+                        <td><b><s:property value="numberSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>
+                    <tr>
+                        <td align="right">Control Samples Set:</td>
+                        <td><b> <s:if test="%{numberControlSamples > 0}">
+                            <s:property value="numberControlSampleSetSamples" />
+                        </s:if> <s:else>
                         Not Configured.
-                     </s:else> 
-                     </b> 
-                </td>
-                <td />
-                <td />
-            </tr>
+                     </s:else> </b></td>
+                        <td />
+                        <td />
+                    </tr>
+                </s:if>
+                <s:elseif test="copyNumberData">
+                    <tr>
+                        <td align="right">Copy Number Samples:</td>
+                        <td><b><s:property value="numberSamples" /> </b></td>
+                        <td />
+                        <td />
+                    </tr>
+                </s:elseif>
             </s:iterator>
         </s:if>
     
