@@ -97,6 +97,7 @@ public class KMPlotGeneExpressionBasedActionForm {
     private String geneSymbol;
     private String overexpressedNumber;
     private String underexpressedNumber;
+    private String controlSampleSetName;
     private boolean initialized = false;
     private boolean resetSelected = false;
     
@@ -179,5 +180,19 @@ public class KMPlotGeneExpressionBasedActionForm {
      */
     public void setResetSelected(boolean resetSelected) {
         this.resetSelected = resetSelected;
+    }
+
+    /**
+     * @return the controlSampleSetName
+     */
+    public String getControlSampleSetName() {
+        return controlSampleSetName;
+    }
+
+    /**
+     * @param controlSampleSetName the controlSampleSetName to set
+     */
+    public void setControlSampleSetName(String controlSampleSetName) {
+        this.controlSampleSetName = controlSampleSetName;
     }
 }
