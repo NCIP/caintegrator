@@ -436,4 +436,8 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         return symbolsSet;
     }
 
+    public boolean isPlatformInUsed(Platform platform) {
+        return false;
+    }
+
 }

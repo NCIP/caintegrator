@@ -245,7 +245,7 @@ public class ManagePlatformsActionTest {
 
     @Test
     public void testGetPlatforms() {
-        assertNotNull(action.getPlatforms());
+        assertNotNull(action.getDisplayablePlatforms());
     }
 
 }

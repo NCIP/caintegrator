@@ -40,6 +40,7 @@
 <h1>Manage Platforms</h1>
 <s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data">
     <s:hidden name="selectedAction" />
+    <s:actionerror/>
     <table class="data">
         <tr>
             <th colspan="2">
@@ -60,17 +61,29 @@
             <th>Name</th>
             <th>Vendor</th>
             <th>Reporter List</th>
+            <th>Action</th>
         </tr>
-        <s:iterator value="platforms" status="status">
+        <s:iterator value="displayablePlatforms" status="status">
             <s:if test="#status.odd == true">
               <tr class="odd">
             </s:if>
             <s:else>
               <tr class="even">
             </s:else>            
-                <td><s:property value="name" /></td>
-                <td><s:property value="vendor" /></td>
-                <td><s:property value="reporterListListing" /></td>
+                <td><s:property value="platform.name" /></td>
+                <td><s:property value="platform.vendor" /></td>
+                <td><s:property value="platform.reporterListListing" /></td>
+                <td>
+                    <s:if test="!inUse">
+                        <s:url id="deletePlatform" action="deletePlatform">
+                            <s:param name="platformName" value="platform.name" />
+                        </s:url> 
+                        <s:a href="%{deletePlatform}" onclick="return confirm('This platform will be permanently deleted.')">
+                            Delete
+                        </s:a>
+                    </s:if>
+                    <s:else>None</s:else>
+                </td>
             </tr>
         </s:iterator>
     </table>

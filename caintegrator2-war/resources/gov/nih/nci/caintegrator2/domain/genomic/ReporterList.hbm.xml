@@ -20,7 +20,7 @@
             <list-index column="REPORTER_INDEX" />
 			<one-to-many class="gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter" />
 		</list>
-        <set name="arrayDatas" lazy="true" table="ARRAY_DATA_REPORTER_LISTS" cascade="save-update,merge" inverse="true">
+        <set name="arrayDatas" lazy="true" table="ARRAY_DATA_REPORTER_LISTS" cascade="all" inverse="true">
             <cache usage="read-write" />
             <key column="REPORTER_LIST_ID" />
             <many-to-many class="gov.nih.nci.caintegrator2.domain.genomic.ArrayData" column="ARRAY_DATA_ID"/>
