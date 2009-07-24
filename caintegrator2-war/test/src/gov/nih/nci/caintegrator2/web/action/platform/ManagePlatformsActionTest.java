@@ -248,5 +248,19 @@ public class ManagePlatformsActionTest {
         assertNotNull(action.getDisplayablePlatforms());
     }
 
+    @Test
+    public void testGetDisabled() {
+        assertEquals(action.getPlatformNameDisabled(), "true");
+        assertEquals(action.getAddButtonDisabled(), "true");
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
+        assertEquals(action.getPlatformNameDisabled(), "false");
+        assertEquals(action.getAddButtonDisabled(), "false");
+    }
+
+    @Test
+    public void testDeletePlatform() {
+        assertEquals(action.deletePlatform(), "success");
+    }
+
 }
 
