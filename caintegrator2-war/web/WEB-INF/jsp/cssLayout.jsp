@@ -35,7 +35,7 @@
 			<div id="main">				
 			    <!-- Begin hidden caBioGeneSearchForm -->
 			    <s:div id="TB_overlay" cssClass="TB_overlayBG"/>
-			    <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm">
+			    <s:form name="caBioGeneSearchForm" id="caBioGeneSearchForm" onsubmit="runCaBioSearch(); return false;">
 			        <!-- For caBio to know which form element to publish gene symbols to. -->
 			        <s:hidden name="geneSymbolElementId" />
 			        <s:hidden name="caBioGeneSearchTopicPublished" value="false" />
