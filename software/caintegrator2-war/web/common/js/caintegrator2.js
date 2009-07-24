@@ -36,10 +36,10 @@
         return str.slice(0, i + 1);
     }
     
-    function checkUncheckAll(theElement) {
+    function checkUncheckAll(theElement, excludeThisElementName) {
         var theForm = theElement.form, z = 0;
         for(z=0; z<theForm.length;z++){
-            if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall'){
+            if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall' && theForm[z].name != excludeThisElementName){
                 theForm[z].checked = theElement.checked;
             }
         }
