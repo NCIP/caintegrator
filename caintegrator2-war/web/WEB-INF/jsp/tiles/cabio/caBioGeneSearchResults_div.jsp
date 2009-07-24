@@ -6,7 +6,7 @@
     <s:if test="%{!caBioGenes.empty}">
         <s:div cssStyle="padding-left: 5px;">
             <s:div cssClass="columnWrapper">
-                <s:div cssClass="columnHeader" cssStyle="float: left; width: 20px; padding-bottom: 1px;"> <input type="checkbox" name="checkall" onclick="checkUncheckAll(this);" checked="checked"/> </s:div>
+                <s:div cssClass="columnHeader" cssStyle="float: left; width: 20px; padding-bottom: 1px;"> <input type="checkbox" name="checkall" onclick="checkUncheckAll(this,'geneSearchParams.filterGenesOnStudy');" checked="checked"/> </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 100px;"> Symbol </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 50px;"> Taxon </s:div>
                 <s:div cssClass="columnHeader" cssStyle="float: left; width: 300px;"> Full Name </s:div>
@@ -29,8 +29,8 @@
                     </s:div><br>
                 </s:else>
     	    </s:iterator>
+            <button type="button" onclick="captureCaBioCheckBoxes('<s:property value='geneSymbolElementId' />')">Use Genes</button>    
         </s:div>
-    <button type="button" onclick="captureCaBioCheckBoxes('<s:property value='geneSymbolElementId' />')">Use Genes</button>
     </s:if>
     <!-- /CaBio Gene Results -->
 
