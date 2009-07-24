@@ -81,6 +81,18 @@
     <tr>
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imageSourceConfiguration.id" id="imageSourceId"/>
+        
+        <s:if test="imageSourceConfiguration.statusDescription != null && imageSourceConfiguration.statusDescription.length() > 0">
+            <tr>
+                <td class="tdLabel" align="right">
+                    <label class="label">Status Description:</label>
+                </td>
+                <td>
+                    <s:property value="imageSourceConfiguration.statusDescription"/>
+                </td>
+            </tr>
+        </s:if>
+        
         <s:textfield required="true" label=" NBIA Server Grid URL " name="imageSourceConfiguration.serverProfile.url" id="nbiaUrl" />
         <s:textfield label=" NBIA Username " name="imageSourceConfiguration.serverProfile.username" id="nbiaUsername"/>
         <s:password label=" NBIA Password " name="imageSourceConfiguration.serverProfile.password" id="nbiaPassword"/>

@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.analysis.GenomicDataParameterValue;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -179,7 +180,7 @@ public class GenomicDataFormParameter extends AbstractAnalysisFormParameter {
 
     private void initializeReporterGenes(GenomicDataQueryResult genomicData) {
         for (GenomicDataResultRow row : genomicData.getRowCollection()) {
-            Cai2Util.loadCollection(row.getReporter().getGenes());
+            HibernateUtil.loadCollection(row.getReporter().getGenes());
         }
     }
 

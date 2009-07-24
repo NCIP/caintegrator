@@ -93,7 +93,9 @@ import gov.nih.nci.caintegrator2.TestDataFiles;
 import gov.nih.nci.caintegrator2.application.study.ImageAnnotationConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.acegisecurity.context.SecurityContextHolder;
@@ -112,6 +114,7 @@ public class EditImagingSourceActionTest {
 
     private EditImagingSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
+    private ImagingDataSourceAjaxUpdaterStub updaterStub;
 
     @Before
     public void setUp() {
@@ -122,6 +125,9 @@ public class EditImagingSourceActionTest {
         studyManagementServiceStub = (StudyManagementServiceStub) context.getBean("studyManagementService");
         studyManagementServiceStub.clear();
         action.clearErrorsAndMessages();
+        updaterStub = new ImagingDataSourceAjaxUpdaterStub();
+        updaterStub.clear();
+        action.setUpdater(updaterStub);
     }
 
     @Test
@@ -185,14 +191,12 @@ public class EditImagingSourceActionTest {
         action.setImageAnnotationFile(null);
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
-        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+        assertTrue(updaterStub.runJobCalled);
+        updaterStub.clear();
         action.getImageSourceConfiguration().setId(1l);
         assertEquals(Action.SUCCESS, action.saveImagingSource());
         assertTrue(studyManagementServiceStub.deleteCalled);
-        
-        studyManagementServiceStub.throwConnectionException = true;
-        assertEquals(Action.INPUT, action.saveImagingSource());
-        
+        assertTrue(updaterStub.runJobCalled);        
     }
     
     @Test
@@ -239,18 +243,9 @@ public class EditImagingSourceActionTest {
         action.setImageClinicalMappingFile(TestDataFiles.VALID_FILE);
         action.setImageClinicalMappingFileFileName("valid");
         action.clearErrorsAndMessages();
-        studyManagementServiceStub.throwValidationException = true;
-        assertEquals(Action.INPUT, action.mapImagingSource());
-        
-        action.clearErrorsAndMessages();
-        studyManagementServiceStub.clear();
-        studyManagementServiceStub.throwIOException = true;
-        assertEquals(Action.ERROR, action.mapImagingSource());
-        
-        action.clearErrorsAndMessages();
         studyManagementServiceStub.clear();
         assertEquals(Action.SUCCESS, action.mapImagingSource());
-        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+        assertTrue(updaterStub.runJobCalled);
     }
     
     @Test
@@ -261,5 +256,24 @@ public class EditImagingSourceActionTest {
         assertEquals("", action.getMappingType());
         action.setMappingType(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue());
         assertEquals(ImageDataSourceMappingTypeEnum.IMAGE_SERIES.getValue(), action.getMappingType());
+    }
+    
+    private static class ImagingDataSourceAjaxUpdaterStub implements IImagingDataSourceAjaxUpdater {
+        
+        public boolean runJobCalled = false;
+        
+        public void clear() {
+            runJobCalled = false;
+        }
+        
+        public void initializeJsp() {
+            
+        }
+
+        public void runJob(Long imagingSourceId, File imageClinicalMappingFile,
+                ImageDataSourceMappingTypeEnum mappingType, boolean mapOnly) {
+            runJobCalled = true;
+        }
+        
     }
 }

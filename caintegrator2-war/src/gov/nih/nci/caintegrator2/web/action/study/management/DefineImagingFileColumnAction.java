@@ -148,6 +148,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
         super.prepare();
         if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
+
         }
         setReadOnly(true);
     }
@@ -181,6 +182,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             getFileColumn().getFieldDescriptor().setName(getFileColumn().getName());
         }
         getStudyManagementService().save(getStudyConfiguration());
+        updateImageDataSourceStatus();
         clearCacheMemory();
         return SUCCESS;
     }
@@ -197,6 +199,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
                                                   getFileColumn(), 
                                                   definitionToUse,
                                                   EntityTypeEnum.IMAGESERIES);
+        updateImageDataSourceStatus();
         return SUCCESS;
     }
     
@@ -238,6 +241,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             prepare();
             return ERROR;
         }
+        updateImageDataSourceStatus();
         return SUCCESS;
     }
     
@@ -266,7 +270,12 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             }
         }
         getStudyManagementService().save(getStudyConfiguration());
+        updateImageDataSourceStatus();
         return SUCCESS;
+    }
+
+    private void updateImageDataSourceStatus() {
+        getStudyManagementService().updateImageDataSourceStatus(getStudyConfiguration()); // If it changes state
     }
 
     /**

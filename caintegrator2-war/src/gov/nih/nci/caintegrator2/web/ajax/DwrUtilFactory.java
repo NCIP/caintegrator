@@ -99,6 +99,7 @@ public class DwrUtilFactory {
     private final Map <String, Util> analysisUsernameUtilityMap = new HashMap<String, Util>();
     private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
     private final Map <String, Util> genomicDataSourceUtilityMap = new HashMap<String, Util>();
+    private final Map <String, Util> imagingDataSourceUtilityMap = new HashMap<String, Util>();
     
     /**
      * Retrieves the DWR utility object for an Analysis Job.
@@ -125,6 +126,15 @@ public class DwrUtilFactory {
      */
     public Util retrieveGenomicDataSourceUtil(String username) {
         return retrieveDwrUtil(username, genomicDataSourceUtilityMap);
+    }
+    
+    /**
+     * Retrieves the DWR utility object for an ImageDataSourceConfiguration job.
+     * @param username to retrieve utility for.
+     * @return DWR Utility
+     */
+    public Util retrieveImagingDataSourceUtil(String username) {
+        return retrieveDwrUtil(username, imagingDataSourceUtilityMap);
     }
     
     private Util retrieveDwrUtil(String username, Map<String, Util> map) {
@@ -158,6 +168,15 @@ public class DwrUtilFactory {
      */
     public void associateGenomicDataSourceWithSession(String username, Util util) {
         genomicDataSourceUtilityMap.put(username, util);
+    }
+    
+    /**
+     * Associates a username with a session for the <code>ImageDataSourceConfiguration</code>. 
+     * @param username for current user.
+     * @param util dwr object.
+     */
+    public void associateImagingDataSourceWithSession(String username, Util util) {
+        imagingDataSourceUtilityMap.put(username, util);
     }
     
 

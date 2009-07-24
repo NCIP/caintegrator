@@ -86,11 +86,8 @@
 package gov.nih.nci.caintegrator2.common;
 
 import gov.nih.nci.cagrid.common.ZipUtilities;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
-import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.DatePermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -107,13 +104,8 @@ import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
-import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Sample;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
-import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
-import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.awt.Color;
 import java.io.File;
@@ -128,14 +120,12 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Hibernate;
 
 /**
  * This is a static utility class used by different caIntegrator2 objects. 
@@ -291,106 +281,6 @@ public final class Cai2Util {
         return false;
     }
 
-    /**
-     * Make sure all persistent collections are loaded.
-     * 
-     * @param definition the definition to ensure is loaded from Hibernate.
-     */
-    public static void loadCollections(AnnotationDefinition definition) {
-        loadCollection(definition.getAnnotationValueCollection());
-        loadCollection(definition.getPermissibleValueCollection());
-    }
-
-    /**
-     * Make sure all persistent collections are loaded.
-     * 
-     * @param query the query to ensure is loaded from Hibernate.
-     */
-    public static void loadCollection(Query query) {
-        if (query.getCompoundCriterion() != null) {
-            loadCollection(query.getCompoundCriterion().getCriterionCollection());
-            for (AbstractCriterion criterion : query.getCompoundCriterion().getCriterionCollection()) {
-                if (criterion instanceof SelectedValueCriterion) {
-                    loadCollection(((SelectedValueCriterion) criterion).getValueCollection());
-                } else if (criterion instanceof FoldChangeCriterion) {
-                    loadCollection(((FoldChangeCriterion) criterion).getCompareToSampleSet().getSamples());
-                }
-            }
-        }
-        loadCollection(query.getColumnCollection());
-    }
-
-    /**
-     * Make sure all persistent collections are loaded.
-     * @param studyConfiguration to load from hibernate.
-     */
-    public static void loadCollection(StudyConfiguration studyConfiguration) {
-        loadCollection(studyConfiguration.getClinicalConfigurationCollection());
-        loadGenomicSources(studyConfiguration.getGenomicDataSources());
-        Cai2Util.loadCollection(studyConfiguration.getStudy().getAssignmentCollection());
-        for (StudySubjectAssignment assignment : studyConfiguration.getStudy().getAssignmentCollection()) {
-            loadCollection(assignment.getSampleAcquisitionCollection());
-            for (SampleAcquisition sampleAcquisition : assignment.getSampleAcquisitionCollection()) {
-                loadSampleCollections(sampleAcquisition.getSample());
-            }
-        }
-    }
-
-    /**
-     * Make sure all persistent collections are loaded.
-     * @param genomicSources List of GenomicDataSourceConfiguration to load from hibernate.
-     */
-    public static void loadGenomicSources(List<GenomicDataSourceConfiguration> genomicSources) {
-        loadCollection(genomicSources);
-        for (GenomicDataSourceConfiguration genomicSource : genomicSources) {
-            loadSamples(genomicSource.getSamples());
-            loadSamples(genomicSource.getControlSamples());
-            loadSamples(genomicSource.getMappedSamples());
-            loadSampleSets(genomicSource.getControlSampleSetCollection());
-            Hibernate.initialize(genomicSource.getServerProfile());
-        }
-    }
-    
-    /**
-     * Loads the sample set collection, as well as the subcollections.
-     * @param sampleSets to load.
-     */
-    
-    public static void loadSampleSets(Collection<SampleSet> sampleSets) {
-        for (SampleSet sampleSet : sampleSets) {
-            loadSamples(sampleSet.getSamples());
-        }
-    }
-    
-    /**
-     * Loads the samples collection, as well as the subcollections.
-     * @param samples to load.
-     */
-    public static void loadSamples(Collection<Sample> samples) {
-        loadCollection(samples);
-        for (Sample sample : samples) {
-            loadSampleCollections(sample);
-        }
-    }
-    
-    /**
-     * Loads the subcollections for the Sample object.
-     * @param sample to load.
-     */
-    public static void loadSampleCollections(Sample sample) {
-        loadCollection(sample.getArrayCollection());
-        loadCollection(sample.getArrayDataCollection());
-    }
-
-    /**
-     * Ensure that a persistent collection is loaded.
-     * 
-     * @param collection the collection to load.
-     */
-    public static void loadCollection(Collection<? extends Object> collection) {
-        Hibernate.initialize(collection);
-    }
-    
     /**
      * Takes in a directory and zips it up.
      * 

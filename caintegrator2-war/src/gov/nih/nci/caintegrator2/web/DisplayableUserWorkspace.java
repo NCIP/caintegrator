@@ -87,8 +87,8 @@ package gov.nih.nci.caintegrator2.web;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenePatternAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
@@ -248,7 +248,8 @@ public class DisplayableUserWorkspace {
             if (subscription.getId().equals(getCurrentStudySubscriptionId())) {
                 currentStudySubscription = subscription;
                 currentStudy = subscription.getStudy();
-                Cai2Util.loadGenomicSources(subscription.getStudy().getStudyConfiguration().getGenomicDataSources());
+                HibernateUtil.loadGenomicSources(subscription.getStudy().getStudyConfiguration()
+                        .getGenomicDataSources());
             }
         }
 

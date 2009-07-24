@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -108,7 +108,7 @@ implements ModelDriven<StudyConfiguration> {
         if (studyConfiguration.getId() != null) {
             studyConfiguration = studyManagementService.getRefreshedStudyEntity(studyConfiguration);
             getDisplayableWorkspace().setCurrentStudyConfiguration(studyConfiguration);
-            Cai2Util.loadGenomicSources(studyConfiguration.getGenomicDataSources()); // For Genomic Source Ajax Updater
+            HibernateUtil.loadGenomicSources(studyConfiguration.getGenomicDataSources()); // For Ajax Updater
         }
     }
 
