@@ -444,6 +444,21 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings(UNCHECKED)
+    public boolean isPlatformInUsed(Platform platform) {
+        List<GenomicDataSourceConfiguration> result = getHibernateTemplate().find(
+                "from GenomicDataSourceConfiguration where platformName = ?",
+                new Object[] {platform.getName()});
+        if (result.isEmpty()) {
+            result =  getHibernateTemplate().find(
+                    "from Array where platform = ?", new Object[] {platform});
+        }
+        return !result.isEmpty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
     public List<Study> getStudies(String username) {
         secureCurrentSession(username);

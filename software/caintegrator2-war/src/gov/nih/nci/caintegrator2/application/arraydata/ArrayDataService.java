@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
 
 import java.util.Collection;
 import java.util.List;
@@ -143,5 +144,19 @@ public interface ArrayDataService {
       * @return the platforms.
       */
      List<Platform> getPlatforms();
+
+     /**
+      * Returns all platforms in alphabetical order.
+      * 
+      * @return the displayablePlatforms.
+      */
+     List<DisplayablePlatform> getDisplayablePlatforms();
+
+     /**
+      * Delete the platform of name.
+      * 
+      * @param name the platform name
+      */
+     void deletePlatform(String name);
     
 }

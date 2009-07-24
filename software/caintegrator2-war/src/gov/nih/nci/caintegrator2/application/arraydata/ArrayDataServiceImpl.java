@@ -89,7 +89,9 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -107,7 +109,6 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     
     private CaIntegrator2Dao dao;
     private FileManager fileManager;
-
 
     /**
      * {@inheritDoc}
@@ -149,6 +150,24 @@ public class ArrayDataServiceImpl implements ArrayDataService {
      */
     public List<Platform> getPlatforms() {
         return dao.getPlatforms();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<DisplayablePlatform> getDisplayablePlatforms() {
+        List<DisplayablePlatform> result = new ArrayList<DisplayablePlatform>();
+        for (Platform platform : getPlatforms()) {
+            result.add(new DisplayablePlatform(platform, dao.isPlatformInUsed(platform)));
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deletePlatform(String name) {
+        dao.delete(dao.getPlatform(name));
     }
 
     /**

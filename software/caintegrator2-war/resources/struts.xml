@@ -834,6 +834,11 @@
             <result name="error" type="tiles">managePlatforms</result>
             <result name="input" type="tiles">managePlatforms</result>
         </action>
+      
+        <action name="deletePlatform" method="deletePlatform" class="managePlatformsAction">
+            <result type="tiles">managePlatforms</result>
+            <result name="error" type="tiles">managePlatforms</result>
+        </action>
         
         <!-- CaBio Actions -->
         <action name="caBioGeneSearchInput" method="input" class="caBioSearchAction">
