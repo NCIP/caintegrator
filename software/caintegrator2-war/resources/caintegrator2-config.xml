@@ -136,6 +136,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="updater">
+            <ref local="imagingDataSourceAjaxUpdater"/>
+        </property>
     </bean>
     
     <bean id="editClinicalSourceAction"
@@ -577,6 +580,20 @@
     
     <bean id="genomicDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.GenomicDataSourceAjaxUpdater">
         <dwr:remote javascript="GenomicDataSourceAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="studyManagementService">
+          <ref local="studyManagementService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="imagingDataSourceAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.ImagingDataSourceAjaxUpdater">
+        <dwr:remote javascript="ImagingDataSourceAjaxUpdater" />
         <property name="workspaceService">
           <ref local="workspaceService"/>
         </property>

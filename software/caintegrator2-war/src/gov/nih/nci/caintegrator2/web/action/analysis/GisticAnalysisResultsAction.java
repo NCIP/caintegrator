@@ -85,7 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
@@ -133,7 +133,7 @@ public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
                             + " isn't a Gistic job type");
                 }
                 GisticAnalysisJob gisticJob = (GisticAnalysisJob) job;
-                Cai2Util.loadCollection(gisticJob.getResults());
+                HibernateUtil.loadCollection(gisticJob.getResults());
                 getDisplayableWorkspace().setGisticJobResult(
                         new DisplayableGisticJobResult(gisticJob));
                 return;

@@ -2,18 +2,18 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type='text/javascript' src='dwr/interface/GenomicDataSourceAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/interface/ImagingDataSourceAjaxUpdater.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <div id="content">                      
     
-    <script type="text/javascript" defer>
-    
-    initializeJsp();
+    <script type="text/javascript">
 
     function initializeJsp() {
         dwr.engine.setActiveReverseAjax(true);
         GenomicDataSourceAjaxUpdater.initializeJsp();
+        ImagingDataSourceAjaxUpdater.initializeJsp();
     }
     
     function enableDeployButton() {
@@ -220,7 +220,7 @@
     <s:hidden name="studyConfiguration.id"  />
     <table class="data">
         <tr>
-            <th colspan="5">Imaging Data Sources</th>
+            <th colspan="5">Imaging Data Sources <span id="imagingSourceLoader"> <img src="images/ajax-loader.gif"/> </span></th>
         </tr>
         <tr>
             <th>Host Name</th>
@@ -229,72 +229,9 @@
             <th>Status</th>
             <th>Action</th>
         </tr>
-        <s:iterator value="studyConfiguration.imageDataSources" status="status">
-            <s:if test="#status.odd == true">
-             <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-            <td><s:property value="serverProfile.hostname" /></td>
-            <td><s:property value="collectionName" /></td>
-            <td>
-                <i>Annotation:</i> 
-                <s:if test="%{imageAnnotationConfiguration != null}">
-                    <s:property value="imageAnnotationConfiguration.annotationFile.file.name" />
-                </s:if>
-                <s:else>
-                    None
-                </s:else>
-                <br><i>Mapping:</i> <s:property value="mappingFileName" />
-            </td>
-            <td>
-                <s:if test="%{imageAnnotationConfiguration != null}">
-                    <s:if test="%{!imageAnnotationConfiguration.loadable}">
-                            Definition Incomplete
-                    </s:if>
-                    <s:else>
-                        <s:if test="%{imageAnnotationConfiguration.currentlyLoaded}">
-                            Loaded
-                        </s:if>
-                        <s:else>
-                            Not Loaded
-                        </s:else>
-                    </s:else>
-                </s:if>
-                <s:else>
-                    Loaded
-                </s:else>
-            </td>
-            <td>
-               <s:url id="editImagingSource" action="editImagingSource">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="imageSourceConfiguration.id" value="id" />
-                </s:url> 
-                <s:a href="%{editImagingSource}">Edit</s:a> 
-                 | 
-                <s:url id="editImagingSourceAnnotations" action="editImagingSourceAnnotations">
-                    <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                    <s:param name="imageSourceConfiguration.id" value="id" />
-                </s:url> 
-                <s:a href="%{editImagingSourceAnnotations}">Edit Annotations</s:a> 
-                 |                 
-                <s:if test="%{imageAnnotationConfiguration.loadable && !imageAnnotationConfiguration.currentlyLoaded}" >
-                    <s:url id="loadImagingSource" action="loadImagingSource">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imageSourceConfiguration.id" value="id" />
-                    </s:url> 
-                    <s:a href="%{loadImagingSource}">Load Annotations</s:a>
-                     | 
-                </s:if>
-                <s:url id="deleteImagingSource" action="deleteImagingSource">
-                        <s:param name="studyConfiguration.id" value="studyConfiguration.id" />
-                        <s:param name="imageSourceConfiguration.id" value="id" />
-                </s:url> 
-                <s:a href="%{deleteImagingSource}" onclick="return confirm('This imaging source file will be permanently deleted.')"> Delete</s:a> 
-            </td>
-        </tr>
-        </s:iterator>
+        <tbody id="imagingSourceJobStatusTable" />
+            </table>
+        <table class="data">
         <tr>
             <th colspan="5"><s:submit action="addImagingSource" value="Add" theme="simple" /></th>
         </tr>

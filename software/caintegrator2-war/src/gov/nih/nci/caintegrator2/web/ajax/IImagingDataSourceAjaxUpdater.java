@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,97 +83,33 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
+
+import java.io.File;
+
 
 /**
- * 
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDeployedStudyAction {
-    
-    private static final long serialVersionUID = 1L;
-
-    private static final int DEFAULT_PAGE_SIZE = 50;
-    private Long jobId;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (jobId == null) {
-            addActionError("No job id for Comparative Marker Selection specified.");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute() {
-        if (getDisplayableWorkspace().getCmsJobResult() == null
-                || jobId.compareTo(getDisplayableWorkspace().getCmsJobResult().getJobId()) != 0) {
-            loadJob();
-        }
-        return SUCCESS;
-    }
-    
-    private void loadJob() {
-        for (AbstractPersistedAnalysisJob job
-                : getStudySubscription().getAnalysisJobCollection()) {
-            if (jobId.compareTo(job.getId()) == 0) {
-                if (!AnalysisJobTypeEnum.CMS.getValue().equals(job.getJobType())) {
-                    throw new IllegalStateException("Job Id " + jobId 
-                            + " isn't a Comparative Marker Selection job type");
-                }
-                ComparativeMarkerSelectionAnalysisJob cmsJob = (ComparativeMarkerSelectionAnalysisJob) job;
-                HibernateUtil.loadCollection(cmsJob.getResults());
-                getDisplayableWorkspace().setCmsJobResult(
-                        new DisplayableCmsJobResult(cmsJob));
-                return;
-            }
-        }
-        addActionError("Comparative Marker Selection job not found: " + jobId);
-    }
-
-    /**
-     * @return the jobId
-     */
-    public Long getJobId() {
-        return jobId;
-    }
-
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
+public interface IImagingDataSourceAjaxUpdater {
     
     /**
-     * @return page size
+     * Initializes the web context to this JSP so the update messages stream here.
      */
-    public int getPageSize() {
-        if (getCmsJobResult() != null) {
-            return getCmsJobResult().getPageSize();
-        }
-        return DEFAULT_PAGE_SIZE;
-    }
-        
+    void initializeJsp();
+    
     /**
-     * Set the page size.
-     * @param pageSize the page size
+     * Used to run the GenomicDataSource Job.
+     * @param imagingSourceId to retrieve imaging data for (asynchronously).
+     * @param imageClinicalMappingFile file to map.
+     * @param mappingType type of mapping for the image source. 
+     * @param mapOnly to determine if it's only re-mapping the source.
      */
-    public void setPageSize(int pageSize) {
-        if (getCmsJobResult() != null) {
-            getCmsJobResult().setPageSize(pageSize);
-        }
-    }
+    void runJob(Long imagingSourceId, 
+            File imageClinicalMappingFile, 
+            ImageDataSourceMappingTypeEnum mappingType,
+            boolean mapOnly);
 
 }

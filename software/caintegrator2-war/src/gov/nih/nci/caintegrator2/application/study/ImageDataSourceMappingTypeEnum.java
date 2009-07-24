@@ -17,9 +17,9 @@ public enum ImageDataSourceMappingTypeEnum {
     AUTO("Auto (No File Required)"),
     
     /**
-     * Patient.
+     * Subject.
      */
-    PATIENT("By Subject"),
+    SUBJECT("By Subject"),
 
     /**
      * Image Series.
@@ -65,7 +65,7 @@ public enum ImageDataSourceMappingTypeEnum {
     public static List<String> getStringValues() {
         List<String> values = new ArrayList<String>();
         values.add(AUTO.getValue());
-        values.add(PATIENT.getValue());
+        values.add(SUBJECT.getValue());
         values.add(IMAGE_SERIES.getValue());
         return values;
     }

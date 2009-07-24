@@ -101,6 +101,11 @@ public enum Status {
     NOT_LOADED("Not Loaded"),
     
     /**
+     * Definition Incomplete.
+     */
+    DEFINITION_INCOMPLETE("Definition Incomplete"),
+    
+    /**
      * Processing.
      */
     PROCESSING("Processing"),

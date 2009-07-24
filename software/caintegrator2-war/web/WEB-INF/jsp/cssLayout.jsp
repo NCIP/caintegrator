@@ -18,7 +18,7 @@
         <script type="text/javascript" src="common/js/onlinehelp.js"></script>
         <script type="text/javascript" src="./struts/optiontransferselect.js"></script>      
 	</head>
-	<body>
+	<tiles:insertAttribute name="bodyTile" />
 		
 		<a href="#content" id="navskip">Skip to Page Content</a>
 		
