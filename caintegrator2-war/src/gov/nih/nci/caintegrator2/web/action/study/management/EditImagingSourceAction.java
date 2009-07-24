@@ -87,10 +87,11 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
-import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.web.ajax.IImagingDataSourceAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +110,8 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
     private String imageAnnotationFileFileName;
     private String imageClinicalMappingFileFileName;
     private ImageDataSourceMappingTypeEnum mappingType = ImageDataSourceMappingTypeEnum.AUTO;
-
+    private IImagingDataSourceAjaxUpdater updater;
+    
     /**
      * {@inheritDoc}
      */
@@ -177,15 +179,35 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
             delete();
             setImageSourceConfiguration(newImagingSource);
         }
+        getImageSourceConfiguration().getServerProfile().setHostname(
+                Cai2Util.getHostNameFromUrl(getImageSourceConfiguration().getServerProfile().getUrl()));
+        return runAsynchronousJob(false);
+    }
+
+    private String runAsynchronousJob(boolean mapOnly) {
+        storeImageMappingFileName();
+        File newMappingFile = null;
         try {
-            getImageSourceConfiguration().getServerProfile().setHostname(
-                    Cai2Util.getHostNameFromUrl(getImageSourceConfiguration().getServerProfile().getUrl()));
-            getStudyManagementService().addImageSource(getStudyConfiguration(), getImageSourceConfiguration());
-            return mapImagingSource();
-        } catch (ConnectionException e) {
-            addActionError("The configured server couldn't reached. Please check the configuration settings.");
+            newMappingFile = storeTemporaryMappingFile();
+        } catch (IOException e) {
+            addActionError("Unable to save uploaded file.");
             return INPUT;
         }
+        getImageSourceConfiguration().setStatus(Status.PROCESSING);
+        if (!mapOnly) {
+            getStudyManagementService().addImageSourceToStudy(getStudyConfiguration(), getImageSourceConfiguration());
+        }
+        getStudyManagementService().saveImagingDataSource(getImageSourceConfiguration());
+        updater.runJob(getImageSourceConfiguration().getId(), newMappingFile, mappingType, mapOnly);
+        return SUCCESS;
+    }
+
+    private File storeTemporaryMappingFile() throws IOException {
+        if (!ImageDataSourceMappingTypeEnum.AUTO.equals(mappingType)) {
+            return getStudyManagementService().saveFileToStudyDirectory(getStudyConfiguration(), 
+                    getImageClinicalMappingFile());
+        }
+        return null;
     }
     
     /**
@@ -237,8 +259,6 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         return SUCCESS;
     }
     
-
-
     /**
      * Loads image annotations.
      * @return struts result.
@@ -261,27 +281,17 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
         if (!validateMappingFile()) {
             return INPUT;
         }
+        return runAsynchronousJob(true);
+    }
+
+    private void storeImageMappingFileName() {
         if (!StringUtils.isBlank(imageClinicalMappingFileFileName)) {
             getImageSourceConfiguration().setMappingFileName(imageClinicalMappingFileFileName);
         } else {
             getImageSourceConfiguration().setMappingFileName(ImageDataSourceConfiguration.AUTOMATIC_MAPPING);
         }
-        try {
-            getStudyManagementService().mapImageSeriesAcquisitions(getStudyConfiguration(),
-                    getImageSourceConfiguration(), getImageClinicalMappingFile(), mappingType);
-        } catch (ValidationException e) {
-            addFieldError("imagingFile", "Invalid file: " + e.getResult().getInvalidMessage());
-            return INPUT;
-        } catch (IOException e) {
-            return ERROR;
-        }
-        return SUCCESS;
     }
-    
-
-
-
-    
+        
     /**
      * @return the Imaging File
      */
@@ -360,6 +370,20 @@ public class EditImagingSourceAction extends AbstractImagingSourceAction {
      */
     public void setImageClinicalMappingFileFileName(String imageClinicalMappingFileFileName) {
         this.imageClinicalMappingFileFileName = imageClinicalMappingFileFileName;
+    }
+
+    /**
+     * @return the updater
+     */
+    public IImagingDataSourceAjaxUpdater getUpdater() {
+        return updater;
+    }
+
+    /**
+     * @param updater the updater to set
+     */
+    public void setUpdater(IImagingDataSourceAjaxUpdater updater) {
+        this.updater = updater;
     }
 
 }

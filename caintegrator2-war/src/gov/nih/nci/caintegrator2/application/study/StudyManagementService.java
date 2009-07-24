@@ -131,6 +131,12 @@ public interface StudyManagementService {
     void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource);
     
     /**
+     * Saves an imaging source.
+     * @param imagingSource to save.
+     */
+    void saveImagingDataSource(ImageDataSourceConfiguration imagingSource);
+    
+    /**
      * Deletes a study.
      * 
      * @param studyConfiguration study to delete
@@ -262,6 +268,15 @@ public interface StudyManagementService {
      */
     void loadGenomicSource(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, ExperimentNotFoundException;
+    
+    /**
+     * Saves a file to the study directory.
+     * @param studyConfiguration to get the directory.
+     * @param file to save.
+     * @return saved file.
+     * @throws IOException if unable to read/save file.
+     */
+    File saveFileToStudyDirectory(StudyConfiguration studyConfiguration, File file) throws IOException;
 
     /**
      * Adds a new, initialized image data source to the study. The <code>ImageSeriesAcquisition</code> related to this 
@@ -273,6 +288,21 @@ public interface StudyManagementService {
      */
     void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
     throws ConnectionException;
+    
+    /**
+     * Adds a new image source to study.
+     * @param studyConfiguration to add image source to.
+     * @param imageSource to add to study.
+     */
+    void addImageSourceToStudy(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource);
+    
+    /**
+     * Loads the image source.
+     * @param imageSource to load.
+     * @throws ConnectionException if can't connect to imaging server.
+     */
+    void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException;
+    
     
     /**
      * Adds an image series annotation file to the study. The file given will be copied to permanent storage 
@@ -297,6 +327,19 @@ public interface StudyManagementService {
      */
     void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException;
 
+    /**
+     * Updates the status of the imaging sources.
+     * @param studyConfiguration which contains the imaging sources.
+     */
+    void updateImageDataSourceStatus(StudyConfiguration studyConfiguration);
+    
+    /**
+     * Returns the refreshed ImageDataSourceConfiguration attached to the current Hibernate session.
+     * @param id of the image data source configuration.
+     * @return refreshed entity.
+     */
+    ImageDataSourceConfiguration getRefreshedImageSource(Long id);
+    
     /**
      * Returns the refreshed entity attached to the current Hibernate session.
      * 

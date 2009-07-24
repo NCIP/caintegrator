@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.Preprocess
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.QueryResult;
@@ -276,7 +277,7 @@ public class ComparativeMarkerSelectionAnalysisAction  extends AbstractDeployedS
         for (Query query 
                 : getStudySubscription().getQueryCollection()) {
             if (id.equals(query.getId().toString())) {
-                Cai2Util.loadCollection(query);
+                HibernateUtil.loadCollection(query);
                 return query;
             }
         }

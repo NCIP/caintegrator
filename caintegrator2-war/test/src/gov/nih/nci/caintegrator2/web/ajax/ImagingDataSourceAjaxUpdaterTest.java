@@ -83,96 +83,111 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 
-/**
- * 
- */
-public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDeployedStudyAction {
-    
-    private static final long serialVersionUID = 1L;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 
-    private static final int DEFAULT_PAGE_SIZE = 50;
-    private Long jobId;
+import javax.servlet.ServletException;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (jobId == null) {
-            addActionError("No job id for Comparative Marker Selection specified.");
-        }
+import org.acegisecurity.context.SecurityContextHolder;
+import org.directwebremoting.WebContextFactory;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.opensymphony.xwork2.ActionContext;
+
+
+public class ImagingDataSourceAjaxUpdaterTest {
+
+    private ImagingDataSourceAjaxUpdater updater;
+    private DwrUtilFactory dwrUtilFactory;
+    private WorkspaceServiceStudyDeploymentJobStub workspaceService;
+    private StudyManagementServiceStub studyManagementServiceStub;
+    private StudyConfiguration studyConfiguration;
+    private ImageDataSourceConfiguration imagingDataSource;
+
+    @Before
+    public void setUp() throws Exception {
+        updater = new ImagingDataSourceAjaxUpdater();
+        dwrUtilFactory = new DwrUtilFactory();
+        workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
+        studyManagementServiceStub = new StudyManagementServiceStub();
+        studyManagementServiceStub.clear();
+        workspaceService.clear();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(dwrUtilFactory);
+        updater.setStudyManagementService(studyManagementServiceStub);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+        StudyHelper studyHelper = new StudyHelper();
+        studyConfiguration = studyHelper.populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        studyConfiguration.setId(Long.valueOf(1));
+        SessionHelper.getInstance().getDisplayableUserWorkspace().setCurrentStudyConfiguration(studyConfiguration);
+        imagingDataSource = studyConfiguration.getImageDataSources().get(0);
+        imagingDataSource.setId(Long.valueOf(1));
+        imagingDataSource.setStudyConfiguration(studyConfiguration);
+        studyManagementServiceStub.refreshedImageSource = imagingDataSource;
+        imagingDataSource.setStatus(Status.PROCESSING);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute() {
-        if (getDisplayableWorkspace().getCmsJobResult() == null
-                || jobId.compareTo(getDisplayableWorkspace().getCmsJobResult().getJobId()) != 0) {
-            loadJob();
-        }
-        return SUCCESS;
-    }
-    
-    private void loadJob() {
-        for (AbstractPersistedAnalysisJob job
-                : getStudySubscription().getAnalysisJobCollection()) {
-            if (jobId.compareTo(job.getId()) == 0) {
-                if (!AnalysisJobTypeEnum.CMS.getValue().equals(job.getJobType())) {
-                    throw new IllegalStateException("Job Id " + jobId 
-                            + " isn't a Comparative Marker Selection job type");
-                }
-                ComparativeMarkerSelectionAnalysisJob cmsJob = (ComparativeMarkerSelectionAnalysisJob) job;
-                HibernateUtil.loadCollection(cmsJob.getResults());
-                getDisplayableWorkspace().setCmsJobResult(
-                        new DisplayableCmsJobResult(cmsJob));
-                return;
-            }
-        }
-        addActionError("Comparative Marker Selection job not found: " + jobId);
-    }
-
-    /**
-     * @return the jobId
-     */
-    public Long getJobId() {
-        return jobId;
-    }
-
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    @Test
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        updater.initializeJsp();
+        assertNotNull(dwrUtilFactory.retrieveGenomicDataSourceUtil("Test"));
     }
     
-    /**
-     * @return page size
-     */
-    public int getPageSize() {
-        if (getCmsJobResult() != null) {
-            return getCmsJobResult().getPageSize();
-        }
-        return DEFAULT_PAGE_SIZE;
-    }
+    @Test
+    public void testRunJob() throws InterruptedException {
+        studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
+        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        Thread.sleep(500);
+        assertTrue(studyManagementServiceStub.loadImageSourceCalled);
+        assertTrue(studyManagementServiceStub.mapImageSeriesCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedImageSourceCalled);
+        studyManagementServiceStub.clear();
         
-    /**
-     * Set the page size.
-     * @param pageSize the page size
-     */
-    public void setPageSize(int pageSize) {
-        if (getCmsJobResult() != null) {
-            getCmsJobResult().setPageSize(pageSize);
+        studyManagementServiceStub.throwValidationException = true;
+        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        Thread.sleep(500);
+        assertEquals(Status.ERROR, imagingDataSource.getStatus());
+        assertTrue(studyManagementServiceStub.saveImagingDataSourceCalled);
+        
+        studyManagementServiceStub.clear();
+        studyManagementServiceStub.throwIOException = true;
+        updater.runJob(1l, null, ImageDataSourceMappingTypeEnum.AUTO, false);
+        Thread.sleep(500);
+        assertEquals(Status.ERROR, imagingDataSource.getStatus());
+        assertTrue(studyManagementServiceStub.saveImagingDataSourceCalled);
+    }
+    
+    private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {
+        @Override
+        public UserWorkspace getWorkspace() {
+            UserWorkspace workspace = new UserWorkspace();
+            workspace.setUsername("Test");
+            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            workspace.getSubscriptionCollection().add(getSubscription());
+            studyConfiguration.setUserWorkspace(workspace);
+            
+            return workspace;
         }
     }
 

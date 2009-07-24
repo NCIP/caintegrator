@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.study;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.DateUtil;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
@@ -129,6 +130,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * Entry point to the StudyManagementService subsystem.
@@ -188,6 +190,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
         dao.save(genomicSource);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void saveImagingDataSource(ImageDataSourceConfiguration imagingSource) {
+        dao.save(imagingSource);
     }
 
     /**
@@ -679,6 +688,13 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setArrayDataService(ArrayDataService arrayDataService) {
         this.arrayDataService = arrayDataService;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public File saveFileToStudyDirectory(StudyConfiguration studyConfiguration, File file) throws IOException {
+        return fileManager.storeStudyFile(file, file.getName(), studyConfiguration);
+    }
 
     /**
      * {@inheritDoc}
@@ -692,6 +708,9 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         ImageAnnotationConfiguration imageAnnotationConfiguration = 
             new ImageAnnotationConfiguration(annotationFile, imageDataSourceConfiguration);
         imageAnnotationConfiguration.setImageDataSourceConfiguration(imageDataSourceConfiguration);
+        imageDataSourceConfiguration.setImageAnnotationConfiguration(imageAnnotationConfiguration);
+        imageDataSourceConfiguration.setStatus(retrieveImageSourceStatus(imageDataSourceConfiguration
+                .getImageAnnotationConfiguration()));
         dao.save(imageAnnotationConfiguration);
         return imageAnnotationConfiguration;
     }
@@ -699,18 +718,35 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(rollbackFor = {ConnectionException.class, IllegalStateException.class })
-    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource)
-            throws ConnectionException {
+    public void addImageSource(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) 
+        throws ConnectionException {
+        addImageSourceToStudy(studyConfiguration, imageSource);
+        loadImageSource(imageSource);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addImageSourceToStudy(StudyConfiguration studyConfiguration, 
+            ImageDataSourceConfiguration imageSource) {
         imageSource.setStudyConfiguration(studyConfiguration);
+        studyConfiguration.getImageDataSources().add(imageSource);
+        dao.save(imageSource);
+        dao.save(studyConfiguration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException {
         List<ImageSeriesAcquisition> acquisitions = getNciaFacade().getImageSeriesAcquisitions(
-                    imageSource.getCollectionName(), imageSource.getServerProfile());
+                imageSource.getCollectionName(), imageSource.getServerProfile());
         imageSource.getImageSeriesAcquisitions().addAll(acquisitions);
         for (ImageSeriesAcquisition acquisition : acquisitions) {
             acquisition.setImageDataSource(imageSource);
         }
-        studyConfiguration.getImageDataSources().add(imageSource);
-        dao.save(studyConfiguration);
+        imageSource.setStatus(Status.LOADED);
+        dao.save(imageSource);
     }
 
     /**
@@ -718,6 +754,7 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     public void loadImageAnnotation(ImageDataSourceConfiguration imageDataSource) throws ValidationException {
         imageDataSource.getImageAnnotationConfiguration().loadAnnontation();
+        imageDataSource.setStatus(retrieveImageSourceStatus(imageDataSource.getImageAnnotationConfiguration()));
         dao.save(imageDataSource);
     }
 
@@ -729,7 +766,49 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         throws ValidationException, IOException {
         new ImageSeriesAcquisitionMappingHelper(studyConfiguration, mappingFile, 
                 mappingType, imageSource).mapImageSeries();
-        save(studyConfiguration);
+        imageSource.setStatus(retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration()));
+        dao.save(imageSource);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void updateImageDataSourceStatus(StudyConfiguration studyConfiguration) {
+        for (ImageDataSourceConfiguration imageSource : studyConfiguration.getImageDataSources()) {
+            if (Status.PROCESSING.equals(imageSource.getStatus())) {
+                continue;
+            }
+            Status status = retrieveImageSourceStatus(imageSource.getImageAnnotationConfiguration());
+            if (imageSource.getStatus() != status) {
+                imageSource.setStatus(status);
+                dao.save(imageSource);
+            }
+        }
+    }
+
+    private Status retrieveImageSourceStatus(ImageAnnotationConfiguration annotationConfiguration) {
+        if (annotationConfiguration != null) {
+            if (annotationConfiguration.isLoadable() 
+                 && !annotationConfiguration.isCurrentlyLoaded()) {
+                return Status.NOT_LOADED;
+            } else if (annotationConfiguration.isCurrentlyLoaded()) {
+                return Status.LOADED;
+            } else if (!annotationConfiguration.isLoadable()) {
+                return Status.DEFINITION_INCOMPLETE;
+            }
+        } 
+        return Status.LOADED;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
+        ImageDataSourceConfiguration imagingSource = new ImageDataSourceConfiguration();
+        imagingSource.setId(id);
+        imagingSource = getRefreshedStudyEntity(imagingSource);
+        HibernateUtil.loadCollection(imagingSource.getStudyConfiguration());
+        return imagingSource;
     }
 
     /**
@@ -915,5 +994,4 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     public void setSecurityManager(SecurityManager securityManager) {
         this.securityManager = securityManager;
     }
-
 }

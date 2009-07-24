@@ -83,97 +83,89 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ImageDataSourceMappingTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 /**
- * 
+ * Asynchronous thread that runs Imaging Source Loading jobs and updates the status of those jobs.
  */
-public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDeployedStudyAction {
+public class ImagingDataSourceAjaxRunner implements Runnable {
     
-    private static final long serialVersionUID = 1L;
-
-    private static final int DEFAULT_PAGE_SIZE = 50;
-    private Long jobId;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (jobId == null) {
-            addActionError("No job id for Comparative Marker Selection specified.");
-        }
+    private static final Logger LOGGER = Logger.getLogger(ImagingDataSourceAjaxRunner.class);
+    private final ImagingDataSourceAjaxUpdater updater;
+    private final Long imageDataSourceId;
+    private final File imageClinicalMappingFile;
+    private final ImageDataSourceMappingTypeEnum mappingType;
+    private final boolean mapOnly;
+    private ImageDataSourceConfiguration imagingSource;
+    private String username;
+    
+    ImagingDataSourceAjaxRunner(ImagingDataSourceAjaxUpdater updater,
+            Long imageDataSourceId,
+            File imageClinicalMappingFile,
+            ImageDataSourceMappingTypeEnum mappingType,
+            boolean mapOnly) {
+        this.updater = updater;
+        this.imageDataSourceId = imageDataSourceId;
+        this.imageClinicalMappingFile = imageClinicalMappingFile;
+        this.mappingType = mappingType;
+        this.mapOnly = mapOnly;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public String execute() {
-        if (getDisplayableWorkspace().getCmsJobResult() == null
-                || jobId.compareTo(getDisplayableWorkspace().getCmsJobResult().getJobId()) != 0) {
-            loadJob();
-        }
-        return SUCCESS;
-    }
-    
-    private void loadJob() {
-        for (AbstractPersistedAnalysisJob job
-                : getStudySubscription().getAnalysisJobCollection()) {
-            if (jobId.compareTo(job.getId()) == 0) {
-                if (!AnalysisJobTypeEnum.CMS.getValue().equals(job.getJobType())) {
-                    throw new IllegalStateException("Job Id " + jobId 
-                            + " isn't a Comparative Marker Selection job type");
-                }
-                ComparativeMarkerSelectionAnalysisJob cmsJob = (ComparativeMarkerSelectionAnalysisJob) job;
-                HibernateUtil.loadCollection(cmsJob.getResults());
-                getDisplayableWorkspace().setCmsJobResult(
-                        new DisplayableCmsJobResult(cmsJob));
-                return;
+    public void run() {
+        setupSession();
+        updater.updateJobStatus(username, imagingSource);
+        try {
+            if (!mapOnly) {
+                addSource();
             }
+            mapSource();
+        } catch (ConnectionException e) {
+            addError("The configured server couldn't reached. Please check the configuration settings.", e);
         }
-        addActionError("Comparative Marker Selection job not found: " + jobId);
+        updater.updateJobStatus(username, imagingSource);
     }
 
-    /**
-     * @return the jobId
-     */
-    public Long getJobId() {
-        return jobId;
+    private void setupSession() {
+        imagingSource = updater.getStudyManagementService().getRefreshedImageSource(imageDataSourceId);
+        username = imagingSource.getStudyConfiguration().getUserWorkspace().getUsername();
     }
 
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    private void addSource() throws ConnectionException {
+        updater.getStudyManagementService().loadImageSource(imagingSource);
     }
-    
-    /**
-     * @return page size
-     */
-    public int getPageSize() {
-        if (getCmsJobResult() != null) {
-            return getCmsJobResult().getPageSize();
-        }
-        return DEFAULT_PAGE_SIZE;
-    }
-        
-    /**
-     * Set the page size.
-     * @param pageSize the page size
-     */
-    public void setPageSize(int pageSize) {
-        if (getCmsJobResult() != null) {
-            getCmsJobResult().setPageSize(pageSize);
+
+    private void mapSource() {
+        try {
+            updater.getStudyManagementService().mapImageSeriesAcquisitions(imagingSource.getStudyConfiguration(),
+                    imagingSource, imageClinicalMappingFile, mappingType);
+        } catch (ValidationException e) {
+            addError("Invalid file: " + e.getResult().getInvalidMessage(), e);
+        } catch (IOException e) {
+            addError(e.getMessage(), e);
+        } finally {
+            FileUtils.deleteQuietly(imageClinicalMappingFile);
         }
     }
 
+    private void addError(String message, Exception e) {
+        LOGGER.error("Deployment of imaging source failed.", e);
+        imagingSource.setStatus(Status.ERROR);
+        imagingSource.setStatusDescription(message);
+        updater.saveAndUpdateJobStatus(username, imagingSource);
+    }
 }

@@ -141,6 +141,14 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean throwConnectionException = false;
     public boolean throwValidationException = false;
     public boolean throwIOException = false;
+    public boolean getRefreshedImageSourceCalled;
+    public boolean saveImagingDataSourceCalled;
+    public boolean addImageSourceToStudyCalled;
+    public boolean loadImageSourceCalled;
+    public boolean saveFileStoStudyDirectoryCalled;
+    public boolean updateImageDataSourceStatusCalled;
+    
+    public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -216,6 +224,12 @@ public class StudyManagementServiceStub implements StudyManagementService {
         throwConnectionException = false;
         throwValidationException = false;
         throwIOException = false;
+        getRefreshedImageSourceCalled = false;
+        saveImagingDataSourceCalled = false;
+        addImageSourceToStudyCalled = false;
+        loadImageSourceCalled = false;
+        saveFileStoStudyDirectoryCalled = false;
+        updateImageDataSourceStatusCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -408,6 +422,33 @@ public class StudyManagementServiceStub implements StudyManagementService {
 
     public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
         saveGenomicSourceCalled = true;
+    }
+
+    
+    public void saveImagingDataSource(ImageDataSourceConfiguration imagingSource) {
+        saveImagingDataSourceCalled = true;
+    }
+
+    public void addImageSourceToStudy(StudyConfiguration studyConfiguration, ImageDataSourceConfiguration imageSource) {
+        addImageSourceToStudyCalled = true;
+    }
+
+    public void loadImageSource(ImageDataSourceConfiguration imageSource) throws ConnectionException {
+        loadImageSourceCalled = true;
+    }
+
+    public File saveFileToStudyDirectory(StudyConfiguration studyConfiguration, File file) throws IOException {
+        saveFileStoStudyDirectoryCalled = true;
+        return null;
+    }
+
+    public void updateImageDataSourceStatus(StudyConfiguration studyConfiguration) {
+        updateImageDataSourceStatusCalled = true;
+    }
+
+    public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
+        getRefreshedImageSourceCalled = true;
+        return refreshedImageSource;
     }
 
 }

@@ -83,97 +83,44 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
-import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
-import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.FoldChangeCriterion;
+import gov.nih.nci.caintegrator2.domain.application.GeneNameCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
+
+import org.junit.Test;
 
 /**
  * 
  */
-public class ComparativeMarkerSelectionAnalysisResultsAction  extends AbstractDeployedStudyAction {
+public class HibernateUtilTest {
     
-    private static final long serialVersionUID = 1L;
+    @Test
+    public void testLoadCollection() {
+        Query query = new Query();
+        HibernateUtil.loadCollection(query);
+        CompoundCriterion compoundCriterion = new CompoundCriterion();
+        query.setCompoundCriterion(compoundCriterion);
+        HibernateUtil.loadCollection(query);
 
-    private static final int DEFAULT_PAGE_SIZE = 50;
-    private Long jobId;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (jobId == null) {
-            addActionError("No job id for Comparative Marker Selection specified.");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String execute() {
-        if (getDisplayableWorkspace().getCmsJobResult() == null
-                || jobId.compareTo(getDisplayableWorkspace().getCmsJobResult().getJobId()) != 0) {
-            loadJob();
-        }
-        return SUCCESS;
-    }
-    
-    private void loadJob() {
-        for (AbstractPersistedAnalysisJob job
-                : getStudySubscription().getAnalysisJobCollection()) {
-            if (jobId.compareTo(job.getId()) == 0) {
-                if (!AnalysisJobTypeEnum.CMS.getValue().equals(job.getJobType())) {
-                    throw new IllegalStateException("Job Id " + jobId 
-                            + " isn't a Comparative Marker Selection job type");
-                }
-                ComparativeMarkerSelectionAnalysisJob cmsJob = (ComparativeMarkerSelectionAnalysisJob) job;
-                HibernateUtil.loadCollection(cmsJob.getResults());
-                getDisplayableWorkspace().setCmsJobResult(
-                        new DisplayableCmsJobResult(cmsJob));
-                return;
-            }
-        }
-        addActionError("Comparative Marker Selection job not found: " + jobId);
-    }
-
-    /**
-     * @return the jobId
-     */
-    public Long getJobId() {
-        return jobId;
-    }
-
-    /**
-     * @param jobId the jobId to set
-     */
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-    
-    /**
-     * @return page size
-     */
-    public int getPageSize() {
-        if (getCmsJobResult() != null) {
-            return getCmsJobResult().getPageSize();
-        }
-        return DEFAULT_PAGE_SIZE;
-    }
+        compoundCriterion.getCriterionCollection().add(new SelectedValueCriterion());
+        compoundCriterion.getCriterionCollection().add(new FoldChangeCriterion());
+        compoundCriterion.getCriterionCollection().add(new GeneNameCriterion());
+        HibernateUtil.loadCollection(query);
         
-    /**
-     * Set the page size.
-     * @param pageSize the page size
-     */
-    public void setPageSize(int pageSize) {
-        if (getCmsJobResult() != null) {
-            getCmsJobResult().setPageSize(pageSize);
-        }
+    }
+    
+    @Test
+    public void testLoadCollectionStudyConfiguration() {
+        StudyHelper studyHelper = new StudyHelper();
+        StudyConfiguration studyConfiguration = studyHelper.
+                    populateAndRetrieveStudyWithSourceConfigurations().getStudyConfiguration();
+        HibernateUtil.loadCollection(studyConfiguration);
     }
 
 }
