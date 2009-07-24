@@ -330,7 +330,7 @@ public interface CaIntegrator2Dao {
      * @return Platforms for that source.
      */
     List<Platform> retrievePlatformsForGenomicSource(GenomicDataSourceConfiguration genomicSource);
-    
+
     /**
      * Returns all platforms ordered by name.
      * 
@@ -338,6 +338,13 @@ public interface CaIntegrator2Dao {
      */
     List<Platform> getPlatforms();
     
+    /**
+     * Check if the platform is in used.
+     * 
+     * @param platform the platform
+     * @return boolean
+     */
+    boolean isPlatformInUsed(Platform platform);
     
     /**
      * Returns all studies ordered by name.

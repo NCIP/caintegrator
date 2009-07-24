@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,6 +98,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
 
     public boolean loadArrayDesignCalled;
     public boolean getFoldChangeValuesCalled;
+    public boolean deleteCalled;
 
     /**
      * {@inheritDoc}
@@ -157,8 +159,34 @@ public class ArrayDataServiceStub implements ArrayDataService {
         return platforms;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public List<DisplayablePlatform> getDisplayablePlatforms() {
+        List<DisplayablePlatform> displayablePlatforms = new ArrayList<DisplayablePlatform>();
+        for (Platform platform : getPlatforms()) {
+            displayablePlatforms.add(new DisplayablePlatform(platform, false));
+        }
+        return displayablePlatforms;
+    }
+
     public void clear() {
         loadArrayDesignCalled = false;
+        deleteCalled = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deletePlatform(String name) {
+        deleteCalled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isPlatformInUsed(String name) {
+        return false;
     }
 
 }

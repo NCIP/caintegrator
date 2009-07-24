@@ -92,8 +92,9 @@ import gov.nih.nci.caintegrator2.application.arraydata.AgilentDnaPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.file.FileManager;
+import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
 
 import java.io.File;
@@ -167,6 +168,20 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         } else {
             super.validate();
         }
+    }
+    
+    /**
+     * @return SUCCESS
+     */
+    public String deletePlatform() {
+
+        if (SessionHelper.getInstance().isAuthenticated()) {
+            getArrayDataService().deletePlatform(getPlatformName());
+        } else {
+            addActionError("User is unauthenticated");
+            return ERROR;
+        }
+        return SUCCESS;
     }
     
     private void checkPlatformFile() {
@@ -286,8 +301,8 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     /**
      * @return the list of all platforms, alphabetized
      */
-    public List<Platform> getPlatforms() {
-        return getArrayDataService().getPlatforms();
+    public List<DisplayablePlatform> getDisplayablePlatforms() {
+        return getArrayDataService().getDisplayablePlatforms();
     }
 
     /**
