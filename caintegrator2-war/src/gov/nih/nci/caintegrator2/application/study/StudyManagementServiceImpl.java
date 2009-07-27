@@ -488,6 +488,28 @@ public class StudyManagementServiceImpl implements StudyManagementService {
         genomicSource.setStatus(Status.LOADED);
         dao.save(genomicSource);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setId(id);
+        genomicSource = getRefreshedStudyEntity(genomicSource);
+        HibernateUtil.loadCollection(genomicSource.getStudyConfiguration());
+        return genomicSource;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(id);
+        studyConfiguration = getRefreshedStudyEntity(studyConfiguration);
+        HibernateUtil.loadCollection(studyConfiguration);
+        return studyConfiguration;
+    }
 
     /**
      * {@inheritDoc}

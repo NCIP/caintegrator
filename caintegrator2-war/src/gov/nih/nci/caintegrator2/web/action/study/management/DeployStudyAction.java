@@ -110,7 +110,7 @@ public class DeployStudyAction extends AbstractStudyAction {
         getStudyConfiguration().setStatus(Status.PROCESSING);
         getStudyManagementService().save(getStudyConfiguration());
         HibernateUtil.loadCollection(getStudyConfiguration());
-        ajaxUpdater.runJob(getStudyConfiguration());
+        ajaxUpdater.runJob(getStudyConfiguration().getId());
         return SUCCESS;
     }
 

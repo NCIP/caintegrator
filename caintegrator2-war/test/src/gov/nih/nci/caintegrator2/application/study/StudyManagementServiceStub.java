@@ -147,8 +147,13 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean loadImageSourceCalled;
     public boolean saveFileStoStudyDirectoryCalled;
     public boolean updateImageDataSourceStatusCalled;
+    public boolean getRefreshedStudyConfigurationCalled;
+    public boolean getRefreshedGenomicSourceCalled;
     
     public ImageDataSourceConfiguration refreshedImageSource = new ImageDataSourceConfiguration();
+    public GenomicDataSourceConfiguration refreshedGenomicSource = new GenomicDataSourceConfiguration();
+    public StudyConfiguration refreshedStudyConfiguration = new StudyConfiguration();
+
 
     public void loadClinicalAnnotation(StudyConfiguration studyConfiguration,
             AbstractClinicalSourceConfiguration clinicalSourceConfiguration)
@@ -230,6 +235,8 @@ public class StudyManagementServiceStub implements StudyManagementService {
         loadImageSourceCalled = false;
         saveFileStoStudyDirectoryCalled = false;
         updateImageDataSourceStatusCalled = false;
+        getRefreshedStudyConfigurationCalled = false;
+        getRefreshedGenomicSourceCalled = false;
     }
 
     public void addGenomicSource(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
@@ -449,6 +456,16 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public ImageDataSourceConfiguration getRefreshedImageSource(Long id) {
         getRefreshedImageSourceCalled = true;
         return refreshedImageSource;
+    }
+
+    public GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id) {
+        getRefreshedGenomicSourceCalled = true;
+        return refreshedGenomicSource;
+    }
+
+    public StudyConfiguration getRefreshedStudyConfiguration(Long id) {
+        getRefreshedStudyConfigurationCalled = true;
+        return refreshedStudyConfiguration;
     }
 
 }
