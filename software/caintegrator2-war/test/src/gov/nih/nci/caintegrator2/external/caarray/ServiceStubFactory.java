@@ -85,107 +85,155 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
-import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
-import gov.nih.nci.caarray.domain.data.DataSet;
-import gov.nih.nci.caarray.domain.file.CaArrayFile;
-import gov.nih.nci.caarray.domain.project.Experiment;
-import gov.nih.nci.caarray.domain.sample.Sample;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.file.FileRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
+import gov.nih.nci.caarray.external.v1_0.AbstractCaArrayEntity;
+import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
+import gov.nih.nci.caarray.external.v1_0.data.DataFile;
+import gov.nih.nci.caarray.external.v1_0.data.DataSet;
+import gov.nih.nci.caarray.external.v1_0.data.MageTabFileSet;
+import gov.nih.nci.caarray.external.v1_0.data.QuantitationType;
+import gov.nih.nci.caarray.external.v1_0.experiment.Person;
+import gov.nih.nci.caarray.external.v1_0.query.AnnotationSetRequest;
+import gov.nih.nci.caarray.external.v1_0.query.BiomaterialKeywordSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.DataSetRequest;
+import gov.nih.nci.caarray.external.v1_0.query.ExampleSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.FileDownloadRequest;
+import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.HybridizationSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.KeywordSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.LimitOffset;
+import gov.nih.nci.caarray.external.v1_0.query.QuantitationTypeSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
+import gov.nih.nci.caarray.external.v1_0.sample.AnnotationSet;
+import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
+import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
+import gov.nih.nci.caarray.external.v1_0.vocabulary.Category;
+import gov.nih.nci.caarray.external.v1_0.vocabulary.Term;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
+import gov.nih.nci.caarray.services.external.v1_0.NoEntityMatchingReferenceException;
+import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
+import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
+import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import com.healthmarketscience.rmiio.RemoteInputStream;
 
 public class ServiceStubFactory implements CaArrayServiceFactory {
 
- 
-    public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
+    public SearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
         return new SearchServiceStub();
     }
 
-    public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile)  {
-        return new DataRetrievalServiceStub();
+    public DataService createDataService(ServerConnectionProfile profile) {
+        return new DataServiceStub();
     }
 
-   static class SearchServiceStub implements CaArraySearchService {
+    static class SearchServiceStub implements SearchService {
 
-        @SuppressWarnings("unchecked")
-        public <T extends AbstractCaArrayObject> List<T> search(T searchObject) {
-            if (searchObject instanceof Experiment) {
-                return (List<T>) returnExperiments((Experiment) searchObject);
-            } else if (searchObject instanceof Sample) {
-                return (List<T>) returnSamples((Sample) searchObject);
-            } else {
-                List<T> values = new ArrayList<T>();
-                values.add(searchObject);
-                return values;
-            }
+        public List<Category> getAllCharacteristicCategories(CaArrayEntityReference arg0)
+                throws InvalidReferenceException {
+            return Collections.emptyList();
         }
 
-        private List<Sample> returnSamples(Sample searchSample) {
-            List<Sample> samples = new ArrayList<Sample>();
-            if (searchSample.getExperiment() != null) {
-                List<Experiment> experiments = returnExperiments(searchSample.getExperiment());
-                if (!experiments.isEmpty()) {
-                    samples.addAll(experiments.get(0).getSamples());
-                }
-            } else {
-                samples.add(searchSample);
-            }
-            return samples;
+        public List<Person> getAllPrincipalInvestigators() {
+            return Collections.emptyList();
         }
 
-        private List<Experiment> returnExperiments(Experiment searchExperiment) {
-            List<Experiment> experiments = new ArrayList<Experiment>();
-            if ("samples".equals(searchExperiment.getPublicIdentifier())) {
-                Experiment experiment = new Experiment();
-                Sample sample1 = new Sample();
-                sample1.setName("sample1");
-                experiment.getSamples().add(sample1);
-                Sample sample2 = new Sample();
-                sample2.setName("sample2");
-                experiment.getSamples().add(sample2);
-                experiments.add(experiment);
-            } else if ("no-samples".equals(searchExperiment.getPublicIdentifier())) {
-                Experiment experiment = new Experiment();
-                experiments.add(experiment);
-            }
-            return experiments;        
+        public AnnotationSet getAnnotationSet(AnnotationSetRequest arg0) throws InvalidReferenceException {
+            return new AnnotationSet();
         }
 
-
-        public List<?> search(CQLQuery arg0) {
+        public AbstractCaArrayEntity getByReference(CaArrayEntityReference arg0)
+                throws NoEntityMatchingReferenceException {
             return null;
         }
 
-    }
-    
-    private static class DataRetrievalServiceStub implements DataRetrievalService {
+        public List<AbstractCaArrayEntity> getByReferences(List<CaArrayEntityReference> arg0)
+                throws NoEntityMatchingReferenceException {
+            return Collections.emptyList();
+        }
 
-        public DataSet getDataSet(DataRetrievalRequest arg0) {
-            return new DataSet();
+        public List<Term> getTermsForCategory(CaArrayEntityReference arg0, String arg1)
+                throws InvalidReferenceException {
+            return Collections.emptyList();
+        }
+
+        public <T extends AbstractCaArrayEntity> SearchResult<T> searchByExample(ExampleSearchCriteria<T> criteria,
+                LimitOffset arg1) {
+            SearchResult<T> result = new SearchResult<T>();
+            result.getResults().add(criteria.getExample());
+            return result;
+        }
+
+        public SearchResult<Biomaterial> searchForBiomaterials(BiomaterialSearchCriteria arg0, LimitOffset arg1)
+                throws InvalidReferenceException, UnsupportedCategoryException {
+            return null;
+        }
+
+        public SearchResult<Biomaterial> searchForBiomaterialsByKeyword(BiomaterialKeywordSearchCriteria arg0,
+                LimitOffset arg1) {
+            return null;
+        }
+
+        public SearchResult<gov.nih.nci.caarray.external.v1_0.experiment.Experiment> searchForExperiments(
+                ExperimentSearchCriteria arg0, LimitOffset arg1) throws InvalidReferenceException,
+                UnsupportedCategoryException {
+            return null;
+        }
+
+        public SearchResult<gov.nih.nci.caarray.external.v1_0.experiment.Experiment> searchForExperimentsByKeyword(
+                KeywordSearchCriteria arg0, LimitOffset arg1) {
+            return null;
+        }
+
+        public SearchResult<DataFile> searchForFiles(FileSearchCriteria arg0, LimitOffset arg1)
+                throws InvalidReferenceException {
+            return null;
+        }
+
+        public SearchResult<Hybridization> searchForHybridizations(HybridizationSearchCriteria arg0, LimitOffset arg1)
+                throws InvalidReferenceException {
+            return null;
+        }
+
+        public List<QuantitationType> searchForQuantitationTypes(QuantitationTypeSearchCriteria arg0)
+                throws InvalidReferenceException {
+            return Collections.emptyList();
         }
 
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactory#createFileRetrievalService(gov.nih.nci.caintegrator2.external.ServerConnectionProfile)
-     */
-    public FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile) throws ConnectionException {
-        return new FileRetrievalServiceStub();
-    }
-    
-    private static class FileRetrievalServiceStub implements FileRetrievalService {
+    static class DataServiceStub implements DataService {
 
-        /* (non-Javadoc)
-         * @see gov.nih.nci.caarray.services.file.FileRetrievalService#readFile(gov.nih.nci.caarray.domain.file.CaArrayFile)
-         */
-        public byte[] readFile(CaArrayFile arg0) {
+        public MageTabFileSet exportMageTab(CaArrayEntityReference arg0) throws InvalidReferenceException,
+                DataTransferException {
+            return null;
+        }
+
+        public DataSet getDataSet(DataSetRequest arg0) throws InvalidReferenceException, InconsistentDataSetsException,
+                IllegalArgumentException {
+            return new DataSet();
+        }
+
+        public RemoteInputStream streamFileContents(CaArrayEntityReference arg0, boolean arg1)
+                throws InvalidReferenceException, DataTransferException {
+            return null;
+        }
+
+        public RemoteInputStream streamFileContentsZip(FileDownloadRequest arg0, boolean arg1)
+                throws InvalidReferenceException, DataTransferException {
+            return null;
+        }
+
+        public RemoteInputStream streamMageTabZip(CaArrayEntityReference arg0, boolean arg1)
+                throws InvalidReferenceException, DataTransferException {
             return null;
         }
 

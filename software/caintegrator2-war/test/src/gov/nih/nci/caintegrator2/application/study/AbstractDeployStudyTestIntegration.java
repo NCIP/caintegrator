@@ -204,16 +204,20 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         if (getCopyNumberFile() != null) {
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname(getCopyNumberCaArrayHostname());
-            genomicSource.getServerProfile().setPort(8080);
+            genomicSource.getServerProfile().setPort(getCopyNumberCaArrayPort());
             genomicSource.getServerProfile().setUsername(getCaArrayUsername());
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCopyNumberCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
-            genomicSource.setDataType(getDataType());
+            genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
             service.addGenomicSource(studyConfiguration, genomicSource);
             getService().saveCopyNumberMappingFile(genomicSource, getCopyNumberFile(), getCopyNumberFile().getName());
             configureSegmentationDataCalcuation(genomicSource.getCopyNumberDataConfiguration());
         }
+    }
+
+    protected int getCopyNumberCaArrayPort() {
+        return 31099;
     }
 
     protected void configureSegmentationDataCalcuation(CopyNumberDataConfiguration copyNumberDataConfiguration) {
@@ -418,12 +422,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
             logStart();
             GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
             genomicSource.getServerProfile().setHostname(getCaArrayHostname());
-            genomicSource.getServerProfile().setPort(8080);
+            genomicSource.getServerProfile().setPort(getCaArrayPort());
             genomicSource.getServerProfile().setUsername(getCaArrayUsername());
             genomicSource.getServerProfile().setPassword(getCaArrayPassword());
             genomicSource.setExperimentIdentifier(getCaArrayId());
             genomicSource.setPlatformVendor(getPlatformVendor());
-            genomicSource.setDataType(getDataType());
+            genomicSource.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
             if (getSampleMappingFile() != null) {
                 genomicSource.addSampleMappingFileName(getSampleMappingFile().getName());
             }
@@ -433,12 +437,16 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         }
     }
 
+    protected int getCaArrayPort() {
+        return 31099;
+    }
+
     protected String getCopyNumberCaArrayHostname() {
-        return "array.nci.nih.gov";
+        return "ncias-d227-v.nci.nih.gov";
     }
 
     protected String getCaArrayHostname() {
-        return "array.nci.nih.gov";
+        return "ncias-d227-v.nci.nih.gov";
     }
 
     abstract protected String getCaArrayId();
@@ -593,7 +601,6 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     }
 
     abstract protected String getPlatformVendor();
-    abstract protected GenomicDataSourceDataTypeEnum getDataType();
 
     /**
      * @return the queryManagementService

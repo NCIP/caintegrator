@@ -85,16 +85,19 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.domain.array.AbstractDesignElement;
-import gov.nih.nci.caarray.domain.array.AbstractProbe;
-import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
-import gov.nih.nci.caarray.domain.data.DataSet;
-import gov.nih.nci.caarray.domain.data.FloatColumn;
-import gov.nih.nci.caarray.domain.data.HybridizationData;
-import gov.nih.nci.caarray.domain.data.QuantitationType;
-import gov.nih.nci.caarray.domain.hybridization.Hybridization;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caarray.external.v1_0.data.DataSet;
+import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
+import gov.nih.nci.caarray.external.v1_0.data.FloatColumn;
+import gov.nih.nci.caarray.external.v1_0.data.HybridizationData;
+import gov.nih.nci.caarray.external.v1_0.data.QuantitationType;
+import gov.nih.nci.caarray.external.v1_0.query.DataSetRequest;
+import gov.nih.nci.caarray.external.v1_0.query.ExampleSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
+import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
+import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -113,62 +116,66 @@ import org.apache.log4j.Logger;
  */
 class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
 
+    private static final String CHP_SIGNAL_TYPE_NAME = "CHPSignal";
     private static final Logger LOGGER = Logger.getLogger(AffymetrixDataRetrievalHelper.class);
-    private final DataRetrievalService dataRetrievalService;
+    private final DataService dataService;
 
     
     AffymetrixDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource,
-            DataRetrievalService dataRetrievalService,
-            CaArraySearchService searchService, CaIntegrator2Dao dao) {
+            DataService dataService,
+            SearchService searchService, CaIntegrator2Dao dao) {
         super(genomicSource, searchService, dao);
-        this.dataRetrievalService = dataRetrievalService;
+        this.dataService = dataService;
     }
 
-    protected ArrayDataValues retrieveData() throws ConnectionException, DataRetrievalException {
-        DataSet dataSet = dataRetrievalService.getDataSet(createRequest());
-        if (dataSet.getHybridizationDataList().isEmpty()) {
+    protected ArrayDataValues retrieveData() 
+    throws ConnectionException, DataRetrievalException, InvalidReferenceException, 
+    InconsistentDataSetsException, UnsupportedCategoryException {
+        DataSet dataSet = dataService.getDataSet(createRequest());
+        if (dataSet.getDatas().isEmpty()) {
             throw new DataRetrievalException("No Chip signal available for experiment: "
                     + getGenomicSource().getExperimentIdentifier());
         }
-        Hybridization hybridization = dataSet.getHybridizationDataList().iterator().next().getHybridization();
+        Hybridization hybridization = dataSet.getDatas().get(0).getHybridization();
         setPlatformHelper(new PlatformHelper(getPlatform(hybridization)));
         init();
-        
         convertToArrayDataValues(dataSet);
         return getArrayDataValues();
     }
 
-    private DataRetrievalRequest createRequest() {
-        DataRetrievalRequest request = new DataRetrievalRequest();
-        request.addQuantitationType(getSignal());
-        request.getHybridizations().addAll(getAllHybridizations());
+    private DataSetRequest createRequest() throws InvalidReferenceException, UnsupportedCategoryException {
+        DataSetRequest request = new DataSetRequest();
+        for (Hybridization hybridization : getAllHybridizations()) {
+            request.getHybridizations().add(hybridization.getReference());
+        }
+        request.getQuantitationTypes().add(getSignal().getReference());
         return request;
     }
 
     private QuantitationType getSignal() {
-        QuantitationType signalSearch = new QuantitationType();
-        signalSearch.setName("CHPSignal");
-        return getSearchService().search(signalSearch).iterator().next();
+        QuantitationType signal = new QuantitationType();
+        signal.setName(CHP_SIGNAL_TYPE_NAME);
+        ExampleSearchCriteria<QuantitationType> criteria = new ExampleSearchCriteria<QuantitationType>();
+        criteria.setExample(signal);
+        return getSearchService().searchByExample(criteria, null).getResults().get(0);
     }
 
-    private void convertToArrayDataValues(DataSet dataSet) throws DataRetrievalException {
-
-        for (HybridizationData hybridizationData : dataSet.getHybridizationDataList()) {
-            hybridizationData.setDataSet(dataSet);
-            loadArrayDataValues(hybridizationData);
+    private void convertToArrayDataValues(DataSet dataSet) 
+    throws DataRetrievalException, InvalidReferenceException, UnsupportedCategoryException {
+        for (HybridizationData hybridizationData : dataSet.getDatas()) {
+            loadArrayDataValues(hybridizationData, dataSet);
         }
     }
 
-    private void loadArrayDataValues(HybridizationData hybridizationData) {
+    private void loadArrayDataValues(HybridizationData hybridizationData, DataSet dataSet) 
+    throws InvalidReferenceException, UnsupportedCategoryException {
         ArrayData arrayData = createArrayData(hybridizationData.getHybridization());
-        QuantitationType quantitationType = hybridizationData.getDataSet().getQuantitationTypes().get(0);
-        List<AbstractDesignElement> probeSets = 
-            hybridizationData.getDataSet().getDesignElementList().getDesignElements();
-        float[] values = ((FloatColumn) hybridizationData.getColumn(quantitationType)).getValues();
+        List<DesignElement> probeSets = dataSet.getDesignElements();
+        float[] values = ((FloatColumn) hybridizationData.getDataColumns().get(0)).getValues();
         for (int i = 0; i < probeSets.size(); i++) {
             AbstractReporter reporter = getReporter(probeSets.get(i));
             if (reporter == null) {
-                String probeSetName = ((AbstractProbe) probeSets.get(i)).getName();
+                String probeSetName = ((DesignElement) probeSets.get(i)).getName();
                 LOGGER.warn("Reporter with name " + probeSetName + " was not found in platform " 
                         + getPlatformHelper().getPlatform().getName());
             } else {

@@ -28,7 +28,7 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>liu-00252</td>
+	<td>admin-00002</td>
 	<td>caarrayExperimentNameCopyNumber</td>
 </tr>
 <tr>
@@ -1158,12 +1158,12 @@
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
-	<td>array.nci.nih.gov</td>
+	<td>ncias-d227-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -1240,17 +1240,17 @@
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
-	<td>array.nci.nih.gov</td>
+	<td>ncias-d227-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_experimentIdentifier</td>
-	<td>liu-00252</td>
+	<td>admin-00002</td>
 </tr>
 <tr>
 	<td>type</td>

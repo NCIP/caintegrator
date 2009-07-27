@@ -139,13 +139,8 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     }
 
     @Override
-    protected String getCaArrayHostname() {
-        return "array.nci.nih.gov";
-    }
-
-    @Override
     protected String getCaArrayId() {
-        return "jacob-00182";
+        return "admin-00003";
     }
 
     @Override
@@ -258,11 +253,6 @@ public class DeployPublicDCLungStudyTestIntegration extends AbstractDeployStudyT
     @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
-    }
-
-    @Override
-    protected GenomicDataSourceDataTypeEnum getDataType() {
-        return GenomicDataSourceDataTypeEnum.EXPRESSION;
     }
 
 }

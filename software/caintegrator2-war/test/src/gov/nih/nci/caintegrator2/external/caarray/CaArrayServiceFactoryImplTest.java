@@ -100,8 +100,6 @@ public class CaArrayServiceFactoryImplTest {
         profile.setId(Long.valueOf(1));
         profile.setHostname("localhost");
         profile.setPort(1234);
-        profile.setUsername("dummy_username");
-        profile.setPassword("dummy_password");
         factoryImpl.createSearchService(profile);
     }
 
