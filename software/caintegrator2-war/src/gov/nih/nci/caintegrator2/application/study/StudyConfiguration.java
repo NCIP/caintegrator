@@ -416,9 +416,18 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
      */
     public boolean isDeployable() {
         return ((Status.NOT_DEPLOYED.equals(status) || Status.ERROR.equals(status))
-                && hasOneLoadedClinical() && genomicSourcesDeployed());
+                && hasOneLoadedClinical() && genomicSourcesDeployed() && imageSourcesLoaded());
     }
     
+    private boolean imageSourcesLoaded() {
+        for (ImageDataSourceConfiguration imageSource : imageDataSources) {
+            if (Status.PROCESSING.equals(imageSource.getStatus())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean genomicSourcesDeployed() {
         for (GenomicDataSourceConfiguration genomicSource : genomicDataSources) {
             if (!Status.LOADED.equals(genomicSource.getStatus())) {

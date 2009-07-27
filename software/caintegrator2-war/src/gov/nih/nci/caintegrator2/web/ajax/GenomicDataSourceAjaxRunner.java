@@ -100,20 +100,21 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(GenomicDataSourceAjaxRunner.class);
         
     private final GenomicDataSourceAjaxUpdater updater;
-    private final GenomicDataSourceConfiguration genomicSource;
-    private final String username;
+    private final Long genomicSourceId;
+    private GenomicDataSourceConfiguration genomicSource;
+    private String username;
     
     GenomicDataSourceAjaxRunner(GenomicDataSourceAjaxUpdater updater,
-            GenomicDataSourceConfiguration genomicSource) {
+            Long genomicSourceId) {
         this.updater = updater;
-        this.genomicSource = genomicSource;
-        this.username = genomicSource.getStudyConfiguration().getUserWorkspace().getUsername();
+        this.genomicSourceId = genomicSourceId;
     }
 
     /**
      * {@inheritDoc}
      */
     public void run() {
+        setupSession();
         updater.updateJobStatus(username, genomicSource, true);
         try {
             updater.getStudyManagementService().loadGenomicSource(genomicSource);
@@ -123,6 +124,11 @@ public class GenomicDataSourceAjaxRunner implements Runnable {
         } catch (ExperimentNotFoundException e) {
             addError(e.getMessage(), e);
         }
+    }
+
+    private void setupSession() {
+        genomicSource = updater.getStudyManagementService().getRefreshedGenomicSource(genomicSourceId);
+        username = genomicSource.getStudyConfiguration().getUserWorkspace().getUsername();
     }
 
     private void addError(String message, Exception e) {

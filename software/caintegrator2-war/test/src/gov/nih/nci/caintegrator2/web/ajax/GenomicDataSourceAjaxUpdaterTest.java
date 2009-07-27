@@ -151,10 +151,11 @@ public class GenomicDataSourceAjaxUpdaterTest {
     @Test
     public void testRunJob() throws InterruptedException {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
-        updater.runJob(genomicDataSource);
+        studyManagementServiceStub.refreshedGenomicSource = genomicDataSource;
+        updater.runJob(genomicDataSource.getId());
         Thread.sleep(500);
-        assertTrue(studyManagementServiceStub.saveGenomicSourceCalled = true);
-        assertTrue(studyManagementServiceStub.loadGenomicSourceCalled = true);
+        assertTrue(studyManagementServiceStub.loadGenomicSourceCalled);
+        assertTrue(studyManagementServiceStub.getRefreshedGenomicSourceCalled);
     }
     
     private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {

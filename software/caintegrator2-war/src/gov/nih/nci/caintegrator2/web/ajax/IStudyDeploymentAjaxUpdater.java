@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 
 
 /**
@@ -100,8 +99,8 @@ public interface IStudyDeploymentAjaxUpdater {
     
     /**
      * Used to run the StudyDeploymentJob.
-     * @param job to run.
+     * @param id of study configuration to run.
      */
-    void runJob(StudyConfiguration job);
+    void runJob(Long id);
 
 }

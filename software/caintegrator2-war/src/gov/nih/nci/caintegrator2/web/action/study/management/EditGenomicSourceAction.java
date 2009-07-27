@@ -89,7 +89,6 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
@@ -172,10 +171,9 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
 
     private void runAsynchronousGenomicDataRetrieval(GenomicDataSourceConfiguration genomicSource) {
         getDisplayableWorkspace().setCurrentStudyConfiguration(getStudyConfiguration());
-        HibernateUtil.loadCollection(getStudyConfiguration());
         genomicSource.setStatus(Status.PROCESSING);
         getStudyManagementService().addGenomicSourceToStudy(getStudyConfiguration(), genomicSource);
-        updater.runJob(genomicSource);
+        updater.runJob(genomicSource.getId());
     }
 
     private boolean validateSave() {
