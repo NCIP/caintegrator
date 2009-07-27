@@ -86,101 +86,131 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
-import gov.nih.nci.caarray.external.v1_0.data.DataFile;
-import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
-import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
+import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
+import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.LimitOffset;
+import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
+import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
+import gov.nih.nci.caarray.external.v1_0.sample.BiomaterialType;
 import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
 import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
 import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
+import gov.nih.nci.caarray.services.external.v1_0.data.JavaDataApiUtils;
 import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 /**
- * Responsible for retrieving array data from caArray.
+ * Contains utility methods for working with the caArray API.
  */
-class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
+final class CaArrayUtils {
+    
+    static final boolean COMPRESSED_DEFAULT = false;
+    
+    private static boolean compressed = COMPRESSED_DEFAULT;
+    
+    private CaArrayUtils() {
+        super();
+    }
+    
+    @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
+    static byte[] retrieveFile(DataService dataService, CaArrayEntityReference fileRef) 
+    throws FileNotFoundException, ConnectionException {
+        try {
+            JavaDataApiUtils dataServiceHelper = new JavaDataApiUtils(dataService);
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            dataServiceHelper.copyFileContentsToOutputStream(fileRef, compressed, outStream);
+            byte[] byteArray = outStream.toByteArray();
+            outStream.close();
+            return byteArray;
+        } catch (InvalidReferenceException e) {
+            throw new FileNotFoundException(e.getMessage());
+        } catch (DataTransferException e) {
+            throw new FileNotFoundException(e.getMessage());
+        } catch (IOException e) {
+            throw new FileNotFoundException(e.getMessage());
+        }
+    }
 
-    private static final Logger LOGGER = Logger.getLogger(AgilentDataRetrievalHelper.class);
-    private final DataService dataService;
+    static boolean isCompressed() {
+        return compressed;
+    }
 
     /**
-     * @param genomicSource
-     * @param dataService
-     * @param searchService
-     * @param dao
+     * The setting for "compressed" should only be changed by tests that require a non-default
+     * value to work. These tests should ensure that the value is returned to the original default.
+     * 
+     * @param compressed the compressed to set
      */
-    AgilentDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource, DataService dataService,
-            SearchService searchService, CaIntegrator2Dao dao) {
-        super(genomicSource, searchService, dao);
-        this.dataService = dataService;
-    }
-
-    protected ArrayDataValues retrieveData() 
-    throws DataRetrievalException, InvalidReferenceException, UnsupportedCategoryException, 
-    FileNotFoundException, ConnectionException {
-        Set<Hybridization> hybridizationSet = getAllHybridizations();
-        if (hybridizationSet.isEmpty()) {
-            return new ArrayDataValues(new ArrayList<AbstractReporter>());
-        }
-        setPlatformHelper(new PlatformHelper(getDao().getPlatform(getGenomicSource().getPlatformName())));
-        init();
-        populateArrayDataValues(hybridizationSet);
-        return getArrayDataValues();
+    static void setCompressed(boolean compressed) {
+        CaArrayUtils.compressed = compressed;
     }
     
-    private void populateArrayDataValues(Set<Hybridization> hybridizationSet) 
-    throws DataRetrievalException, InvalidReferenceException, FileNotFoundException, 
-    ConnectionException, UnsupportedCategoryException {
-        for (Hybridization hybridization : hybridizationSet) {
-            DataFile dataFile = getDataFile(hybridization);
-            byte[] byteArray = CaArrayUtils.retrieveFile(dataService, dataFile.getReference());
-            ArrayData arrayData = createArrayData(hybridization);
-            Map<String, Float> agilentDataMap = AgilentRawDataFileParser.INSTANCE.extractData(
-                    new InputStreamReader(new ByteArrayInputStream(byteArray)));
-            loadArrayDataValues(agilentDataMap, arrayData);
+
+    static List<Biomaterial> getSamples(String experimentIdentifier, SearchService searchService) 
+    throws ExperimentNotFoundException {
+        return getSamples(getExperiment(experimentIdentifier, searchService), searchService);
+    }
+
+
+    static List<Biomaterial> getSamples(Experiment experiment, SearchService searchService) {
+        BiomaterialSearchCriteria criteria = new BiomaterialSearchCriteria();
+        criteria.setExperiment(experiment.getReference());
+        Set<BiomaterialType> types = new HashSet<BiomaterialType>();
+        types.add(BiomaterialType.SAMPLE);
+        criteria.setTypes(types);
+        try {
+            return getSamples(searchService, criteria);
+        } catch (InvalidReferenceException e) {
+            throw new IllegalStateException("Couldn't load Biomaterials for valid experiment", e);
+        } catch (UnsupportedCategoryException e) {
+            throw new IllegalStateException("Couldn't load Biomaterials for valid experiment", e);
+        }
+    }
+    
+    private static List<Biomaterial> getSamples(SearchService searchService, BiomaterialSearchCriteria criteria)
+            throws InvalidReferenceException, UnsupportedCategoryException {
+        List<Biomaterial> samples = new ArrayList<Biomaterial>();
+        LimitOffset limitOffset = new LimitOffset(-1, 0);
+        SearchResult<Biomaterial> result;
+        do {
+            result = searchService.searchForBiomaterials(criteria, limitOffset);
+            samples.addAll(result.getResults());
+            limitOffset.setOffset(limitOffset.getOffset() + result.getMaxAllowedResults());
+        } while (result.getResults().size() == result.getMaxAllowedResults());
+        return samples;
+    }
+
+    static Experiment getExperiment(String experimentIdentifier, SearchService searchService) 
+    throws ExperimentNotFoundException {
+        ExperimentSearchCriteria criteria = new ExperimentSearchCriteria();
+        criteria.setPublicIdentifier(experimentIdentifier);
+        SearchResult<Experiment> experiments;
+        try {
+            experiments = searchService.searchForExperiments(criteria, null);
+        } catch (InvalidReferenceException e) {
+            throw new ExperimentNotFoundException(getExperimentNotFoundMessage(experimentIdentifier), e);
+        } catch (UnsupportedCategoryException e) {
+            throw new ExperimentNotFoundException(getExperimentNotFoundMessage(experimentIdentifier), e);
+        }
+        if (experiments.getResults().isEmpty()) {
+            throw new ExperimentNotFoundException(getExperimentNotFoundMessage(experimentIdentifier));
+        } else {
+            return experiments.getResults().get(0);
         }
     }
 
-    private DataFile getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidReferenceException {
-        FileSearchCriteria criteria = new FileSearchCriteria();
-        Set<CaArrayEntityReference> nodes = new HashSet<CaArrayEntityReference>();
-        criteria.setExperimentGraphNodes(nodes);
-        nodes.add(hybridization.getReference());
-        List<DataFile> files =  getSearchService().searchForFiles(criteria, null).getResults();
-        if (files.isEmpty()) {
-            throw new DataRetrievalException("No matching file for hybridization.");
-        }
-        return files.get(0);
-    }
-    
-    private void loadArrayDataValues(Map<String, Float> agilentDataMap, ArrayData arrayData) {
-        for (String probeName : agilentDataMap.keySet()) {
-            AbstractReporter reporter = getReporter(probeName);
-            if (reporter == null) {
-                LOGGER.warn("Reporter with name " + probeName + " was not found in platform " 
-                        + getPlatformHelper().getPlatform().getName());
-            } else {
-                setValue(arrayData, reporter, agilentDataMap.get(probeName).floatValue());
-            }
-        }
+    private static String getExperimentNotFoundMessage(String experimentIdentifier) {
+        return "Experiment '" + experimentIdentifier + "' could not be found";
     }
 
 }

@@ -106,7 +106,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
 
     @Test
     public void testDeployStudy() throws ValidationException ,java.io.IOException ,gov.nih.nci.caintegrator2.external.ConnectionException ,gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException ,gov.nih.nci.caintegrator2.external.DataRetrievalException, ExperimentNotFoundException, InvalidCriterionException, CSException {
-        deployStudy();
+        //deployStudy();
     }
     
     @Override
@@ -136,7 +136,7 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     
     @Override
     protected String getCaArrayId() {
-        return "rembr-00037";
+        return "admin-00004";
     }
 
     @Override
@@ -246,11 +246,6 @@ public class DeployVasariTestIntegration extends AbstractDeployStudyTestIntegrat
     @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
-    }
-
-    @Override
-    protected GenomicDataSourceDataTypeEnum getDataType() {
-        return GenomicDataSourceDataTypeEnum.EXPRESSION;
     }
 
 }

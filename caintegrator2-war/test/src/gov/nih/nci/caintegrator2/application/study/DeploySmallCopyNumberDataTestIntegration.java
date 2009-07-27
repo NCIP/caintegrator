@@ -183,7 +183,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     
     @Override
     protected String getCaArrayId() {
-        return "jagla-00034";
+        return "admin-00001";
     }
 
     @Override
@@ -228,7 +228,7 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     
     @Override
     protected String getCopyNumberCaArrayId() {
-        return "liu-00252";
+        return "admin-00002";
     }
 
     @Override
@@ -295,11 +295,6 @@ public class DeploySmallCopyNumberDataTestIntegration extends AbstractDeployStud
     @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
-    }
-
-    @Override
-    protected GenomicDataSourceDataTypeEnum getDataType() {
-        return GenomicDataSourceDataTypeEnum.COPY_NUMBER;
     }
 
     @Override

@@ -141,9 +141,22 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     
     @Override
     protected String getCaArrayId() {
-        return "jagla-00034";
+        return "admin-00001";
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getCaArrayHostname() {
+        return "ncias-d227-v.nci.nih.gov";
+    }
+    
+    @Override
+    protected int getCaArrayPort() {
+        return 31099;
+    }
+    
     @Override
     protected int getExpectedSampleCount() {
         return 3;
@@ -250,11 +263,6 @@ public class DeployStudyRembrandtNcriTestIntegration extends AbstractDeployStudy
     @Override
     protected String getPlatformVendor() {
         return "Affymetrix";
-    }
-
-    @Override
-    protected GenomicDataSourceDataTypeEnum getDataType() {
-        return GenomicDataSourceDataTypeEnum.EXPRESSION;
     }
 
 }

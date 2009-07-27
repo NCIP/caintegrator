@@ -28,12 +28,12 @@ public class LoadAffymetrixDesignsTestIntegration extends AbstractTransactionalS
     @Test
     public void testLoadArrayDesign() throws PlatformLoadingException, AffymetrixCdfReadException {
         checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133_PLUS_2_CDF_FILE, TestArrayDesignFiles.HG_U133_PLUS_2_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133A_CDF_FILE, TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133B_CDF_FILE, TestArrayDesignFiles.HG_U133B_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95AV2_CDF_FILE, TestArrayDesignFiles.HG_U95AV2_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95B_CDF_FILE, TestArrayDesignFiles.HG_U95B_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95C_CDF_FILE, TestArrayDesignFiles.HG_U95C_ANNOTATION_FILE);
-//        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95D_CDF_FILE, TestArrayDesignFiles.HG_U95D_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133A_CDF_FILE, TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U133B_CDF_FILE, TestArrayDesignFiles.HG_U133B_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95AV2_CDF_FILE, TestArrayDesignFiles.HG_U95AV2_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95B_CDF_FILE, TestArrayDesignFiles.HG_U95B_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95C_CDF_FILE, TestArrayDesignFiles.HG_U95C_ANNOTATION_FILE);
+        checkLoadAffymetrixArrayDesign(TestArrayDesignFiles.HG_U95D_CDF_FILE, TestArrayDesignFiles.HG_U95D_ANNOTATION_FILE);
         List<File> files = new ArrayList<File>();
         files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         files.add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
