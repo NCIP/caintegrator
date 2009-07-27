@@ -167,8 +167,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    public void runJob(StudyConfiguration studyConfiguration) {
-        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(this, studyConfiguration));
+    public void runJob(Long id) {
+        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(this, id));
         studyConfigurationRunner.start();
     }
     

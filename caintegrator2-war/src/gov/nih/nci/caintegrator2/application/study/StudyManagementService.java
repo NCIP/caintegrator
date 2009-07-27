@@ -270,6 +270,20 @@ public interface StudyManagementService {
     throws ConnectionException, ExperimentNotFoundException;
     
     /**
+     * Retrieves refreshed genomic source.
+     * @param id of the genomic source.
+     * @return refreshed genomic source.
+     */
+    GenomicDataSourceConfiguration getRefreshedGenomicSource(Long id);
+    
+    /**
+     * Retrieves refreshed study configuration.
+     * @param id of the study configuration.
+     * @return refreshed study configuration.
+     */
+    StudyConfiguration getRefreshedStudyConfiguration(Long id);
+    
+    /**
      * Saves a file to the study directory.
      * @param studyConfiguration to get the directory.
      * @param file to save.

@@ -122,7 +122,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
         String username = workspace.getUserWorkspace().getUsername();
         try {
             StudyConfiguration studyConfiguration = workspace.getCurrentStudyConfiguration();
-            if (studyConfiguration != null) {
+            if (studyConfiguration != null && studyConfiguration.getId() != null) {
+                studyConfiguration = studyManagementService.getRefreshedStudyEntity(studyConfiguration);
                 int counter = 0;
                 for (GenomicDataSourceConfiguration genomicSource : studyConfiguration.getGenomicDataSources()) {
                     getDwrUtil(username).addRows(STATUS_TABLE, 
@@ -175,8 +176,8 @@ public class GenomicDataSourceAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    public void runJob(GenomicDataSourceConfiguration genomicSource) {
-        Thread genomicSourceRunner = new Thread(new GenomicDataSourceAjaxRunner(this, genomicSource));
+    public void runJob(Long genomicSourceId) {
+        Thread genomicSourceRunner = new Thread(new GenomicDataSourceAjaxRunner(this, genomicSourceId));
         genomicSourceRunner.start();
     }
     

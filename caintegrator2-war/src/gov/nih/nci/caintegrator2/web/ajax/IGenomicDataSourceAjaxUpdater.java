@@ -85,7 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 
 
 /**
@@ -100,8 +99,8 @@ public interface IGenomicDataSourceAjaxUpdater {
     
     /**
      * Used to run the GenomicDataSource Job.
-     * @param genomicSource to retrieve genomic data for (asynchronously).
+     * @param genomicSourceId to retrieve genomic data for (asynchronously).
      */
-    void runJob(GenomicDataSourceConfiguration genomicSource);
+    void runJob(Long genomicSourceId);
 
 }
