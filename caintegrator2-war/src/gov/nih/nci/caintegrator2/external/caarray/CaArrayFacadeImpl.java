@@ -85,12 +85,17 @@
  */
 package gov.nih.nci.caintegrator2.external.caarray;
 
-import gov.nih.nci.caarray.domain.file.CaArrayFile;
-import gov.nih.nci.caarray.domain.project.Experiment;
-import gov.nih.nci.caarray.domain.project.Project;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.file.FileRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
+import gov.nih.nci.caarray.external.v1_0.data.DataFile;
+import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
+import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
+import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
+import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
+import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
@@ -108,7 +113,8 @@ import java.util.List;
  * Implementation of the CaArrayFacade subsystem.
  */
 public class CaArrayFacadeImpl implements CaArrayFacade {
-    
+
+    private static final String ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE = "Couldn't retrieve the requested array data";
     private CaArrayServiceFactory serviceFactory;
     private CaIntegrator2Dao dao;
 
@@ -117,43 +123,26 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public List<Sample> getSamples(String experimentIdentifier, ServerConnectionProfile profile) 
     throws ConnectionException, ExperimentNotFoundException {
-        CaArraySearchService searchService = getServiceFactory().createSearchService(profile);
+        SearchService searchService = getServiceFactory().createSearchService(profile);
         return getSamples(searchService, experimentIdentifier);
     }
 
-    private List<Sample> getSamples(CaArraySearchService searchService, String experimentIdentifier) 
+    private List<Sample> getSamples(SearchService searchService, String experimentIdentifier) 
     throws ExperimentNotFoundException {
         List<Sample> samples = new ArrayList<Sample>();
-        for (gov.nih.nci.caarray.domain.sample.Sample experimentSample 
+        for (Biomaterial experimentSample 
                 : getCaArraySamples(experimentIdentifier, searchService)) {
             samples.add(translateSample(experimentSample));
         }
         return samples;
     }
 
-    private List<gov.nih.nci.caarray.domain.sample.Sample> getCaArraySamples(String experimentIdentifier, 
-            CaArraySearchService searchService) throws ExperimentNotFoundException {
-        Experiment searchExperiment = new Experiment();
-        searchExperiment.setPublicIdentifier(experimentIdentifier);
-        List<Experiment> experiments = searchService.search(searchExperiment);
-        if (experiments.isEmpty()) {
-            throw new ExperimentNotFoundException("Experiment '" + experimentIdentifier + "' could not be found");
-        } else {
-            return getSamples(experiments.get(0), searchService);
-        }
+    private List<Biomaterial> getCaArraySamples(String experimentIdentifier, 
+            SearchService searchService) throws ExperimentNotFoundException {
+        return CaArrayUtils.getSamples(experimentIdentifier, searchService);
     }
 
-    private List<gov.nih.nci.caarray.domain.sample.Sample> getSamples(Experiment experiment,
-            CaArraySearchService searchService) {
-        List<gov.nih.nci.caarray.domain.sample.Sample> samples = 
-            new ArrayList<gov.nih.nci.caarray.domain.sample.Sample>(experiment.getSampleCount());
-        for (gov.nih.nci.caarray.domain.sample.Sample sample : experiment.getSamples()) {
-            samples.add(searchService.search(sample).get(0));
-        }
-        return samples;
-    }
-
-    private Sample translateSample(gov.nih.nci.caarray.domain.sample.Sample loadedSample) {
+    private Sample translateSample(Biomaterial loadedSample) {
         Sample sample = new Sample();
         sample.setName(loadedSample.getName());
         return sample;
@@ -178,25 +167,35 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public ArrayDataValues retrieveData(GenomicDataSourceConfiguration genomicSource) 
     throws ConnectionException, DataRetrievalException {
-        CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        AbstractDataRetrievalHelper dataRetrievalHelper;
+        AbstractDataRetrievalHelper dataRetrievalHelper = getDataRetrievalHelper(genomicSource);
+        try {
+            return dataRetrievalHelper.retrieveData();
+        } catch (InvalidReferenceException e) {
+            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
+        } catch (InconsistentDataSetsException e) {
+            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
+        } catch (UnsupportedCategoryException e) {
+            throw new DataRetrievalException(ARRAY_DATA_RETRIEVAL_ERROR_MESSAGE, e);
+        } catch (FileNotFoundException e) {
+            throw new DataRetrievalException("Couldn't retrieve the array data file", e);
+        }
+    }
+
+    private AbstractDataRetrievalHelper getDataRetrievalHelper(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, DataRetrievalException {
+        SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+        DataService dataService = 
+            getServiceFactory().createDataService(genomicSource.getServerProfile());
         switch (PlatformVendorEnum.getByValue(genomicSource.getPlatformVendor())) {
         case AFFYMETRIX:
-            DataRetrievalService dataRetrievalService = 
-                getServiceFactory().createDataRetrievalService(genomicSource.getServerProfile());
-            dataRetrievalHelper = new AffymetrixDataRetrievalHelper(genomicSource, dataRetrievalService,
+            return new AffymetrixDataRetrievalHelper(genomicSource, dataService,
                     searchService, dao);
-            break;
         case AGILENT:
-            FileRetrievalService fileRetrievalService =
-                getServiceFactory().createFileRetrievalService(genomicSource.getServerProfile());
-            dataRetrievalHelper = new AgilentDataRetrievalHelper(genomicSource, fileRetrievalService,
+            return new AgilentDataRetrievalHelper(genomicSource, dataService,
                  searchService, dao);
-            break;
         default:
             throw new DataRetrievalException("Unknown platform vendor.");
         }
-        return dataRetrievalHelper.retrieveData();
     }
 
     /**
@@ -218,26 +217,32 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws FileNotFoundException, ConnectionException {
-        CaArrayFile file = getFile(genomicSource, filename);
-        FileRetrievalService fileRetrievalService =
-            getServiceFactory().createFileRetrievalService(genomicSource.getServerProfile());
-        return fileRetrievalService.readFile(file);
+        DataFile dataFile = getFile(genomicSource, filename);
+        CaArrayEntityReference fileRef = dataFile.getReference();
+        DataService dataService = getServiceFactory().createDataService(genomicSource.getServerProfile());
+        return CaArrayUtils.retrieveFile(dataService, fileRef);
     }
 
-    private CaArrayFile getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
+    @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
+    private DataFile getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws ConnectionException, FileNotFoundException {
-        CaArraySearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
-        Experiment searchExperiment = new Experiment();
-        searchExperiment.setPublicIdentifier(genomicSource.getExperimentIdentifier());
-        Experiment experiment = searchService.search(searchExperiment).get(0);
-        Project project = searchService.search(experiment.getProject()).get(0);
-        for (CaArrayFile file : project.getFiles()) {
-            if (filename.equals(file.getName())) {
-                return file;
+        try {
+            SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+            Experiment experiment = CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
+            FileSearchCriteria criteria = new FileSearchCriteria();
+            criteria.setExperiment(experiment.getReference());
+            SearchResult<DataFile> result = searchService.searchForFiles(criteria, null);
+            for (DataFile file : result.getResults()) {
+                if (filename.equals(file.getName())) {
+                    return file;
+                }
             }
+        } catch (InvalidReferenceException e) {
+            throw new FileNotFoundException(e.getMessage());
+        } catch (ExperimentNotFoundException e) {
+            throw new FileNotFoundException(e.getMessage());
         }
-        throw new FileNotFoundException("Experiment " + genomicSource.getExperimentIdentifier() 
-                + " doesn't contain a file named " + filename);
+        throw new FileNotFoundException("The experiment did not contain a file named " + filename);
     }
 
 }

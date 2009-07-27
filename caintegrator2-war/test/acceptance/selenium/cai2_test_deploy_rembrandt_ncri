@@ -1148,17 +1148,17 @@
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_hostname</td>
-	<td>array.nci.nih.gov</td>
+	<td>ncias-d227-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_serverProfile_port</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>genomicSourceForm_genomicSource_experimentIdentifier</td>
-	<td>jagla-00034</td>
+	<td>admin-00001</td>
 </tr>
 <tr>
 	<td>type</td>

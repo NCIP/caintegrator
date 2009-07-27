@@ -15,6 +15,9 @@
         <property name="serviceFactory">
             <ref local="serviceFactory"/>
         </property>
+        <property name="dao">
+            <ref local="dao"/>
+        </property>
     </bean>
     
     <bean id="serviceFactory" class="gov.nih.nci.caintegrator2.external.caarray.CaArrayServiceFactoryImpl" />

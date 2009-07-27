@@ -89,11 +89,10 @@ import javax.security.auth.login.FailedLoginException;
 
 import org.apache.commons.lang.StringUtils;
 
-import gov.nih.nci.caarray.services.CaArrayServer;
 import gov.nih.nci.caarray.services.ServerConnectionException;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.file.FileRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caarray.services.external.v1_0.CaArrayServer;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
@@ -105,24 +104,16 @@ public class CaArrayServiceFactoryImpl implements CaArrayServiceFactory {
     /**
      * {@inheritDoc}
      */
-    public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
+    public DataService createDataService(ServerConnectionProfile profile) throws ConnectionException {
+        return connect(profile).getDataService();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
         return connect(profile).getSearchService();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) throws ConnectionException {
-        return connect(profile).getDataRetrievalService();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile) throws ConnectionException {
-        return connect(profile).getFileRetrievalService();
-    }
-
 
     private CaArrayServer connect(ServerConnectionProfile profile) throws ConnectionException {
         CaArrayServer server = new CaArrayServer(profile.getHostname(), profile.getPort());

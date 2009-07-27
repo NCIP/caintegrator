@@ -92,7 +92,7 @@ import affymetrix.fusion.cdf.FusionCDFData;
 /**
  * Provides common Affymetrix CDF file handling functionality.
  */
-final class AffymetrixCdfReader {
+public final class AffymetrixCdfReader {
 
     private FusionCDFData cdfData;
 
@@ -112,7 +112,7 @@ final class AffymetrixCdfReader {
      * @return  a reader for the CDF
      * @throws AffymetrixCdfReadException if the file couldn't be read
      */
-    static AffymetrixCdfReader create(File cdfFile) throws AffymetrixCdfReadException {
+    public static AffymetrixCdfReader create(File cdfFile) throws AffymetrixCdfReadException {
         AffymetrixCdfReader reader = new AffymetrixCdfReader(cdfFile);
 
         boolean opened = false;
@@ -149,7 +149,7 @@ final class AffymetrixCdfReader {
     /**
      * Closes the reader.
      */
-    void close() {
+    public void close() {
         // See development tracker issue #9735 and dev tracker #10925 for details on why System.gc() used here
         if (cdfData != null) {
             cdfData.clear();
@@ -161,7 +161,7 @@ final class AffymetrixCdfReader {
     /**
      * @return the cdfData
      */
-    FusionCDFData getCdfData() {
+    public FusionCDFData getCdfData() {
         return cdfData;
     }
 

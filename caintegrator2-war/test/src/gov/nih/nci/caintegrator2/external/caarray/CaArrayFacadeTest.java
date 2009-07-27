@@ -89,25 +89,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.caarray.domain.AbstractCaArrayObject;
-import gov.nih.nci.caarray.domain.array.Array;
-import gov.nih.nci.caarray.domain.array.ArrayDesign;
-import gov.nih.nci.caarray.domain.array.ArrayDesignDetails;
-import gov.nih.nci.caarray.domain.array.LogicalProbe;
-import gov.nih.nci.caarray.domain.data.DataRetrievalRequest;
-import gov.nih.nci.caarray.domain.data.DataSet;
-import gov.nih.nci.caarray.domain.data.DesignElementList;
-import gov.nih.nci.caarray.domain.data.FloatColumn;
-import gov.nih.nci.caarray.domain.data.HybridizationData;
-import gov.nih.nci.caarray.domain.data.RawArrayData;
-import gov.nih.nci.caarray.domain.file.CaArrayFile;
-import gov.nih.nci.caarray.domain.hybridization.Hybridization;
-import gov.nih.nci.caarray.domain.project.Experiment;
-import gov.nih.nci.caarray.domain.sample.Extract;
-import gov.nih.nci.caarray.domain.sample.LabeledExtract;
-import gov.nih.nci.caarray.services.data.DataRetrievalService;
-import gov.nih.nci.caarray.services.file.FileRetrievalService;
-import gov.nih.nci.caarray.services.search.CaArraySearchService;
+import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
+import gov.nih.nci.caarray.external.v1_0.array.ArrayDesign;
+import gov.nih.nci.caarray.external.v1_0.data.DataFile;
+import gov.nih.nci.caarray.external.v1_0.data.DataSet;
+import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
+import gov.nih.nci.caarray.external.v1_0.data.FloatColumn;
+import gov.nih.nci.caarray.external.v1_0.data.HybridizationData;
+import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
+import gov.nih.nci.caarray.external.v1_0.query.BiomaterialSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.DataSetRequest;
+import gov.nih.nci.caarray.external.v1_0.query.ExperimentSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.HybridizationSearchCriteria;
+import gov.nih.nci.caarray.external.v1_0.query.LimitOffset;
+import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
+import gov.nih.nci.caarray.external.v1_0.sample.Biomaterial;
+import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
+import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
+import gov.nih.nci.caarray.services.external.v1_0.UnsupportedCategoryException;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataService;
+import gov.nih.nci.caarray.services.external.v1_0.data.DataTransferException;
+import gov.nih.nci.caarray.services.external.v1_0.data.InconsistentDataSetsException;
+import gov.nih.nci.caarray.services.external.v1_0.search.SearchService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValueType;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
@@ -124,13 +128,18 @@ import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
-import java.util.ArrayList;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.healthmarketscience.rmiio.DirectRemoteInputStream;
+import com.healthmarketscience.rmiio.RemoteInputStream;
 
 @SuppressWarnings("PMD")
 public class CaArrayFacadeTest {
@@ -143,14 +152,20 @@ public class CaArrayFacadeTest {
     public void setUp() {
         ApplicationContext context = new ClassPathXmlApplicationContext("caarray-test-config.xml", CaArrayFacadeTest.class); 
         caArrayFacade = (CaArrayFacade) context.getBean("CaArrayFacade"); 
+        CaArrayUtils.setCompressed(true);
+    }
+
+    @After
+    public void tearDown() {
+        CaArrayUtils.setCompressed(CaArrayUtils.COMPRESSED_DEFAULT);
     }
 
     @Test
     public void testGetSamples() throws ConnectionException, ExperimentNotFoundException {
+        ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
         List<Sample> samples = caArrayFacade.getSamples("samples", null);
         assertFalse(samples.isEmpty());
-        assertTrue(samples.get(0).getName().equals("sample1") || samples.get(0).getName().equals("sample2"));
-        assertTrue(samples.get(1).getName().equals("sample1") || samples.get(1).getName().equals("sample2"));
+        assertTrue(samples.get(0).getName().equals("sample"));
         boolean experimentNotFound = false;
         try {
             samples = caArrayFacade.getSamples("no-experiment", null);   
@@ -169,15 +184,12 @@ public class CaArrayFacadeTest {
         genomicSource.setExperimentIdentifier("test-data");
         genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
         genomicSource.setStudyConfiguration(new StudyConfiguration());
-        Sample sample1 = new Sample();
-        Sample sample2 = new Sample();
-        sample1.setName("sample1");
-        sample2.setName("sample2");
-        genomicSource.getSamples().add(sample1);
-        genomicSource.getSamples().add(sample2);
+        Sample sample = new Sample();
+        sample.setName("sample");
+        genomicSource.getSamples().add(sample);
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
         assertNotNull(values);
-        assertEquals(2, values.getArrayDatas().size());
+        assertEquals(1, values.getArrayDatas().size());
         for (ArrayData arrayData : values.getArrayDatas()) {
             assertEquals((float) 1.1, (float) values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
             assertEquals((float) 2.2, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
@@ -193,19 +205,24 @@ public class CaArrayFacadeTest {
         genomicSource.setExperimentIdentifier("test-data");
         genomicSource.setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
         genomicSource.setStudyConfiguration(new StudyConfiguration());
-        Sample sample1 = new Sample();
-        Sample sample2 = new Sample();
-        sample1.setName("sample1");
-        sample2.setName("sample2");
-        genomicSource.getSamples().add(sample1);
-        genomicSource.getSamples().add(sample2);
+        Sample sample = new Sample();
+        sample.setName("sample");
+        genomicSource.getSamples().add(sample);
         ArrayDataValues values = caArrayFacade.retrieveData(genomicSource);
         assertNotNull(values);
-        assertEquals(2, values.getArrayDatas().size());
+        assertEquals(1, values.getArrayDatas().size());
         for (ArrayData arrayData : values.getArrayDatas()) {
             assertEquals((float) 0.05, (float) values.getFloatValue(arrayData, reporter1, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
             assertEquals((float) -0.1234, (float) values.getFloatValue(arrayData, reporter2, ArrayDataValueType.EXPRESSION_SIGNAL), 0);
         }
+    }
+    
+    @Test
+    public void testRetrieveFile() throws FileNotFoundException, ConnectionException {
+        ((CaArrayFacadeImpl) caArrayFacade).setServiceFactory(new RetrieveDataServiceFactoryStub());
+        GenomicDataSourceConfiguration source = new GenomicDataSourceConfiguration();
+        byte[] bytes = caArrayFacade.retrieveFile(source, "filename");
+        assertEquals(118, bytes.length);
     }
 
     private GeneExpressionReporter createTestReporter(String name) {
@@ -239,138 +256,133 @@ public class CaArrayFacadeTest {
     private class RetrieveDataServiceFactoryStub extends ServiceStubFactory {
 
         private final ArrayDesign arrayDesign = createTestArrayDesign();
-        LogicalProbe probeSet1 = createTestProbeSet("A_probeSet1");
-        LogicalProbe probeSet2 = createTestProbeSet("A_probeSet2");
+        DesignElement probeSet1 = createTestProbeSet("A_probeSet1");
+        DesignElement probeSet2 = createTestProbeSet("A_probeSet2");
+        private final Hybridization hybridization = createTestHybridization();
 
         @Override
-        public CaArraySearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
-            return new RetrieveDataSearchServiceStub();
+        public SearchService createSearchService(ServerConnectionProfile profile) throws ConnectionException {
+            return new LocalSearchServiceStub();
         }
 
-        @SuppressWarnings("deprecation")
-        private LogicalProbe createTestProbeSet(String name) {
-            LogicalProbe probeSet = new LogicalProbe();
+        private DesignElement createTestProbeSet(String name) {
+            DesignElement probeSet = new DesignElement();
             probeSet.setName(name);
             return probeSet;
         }
 
-        @Override
-        public DataRetrievalService createDataRetrievalService(ServerConnectionProfile profile) {
-            return new RetrieveDataDataRetrievalServiceStub();
+        private Hybridization createTestHybridization() {
+            Hybridization hybridization = new Hybridization();
+            hybridization.setArrayDesign(arrayDesign);
+            return hybridization;
         }
 
         @Override
-        public FileRetrievalService createFileRetrievalService(ServerConnectionProfile profile)
-                throws ConnectionException {
-            return new RetrieveDataFileRetrievalServiceStub();
+        public DataService createDataService(ServerConnectionProfile profile) {
+            return new LocalDataServiceStub();
         }
 
-        @SuppressWarnings("deprecation")
         private ArrayDesign createTestArrayDesign() {
             ArrayDesign design = new ArrayDesign();
             design.setName("test design");
-            design.setDesignDetails(new ArrayDesignDetails());
-            design.getDesignDetails().getLogicalProbes().add(probeSet1);
-            design.getDesignDetails().getLogicalProbes().add(probeSet2);
             return design;
         }
 
-        private class RetrieveDataDataRetrievalServiceStub implements DataRetrievalService {
+        private class LocalDataServiceStub extends DataServiceStub {
 
-            public DataSet getDataSet(DataRetrievalRequest request) {
+            @Override
+            @SuppressWarnings("unused")
+            public DataSet getDataSet(DataSetRequest request) throws InvalidReferenceException,
+                    InconsistentDataSetsException, IllegalArgumentException {
                 DataSet dataSet = new DataSet();
-                dataSet.setDesignElementList(new DesignElementList());
-                dataSet.getDesignElementList().getDesignElements().add(probeSet1);
-                dataSet.getDesignElementList().getDesignElements().add(probeSet2);
-                dataSet.getQuantitationTypes().addAll(request.getQuantitationTypes());
-                for (Hybridization hybridization : request.getHybridizations()) {
-                    HybridizationData hybridizationData = dataSet.addHybridizationData(hybridization);
+                dataSet.getDesignElements().add(probeSet1);
+                dataSet.getDesignElements().add(probeSet2);
+                for (CaArrayEntityReference reference : request.getHybridizations()) {
+                    HybridizationData data = new HybridizationData();
+                    data.setHybridization(hybridization);
+                    dataSet.getDatas().add(data);
                     FloatColumn column = new FloatColumn();
-                    column.setQuantitationType(request.getQuantitationTypes().get(0));
-                    column.initializeArray(2);
-                    column.getValues()[0] = (float) 1.1;
-                    column.getValues()[1] = (float) 2.2;
-                    hybridizationData.getColumns().add(column);
+                    column.setValues(new float[] {1.1f, 2.2f});
+                    data.getDataColumns().add(column);
                 }
                 return dataSet;
             }
-
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public RemoteInputStream streamFileContents(CaArrayEntityReference arg0, boolean arg1)
+                    throws InvalidReferenceException, DataTransferException {
+                StringBuffer dataFile = new StringBuffer();
+                dataFile.append("TYPE\ttext\ttext\n");
+                dataFile.append("\n");
+                dataFile.append("FEATURES\tProbeName\tLogRatio\n");
+                dataFile.append("\n");
+                dataFile.append("DATA\tA_probeSet1\t0.05\n");
+                dataFile.append("DATA\tDarkCorner\t-0.0034\n");
+                dataFile.append("*\n");
+                dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(dataFile.toString().getBytes());
+                return new DirectRemoteInputStream(byteArrayInputStream, false);
+            }
         }
 
-        private class RetrieveDataSearchServiceStub extends SearchServiceStub {
-            
-            private final gov.nih.nci.caarray.domain.sample.Sample sample1 = creatTestSample("sample1");
-            private final gov.nih.nci.caarray.domain.sample.Sample sample2 = creatTestSample("sample2");
+        private class LocalSearchServiceStub extends SearchServiceStub {
+
             private final Experiment experiment = createTestDataExperiment();
+            private final Biomaterial sample = creatTestSample("sample"); 
             
-            @SuppressWarnings("unchecked")
-            public <T extends AbstractCaArrayObject> List<T> search(T searchObject) {
-                List<T> results = new ArrayList<T>();
-                if (searchObject instanceof Experiment && ("test-data".equals(((Experiment) searchObject).getPublicIdentifier()))) {
-                    results.add((T) experiment);
-                } else if (searchObject instanceof gov.nih.nci.caarray.domain.sample.Sample) {
-                    results.add((T) getSample((gov.nih.nci.caarray.domain.sample.Sample) searchObject));
-                } else {
-                    results.add(searchObject);
+            @Override
+            public SearchResult<Experiment> searchForExperiments(ExperimentSearchCriteria criteria, LimitOffset offset)
+                    throws InvalidReferenceException, UnsupportedCategoryException {
+                SearchResult<Experiment> result = new SearchResult<Experiment>();
+                if (!"no-experiment".equals(criteria.getPublicIdentifier())) {
+                    result.getResults().add(experiment);
                 }
-                return results;
+                return result;
             }
 
-            private gov.nih.nci.caarray.domain.sample.Sample creatTestSample(String name) {
-                gov.nih.nci.caarray.domain.sample.Sample sample = new gov.nih.nci.caarray.domain.sample.Sample();
+            private Biomaterial creatTestSample(String name) {
+                Biomaterial sample = new Biomaterial();
                 sample.setName(name);
-                Hybridization hybridization = new Hybridization();
-                hybridization.setName("hybridiation " + name);
-                hybridization.setArray(new Array());
-                hybridization.getArray().setDesign(arrayDesign);
-                RawArrayData rawArrayData = new RawArrayData();
-                rawArrayData.setDataFile(new CaArrayFile());
-                hybridization.addRawArrayData(rawArrayData);
-                LabeledExtract labeledExtract = new LabeledExtract();
-                hybridization.getLabeledExtracts().add(labeledExtract);
-                labeledExtract.getHybridizations().add(hybridization);
-                Extract extract = new Extract();
-                extract.getLabeledExtracts().add(labeledExtract);
-                labeledExtract.getExtracts().add(extract);
-                extract.getSamples().add(sample);
-                sample.getExtracts().add(extract);
                 return sample;
             }
 
-            private gov.nih.nci.caarray.domain.sample.Sample getSample(gov.nih.nci.caarray.domain.sample.Sample searchSample) {
-                if ("sample1".equals(searchSample.getName())) {
-                    return sample1;
-                } else if ("sample2".equals(searchSample.getName())) {
-                    return sample2;
-                } else {
-                    return searchSample;
-                }
+            @Override
+            public SearchResult<Biomaterial> searchForBiomaterials(BiomaterialSearchCriteria arg0, LimitOffset arg1)
+                    throws InvalidReferenceException, UnsupportedCategoryException {
+                SearchResult<Biomaterial> result = new SearchResult<Biomaterial>();
+                result.getResults().add(sample);
+                return result;
             }
 
+            @Override
+            public SearchResult<DataFile> searchForFiles(FileSearchCriteria criteria, LimitOffset arg1)
+                    throws InvalidReferenceException {
+                SearchResult<DataFile> result = new SearchResult<DataFile>();
+                DataFile file = new DataFile();
+                file.setName("filename");
+                result.getResults().add(file);
+                return result;
+            }
+
+            @Override
+            @SuppressWarnings("unused")
+            public SearchResult<Hybridization> searchForHybridizations(HybridizationSearchCriteria criteria,
+                    LimitOffset arg1) throws InvalidReferenceException {
+                SearchResult<Hybridization> result = new SearchResult<Hybridization>();
+                result.getResults().add(hybridization);
+                return result;
+            }
+            
             private Experiment createTestDataExperiment() {
                 Experiment experiment = new Experiment();
-                experiment.getSamples().add(sample1);
-                experiment.getSamples().add(sample2);
+                experiment.setPublicIdentifier("samples");
                 return experiment;
             }
+            
         }
     }
-    
-    private class RetrieveDataFileRetrievalServiceStub implements FileRetrievalService {
-
-        public byte[] readFile(CaArrayFile arg0) {
-            StringBuffer dataFile = new StringBuffer();
-            dataFile.append("TYPE\ttext\ttext\n");
-            dataFile.append("\n");
-            dataFile.append("FEATURES\tProbeName\tLogRatio\n");
-            dataFile.append("\n");
-            dataFile.append("DATA\tA_probeSet1\t0.05\n");
-            dataFile.append("DATA\tDarkCorner\t-0.0034\n");
-            dataFile.append("*\n");
-            dataFile.append("DATA\tA_probeSet2\t-0.1234\n");
-            return dataFile.toString().getBytes();
-        }
-
-    }
-
+   
 }

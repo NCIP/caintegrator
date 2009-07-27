@@ -2032,17 +2032,17 @@
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_serverProfile_hostname</td>
-	<td>array-stage.nci.nih.gov</td>
+	<td>ncias-d227-v.nci.nih.gov</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_serverProfile_port</td>
-	<td>8080</td>
+	<td>31099</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>saveGenomicSource_genomicSource_experimentIdentifier</td>
-	<td>liu-00217</td>
+	<td>admin-00002</td>
 </tr>
 <tr>
 	<td>type</td>

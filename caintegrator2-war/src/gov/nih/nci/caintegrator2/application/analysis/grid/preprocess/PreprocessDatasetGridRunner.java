@@ -242,6 +242,8 @@ public class PreprocessDatasetGridRunner {
             return Cai2Util.storeFileFromInputStream(stream, filename);
         } catch (Exception e) {
             throw new ConnectionException("Unable to download stream data from server.", e);
+        } finally {
+            tclient.destroy();
         }
     }
     
