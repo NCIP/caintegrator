@@ -85,13 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
-import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
+import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -107,38 +109,40 @@ public interface GenePatternGridRunner {
     /**
      * Runs the GenePattern Grid Services PreprocessDataset followed by ComparativeMarkerSelection on the 
      * preprocessed data and returns the Marker Results.
-     * @param studySubscription for current study.
-     * @param preprocessParams for preprocess dataset.
-     * @param comparativeMarkerParams for comparative marker selection.
+     * @param updater the ajax updater.
+     * @param job the Analysis job.
      * @return MarkerResults of the processed dataset.
      * @throws ConnectionException if unable to connect to grid services.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    List<MarkerResult> runPreprocessComparativeMarkerSelection(StudySubscription studySubscription,
-            PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
+    List<MarkerResult> runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
+            ComparativeMarkerSelectionAnalysisJob job)
             throws ConnectionException, InvalidCriterionException;
             
     /**
      * Executes the grid service PreprocessDataset.
-     * @param studySubscription for current study.
+     * @param updater the ajax updater.
+     * @param job the Analysis job.
      * @param parameters for preprocess dataset.
      * @return preprocessed GCT file.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    File runPreprocessDataset(StudySubscription studySubscription,
-            PreprocessDatasetParameters parameters) throws ConnectionException, InvalidCriterionException;
+    File runPreprocessDataset(StatusUpdateListener updater,
+            AbstractPersistedAnalysisJob job, PreprocessDatasetParameters parameters)
+    throws ConnectionException, InvalidCriterionException;
     
     /**
      * Executes the grid service PCA.
-     * @param studySubscription for current study.
-     * @param parameters for PCA.
+     * @param updater the ajax updater.
+     * @param job the Analysis job.
      * @param preprocessedGctFile (optional) parameter if needed to run preprocess dataset.
      * @return zip file containing results.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    File runPCA(StudySubscription studySubscription, PCAParameters parameters, File preprocessedGctFile) 
+    File runPCA(StatusUpdateListener updater,
+            PrincipalComponentAnalysisJob job, File preprocessedGctFile) 
         throws ConnectionException, InvalidCriterionException; 
 
     /**

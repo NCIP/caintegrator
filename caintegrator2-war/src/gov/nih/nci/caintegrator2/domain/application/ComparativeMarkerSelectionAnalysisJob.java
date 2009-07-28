@@ -114,7 +114,7 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnal
     /**
      * @return the analysisForm
      */
-    public ComparativeMarkerSelectionAnalysisForm getComparativeMarkerSelectionAnalysisForm() {
+    public ComparativeMarkerSelectionAnalysisForm getForm() {
         return comparativeMarkerSelectionAnalysisForm;
     }
 
