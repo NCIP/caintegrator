@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
+import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
@@ -106,7 +107,7 @@ import org.directwebremoting.proxy.dwr.Util;
  * This is an object which is turned into an AJAX javascript file using the DWR framework.  
  */
 public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
-    implements IPersistedAnalysisJobAjaxUpdater {
+    implements IPersistedAnalysisJobAjaxUpdater, StatusUpdateListener {
     
     private static final String STATUS_TABLE = "analysisJobStatusTable";
     private static final String JOB_NAME = "jobName_";
@@ -210,15 +211,24 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         String jobId = job.getId().toString();
         utilThis.setValue(JOB_NAME + jobId, job.getName());
         utilThis.setValue(JOB_TYPE + jobId, job.getJobType());
-        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));
+        updateStatus(job);
+        if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
+            addJobUrl(utilThis, job);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateStatus(AbstractPersistedAnalysisJob job) {
+        Util utilThis = getDwrUtil(job.getUserWorkspace().getUsername());
+        String jobId = job.getId().toString();
+        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
         if (job.getLastUpdateDate() != null) {
             utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
                 getDateString(job.getLastUpdateDate()));
-        }
-        if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
-            addJobUrl(utilThis, job);
         }
     }
 
@@ -278,6 +288,4 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
-
-
 }

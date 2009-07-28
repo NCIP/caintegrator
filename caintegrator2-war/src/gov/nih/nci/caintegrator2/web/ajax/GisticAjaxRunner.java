@@ -117,7 +117,7 @@ public class GisticAjaxRunner implements Runnable {
      * {@inheritDoc}
      */
     public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
+        job.setStatus(AnalysisJobStatusEnum.PROCESSING_REMOTELY);
         updater.saveAndUpdateJobStatus(job);
         try {
             processLocally();

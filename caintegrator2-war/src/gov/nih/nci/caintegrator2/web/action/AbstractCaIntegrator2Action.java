@@ -348,7 +348,7 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public ComparativeMarkerSelectionAnalysisForm getComparativeMarkerSelectionAnalysisForm() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getCurrentComparativeMarkerSelectionAnalysisJob().
-                getComparativeMarkerSelectionAnalysisForm();
+                getForm();
         } else {
             return null;
         }

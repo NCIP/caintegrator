@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import static org.junit.Assert.assertArrayEquals;
+import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
@@ -96,6 +97,9 @@ import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -129,6 +133,13 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     private FileManager fileManager;
     private CaIntegrator2DaoImpl dao;
     private StudyHelper studyHelper;
+    private StatusUpdateListenerStub updater;
+    
+    private final class StatusUpdateListenerStub implements StatusUpdateListener {
+        public void updateStatus(AbstractPersistedAnalysisJob job) {
+            return;
+        }
+    }
     
     public void setupContext() {
         ApplicationContext context = new ClassPathXmlApplicationContext("genepattern-test-config.xml", GenePatternGridRunnerImplTestIntegration.class);
@@ -140,7 +151,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         queryManagementServiceImpl.setArrayDataService(arrayDataService);
         queryManagementServiceImpl.setResultHandler(new ResultHandlerImpl());
         genePatternGridRunner.setQueryManagementService(queryManagementServiceImpl);
-        
+        updater = new StatusUpdateListenerStub();
     }
 
     private StudySubscription setupStudySubscription() {
@@ -167,6 +178,8 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         server.setUrl(PREPROCESS_DATASET_URL);
         PreprocessDatasetParameters preprocessParameters = new PreprocessDatasetParameters();
         preprocessParameters.setServer(server);
+        PrincipalComponentAnalysisJob job = new PrincipalComponentAnalysisJob();
+        job.setSubscription(subscription);
         
         // Narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
         // a 6th sample, so combined it should produce 6 sample rows.
@@ -180,7 +193,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         query1.setName("Query 1");
         preprocessParameters.getClinicalQueries().add(query2);
         query2.setName("Query  2");
-        genePatternGridRunner.runPreprocessDataset(subscription, preprocessParameters);
+        genePatternGridRunner.runPreprocessDataset(updater, job, preprocessParameters);
         File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + preprocessParameters.getProcessedGctFilename());
         checkGctFile(gctFile, 6, 6, "0.29865831556451516");
@@ -194,6 +207,9 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         server.setUrl(PREPROCESS_DATASET_URL);
         PreprocessDatasetParameters preprocessParameters = new PreprocessDatasetParameters();
         preprocessParameters.setServer(server);
+        ComparativeMarkerSelectionAnalysisJob job = new ComparativeMarkerSelectionAnalysisJob();
+        job.setSubscription(subscription);
+        job.getForm().setPreprocessDatasetparameters(preprocessParameters);
         
         // Narrow the results based on 2 clinical queries, the first one will have 5 samples, the second will have
         // a 6th sample, so combined it should produce 6 sample rows.
@@ -213,8 +229,10 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         ServerConnectionProfile comparativeMarkerServer = new ServerConnectionProfile();
         comparativeMarkerServer.setUrl(COMPARATIVE_MARKER_URL);
         comparativeMarkerParameters.setServer(comparativeMarkerServer);
-
-        List <MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(subscription, preprocessParameters, comparativeMarkerParameters);
+        job.getForm().setComparativeMarkerSelectionParameters(comparativeMarkerParameters);
+        
+        List <MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(
+                updater, job);
         assertEquals(6, results.size());
         File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
                 + preprocessParameters.getProcessedGctFilename());
@@ -233,6 +251,9 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         ServerConnectionProfile server = new ServerConnectionProfile();
         server.setUrl(PCA_URL);
         PCAParameters parameters = new PCAParameters();
+        PrincipalComponentAnalysisJob job = new PrincipalComponentAnalysisJob();
+        job.setSubscription(subscription);
+        job.getForm().setPcaParameters(parameters);
         parameters.setClusterBy("columns");
         parameters.setGctFileName("testPca.gct");
         parameters.setClassificationFileName("testPca.cls");
@@ -246,7 +267,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         parameters.getClinicalQueries().add(query1);
         parameters.getClinicalQueries().add(query2);
         File zipFile = null;
-        zipFile = genePatternGridRunner.runPCA(subscription, parameters, null);
+        zipFile = genePatternGridRunner.runPCA(updater, job, null);
         assertNotNull(zipFile);
         zipFile.deleteOnExit();
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));

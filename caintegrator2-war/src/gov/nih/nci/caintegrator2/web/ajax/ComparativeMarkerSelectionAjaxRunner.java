@@ -137,9 +137,7 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
 
     private void processLocally() throws ConnectionException, InvalidCriterionException {
         List<MarkerResult> results = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
-                job.getSubscription(),
-                job.getComparativeMarkerSelectionAnalysisForm().getPreprocessDatasetparameters(),
-                job.getComparativeMarkerSelectionAnalysisForm().getComparativeMarkerSelectionParameters());
+                updater, job);
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
         if (results != null) {
             job.getResults().addAll(results);
