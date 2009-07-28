@@ -91,10 +91,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEP
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
-import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
@@ -104,6 +101,8 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
@@ -166,12 +165,10 @@ public class AnalysisServiceImpl implements AnalysisService {
      * {@inheritDoc}
      * @throws InvalidCriterionException 
      */
-    public List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
-                                             PreprocessDatasetParameters preprocessParams,
-                                             ComparativeMarkerSelectionParameters comparativeMarkerParams) 
+    public List<MarkerResult> executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
+            ComparativeMarkerSelectionAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException {
-        return genePatternGridRunner.runPreprocessComparativeMarkerSelection(
-                            studySubscription, preprocessParams, comparativeMarkerParams);
+        return genePatternGridRunner.runPreprocessComparativeMarkerSelection(updater, job);
     }
     
     /**
@@ -189,13 +186,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     /**
      * {@inheritDoc}
      */
-    public File executeGridPCA(StudySubscription studySubscription, PreprocessDatasetParameters preprocessParams,
-            PCAParameters pcaParams) throws ConnectionException, InvalidCriterionException {
+    public File executeGridPCA(StatusUpdateListener updater,
+            PrincipalComponentAnalysisJob job) throws ConnectionException, InvalidCriterionException {
         File gctFile = null;
-        if (preprocessParams != null) {
-            gctFile = genePatternGridRunner.runPreprocessDataset(studySubscription, preprocessParams);
+        if (job.getForm().isUsePreprocessDataset()) {
+            gctFile = genePatternGridRunner.runPreprocessDataset(updater,
+                    job, job.getForm().getPreprocessParameters());
         }
-        return genePatternGridRunner.runPCA(studySubscription, pcaParams, gctFile);
+        return genePatternGridRunner.runPCA(updater, job, gctFile);
     }
 
     /**
@@ -306,8 +304,5 @@ public class AnalysisServiceImpl implements AnalysisService {
     public void setGenePatternGridRunner(GenePatternGridRunner genePatternGridRunner) {
         this.genePatternGridRunner = genePatternGridRunner;
     }
-
-    
-    
 
 }

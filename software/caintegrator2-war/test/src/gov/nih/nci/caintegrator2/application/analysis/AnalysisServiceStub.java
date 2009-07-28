@@ -87,10 +87,7 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
@@ -98,6 +95,8 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
@@ -177,15 +176,14 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public List<MarkerResult> executeGridPreprocessComparativeMarker(StudySubscription studySubscription,
-            PreprocessDatasetParameters preprocessParams, ComparativeMarkerSelectionParameters comparativeMarkerParams)
+    public List<MarkerResult> executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
+            ComparativeMarkerSelectionAnalysisJob job)
             throws ConnectionException {
         executeComparativeMarkerSelectionJobCalled = true;
         return null;
     }
 
-    public File executeGridPCA(StudySubscription studySubscription, PreprocessDatasetParameters preprocessParams,
-            PCAParameters pcaParams)
+    public File executeGridPCA(StatusUpdateListener updater, PrincipalComponentAnalysisJob job)
             throws ConnectionException {
         executePcaJobCalled = true;
         return null;
