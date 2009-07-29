@@ -10,6 +10,11 @@
 <tr><td rowspan="1" colspan="3">cai2_test_check_login_page</td></tr>
 </thead><tbody>
 <tr>
+	<td>setTimeout</td>
+	<td>60000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
 	<td>/caintegrator2/login.action</td>
 	<td></td>
