@@ -86,19 +86,18 @@
 package gov.nih.nci.caintegrator2.application.analysis.grid;
 
 import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
-import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -147,13 +146,14 @@ public interface GenePatternGridRunner {
 
     /**
      * Runs Gistic grid service.
-     * @param studySubscription for current study.
-     * @param parameters for gistic.
+     * @param updater the ajax updater.
+     * @param job the Analysis job.
      * @return GisticResults retrieved from grid.
      * @throws ConnectionException if unable to connect to grid service.
      * @throws InvalidCriterionException if criterion is not valid.
      * @throws ParameterException id parameter is invalid.
+     * @throws IOException if there's a problem saving any of the files to the file system.
      */
-    List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
-        throws ConnectionException, InvalidCriterionException, ParameterException;
+    File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+        throws ConnectionException, InvalidCriterionException, ParameterException, IOException;
 }

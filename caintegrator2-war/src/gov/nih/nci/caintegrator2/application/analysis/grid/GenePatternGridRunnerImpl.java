@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.Com
 import gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker.ComparativeMarkerSelectionParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
+import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticSamplesMarkers;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAGridRunner;
 import gov.nih.nci.caintegrator2.application.analysis.grid.pca.PCAParameters;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetGridRunner;
@@ -104,11 +105,11 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -144,15 +145,23 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     
     /**
      * {@inheritDoc}
-     * @throws ParameterException 
      */
-    public List<GisticResult> runGistic(StudySubscription studySubscription, GisticParameters parameters) 
-    throws ConnectionException, InvalidCriterionException, ParameterException {
+    public File runGistic(StatusUpdateListener updater, GisticAnalysisJob job) 
+    throws ConnectionException, InvalidCriterionException, ParameterException, IOException {
+        GisticParameters parameters = job.getGisticAnalysisForm().getGisticParameters();
+        StudySubscription studySubscription = job.getSubscription();
         GisticI gisticClient = genePatternGridClientFactory.createGisticClient(parameters.getServer());
-        GisticGridRunner runner = new GisticGridRunner(gisticClient);
-        
-        return runner.execute(parameters, GenePatternUtil.createGisticSamplesMarkers(queryManagementService,
-                                   parameters.getClinicalQuery(), studySubscription));
+        GisticGridRunner runner = new GisticGridRunner(gisticClient, fileManager);
+        try {
+            GisticSamplesMarkers gisticSamplesMarkers = GenePatternUtil.
+                createGisticSamplesMarkers(queryManagementService, parameters.getClinicalQuery(), studySubscription);
+            updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_REMOTELY);
+            return runner.execute(studySubscription, parameters, gisticSamplesMarkers);
+        } catch (InterruptedException e) {
+            return null;
+        } finally {
+            updateStatus(updater, job, AnalysisJobStatusEnum.PROCESSING_LOCALLY);
+        }
     }
     
     /**

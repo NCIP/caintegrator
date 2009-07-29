@@ -95,9 +95,7 @@ import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 public class PrincipalComponentAnalysisResultsAction  extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
-    
-    private static final String DOWNLOAD_RESULTS_FILE = "downloadResultFile";
-    
+
     private StudyManagementService studyManagementService;
     private PrincipalComponentAnalysisJob job = new PrincipalComponentAnalysisJob();
     private Long jobId;
@@ -127,13 +125,9 @@ public class PrincipalComponentAnalysisResultsAction  extends AbstractDeployedSt
      * {@inheritDoc}
      */
     public String execute() {
-        if (job.getResultsZipFile() != null) {
-            getDisplayableWorkspace().setTemporaryDownloadFile(getJob().getResultsZipFile().getPath());
-            return DOWNLOAD_RESULTS_FILE;
-        }
-        addActionError("The job doesn't contain a results file");
-        return INPUT;
+        return executeAnalysisJobZipDownload(getJob());
     }
+
     /**
      * @return the studyManagementService
      */

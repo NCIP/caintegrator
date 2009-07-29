@@ -110,13 +110,9 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -375,27 +371,6 @@ public final class Cai2Util {
     }
     
     /**
-     * Stores a file from an input stream.
-     * @param istream stream to store file from.
-     * @param filename file to store.
-     * @return File that was created.
-     * @throws IOException if unable to create file.
-     */
-    public static File storeFileFromInputStream(InputStream istream, String filename) throws IOException {
-        File file = new File(filename);
-        OutputStream out = new FileOutputStream(file);
-        byte [] buf = new byte[BUFFER_SIZE];
-        int len;
-        while ((len = istream.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        out.flush();
-        out.close();
-        istream.close();
-        return file;
-    }
-    
-    /**
      * Extract the host name from the url.
      * 
      * @param url
@@ -503,26 +478,4 @@ public final class Cai2Util {
         return query;
     }
     
-    /**
-     * Writes a serializable object to disk in the location given. Intended to support
-     * testing, this method is provided in the production code-base so that it can be
-     * called temporarily from production code to serialize test objects.
-     * 
-     * @param serializable the object to write to disk.
-     * @param filepath the fully-qualified path of the file to write.
-     */
-    public static void serializeToDisk(Serializable serializable, String filepath) {
-        try {
-            FileOutputStream fos = new FileOutputStream(filepath);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(serializable);
-            oos.close();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            throw new IllegalStateException("Couldn't write object to disk", e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Couldn't write object to disk", e);
-        }
-    }
-
 }

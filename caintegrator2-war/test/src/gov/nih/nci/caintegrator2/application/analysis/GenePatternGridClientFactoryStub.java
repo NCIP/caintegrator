@@ -113,6 +113,7 @@ import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.Invalid
 import org.genepattern.gistic.GisticResult;
 import org.genepattern.gistic.Marker;
 import org.genepattern.gistic.common.GisticI;
+import org.genepattern.gistic.context.client.GisticContextClient;
 import org.genepattern.pca.PCAResult;
 import org.genepattern.pca.common.PCAI;
 import org.genepattern.pca.context.client.PCAContextClient;
@@ -310,6 +311,10 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
             GisticResult[] gisticResult = new GisticResult[1];
             gisticResult[0] = new GisticResult();
             return gisticResult;
+        }
+
+        public GisticContextClient createAnalysis() throws RemoteException, MalformedURIException {
+            return null;
         }        
     }
 }

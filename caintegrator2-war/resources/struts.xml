@@ -548,8 +548,13 @@
         </action>
         
         <action name="gisticAnalysisResults" class="gisticAnalysisResultsAction">
-            <result type="tiles">gisticAnalysisResults</result>
-            <result name="input" type="tiles">gisticAnalysisResults</result>
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
+            <result name="downloadResultFile" type="temporaryDownloadFileResult">
+                <param name="fileName">gisticResults.zip</param>
+                <param name="contentType">application/zip</param>
+                <param name="deleteFile">false</param>
+            </result>
         </action>
         
         <!-- Kaplan-Meier Actions -->

@@ -83,154 +83,64 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.application;
+package gov.nih.nci.caintegrator2.application.analysis.grid.gistic;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import edu.wustl.icr.asrv1.segment.ChromosomalSegment;
+import edu.wustl.icr.asrv1.segment.SampleWithChromosomalSegmentSet;
+import gov.nih.nci.caintegrator2.data.StudyHelper;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.translational.Study;
 
-import java.util.Date;
+import java.math.BigInteger;
 
-/**
- * 
- */
-public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
-    implements Comparable<AbstractPersistedAnalysisJob> {
+import org.genepattern.gistic.Marker;
+import org.junit.Before;
+import org.junit.Test;
+
+
+public class GisticSamplesMarkersTest {
+
+    private Study study;
+    private GisticSamplesMarkers gisticSamplesMarkers;
     
-    private String name;
-    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
-    private Date creationDate;
-    private Date lastUpdateDate;
-    private String jobType;
-    private StudySubscription subscription;
-    private String statusDescription;
-    private static final int DESCRIPTION_LENGTH = 250;
-    
-    /**
-     * @return the statusDescription
-     */
-    public String getStatusDescription() {
-        return statusDescription;
+    @Before
+    public void setUp() throws Exception {
+        StudyHelper studyHelper = new StudyHelper();
+        studyHelper.setArrayDataType(ArrayDataType.COPY_NUMBER);
+        study = studyHelper.populateAndRetrieveStudy().getStudy();
+        gisticSamplesMarkers = new GisticSamplesMarkers();
     }
 
-    /**
-     * @param statusDescription the statusDescription to set
-     */
-    public void setStatusDescription(String statusDescription) {
-        if (statusDescription != null && statusDescription.length() > DESCRIPTION_LENGTH) {
-            this.statusDescription = statusDescription.substring(0, DESCRIPTION_LENGTH);
-        } else {
-            this.statusDescription = statusDescription;
-        }
+    @Test
+    public void testAddReporterListToGisticMarkers() {
+        ReporterList reporterList = getArrayData().getReporterLists().iterator().next();
+        
+        gisticSamplesMarkers.addReporterListToGisticMarkers(reporterList);
+        Marker marker = gisticSamplesMarkers.getMarkers()[0];
+        assertEquals("1", marker.getChromosome());
+        assertEquals("SNP_A_1677174", marker.getName());
+        assertEquals(836727, marker.getPosition());
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    private ArrayData getArrayData() {
+        return study.getArrayDatas(ReporterTypeEnum.DNA_ANALYSIS_REPORTER).iterator().next();
     }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    @Test
+    public void testAddSegmentDataToGisticSamples() {
+        gisticSamplesMarkers
+                .addSegmentDataToGisticSamples(getArrayData().getSegmentDatas(), getArrayData().getSample());
+        SampleWithChromosomalSegmentSet sample = gisticSamplesMarkers.getSamples()[0];
+        ChromosomalSegment segment = sample.getSegments().getChromosomalSegment(0);
+        assertTrue(sample.getName().contains("SAMPLE_"));
+        assertEquals("3", segment.getChromosomeNumber());
+        assertEquals(BigInteger.valueOf(48603), segment.getSegmentStart());
+        assertEquals(BigInteger.valueOf(198541751), segment.getSegmentEnd());
     }
 
-    /**
-     * @return the status
-     */
-    public AnalysisJobStatusEnum getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(AnalysisJobStatusEnum status) {
-        this.status = status;
-    }
-
-    /**
-     * @return the creationDate
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
-     * @param creationDate the creationDate to set
-     */
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /**
-     * @return the lastUpdateDate
-     */
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    /**
-     * @param lastUpdateDate the lastUpdateDate to set
-     */
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    /**
-     * @return the subscription
-     */
-    public StudySubscription getSubscription() {
-        return subscription;
-    }
-
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public UserWorkspace getUserWorkspace() {
-        if (getSubscription() != null) {
-            return getSubscription().getUserWorkspace();
-        }
-        return null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(AbstractPersistedAnalysisJob o) {
-        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
-    }
-
-    /**
-     * @return the jobType
-     */
-    public String getJobType() {
-        return jobType;
-    }
-
-    /**
-     * @param jobType the jobType to set
-     */
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
-    }
-    
-    /**
-     * To be overridden if there is a resultsZipFile.
-     * @return the results file for the job.
-     */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
-    public ResultsZipFile getResultsZipFile() {
-        // default implementation is null; override if appropriate
-        return null;
-    }
-    
 }

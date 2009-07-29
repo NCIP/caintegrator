@@ -85,10 +85,6 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisForm;
 
 /**
@@ -99,7 +95,7 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
     private static final long serialVersionUID = 1L;
     
     private final transient GisticAnalysisForm gisticAnalysisForm = new GisticAnalysisForm();
-    private List<GisticResult> results = new ArrayList<GisticResult>();
+    private ResultsZipFile resultsZipFile;
     private String gisticUrl;
 
     /**
@@ -107,20 +103,6 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      */
     public GisticAnalysisJob() {
         this.setJobType(AnalysisJobTypeEnum.GISTIC.getValue());
-    }
-
-    /**
-     * @return the results
-     */
-    public List<GisticResult> getResults() {
-        return results;
-    }
-
-    /**
-     * @param results the results to set
-     */
-    public void setResults(List<GisticResult> results) {
-        this.results = results;
     }
 
     /**
@@ -142,5 +124,19 @@ public class GisticAnalysisJob extends AbstractPersistedAnalysisJob {
      */
     public void setGisticUrl(String gisticUrl) {
         this.gisticUrl = gisticUrl;
+    }
+
+    /**
+     * @return the resultsZipFile
+     */
+    public ResultsZipFile getResultsZipFile() {
+        return resultsZipFile;
+    }
+
+    /**
+     * @param resultsZipFile the resultsZipFile to set
+     */
+    public void setResultsZipFile(ResultsZipFile resultsZipFile) {
+        this.resultsZipFile = resultsZipFile;
     }
 }

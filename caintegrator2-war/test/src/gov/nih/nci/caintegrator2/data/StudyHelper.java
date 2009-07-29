@@ -111,6 +111,8 @@ import gov.nih.nci.caintegrator2.domain.application.SubjectList;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayDataType;
+import gov.nih.nci.caintegrator2.domain.genomic.ChromosomalLocation;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
@@ -118,6 +120,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
+import gov.nih.nci.caintegrator2.domain.genomic.SegmentData;
 import gov.nih.nci.caintegrator2.domain.imaging.Image;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeries;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -143,6 +146,7 @@ public class StudyHelper {
     private NumericPermissibleValue permval1;
     private NumericPermissibleValue permval2;
     private Timepoint defaultTimepoint;
+    private ArrayDataType arrayDataType = ArrayDataType.GENE_EXPRESSION;
     
     @SuppressWarnings({"PMD"}) // This is a long method for setting up test data
     public StudySubscription populateAndRetrieveStudy() {
@@ -151,6 +155,8 @@ public class StudyHelper {
         
         StudySubscription studySubscription = new StudySubscription();
         studySubscription.setStudy(myStudy);
+        
+        myStudy.setStudyConfiguration(new StudyConfiguration());
         
         sampleAnnotationDefinition = new AnnotationDefinition();
         sampleAnnotationDefinition.setDisplayName("SampleAnnotation");
@@ -486,11 +492,44 @@ public class StudyHelper {
         sample.setSampleAcquisition(sampleAcquisition);
         sampleAcquisition.setSample(sample);
         sample.setName("SAMPLE_" + sampleNum);
+        ArrayData arrayData = createArrayData(sampleNum); 
+        arrayData.setSample(sample);
+        sample.getArrayDataCollection().add(arrayData);
+    }
+
+    private ArrayData createArrayData(int sampleNum) {
         ArrayData arrayData = new ArrayData();
-        arrayData.setType(ArrayDataType.GENE_EXPRESSION);
+        arrayData.setType(arrayDataType);
         Platform platform = new Platform();
-        ReporterList reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        ReporterList reporterList = null;
+        if (ArrayDataType.COPY_NUMBER.equals(arrayDataType)) {
+            reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+            createDnaReporter(reporterList); 
+            addSegmentationData(arrayData);
+        } else {
+            reporterList = platform.addReporterList("reporterList", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+            createGeneExpressionReporter(sampleNum, reporterList);
+        }
         reporterList.getArrayDatas().add(arrayData);
+        arrayData.getReporterLists().add(reporterList);
+        return arrayData;
+    }
+    
+    private void addSegmentationData(ArrayData arrayData) {
+        SegmentData segmentData = new SegmentData();
+        segmentData.setArrayData(arrayData);
+        segmentData.setNumberOfMarkers(7813);
+        segmentData.setSegmentValue(.135339f);
+        ChromosomalLocation location = new ChromosomalLocation();
+        location.setChromosome("3");
+        location.setStartPosition(48603);
+        location.setEndPosition(198541751);
+        segmentData.setLocation(location);
+        arrayData.getSegmentDatas().add(segmentData);
+        
+    }
+
+    private void createGeneExpressionReporter(int sampleNum, ReporterList reporterList) {
         GeneExpressionReporter reporter = new GeneExpressionReporter();
         Gene gene = new Gene();
         gene.setSymbol("GENE_" + sampleNum);
@@ -499,9 +538,19 @@ public class StudyHelper {
         reporter.setIndex(0);
         reporter.setName("REPORTER_" + sampleNum);
         reporterList.getReporters().add(reporter);
-        arrayData.getReporterLists().add(reporterList);
-        arrayData.setSample(sample);
-        sample.getArrayDataCollection().add(arrayData);
+    }
+    
+    private void createDnaReporter(ReporterList reporterList) {
+        DnaAnalysisReporter reporter = new DnaAnalysisReporter();
+        reporter.setAlleleA('C');
+        reporter.setAlleleB('G');
+        reporter.setChromosome("1");
+        reporter.setDbSnpId("rs950122");
+        reporter.setIndex(0);
+        reporter.setName("SNP_A_1677174");
+        reporter.setPosition(836727);
+        reporter.setReporterList(reporterList);
+        reporterList.getReporters().add(reporter);
     }
 
     public Study populateAndRetrieveStudyWithSourceConfigurations() {
@@ -710,6 +759,20 @@ public class StudyHelper {
 
     public void setDefaultTimepoint(Timepoint defaultTimepoint) {
         this.defaultTimepoint = defaultTimepoint;
+    }
+
+    /**
+     * @return the arrayDataType
+     */
+    public ArrayDataType getArrayDataType() {
+        return arrayDataType;
+    }
+
+    /**
+     * @param arrayDataType the arrayDataType to set
+     */
+    public void setArrayDataType(ArrayDataType arrayDataType) {
+        this.arrayDataType = arrayDataType;
     }
     
     
