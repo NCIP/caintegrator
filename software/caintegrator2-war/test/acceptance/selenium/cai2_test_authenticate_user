@@ -2,12 +2,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2" />
-<title>cai2_test_check_login_page</title>
+<title>Check Authentication</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">cai2_test_check_login_page</td></tr>
+<tr><td rowspan="1" colspan="3">Check Authentication</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -32,6 +32,21 @@
 <tr>
 	<td>assertTextPresent</td>
 	<td>exact:Password:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_acegi_security_check_j_username</td>
+	<td>manager</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_acegi_security_check_j_password</td>
+	<td>manager</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>j_acegi_security_check_0</td>
 	<td></td>
 </tr>
 
