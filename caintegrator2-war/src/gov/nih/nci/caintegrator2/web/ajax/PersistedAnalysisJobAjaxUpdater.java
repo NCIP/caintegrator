@@ -253,7 +253,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
             break;
         case GISTIC:
             utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"gisticAnalysisResults.action?jobId=" + jobId + "\">View</a>",
+                    " - <a href=\"gisticAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
                     false);
             break;
         default:
@@ -288,4 +288,6 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
     public void setAnalysisService(AnalysisService analysisService) {
         this.analysisService = analysisService;
     }
+
+
 }

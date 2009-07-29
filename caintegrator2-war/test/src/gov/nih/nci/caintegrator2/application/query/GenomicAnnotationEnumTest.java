@@ -83,69 +83,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.action.analysis;
+package gov.nih.nci.caintegrator2.application.query;
 
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
-import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-import java.util.List;
+import org.junit.Test;
 
-/**
- * Wraps access to a <code>MarkerResult</code> object for easy use in display JSPs.
- */
-public final class DisplayableGisticJobResult {
-    private static final int DEFAULT_PAGE_SIZE = 50;
-    private final Long jobId;
-    private final String jobName;
-    private final List<GisticResult> rows;
-    private int pageSize = DEFAULT_PAGE_SIZE;
-    
-    DisplayableGisticJobResult(GisticAnalysisJob gisticJob) {
-        this.jobId = gisticJob.getId();
-        this.jobName = gisticJob.getName();
-        this.rows = gisticJob.getResults();
+public class GenomicAnnotationEnumTest {
+
+    @Test
+    public void testGetByValue() {
+        assertEquals(GenomicAnnotationEnum.FOLD_CHANGE, GenomicAnnotationEnum.getByValue("Fold Change"));
+        assertNull(GenomicAnnotationEnum.getByValue(null));
     }
 
-    /**
-     * @return the rows
-     */
-    public List<GisticResult> getRows() {
-        return rows;
-    }
-    
-    /**
-     * @return the number of rows.
-     */
-    public int getNumberOfRows() {
-        return getRows().size();
-    }
-    
-    /**
-     * @return the pageSize
-     */
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    /**
-     * @param pageSize the pageSize to set
-     */
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * @return the jobId
-     */
-    public Long getJobId() {
-        return jobId;
-    }
-
-    /**
-     * @return the jobName
-     */
-    public String getJobName() {
-        return jobName;
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckType() {
+        GenomicAnnotationEnum.checkType("no match");
     }
 
 }

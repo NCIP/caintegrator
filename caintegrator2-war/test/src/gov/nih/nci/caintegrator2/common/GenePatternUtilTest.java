@@ -83,81 +83,76 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.analysis;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.caintegrator2.application.analysis.SampleClassificationParameterValue;
+import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
+import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
+import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.QueryResult;
+import gov.nih.nci.caintegrator2.domain.application.ResultRow;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 
-/**
- * Wrapped <code>GisticResult</code> object from gene pattern.
- */
-public class GisticResult extends AbstractCaIntegrator2Object {
-    private static final long serialVersionUID = 1L;
-    
-    private Boolean amplification;
-    private Double amplitude;
-    private Double score;
-    private Double qvalue;
-    private Double frequency;
-    
-    /**
-     * @return the amplification
-     */
-    public Boolean isAmplification() {
-        return amplification;
-    }
-    /**
-     * @param amplification the amplification to set
-     */
-    public void setAmplification(Boolean amplification) {
-        this.amplification = amplification;
-    }
-    /**
-     * @return the amplitude
-     */
-    public Double getAmplitude() {
-        return amplitude;
-    }
-    /**
-     * @param amplitude the amplitude to set
-     */
-    public void setAmplitude(Double amplitude) {
-        this.amplitude = amplitude;
-    }
-    /**
-     * @return the score
-     */
-    public Double getScore() {
-        return score;
-    }
-    /**
-     * @param score the score to set
-     */
-    public void setScore(Double score) {
-        this.score = score;
-    }
-    /**
-     * @return the qvalue
-     */
-    public Double getQvalue() {
-        return qvalue;
-    }
-    /**
-     * @param value the qvalue to set
-     */
-    public void setQvalue(Double value) {
-        qvalue = value;
-    }
-    /**
-     * @return the frequency
-     */
-    public Double getFrequency() {
-        return frequency;
-    }
-    /**
-     * @param frequency the frequency to set
-     */
-    public void setFrequency(Double frequency) {
-        this.frequency = frequency;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import org.junit.Test;
+
+
+public class GenePatternUtilTest {
+
+    @Test
+    public void testGenePatternUtil() throws InvalidCriterionException {
+        Query query1 = new Query();
+        query1.setName("query1");
+        query1.setCompoundCriterion(new CompoundCriterion());
+        Query query2 = new Query();
+        query2.setName("query2");
+        query2.setCompoundCriterion(new CompoundCriterion());
+        List<Query> queries = new ArrayList<Query>();
+        queries.add(query1);
+        queries.add(query2);
+        SampleClassificationParameterValue value = 
+            GenePatternUtil.createSampleClassification(new QueryManagementServiceGenePatternStub(), queries);
+        assertNotNull(value);
+        
+        assertEquals("1", GenePatternUtil.createBoolean0or1Parameter("name", true).getValue());
+        assertEquals("0", GenePatternUtil.createBoolean0or1Parameter("name", false).getValue());
     }
     
+private static class QueryManagementServiceGenePatternStub extends QueryManagementServiceStub {
+        
+        private static Long counter = 0l;
+        @Override
+        public QueryResult execute(Query query) {
+            return result(counter++, ++counter);
+        }
+        
+        private QueryResult result(Long id1, Long id2) {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setRowCollection(new HashSet<ResultRow>());
+            ResultRow row1 = new ResultRow();
+            SampleAcquisition sampleAcquisition = new SampleAcquisition();
+            Sample sample = new Sample();
+            sample.setId(id1);
+            sampleAcquisition.setSample(sample);
+            row1.setSampleAcquisition(sampleAcquisition);
+            
+            ResultRow row2 = new ResultRow();
+            SampleAcquisition sampleAcquisition2 = new SampleAcquisition();
+            Sample sample2 = new Sample();
+            sample2.setId(id2);
+            sampleAcquisition2.setSample(sample2);
+            row2.setSampleAcquisition(sampleAcquisition2);
+            
+            queryResult.getRowCollection().add(row1);
+            queryResult.getRowCollection().add(row2);
+            return queryResult;
+        }
+    }
 }

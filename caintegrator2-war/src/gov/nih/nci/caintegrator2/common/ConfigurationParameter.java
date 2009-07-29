@@ -133,7 +133,7 @@ public enum ConfigurationParameter {
     /**
      * Default GISTIC service URL.
      */
-    GISTIC_URL("http://node255.broad.mit.edu:6060/wsrf/services/cagrid/Gistic"),
+    GISTIC_URL("http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic"),
     
     /**
      * Default CaDNACopy service URL.

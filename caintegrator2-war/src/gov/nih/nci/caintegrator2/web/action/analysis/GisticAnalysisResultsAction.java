@@ -85,9 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
-import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
-import gov.nih.nci.caintegrator2.domain.application.AnalysisJobTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
@@ -98,9 +96,20 @@ public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
 
-    private static final int DEFAULT_PAGE_SIZE = 50;
+    private StudyManagementService studyManagementService;
+    private GisticAnalysisJob job = new GisticAnalysisJob();
     private Long jobId;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        super.prepare();
+        job.setId(jobId);
+        setJob(studyManagementService.getRefreshedStudyEntity(getJob()));
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -117,31 +126,9 @@ public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
      */
     @Override
     public String execute() {
-        if (getDisplayableWorkspace().getGisticJobResult() == null
-                || jobId.compareTo(getDisplayableWorkspace().getGisticJobResult().getJobId()) != 0) {
-            loadJob();
-        }
-        return SUCCESS;
+        return executeAnalysisJobZipDownload(getJob());
     }
     
-    private void loadJob() {
-        for (AbstractPersistedAnalysisJob job
-                : getStudySubscription().getAnalysisJobCollection()) {
-            if (jobId.compareTo(job.getId()) == 0) {
-                if (!AnalysisJobTypeEnum.GISTIC.getValue().equals(job.getJobType())) {
-                    throw new IllegalStateException("Job Id " + jobId 
-                            + " isn't a Gistic job type");
-                }
-                GisticAnalysisJob gisticJob = (GisticAnalysisJob) job;
-                HibernateUtil.loadCollection(gisticJob.getResults());
-                getDisplayableWorkspace().setGisticJobResult(
-                        new DisplayableGisticJobResult(gisticJob));
-                return;
-            }
-        }
-        addActionError("GISTIC job not found: " + jobId);
-    }
-
     /**
      * @return the jobId
      */
@@ -157,23 +144,31 @@ public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
     }
     
     /**
-     * @return page size
+     * @return the studyManagementService
      */
-    public int getPageSize() {
-        if (getGisticJobResult() != null) {
-            return getGisticJobResult().getPageSize();
-        }
-        return DEFAULT_PAGE_SIZE;
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
     }
-        
+
     /**
-     * Set the page size.
-     * @param pageSize the page size
+     * @param studyManagementService the studyManagementService to set
      */
-    public void setPageSize(int pageSize) {
-        if (getGisticJobResult() != null) {
-            getGisticJobResult().setPageSize(pageSize);
-        }
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
+    }
+
+    /**
+     * @return the job
+     */
+    public GisticAnalysisJob getJob() {
+        return job;
+    }
+
+    /**
+     * @param job the job to set
+     */
+    public void setJob(GisticAnalysisJob job) {
+        this.job = job;
     }
 
 }
