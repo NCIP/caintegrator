@@ -88,7 +88,7 @@ package gov.nih.nci.caintegrator2.application.analysis.grid.preprocess;
 import gov.nih.nci.cagrid.common.ZipUtilities;
 import gov.nih.nci.caintegrator2.application.analysis.GctDataset;
 import gov.nih.nci.caintegrator2.application.analysis.GctDatasetFileWriter;
-import gov.nih.nci.caintegrator2.common.Cai2Util;
+import gov.nih.nci.caintegrator2.common.CaGridUtil;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.file.FileManager;
@@ -97,7 +97,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
@@ -214,7 +213,7 @@ public class PreprocessDatasetGridRunner {
             }
             Thread.sleep(DOWNLOAD_REFRESH_INTERVAL);
         }
-        File zipFile = retrieveFileFromTscr(gctFile.getAbsolutePath() + ".zip", tscr); 
+        File zipFile = CaGridUtil.retrieveFileFromTscr(gctFile.getAbsolutePath() + ".zip", tscr); 
         return replaceGctFileWithPreprocessed(gctFile, zipFile);
     }
 
@@ -233,20 +232,7 @@ public class PreprocessDatasetGridRunner {
         FileUtils.deleteDirectory(zipFileDirectory);
         return gctFile;
     }
-    
-    private File retrieveFileFromTscr(String filename, TransferServiceContextReference tscr)
-            throws MalformedURIException, RemoteException, ConnectionException {
-        TransferServiceContextClient tclient = new TransferServiceContextClient(tscr.getEndpointReference());
-        try {
-            InputStream stream = (InputStream) TransferClientHelper.getData(tclient.getDataTransferDescriptor());
-            return Cai2Util.storeFileFromInputStream(stream, filename);
-        } catch (Exception e) {
-            throw new ConnectionException("Unable to download stream data from server.", e);
-        } finally {
-            tclient.destroy();
-        }
-    }
-    
+        
     private void checkTimeout(int callCount) throws ConnectionException {
         if (callCount >= TIMEOUT_SECONDS) {
             throw new ConnectionException("Timed out trying to download preprocess dataset results");

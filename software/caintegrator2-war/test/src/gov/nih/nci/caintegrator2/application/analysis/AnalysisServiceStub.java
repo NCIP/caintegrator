@@ -87,15 +87,14 @@ package gov.nih.nci.caintegrator2.application.analysis;
 
 import edu.mit.broad.genepattern.gp.services.JobInfo;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
-import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParameters;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
@@ -189,10 +188,9 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public List<GisticResult> executeGridGistic(StudySubscription studySubscription, GisticParameters gisticParams)
+    public File executeGridGistic(StatusUpdateListener updater, GisticAnalysisJob job)
             throws ConnectionException, InvalidCriterionException {
         executeGisticJobCalled = true;
         return null;
     }
-
 }

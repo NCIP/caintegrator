@@ -512,6 +512,7 @@
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/GenericEnumUserType.class" />
                  <exclude name="gov/nih/nci/caintegrator2/common/ConfigurationHelperImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/common/CaGridUtil.class" />
                  <!-- Because the Gene Pattern Grid jobs are grid transfer-based, doing integration tests and not unit -->
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/GenePatternGridRunnerImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/pca/PCAGridRunner.class" />
@@ -519,6 +520,8 @@
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/preprocess/PreprocessDatasetParameters.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/comparativemarker/ComparativeMarkerSelectionGridRunner.class" />
                  <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/comparativemarker/ComparativeMarkerSelectionParameters.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/gistic/GisticGridRunner.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/application/analysis/grid/gistic/GisticParameters.class" />
                  <exclude name="gov/nih/nci/caintegrator2/domain/analysis/MarkerResult.class" />
                  <exclude name="gov/nih/nci/caintegrator2/security/SecurityHelper.class" />
              </fileset>

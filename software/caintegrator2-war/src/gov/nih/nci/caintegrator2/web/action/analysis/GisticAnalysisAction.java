@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticParamete
 import gov.nih.nci.caintegrator2.application.analysis.grid.gistic.GisticRefgeneFileEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.common.HibernateUtil;
@@ -105,6 +106,8 @@ import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 import gov.nih.nci.caintegrator2.web.ajax.IPersistedAnalysisJobAjaxUpdater;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -138,6 +141,7 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
 
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
+    private StudyManagementService studyManagementService;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
 
@@ -223,8 +227,12 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
             if (!loadParameters()) {
                 return INPUT;
             }
+            storeCnvSegmentsToIgnoreFile();
         } catch (InvalidCriterionException e) {
             addActionError(e.getMessage());
+            return INPUT;
+        } catch (IOException e) {
+            addActionError("Unable to save uploaded CNV ignore file.");
             return INPUT;
         }
         getCurrentGisticAnalysisJob().setCreationDate(new Date());
@@ -236,6 +244,18 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
         ajaxUpdater.runJob(getCurrentGisticAnalysisJob());
         resetCurrentGisticAnalysisJob();
         return STATUS_ACTION;
+    }
+    
+    private void storeCnvSegmentsToIgnoreFile() throws IOException {
+        GisticParameters gisticParams = getCurrentGisticAnalysisJob().getGisticAnalysisForm().getGisticParameters();
+        File currentCnvFile = gisticParams.getCnvSegmentsToIgnoreFile();
+        if (currentCnvFile != null) {
+            gisticParams
+                    .setCnvSegmentsToIgnoreFile(getStudyManagementService().saveFileToStudyDirectory(
+                            getCurrentStudy().getStudyConfiguration(),
+                            currentCnvFile));
+            
+        }
     }
     
     private boolean loadParameters() throws InvalidCriterionException {
@@ -376,5 +396,19 @@ public class GisticAnalysisAction  extends AbstractDeployedStudyAction {
      */
     public Map<String, String> getGisticServices() {
         return GridDiscoveryServiceJob.getGridGisticServices();
+    }
+
+    /**
+     * @return the studyManagementService
+     */
+    public StudyManagementService getStudyManagementService() {
+        return studyManagementService;
+    }
+
+    /**
+     * @param studyManagementService the studyManagementService to set
+     */
+    public void setStudyManagementService(StudyManagementService studyManagementService) {
+        this.studyManagementService = studyManagementService;
     }
 }

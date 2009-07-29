@@ -86,13 +86,14 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.GisticResult;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ParameterException;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
@@ -117,10 +118,10 @@ public class GisticAjaxRunner implements Runnable {
      * {@inheritDoc}
      */
     public void run() {
-        job.setStatus(AnalysisJobStatusEnum.PROCESSING_REMOTELY);
+        job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         updater.saveAndUpdateJobStatus(job);
         try {
-            processLocally();
+            process();
         } catch (ConnectionException e) {
             addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
             + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
@@ -128,6 +129,8 @@ public class GisticAjaxRunner implements Runnable {
             addErrorMessage("Couldn't execute GISTIC analysis job: " + job.getName()
             + " - " + e.getMessage(), e.getMessage(), AnalysisJobStatusEnum.INVALID_PARAMETER);
         } catch (InvalidCriterionException e) {
+            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
+        } catch (IOException e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
         }
     }
@@ -144,13 +147,14 @@ public class GisticAjaxRunner implements Runnable {
         addErrorMessage(errorMessage, errorState);
     }
 
-    private void processLocally() throws ConnectionException, InvalidCriterionException, ParameterException {
-        List<GisticResult> results = updater.getAnalysisService().executeGridGistic(
-                job.getSubscription(),
-                job.getGisticAnalysisForm().getGisticParameters());
+    private void process() throws ConnectionException, InvalidCriterionException, ParameterException,
+            IOException {
+        File resultFile = updater.getAnalysisService().executeGridGistic(updater, job);
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        if (results != null) {
-            job.getResults().addAll(results);
+        if (resultFile != null) {
+            ResultsZipFile resultZipFile = new ResultsZipFile();
+            resultZipFile.setPath(resultFile.getAbsolutePath());
+            job.setResultsZipFile(resultZipFile);
         }
         updater.saveAndUpdateJobStatus(job);
     }

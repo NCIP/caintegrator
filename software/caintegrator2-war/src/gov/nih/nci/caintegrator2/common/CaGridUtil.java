@@ -83,154 +83,63 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.domain.application;
+package gov.nih.nci.caintegrator2.common;
 
-import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.util.Date;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.rmi.RemoteException;
+
+import org.apache.axis.types.URI.MalformedURIException;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 
 /**
- * 
+ * Utility class used to retrieve data from caGrid objects.  This class cannot be tested using unit tests.
  */
-public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
-    implements Comparable<AbstractPersistedAnalysisJob> {
-    
-    private String name;
-    private AnalysisJobStatusEnum status = AnalysisJobStatusEnum.NOT_SUBMITTED;
-    private Date creationDate;
-    private Date lastUpdateDate;
-    private String jobType;
-    private StudySubscription subscription;
-    private String statusDescription;
-    private static final int DESCRIPTION_LENGTH = 250;
-    
-    /**
-     * @return the statusDescription
-     */
-    public String getStatusDescription() {
-        return statusDescription;
-    }
+public final class CaGridUtil {
 
+    private static final Integer BUFFER_SIZE = 4096;
+    
+    private CaGridUtil() { }
     /**
-     * @param statusDescription the statusDescription to set
+     * Stores a file from an TransferServiceContextReference.
+     * @param filename file to store.
+     * @param tscr transfer reference to retrieve file from.
+     * @return File that was created.
+     * @throws RemoteException unable to connect.
+     * @throws MalformedURIException malformed URI.
+     * @throws ConnectionException unable to connect.
      */
-    public void setStatusDescription(String statusDescription) {
-        if (statusDescription != null && statusDescription.length() > DESCRIPTION_LENGTH) {
-            this.statusDescription = statusDescription.substring(0, DESCRIPTION_LENGTH);
-        } else {
-            this.statusDescription = statusDescription;
+    public static File retrieveFileFromTscr(String filename, TransferServiceContextReference tscr)
+    throws ConnectionException, MalformedURIException, RemoteException {
+        TransferServiceContextClient tclient = new TransferServiceContextClient(tscr.getEndpointReference());
+        try {
+            InputStream stream = (InputStream) TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+            return storeFileFromInputStream(stream, filename);
+        } catch (Exception e) {
+            throw new ConnectionException("Unable to download stream data from server.", e);
+        } finally {
+            tclient.destroy();
         }
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the status
-     */
-    public AnalysisJobStatusEnum getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(AnalysisJobStatusEnum status) {
-        this.status = status;
-    }
-
-    /**
-     * @return the creationDate
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
-     * @param creationDate the creationDate to set
-     */
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /**
-     * @return the lastUpdateDate
-     */
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    /**
-     * @param lastUpdateDate the lastUpdateDate to set
-     */
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    /**
-     * @return the subscription
-     */
-    public StudySubscription getSubscription() {
-        return subscription;
-    }
-
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(StudySubscription subscription) {
-        this.subscription = subscription;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public UserWorkspace getUserWorkspace() {
-        if (getSubscription() != null) {
-            return getSubscription().getUserWorkspace();
+    private static File storeFileFromInputStream(InputStream istream, String filename) throws IOException {
+        File file = new File(filename);
+        OutputStream out = new FileOutputStream(file);
+        byte [] buf = new byte[BUFFER_SIZE];
+        int len;
+        while ((len = istream.read(buf)) > 0) {
+            out.write(buf, 0, len);
         }
-        return null;
+        out.flush();
+        out.close();
+        istream.close();
+        return file;
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(AbstractPersistedAnalysisJob o) {
-        return this.getCreationDate().compareTo(o.getCreationDate()) * -1;
-    }
-
-    /**
-     * @return the jobType
-     */
-    public String getJobType() {
-        return jobType;
-    }
-
-    /**
-     * @param jobType the jobType to set
-     */
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
-    }
-    
-    /**
-     * To be overridden if there is a resultsZipFile.
-     * @return the results file for the job.
-     */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract") // empty default implementation
-    public ResultsZipFile getResultsZipFile() {
-        // default implementation is null; override if appropriate
-        return null;
-    }
-    
 }

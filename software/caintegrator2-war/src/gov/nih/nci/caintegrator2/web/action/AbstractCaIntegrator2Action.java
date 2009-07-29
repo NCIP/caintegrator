@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
-import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableGisticJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.GenePatternAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
@@ -294,17 +293,6 @@ public abstract class AbstractCaIntegrator2Action extends ActionSupport implemen
     public final DisplayableCmsJobResult getCmsJobResult() {
         if (getDisplayableWorkspace() != null) {
             return getDisplayableWorkspace().getCmsJobResult();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the gisticJobResult
-     */
-    public final DisplayableGisticJobResult getGisticJobResult() {
-        if (getDisplayableWorkspace() != null) {
-            return getDisplayableWorkspace().getGisticJobResult();
         } else {
             return null;
         }
