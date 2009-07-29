@@ -716,7 +716,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	<target name="test:seleniumrc:stop">
 		<get taskname="selenium-shutdown"
 			src="http://localhost:${selenium.proxy.port}/selenium-server/driver/?cmd=shutDown"
-			dest="${temp.dir}/reslut.txt" ignoreerrors="true"/>
+			dest="${temp.dir}/result.txt" ignoreerrors="true"/>
 	</target>
 
     <property name="selenium.test.src.dir" value="${software.dir}/caintegrator2-war/test/acceptance/selenium"/>
@@ -743,21 +743,43 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
                 <filter token="selenium.test.resources.dir" value="${selenium.test.resources.dir}" />
                 <filter token="selenium.test.affymetrix.design.dir" value="${selenium.test.affymetrix.design.dir}" />
                 <filter token="selenium.test.agilent.design.dir" value="${selenium.test.agilent.design.dir}" />
+                <filter token="jboss.server.port" value="${jboss.server.port}" />
+                <filter token="jboss.server.hostname" value="${jboss.server.hostname}" />
             </filterset>
         </copy>
     </target>
 
     <target name="test:selenium:init" depends="test:selenium:copy-tests">
 		<property name="selenium.jar" value="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
-		<property name="selenium.browser" value="*firefox"/>
-		<!--  What you would need for a ci server, recommend setting in local.properties
-		<property name="selenium.browser" value="*firefox /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
-		-->
-		<property name="selenium.proxy.port" value="4444"/>
+        
+        <!-- the following are options for telling selenium which browser to use.  Set selenium.browser
+             as a property in local.properties with a value similar to one of the following:
+             
+        - firefox, generic firefox for all platforms
+        <property name="selenium.browser" value="*firefox"/>
+        - firefox 2, for windows platform
+        <property name="selenium.browser" value="*firefox C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
+        - chrome, needed for file upload
+        <property name="selenium.browser" value="*chrome C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
+        - firefox on linux
+        <property name="selenium.browser" value="*firefox /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
+        - chrome on linux
+        <property name="selenium.browser" value="*chrome /usr/lib64/firefox-1.5.0.12/firefox-bin"/>
+        
+        -->
+
+        <property name="selenium.browser" value="*chrome C:\Program Files\Mozilla Firefox 2\firefox.exe"/>
+		<property name="selenium.proxy.port" value="48444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
-		<property name="selenium.url" value="http://localhost:46210"/>
-
+        <property name="selenium.testcase.timeout" value="300"/>
+		<property name="selenium.url" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
+        
+        <echo message="selenium:init: selenium server running on port ${selenium.proxy.port}."/>
+        <echo message="selenium:init: selenium test case timeout is ${selenium.testcase.timeout} seconds."/>
+        <echo message="selenium:init: browser being tested is ${selenium.browser}."/>
+        <echo message="selenium:init: web app being tested is ${selenium.url}."/>
+        
 		<mkdir dir="${selenium.report.dir}"/>
 
 		<if>
@@ -780,16 +802,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		/>
 
 	<target name="test:selenium:run">
-		<!--
+
 		<java jar="${selenium.jar}" fork="true">
+		    <arg line=" -port ${selenium.proxy.port}"/>
 			<arg line=" -htmlSuite &quot;${selenium.browser}&quot;"/>
 			<arg line=" &quot;${selenium.url}&quot;"/>
 			<arg line=" &quot;${selenium.test.suite}&quot;"/>
 			<arg line=" &quot;${selenium.report.dir}/${selenium.report.file}&quot;"/>
-			<arg line=" -timeout 30"/>
+			<arg line=" -timeout ${selenium.testcase.timeout}"/>
 			<arg line=" -log ${temp.dir}/selenium-debug.log"/>
 		</java> 
-		-->
+
 		<osfamily property="os.family"/>
 		<if>
 			<equals arg1="${os.family}" arg2="unix"/>
@@ -801,15 +824,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			</then>
 		</if>
 		<taskdef resource="selenium-ant.properties"  classpathref="project.test.selenium.classpath"/>
+<!--	    
 		<selenese  
 			suite="${selenium.test.suite}"
 			browser="${selenium.browser}"
 			results="${selenium.report.dir}/${selenium.report.file}"
 			multiWindow="false"
-			timeoutInSeconds="3600"
+			timeoutInSeconds="${selenium.testcase.timeout}"
 			port="${selenium.proxy.port}"
 			startURL="${selenium.url}"
 		      	/>
+-->
 	</target>
 	<!-- These targets are for adding files to ivy --> 
 	<target name="ivy:module:add2repo">

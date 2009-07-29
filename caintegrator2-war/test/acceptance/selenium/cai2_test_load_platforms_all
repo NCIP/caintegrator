@@ -121,6 +121,81 @@
 	<td></td>
 </tr>
 <!--// end add Affymetrix Copy Number Platform-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG-U133B.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG_U95Av2.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG_U95B.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG_U95C.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>managePlatformForm_platformFile</td>
+	<td>${testResourcesDesignsAffyDirectory}HG_U95D.na27.annot.csv</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>managePlatformForm_createPlatform</td>
+	<td></td>
+</tr>
 
 </tbody></table>
 </body>
