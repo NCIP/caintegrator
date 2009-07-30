@@ -121,7 +121,6 @@
         </s:if>
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
-                <li><a href="${ notYetImplementedUrl }">Advanced Search</a></li>                
                 <li><a href="${ notYetImplementedUrl }">Support</a></li>
                 <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
