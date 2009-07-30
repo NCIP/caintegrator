@@ -213,7 +213,11 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         utilThis.setValue(JOB_TYPE + jobId, job.getJobType());
         utilThis.setValue(JOB_CREATION_DATE + jobId, 
                 getDateString(job.getCreationDate()));
-        updateStatus(job);
+        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
+        if (job.getLastUpdateDate() != null) {
+            utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
+                getDateString(job.getLastUpdateDate()));
+        }
         if (AnalysisJobStatusEnum.COMPLETED.equals(job.getStatus())) {
             addJobUrl(utilThis, job);
         }
@@ -223,13 +227,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
      * {@inheritDoc}
      */
     public void updateStatus(AbstractPersistedAnalysisJob job) {
-        Util utilThis = getDwrUtil(job.getUserWorkspace().getUsername());
-        String jobId = job.getId().toString();
-        utilThis.setValue(JOB_STATUS + jobId, getStatusMessage(job.getStatus()));
-        if (job.getLastUpdateDate() != null) {
-            utilThis.setValue(JOB_LAST_UPDATE_DATE + jobId, 
-                getDateString(job.getLastUpdateDate()));
-        }
+        saveAndUpdateJobStatus(job);
     }
 
     private void addJobUrl(Util utilThis, AbstractPersistedAnalysisJob job) {
