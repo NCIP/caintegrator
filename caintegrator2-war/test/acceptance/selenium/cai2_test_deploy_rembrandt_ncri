@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -31,6 +29,18 @@
 	<td>Rembrandt with NCRI</td>
 	<td>Cai2StudyName</td>
 </tr>
+<!--// begin Check that the genomic platform has been loaded-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Platforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;managePlatformForm&quot;]//td[text()='HG-U133_Plus_2']</td>
+	<td>true</td>
+</tr>
+<!--// end Check that genomic platform has been loaded-->
 <tr>
 	<td>open</td>
 	<td>/caintegrator2/createStudy.action</td>
@@ -1229,6 +1239,11 @@
 <!--// end map samples-->
 <!--// begin add imaging data source-->
 <tr>
+	<td>store</td>
+	<td>NCRI</td>
+	<td>nbiaCollectionUsedInThisStudy</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>saveControlSamples_addImagingSource</td>
 	<td></td>
@@ -1251,7 +1266,7 @@
 <tr>
 	<td>type</td>
 	<td>nbiaCollectionName</td>
-	<td>NCRI</td>
+	<td>${nbiaCollectionUsedInThisStudy}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -1271,8 +1286,13 @@
 <!--// end add imaging data source-->
 <!--// begin to edit annotation definitions-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a[text()='Edit Annotations']</td>
+	<td>true</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='editStudy']/table[2]/tbody/tr[3]/td[5]/a[2]</td>
+	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a[text()='Edit Annotations']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1566,11 +1586,18 @@
 	<td></td>
 </tr>
 <!--// end assign imaging annotation-->
+<!--// begin Load Image Annotations -->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a[text()='Load Annotations']</td>
+	<td>true</td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Load Annotations</td>
+	<td>//*[@id=&quot;imagingSourceJobStatusTable&quot;]//span[text()='${nbiaCollectionUsedInThisStudy}']/parent::td/parent::tr//a[text()='Load Annotations']</td>
 	<td></td>
 </tr>
+<!--// end Load Image Annotations -->
 <!--// begin Save and Deploy-->
 <tr>
 	<td>clickAndWait</td>

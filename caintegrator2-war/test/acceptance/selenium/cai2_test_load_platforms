@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2" />
+<link rel="selenium.base" href="http://$%7Bjboss.server.hostname%7D:$%7Bjboss.server.port%7D/caintegrator2" />
 <title>Manage Cai2 - Load platforms</title>
 </head>
 <body>
@@ -40,18 +40,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Manage Platforms</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
-	<td>${testResourcesDesignsAffyDirectory}HG-U133A.na27.annot.csv</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>managePlatformForm_createPlatform</td>
+	<td>setSpeed</td>
+	<td>300000</td>
 	<td></td>
 </tr>
 <tr>
@@ -60,67 +50,15 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>managePlatformForm_platformType</td>
-	<td>label=Agilent Gene Expression</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>platformName</td>
-	<td>AgilentG4502A_07_01</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
-	<td>${testResourcesDesignsAgilentDirectory}AgilentG4502A_07_01.tcga.adf</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>managePlatformForm_createPlatform</td>
-	<td></td>
-</tr>
-<!--// add Affymetrix copy number platforms-->
-<tr>
-	<td>open</td>
-	<td>/caintegrator2/managePlatforms.action</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>managePlatformForm_platformType</td>
-	<td>label=Affymetrix SNP</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>platformName</td>
-	<td>GeneChip Human Mapping 100K Set</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
-	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Hind240.na27.annot.csv</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addFileButton</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>managePlatformForm_platformFile</td>
-	<td>${testResourcesDesignsAffyDirectory}Mapping50K_Xba240.na27.annot.csv</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>addFileButton</td>
+	<td>setSpeed</td>
+	<td>0</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>managePlatformForm_createPlatform</td>
+	<td>link=Manage Platforms</td>
 	<td></td>
 </tr>
-<!--// end add Affymetrix Copy Number Platform-->
 
 </tbody></table>
 </body>
