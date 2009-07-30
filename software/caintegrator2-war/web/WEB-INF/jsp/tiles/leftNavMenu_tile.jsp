@@ -121,7 +121,7 @@
         </s:if>
         <li class="stdnav" style="padding-bottom:0;"><div><span class="lowercase">ca</span>Integrator2 Menu</div>
             <ul>
-                <li><a href="${ notYetImplementedUrl }">Support</a></li>
+                <li><a href="javascript:openWin('/caintegrator2//help/Getting_Started.2.8.html#1122280')">Support</a></li>
                 <li><a href="${ notYetImplementedUrl }">Tutorials</a></li>
                 <li><a href="javascript:openUsersGuideWindow('top')">User Guide (draft)</a></li>
             </ul>
