@@ -11,6 +11,8 @@ package edu.mit.broad.genepattern.gp.services;
 public class JobInfo  implements java.io.Serializable {
     private java.util.Calendar dateCompleted;
     private java.util.Calendar dateSubmitted;
+    private java.lang.Boolean deleted;
+    private java.lang.Long elapsedTimeMillis;
     private int jobNumber;
     private java.lang.String parameterInfo;
     private edu.mit.broad.genepattern.gp.services.ParameterInfo[] parameterInfoArray;
@@ -420,6 +422,34 @@ public class JobInfo  implements java.io.Serializable {
         return 
           new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
+    }
+
+    /**
+     * @return the deleted
+     */
+    public java.lang.Boolean getDeleted() {
+        return deleted;
+    }
+
+    /**
+     * @param deleted the deleted to set
+     */
+    public void setDeleted(java.lang.Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    /**
+     * @return the elapsedTimeMillis
+     */
+    public java.lang.Long getElapsedTimeMillis() {
+        return elapsedTimeMillis;
+    }
+
+    /**
+     * @param elapsedTimeMillis the elapsedTimeMillis to set
+     */
+    public void setElapsedTimeMillis(java.lang.Long elapsedTimeMillis) {
+        this.elapsedTimeMillis = elapsedTimeMillis;
     }
 
 }
