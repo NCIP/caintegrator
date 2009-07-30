@@ -252,8 +252,8 @@ public class AnalysisFormTest {
     
     @Test
     public void testGetAnalysisMethodInformationUrl() {
-        form.setUrl("http://genepattern.broad.mit.edu/gp/services/Analysis");
-        assertEquals("http://genepattern.broad.mit.edu/gp/getTaskDoc.jsp", form.getAnalysisMethodInformationUrl());
+        form.setUrl("http://genepattern.broadinstitute.org/gp/services/Analysis?");
+        assertEquals("http://genepattern.broadinstitute.org/gp/getTaskDoc.jsp", form.getAnalysisMethodInformationUrl());
     }
 
 }

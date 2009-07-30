@@ -19,7 +19,7 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
     }
 
     // Use to get a proxy class for Analysis
-    private java.lang.String Analysis_address = "http://genepattern.broad.mit.edu/gp/services/Analysis";
+    private java.lang.String Analysis_address = "http://genepattern.broadinstitute.org/gp/services/Analysis";
 
     public java.lang.String getAnalysisAddress() {
         return Analysis_address;
@@ -102,7 +102,7 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "AnalysisService");
+        return new javax.xml.namespace.QName("http://genepattern.broadinstitute.org/gp/services/Analysis", "AnalysisService");
     }
 
     private java.util.HashSet ports = null;
@@ -110,7 +110,7 @@ public class AnalysisServiceLocator extends org.apache.axis.client.Service imple
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://genepattern.broad.mit.edu/gp/services/Analysis", "Analysis"));
+            ports.add(new javax.xml.namespace.QName("http://genepattern.broadinstitute.org/gp/services/Analysis", "Analysis"));
         }
         return ports.iterator();
     }

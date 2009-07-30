@@ -21,6 +21,7 @@ public class TaskInfo  implements java.io.Serializable {
     private java.lang.String shortName;
     private java.lang.Object taskInfoAttributes;
     private java.lang.String userId;
+    private java.lang.Boolean visualizer;
 
     public TaskInfo() {
     }
@@ -484,6 +485,20 @@ public class TaskInfo  implements java.io.Serializable {
         return 
           new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
+    }
+
+    /**
+     * @return the visualizer
+     */
+    public java.lang.Boolean getVisualizer() {
+        return visualizer;
+    }
+
+    /**
+     * @param visualizer the visualizer to set
+     */
+    public void setVisualizer(java.lang.Boolean visualizer) {
+        this.visualizer = visualizer;
     }
 
 }

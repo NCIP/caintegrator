@@ -330,6 +330,9 @@
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
+        <property name="configurationHelper">
+            <ref local="configurationHelper"/>
+        </property>
         <property name="ajaxUpdater">
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>

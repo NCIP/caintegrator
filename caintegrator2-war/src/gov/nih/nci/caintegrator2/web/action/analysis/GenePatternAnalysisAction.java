@@ -90,6 +90,8 @@ import gov.nih.nci.caintegrator2.application.analysis.AnalysisMethod;
 import gov.nih.nci.caintegrator2.application.analysis.AnalysisService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelper;
+import gov.nih.nci.caintegrator2.common.ConfigurationParameter;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -144,6 +146,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
     
     private AnalysisService analysisService;
     private QueryManagementService queryManagementService;
+    private ConfigurationHelper configurationHelper;
     private IPersistedAnalysisJobAjaxUpdater ajaxUpdater;
     private String selectedAction = OPEN_ACTION;
     private String analysisMethodName;
@@ -180,6 +183,7 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     private String open() {
         resetCurrentGenePatternAnalysisJob();
+        getGenePatternAnalysisForm().setUrl(configurationHelper.getString(ConfigurationParameter.GENE_PATTERN_URL));
         getGenePatternAnalysisForm().setGenomicQueries(getGenomicQueries());
         Collection<AnnotationDefinition> subjectClassifications = 
             getClassificationAnnotations(getStudy().getSubjectAnnotationCollection());
@@ -379,6 +383,20 @@ public class GenePatternAnalysisAction extends AbstractDeployedStudyAction {
      */
     public void setAjaxUpdater(IPersistedAnalysisJobAjaxUpdater ajaxUpdater) {
         this.ajaxUpdater = ajaxUpdater;
+    }
+
+    /**
+     * @return the configurationHelper
+     */
+    public ConfigurationHelper getConfigurationHelper() {
+        return configurationHelper;
+    }
+
+    /**
+     * @param configurationHelper the configurationHelper to set
+     */
+    public void setConfigurationHelper(ConfigurationHelper configurationHelper) {
+        this.configurationHelper = configurationHelper;
     }
 
 }
