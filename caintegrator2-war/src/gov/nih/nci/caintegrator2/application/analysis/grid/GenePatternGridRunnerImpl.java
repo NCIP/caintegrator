@@ -119,7 +119,6 @@ import gov.nih.nci.caintegrator2.file.FileManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -340,7 +339,6 @@ public class GenePatternGridRunnerImpl implements GenePatternGridRunner {
     private void updateStatus(StatusUpdateListener updater,
             AbstractPersistedAnalysisJob job, AnalysisJobStatusEnum status) {
         job.setStatus(status);
-        job.setLastUpdateDate(new Date());
         updater.updateStatus(job);
     }
 
