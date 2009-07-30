@@ -114,6 +114,11 @@ public enum ConfigurationParameter {
             "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"),
     
     /**
+     * Default URL for GenePattern service.
+     */
+    GENE_PATTERN_URL("http://genepattern.broadinstitute.org/gp/services/Analysis"),
+    
+    /**
      * Default Preprocess Dataset service URL.
      */
     PREPROCESS_DATASET_URL(

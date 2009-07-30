@@ -100,6 +100,7 @@ import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguratio
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.common.ConfigurationHelperStub;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -139,6 +140,7 @@ public class GenePatternAnalysisActionTest {
         action.setQueryManagementService(new QueryManagementServiceStub());
         action.setWorkspaceService(new WorkspaceServiceStub());
         action.setAjaxUpdater(new PersistedAnalysisJobAjaxUpdater());
+        action.setConfigurationHelper(new ConfigurationHelperStub());
     }
     
     @Test
