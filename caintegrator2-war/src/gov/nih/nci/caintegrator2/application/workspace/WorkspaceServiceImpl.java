@@ -164,6 +164,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     /**
      * {@inheritDoc}
      */    
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void savePersistedAnalysisJob(AbstractPersistedAnalysisJob job) {
         if (job.getId() == null) {
             dao.save(job);
