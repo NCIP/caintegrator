@@ -772,7 +772,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<property name="selenium.proxy.port" value="48444"/>
 		<property name="selenium.report.dir" value="${reports.dir}/selenium"/>
 		<property name="selenium.report.file" value="selenium-rpt.html"/>
-        <property name="selenium.testcase.timeout" value="300"/>
+        <property name="selenium.testcase.timeout" value="900"/>
 		<property name="selenium.url" value="http://${jboss.server.hostname}:${jboss.server.port}"/>
         
         <echo message="selenium:init: selenium server running on port ${selenium.proxy.port}."/>
