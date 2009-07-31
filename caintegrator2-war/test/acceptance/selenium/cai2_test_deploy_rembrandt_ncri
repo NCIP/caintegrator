@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost:${jboss.server.port}/caintegrator2" />
+<link rel="selenium.base" href="http://localhost:$%7Bjboss.server.port%7D/caintegrator2" />
 <title>Manage Studies - Load Rembrandt with NCRI images</title>
 </head>
 <body>
@@ -1302,7 +1302,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//button[@type='button' and @onclick=&quot;document.imagingSourceForm.action = 'addImagingSourceAnnotations.action';<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.imagingSourceForm.submit();&quot;]</td>
+	<td>//button[2]</td>
 	<td></td>
 </tr>
 <tr>

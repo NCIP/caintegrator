@@ -39,14 +39,10 @@
 	<td>managePlatformForm_createPlatform</td>
 	<td></td>
 </tr>
+<!--// begin induce delay to allow platform time to load -->
 <tr>
 	<td>setSpeed</td>
-	<td>300000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Manage Platforms</td>
+	<td>150000</td>
 	<td></td>
 </tr>
 <tr>
@@ -54,6 +50,7 @@
 	<td>0</td>
 	<td></td>
 </tr>
+<!--// end induce delay to allow platform time to load -->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Manage Platforms</td>
