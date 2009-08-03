@@ -162,12 +162,9 @@ abstract class AbstractKMPlotHandler {
         DateAnnotationValue subjectSurvivalStartDate = null;
         DateAnnotationValue subjectDeathDate = null;
         DateAnnotationValue subjectLastFollowupDate = null;
-        subjectSurvivalStartDate = (DateAnnotationValue) dao.retrieveValueForAnnotationSubject(
-                                    subjectAssignment, survivalValueDefinition.getSurvivalStartDate());
-        subjectDeathDate = (DateAnnotationValue) dao.retrieveValueForAnnotationSubject(
-                                    subjectAssignment, survivalValueDefinition.getDeathDate());
-        subjectLastFollowupDate = (DateAnnotationValue) dao.retrieveValueForAnnotationSubject(
-                                    subjectAssignment, survivalValueDefinition.getLastFollowupDate());
+        subjectSurvivalStartDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getSurvivalStartDate());
+        subjectDeathDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getDeathDate());
+        subjectLastFollowupDate = subjectAssignment.getDateAnnotation(survivalValueDefinition.getLastFollowupDate());
         Calendar calSubjectStartDate = Calendar.getInstance();
         Calendar calSubjectEndDate = Calendar.getInstance();
         if (subjectSurvivalStartDate != null && subjectSurvivalStartDate.getDateValue() != null) {

@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyLogo;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -274,17 +273,6 @@ public interface CaIntegrator2Dao {
      * @return - StudyLogo object.
      */
     StudyLogo retrieveStudyLogo(Long studyId, String studyShortTitleText);
-    
-    /**
-     * Retrieves an AbstractAnnotationValue for an AnnotationDefinition given a SubjectAssignment.
-     * NOTE:  This currently only works if the AnnotationDefinition is a SubjectAnnotation type.  Eventually
-     * might want to add support for ImageSeries, Image, and SampleAcquisition types.
-     * @param subject is the Subject which the value belongs to.
-     * @param annotationDefinition is the AnnotationDefinition which the value belongs to.
-     * @return the Value which correlates to the given subject / annotation.
-     */
-    AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
-            AnnotationDefinition annotationDefinition);
     
     /**
      * Retrieves the unique values for a study's annotation definition.
