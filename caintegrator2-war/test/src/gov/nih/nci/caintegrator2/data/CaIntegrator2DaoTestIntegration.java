@@ -390,39 +390,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
     }
     
     @Test
-    public void testRetrieveValueForAnnotationSubject() {
-        StudySubjectAssignment studySubjectAssignment = new StudySubjectAssignment();
-        
-        SubjectAnnotation genderSubjectAnnotation = new SubjectAnnotation();
-        SubjectAnnotation weightSubjectAnnotation = new SubjectAnnotation();
-        studySubjectAssignment.getSubjectAnnotationCollection().add(genderSubjectAnnotation);
-        studySubjectAssignment.getSubjectAnnotationCollection().add(weightSubjectAnnotation);
-        
-        AnnotationDefinition genderAnnotationDefinition = new AnnotationDefinition();
-        AnnotationDefinition weightAnnotationDefinition = new AnnotationDefinition();
-        
-        StringAnnotationValue genderStringValue = new StringAnnotationValue();
-        genderStringValue.setStringValue("M");
-        genderStringValue.setSubjectAnnotation(genderSubjectAnnotation);
-        genderSubjectAnnotation.setAnnotationValue(genderStringValue);
-        genderStringValue.setAnnotationDefinition(genderAnnotationDefinition);
-        
-        NumericAnnotationValue weightAnnotationValue = new NumericAnnotationValue();
-        weightAnnotationValue.setNumericValue(180.0);
-        weightAnnotationValue.setSubjectAnnotation(weightSubjectAnnotation);
-        weightSubjectAnnotation.setAnnotationValue(weightAnnotationValue);
-        weightAnnotationValue.setAnnotationDefinition(weightAnnotationDefinition);
-        
-        dao.save(studySubjectAssignment);
-        
-        assertEquals(genderStringValue, 
-                dao.retrieveValueForAnnotationSubject(studySubjectAssignment, genderAnnotationDefinition));
-        
-        assertEquals(weightAnnotationValue, 
-                dao.retrieveValueForAnnotationSubject(studySubjectAssignment, weightAnnotationDefinition));
-    }
-    
-    @Test
     public void testRetrieveUniqueValuesForStudyAnnotation() {
         Study study = new Study();
 

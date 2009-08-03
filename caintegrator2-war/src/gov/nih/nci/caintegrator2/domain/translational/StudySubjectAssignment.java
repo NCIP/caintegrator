@@ -1,6 +1,10 @@
 package gov.nih.nci.caintegrator2.domain.translational;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
+import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
+import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
+import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
@@ -117,5 +121,29 @@ public class StudySubjectAssignment extends AbstractCaIntegrator2Object {
                 && sampleAcquisitionCollection.isEmpty()
                 && subjectAnnotationCollection.isEmpty());
     }
+    
+    /**
+     * For a given definition (for a datatype of Date), will return the DateAnnotationValue.
+     * @param definition to retrieve value for.
+     * @return date annotation value corresponding to this subject and definition.
+     */
+    public DateAnnotationValue getDateAnnotation(AnnotationDefinition definition) {
+        if (!AnnotationTypeEnum.DATE.getValue().equals(definition.getType())) {
+            throw new IllegalArgumentException("Definition must be of Date type.");
+        }
+        return (DateAnnotationValue) getAnnotation(definition);
+    }
+
+    
+    private AbstractAnnotationValue getAnnotation(AnnotationDefinition definition) {
+        for (SubjectAnnotation subjectAnnotation : getSubjectAnnotationCollection()) {
+            if (definition.equals(subjectAnnotation.getAnnotationValue().getAnnotationDefinition())) {
+                return subjectAnnotation.getAnnotationValue();
+            }
+        }
+        throw new IllegalArgumentException("Subject " + getIdentifier() 
+                + " doesn't have an annotation value for " + definition.getDisplayName());
+    }
+
 
 }

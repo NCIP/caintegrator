@@ -203,7 +203,6 @@ public class AnalysisServiceTest {
         assertNotNull(kmPlot);
         assertTrue(caIntegratorPlotServiceStub.computeLogRankPValueBetweenCalled);
         assertTrue(caIntegratorPlotServiceStub.getChartCalled);
-        assertTrue(daoStub.retrieveValueForAnnotationSubjectCalled);
         boolean exceptionCaught = false;
         try { // Try giving no survival value definition.
             annotationParameters.setSurvivalValueDefinition(null);
