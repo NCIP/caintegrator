@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis;
 
+import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -240,14 +241,17 @@ public class KMPlotStudyCreator {
         survivalStartDateAnnotation.setDisplayName("Survival Start Date");
         survivalStartDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         survivalStartDateAnnotation.setId(Long.valueOf(2));
+        survivalStartDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
         AnnotationDefinition deathDateAnnotation = new AnnotationDefinition();
         deathDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         deathDateAnnotation.setDisplayName("Death Date");
         deathDateAnnotation.setId(Long.valueOf(3));
+        deathDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
         AnnotationDefinition lastFollowupDateAnnotation = new AnnotationDefinition();
         lastFollowupDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         lastFollowupDateAnnotation.setDisplayName("Last Followup Date");
         lastFollowupDateAnnotation.setId(Long.valueOf(4));
+        lastFollowupDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
         survivalValueDefinition.setSurvivalStartDate(survivalStartDateAnnotation);
         survivalValueDefinition.setDeathDate(deathDateAnnotation);
         survivalValueDefinition.setLastFollowupDate(lastFollowupDateAnnotation);

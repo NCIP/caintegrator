@@ -94,7 +94,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.StringAnnotationValue;
-import gov.nih.nci.caintegrator2.domain.annotation.SubjectAnnotation;
 import gov.nih.nci.caintegrator2.domain.application.AbstractAnnotationCriterion;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -140,7 +139,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean findGeneExpressionReportersCalled;
     public boolean isDuplicateStudyNameCalled;
     public boolean retrieveStudyLogoCalled;
-    public boolean retrieveValueForAnnotationSubjectCalled;
     public boolean mergeCalled;
     public boolean getPlatformsCalled;
     public boolean getStudiesCalled;
@@ -186,7 +184,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
         findGeneExpressionReportersCalled = false;
         isDuplicateStudyNameCalled = false;
         retrieveStudyLogoCalled = false;
-        retrieveValueForAnnotationSubjectCalled = false;
         mergeCalled = false;
         retrieveImagingDataSourceForStudyCalled = false;
         getPlatformsCalled = false;
@@ -309,19 +306,6 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public StudyLogo retrieveStudyLogo(Long id, String fileName) {
         retrieveStudyLogoCalled = true;
         return new StudyLogo();
-    }
-
-    public AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
-            AnnotationDefinition annotationDefinition) {
-        retrieveValueForAnnotationSubjectCalled = true;
-        if (subject != null && annotationDefinition != null) {
-            for (SubjectAnnotation subjectAnnotation : subject.getSubjectAnnotationCollection()) {
-                if (subjectAnnotation.getAnnotationValue().getAnnotationDefinition().equals(annotationDefinition)) {
-                    return subjectAnnotation.getAnnotationValue();
-                }
-            }
-        }
-        return null;
     }
 
     @SuppressWarnings({"PMD", "unchecked"})

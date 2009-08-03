@@ -494,25 +494,6 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
         }
         return null;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings(UNCHECKED)
-    public AbstractAnnotationValue retrieveValueForAnnotationSubject(StudySubjectAssignment subject,
-                                                                    AnnotationDefinition annotationDefinition) {
-        Criteria abstractAnnotationValueCriteria = getCurrentSession().
-                                        createCriteria(AbstractAnnotationValue.class);
-        abstractAnnotationValueCriteria.add(Restrictions.eq(ANNOTATION_DEFINITION_ASSOCIATION, annotationDefinition));
-        abstractAnnotationValueCriteria.createCriteria("subjectAnnotation").
-                add(Restrictions.eq("studySubjectAssignment", subject));
-        List<AbstractAnnotationValue> valueList = abstractAnnotationValueCriteria.list();
-        AbstractAnnotationValue value = null;
-        if (valueList != null && !valueList.isEmpty()) {
-            value = valueList.get(0);
-        }                
-        return value;
-    }
     
     /**
      * {@inheritDoc}
