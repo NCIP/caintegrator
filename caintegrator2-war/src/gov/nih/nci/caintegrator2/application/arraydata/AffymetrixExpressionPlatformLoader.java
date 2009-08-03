@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -135,12 +136,29 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
         return platform;
     }
 
-    void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return getChipType(getAnnotationFiles().get(0));
+    }
+    
+    private String getChipType(File annotationFile)
     throws PlatformLoadingException {
         try {
             setAnnotationFileReader(new CSVReader(new FileReader(annotationFile)));
             loadHeaders();
-            String chipType = getHeaderValue(CHIP_TYPE_HEADER);
+            return fileHeaders.get(CHIP_TYPE_HEADER);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Annotation file not found: " + e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error("IO Error: " + e.getMessage());
+        }
+        throw new PlatformLoadingException("Unable extracting Chip Type from annotation file.");
+    }
+
+    void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
+    throws PlatformLoadingException {
+        try {
+            String chipType = getChipType(annotationFile);
             platform.setName(chipType);
             ReporterList geneReporters = platform.addReporterList(chipType, ReporterTypeEnum.GENE_EXPRESSION_GENE);
             ReporterList probeSetReporters = 
@@ -151,10 +169,6 @@ class AffymetrixExpressionPlatformLoader extends AbstractExpressionPlatformLoade
         } catch (IOException e) {
             throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFileNames(), e);
         }
-    }
-
-    private String getHeaderValue(String headerName) {
-        return fileHeaders.get(headerName);
     }
 
     private void loadHeaders() throws PlatformLoadingException, IOException {

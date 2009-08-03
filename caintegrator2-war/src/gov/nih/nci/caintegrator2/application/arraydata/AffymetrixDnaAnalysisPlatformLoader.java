@@ -85,6 +85,13 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
+import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
+import gov.nih.nci.caintegrator2.domain.genomic.Gene;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -96,13 +103,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import au.com.bytecode.opencsv.CSVReader;
-
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
-import gov.nih.nci.caintegrator2.domain.genomic.Gene;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 /**
  * Loader for Affymetrix SNP array designs.
@@ -122,16 +122,21 @@ class AffymetrixDnaAnalysisPlatformLoader extends AbstractPlatformLoader {
     private static final String POSITION_HEADER = "Physical Position";
     private Map<String, String> fileHeaders;
 
-    AffymetrixDnaAnalysisPlatformLoader(AbstractPlatformSource source) {
+    AffymetrixDnaAnalysisPlatformLoader(AffymetrixDnaPlatformSource source) {
         super(source);
     }
 
     @Override
     Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException {
         Platform platform = createPlatform(PlatformVendorEnum.AFFYMETRIX);
-        platform.setName(((AffymetrixDnaPlatformSource) getSource()).getPlatformName());
+        platform.setName(getPlatformName());
         loadAnnotationFiles(platform, dao);
         return platform;
+    }
+
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return getSource().getPlatformName();
     }
 
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)

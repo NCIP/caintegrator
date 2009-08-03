@@ -98,8 +98,20 @@ public abstract class AbstractPlatformSource implements Serializable {
     private boolean deleteFileOnCompletion;
     private final List<File> annotationFiles = new ArrayList<File>();
     
-    abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
-
+    /**
+     * The platform loader.
+     * @return platform loader.
+     * @throws PlatformLoadingException when error reading the annotation file.
+     */
+    public abstract AbstractPlatformLoader getLoader() throws PlatformLoadingException;
+    
+    /**
+     * Get the platform name either from user input or from the annotation file.
+     * @return the platform name
+     * @exception PlatformLoadingException loading annotation file error
+     */
+    public abstract String getPlatformName() throws PlatformLoadingException;
+    
     /**
      * Creates a new instance.
      * 

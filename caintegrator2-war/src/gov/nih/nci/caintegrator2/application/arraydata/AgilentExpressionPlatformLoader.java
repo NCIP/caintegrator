@@ -133,6 +133,11 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
         setFieldHeaders();
     }
     
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return getSource().getPlatformName();
+    }
+    
     private void setFieldHeaders() {
         if (((AgilentExpressionPlatformSource) getSource()).getPlatformFileName().endsWith(".adf")) {
             firstFieldHeader = ADF_FIRST_FIELD_HEADER;
@@ -173,6 +178,7 @@ class AgilentExpressionPlatformLoader extends AbstractExpressionPlatformLoader {
             probeSetReporters.sortAndLoadReporterIndexes();
             geneReporters.sortAndLoadReporterIndexes();
         } catch (IOException e) {
+            LOGGER.error("IO Error reading annotation file.");
             throw new PlatformLoadingException("Couldn't read annotation file " + getAnnotationFileNames(), e);
         }
     }

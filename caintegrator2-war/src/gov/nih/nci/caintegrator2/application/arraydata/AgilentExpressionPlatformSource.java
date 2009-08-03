@@ -110,8 +110,11 @@ public class AgilentExpressionPlatformSource extends AbstractPlatformSource {
         this.platformFileName = platformFileName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    AbstractPlatformLoader getLoader() {
+    public AbstractPlatformLoader getLoader() {
         return new AgilentExpressionPlatformLoader(this);
     }
     
