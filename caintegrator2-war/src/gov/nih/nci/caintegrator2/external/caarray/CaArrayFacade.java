@@ -136,4 +136,14 @@ public interface CaArrayFacade {
     byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws ConnectionException, FileNotFoundException;
 
+    
+    /**
+     * Use this to verify a genomic source will connect and find experiment without
+     * throwing an exception.
+     * @param genomicSource to test connection.
+     * @throws ConnectionException if the server couldn't be reached.
+     * @throws ExperimentNotFoundException if the experiment doesn't exist on the server.
+     */
+    void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource) 
+    throws ConnectionException, ExperimentNotFoundException;
 }

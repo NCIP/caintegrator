@@ -244,5 +244,15 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
         }
         throw new FileNotFoundException("The experiment did not contain a file named " + filename);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource) 
+        throws ConnectionException, ExperimentNotFoundException {
+        SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
+        CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
+        
+    }
 
 }

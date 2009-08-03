@@ -89,8 +89,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacadeStub;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
 import java.util.HashMap;
@@ -109,6 +113,7 @@ public class EditGenomicSourceActionTest {
 
     private EditGenomicSourceAction action;
     private StudyManagementServiceStub studyManagementServiceStub;
+    private CaArrayFacadeStubForAction caArrayFacadeStub;
 
     @Before
     public void setUp() {
@@ -119,6 +124,8 @@ public class EditGenomicSourceActionTest {
         action.setUpdater(new GenomicDataSourceAjaxUpdaterStub());
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
+        caArrayFacadeStub = new CaArrayFacadeStubForAction();
+        action.setCaArrayFacade(caArrayFacadeStub);
     }
 
     @Test
@@ -147,11 +154,20 @@ public class EditGenomicSourceActionTest {
         assertTrue(studyManagementServiceStub.deleteCalled);
         assertTrue(updaterStub.runJobCalled);
         
+        // Test platform validation.
         action.getGenomicSource().setPlatformVendor(PlatformVendorEnum.AGILENT.getValue());
         action.getGenomicSource().setPlatformName("");
         assertEquals(Action.INPUT, action.save());
         action.getGenomicSource().setPlatformName("Name");
         assertEquals(Action.SUCCESS, action.save());
+        
+        // Test server validation.
+        caArrayFacadeStub.throwConnectionException = true;
+        assertEquals(Action.INPUT, action.save());
+        
+        caArrayFacadeStub.clear();
+        caArrayFacadeStub.throwExperimentNotFoundException = true;
+        assertEquals(Action.INPUT, action.save());
         
     }
     
@@ -174,5 +190,26 @@ public class EditGenomicSourceActionTest {
             runJobCalled = true;
         }
         
+    }
+    
+    private static class CaArrayFacadeStubForAction extends CaArrayFacadeStub {
+        public boolean throwConnectionException = false;
+        public boolean throwExperimentNotFoundException = false;
+        
+        public void clear() {
+            throwConnectionException = false;
+            throwExperimentNotFoundException = false;
+        }
+        
+        @Override
+        public void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource)
+                throws ConnectionException, ExperimentNotFoundException {
+            if (throwConnectionException) {
+                throw new ConnectionException("Exception Thrown");
+            }
+            if (throwExperimentNotFoundException) {
+                throw new ExperimentNotFoundException("Exception Thrown");
+            }
+        }
     }
 }

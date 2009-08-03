@@ -134,4 +134,8 @@ public class CaArrayFacadeStub implements CaArrayFacade {
         return new byte[0];
     }
 
+    public void validateGenomicSourceConnection(GenomicDataSourceConfiguration genomicSource)
+            throws ConnectionException, ExperimentNotFoundException {
+    }
+
 }
