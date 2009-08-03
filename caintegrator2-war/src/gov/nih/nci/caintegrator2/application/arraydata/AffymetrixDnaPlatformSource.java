@@ -107,8 +107,11 @@ public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
         this.platformName = platformName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    AbstractPlatformLoader getLoader() throws PlatformLoadingException {
+    public AbstractPlatformLoader getLoader() throws PlatformLoadingException {
         return new AffymetrixDnaAnalysisPlatformLoader(this);
     }
 
@@ -121,8 +124,9 @@ public class AffymetrixDnaPlatformSource extends AbstractPlatformSource {
     }
 
     /**
-     * @return the platformName
+     * {@inheritDoc}
      */
+    @Override
     public String getPlatformName() {
         return platformName;
     }

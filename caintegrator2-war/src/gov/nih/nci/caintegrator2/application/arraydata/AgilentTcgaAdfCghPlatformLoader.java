@@ -134,6 +134,11 @@ class AgilentTcgaAdfCghPlatformLoader extends AbstractPlatformLoader {
         return platform;
     }
 
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return getSource().getPlatformName();
+    }
+    
     void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException {
         try {

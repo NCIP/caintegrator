@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.AffymetrixExpressionPlatf
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentDnaPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatformSource;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.file.FileManager;
 import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
@@ -199,8 +200,6 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             if (StringUtils.isEmpty(platformName)
                     && !platformFileFileName.endsWith(".xml")) {
                 addFieldError("platformName", "Platform name is required for this platform type.");
-            } else if (getArrayDataService().getPlatform(platformName) != null) {
-                addFieldError("platformName", "Platform name is duplicate, please enter another name.");
             }
         }
     }
@@ -233,23 +232,33 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             AbstractPlatformSource source;
             switch (PlatformTypeEnum.getByValue(platformType)) {
             case AFFYMETRIX_GENE_EXPRESSION:
-                source = new AffymetrixExpressionPlatformSource(getPlatformFileCopy());
+                source = new AffymetrixExpressionPlatformSource(
+                        getPlatformFileCopy());
                 break;
 
             case AFFYMETRIX_DNA_ANALYSIS:
-                source = new AffymetrixDnaPlatformSource(getAnnotationFiles(), getPlatformName());
+                source = new AffymetrixDnaPlatformSource(
+                        getAnnotationFiles(), getPlatformName());
                 break;
                 
             case AGILENT_GENE_EXPRESSION:
-                source = new AgilentExpressionPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
+                source = new AgilentExpressionPlatformSource(
+                        getPlatformFileCopy(), getPlatformName(), platformFileFileName);
                 break;
                 
             case AGILENT_DNA_ANALYSIS:
-                source = new AgilentDnaPlatformSource(getPlatformFileCopy(), platformName, platformFileFileName);
+                source = new AgilentDnaPlatformSource(
+                        getPlatformFileCopy(), getPlatformName(), platformFileFileName);
                 break;
 
             default:
                 addActionError("Invalid platform vendor: " + platformType);
+                return ERROR;
+            }
+            String extractedName = source.getLoader().getPlatformName();
+            if (getArrayDataService().getPlatform(extractedName) != null) {
+                addFieldError("platformName", "Platform name is duplicate or the platform is already been loaded: "
+                        + extractedName);
                 return ERROR;
             }
             submitPlatformCreation(source);
@@ -258,6 +267,10 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             LOGGER.error("Couldn't copy uploaded file", e);
             addActionError("Please contact the system administrator. Couldn't copy the uploaded files: " 
                     + e.getMessage());
+            return ERROR;
+        } catch (PlatformLoadingException e) {
+            LOGGER.error("Couldn't loaded annotation file", e);
+            addActionError("Couldn't read annotation file: " + e.getMessage());
             return ERROR;
         }
     }

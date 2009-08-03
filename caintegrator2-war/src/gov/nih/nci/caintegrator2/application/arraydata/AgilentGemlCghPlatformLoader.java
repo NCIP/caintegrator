@@ -114,6 +114,13 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
     
     private static final Logger LOGGER = Logger.getLogger(AgilentGemlCghPlatformLoader.class);
 
+    private static final String NAME_ATTRIBUTE = "name";
+    private static final String PROJECT_TAG = "project";
+    private static final String REPORTER_TAG = "reporter";
+    private static final String GENE_TAG = "gene";
+    private static final String OTHER_TAG = "other";
+    private static final String DONE = "Done";
+    
     private final GemlSaxParser gemlSaxParser;
 
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
@@ -132,6 +139,12 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         loadAnnotationFiles(platform, dao);
         return platform;
     }
+    
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return new GemlPlatformNameParser().extractPlatformName(
+                getAnnotationFiles().get(0));
+    }
 
     /**
      * {@inheritDoc}
@@ -142,10 +155,13 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         try {
             gemlSaxParser.parseFile(annotationFile, platform, dao);
         } catch (SAXException se) {
+            LOGGER.info("Error parsing annotation file: " + annotationFile.getAbsolutePath());
             throw new PlatformLoadingException("Error parsing annotation file", se);
         } catch (ParserConfigurationException pce) {
+            LOGGER.info("Error configuring SAX parser.");
             throw new PlatformLoadingException("Error configuring SAX parser", pce);
         } catch (IOException ie) {
+            LOGGER.info("IO Error on annotation file: " + annotationFile.getAbsolutePath());
             throw new PlatformLoadingException("I/O Error on annotation file", ie);
         }
     }
@@ -166,6 +182,64 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
     @Override
     Logger getLogger() {
         return LOGGER;
+    }
+    
+    /**
+     * 
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity")   // SAX parser event
+    class GemlPlatformNameParser extends DefaultHandler {
+        
+        private String platformName = null;
+
+        /**
+         * Parse the GEML XML file to extract the platform name.
+         * @param xmlFile the input XML file.
+         * @throws PlatformLoadingException 
+         * @exception when error parsing the annotation file.
+         */
+        String extractPlatformName(File xmlFile)
+        throws PlatformLoadingException {
+            String errorMsg = null;
+            try {
+                // get a factory
+                SAXParserFactory spf = SAXParserFactory.newInstance();
+                SAXParser sp = spf.newSAXParser();
+
+                // Ignore the DTD declaration
+                final XMLReader parser = sp.getXMLReader();
+                parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                parser.setFeature("http://xml.org/sax/features/validation", false);
+
+                sp.parse(xmlFile, this);
+
+            } catch (SAXException e) {
+                if (DONE.equalsIgnoreCase(e.getMessage())) {
+                    return platformName;
+                }
+                errorMsg = "Platform name not found.";
+                LOGGER.error(errorMsg);
+            } catch (ParserConfigurationException e) {
+                errorMsg = "Error configurating SAX parser.";
+                LOGGER.error(errorMsg);
+            } catch (IOException e) {
+                errorMsg = "IO Error: " + e.getMessage();
+                LOGGER.error(errorMsg);
+            }
+            throw new PlatformLoadingException(errorMsg);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes)
+        throws SAXException {
+            if (qName.equalsIgnoreCase(PROJECT_TAG)) {
+                platformName = attributes.getValue(NAME_ATTRIBUTE);
+                throw new SAXException(DONE);
+            }
+        }
     }
     
     /**
@@ -214,26 +288,26 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
         @SuppressWarnings("PMD.CyclomaticComplexity")   // SAX parser event
         public void startElement(String uri, String localName, String qName, Attributes attributes)
         throws SAXException {
-            if (qName.equalsIgnoreCase("project")) {
+            if (qName.equalsIgnoreCase(PROJECT_TAG)) {
                 processProjectTag(attributes);
-            } else if (qName.equalsIgnoreCase("reporter")) {
+            } else if (qName.equalsIgnoreCase(REPORTER_TAG)) {
                 processReporterTag(attributes);
-            } else if (qName.equalsIgnoreCase("gene") && reporter != null) {
+            } else if (qName.equalsIgnoreCase(GENE_TAG) && reporter != null) {
                 processGeneTag(attributes);
-            } else if (qName.equalsIgnoreCase("other")
-                    && attributes.getValue("name").equalsIgnoreCase("genomic_build")) {
+            } else if (qName.equalsIgnoreCase(OTHER_TAG)
+                    && attributes.getValue(NAME_ATTRIBUTE).equalsIgnoreCase("genomic_build")) {
                 reporterList.setGenomeVersion(attributes.getValue("value").split(":")[0]);
             }
         }
         
         private void processProjectTag(Attributes attributes) {
-            myPlatform.setName(attributes.getValue("name"));
+            myPlatform.setName(attributes.getValue(NAME_ATTRIBUTE));
             reporterList = myPlatform.addReporterList(myPlatform.getName(),
                     ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
         }
         
         private void processReporterTag(Attributes attributes) {
-            String reporterName = attributes.getValue("name");
+            String reporterName = attributes.getValue(NAME_ATTRIBUTE);
             if (reporterName.startsWith("A_")) {
                 reporter = new DnaAnalysisReporter();
                 reporterList.getReporters().add(reporter);
