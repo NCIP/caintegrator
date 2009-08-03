@@ -222,6 +222,9 @@
         <property name="updater">
             <ref local="genomicDataSourceAjaxUpdater"/>
         </property>
+        <property name="caArrayFacade">
+            <ref local="caArrayFacade"/>
+        </property>
     </bean>
 
     <bean id="editSampleMappingAction"
