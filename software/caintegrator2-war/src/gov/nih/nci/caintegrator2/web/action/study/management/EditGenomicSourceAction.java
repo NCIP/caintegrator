@@ -90,7 +90,10 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.web.ajax.IGenomicDataSourceAjaxUpdater;
 
 import java.util.ArrayList;
@@ -107,6 +110,7 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
     
     private IGenomicDataSourceAjaxUpdater updater;
     private ArrayDataService arrayDataService;
+    private CaArrayFacade caArrayFacade;
 
     /**
      * {@inheritDoc}
@@ -182,6 +186,15 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
             addFieldError("genomicSource.platformName", "Platform name is required for Agilent");
             return false;
         }
+        try {
+            caArrayFacade.validateGenomicSourceConnection(getGenomicSource());
+        } catch (ConnectionException e) {
+            addFieldError("genomicSource.serverProfile.hostname", "Unable to connect to server.");
+            return false;
+        } catch (ExperimentNotFoundException e) {
+            addFieldError("genomicSource.experimentIdentifier", "Experiment identifier not found on server.");
+            return false;
+        }
         return true;
     }
     
@@ -227,6 +240,20 @@ public class EditGenomicSourceAction extends AbstractGenomicSourceAction {
      */
     public void setUpdater(IGenomicDataSourceAjaxUpdater updater) {
         this.updater = updater;
+    }
+
+    /**
+     * @return the caArrayFacade
+     */
+    public CaArrayFacade getCaArrayFacade() {
+        return caArrayFacade;
+    }
+
+    /**
+     * @param caArrayFacade the caArrayFacade to set
+     */
+    public void setCaArrayFacade(CaArrayFacade caArrayFacade) {
+        this.caArrayFacade = caArrayFacade;
     }
        
 }
