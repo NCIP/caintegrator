@@ -103,8 +103,11 @@ public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
         super(annotationFile);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    AbstractPlatformLoader getLoader() throws PlatformLoadingException {
+    public AbstractPlatformLoader getLoader() throws PlatformLoadingException {
         return new AffymetrixExpressionPlatformLoader(this);
     }
 
@@ -114,6 +117,14 @@ public class AffymetrixExpressionPlatformSource extends AbstractPlatformSource {
     @Override
     public String toString() {
         return "Affymetrix CSV annotation file: " + getAnnotationFileNames();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPlatformName() throws PlatformLoadingException {
+        return getLoader().getPlatformName();
     }
 
 }

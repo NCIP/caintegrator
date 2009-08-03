@@ -103,7 +103,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Base class for platform loaders.
  */
-abstract class AbstractPlatformLoader {
+public abstract class AbstractPlatformLoader {
     
     
     private final Map<String, Gene> symbolToGeneMap = new HashMap<String, Gene>();
@@ -115,17 +115,35 @@ abstract class AbstractPlatformLoader {
     AbstractPlatformLoader(AbstractPlatformSource source) {
         this.source = source;
     }
+    
+    /**
+     * 
+     * @return the platform name
+     * @throws PlatformLoadingException when error parsing the annotation file
+     */
+    public abstract String getPlatformName() throws PlatformLoadingException;
 
     abstract Platform load(CaIntegrator2Dao dao) throws PlatformLoadingException;
 
     abstract  Gene createGene(String symbol, String[] fields);
 
+    /**
+     * Create platform and set vendor.
+     * @param platformVendor the vendor to set.
+     * @return the platform
+     */
     protected Platform createPlatform(PlatformVendorEnum platformVendor) {
         Platform platform = new Platform();
         platform.setVendor(platformVendor);
         return platform;
     }
     
+    /**
+     * Load the annotation file for the platform.
+     * @param platform the platform
+     * @param dao the caIntegrator2Dao
+     * @throws PlatformLoadingException when error loading the annotation file.
+     */
     protected void loadAnnotationFiles(Platform platform, CaIntegrator2Dao dao) throws PlatformLoadingException {
         try {
             for (File annotationFile : getAnnotationFiles()) {
@@ -141,16 +159,33 @@ abstract class AbstractPlatformLoader {
     abstract void handleAnnotationFile(File annotationFile, Platform platform, CaIntegrator2Dao dao)
     throws PlatformLoadingException;
 
+    /**
+     * 
+     * @param headers the mapping header
+     */
     protected void loadAnnotationHeaders(String[] headers) {
         for (int i = 0; i < headers.length; i++) {
             headerToIndexMap.put(headers[i], i);
         }
     }
 
+    /**
+     * 
+     * @param fields filed array
+     * @param firstField the first field
+     * @return true or false
+     */
     protected boolean isAnnotationHeadersLine(String[] fields, String firstField) {
         return fields.length > 0 && firstField.equals(fields[0]);
     }
 
+    /**
+     * 
+     * @param fields field array
+     * @param symbol gene symbol
+     * @param dao the caIntegratorDao
+     * @return the gene
+     */
     protected Gene lookupOrCreateGene(String[] fields, String symbol, CaIntegrator2Dao dao) {
         Gene gene = dao.getGene(symbol);
         if (gene == null) {
@@ -160,6 +195,12 @@ abstract class AbstractPlatformLoader {
         return gene;
     }
 
+    /**
+     * 
+     * @param fields field array
+     * @param header the header to get the value for
+     * @return the value
+     */
     protected String getAnnotationValue(String[] fields, String header) {
         if (getHeaderToIndexMap().containsKey(header)) {
             return fields[getHeaderToIndexMap().get(header)];
@@ -167,11 +208,21 @@ abstract class AbstractPlatformLoader {
         return "";
     }
 
+    /**
+     * 
+     * @param fields field array
+     * @param header the header
+     * @param noValueSymbol the no value string
+     * @return the value
+     */
     protected String getAnnotationValue(String[] fields, String header, String noValueSymbol) {
         String value = fields[getHeaderToIndexMap().get(header)];
         return value.equals(noValueSymbol) ? null : value;
     }
 
+    /**
+     * Clean up at the end.
+     */
     protected void cleanUp() {
         if (getSource().getDeleteFileOnCompletion()) {
             for (File file : getSource().getAnnotationFiles()) {
@@ -180,6 +231,9 @@ abstract class AbstractPlatformLoader {
         }
     }
 
+    /**
+     * Close all files.
+     */
     protected void closeAnnotationFileReader() {
         if (annotationFileReader != null) {
             try {

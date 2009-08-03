@@ -157,6 +157,8 @@ public class ManagePlatformsActionTest {
         
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
+        action.setPlatformName("CGH244A");
+        action.setPlatformFileFileName(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
         action.setJmsTemplate(new JmsTemplate() {
             @Override
             public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
