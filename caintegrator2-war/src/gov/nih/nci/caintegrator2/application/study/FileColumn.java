@@ -221,6 +221,9 @@ public class FileColumn extends AbstractCaIntegrator2Object implements Comparabl
         } else if (isTimepointColumn()) {
             getAnnotationFile().setTimepointColumn(null);
         }
+        if (getFieldDescriptor() == null) {
+            setFieldDescriptor(new AnnotationFieldDescriptor());
+        }
     }
 
     boolean isLoadable() {
