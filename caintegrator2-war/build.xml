@@ -296,10 +296,7 @@
 
         <path id="svnlib.classpath">
             <fileset dir="${svnlib.dir}">
-                <include name="svnant-1.2.1.jar" />
-                <include name="svnClientAdapter-1.2.1.jar" />
-                <include name="svnjavahl-1.2.1.jar" />
-                <include name="svnkit-1.2.1.jar" />
+                   <include name="*.jar"/>
             </fileset>
         </path>        
         
