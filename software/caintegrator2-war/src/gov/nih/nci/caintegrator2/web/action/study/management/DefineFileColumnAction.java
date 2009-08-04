@@ -318,11 +318,19 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
 
     private void updateColumnType() {
         if (IDENTIFIER_TYPE.equals(columnType)) {
+            setAnnotationColumn(getFileColumn().getAnnotationFile().getIdentifierColumn());
             getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
         } else if (TIMEPOINT_TYPE.equals(columnType)) {
+            setAnnotationColumn(getFileColumn().getAnnotationFile().getTimepointColumn());
             getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
         } else if (ANNOTATION_TYPE.equals(columnType)) {
             getFileColumn().makeAnnotationColumn();
+        }
+    }
+    
+    private void setAnnotationColumn(FileColumn annotationColumn) {
+        if (annotationColumn != null) {
+            annotationColumn.makeAnnotationColumn();
         }
     }
 
@@ -416,6 +424,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
      */
     public boolean isPermissibleOn() {
         if (isColumnTypeAnnotation()
+                && fileColumn.getFieldDescriptor() != null
                 && fileColumn.getFieldDescriptor().getDefinition() != null) {
             return true;
         } 
