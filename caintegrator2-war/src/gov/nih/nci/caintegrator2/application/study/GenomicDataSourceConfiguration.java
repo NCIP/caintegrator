@@ -452,7 +452,7 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
                 resultBuffer.append(", ");
             }
             resultBuffer.append(controlSampleSet.getName());
-            resultBuffer.append(':');
+            resultBuffer.append(": ");
             resultBuffer.append(controlSampleSet.getSamples().size());
         }
         return resultBuffer.toString();

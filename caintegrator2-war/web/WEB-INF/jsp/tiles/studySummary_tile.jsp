@@ -34,10 +34,10 @@
             <td align="right">Deployment Status: </td>
             <td><b>
                 <s:if test="studySummary.deployed">
-                    Deployed.
+                    Deployed
                 </s:if>
                 <s:else>
-                    Not Deployed.
+                    Not Deployed
                 </s:else> 
                 </b>           
             </td>
@@ -64,7 +64,7 @@
         
         <tr>
 	        <td align="right">
-	         Suvival Definitions:
+	         Survival Definitions:
 	        </td>
 	        
 	        <s:if test="%{studySummary.study.survivalValueDefinitionCollection.empty}">
@@ -132,17 +132,17 @@
             </tr>
                 <s:if test="expressionData">
                     <tr>
-                        <td align="right">Number of Samples:</td>
+                        <td align="right">Number of Samples: </td>
                         <td><b><s:property value="numberSamples" /> </b></td>
                         <td />
                         <td />
                     </tr>
                     <tr>
-                        <td align="right">Control Samples Set:</td>
+                        <td align="right">Control Samples Set: </td>
                         <td><b> <s:if test="%{numberControlSamples > 0}">
                             <s:property value="numberControlSampleSetSamples" />
                         </s:if> <s:else>
-                        Not Configured.
+                        Not Configured
                      </s:else> </b></td>
                         <td />
                         <td />
@@ -150,7 +150,7 @@
                 </s:if>
                 <s:elseif test="copyNumberData">
                     <tr>
-                        <td align="right">Copy Number Samples:</td>
+                        <td align="right">Copy Number Samples: </td>
                         <td><b><s:property value="numberSamples" /> </b></td>
                         <td />
                         <td />
