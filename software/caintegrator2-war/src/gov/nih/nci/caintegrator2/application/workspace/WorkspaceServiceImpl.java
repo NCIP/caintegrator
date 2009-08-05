@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.application.workspace;
 
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
@@ -103,10 +104,12 @@ import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +121,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     
     private CaIntegrator2Dao dao;
     private SecurityManager securityManager;
+    
+    private static final int TWELVE_HOURS = 12;
 
     /**
      * {@inheritDoc}
@@ -193,8 +198,26 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      */
     public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace userWorkspace) 
         throws CSException {
-        return securityManager.retrieveManagedStudyConfigurations(userWorkspace.getUsername(), 
+        Set<StudyConfiguration> results = securityManager.retrieveManagedStudyConfigurations(
+                userWorkspace.getUsername(), 
                         dao.getStudies(userWorkspace.getUsername()));
+        updateStatus(results);
+        return results;
+    }
+    
+    private void updateStatus(Set<StudyConfiguration> studsyConfigurations) {
+        for (StudyConfiguration studyConfiguration : studsyConfigurations) {
+            if (Status.PROCESSING.equals(studyConfiguration.getStatus())
+                    && isTimeout(studyConfiguration.getDeploymentStartDate())) {
+                studyConfiguration.setStatus(Status.ERROR);
+                studyConfiguration.setStatusDescription("TImeout after 12 hours");
+                dao.save(studyConfiguration);
+            }
+        }
+    }
+    
+    private boolean isTimeout(Date date) {
+        return DateUtils.addHours(date, TWELVE_HOURS).before(new Date());
     }
     
     private void removeOldSubscriptions(UserWorkspace userWorkspace, List<Study> myStudies) {

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.workspace;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.Query;
@@ -94,9 +95,12 @@ import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.web.DisplayableStudySummary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.time.DateUtils;
 
 /**
  * Stubbed implementation of WorkspaceService for testing.
@@ -143,7 +147,17 @@ public class WorkspaceServiceStub implements WorkspaceService {
 
     public Set<StudyConfiguration> retrieveStudyConfigurationJobs(UserWorkspace workspace) {
         retrieveStudyConfigurationJobsCalled = true;
-        return new HashSet<StudyConfiguration>();
+        HashSet<StudyConfiguration> results = new HashSet<StudyConfiguration>();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        results.add(studyConfiguration);
+        studyConfiguration.setStatus(Status.PROCESSING);
+        Date today = new Date();
+        studyConfiguration.setDeploymentStartDate(DateUtils.addHours(today, -13));
+        studyConfiguration = new StudyConfiguration();
+        results.add(studyConfiguration);
+        studyConfiguration.setStatus(Status.PROCESSING);
+        studyConfiguration.setDeploymentStartDate(today);
+        return results;
     }
     
     public void subscribeAll(UserWorkspace userWorkspace) {
