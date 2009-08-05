@@ -119,6 +119,11 @@ public class EditStudyActionTest {
     }
 
     @Test
+    public void testManageStudy() {
+        assertEquals(Action.SUCCESS, editStudyAction.manageStudies());
+    }
+
+    @Test
     public void testDelete() {
         assertEquals(Action.SUCCESS, editStudyAction.deleteStudy());
     }
