@@ -91,7 +91,6 @@ import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.chart.renderer.category.StatisticalBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -200,9 +199,12 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
         return renderer;
     }
     
-    private BoxAndWhiskerRenderer cusomtizeBoxWhiskerChart(JFreeChart chart) {
+    private BoxAndWhiskerCoinPlotRenderer cusomtizeBoxWhiskerChart(JFreeChart chart) {
         customizeAxisMargin(chart);
-        BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        BoxAndWhiskerCoinPlotRenderer renderer = new BoxAndWhiskerCoinPlotRenderer();
+        renderer.setDisplayAllOutliers(true);
+        renderer.setDisplayMean(false);
+        renderer.setFillBox(false);
         renderer.setItemMargin(ITEM_MARGIN);
         chart.removeLegend();
         return renderer;

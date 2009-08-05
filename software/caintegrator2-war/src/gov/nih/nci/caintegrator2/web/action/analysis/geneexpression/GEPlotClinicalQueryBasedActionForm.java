@@ -99,7 +99,7 @@ import java.util.Map;
 public class GEPlotClinicalQueryBasedActionForm {
     
     private String geneSymbol;
-    private String reporterType;
+    private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     private List<String> selectedQueryIDs = new ArrayList<String>();
     private List<String> unselectedQueryIDs = new ArrayList<String>();
     private boolean exclusiveGroups = false;

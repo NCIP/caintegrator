@@ -97,7 +97,7 @@ import java.util.Map;
 public class GEPlotGenomicQueryBasedActionForm {
     
     private String selectedQueryId;
-    private String reporterType;
+    private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     private boolean resetSelected = false;
     
     // JSP Select List Options
