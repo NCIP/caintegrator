@@ -106,7 +106,7 @@ public class GEPlotAnnotationBasedActionForm {
     private boolean addControlSamplesGroup = false;
     private String controlSampleSetName;
     private String geneSymbol;
-    private String reporterType;
+    private String reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue();
     
     
     // JSP Select List Options
