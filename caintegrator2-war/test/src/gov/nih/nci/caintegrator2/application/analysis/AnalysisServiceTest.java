@@ -285,7 +285,7 @@ public class AnalysisServiceTest {
         assertEquals(ResultTypeEnum.CLINICAL, query1.getResultType());
     }
     
-    private void runGEPlotTest(KMPlotStudyCreator studyCreator, StudySubscription subscription, AbstractGEPlotParameters annotationParameters) 
+    private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters annotationParameters) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, annotationParameters);
         
@@ -305,9 +305,12 @@ public class AnalysisServiceTest {
         annotationParameters.setSelectedAnnotation(studyCreator.getGroupAnnotationField());
         annotationParameters.getSelectedValues().addAll(studyCreator.getPlotGroupValues());
         annotationParameters.setGeneSymbol("egfr");
+        annotationParameters.setAddControlSamplesGroup(true);
+        annotationParameters.setAddPatientsNotInQueriesGroup(true);
+        annotationParameters.setControlSampleSetName("samples");
 
         assertTrue(annotationParameters.validate());
-        runGEPlotTest(studyCreator, subscription, annotationParameters);
+        runGEPlotTest(subscription, annotationParameters);
         
     }
     
@@ -328,7 +331,7 @@ public class AnalysisServiceTest {
         assertFalse(genomicQueryParameters.validate());
         genomicQueryParameters.setQuery(query1);
         genomicQueryParameters.setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
+        runGEPlotTest(subscription, genomicQueryParameters);
         assertEquals(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET, query1.getReporterType());
     }
     
@@ -356,7 +359,7 @@ public class AnalysisServiceTest {
         assertFalse(genomicQueryParameters.validate());
         genomicQueryParameters.setGeneSymbol("EGFR");
         assertTrue(genomicQueryParameters.validate());
-        runGEPlotTest(studyCreator, subscription, genomicQueryParameters);
+        runGEPlotTest(subscription, genomicQueryParameters);
     }
     
     private final class GenePatternClientFactoryStub implements GenePatternClientFactory {

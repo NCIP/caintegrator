@@ -86,6 +86,8 @@
 package gov.nih.nci.caintegrator2.application.analysis;
 
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
@@ -99,6 +101,7 @@ import gov.nih.nci.caintegrator2.domain.application.QueryResult;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultRow;
 import gov.nih.nci.caintegrator2.domain.application.ResultValue;
+import gov.nih.nci.caintegrator2.domain.genomic.SampleSet;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
@@ -119,6 +122,13 @@ public class KMPlotStudyCreator {
     
     public Study createKMPlotStudy() {
         Study kmPlotStudy = new Study();
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        kmPlotStudy.setStudyConfiguration(studyConfiguration);
+        GenomicDataSourceConfiguration genomicDataSource = new GenomicDataSourceConfiguration();
+        SampleSet sampleSet = new SampleSet();
+        sampleSet.setName("samples");
+        genomicDataSource.getControlSampleSetCollection().add(sampleSet);
+        studyConfiguration.getGenomicDataSources().add(genomicDataSource);
         StudySubjectAssignment male1 = new StudySubjectAssignment();
         male1.setId(Long.valueOf(1));
         StudySubjectAssignment male2 = new StudySubjectAssignment();

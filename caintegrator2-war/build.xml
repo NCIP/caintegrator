@@ -504,6 +504,7 @@
                  <include name="gov/nih/nci/caintegrator2/**" />
                  <!-- Excludes for classes that can only be tested in integration tests -->
                  <exclude name="gov/nih/nci/caintegrator2/data/CaIntegrator2DaoImpl.class" />
+                 <exclude name="gov/nih/nci/caintegrator2/application/geneexpression/BoxAndWhiskerCoinPlotRenderer.class"/>
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIASearchServiceImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIAServiceFactoryImpl.class" />
                  <exclude name="gov/nih/nci/caintegrator2/external/ncia/NCIADicomJobRunnerImpl.class" />
