@@ -1,6 +1,18 @@
 <!--
-$Id: userInputSpec.xml 1780 2009-06-29 18:32:19Z saksass $
+$Id: userInputSpec.xml 1934 2009-08-06 15:51:28Z saksass $
 $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/gui-installer/userInputSpec.xml $
+
+Guide to this file:
+	First off remember this is a template you will be changing it.  Our test project deploys both an application and a grid component on both Tomcat and JBoss.  You may only support JBoss and have no grid component, at which point you would delete Tomcat and grid related panels.  Or you have have 3 JBoss containers, two apps and one grid.  This would reuqire that you delete tomcat and copy the jboss sections 3 times.
+	Second the fields in this file should match the fields in your install.properties.  Excluding hard coding things in properties-template/* you should have one field in here for every field in install.properties.  Also not that the install and upgrade properties file under properties template should also have all the properties in your master install.properties.  Also dynamic variables in gui-installer/install.xml should be reviewed.
+	Third there is a correlation between the panels section in gui-installer/install.xml and this file.  A panel here should have a corresponding panel in the gui-installer/install.xml.  We also recommend putting acomment above the panel definition here and in the gui-installer/install.xml.  Also the panels seem to need to be sequential, when they are not numbered and called sequentially bad things seem to happen (not sure if this is only a problem with an older version or it happnes now).  So when you need insert a panel, you need to shift all panel numbers after the insertion down here and in the gui-installer/install.xml.  Let's say you have 5 panels and you want to insert  a new panel between 2 and 3.  You would insert the new panel as 3, then rename 3 to 4, 4 to 5 and 5 to 6 in both this file and the gui-installer/install.xml
+	Lastly the creation of the jar will be successfull but when you click through the gui some or none of the custom panels will come up.  I have found this to be two things un-escaped characters in fields (see below) or impropertly formated xml.  I commit regularly when working on the file so I can use svn diff to identify bad edits I have made.  And a few times I have had to comment out half the file, build, and test the gui-installer, uncomment half more of the file and repeat until I find the area where things are broken.  If you have questions don't hesitate to contact the bda team at ncicbiitbda@mail.nih.gov, good luck :)
+
+	quote (") 	&quot;
+	apostrophe (') 	&apos;
+	ampersand (&) 	&amp;
+	less than (<) 	&lt;
+	greater than (>) 	&gt;
 -->
 
 <userInput>
@@ -20,14 +32,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<!-- Select component -->
 	<panel order="1">
 		<field type="title" txt="Choose what to install" bold="true" size="1" />
-		<field type="staticText" align="left" txt="A Typical install requires you to enter an essential minimum number of values to successfully install the software. A Typical install configures ports and other required values. A Custom install allows you to modify all of the configurable values such as port numbers."/>
+		<field type="staticText" align="left" txt="Select whether you want to install or upgrade all components of this application, or just an individual component.  If you want to install components on different servers, select the one component on this machine and other components on other machines."/>
 		<field type="divider" align="top"/>
 		<field type="radio" variable="install.selection">
-			<description align="left" txt="Chose what to install"/>
+			<description align="left" txt="Choose what to install"/>
 			<spec>
 				<choice txt="Everything" value="install.all" set="true" />
 				<choice txt="JBoss" value="install.jboss" />
-				<choice txt="Tomcat" value="install.tomcat" />
+				<!-- <choice txt="Tomcat" value="install.tomcat" /> -->
 				<choice txt="Database - (must be run on JBoss machine)" value="install.database" />
 			</spec>
 		</field>
@@ -65,7 +77,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<!-- Upgrade container.all -->
 	<panel order="3">
 		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
-		<panelreader classname="pre-install/install.xml" methodname="init:upgrade" language="ant">
+		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
 			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
 			<inpropertymap inpropertyname="jboss.home" inpropertyvalue="jboss.home"/>
 			<inpropertymap inpropertyname="jboss.server.name" inpropertyvalue="jboss.server.name"/>
@@ -91,6 +103,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="jboss.grid.secure.enable" mapname="jboss.grid.secure.enable"/>
 			<propertymap propertyname="jboss.grid.secure.key.file" mapname="jboss.grid.secure.key.file"/>
 			<propertymap propertyname="jboss.grid.secure.port" mapname="jboss.grid.secure.port"/>
+			<propertymap propertyname="jboss.http-connector.remove" mapname="jboss.http-connector.remove"/>
 			<propertymap propertyname="jboss.java.opts" mapname="jboss.java.opts"/>
 			<propertymap propertyname="jboss.server.bindingfile.location" mapname="jboss.server.bindingfile.location"/>
 			<propertymap propertyname="jboss.server.hostname" mapname="jboss.server.hostname"/>
@@ -117,6 +130,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="tomcat.grid.secure.enable" mapname="tomcat.grid.secure.enable"/>
 			<propertymap propertyname="tomcat.grid.secure.key.file" mapname="tomcat.grid.secure.key.file"/>
 			<propertymap propertyname="tomcat.grid.secure.port" mapname="tomcat.grid.secure.port"/>
+			<propertymap propertyname="tomcat.http-connector.remove" mapname="tomcat.http-connector.remove"/>
 			<propertymap propertyname="tomcat.hostname" mapname="tomcat.hostname"/>
 			<propertymap propertyname="tomcat.port.ajp" mapname="tomcat.port.ajp"/>
 			<propertymap propertyname="tomcat.port.http" mapname="tomcat.port.http"/>
@@ -150,6 +164,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="jboss.ejbinvoker.port" mapname="jboss.ejbinvoker.port"/>
 			<propertymap propertyname="jboss.server.rmi.port" mapname="jboss.server.rmi.port"/>
 			<propertymap propertyname="jboss.web.service.port" mapname="jboss.web.service.port"/>
+			<propertymap propertyname="jboss.unifiedinvoker.port" mapname="jboss.unifiedinvoker.port"/>
+			<propertymap propertyname="jboss.hajndi.auto.port" mapname="jboss.hajndi.auto.port"/>
+			<propertymap propertyname="jboss.ssl.port" mapname="jboss.ssl.port"/>
+			<propertymap propertyname="jboss.jms2.netty.port" mapname="jboss.jms2.netty.port"/>
+			<propertymap propertyname="jboss.jms2.netty-ssl.port" mapname="jboss.jms2.netty-ssl.port"/>
+			<propertymap propertyname="jboss.transaction.recovery.port" mapname="jboss.transaction.recovery.port"/>
+			<propertymap propertyname="jboss.transaction.status.port" mapname="jboss.transaction.status.port"/>
+			<propertymap propertyname="jboss.transaction.processid.port" mapname="jboss.transaction.processid.port"/>
+
 			<propertymap propertyname="jboss.service.rmiobject.port" mapname="jboss.service.rmiobject.port"/>
 			<propertymap propertyname="jboss.server.bind.port" mapname="jboss.server.bind.port"/>
 			<propertymap propertyname="jboss.hajndi.port" mapname="jboss.hajndi.port"/>
@@ -160,8 +183,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="jboss.jmx-rmi.port" mapname="jboss.jmx-rmi.port"/>
 			<propertymap propertyname="jboss.snmp-trapd.port" mapname="jboss.snmp-trapd.port"/>
 			<propertymap propertyname="jboss.snmp.port" mapname="jboss.snmp.port"/>
-			<propertymap propertyname="jboss.jms.port" mapname="jboss.jms.port"/>
 			<propertymap propertyname="jboss.remoting.port" mapname="jboss.remoting.port"/>
+			<propertymap propertyname="jboss.jms.port" mapname="jboss.jms.port"/>
 			<propertymap propertyname="jboss.messaging.port" mapname="jboss.messaging.port"/>
 			<propertymap propertyname="jboss.ssl.keystore.location" mapname="jboss.ssl.keystore.location"/>
 			<propertymap propertyname="jboss.grid.secure.cert.location" mapname="jboss.grid.secure.cert.location"/>
@@ -170,9 +193,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="tomcat.grid.secure.cert.location" mapname="tomcat.grid.secure.cert.location"/>
 			<propertymap propertyname="tomcat.grid.secure.key.location" mapname="tomcat.grid.secure.key.location"/>
 		</panelreader>
-		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
 		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
-		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
 	</panel>
 	<!-- Upgrade container.jboss -->
 	<panel order="4">
@@ -241,6 +264,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="jboss.ejbinvoker.port" mapname="jboss.ejbinvoker.port"/>
 			<propertymap propertyname="jboss.server.rmi.port" mapname="jboss.server.rmi.port"/>
 			<propertymap propertyname="jboss.web.service.port" mapname="jboss.web.service.port"/>
+			<propertymap propertyname="jboss.unifiedinvoker.port" mapname="jboss.unifiedinvoker.port"/>
+			<propertymap propertyname="jboss.hajndi.auto.port" mapname="jboss.hajndi.auto.port"/>
+			<propertymap propertyname="jboss.ssl.port" mapname="jboss.ssl.port"/>
+			<propertymap propertyname="jboss.jms2.netty.port" mapname="jboss.jms2.netty.port"/>
+			<propertymap propertyname="jboss.jms2.netty-ssl.port" mapname="jboss.jms2.netty-ssl.port"/>
+			<propertymap propertyname="jboss.transaction.recovery.port" mapname="jboss.transaction.recovery.port"/>
+			<propertymap propertyname="jboss.transaction.status.port" mapname="jboss.transaction.status.port"/>
+			<propertymap propertyname="jboss.transaction.processid.port" mapname="jboss.transaction.processid.port"/>
+
 			<propertymap propertyname="jboss.service.rmiobject.port" mapname="jboss.service.rmiobject.port"/>
 			<propertymap propertyname="jboss.server.bind.port" mapname="jboss.server.bind.port"/>
 			<propertymap propertyname="jboss.hajndi.port" mapname="jboss.hajndi.port"/>
@@ -251,16 +283,16 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="jboss.jmx-rmi.port" mapname="jboss.jmx-rmi.port"/>
 			<propertymap propertyname="jboss.snmp-trapd.port" mapname="jboss.snmp-trapd.port"/>
 			<propertymap propertyname="jboss.snmp.port" mapname="jboss.snmp.port"/>
-			<propertymap propertyname="jboss.jms.port" mapname="jboss.jms.port"/>
 			<propertymap propertyname="jboss.remoting.port" mapname="jboss.remoting.port"/>
+			<propertymap propertyname="jboss.jms.port" mapname="jboss.jms.port"/>
 			<propertymap propertyname="jboss.messaging.port" mapname="jboss.messaging.port"/>
 			<propertymap propertyname="jboss.ssl.keystore.location" mapname="jboss.ssl.keystore.location"/>
 			<propertymap propertyname="jboss.grid.secure.cert.location" mapname="jboss.grid.secure.cert.location"/>
 			<propertymap propertyname="jboss.grid.secure.key.location" mapname="jboss.grid.secure.key.location"/>
 		</panelreader>
-		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
 		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
-		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
 	</panel>
 	<!-- Upgrade container.tomcat -->
 	<panel order="5">
@@ -321,9 +353,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="tomcat.grid.secure.cert.location" mapname="tomcat.grid.secure.cert.location"/>
 			<propertymap propertyname="tomcat.grid.secure.key.location" mapname="tomcat.grid.secure.key.location"/>
 		</panelreader>
-		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
 		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
-		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
 	</panel>
 	<!-- Upgrade container.database -->
 	<panel order="6">
@@ -342,16 +374,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<propertymap propertyname="database.url" mapname="database.url"/>
 			<propertymap propertyname="database.user" mapname="database.user"/>
 		</panelreader>
-		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
 		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
-		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
 	</panel>
 	<!-- Jboss Configuration -->
 	<panel order="7">
-		<field type="title" txt="Configure your JBoss application server" bold="true" size="1" />
+		<field type="title" txt="JBoss Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in ${UserPathPanelVariable}/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
-		<field type="staticText" align="left" txt="As part of this installation, JBoss will be installed in ${UserPathPanelVariable}/${jboss.binaries.relative.dir}.  It will be configured based on the values you enter below.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this JBoss application server from the Internet, you may need to provide the JBoss HTTP Port to your Network administrator to allow access through the firewall."/>
-		<field type="space"/>
 		<field type="text" align="left" variable="jboss.server.hostname">
 			<spec txt="Hostname of this Server:" size="25" set="$HOST_NAME"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Hostname of this Server is a required field" />
@@ -425,7 +456,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<!-- Jboss Continued -->
 	<panel order="8">
-		<field type="title" txt="Additional JBoss installation options" bold="true" size="1" />
+		<field type="title" txt="JBoss Configuration continued" bold="true" size="1" />
 		<field type="divider" align="top"/>
 
 		<field type="text" variable="jboss.jmx-rmi.port">
@@ -444,7 +475,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</field>
 
 		<field type="text" variable="jboss.remoting.port">
-			<spec txt="JBoss remoting port:" size="5" set="48320"/>
+			<spec txt="JBossremotingport:" size="5" set="48320"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss remoting port number is already in use"/>
 		</field>
 
@@ -452,11 +483,6 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<field type="text" variable="jboss.server.bind.port">
 			<spec txt="JBoss bind port:" size="5" set="48190"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss bind port number is already in use"/>
-		</field>
-
-		<field type="text" variable="jboss.server.redirect.port">
-			<spec txt="JBoss redirect port:" size="5" set="48220"/>
-			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss redirect port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.service.rmiobject.port">
@@ -479,6 +505,52 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<spec txt="JBoss web service port:" size="5" set="48250"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss web service port number is already in use"/>
 		</field>
+
+        <field type="text" variable="jboss.unifiedinvoker.port">
+            <spec txt="JBoss Unified Invoker Port" size="5" set="48360"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Unified Invoker port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.hajndi.auto.port">
+            <spec txt="JBoss hajndi Auto Discovery Port" size="5" set="48370"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss hajndi Auto Discovery port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.ssl.port">
+            <spec txt="JBoss SSL" size="5" set="48380"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss SSL port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.jms2.netty.port">
+            <spec txt="JBoss Messaging 2.x HTTP port" size="5" set="48390"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Messaging 2.x HTTP port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.jms2.netty.port">
+            <spec txt="JBoss Messaging 2.x HTTP port" size="5" set="48390"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Messaging 2.x HTTP port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.jms2.netty-ssl.port">
+            <spec txt="JBoss Messaging 2.x SSL port" size="5" set="48400"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Messaging 2.x SSL port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.transaction.recovery.port">
+            <spec txt="JBoss Transaction Recovery port" size="5" set="48410"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Transaction Recovery port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.transaction.status.port">
+            <spec txt="JBoss Transaction Status port" size="5" set="48420"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Transaction Status port number is already in use"/>
+        </field>
+
+        <field type="text" variable="jboss.transaction.processid.port">
+            <spec txt="JBoss Transaction Process ID port" size="5" set="48430"/>
+            <validator class="com.izforge.izpack.util.PortValidator" txt="JBoss Transaction Process ID port number is already in use"/>
+        </field>
+
 	</panel>
 	<!--
 		<field type="text" variable="">
@@ -489,8 +561,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<!-- Jboss SSL 0.9.0 -->
 	<panel order="9">
-		<field type="title" txt="Configuring JBoss SSL and External Hostnames" bold="true" size="1" />
-		<field type="staticText" align="left" txt="For JBoss SSL configuration details see https://wiki.nci.nih.gov/x/7xWy"/>
+		<field type="title" txt="JBoss Security Listener Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="For JBoss SSL and Secure Grid configuration requires that you have requested and retrieved certificates already.  See https://wiki.nci.nih.gov/x/7xWy for details on SSL, see https://wiki.nci.nih.gov/x/8BWy for details on Secure Grid."/>
 		<field type="divider" align="top"/>
 
 		<field type="radio" variable="jboss.ssl.enable">
@@ -526,6 +598,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<choice txt="False" value="false" set="true"/>
 			</spec>
 		</field>
+	    <field type="radio" variable="jboss.http-connector.remove">
+			<description align="left" txt="Remove HTTP Port"/>
+			<spec>
+				<choice txt="True"  value="true" />
+				<choice txt="False" value="false" set="true"/>
+			</spec>
+		</field>
+		
 		<field type="text" variable="jboss.grid.secure.port">
 			<spec txt="Port to run the Grid service on JBoss:"  size="5" set="48500"/>
 		</field>
@@ -536,7 +616,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<spec txt="caGrid private key file location: "  size="75" set=""/>
 		</field>
 
-		<field type="space" align="top"/>
+	</panel>
+	<!-- External host stuff for Jboss -->
+	<panel order="10">
+		<field type="title" txt="JBoss External Hostname Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For JBoss External Hostname configurations see https://wiki.nci.nih.gov/x/8hWy, values not required if not externally accessible"/>
 		<field type="divider" align="top"/>
 		<field type="text" variable="jboss.external.ssl.host">
@@ -559,14 +642,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<spec txt="Grid External Port Number:" size="5" set=""/>
 		</field>
 
-		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
 		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
-		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.jms.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
 
 	</panel>
 
 	<!-- Authentication Type -->
-	<panel order="10">
+	<panel order="11">
 		<field type="title" txt="Authentication Type" bold="true" size="1" />
 		<field type="staticText" align="left" txt="There are two types of ways to authenticate users: against database or using an LDAP server. To connect to LDAP, you must have an LDAP server available in your network."/>
 		<field type="divider" align="top"/>
@@ -582,7 +665,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Ldap data entry -->
-	<panel order="11">
+	<panel order="12">
 			<field type="title" txt="LDAP Configuration" bold="true" size="1" />
 			<field type="staticText" align="left" txt="Choose the URL for the LDAP server and the Base DN for authenticating users."/>
 			<field type="divider" align="top"/>
@@ -597,9 +680,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Database Properties -->
-	<panel order="12">
-		<field type="title" txt="Configuring your MySQL database connection" bold="true" size="1" />
-		<field type="staticText" align="left" txt="The information you enter below will connect you to an existing MySQL database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process. For detailed descriptions on each of the properties below, see the Database Settings section at http://someurl"/>
+	<panel order="13">
+		<field type="title" txt="Database Configuration" bold="true" size="1" />
+        <field type="staticText" align="left" txt="The information you enter below will connect you to an existing database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database.  In either case we recommend backing up your database before proceeding."/>
 		<field type="divider" align="top"/>
 
 		<variable name="install.path" value="$INSTALL_PATH"/>
@@ -630,10 +713,11 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Global Configuraiton Options -->
-	<panel order="13">
+	<panel order="14">
 
-		<field type="title" txt="Configure Global Settings" bold="true" size="1" />
-		<field type="divider" align="top"/>
+		<field type="title" txt="Global Settings" bold="true" size="1" />
+        <field type="staticText" align="left" txt="These options are for properties that may be used by multiple applications."/>
+        <field type="divider" align="top"/>
 		<field type="text" variable="mail.smtp.server">
 			<spec txt="SMTP Relay Host:" size="25" set="localhost"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" SMTP Relay Host is a required field" />
@@ -641,9 +725,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Grid Global Configuration -->
-	<panel order="14">
-
-		<field type="title" txt="Configure global information for Grid configuration. [NEED MORE INFORMATION]" bold="true" size="1" />
+	<panel order="15">
+		<field type="title" txt="Grid Resource Locations Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring Grid Resource Locations."/>
 		<field type="divider" align="top"/>
 		<field type="text" variable="grid.index.url">
 			<spec txt="Grid Index Url:" size="35" set="http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"/>
@@ -652,8 +736,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Grid Research Center -->
-	<panel order="15">
-		<field type="title" txt="Configure research center contact information for Grid configuration." bold="true" size="1" />
+	<panel order="16">
+		<field type="title" txt="Grid Research Center Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact/location information about your Research center."/>
 		<field type="divider" align="top"/>
 		<field type="text" variable="grid.poc.tech.researchCenter.displayname">
 			<spec txt="Research Center Display Name:" size="25" set=""/>
@@ -689,9 +774,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Grid Tech Contact -->
-	<panel order="16">
+	<panel order="17">
 
-		<field type="title" txt="Configure technical contact information for Grid configuration" bold="true" size="1" />
+		<field type="title" txt="Grid Tech Contact Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact information for your Tech Contact."/>
 		<field type="divider" align="top"/>
 
 		<field type="text" variable="grid.poc.tech.affiliation">
@@ -721,8 +807,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Grid Science Contact -->
-	<panel order="17">
-		<field type="title" txt="Configure science contact information for Grid configuration" bold="true" size="1" />
+	<panel order="18">
+		<field type="title" txt="Grid Science Contact Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact information Science Contact."/>
 		<field type="divider" align="top"/>
 		<field type="text" variable="grid.poc.science.affiliation">
 			<spec txt="Science Contact Affiliation :" size="25" set=""/>
@@ -752,9 +839,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 
 	<!-- Tomcat Base Config 0.9.0 -->
-	<panel order="18">
+	<panel order="19">
 		<field type="title" txt="Tomcat Configuration" bold="true" size="1" />
-		<field type="staticText" align="left" txt="For detailed descriptions on each of the properties below, see the Application Settings section at http://someurl"/>
+		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in ${UserPathPanelVariable}/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
 		<field type="divider" align="top"/>
 		<field type="text" align="left" variable="tomcat.relative.path">
 			<spec txt="Relative Directory for Tomcat (relative from ${UserPathPanelVariable}):" size="25" set="${tomcat.binaries.relative.dir}"/>
@@ -793,9 +880,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</panel>
 
 	<!-- Tomcat SSL 0.9.0 -->
-	<panel order="19">
-		<field type="title" txt="Configuring Tomcat SSL and External Hostnames" bold="true" size="1" />
-		<field type="staticText" align="left" txt="For Tomcat SSL configuration details see https://wiki.nci.nih.gov/x/7xWy"/>
+	<panel order="20">
+		<field type="title" txt="Tomcat Secure Listener Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="For Tomcat SSL and Secure Grid configuration requires that you have requested and retrieved certificates already.  See https://wiki.nci.nih.gov/x/7xWy for details on SSL, see https://wiki.nci.nih.gov/x/8BWy for details on Secure Grid."/>
 		<field type="divider" align="top"/>
 
 		<field type="radio" variable="tomcat.ssl.enable">
@@ -831,6 +918,13 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<choice txt="False" value="false" set="true"/>
 			</spec>
 		</field>
+		<field type="radio" variable="tomcat.http-connector.remove">
+			<description align="left" txt="Remove HTTP Port"/>
+			<spec>
+				<choice txt="True"  value="true" />
+				<choice txt="False" value="false" set="true"/>
+			</spec>
+		</field>
 		<field type="text" variable="tomcat.grid.secure.port">
 			<spec txt="Port to run the Grid service on Tomcat:"  size="5" set="21444"/>
 		</field>
@@ -841,7 +935,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<spec txt="caGrid private key file location: "  size="75" set=""/>
 		</field>
 
-		<field type="space" align="top"/>
+	</panel>
+	<!-- External Host stuff for Tomcat -->
+	<panel order="21">
+		<field type="title" txt="Tomcat External Hostname Configuration" bold="true" size="1" />
 		<field type="staticText" align="left" txt="For Tomcat External Hostname configurations see https://wiki.nci.nih.gov/x/8hWy, values not required if not externally accessible"/>
 		<field type="divider" align="top"/>
 		<field type="text" variable="tomcat.external.ssl.host">
@@ -865,7 +962,43 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</field>
 
 	</panel>
-	<panel order="20">
+	<!-- Jar Signing 1.5.0 -->
+	<!-- If you are signing jars for Java Web Starts then you may want to add com.izforge.izpack.util.PasswordEqualityValidator to each of the fields below.
+	-->
+	<panel order="22">
+		<field type="title" txt="Jar Signging configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="This application can sign jars.  This page allows you to use your own java keystore to sign the jars or to have a self-signed one generated for you.  If you have an existing one put the full path to the file, the alias and password."/>
+		<field type="divider" align="top"/>
+
+		<field type="radio" variable="jar-signing.execution.time">
+			<description align="left" txt="If or when to sign jars"/>
+			<spec>
+				<choice txt="Disabled"  value="false" set="true"/>
+				<choice txt="InstallTime" value="install"/>
+			</spec>
+		</field>
+		<field type="radio" variable="jar-signing.generate-selfsigned">
+			<description align="left" txt="Auto generate the certificate"/>
+			<spec>
+				<choice txt="False"  value="false" set="true"/>
+				<choice txt="True" value="true"/>
+			</spec>
+		</field>
+		<field type="text" variable="jar-signing.keystore.location">
+			<spec txt="Keystore file location: "  size="75" set=""/>
+		</field>
+		<field type="text" variable="jar-signing.keystore.alias">
+			<spec txt="Keystore alias: "  size="75" set=""/>
+		</field>
+		<field type="password" align="left" variable="jar-signing.keystore.password">
+			<spec>
+				<pwd txt="Jar-signing Keystore Password:" size="25" set=""/>
+				<pwd txt="Jar-signing Keystore Password Confirm:" size="25" set=""/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
+		</field>
+	</panel>
+	<panel order="23">
 		<field type="title" txt="Installation Summary" bold="true" size="1" />
 		<field type="staticText" align="left" txt="Below are "/>
 		<field type="divider" align="top"/>

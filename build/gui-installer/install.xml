@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 <!--
-$Id: install.xml 1780 2009-06-29 18:32:19Z saksass $
+$Id: install.xml 1934 2009-08-06 15:51:28Z saksass $
 $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-template/software/build/gui-installer/install.xml $
 -->
 
@@ -74,11 +74,31 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<javaversion>1.5</javaversion>
 				</info>
 
-				<!--
-				The gui preferences indication.
-				Sets the installer window to 640x480. It will not be able to change the size.
-				-->
-				<guiprefs width="1024" height="768" resizable="yes">
+                <!--
+                The gui preferences indication.
+                Sets the installer window to 640x480. It will not be able to change the size.
+                LOOK AND FEELS <laf/> (style: name in laf)
+                Kunstoff: kunststoff
+                Liquid: liquid (decorate.frames: yes means that it will render the frames in Liquid style)
+                Substance: substance
+                Metouia: metouia
+                JGoodies Looks: looks (variants)
+                    windows: use the Windows look
+                    plastic: use the basic Plastic look
+                    plastic3D: use the Plastic 3D look
+                    plasticXP: use the Plastic XP look (default).
+                -->
+                <guiprefs width="1024" height="768" resizable="yes">
+                    <laf name="liquid">
+                        <os family="unix" />
+                        <param name="decorate.frames" value="yes" />
+                    </laf>
+                    <!-- go with the default for now
+                    <laf name="looks">
+                        <os family="windows" />
+                        <param name="variant" value="extwin" />
+                    </laf>
+                    -->
 					<modifier key="useButtonIcons" value="no"/>
 					<modifier key="useLabelIcons" value="no"/>
 					<modifier key="allYGap" value="3"/>
@@ -192,7 +212,16 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<variable name="jboss.snmp.port" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.snmp-trapd.port" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.web.service.port" value="" condition="container.database|container.tomcat"/>
-					<variable name="jboss.ssl.enable" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.unifiedinvoker.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.hajndi.auto.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.ssl.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.jms2.netty.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.jms2.netty-ssl.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.transaction.recovery.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.transaction.status.port" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.transaction.processid.port" value="" condition="container.database|container.tomcat"/>
+
+                    <variable name="jboss.ssl.enable" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.ssl.keystore.location" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.ssl.keystore.pass" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.ssl.keystore.alias" value="" condition="container.database|container.tomcat"/>
@@ -208,7 +237,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<variable name="jboss.grid.secure.enable" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.grid.secure.port" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.grid.secure.cert.location" value="" condition="container.database|container.tomcat"/>
-					<variable name="jboss.grid.secure.key.location" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.grid.secure.key.location" value="" condition="container.database|container.tomcat"/>
+                    <variable name="jboss.http-connector.remove" value="" condition="container.database|container.tomcat"/>
 					<variable name="jboss.server.redirect.port" value="" condition="container.database|container.tomcat"/>
 					<variable name="log4j.maxFileSize" value="" condition="container.database|container.tomcat"/>
 					<variable name="log4j.maxDays" value="" condition="container.database|container.tomcat"/>
@@ -236,6 +266,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<variable name="tomcat.grid.secure.port" value="" condition="container.database|container.jboss"/>
 					<variable name="tomcat.grid.secure.cert.location" value="" condition="container.database|container.jboss"/>
 					<variable name="tomcat.grid.secure.key.location" value="" condition="container.database|container.jboss"/>
+                    <variable name="tomcat.http-connector.remove" value="" condition="container.database|container.jboss"/>
 
 					<variable name="grid.index.url" value="" condition="container.database"/>
 					<variable name="grid.poc.tech.researchCenter.displayname" value="" condition="container.database"/>
@@ -309,29 +340,36 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 					<panel classname="UserInputPanel"  id="UserInputPanel.8" condition="container.jboss|container.all"/>
 					<!-- Jboss SSL 0.9.0 -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.9" condition="container.jboss|container.all"/>
+					<!-- external host stuff jboss -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.10" condition="container.jboss|container.all"/>
 					<!-- Authentication Type -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.10" condition="!container.database"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.11" condition="!container.database"/>
 					<!-- Ldap data entry -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.11" condition="ldap.setup"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.12" condition="ldap.setup"/>
 					<!-- Database Properties -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.12"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.13"/>
 					<!-- Global Configuraiton Options -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.13" condition="!container.database"/>
+					<panel classname="UserInputPanel"  id="UserInputPanel.14" condition="!container.database"/>
 					<!-- Grid Global Configuration -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.14" condition="never"/>
-					<!-- Grid Research Center -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.15" condition="never"/>
-					<!-- Grid Tech Contact -->
+					<!-- Grid Research Center -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.16" condition="never"/>
-					<!-- Grid Science Contact -->
+					<!-- Grid Tech Contact -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.17" condition="never"/>
+					<!-- Grid Science Contact -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.18" condition="never"/>
 					<!-- Application Specific Properties -->
 					<!-- Tomcat Base Config 0.9.0 -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.18" condition="never"/>
-					<!-- Tomcat SSL 0.9.0 -->
 					<panel classname="UserInputPanel"  id="UserInputPanel.19" condition="never"/>
+					<!-- Tomcat SSL 0.9.0 -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.20" condition="never"/>
+					<!-- external host stuff tomcat -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.21" condition="never"/>
+					<!-- Jar Signing 1.5.0 -->
+					<panel classname="UserInputPanel"  id="UserInputPanel.22" condition="container.tomcat|container.all|container.jboss"/>
+					
 					<!-- Installation Summary -->
-					<panel classname="UserInputPanel"  id="UserInputPanel.20" />
+					<panel classname="UserInputPanel"  id="UserInputPanel.23" />
 					<panel classname="InstallationGroupPanel"/>
 					<panel classname="ExtendedInstallPanel"/>
 					<panel classname="FinishPanel"/>
