@@ -380,40 +380,40 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 
 		<field type="text" variable="jboss.server.port">
-			<spec txt="JBoss HTTP Port:" size="5" set="30210"/>
+			<spec txt="JBoss HTTP Port:" size="5" set="48210"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The HTTP port number is already in use"/>
 		</field>
 		<field type="text" variable="jboss.server.jndi.port">
-			<spec txt="JBoss JNDI Port:" size="5" set="30200"/>
+			<spec txt="JBoss JNDI Port:" size="5" set="48200"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JNDI port number is already in use"/>
 		</field>
 		<field type="text" variable="jboss.server.rmi.port">
-			<spec txt="JBoss RMI Port:" size="5" set="30230"/>
+			<spec txt="JBoss RMI Port:" size="5" set="48230"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss RMI port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.ejbinvoker.port">
-			<spec txt="JBoss EJBInvoker Port:" size="5" set="30150"/>
+			<spec txt="JBoss EJBInvoker Port:" size="5" set="48150"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The ejbinvoker port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.cobraorb.port">
-			<spec txt="JBoss CORBAORG port:" size="5" set="30350"/>
+			<spec txt="JBoss CORBAORG port:" size="5" set="48350"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The cobraorb port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.hajndi.port">
-			<spec txt="JBoss hajndi port:" size="5" set="30160"/>
+			<spec txt="JBoss hajndi port:" size="5" set="48160"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The hajndi port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.hajrmi.port">
-			<spec txt="JBoss hajrmi port:" size="5" set="30260"/>
+			<spec txt="JBoss hajrmi port:" size="5" set="48260"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The hajrmi port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.jms.port">
-			<spec txt="JBoss JMS port:" size="5" set="30170"/>
+			<spec txt="JBoss JMS port:" size="5" set="48170"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss JMS port number is already in use"/>
 		</field>
 		<!-- Not sure we ant to prompt for these, this page is so big already --> 
@@ -429,54 +429,54 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<field type="divider" align="top"/>
 
 		<field type="text" variable="jboss.jmx-rmi.port">
-			<spec txt="JBoss jmx-rmi port:" size="5" set="30290"/>
+			<spec txt="JBoss jmx-rmi port:" size="5" set="48290"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss jmx-rmi port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.messaging.port">
-			<spec txt="JBoss messaging port:" size="5" set="30330"/>
+			<spec txt="JBoss messaging port:" size="5" set="48330"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss messaging port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.pooledha.port">
-			<spec txt="JBoss pooledha port:" size="5" set="30270"/>
+			<spec txt="JBoss pooledha port:" size="5" set="48270"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss pooledha port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.remoting.port">
-			<spec txt="JBoss remoting port:" size="5" set="30320"/>
+			<spec txt="JBoss remoting port:" size="5" set="48320"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss remoting port number is already in use"/>
 		</field>
 
 
 		<field type="text" variable="jboss.server.bind.port">
-			<spec txt="JBoss bind port:" size="5" set="0"/>
+			<spec txt="JBoss bind port:" size="5" set="48190"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss bind port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.server.redirect.port">
-			<spec txt="JBoss redirect port:" size="5" set="11298"/>
+			<spec txt="JBoss redirect port:" size="5" set="48220"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss redirect port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.service.rmiobject.port">
-			<spec txt="JBoss rmiobject port:" size="5" set="30240"/>
+			<spec txt="JBoss rmiobject port:" size="5" set="48240"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss rmiobject port number is already in use"/>
 		</field>
 
 
 		<field type="text" variable="jboss.snmp-trapd.port">
-			<spec txt="JBoss snmp-trapd port:" size="5" set="30300"/>
+			<spec txt="JBoss snmp-trapd port:" size="5" set="48300"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss snmp-trapd port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.snmp.port">
-			<spec txt="JBoss SNMP port:" size="5" set="30310"/>
+			<spec txt="JBoss SNMP port:" size="5" set="48310"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss SNMP port number is already in use"/>
 		</field>
 
 		<field type="text" variable="jboss.web.service.port">
-			<spec txt="JBoss web service port:" size="5" set="30250"/>
+			<spec txt="JBoss web service port:" size="5" set="48250"/>
 			<validator class="com.izforge.izpack.util.PortValidator" txt="The JBoss web service port number is already in use"/>
 		</field>
 	</panel>
@@ -527,7 +527,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			</spec>
 		</field>
 		<field type="text" variable="jboss.grid.secure.port">
-			<spec txt="Port to run the Grid service on JBoss:"  size="5" set="30500"/>
+			<spec txt="Port to run the Grid service on JBoss:"  size="5" set="48500"/>
 		</field>
 		<field type="text" variable="jboss.grid.secure.cert.location">
 			<spec txt="caGrid certificate file location: "  size="75" set=""/>
@@ -878,7 +878,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<field type="space"/>
 		<field type="staticText" align="left" txt="JBoss URL [http://${jboss.server.hostname}:${jboss.server.port}/caintegrator2] - This will be the url to reach your application when the install is finished."/>
 		<field type="space"/>
-		<field type="staticText" align="left" txt="JBoss Log Dir [${UserPathPanelVariable}/${jboss.binaries.relative.path}/server/${jboss.server.name}] - This is where the logs can be found."/>
+		<field type="staticText" align="left" txt="JBoss Log Dir [${UserPathPanelVariable}/${jboss.binaries.relative.dir}/server/${jboss.server.name}] - This is where the logs can be found."/>
 
 		<field type="space"/>
 		<field type="staticText" align="left" txt="Database URL [jdbc:mysql://${database.server}:${database.port}/${database.name}] "/>
