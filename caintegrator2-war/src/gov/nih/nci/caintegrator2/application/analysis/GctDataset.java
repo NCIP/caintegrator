@@ -163,7 +163,7 @@ public class GctDataset {
     
     private void addRowValues(boolean columnNamesMapped, int rowNum, GenomicDataResultRow row) {
         int colNum = 0;
-        for (GenomicDataResultValue value : row.getValueCollection()) {
+        for (GenomicDataResultValue value : row.getValues()) {
             values[rowNum][colNum] = value.getValue();
             if (!columnNamesMapped) {
                 columnSampleNames.add(value.getColumn().getSampleAcquisition().getSample().getName());

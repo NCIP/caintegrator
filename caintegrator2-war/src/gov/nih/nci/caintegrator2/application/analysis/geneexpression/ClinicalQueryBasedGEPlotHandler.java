@@ -160,7 +160,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
     private void fillUsedSubjects(GenomicDataQueryResult queryResults) {
         if (parameters.isAddPatientsNotInQueriesGroup() || parameters.isExclusiveGroups()) {
             for (GenomicDataResultRow row : queryResults.getRowCollection()) {
-                for (GenomicDataResultValue value : row.getValueCollection()) {
+                for (GenomicDataResultValue value : row.getValues()) {
                     usedSubjects.add(value.getColumn().getSampleAcquisition().getAssignment());
                 }
             }

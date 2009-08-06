@@ -89,13 +89,11 @@ import static org.junit.Assert.assertEquals;
 import gov.nih.nci.caintegrator2.application.study.AbstractTestDataGenerator;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
-import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -110,7 +108,7 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
     @Override
     public void compareFields(GenomicDataResultRow original, GenomicDataResultRow retrieved) {
         assertEquals(original.getId(), retrieved.getId());
-        assertEquals(original.getValueCollection().size(), retrieved.getValueCollection().size());
+        assertEquals(original.getValues().size(), retrieved.getValues().size());
     }
 
 
@@ -122,9 +120,8 @@ public final class GenomicDataResultRowGenerator extends AbstractTestDataGenerat
 
     @Override
     public void setValues(GenomicDataResultRow resultRow, Set<AbstractCaIntegrator2Object> nonCascadedObjects) {
-        resultRow.setValueCollection(new HashSet<GenomicDataResultValue>());
         for (int i = 0; i < 3; i++) {
-            resultRow.getValueCollection().add(GenomicDataResultValueGenerator.INSTANCE.createPersistentObject());
+            resultRow.getValues().add(GenomicDataResultValueGenerator.INSTANCE.createPersistentObject());
         }
         resultRow.setReporter(new GeneExpressionReporter());
         resultRow.getReporter().setIndex(0);

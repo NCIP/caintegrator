@@ -25,6 +25,16 @@
         </div>
         <div class="selectorNote">Reporter Id - will display all reporter ids.<br>
                 Gene - will display a median value for each gene.</div>    
+        <br>
+        <div class="resultTypeSelector">
+        <b>Select Results Orientation: </b> 
+            <s:radio name="queryForm.resultConfiguration.orientation"
+                list="@gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum@getValueToDisplayableMap()"
+                listKey="key" 
+                listValue="value" />
+        </div>  
+        <div class="selectorNote">Genes in Rows / Subjects in Columns - will display the subjects and samples along the top and genes and reporters along the side.<br>
+                Genes in Columns / Subjects in Rows - will display the genes and reporters along the top and subjects and samples along the side. Useful when there are many samples and few reporters.</div>    
     </s:if>
     </div>
     

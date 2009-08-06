@@ -218,7 +218,7 @@ public class QueryManagementServiceImplTest {
         GenomicDataQueryResult result = queryManagementService.executeGenomicDataQuery(query);
         assertEquals(1, result.getRowCollection().size());
         assertEquals(1, result.getColumnCollection().size());
-        assertEquals(1, result.getRowCollection().iterator().next().getValueCollection().size());
+        assertEquals(1, result.getRowCollection().iterator().next().getValues().size());
         GenomicDataResultColumn column = result.getColumnCollection().iterator().next();
         assertNotNull(column.getSampleAcquisition());
         assertNotNull(column.getSampleAcquisition().getSample());

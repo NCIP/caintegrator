@@ -17,6 +17,7 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
     private String name;
     private ReporterTypeEnum reporterType = ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET;
     private ResultTypeEnum resultType = ResultTypeEnum.CLINICAL;
+    private ResultsOrientationEnum orientation = ResultsOrientationEnum.SUBJECTS_AS_COLUMNS;
     private String visibility;
     
     private StudySubscription subscription;
@@ -158,6 +159,20 @@ public class Query extends AbstractCaIntegrator2Object implements Cloneable {
             clone.add(resultColumn.clone());
         }
         return clone;
+    }
+
+    /**
+     * @return the orientation
+     */
+    public ResultsOrientationEnum getOrientation() {
+        return orientation;
+    }
+
+    /**
+     * @param orientation the orientation to set
+     */
+    public void setOrientation(ResultsOrientationEnum orientation) {
+        this.orientation = orientation;
     }
 
 }

@@ -91,6 +91,7 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.application.CompoundCriterion;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.util.HashSet;
@@ -114,6 +115,8 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
         CompoundCriterionGenerator.INSTANCE.compare(original.getCompoundCriterion(), retrieved.getCompoundCriterion());
         assertEquals(original.getColumnCollection().size(), retrieved.getColumnCollection().size());
         assertEquals(original.getColumnCollection().size(), 3);
+        assertEquals(original.getReporterType(), retrieved.getReporterType());
+        assertEquals(original.getOrientation(), retrieved.getOrientation());
     }
 
     @Override
@@ -130,6 +133,7 @@ public final class QueryGenerator extends AbstractTestDataGenerator<Query> {
             query.getColumnCollection().add(ResultColumnGenerator.INSTANCE.createPopulatedPersistentObject(nonCascadedObjects));
         }
         query.setReporterType(getNewEnumValue(query.getReporterType(), ReporterTypeEnum.values()));
+        query.setOrientation(getNewEnumValue(query.getOrientation(), ResultsOrientationEnum.values()));
         CompoundCriterionGenerator.INSTANCE.setValues(compoundCriterion, nonCascadedObjects);
         query.setCompoundCriterion(compoundCriterion);
 

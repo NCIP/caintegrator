@@ -92,6 +92,7 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
 import gov.nih.nci.caintegrator2.domain.application.Query;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
@@ -102,7 +103,6 @@ import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -120,16 +120,30 @@ public class GenomicDataFileWriterTest {
         csvFile = GenomicDataFileWriter.writeAsCsv(result, csvFile);
         csvFile.deleteOnExit();
         checkFile(csvFile, result);
+        query.setOrientation(ResultsOrientationEnum.SUBJECTS_AS_ROWS);
+        csvFile = GenomicDataFileWriter.writeAsCsv(result, csvFile);
+        checkFileWithSubjectsAsRows(csvFile, result);
     }
-    
+
     private void checkFile(File csvFile, GenomicDataQueryResult result) throws IOException {
         assertTrue(csvFile.exists());
         CSVReader reader = new CSVReader(new FileReader(csvFile), ',');
-        checkLine(reader.readNext(), "", "", "Patient ID", "ASSIGNMENT1", "ASSIGNMENT2", "ASSIGNMENT3");
+        checkLine(reader.readNext(), "", "", "Subject ID", "ASSIGNMENT1", "ASSIGNMENT2", "ASSIGNMENT3");
         checkLine(reader.readNext(), "", "", "Sample ID", "SAMPLE1", "SAMPLE2", "SAMPLE3");
-        checkLine(reader.readNext(), "Gene Name", "Reporter Id", "", "", "", "");
+        checkLine(reader.readNext(), "Gene Name", "Reporter ID", "", "", "", "");
         checkLine(reader.readNext(), "GENE1", "REPORTER1", "", "1.1", "2.2", "3.3");
         checkLine(reader.readNext(), "", "REPORTER2", "", "4.4", "5.5", "6.6");
+    }
+
+    private void checkFileWithSubjectsAsRows(File csvFile, GenomicDataQueryResult result) throws IOException {
+        assertTrue(csvFile.exists());
+        CSVReader reader = new CSVReader(new FileReader(csvFile), ',');
+        checkLine(reader.readNext(), "", "", "Gene Name", "GENE1", "");
+        checkLine(reader.readNext(), "", "", "Reporter ID", "REPORTER1", "REPORTER2");
+        checkLine(reader.readNext(), "Subject ID", "Sample ID", "", "", "");
+        checkLine(reader.readNext(), "ASSIGNMENT1", "SAMPLE1",  "", "1.1", "4.4");
+        checkLine(reader.readNext(), "ASSIGNMENT2", "SAMPLE2",  "", "2.2", "5.5");
+        checkLine(reader.readNext(), "ASSIGNMENT3", "SAMPLE3",  "", "3.3", "6.6");
     }
 
     private void checkLine(String[] line, String... expecteds) {
@@ -156,12 +170,11 @@ public class GenomicDataFileWriterTest {
             reporter.getGenes().add(gene);
         }
         row.setReporter(reporter);
-        row.setValueCollection(new ArrayList<GenomicDataResultValue>());
         int colNum = 0;
         for (float value : values) {
             GenomicDataResultValue genomicValue = new GenomicDataResultValue();
             genomicValue.setValue(value);
-            row.getValueCollection().add(genomicValue);
+            row.getValues().add(genomicValue);
             genomicValue.setColumn(result.getColumnCollection().get(colNum));
             colNum++;
         }
@@ -169,14 +182,13 @@ public class GenomicDataFileWriterTest {
     }
 
     private void addColumn(GenomicDataQueryResult result, String sampleName, String assignmentName) {
-        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(new SampleAcquisition());
         column.getSampleAcquisition().setSample(new Sample());
         column.getSampleAcquisition().getSample().setName(sampleName);
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         assignment.setIdentifier(assignmentName);
         column.getSampleAcquisition().setAssignment(assignment);
-        result.getColumnCollection().add(column);
     }
 
 }

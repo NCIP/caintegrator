@@ -89,6 +89,7 @@ import gov.nih.nci.caintegrator2.domain.application.GenomicDataQueryResult;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultRow;
 import gov.nih.nci.caintegrator2.domain.application.GenomicDataResultValue;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
 import java.io.File;
@@ -116,8 +117,11 @@ public final class GenomicDataFileWriter {
     public static File writeAsCsv(GenomicDataQueryResult result, File csvFile) {
         try {
             FileWriter writer = new FileWriter(csvFile);
-            writeHeaders(result, writer);
-            writeRows(result, writer);
+            if (ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.equals(result.getQuery().getOrientation())) {
+                writeStandardOrientation(result, writer);
+            } else {
+                writeSubjectsAsRowsOrientation(result, writer);
+            }
             writer.flush();
             writer.close();
         } catch (IOException e) {
@@ -126,10 +130,75 @@ public final class GenomicDataFileWriter {
         return csvFile;
     }
 
+    private static void writeSubjectsAsRowsOrientation(GenomicDataQueryResult result, FileWriter writer) 
+    throws IOException {
+        writeSubjectsAsRowsHeaders(result, writer);
+        writeSubjectsAsRowsRows(result, writer);
+    }
+
+    private static void writeSubjectsAsRowsHeaders(GenomicDataQueryResult result, FileWriter writer) 
+    throws IOException {
+        List<String> line = getGeneHeaderLine(result);
+        writeAsCsvRow(writer, line);
+        int columnCount = line.size();
+        if (isProbeSetResultType(result)) {
+            writeAsCsvRow(writer, getReporterHeaderLine(result));
+        }
+        String[] sampleHeaderLine = new String[columnCount];
+        sampleHeaderLine[0] = "Subject ID";
+        sampleHeaderLine[1] = "Sample ID"; 
+        writeAsCsvRow(writer, sampleHeaderLine);
+    }
+
+    private static List<String> getReporterHeaderLine(GenomicDataQueryResult result) {
+        List<String> line = new ArrayList<String>();
+        line.add("");
+        line.add("");
+        line.add("Reporter ID");
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            line.add(row.getReporter().getName());
+        }
+        return line;
+    }
+
+    private static List<String> getGeneHeaderLine(GenomicDataQueryResult result) {
+        List<String> line = new ArrayList<String>();
+        line.add("");
+        line.add("");
+        line.add("Gene Name");
+        for (GenomicDataResultRow row : result.getRowCollection()) {
+            line.add(row.getReporter().getGeneSymbols());
+        }
+        return line;
+    }
+
+    private static void writeSubjectsAsRowsRows(GenomicDataQueryResult result, FileWriter writer) 
+    throws IOException {
+        for (GenomicDataResultColumn column : result.getColumnCollection()) {
+            writeAsCsvRow(writer, getResultLine(column));
+        }
+    }
+
+    private static List<String> getResultLine(GenomicDataResultColumn column) {
+        List<String> line = new ArrayList<String>();
+        line.add(column.getSampleAcquisition().getAssignment().getIdentifier());
+        line.add(column.getSampleAcquisition().getSample().getName());
+        line.add("");
+        for (GenomicDataResultValue value : column.getValues()) {
+            line.add(String.valueOf(value.getValue()));
+        }
+        return line;
+    }
+
+    private static void writeStandardOrientation(GenomicDataQueryResult result, FileWriter writer) throws IOException {
+        writeHeaders(result, writer);
+        writeRows(result, writer);
+    }
+
     private static void writeHeaders(GenomicDataQueryResult result, FileWriter writer) throws IOException {
         List<String> assignmentIdentifiersRow = new ArrayList<String>();
         assignmentIdentifiersRow.add("");
-        assignmentIdentifiersRow.add("Patient ID");
+        assignmentIdentifiersRow.add("Subject ID");
         List<String> sampleIdentifiersRow = new ArrayList<String>();
         sampleIdentifiersRow.add("");
         sampleIdentifiersRow.add("Sample ID");
@@ -141,14 +210,14 @@ public final class GenomicDataFileWriter {
             sampleIdentifiersRow.add(column.getSampleAcquisition().getSample().getName());
             assignmentIdentifiersRow.add(column.getSampleAcquisition().getAssignment().getIdentifier());
         }
-        writeListAsCsvRow(writer, assignmentIdentifiersRow);
-        writeListAsCsvRow(writer, sampleIdentifiersRow);
+        writeAsCsvRow(writer, assignmentIdentifiersRow);
+        writeAsCsvRow(writer, sampleIdentifiersRow);
         String[] reporterHeadersRow = new String[assignmentIdentifiersRow.size()];
         reporterHeadersRow[0] = "Gene Name";
         if (isProbeSetResultType(result)) {
-            reporterHeadersRow[1] = "Reporter Id";
+            reporterHeadersRow[1] = "Reporter ID";
         }
-        writeListAsCsvRow(writer, Arrays.asList(reporterHeadersRow));
+        writeAsCsvRow(writer, reporterHeadersRow);
     }
     
     private static void writeRows(GenomicDataQueryResult result, FileWriter writer) throws IOException {
@@ -159,15 +228,20 @@ public final class GenomicDataFileWriter {
                 resultValuesRow.add(row.getReporter().getName());
             }
             resultValuesRow.add("");
-            for (GenomicDataResultValue value : row.getValueCollection()) {
+            for (GenomicDataResultValue value : row.getValues()) {
                 resultValuesRow.add(String.valueOf(value.getValue()));
             }
-            writeListAsCsvRow(writer, resultValuesRow);
+            writeAsCsvRow(writer, resultValuesRow);
         }
     }
     
-    private static void writeListAsCsvRow(FileWriter writer, List<String> csvRowString) throws IOException {
-        writer.append(StringUtils.join(csvRowString, ","));
+
+    private static void writeAsCsvRow(FileWriter writer, String[] csvRowStringArray) throws IOException {
+        writeAsCsvRow(writer, Arrays.asList(csvRowStringArray));
+    }
+    
+    private static void writeAsCsvRow(FileWriter writer, List<String> csvRowStrings) throws IOException {
+        writer.append(StringUtils.join(csvRowStrings, ","));
         writer.append("\n");
     }
     
