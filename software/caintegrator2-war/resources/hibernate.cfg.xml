@@ -58,14 +58,7 @@
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/SubjectAnnotation.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/annotation/SurvivalValueDefinition.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/AbstractCriterion.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataQueryResult.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataResultColumn.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataResultRow.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/GenomicDataResultValue.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/QueryResult.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/ResultColumn.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/ResultRow.hbm.xml" />
-        <mapping resource="gov/nih/nci/caintegrator2/domain/application/ResultValue.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/UserWorkspace.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/Query.hbm.xml" />
         <mapping resource="gov/nih/nci/caintegrator2/domain/application/StudySubscription.hbm.xml" />

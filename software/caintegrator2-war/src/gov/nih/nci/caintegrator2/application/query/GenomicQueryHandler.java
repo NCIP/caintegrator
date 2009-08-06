@@ -110,7 +110,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -151,9 +150,8 @@ class GenomicQueryHandler {
 
     private void addToResult(ArrayDataValues values, GenomicDataQueryResult result,
         Map<AbstractReporter, GenomicDataResultRow> reporterToRowMap, ArrayData arrayData) {
-        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        GenomicDataResultColumn column = result.addColumn();
         column.setSampleAcquisition(arrayData.getSample().getSampleAcquisition());
-        result.getColumnCollection().add(column);
         for (AbstractReporter reporter : values.getReporters()) {
             HibernateUtil.loadCollection(reporter.getGenes());
             GenomicDataResultRow row = reporterToRowMap.get(reporter);
@@ -164,7 +162,7 @@ class GenomicQueryHandler {
                 value.setValue(Float.valueOf(new DecimalFormat("0.00").
                             format((double) floatValue)));
             }
-            row.getValueCollection().add(value);
+            row.getValues().add(value);
         }
     }
 
@@ -179,7 +177,6 @@ class GenomicQueryHandler {
     private void createResultRows(GenomicDataQueryResult result, ArrayDataValues values) {
         for (AbstractReporter reporter : values.getReporters()) {
             GenomicDataResultRow row = new GenomicDataResultRow();
-            row.setValueCollection(new ArrayList<GenomicDataResultValue>());
             row.setReporter(reporter);
             result.getRowCollection().add(row);
         }

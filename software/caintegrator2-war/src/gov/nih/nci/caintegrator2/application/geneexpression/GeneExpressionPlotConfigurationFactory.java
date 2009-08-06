@@ -172,7 +172,7 @@ public final class GeneExpressionPlotConfigurationFactory {
 
     private static void addGeneExpressionValuesToGroup(Map<String, PlotReporterGroup> reporterNameToGroupMap,
             PlotSampleGroup sampleGroup, GenomicDataResultRow row, String name, PlotReporterGroup reporterGroup) {
-        for (GenomicDataResultValue value : row.getValueCollection()) {
+        for (GenomicDataResultValue value : row.getValues()) {
             reporterGroup.getGeneExpressionValues().add(Double.valueOf(value.getValue()));
         }
         if (!sampleGroup.isControlSampleGroup()) { // Don't count control group for total.

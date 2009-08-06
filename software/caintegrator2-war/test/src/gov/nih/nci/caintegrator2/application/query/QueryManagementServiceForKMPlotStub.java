@@ -102,9 +102,7 @@ import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
 import gov.nih.nci.caintegrator2.web.action.query.DisplayableResultRow;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("PMD")
 public class QueryManagementServiceForKMPlotStub implements QueryManagementService {
@@ -153,9 +151,8 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         GenomicDataQueryResult result = new GenomicDataQueryResult();
         result.setQuery(query);
         GenomicDataResultRow row = new GenomicDataResultRow();
-        Set <GenomicDataResultValue> valueCollection = new HashSet<GenomicDataResultValue>();
         GenomicDataResultValue value = new GenomicDataResultValue();
-        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        GenomicDataResultColumn column = result.addColumn();
         SampleAcquisition sampleAcquisition = new SampleAcquisition();
         StudySubjectAssignment assignment = new StudySubjectAssignment();
         assignment.setId(Long.valueOf(1));
@@ -168,8 +165,7 @@ public class QueryManagementServiceForKMPlotStub implements QueryManagementServi
         gene.setSymbol("EGFR");
         reporter.getGenes().add(gene);
         row.setReporter(reporter);
-        valueCollection.add(value);
-        row.setValueCollection(valueCollection);
+        row.getValues().add(value);
         result.getRowCollection().add(row);
         return result;
     }

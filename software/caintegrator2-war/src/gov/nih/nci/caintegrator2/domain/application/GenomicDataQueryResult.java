@@ -60,4 +60,17 @@ public class GenomicDataQueryResult extends AbstractCaIntegrator2Object {
         this.columnCollection = columnCollection;
     }
 
+    /**
+     * Adds a new column to this result.
+     * 
+     * @return the new column.
+     */
+    public GenomicDataResultColumn addColumn() {
+        GenomicDataResultColumn column = new GenomicDataResultColumn();
+        column.setResult(this);
+        column.setColumnIndex(getColumnCollection().size());
+        getColumnCollection().add(column);
+        return column;
+    }
+
 }

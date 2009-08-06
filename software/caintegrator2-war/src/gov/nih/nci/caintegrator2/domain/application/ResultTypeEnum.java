@@ -1,6 +1,5 @@
 package gov.nih.nci.caintegrator2.domain.application;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
