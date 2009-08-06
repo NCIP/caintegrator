@@ -85,66 +85,33 @@
  */
 package gov.nih.nci.caintegrator2.web;
 
+import static org.junit.Assert.assertEquals;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * Used to display Platform information on the Manage Platform page.
- */
-public class DisplayablePlatform {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 1L;
-    private final Platform platform;
-    private final boolean inUse;
 
-    /**
-     * @param platform the Platform
-     * @param inUse boolean
-     */
-    public DisplayablePlatform(Platform platform, boolean inUse) {
-        super();
-        this.platform = platform;
-        this.inUse = inUse;
-    }
+public class DisplayablePlatformTest {
     
-    /**
-     * @return the platform
-     */
-    public Platform getPlatform() {
-        return platform;
-    }
-    
-    /**
-     * Retrieves the displayable (comma separated) array names for the this platform.  Because
-     * some of the ReporterLists are duplicate names, have to strip those out so they are only
-     * displayed once.
-     * @return comma separated array names.
-     */
-    public String getDisplayableArrayNames() {
-        Set<String> arrayNamesUsed = new HashSet<String>();
-        StringBuffer arrayNames = new StringBuffer();
-        int count = 0;
-        for (ReporterList reporterList : platform.getReporterLists()) {
-            count++;
-            String name = reporterList.getName();
-            if (!arrayNamesUsed.contains(name)) {
-                arrayNamesUsed.add(name);
-                if (count > 1) {
-                    arrayNames.append(", ");
-                }
-                arrayNames.append(name);
-            }
-        }
-        return arrayNames.toString();
+    @Test
+    public void testGetDisplayableArrayNames() {
+        Platform platform = new Platform();
+        platform.setName("Platform Name");
+        platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
+        platform.addReporterList("list1", ReporterTypeEnum.GENE_EXPRESSION_GENE);
+        platform.addReporterList("list1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
+        platform.addReporterList("list2", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        DisplayablePlatform displayablePlatform = new DisplayablePlatform(platform, true);
+        String arrayNames = displayablePlatform.getDisplayableArrayNames();
+        List<String> arrayNamesList = Arrays.asList(arrayNames.split(","));
+        arrayNamesList.contains("list1");
+        arrayNamesList.contains("list2");
+        assertEquals(2, arrayNamesList.size());
     }
 
-    /**
-     * @return the inUse
-     */
-    public boolean isInUse() {
-        return inUse;
-    }
 }
