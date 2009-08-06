@@ -3,7 +3,8 @@ package gov.nih.nci.caintegrator2.domain.application;
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -13,7 +14,7 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
     private static final long serialVersionUID = 1L;
     
     private AbstractReporter reporter;
-    private Collection<GenomicDataResultValue> valueCollection;
+    private final List<GenomicDataResultValue> values = new ArrayList<GenomicDataResultValue>();
 
     /**
      * @return the reporter
@@ -29,17 +30,10 @@ public class GenomicDataResultRow extends AbstractCaIntegrator2Object {
         this.reporter = reporter;
     }
     /**
-     * @return the valueCollection
+     * @return the values
      */
-    public Collection<GenomicDataResultValue> getValueCollection() {
-        return valueCollection;
-    }
-    
-    /**
-     * @param valueCollection the valueCollection to set
-     */
-    public void setValueCollection(Collection<GenomicDataResultValue> valueCollection) {
-        this.valueCollection = valueCollection;
+    public List<GenomicDataResultValue> getValues() {
+        return values;
     }
 
 }

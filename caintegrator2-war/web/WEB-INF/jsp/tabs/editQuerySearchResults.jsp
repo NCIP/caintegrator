@@ -35,50 +35,91 @@
     <div id="queryResultsDiv" >
         <s:if test='%{query.resultType.value.equals("genomic")}'>
         <table class="data">
-            <tr>
-                <td />
-                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+            <s:if test='%{query.orientation.value.equals("subjectsAsColumns")}'>
+                <tr>
                     <td />
+                    <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                        <td />
+                    </s:if>
+                    <th>Subject ID</th>
+                    <s:iterator value="genomicDataQueryResult.columnCollection">
+                        <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
+                    </s:iterator>
+                </tr>
+                <tr>
+                    <td />
+                    <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                        <td />
+                    </s:if>
+                    <th>Sample ID</th>
+                    <s:iterator value="genomicDataQueryResult.columnCollection">
+                        <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
+                    </s:iterator>
+                </tr>
+                <tr />
+                <tr>
+                    <th>Gene Name</th>
+                    <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                        <th>Reporter ID</th>
+                    </s:if>
+                </tr>
+                <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                    <s:if test="#status.odd == true">
+                        <tr class="odd">
+                    </s:if>
+                    <s:else>
+                        <tr class="even">
+                    </s:else>
+                    <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                        <b><s:property value="reporter.geneSymbols" /></b>
+                    </a></td>
+                    <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                        <td><b><s:property value="reporter.name" /></b></td>
+                    </s:if>
+                    <td /><s:iterator value="values">
+                        <td><s:property value="value" /></td>
+                    </s:iterator>
+                </s:iterator>
+            </s:if>
+            <s:else>
+                <tr>
+                    <td/><td/>
+                    <th>Gene Name</th>
+                    <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                        <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
+                            <b><s:property value="reporter.geneSymbols" /></b>
+                        </a></td>
+                    </s:iterator>
+                </tr>
+                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
+                    <tr>
+                        <td/><td/>
+                        <th>Reporter ID</th>
+                        <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
+                            <td><b><s:property value="reporter.name" /></b></td>
+                        </s:iterator>
+                    </tr>
                 </s:if>
-                <th>Patient ID</th>
-                <s:iterator value="genomicDataQueryResult.columnCollection">
+                <tr>
+                    <th>Subject ID</th>
+                    <th>Sample ID</th>
+                </tr>
+                <s:iterator value="genomicDataQueryResult.columnCollection" status="status">
+                    <s:if test="#status.odd == true">
+                        <tr class="odd">
+                    </s:if>
+                    <s:else>
+                        <tr class="even">
+                    </s:else>
                     <td><b><s:property value="sampleAcquisition.assignment.identifier" /></b></td>
-                </s:iterator>
-            </tr>
-            <tr>
-                <td />
-                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
-                    <td />
-                </s:if>
-                <th>Sample ID</th>
-                <s:iterator value="genomicDataQueryResult.columnCollection">
                     <td><b><s:property value="sampleAcquisition.sample.name" /></b></td>
+                    <td/>
+                    <s:iterator value="values">
+                        <td><s:property value="value" /></td>
+                    </s:iterator>
+                    </tr>
                 </s:iterator>
-            </tr>
-            <tr />
-            <tr>
-                <th>Gene Name</th>
-                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
-                    <th>Reporter Id</th>
-                </s:if>
-            </tr>
-            <s:iterator value="genomicDataQueryResult.rowCollection" status="status">
-                <s:if test="#status.odd == true">
-                    <tr class="odd">
-                </s:if>
-                <s:else>
-                    <tr class="even">
-                </s:else>
-                <td><a href="${reporter.geneSymbolsCgapUrl}" target="cai2_CGAP" title="Click to find this Gene Symbol in the Cancer Genome Anatomy Project (CGAP)">
-                    <b><s:property value="reporter.geneSymbols" /></b>
-                </a></td>
-                <s:if test='%{queryForm.resultConfiguration.reporterType.equals("geneExpressionProbeSet")}'>
-                    <td><b><s:property value="reporter.name" /></b></td>
-                </s:if>
-                <td /><s:iterator value="valueCollection">
-                    <td><s:property value="value" /></td>
-                </s:iterator>
-            </s:iterator>
+            </s:else>
         </table>    
         <br>
             <div class="exportlinks">

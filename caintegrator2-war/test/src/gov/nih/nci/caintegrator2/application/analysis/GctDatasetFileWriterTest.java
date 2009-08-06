@@ -14,7 +14,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -65,12 +64,11 @@ public class GctDatasetFileWriterTest {
             reporter.getGenes().add(gene);
         }
         row.setReporter(reporter);
-        row.setValueCollection(new ArrayList<GenomicDataResultValue>());
         int colNum = 0;
         for (float value : values) {
             GenomicDataResultValue genomicValue = new GenomicDataResultValue();
             genomicValue.setValue(value);
-            row.getValueCollection().add(genomicValue);
+            row.getValues().add(genomicValue);
             genomicValue.setColumn(result.getColumnCollection().get(colNum));
             colNum++;
         }

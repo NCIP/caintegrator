@@ -109,6 +109,7 @@ import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.RegulationTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.application.SelectedValueCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StringComparisonCriterion;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -214,6 +215,13 @@ public class QueryFormTest {
         assertTrue(queryForm.isSavedQuery());
         queryForm.getQuery().setId(null);
         assertFalse(queryForm.isSavedQuery());
+        
+        queryForm.getResultConfiguration().setOrientation(null);
+        assertEquals("", queryForm.getResultConfiguration().getOrientation());
+        assertEquals(null, queryForm.getQuery().getOrientation());
+        queryForm.getResultConfiguration().setOrientation(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.getValue());
+        assertEquals(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.getValue(), queryForm.getResultConfiguration().getOrientation());
+        assertEquals(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS, queryForm.getQuery().getOrientation());
     }
 
     @Test

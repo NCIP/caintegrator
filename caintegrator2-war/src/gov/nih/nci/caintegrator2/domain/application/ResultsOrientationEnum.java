@@ -6,23 +6,23 @@ import java.util.Map;
 /**
  * Query result types.
  */
-public enum ResultTypeEnum {
+public enum ResultsOrientationEnum {
 
     /**
-     * Clinical.
+     * Display the subjects, samples, etc. as the columns and the reporters as the rows.
      */
-    CLINICAL("clinical"),
+    SUBJECTS_AS_COLUMNS("subjectsAsColumns"),
 
     /**
-     * Genomic data.
+     * Display the subjects, samples, etc. as the rows and the reporters as the columns.
      */
-    GENOMIC("genomic");
-    
-    private static Map<String, ResultTypeEnum> valueToTypeMap = new HashMap<String, ResultTypeEnum>();
+    SUBJECTS_AS_ROWS("subjectsAsRows");
+
+    private static Map<String, ResultsOrientationEnum> valueToTypeMap = new HashMap<String, ResultsOrientationEnum>();
 
     private String value;
     
-    private ResultTypeEnum(String value) {
+    private ResultsOrientationEnum(String value) {
         setValue(value);
     }
 
@@ -37,9 +37,9 @@ public enum ResultTypeEnum {
         this.value = value;
     }
 
-    private static Map<String, ResultTypeEnum> getValueToTypeMap() {
+    private static Map<String, ResultsOrientationEnum> getValueToTypeMap() {
         if (valueToTypeMap.isEmpty()) {
-            for (ResultTypeEnum type : values()) {
+            for (ResultsOrientationEnum type : values()) {
                 valueToTypeMap.put(type.getValue(), type);
             }
         }
@@ -55,8 +55,8 @@ public enum ResultTypeEnum {
      */
     public static Map<String, String> getValueToDisplayableMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(ResultTypeEnum.CLINICAL.getValue(), "Clinical");
-        map.put(ResultTypeEnum.GENOMIC.getValue(), "Genomic");
+        map.put(ResultsOrientationEnum.SUBJECTS_AS_COLUMNS.getValue(), "Genes in Rows / Subjects in Columns");
+        map.put(ResultsOrientationEnum.SUBJECTS_AS_ROWS.getValue(), "Genes in Columns / Subjects in Rows");
         return map;
     }
     
@@ -67,7 +67,7 @@ public enum ResultTypeEnum {
      * @param value the value to match
      * @return the matching type.
      */
-    public static ResultTypeEnum getByValue(String value) {
+    public static ResultsOrientationEnum getByValue(String value) {
         checkType(value);
         return getValueToTypeMap().get(value);
     }

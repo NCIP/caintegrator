@@ -96,6 +96,7 @@ import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.domain.application.ResultColumn;
 import gov.nih.nci.caintegrator2.domain.application.ResultTypeEnum;
+import gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 
@@ -145,6 +146,28 @@ public class ResultConfiguration {
             if (StringUtils.isBlank(getReporterType())) {
                 setReporterType(ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET.getValue());
             }
+        }
+    }
+
+    /**
+     * @return the orientation
+     */
+    public String getOrientation() {
+        if (getQuery().getOrientation() == null) {
+            return "";
+        } else {
+            return getQuery().getOrientation().getValue();
+        }
+    }
+
+    /**
+     * @param orientation the orientation to set
+     */
+    public void setOrientation(String orientation) {
+        if (StringUtils.isBlank(orientation)) {
+            getQuery().setOrientation(null);
+        } else {
+            getQuery().setOrientation(ResultsOrientationEnum.getByValue(orientation));
         }
     }
 
