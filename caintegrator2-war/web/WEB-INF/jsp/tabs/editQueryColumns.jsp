@@ -26,7 +26,7 @@
         <div class="selectorNote">Reporter Id - will display all reporter ids.<br>
                 Gene - will display a median value for each gene.</div>    
         <br>
-        <div class="resultTypeSelector">
+        <div class="reporterTypeSelector">
         <b>Select Results Orientation: </b> 
             <s:radio name="queryForm.resultConfiguration.orientation"
                 list="@gov.nih.nci.caintegrator2.domain.application.ResultsOrientationEnum@getValueToDisplayableMap()"
