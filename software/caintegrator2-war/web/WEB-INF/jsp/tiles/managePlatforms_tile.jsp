@@ -58,9 +58,9 @@
             </th>    
         </tr>
         <tr>
-            <th>Name</th>
+            <th>Platform Name</th>
             <th>Vendor</th>
-            <th>Reporter List</th>
+            <th>Array Name(s)</th>
             <th>Action</th>
         </tr>
         <s:iterator value="displayablePlatforms" status="status">
@@ -72,7 +72,7 @@
             </s:else>            
                 <td><s:property value="platform.name" /></td>
                 <td><s:property value="platform.vendor" /></td>
-                <td><s:property value="platform.reporterListListing" /></td>
+                <td><s:property value="displayableArrayNames" /></td>
                 <td>
                     <s:if test="!inUse">
                         <s:url id="deletePlatform" action="deletePlatform">
