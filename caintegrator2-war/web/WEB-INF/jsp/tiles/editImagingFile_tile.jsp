@@ -64,7 +64,14 @@
                         <s:param name="fileColumn.id" value="id" />
                     </s:url>
                     <br>
-                    <s:a href="%{editImagingFileColumn}">Change Assignment</s:a> 
+                    <s:a href="%{editImagingFileColumn}">
+                        <s:if test="%{identifierColumn || timepointColumn || (fieldDescriptor != null && fieldDescriptor.definition != null) }">
+                            Change Assignment
+                        </s:if>
+                        <s:else>
+                            Assign Annotation Definition
+                        </s:else>
+                    </s:a> 
                 </td>
                 <td><s:property value="name" /></td>
                 <td><s:if test="%{dataValues.size > 0}"><s:property value="dataValues[0]" /></s:if></td>

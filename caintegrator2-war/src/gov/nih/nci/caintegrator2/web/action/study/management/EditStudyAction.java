@@ -126,6 +126,7 @@ public class EditStudyAction extends AbstractStudyAction {
 
         if (SessionHelper.getInstance().isAuthenticated()) {
             try {
+                getDisplayableWorkspace().setCurrentStudyConfiguration(null);
                 getStudyManagementService().delete(getStudyConfiguration());
             } catch (CSException e) {
                 addActionError("There was a problem deleting the Study ProtectionElement from the CSM tables.");
