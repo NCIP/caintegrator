@@ -90,6 +90,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.common.AnnotationValueUtil;
+import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.common.PermissibleValueUtil;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
@@ -115,7 +116,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     private static final String ANNOTATION_TYPE = "Annotation";
     private static final String IDENTIFIER_TYPE = "Identifier";
     private static final String TIMEPOINT_TYPE = "Timepoint";
-    private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE, TIMEPOINT_TYPE};
+    private static final String[] COLUMN_TYPES = new String[] {ANNOTATION_TYPE, IDENTIFIER_TYPE};
     
     private FileColumn fileColumn = new FileColumn();
     private boolean readOnly;
@@ -148,6 +149,12 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
         super.prepare();
         if (fileColumn.getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
+            if (fileColumn.getFieldDescriptor() != null && fileColumn.getFieldDescriptor().getDefinition() != null) {
+                fileColumn.getFieldDescriptor().setDefinition(
+                        getStudyManagementService().getRefreshedStudyEntity(
+                                fileColumn.getFieldDescriptor().getDefinition()));
+                HibernateUtil.loadCollections(fileColumn.getFieldDescriptor().getDefinition());
+            }
         }
         setReadOnly(true);
     }
