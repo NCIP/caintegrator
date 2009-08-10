@@ -88,6 +88,7 @@ package gov.nih.nci.caintegrator2.web.action.analysis.geneexpression;
 
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.PlotTypeEnum;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
@@ -106,6 +107,7 @@ import java.util.Set;
 /**
  * Action dealing with Gene Expression Clinical Query Based plotting.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // see method runFirstCreatPlotThread
 public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction {
 
     private static final long serialVersionUID = 1L;
@@ -238,6 +240,7 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Multiple Catch Statements
     protected void runFirstCreatePlotThread() {
         if (!isCreatePlotRunning()) {
             setCreatePlotRunning(true);
@@ -251,6 +254,9 @@ public class GEPlotClinicalQueryBasedAction extends AbstractGeneExpressionAction
                     addActionError("Group selected in step 6 invalid, control samples must all be mapped to patients: "
                             + e.getMessage());
                 } catch (InvalidCriterionException e) {
+                    SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
+                    addActionError(e.getMessage());
+                } catch (GenesNotFoundInStudyException e) {
                     SessionHelper.setGePlots(PlotTypeEnum.CLINICAL_QUERY_BASED, null);
                     addActionError(e.getMessage());
                 }

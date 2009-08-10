@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
      
      <s:actionerror />
@@ -41,8 +41,14 @@
         </s:iterator>
         </fieldset>
 
+        <s:if test="!#gePlot.clinicalQueryBasedGePlot.genesNotFound.empty">
+            <fieldset style='display:table;width:400; border:1px solid gray; text-align:left; padding:5px;'>
+            <legend> Legend: Genes Not Found </legend>
+            <s:iterator value="#gePlot.clinicalQueryBasedGePlot.genesNotFound" >
+                <b><s:property /></b><br>
+            </s:iterator>
+            </fieldset>
+        </s:if>
         </center>
     </s:if>
     <!-- /Gene Expression Graph -->
-
-

@@ -85,6 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.geneexpression;
 
+import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
@@ -110,15 +111,19 @@ public abstract class AbstractGEPlotHandler {
     
     private final CaIntegrator2Dao dao;
     private final QueryManagementService queryManagementService;
+    private final GeneExpressionPlotService gePlotService;
     
     /**
      * Constructor.
      * @param dao to call database.
      * @param queryManagementService for query execution.
+     * @param gePlotService used to create the ge plots.
      */
-    protected AbstractGEPlotHandler(CaIntegrator2Dao dao, QueryManagementService queryManagementService) {
+    protected AbstractGEPlotHandler(CaIntegrator2Dao dao, QueryManagementService queryManagementService, 
+                                    GeneExpressionPlotService gePlotService) {
         this.dao = dao;
         this.queryManagementService = queryManagementService;
+        this.gePlotService = gePlotService;
     }
     
     /**
@@ -126,34 +131,36 @@ public abstract class AbstractGEPlotHandler {
      * @param dao to call database.
      * @param queryManagementService for query creation.
      * @param parameters used to determine type of handler to create.
+     * @param gePlotService used to create the ge plots.
      * @return handler.
      */
     public static AbstractGEPlotHandler createGeneExpressionPlotHandler(CaIntegrator2Dao dao,
                                                                         QueryManagementService queryManagementService,
-                                                                        AbstractGEPlotParameters parameters) {
+                                                                        AbstractGEPlotParameters parameters,
+                                                                        GeneExpressionPlotService gePlotService) {
         if (parameters instanceof GEPlotAnnotationBasedParameters) {
             return new AnnotationBasedGEPlotHandler(dao, queryManagementService, 
-                                                   (GEPlotAnnotationBasedParameters) parameters);
+                                                   (GEPlotAnnotationBasedParameters) parameters,
+                                                   gePlotService);
         } else if (parameters instanceof GEPlotGenomicQueryBasedParameters) {
             return new GenomicQueryBasedGEPlotHandler(dao, queryManagementService,
-                                                    (GEPlotGenomicQueryBasedParameters) parameters);
+                                                    (GEPlotGenomicQueryBasedParameters) parameters,
+                                                    gePlotService);
         } else if (parameters instanceof GEPlotClinicalQueryBasedParameters) {
             return new ClinicalQueryBasedGEPlotHandler(dao, queryManagementService,
-                    (GEPlotClinicalQueryBasedParameters) parameters);
+                    (GEPlotClinicalQueryBasedParameters) parameters, gePlotService);
 }
         throw new IllegalArgumentException("Unknown Parameter Type");  
     }
     
     /**
      * Creates the GeneExpressionPlotGroup for the parameters.
-     * @param gePlotService creates the plots. 
      * @param subscription that user is currently using.
      * @return plot group.
      * @throws ControlSamplesNotMappedException when a control sample is not mapped.
      * @throws InvalidCriterionException if the criterion is not valid for the query.
      */
-    public abstract GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-            StudySubscription subscription)
+    public abstract GeneExpressionPlotGroup createPlots(StudySubscription subscription)
         throws ControlSamplesNotMappedException, InvalidCriterionException;
 
     /**
@@ -168,6 +175,18 @@ public abstract class AbstractGEPlotHandler {
      */
     public QueryManagementService getQueryManagementService() {
         return queryManagementService;
+    }
+    
+    /**
+     * Creates the plot.
+     * @param parameters input for graph.
+     * @param configuration to add genes not found.
+     * @return the gene expression plot group.
+     */
+    protected GeneExpressionPlotGroup createGeneExpressionPlot(AbstractGEPlotParameters parameters, 
+                                                               GeneExpressionPlotConfiguration configuration) {
+        configuration.getGenesNotFound().addAll(parameters.getGenesNotFound());
+        return gePlotService.generatePlots(configuration);
     }
     
     /**

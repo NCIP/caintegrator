@@ -89,6 +89,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import edu.mit.broad.genepattern.gp.services.GenePatternClient;
 import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import edu.mit.broad.genepattern.gp.services.JobInfo;
@@ -99,6 +100,7 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamp
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotAnnotationBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotClinicalQueryBasedParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GEPlotGenomicQueryBasedParameters;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotServiceImpl;
 import gov.nih.nci.caintegrator2.application.geneexpression.PlotCalculationTypeEnum;
@@ -117,9 +119,12 @@ import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -131,7 +136,7 @@ public class AnalysisServiceTest {
     private GenePatternClientFactoryStub genePatternClientFactoryStub = new GenePatternClientFactoryStub();
     // KMPlot Items
     private CaIntegratorKMPlotServiceStub caIntegratorPlotServiceStub = new CaIntegratorKMPlotServiceStub();
-    private CaIntegrator2DaoStub daoStub = new CaIntegrator2DaoStub();
+    private DaoForAnalysisServiceStub daoStub = new DaoForAnalysisServiceStub();
     private QueryManagementServiceForKMPlotStub queryManagementServiceForKmPlotStub = 
                         new QueryManagementServiceForKMPlotStub();
     
@@ -285,16 +290,27 @@ public class AnalysisServiceTest {
         assertEquals(ResultTypeEnum.CLINICAL, query1.getResultType());
     }
     
-    private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters annotationParameters) 
-    throws ControlSamplesNotMappedException, InvalidCriterionException {
-        GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, annotationParameters);
+    private void runGEPlotTest(StudySubscription subscription, AbstractGEPlotParameters parameters) 
+    throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
+        try {
+            daoStub.returnNoGeneSymbols = true;
+            service.createGeneExpressionPlot(subscription, parameters);
+            if (!(parameters instanceof GEPlotGenomicQueryBasedParameters)) { // Genomic Query doesn't have gene input.
+                fail();
+            }
+        } catch (GenesNotFoundInStudyException e) {
+            // expected result.
+            daoStub.clear();
+        }
+        
+        GeneExpressionPlotGroup gePlot = service.createGeneExpressionPlot(subscription, parameters);
         
         assertNotNull(gePlot.getPlot(PlotCalculationTypeEnum.MEAN));
 
     }
     
     @Test
-    public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
+    public void testCreateAnnotationBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -315,7 +331,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
+    public void testCreateGenomicQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -336,7 +352,7 @@ public class AnalysisServiceTest {
     }
     
     @Test
-    public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException {
+    public void testCreateClinicalQueryBasedGEPlot() throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
         KMPlotStudyCreator studyCreator = new KMPlotStudyCreator();
         Study study = studyCreator.createKMPlotStudy();
         StudySubscription subscription = new StudySubscription();
@@ -471,4 +487,23 @@ public class AnalysisServiceTest {
 
     }
 
+    private static class DaoForAnalysisServiceStub extends CaIntegrator2DaoStub {
+        
+        public boolean returnNoGeneSymbols = false;
+        
+        @Override
+        public void clear() {
+            super.clear();
+            returnNoGeneSymbols = false;
+        }
+        
+        @Override
+        public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
+            Set<String> newSymbols = new HashSet<String>();
+            for (String symbol : symbols) {
+               newSymbols.add(symbol); 
+            }
+            return returnNoGeneSymbols ? new HashSet<String>() : newSymbols;
+        }
+    }
 }
