@@ -147,7 +147,7 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
     @Override
     public void prepare() {
         super.prepare();
-        if (fileColumn.getId() != null) {
+        if (getFileColumn().getId() != null) {
             setFileColumn(getStudyManagementService().getRefreshedStudyEntity(getFileColumn()));
             if (fileColumn.getFieldDescriptor() != null && fileColumn.getFieldDescriptor().getDefinition() != null) {
                 fileColumn.getFieldDescriptor().setDefinition(
@@ -508,5 +508,14 @@ public class DefineFileColumnAction extends AbstractClinicalSourceAction {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @return the identifier name.
+     */
+    public String getIdentifier() {
+        FileColumn identifier = getFileColumn().getAnnotationFile().getIdentifierColumn();
+        return identifier == null ? "" : identifier.getName();
     }
 }
