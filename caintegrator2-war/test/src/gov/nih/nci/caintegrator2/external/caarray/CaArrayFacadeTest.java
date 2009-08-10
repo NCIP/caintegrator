@@ -91,9 +91,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
 import gov.nih.nci.caarray.external.v1_0.array.ArrayDesign;
-import gov.nih.nci.caarray.external.v1_0.data.DataFile;
 import gov.nih.nci.caarray.external.v1_0.data.DataSet;
 import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
+import gov.nih.nci.caarray.external.v1_0.data.File;
+import gov.nih.nci.caarray.external.v1_0.data.FileMetadata;
 import gov.nih.nci.caarray.external.v1_0.data.FloatColumn;
 import gov.nih.nci.caarray.external.v1_0.data.HybridizationData;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
@@ -358,11 +359,12 @@ public class CaArrayFacadeTest {
             }
 
             @Override
-            public SearchResult<DataFile> searchForFiles(FileSearchCriteria criteria, LimitOffset arg1)
+            public SearchResult<File> searchForFiles(FileSearchCriteria criteria, LimitOffset arg1)
                     throws InvalidReferenceException {
-                SearchResult<DataFile> result = new SearchResult<DataFile>();
-                DataFile file = new DataFile();
-                file.setName("filename");
+                SearchResult<File> result = new SearchResult<File>();
+                File file = new File();
+                file.setMetadata(new FileMetadata());
+                file.getMetadata().setName("filename");
                 result.getResults().add(file);
                 return result;
             }
