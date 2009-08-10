@@ -336,11 +336,19 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
 
     private void updateColumnType() {
         if (IDENTIFIER_TYPE.equals(columnType)) {
+            setAnnotationColumn(getFileColumn().getAnnotationFile().getIdentifierColumn());
             getFileColumn().getAnnotationFile().setIdentifierColumn(getFileColumn());
         } else if (TIMEPOINT_TYPE.equals(columnType)) {
+            setAnnotationColumn(getFileColumn().getAnnotationFile().getTimepointColumn());
             getFileColumn().getAnnotationFile().setTimepointColumn(getFileColumn());
         } else if (ANNOTATION_TYPE.equals(columnType)) {
             getFileColumn().makeAnnotationColumn();
+        }
+    }
+    
+    private void setAnnotationColumn(FileColumn annotationColumn) {
+        if (annotationColumn != null) {
+            annotationColumn.makeAnnotationColumn();
         }
     }
 
@@ -435,6 +443,7 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
      */
     public boolean isPermissibleOn() {
         if (isColumnTypeAnnotation()
+                && fileColumn.getFieldDescriptor() != null
                 && fileColumn.getFieldDescriptor().getDefinition() != null) {
             return true;
         } 
@@ -511,5 +520,14 @@ public class DefineImagingFileColumnAction extends AbstractImagingSourceAction {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @return the identifier name.
+     */
+    public String getIdentifier() {
+        FileColumn identifier = getFileColumn().getAnnotationFile().getIdentifierColumn();
+        return identifier == null ? "" : identifier.getName();
     }
 }
