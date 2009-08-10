@@ -87,8 +87,8 @@ package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.AbstractCaArrayEntity;
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
-import gov.nih.nci.caarray.external.v1_0.data.DataFile;
 import gov.nih.nci.caarray.external.v1_0.data.DataSet;
+import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.data.MageTabFileSet;
 import gov.nih.nci.caarray.external.v1_0.data.QuantitationType;
 import gov.nih.nci.caarray.external.v1_0.experiment.Person;
@@ -193,7 +193,7 @@ public class ServiceStubFactory implements CaArrayServiceFactory {
             return null;
         }
 
-        public SearchResult<DataFile> searchForFiles(FileSearchCriteria arg0, LimitOffset arg1)
+        public SearchResult<File> searchForFiles(FileSearchCriteria arg0, LimitOffset arg1)
                 throws InvalidReferenceException {
             return null;
         }
