@@ -104,7 +104,7 @@ public class CaBioGeneSearchParameters {
     private String keywords;
     private String taxon = HUMAN_TAXON;
     private Study study;
-    private boolean filterGenesOnStudy = false;
+    private boolean filterGenesOnStudy = true;
     
     /**
      * @return the keywords

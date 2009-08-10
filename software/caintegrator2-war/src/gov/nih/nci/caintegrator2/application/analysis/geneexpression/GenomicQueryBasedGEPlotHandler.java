@@ -108,8 +108,9 @@ class GenomicQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
         
     GenomicQueryBasedGEPlotHandler(CaIntegrator2Dao dao, 
                                  QueryManagementService queryManagementService, 
-                                 GEPlotGenomicQueryBasedParameters parameters) {
-        super(dao, queryManagementService);
+                                 GEPlotGenomicQueryBasedParameters parameters, 
+                                 GeneExpressionPlotService gePlotService) {
+        super(dao, queryManagementService, gePlotService);
         this.parameters = parameters;
     }
     
@@ -117,13 +118,13 @@ class GenomicQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
      * {@inheritDoc}
      * @throws InvalidCriterionException 
      */
-    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, StudySubscription subscription)
+    public GeneExpressionPlotGroup createPlots(StudySubscription subscription)
             throws InvalidCriterionException {
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         genomicResults.add(retrieveGenomicResults(subscription));
         GeneExpressionPlotConfiguration configuration = 
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+        return createGeneExpressionPlot(parameters, configuration);
     }
 
     

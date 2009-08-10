@@ -90,6 +90,7 @@ import edu.mit.broad.genepattern.gp.services.GenePatternServiceException;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotHandler;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.AbstractGEPlotParameters;
 import gov.nih.nci.caintegrator2.application.analysis.geneexpression.ControlSamplesNotMappedException;
+import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFoundInStudyException;
 import gov.nih.nci.caintegrator2.application.analysis.grid.GenePatternGridRunner;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotService;
@@ -97,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotService;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
@@ -111,8 +113,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -209,11 +215,32 @@ public class AnalysisServiceImpl implements AnalysisService {
      */
     public GeneExpressionPlotGroup createGeneExpressionPlot(StudySubscription studySubscription,
             AbstractGEPlotParameters plotParameters) 
-    throws ControlSamplesNotMappedException, InvalidCriterionException {
+    throws ControlSamplesNotMappedException, InvalidCriterionException, GenesNotFoundInStudyException {
+        if (StringUtils.isNotBlank(plotParameters.getGeneSymbol())) {
+            validateGeneSymbols(studySubscription, plotParameters);
+        }
         AbstractGEPlotHandler gePlotHandler = AbstractGEPlotHandler.createGeneExpressionPlotHandler(
-                dao, queryManagementService, plotParameters);
+                dao, queryManagementService, plotParameters, gePlotService);
         
-        return gePlotHandler.createPlots(gePlotService, studySubscription);
+        return gePlotHandler.createPlots(studySubscription);
+    }
+
+    private void validateGeneSymbols(StudySubscription studySubscription, AbstractGEPlotParameters plotParameters)
+            throws GenesNotFoundInStudyException {
+        plotParameters.getGenesNotFound().clear();
+        List<String> inputGeneSymbols = Arrays.asList(plotParameters.getGeneSymbol().replaceAll(" ", "").split(","));
+        Set<String> genesInStudy = dao.retrieveGeneSymbolsInStudy(inputGeneSymbols, studySubscription.getStudy());
+        if (genesInStudy.isEmpty()) {
+            throw new GenesNotFoundInStudyException("None of the specified genes were found in study.");
+        }
+        for (String geneSymbol : inputGeneSymbols) {
+            if (!Cai2Util.containsIgnoreCase(genesInStudy, geneSymbol)) {
+                plotParameters.getGenesNotFound().add(geneSymbol);
+            }
+        }
+        if (!plotParameters.getGenesNotFound().isEmpty()) {
+            Collections.sort(plotParameters.getGenesNotFound());
+        }
     }
 
 
