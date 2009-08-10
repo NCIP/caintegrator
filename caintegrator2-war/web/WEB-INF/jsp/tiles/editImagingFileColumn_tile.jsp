@@ -25,6 +25,23 @@
         dwr.engine.setActiveReverseAjax(true);
         DataElementSearchAjaxUpdater.initializeJsp("/WEB-INF/jsp/tiles/editFileColumn_searchResult.jsp");
     }
+    
+    function changeColumnType() {
+        var type = document.getElementById("columnType").value;
+        if (document.getElementById("columnType").value == "Identifier") {
+            var identifier = '<s:property value="identifier"/>';
+            if (identifier != "") {
+                if (confirm("You are about to set this column to be an Identifier \n" +
+                    "and set the '" + identifier + "' column to null.")) {
+                    document.columnTypeForm.submit();
+                } else {
+                    document.getElementById("columnType").value = '<s:property value="columnType"/>';
+                    return;
+                }
+            }
+        }
+        document.columnTypeForm.submit();
+    }
     </script>
     
     <!--Page Help-->
@@ -38,12 +55,13 @@
     <s:actionerror />
     <h1>Assign Annotation Definition for Imaging Column: <s:property value="fileColumn.name" /></h1>
 
-    <s:form action="saveImagingColumnType">
+    <s:form name="columnTypeForm" action="saveImagingColumnType">
         <s:hidden name="studyConfiguration.id" />
         <s:hidden name="imageSourceConfiguration.id" />
         <s:hidden name="fileColumn.id" />
     
-        <s:select label="Column Type:" name="columnType" onchange="this.form.submit();" list="columnTypes" required="true" />
+        <s:select id="columnType" label="Column Type:" name="columnType"
+            list="columnTypes" required="true" onchange="changeColumnType()" />
     </s:form>
         
     <s:form id="updateDefinition" cssClass="currentAnnotationDefinition">
