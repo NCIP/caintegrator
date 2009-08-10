@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
-import gov.nih.nci.caarray.external.v1_0.data.DataFile;
+import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.experiment.Experiment;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.query.SearchResult;
@@ -217,23 +217,23 @@ public class CaArrayFacadeImpl implements CaArrayFacade {
      */
     public byte[] retrieveFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws FileNotFoundException, ConnectionException {
-        DataFile dataFile = getFile(genomicSource, filename);
+        File dataFile = getFile(genomicSource, filename);
         CaArrayEntityReference fileRef = dataFile.getReference();
         DataService dataService = getServiceFactory().createDataService(genomicSource.getServerProfile());
         return CaArrayUtils.retrieveFile(dataService, fileRef);
     }
 
     @SuppressWarnings("PMD.PreserveStackTrace")     // FileNotFoundException doesn't include a source Throwable
-    private DataFile getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
+    private File getFile(GenomicDataSourceConfiguration genomicSource, String filename) 
     throws ConnectionException, FileNotFoundException {
         try {
             SearchService searchService = getServiceFactory().createSearchService(genomicSource.getServerProfile());
             Experiment experiment = CaArrayUtils.getExperiment(genomicSource.getExperimentIdentifier(), searchService);
             FileSearchCriteria criteria = new FileSearchCriteria();
             criteria.setExperiment(experiment.getReference());
-            SearchResult<DataFile> result = searchService.searchForFiles(criteria, null);
-            for (DataFile file : result.getResults()) {
-                if (filename.equals(file.getName())) {
+            SearchResult<File> result = searchService.searchForFiles(criteria, null);
+            for (File file : result.getResults()) {
+                if (filename.equals(file.getMetadata().getName())) {
                     return file;
                 }
             }

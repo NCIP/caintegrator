@@ -86,7 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.CaArrayEntityReference;
-import gov.nih.nci.caarray.external.v1_0.data.DataFile;
+import gov.nih.nci.caarray.external.v1_0.data.File;
 import gov.nih.nci.caarray.external.v1_0.query.FileSearchCriteria;
 import gov.nih.nci.caarray.external.v1_0.sample.Hybridization;
 import gov.nih.nci.caarray.services.external.v1_0.InvalidReferenceException;
@@ -150,7 +150,7 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
     throws DataRetrievalException, InvalidReferenceException, FileNotFoundException, 
     ConnectionException, UnsupportedCategoryException {
         for (Hybridization hybridization : hybridizationSet) {
-            DataFile dataFile = getDataFile(hybridization);
+            File dataFile = getDataFile(hybridization);
             byte[] byteArray = CaArrayUtils.retrieveFile(dataService, dataFile.getReference());
             ArrayData arrayData = createArrayData(hybridization);
             Map<String, Float> agilentDataMap = AgilentRawDataFileParser.INSTANCE.extractData(
@@ -159,12 +159,12 @@ class AgilentDataRetrievalHelper extends AbstractDataRetrievalHelper {
         }
     }
 
-    private DataFile getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidReferenceException {
+    private File getDataFile(Hybridization hybridization) throws DataRetrievalException, InvalidReferenceException {
         FileSearchCriteria criteria = new FileSearchCriteria();
         Set<CaArrayEntityReference> nodes = new HashSet<CaArrayEntityReference>();
         criteria.setExperimentGraphNodes(nodes);
         nodes.add(hybridization.getReference());
-        List<DataFile> files =  getSearchService().searchForFiles(criteria, null).getResults();
+        List<File> files =  getSearchService().searchForFiles(criteria, null).getResults();
         if (files.isEmpty()) {
             throw new DataRetrievalException("No matching file for hybridization.");
         }

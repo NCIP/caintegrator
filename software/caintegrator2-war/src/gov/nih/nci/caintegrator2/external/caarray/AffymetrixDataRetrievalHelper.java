@@ -86,6 +86,7 @@
 package gov.nih.nci.caintegrator2.external.caarray;
 
 import gov.nih.nci.caarray.external.v1_0.data.DataSet;
+import gov.nih.nci.caarray.external.v1_0.data.DataType;
 import gov.nih.nci.caarray.external.v1_0.data.DesignElement;
 import gov.nih.nci.caarray.external.v1_0.data.FloatColumn;
 import gov.nih.nci.caarray.external.v1_0.data.HybridizationData;
@@ -155,6 +156,7 @@ class AffymetrixDataRetrievalHelper extends AbstractDataRetrievalHelper {
     private QuantitationType getSignal() {
         QuantitationType signal = new QuantitationType();
         signal.setName(CHP_SIGNAL_TYPE_NAME);
+        signal.setDataType(DataType.FLOAT);
         ExampleSearchCriteria<QuantitationType> criteria = new ExampleSearchCriteria<QuantitationType>();
         criteria.setExample(signal);
         return getSearchService().searchByExample(criteria, null).getResults().get(0);
