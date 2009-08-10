@@ -96,6 +96,7 @@ public abstract class AbstractGEPlotParameters {
     private boolean addControlSamplesGroup;
     private String controlSampleSetName;
     private final List<String> errorMessages = new ArrayList<String>();
+    private final List<String> genesNotFound = new ArrayList<String>();
     
     /**
      * Validates that all parameters are set.
@@ -156,6 +157,13 @@ public abstract class AbstractGEPlotParameters {
      */
     public void setControlSampleSetName(String controlSampleSetName) {
         this.controlSampleSetName = controlSampleSetName;
+    }
+
+    /**
+     * @return the genesNotFound
+     */
+    public List<String> getGenesNotFound() {
+        return genesNotFound;
     }
 
 }

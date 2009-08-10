@@ -122,8 +122,8 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         
     AnnotationBasedGEPlotHandler(CaIntegrator2Dao dao, 
                                  QueryManagementService queryManagementService, 
-                                 GEPlotAnnotationBasedParameters parameters) {
-        super(dao, queryManagementService);
+                                 GEPlotAnnotationBasedParameters parameters, GeneExpressionPlotService gePlotService) {
+        super(dao, queryManagementService, gePlotService);
         this.parameters = parameters;
     }
     
@@ -132,8 +132,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
      * @throws ControlSamplesNotMappedException 
      * @throws InvalidCriterionException 
      */
-    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-            StudySubscription subscription) 
+    public GeneExpressionPlotGroup createPlots(StudySubscription subscription) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
@@ -145,7 +144,7 @@ class AnnotationBasedGEPlotHandler extends AbstractGEPlotHandler {
         addOptionalGroups(subscription, genomicResults, parameters.getControlSampleSetName());
         GeneExpressionPlotConfiguration configuration = 
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+        return createGeneExpressionPlot(parameters, configuration);
     }
 
     private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults,

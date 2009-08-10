@@ -119,16 +119,16 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
         
     ClinicalQueryBasedGEPlotHandler(CaIntegrator2Dao dao, 
                                  QueryManagementService queryManagementService, 
-                                 GEPlotClinicalQueryBasedParameters parameters) {
-        super(dao, queryManagementService);
+                                 GEPlotClinicalQueryBasedParameters parameters, 
+                                 GeneExpressionPlotService gePlotService) {
+        super(dao, queryManagementService, gePlotService);
         this.parameters = parameters;
     }
     
     /**
      * {@inheritDoc}
      */
-    public GeneExpressionPlotGroup createPlots(GeneExpressionPlotService gePlotService, 
-                                               StudySubscription subscription) 
+    public GeneExpressionPlotGroup createPlots(StudySubscription subscription) 
     throws ControlSamplesNotMappedException, InvalidCriterionException {
         List<GenomicDataQueryResult> genomicResults = new ArrayList<GenomicDataQueryResult>();
         for (Query query : parameters.getQueries()) {
@@ -140,7 +140,7 @@ class ClinicalQueryBasedGEPlotHandler extends AbstractGEPlotHandler {
         addOptionalGroups(subscription, genomicResults);
         GeneExpressionPlotConfiguration configuration = 
                 GeneExpressionPlotConfigurationFactory.createPlotConfiguration(genomicResults);
-        return gePlotService.generatePlots(configuration);
+        return createGeneExpressionPlot(parameters, configuration);
     }
 
     private void addOptionalGroups(StudySubscription subscription, List<GenomicDataQueryResult> genomicResults) 

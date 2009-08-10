@@ -96,6 +96,7 @@ import java.util.Set;
 public class GeneExpressionPlotConfiguration {
     
     private final Set<String> geneNames = new HashSet<String>();
+    private final List<String> genesNotFound = new ArrayList<String>();
     private List<PlotSampleGroup> plotSampleGroups = new ArrayList<PlotSampleGroup>();
     
     /**
@@ -117,6 +118,13 @@ public class GeneExpressionPlotConfiguration {
      */
     public Set<String> getGeneNames() {
         return geneNames;
+    }
+
+    /**
+     * @return the genesNotFound
+     */
+    public List<String> getGenesNotFound() {
+        return genesNotFound;
     }
     
 

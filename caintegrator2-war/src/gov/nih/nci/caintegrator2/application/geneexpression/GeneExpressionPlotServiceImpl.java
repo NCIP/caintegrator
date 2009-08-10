@@ -127,6 +127,7 @@ public class GeneExpressionPlotServiceImpl implements GeneExpressionPlotService 
                                             createBoxWhiskerTypePlot(dataSets.getBwDataset()));
         addLegendItemsToPlot(plotGroup);
         addPlotGroupSubjectCounts(configuration, plotGroup);
+        plotGroup.getGenesNotFound().addAll(configuration.getGenesNotFound());
         return plotGroup;
     }
 
