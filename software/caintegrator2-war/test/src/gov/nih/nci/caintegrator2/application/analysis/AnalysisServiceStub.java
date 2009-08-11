@@ -92,7 +92,6 @@ import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotConfiguration;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlotServiceStub;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -175,7 +174,7 @@ public class AnalysisServiceStub implements AnalysisService {
         return null;
     }
 
-    public List<MarkerResult> executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
+    public File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job)
             throws ConnectionException {
         executeComparativeMarkerSelectionJobCalled = true;

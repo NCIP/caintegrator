@@ -99,7 +99,6 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ncia.NCIADicomJob;
-import gov.nih.nci.caintegrator2.web.action.analysis.DisplayableCmsJobResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.KMPlotForm;
 import gov.nih.nci.caintegrator2.web.action.analysis.geneexpression.GEPlotForm;
 import gov.nih.nci.caintegrator2.web.action.platform.form.PlatformForm;
@@ -133,7 +132,6 @@ public class DisplayableUserWorkspace {
     private static final String CURRENT_STUDY_VALUE_STACK_KEY = "study";
     private static final String CURRENT_QUERY_RESULT_VALUE_STACK_KEY = "queryResult";
     private static final String CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY = "genomicDataQueryResult";
-    private static final String CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY = "cmsJobResult";
     private static final String LOGO_SERVLET_URL = "/caintegrator2/logo?";
     
     private Long currentStudySubscriptionId;
@@ -148,7 +146,6 @@ public class DisplayableUserWorkspace {
     private final KMPlotForm kmPlotForm = new KMPlotForm();
     private final GEPlotForm gePlotForm = new GEPlotForm();
     private DisplayableQueryResult queryResult;
-    private DisplayableCmsJobResult cmsJobResult;
     private GenomicDataQueryResult genomicDataQueryResult;
     private NCIADicomJob dicomJob;
     private final DataElementSearchObject dataElementSearchObject = new DataElementSearchObject();
@@ -228,7 +225,6 @@ public class DisplayableUserWorkspace {
             setQueryResult(null);
             setGenomicDataQueryResult(null);
             getQueryForm().setQuery(null);
-            setCmsJobResult(null);
         }
         this.currentStudySubscriptionId = currentStudySubscriptionId;
         putCurrentStudyOnValueStack();
@@ -274,7 +270,6 @@ public class DisplayableUserWorkspace {
     private void putResultObjectsOnValueStack() {
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, getQueryResult());
         getValueStack().set(CURRENT_GENOMIC_RESULT_VALUE_STACK_KEY, getGenomicDataQueryResult());
-        getValueStack().set(CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY, getCmsJobResult());
     }
 
     /**
@@ -290,21 +285,6 @@ public class DisplayableUserWorkspace {
     public void setQueryResult(DisplayableQueryResult queryResult) {
         this.queryResult = queryResult;
         getValueStack().set(CURRENT_QUERY_RESULT_VALUE_STACK_KEY, queryResult);
-    }
-
-    /**
-     * @return the cmsJobResult
-     */
-    public DisplayableCmsJobResult getCmsJobResult() {
-        return cmsJobResult;
-    }
-
-    /**
-     * @param cmsJobResult the ComparativeMarkerSelection job Result to set
-     */
-    public void setCmsJobResult(DisplayableCmsJobResult cmsJobResult) {
-        this.cmsJobResult = cmsJobResult;
-        getValueStack().set(CURRENT_CMSJOB_RESULT_VALUE_STACK_KEY, cmsJobResult);
     }
 
     /**

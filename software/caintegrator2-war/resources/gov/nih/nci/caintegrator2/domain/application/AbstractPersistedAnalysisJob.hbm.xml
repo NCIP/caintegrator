@@ -33,12 +33,9 @@
             <property name="preprocessDataSetUrl" type="string" column="PREPROCESS_GRID_URL"/>
             <property name="comparativeMarkerSelectionUrl" type="string" column="MAIN_GRID_URL"/>
             <!-- Associations mapping for the ComparativeMarkerSelectionAnalysisJob class -->
-            <list name="results" lazy="true" cascade="save-update,merge" >
-	            <cache usage="read-write" />
-	            <key column="COMPARATIVE_MARKER_JOB_ID" />
-	            <list-index column="MARKER_INDEX"/>
-	            <one-to-many class="gov.nih.nci.caintegrator2.domain.analysis.MarkerResult"/>
-            </list>
+            <component name="ResultsZipFile">
+                <property name="path" column="RESULTS_ZIP_FILE_PATH" />
+            </component>
         </subclass>
         <subclass name="PrincipalComponentAnalysisJob" lazy="false" discriminator-value="Principal Component Analysis" >
             <!-- Attributes mapping for the PCAAnalysisJob class -->

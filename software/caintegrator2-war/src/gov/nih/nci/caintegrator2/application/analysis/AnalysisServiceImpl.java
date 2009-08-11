@@ -100,7 +100,6 @@ import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -169,9 +168,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     
     /**
      * {@inheritDoc}
-     * @throws InvalidCriterionException 
      */
-    public List<MarkerResult> executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
+    public File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job) 
         throws ConnectionException, InvalidCriterionException {
         return genePatternGridRunner.runPreprocessComparativeMarkerSelection(updater, job);

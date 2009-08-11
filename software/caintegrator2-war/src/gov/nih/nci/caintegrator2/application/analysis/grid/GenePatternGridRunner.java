@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.analysis.grid;
 import gov.nih.nci.caintegrator2.application.analysis.StatusUpdateListener;
 import gov.nih.nci.caintegrator2.application.analysis.grid.preprocess.PreprocessDatasetParameters;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
@@ -98,7 +97,6 @@ import gov.nih.nci.caintegrator2.external.ParameterException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Entry point to run all GenePattern grid jobs.
@@ -110,11 +108,11 @@ public interface GenePatternGridRunner {
      * preprocessed data and returns the Marker Results.
      * @param updater the ajax updater.
      * @param job the Analysis job.
-     * @return MarkerResults of the processed dataset.
+     * @return zip file containing the ODF marker results file and the gct/cls input files.
      * @throws ConnectionException if unable to connect to grid services.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    List<MarkerResult> runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
+    File runPreprocessComparativeMarkerSelection(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job)
             throws ConnectionException, InvalidCriterionException;
             

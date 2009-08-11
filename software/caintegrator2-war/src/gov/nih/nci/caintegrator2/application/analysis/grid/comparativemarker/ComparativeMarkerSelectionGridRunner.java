@@ -85,119 +85,128 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.genepattern.cabig.util.DatasetWrapper;
-import org.genepattern.cagrid.service.compmarker.mage.client.ComparativeMarkerSelMAGESvcClient;
-import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
-import org.genepattern.io.ParseException;
-import org.genepattern.matrix.Dataset;
-
-import edu.columbia.geworkbench.cagrid.MageBioAssayGenerator;
-import gov.nih.nci.caintegrator2.common.TimeLoggerHelper;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
+import gov.nih.nci.caintegrator2.common.CaGridUtil;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.mageom.domain.bioassay.BioAssay;
-import gridextensions.ClassMembership;
-import gridextensions.ComparativeMarkerSelectionResultCollection;
+import gov.nih.nci.caintegrator2.file.FileManager;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.Status;
+import org.genepattern.cabig.util.ZipUtils;
+import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
+import org.genepattern.cagrid.service.compmarker.mage.context.client.ComparativeMarkerSelMAGESvcContextClient;
+import org.genepattern.cagrid.service.compmarker.mage.context.stubs.types.AnalysisNotComplete;
+import org.genepattern.cagrid.service.compmarker.mage.context.stubs.types.CannotLocateResource;
 
 /**
  * Runs the GenePattern grid service Comparative Marker Selection.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") // See excute method
 public class ComparativeMarkerSelectionGridRunner {
-
+    private static final Logger LOGGER = Logger.getLogger(ComparativeMarkerSelectionGridRunner.class);
+    private static final int DOWNLOAD_REFRESH_INTERVAL = 3000; // Every 3 seconds
+    private static final int TIMEOUT_SECONDS = 300; // 900 seconds = 15 minutes
     private final ComparativeMarkerSelMAGESvcI client;
-    private final MageBioAssayGenerator mbaGenerator;
-    private final Map<String, String> reporterGeneSymbols;
+    private final FileManager fileManager;
     
     /**
      * Public Constructor.
      * @param client of grid service.
-     * @param mbaGenerator to generate BioAssay objects.
-     * @param reporterGeneSymbols the reporterGeneSymbols map.
+     * @param fileManager to store results zip file.
      */
-    public ComparativeMarkerSelectionGridRunner(ComparativeMarkerSelMAGESvcI client,
-            MageBioAssayGenerator mbaGenerator, Map<String, String> reporterGeneSymbols) {
+    public ComparativeMarkerSelectionGridRunner(ComparativeMarkerSelMAGESvcI client, FileManager fileManager) {
         this.client = client;
-        this.mbaGenerator = mbaGenerator;
-        this.reporterGeneSymbols = reporterGeneSymbols;
+        this.fileManager = fileManager;
+        
     }
 
     
     /**
      * Runs comparative marker selection baseed on input parameters, and the gct and cls files.
+     * @param subscription study to save downloaded file to.
      * @param parameters to run comparative marker selection.
      * @param gctFile gene pattern file containing genomic data.
      * @param clsFile gene pattern file containing sample classifications.
      * @return the results from Comparative Marker Selection.
      * @throws ConnectionException if unable to connect to grid service.
+     * @throws InterruptedException if execution is interrupted.
+     * @throws IOException if problem writing to filesystem.
      */
     @SuppressWarnings("PMD.CyclomaticComplexity") // Loop through the all data
-    public List<MarkerResult> execute(ComparativeMarkerSelectionParameters parameters, File gctFile, File clsFile) 
-        throws ConnectionException {
+    public File execute(StudySubscription subscription, ComparativeMarkerSelectionParameters parameters, 
+            File gctFile, File clsFile) throws ConnectionException, InterruptedException, IOException {
+        ComparativeMarkerSelMAGESvcContextClient analysis = client.createAnalysis();
+        postUpload(analysis, parameters, gctFile, clsFile);
+        return downloadResult(subscription, analysis);
+    }
+
+    private void postUpload(ComparativeMarkerSelMAGESvcContextClient analysisClient, 
+            ComparativeMarkerSelectionParameters parameters, File gctFile, File clsFile)
+            throws IOException, ConnectionException {
+        TransferServiceContextReference up = analysisClient.submitData(parameters.createParameterList());
+        TransferServiceContextClient tClient = new TransferServiceContextClient(up.getEndpointReference());
+        BufferedInputStream bis = null;
+        Set<File> fileSet = new HashSet<File>();
+        fileSet.add(clsFile);
+        fileSet.add(gctFile);
+        File zipFile = new File(ZipUtils.writeZipFile(fileSet));
         try {
-            DatasetWrapper datasetWrapper = new DatasetWrapper(gctFile.getAbsolutePath());
-            ClassMembership cls = ComparativeMarkerSelMAGESvcClient.
-                                    createClassMembership(datasetWrapper, clsFile.getAbsolutePath());
-            Dataset dataset = datasetWrapper.getDataset();
-            double[][] values = new double[datasetWrapper.getRowCount()][datasetWrapper.getColumnCount()];
-            for (int i = 0; i < datasetWrapper.getRowCount(); i++) {
-                for (int j = 0; j < datasetWrapper.getColumnCount(); j++) {
-                    values[i][j] = dataset.getValue(i, j);
-                }
+            long size = zipFile.length();
+            bis = new BufferedInputStream(new FileInputStream(zipFile));
+            TransferClientHelper.putData(bis, size, tClient.getDataTransferDescriptor());
+        } catch (Exception e) {
+            // For some reason TransferClientHelper throws "Exception", going to rethrow a connection exception.
+            throw new ConnectionException("Unable to transfer data to the server.", e);
+        } finally {
+            if (bis != null) {
+                bis.close();
             }
-            String[] rowNames = datasetWrapper.getRowNames();
-            String[] columnNames = datasetWrapper.getColumnNames();
-            BioAssay[] bioAssay = mbaGenerator.double2DToBioAssayArray(values, rowNames, columnNames);
-            String jobInfoString = parameters.getClassificationFileName().replace(".cls", "") 
-                                    + " -- ComparativeMarkerSelection Grid Task";
-            TimeLoggerHelper timeLogger = new TimeLoggerHelper(this.getClass());
-            timeLogger.startLog(jobInfoString);
-            ComparativeMarkerSelectionResultCollection result = 
-                client.performAnalysis(bioAssay, cls, parameters.getDatasetParameters());
-            timeLogger.stopLog(jobInfoString);
-            return result == null ? null : retrieveMarkerResultList(result.getMarkerResult());
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Couldn't read gct file at the path " + gctFile.getAbsolutePath(), e);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Error parsing cls or gct file ", e);
+            FileUtils.deleteQuietly(zipFile);
         }
+        tClient.setStatus(Status.Staged);
     }
-
-    private List<MarkerResult> retrieveMarkerResultList(gridextensions.MarkerResult[] markerResults) {
-        List<MarkerResult> markerResultList = new ArrayList<MarkerResult>();
-        for (gridextensions.MarkerResult markerResult : markerResults) {
-            markerResultList.add(createCai2MarkerResult(markerResult));
+    
+    private File downloadResult(StudySubscription studySubscription, 
+            ComparativeMarkerSelMAGESvcContextClient analysisClient)
+            throws ConnectionException, InterruptedException, MalformedURIException, RemoteException {
+        String filename = new File(fileManager.getUserDirectory(studySubscription) + File.separator + "CMS_RESULTS_"
+                + System.currentTimeMillis() + ".zip").getAbsolutePath();
+        TransferServiceContextReference tscr = null;
+        int callCount = 0;
+        while (tscr == null) {
+            try {
+                callCount++;
+                tscr = analysisClient.getResult();
+            } catch (AnalysisNotComplete e) {
+                LOGGER.info("CMS - " + callCount + " - Analysis not complete");
+                checkTimeout(callCount);
+            } catch (CannotLocateResource e) {
+                LOGGER.info("CMS - " + callCount + " - Cannot locate resource");
+                checkTimeout(callCount);
+            } catch (RemoteException e) {
+                throw new ConnectionException("Unable to connect to server to download result.", e);
+            }
+            Thread.sleep(DOWNLOAD_REFRESH_INTERVAL);
         }
-        return markerResultList;
+        return CaGridUtil.retrieveFileFromTscr(filename, tscr);
     }
-
-    private MarkerResult createCai2MarkerResult(gridextensions.MarkerResult markerResult) {
-        MarkerResult cai2MarkerResult = new MarkerResult();
-        cai2MarkerResult.setBonferroni(markerResult.getBonferroni());
-        cai2MarkerResult.setClass0Mean(markerResult.getClass0Mean());
-        cai2MarkerResult.setClass0Std(markerResult.getClass0Std());
-        cai2MarkerResult.setClass1Mean(markerResult.getClass1Mean());
-        cai2MarkerResult.setClass1Std(markerResult.getClass1Std());
-        cai2MarkerResult.setDescription(reporterGeneSymbols.get(markerResult.getFeature()));
-        cai2MarkerResult.setFdr(markerResult.getFDR());
-        cai2MarkerResult.setFeature(markerResult.getFeature());
-        cai2MarkerResult.setFeatureP(markerResult.getFeatureP());
-        cai2MarkerResult.setFeaturePHigh(markerResult.getFeaturePHigh());
-        cai2MarkerResult.setFeaturePLow(markerResult.getFeaturePLow());
-        cai2MarkerResult.setFoldChange(markerResult.getFoldChange());
-        cai2MarkerResult.setFwer(markerResult.getFWER());
-        cai2MarkerResult.setK(markerResult.getK());
-        cai2MarkerResult.setMaxT(markerResult.getMaxT());
-        cai2MarkerResult.setQvalue(markerResult.getQValue());
-        cai2MarkerResult.setRank(markerResult.getRank());
-        cai2MarkerResult.setScore(markerResult.getScore());
-        return cai2MarkerResult;
+    
+    private void checkTimeout(int callCount) throws ConnectionException {
+        if (callCount >= TIMEOUT_SECONDS) {
+            throw new ConnectionException("Timed out trying to download Comparative Marker Selection results");
+        }
     }
 
 }

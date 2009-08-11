@@ -235,7 +235,7 @@ public class PersistedAnalysisJobAjaxUpdater extends AbstractDwrAjaxUpdater
         switch(AnalysisJobTypeEnum.getByValue(job.getJobType())) {
         case CMS:
             utilThis.setValue(JOB_URL + jobId, 
-                    " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">View</a>",
+                    " - <a href=\"comparativeMarkerSelectionAnalysisResults.action?jobId=" + jobId + "\">Download</a>",
                     false);
             break;
         case GENE_PATTERN:

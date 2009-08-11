@@ -96,7 +96,6 @@ import gov.nih.nci.caintegrator2.application.analysis.geneexpression.GenesNotFou
 import gov.nih.nci.caintegrator2.application.geneexpression.GeneExpressionPlotGroup;
 import gov.nih.nci.caintegrator2.application.kmplot.KMPlot;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.PrincipalComponentAnalysisJob;
@@ -134,11 +133,11 @@ public interface AnalysisService {
      * Executes preprocessDataset followed by Comparative Marker Selection via grid interface.
      * @param updater the ajax updater.
      * @param job the Analysis job.
-     * @return Marker Result objects.
+     * @return zip file containing the marker results (.odf format) and gct/cls input files.
      * @throws ConnectionException if unable to connect to grid.
      * @throws InvalidCriterionException if criterion is not valid.
      */
-    List<MarkerResult> executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
+    File executeGridPreprocessComparativeMarker(StatusUpdateListener updater,
             ComparativeMarkerSelectionAnalysisJob job) 
             throws ConnectionException, InvalidCriterionException;
     
