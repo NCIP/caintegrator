@@ -120,6 +120,7 @@ public class CaBioFacadeImplTestIntegration {
         CaBioGeneSearchParameters params = new CaBioGeneSearchParameters();
         params.setKeywords("heart");
         params.setTaxon("human");
+        params.setFilterGenesOnStudy(false);
         List<CaBioDisplayableGene> genes = caBioFacade.retrieveGenes(params);
         assertTrue(checkSymbolExists("CDH13", genes));
         assertTrue(checkSymbolExists("FABP3", genes));
