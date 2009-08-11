@@ -374,26 +374,7 @@
             <ref local="persistedAnalysisJobAjaxUpdater"/>
         </property>
     </bean>
-    
-    <bean id="comparativeMarkerSelectionAnalysisResultsAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisResultsAction">
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-    </bean>
-    
-    <bean id="principalComponentAnalysisResultsAction"
-        scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.analysis.PrincipalComponentAnalysisResultsAction">
-        <property name="workspaceService">
-            <ref local="workspaceService"/>
-        </property>
-        <property name="studyManagementService">
-            <ref local="studyManagementService"/>
-        </property>
-    </bean> 
-    
+
     <bean id="gisticAnalysisAction"
         scope="prototype"
         class="gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisAction">
@@ -414,9 +395,9 @@
         </property>
     </bean>
     
-    <bean id="gisticAnalysisResultsAction"
+    <bean id="downloadAnalysisResultsAction"
         scope="prototype"
-        class="gov.nih.nci.caintegrator2.web.action.analysis.GisticAnalysisResultsAction">
+        class="gov.nih.nci.caintegrator2.web.action.analysis.DownloadAnalysisResultsAction">
         <property name="workspaceService">
             <ref local="workspaceService"/>
         </property>
@@ -830,9 +811,6 @@
         <property name="genePatternGridClientFactory">
             <ref local="genePatternGridClientFactory" />
         </property>
-        <property name="mbaGenerator">
-            <ref local="mbaGenerator" />
-        </property>
         <property name="queryManagementService">
             <ref local="queryManagementService" />
         </property>
@@ -842,8 +820,6 @@
     </bean>
     
     <bean id="genePatternGridClientFactory" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
-
-    <bean id="mbaGenerator" class="edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl" />
 
     <bean id="fileManager"
         class="gov.nih.nci.caintegrator2.file.FileManagerImpl">

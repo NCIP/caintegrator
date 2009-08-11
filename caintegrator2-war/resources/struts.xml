@@ -511,10 +511,16 @@
             <result name="input" type="tiles">comparativeMarkerSelectionAnalysis</result>
         </action>
         
-        <action name="comparativeMarkerSelectionAnalysisResults" class="comparativeMarkerSelectionAnalysisResultsAction">
-            <result type="tiles">comparativeMarkerSelectionAnalysisResults</result>
-            <result name="input" type="tiles">comparativeMarkerSelectionAnalysisResults</result>
+        <action name="comparativeMarkerSelectionAnalysisResults" class="downloadAnalysisResultsAction">
+            <result name="input" type="tiles">genericError</result>
+            <result name="error" type="tiles">genericError</result>
+            <result name="downloadResultFile" type="temporaryDownloadFileResult">
+                <param name="fileName">cmsResults.zip</param>
+                <param name="contentType">application/zip</param>
+                <param name="deleteFile">false</param>
+            </result>
         </action>
+        
         
         <action name="genePatternAnalysisStatus" class="genePatternAnalysisAction" method="showStatusPage">
             <result name="status" type="tiles">genePatternAnalysisStatus</result>
@@ -529,7 +535,7 @@
             <result name="input" type="tiles">principalComponentAnalysis</result>
         </action>
         
-        <action name="principalComponentAnalysisResults" class="principalComponentAnalysisResultsAction">
+        <action name="principalComponentAnalysisResults" class="downloadAnalysisResultsAction">
             <result name="input" type="tiles">genericError</result>
             <result name="error" type="tiles">genericError</result>
             <result name="downloadResultFile" type="temporaryDownloadFileResult">
@@ -547,7 +553,7 @@
             <result name="input" type="tiles">gisticAnalysis</result>
         </action>
         
-        <action name="gisticAnalysisResults" class="gisticAnalysisResultsAction">
+        <action name="gisticAnalysisResults" class="downloadAnalysisResultsAction">
             <result name="input" type="tiles">genericError</result>
             <result name="error" type="tiles">genericError</result>
             <result name="downloadResultFile" type="temporaryDownloadFileResult">

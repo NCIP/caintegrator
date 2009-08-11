@@ -85,12 +85,16 @@
  */
 package gov.nih.nci.caintegrator2.application.analysis.grid.comparativemarker;
 
+import gov.nih.nci.caintegrator2.common.GenePatternUtil;
 import gov.nih.nci.caintegrator2.domain.application.Query;
 import gov.nih.nci.caintegrator2.external.ServerConnectionProfile;
 import gridextensions.ComparativeMarkerSelectionParameterSet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.cabig.icr.asbp.parameter.Parameter;
+import org.cabig.icr.asbp.parameter.ParameterList;
 
 import valuedomain.ComparativeMarkerSelectionPhenotypeTest;
 import valuedomain.ComparativeMarkerSelectionTestDirection;
@@ -99,6 +103,7 @@ import valuedomain.ComparativeMarkerSelectionTestStatistic;
 /**
  * 
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") // See function getTestStatisticForParamList()
 public class ComparativeMarkerSelectionParameters {
     
     private static final Integer DEFAULT_NUMBER_OF_PERMUTATIONS = 1000;
@@ -247,6 +252,67 @@ public class ComparativeMarkerSelectionParameters {
         options.add(ComparativeMarkerSelectionPhenotypeTest._value1);
         options.add(ComparativeMarkerSelectionPhenotypeTest._value2);
         return options;
+    }
+    
+    /**
+     * Creates the parameter list from the parameters given by user.
+     * @return parameters to run grid job.
+     */
+    public ParameterList createParameterList() {
+        ParameterList parameterList = new ParameterList();
+        Parameter[] params = new Parameter[8];
+        params[0] = GenePatternUtil.createParameter("test.direction", 
+                                        getTestDirectionForParamList(datasetParameters.getTestDirection()));
+        params[1] = GenePatternUtil.createParameter("test.statistic", 
+                                        getTestStatisticForParamList(datasetParameters.getTestStatistic()));
+        params[2] = GenePatternUtil.createParameter("min.std", String.valueOf(datasetParameters.getMinStd()));
+        params[3] = GenePatternUtil.createParameter("number.of.permutations", 
+                                                    String.valueOf(datasetParameters.getNumberOfPermutations()));
+        params[4] = GenePatternUtil.createParameter("complete", String.valueOf(datasetParameters.isComplete()));
+        params[5] = GenePatternUtil.createParameter("balanced", String.valueOf(datasetParameters.isBalanced()));
+        params[6] = GenePatternUtil.createParameter("random.seed", String.valueOf(datasetParameters.getRandomSeed()));
+        params[7] = GenePatternUtil.createParameter("smooth.p.values", 
+                                                    String.valueOf(datasetParameters.isSmoothPvalues()));
+        
+        parameterList.setParameterCollection(params);
+        return parameterList;       
+    }
+
+    private String getTestDirectionForParamList(ComparativeMarkerSelectionTestDirection direction) {
+        // This extremely random mapping comes from the class 
+        // ComparativeMarkerSelMAGESvcImpl.parameterSetToParameterList() code.
+        if (ComparativeMarkerSelectionTestDirection.value2.equals(direction)) {
+            return "0";
+        } else if (ComparativeMarkerSelectionTestDirection.value3.equals(direction)) {
+            return "1";
+        } else if (ComparativeMarkerSelectionTestDirection.value1.equals(direction)) {
+            return "2";    
+        }
+        throw new IllegalArgumentException("Unknown direction type");
+    }
+    
+    @SuppressWarnings("PMD.CyclomaticComplexity") // Converting CMS objects to string numbers
+    private String getTestStatisticForParamList(ComparativeMarkerSelectionTestStatistic statistic) {
+        // This extremely random mapping comes from the class 
+        // ComparativeMarkerSelMAGESvcImpl.parameterSetToParameterList() code.
+        if (ComparativeMarkerSelectionTestStatistic.value1 == statistic) {
+            return "1";
+        } else if (ComparativeMarkerSelectionTestStatistic.value2 == statistic) {
+            return "3";
+        } else if (ComparativeMarkerSelectionTestStatistic.value3 == statistic) {
+            return "6";
+        } else if (ComparativeMarkerSelectionTestStatistic.value4 == statistic) {
+            return "5";
+        } else if (ComparativeMarkerSelectionTestStatistic.value5 == statistic) {
+            return "0";
+        } else if (ComparativeMarkerSelectionTestStatistic.value6 == statistic) {
+            return "2";
+        } else if (ComparativeMarkerSelectionTestStatistic.value7 == statistic) {
+            return "7";
+        } else if (ComparativeMarkerSelectionTestStatistic.value8 == statistic) {
+            return "4";
+        }
+        throw new IllegalArgumentException("Unknown statistic type");
     }
 
 }

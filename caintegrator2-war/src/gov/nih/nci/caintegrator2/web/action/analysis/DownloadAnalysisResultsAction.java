@@ -86,18 +86,18 @@
 package gov.nih.nci.caintegrator2.web.action.analysis;
 
 import gov.nih.nci.caintegrator2.application.study.StudyManagementService;
-import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.web.action.AbstractDeployedStudyAction;
 
 /**
  * 
  */
-public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
+public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction {
     
     private static final long serialVersionUID = 1L;
 
     private StudyManagementService studyManagementService;
-    private GisticAnalysisJob job = new GisticAnalysisJob();
+    private AbstractPersistedAnalysisJob job = new AbstractPersistedAnalysisJob();
     private Long jobId;
 
     /**
@@ -160,14 +160,14 @@ public class GisticAnalysisResultsAction  extends AbstractDeployedStudyAction {
     /**
      * @return the job
      */
-    public GisticAnalysisJob getJob() {
+    public AbstractPersistedAnalysisJob getJob() {
         return job;
     }
 
     /**
      * @param job the job to set
      */
-    public void setJob(GisticAnalysisJob job) {
+    public void setJob(AbstractPersistedAnalysisJob job) {
         this.job = job;
     }
 

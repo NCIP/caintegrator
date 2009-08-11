@@ -107,6 +107,7 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.cabig.icr.asbp.parameter.ParameterList;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.genepattern.cagrid.service.compmarker.mage.common.ComparativeMarkerSelMAGESvcI;
+import org.genepattern.cagrid.service.compmarker.mage.context.client.ComparativeMarkerSelMAGESvcContextClient;
 import org.genepattern.cagrid.service.preprocessdataset.mage.common.PreprocessDatasetMAGEServiceI;
 import org.genepattern.cagrid.service.preprocessdataset.mage.context.client.PreprocessDatasetMAGEServiceContextClient;
 import org.genepattern.cagrid.service.preprocessdataset.mage.stubs.types.InvalidParameterException;
@@ -218,6 +219,10 @@ public class GenePatternGridClientFactoryStub implements GenePatternGridClientFa
 
         public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element arg0)
                 throws RemoteException {
+            return null;
+        }
+
+        public ComparativeMarkerSelMAGESvcContextClient createAnalysis() throws RemoteException, MalformedURIException {
             return null;
         }
         

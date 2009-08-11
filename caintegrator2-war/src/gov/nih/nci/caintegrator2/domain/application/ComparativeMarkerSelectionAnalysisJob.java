@@ -85,11 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.domain.application;
 
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.web.action.analysis.ComparativeMarkerSelectionAnalysisForm;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Object representing a single gene pattern analysis job.
@@ -102,7 +98,7 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnal
         = new ComparativeMarkerSelectionAnalysisForm();
     private String preprocessDataSetUrl;
     private String comparativeMarkerSelectionUrl;
-    private List<MarkerResult> results = new ArrayList<MarkerResult>();
+    private ResultsZipFile resultsZipFile;
     
     /**
      * Default Constructor.
@@ -147,18 +143,17 @@ public class ComparativeMarkerSelectionAnalysisJob extends AbstractPersistedAnal
     }
 
     /**
-     * @return the results
+     * @return the resultsZipFile
      */
-    public List<MarkerResult> getResults() {
-        return results;
+    public ResultsZipFile getResultsZipFile() {
+        return resultsZipFile;
     }
 
     /**
-     * @param results the results to set
+     * @param resultsZipFile the resultsZipFile to set
      */
-    @SuppressWarnings("unused")     // required by Hibernate
-    private void setResults(List<MarkerResult> results) {
-        this.results = results;
+    public void setResultsZipFile(ResultsZipFile resultsZipFile) {
+        this.resultsZipFile = resultsZipFile;
     }
 
 }
