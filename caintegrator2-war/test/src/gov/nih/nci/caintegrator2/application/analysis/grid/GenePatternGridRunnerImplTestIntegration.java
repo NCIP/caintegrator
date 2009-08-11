@@ -98,7 +98,6 @@ import gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl;
 import gov.nih.nci.caintegrator2.application.query.ResultHandlerImpl;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoImpl;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.AbstractPersistedAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
 import gov.nih.nci.caintegrator2.domain.application.GisticAnalysisJob;
@@ -120,6 +119,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.genepattern.cabig.util.ZipUtils;
+import org.genepattern.io.ParseException;
+import org.genepattern.io.odf.OdfObject;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -131,7 +133,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactionalSpringContextTests {
     
     private static final String PREPROCESS_DATASET_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PreprocessDatasetMAGEService";
-    private static final String COMPARATIVE_MARKER_URL = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
+    private static final String COMPARATIVE_MARKER_URL = "http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc";
     private static final String PCA_URL                = "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/PCA";
     private static final String GISTIC_URL             = "http://node255.broadinstitute.org:10010/wsrf/services/cagrid/Gistic";
     
@@ -207,7 +209,7 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
     }
     
     @Test
-    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException, InvalidCriterionException {
+    public void testRunPreprocessComparativeMarker() throws ConnectionException, IOException, InvalidCriterionException, ParseException {
         setupContext();
         StudySubscription subscription = setupStudySubscription(ArrayDataType.GENE_EXPRESSION);
         ServerConnectionProfile server = new ServerConnectionProfile();
@@ -238,16 +240,28 @@ public class GenePatternGridRunnerImplTestIntegration extends AbstractTransactio
         comparativeMarkerParameters.setServer(comparativeMarkerServer);
         job.getForm().setComparativeMarkerSelectionParameters(comparativeMarkerParameters);
 
-        List <MarkerResult> results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(
+        File results = genePatternGridRunner.runPreprocessComparativeMarkerSelection(
                 updater, job);
-        assertEquals(6, results.size());
-        File gctFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
-                + preprocessParameters.getProcessedGctFilename());
-        checkGctFile(gctFile, 6, 6, "0.29865831556451516");
-        
-        File clsFile = new File(fileManager.getUserDirectory(subscription) + File.separator 
-                + comparativeMarkerParameters.getClassificationFileName());
-        checkClsFile(clsFile);
+        assertNotNull(results);
+        List<String> filenames = ZipUtils.extractFromZip(results.getAbsolutePath());
+        assertEquals(3, filenames.size());
+        int validFiles = 0;
+        for (String filename : filenames) {
+            File file = new File(filename);
+            if (filename.contains(".gct")) {
+                checkGctFile(file, 6, 6, "0.29865831556451516");
+                validFiles++;
+            } else if (filename.contains(".cls")) {
+                checkClsFile(file);
+                validFiles++;
+            } else if (filename.contains(".odf")) {
+                OdfObject odf = new OdfObject(filename);
+                assertEquals(6, odf.getRowCount());
+                validFiles++;
+            }
+            FileUtils.deleteQuietly(file);
+        }
+        assertEquals(3, validFiles);
         FileUtils.deleteQuietly(fileManager.getUserDirectory(subscription));
     }
     

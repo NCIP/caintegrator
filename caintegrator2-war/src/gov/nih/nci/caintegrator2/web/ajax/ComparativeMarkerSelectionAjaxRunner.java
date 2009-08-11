@@ -86,12 +86,12 @@
 package gov.nih.nci.caintegrator2.web.ajax;
 
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
-import gov.nih.nci.caintegrator2.domain.analysis.MarkerResult;
 import gov.nih.nci.caintegrator2.domain.application.AnalysisJobStatusEnum;
 import gov.nih.nci.caintegrator2.domain.application.ComparativeMarkerSelectionAnalysisJob;
+import gov.nih.nci.caintegrator2.domain.application.ResultsZipFile;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 
-import java.util.List;
+import java.io.File;
 
 import org.apache.log4j.Logger;
 
@@ -119,12 +119,14 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
         job.setStatus(AnalysisJobStatusEnum.PROCESSING_LOCALLY);
         updater.saveAndUpdateJobStatus(job);
         try {
-            processLocally();
+            processJob();
         } catch (ConnectionException e) {
             addErrorMessage("Couldn't execute ComparativeMarkerSelection analysis job: " + job.getName()
             + " - " + e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
         } catch (InvalidCriterionException e) {
             addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.LOCAL_ERROR);
+        } catch (RuntimeException e) {
+            addErrorMessage(e.getMessage(), AnalysisJobStatusEnum.ERROR_CONNECTING);
         }
     }
     
@@ -135,12 +137,14 @@ public class ComparativeMarkerSelectionAjaxRunner implements Runnable {
         updater.saveAndUpdateJobStatus(job);
     }
 
-    private void processLocally() throws ConnectionException, InvalidCriterionException {
-        List<MarkerResult> results = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
+    private void processJob() throws ConnectionException, InvalidCriterionException {
+        File resultFile = updater.getAnalysisService().executeGridPreprocessComparativeMarker(
                 updater, job);
         job.setStatus(AnalysisJobStatusEnum.COMPLETED);
-        if (results != null) {
-            job.getResults().addAll(results);
+        if (resultFile != null) {
+            ResultsZipFile resultZipFile = new ResultsZipFile();
+            resultZipFile.setPath(resultFile.getAbsolutePath());
+            job.setResultsZipFile(resultZipFile);
         }
         updater.saveAndUpdateJobStatus(job);
     }

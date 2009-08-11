@@ -128,7 +128,7 @@ public enum ConfigurationParameter {
      * Default Comparative Marker Selection service URL.
      */
     COMPARATIVE_MARKER_SELECTION_URL(
-            "http://node255.broad.mit.edu:6060/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
+            "http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc"),
             
     /**
      * Default PCA service URL.

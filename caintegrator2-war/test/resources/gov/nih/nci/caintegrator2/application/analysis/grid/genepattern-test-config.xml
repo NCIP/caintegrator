@@ -18,9 +18,6 @@
         <property name="queryManagementService">
             <ref local="queryManagementService"/>
         </property>
-        <property name="mbaGenerator">
-            <ref local="mbaGeneratorIntegration"/>
-        </property>
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>        
@@ -38,11 +35,7 @@
         
     <bean id="configurationHelperStub" class="gov.nih.nci.caintegrator2.common.ConfigurationHelperStub" />
 
-    <bean id="genePatternGridClientFactoryIntegration" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />
-    
-    <bean id="mbaGeneratorIntegration" 
-        class="edu.columbia.geworkbench.cagrid.MageBioAssayGeneratorImpl" />    
-    
+    <bean id="genePatternGridClientFactoryIntegration" class="gov.nih.nci.caintegrator2.application.analysis.GenePatternGridClientFactoryImpl" />    
     
     <bean id="queryManagementService" 
         class="gov.nih.nci.caintegrator2.application.query.QueryManagementServiceImpl">
