@@ -154,7 +154,7 @@ public class DataElementSearchAjaxUpdaterTest {
         }
         
         entityType = "image";
-        keywords = "null";
+        keywords = "empty";
         updater.runSearch(entityType, studyConfId, fileColId, keywords, searchResultJsp);
         while (true) {
             Thread.sleep(600);
@@ -168,6 +168,7 @@ public class DataElementSearchAjaxUpdaterTest {
 
     @Test
     public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        studyManagementService.delayTime = 2000;
         updater.initializeJsp("searchResult.jsp");
         String entityType = "subject";
         String studyConfId = "1";
@@ -181,18 +182,20 @@ public class DataElementSearchAjaxUpdaterTest {
         assertTrue(updater.isCurrentlyRunning());
     }
     
-    private class StudyManagementServiceStubForSearch extends StudyManagementServiceStub {        
+    private class StudyManagementServiceStubForSearch extends StudyManagementServiceStub {
+        public int delayTime = 1000;
+        
         @Override
         public List<CommonDataElement> getMatchingDataElements(List<String> keywords) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(delayTime);
             } catch (InterruptedException e) {
             }
             if ("exceptionTest".equals(keywords.get(0))) {
                 throw new SearchException("Failure Test!");
             }
-            if ("null".equals(keywords.get(0))) {
-                return null;
+            if ("empty".equals(keywords.get(0))) {
+                return new ArrayList<CommonDataElement>();
             }
             super.getMatchingDataElements(keywords);
             List<CommonDataElement> cdes = new ArrayList<CommonDataElement>();
@@ -204,11 +207,11 @@ public class DataElementSearchAjaxUpdaterTest {
         @Override
         public List<AnnotationDefinition> getMatchingDefinitions(List<String> keywords) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(delayTime);
             } catch (InterruptedException e) {
             }
-            if ("null".equals(keywords.get(0))) {
-                return null;
+            if ("empty".equals(keywords.get(0))) {
+                return new ArrayList<AnnotationDefinition>();
             }
             super.getMatchingDefinitions(keywords);
             List<AnnotationDefinition> annotationDefinitions = new ArrayList<AnnotationDefinition>();
