@@ -233,6 +233,20 @@ public class ManagePlatformsActionTest {
         assertFalse(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
+        action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
+        action.setPlatformName("");
+        action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.setPlatformFileFileName("empt.csv");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setPlatformFileFileName("abc.adf");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
         action.setPlatformName("");
         action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);

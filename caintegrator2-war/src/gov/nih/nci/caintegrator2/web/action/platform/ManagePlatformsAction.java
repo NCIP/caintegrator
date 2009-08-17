@@ -198,19 +198,24 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     }
     
     private void checkPlatformParameters() {
-        if (!PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+        if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+            checkDnaPlatformType();
+        } else {
             if (checkAddedPlatformFile()
+                    && !PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue().equals(platformType)
                     && StringUtils.isEmpty(platformName)
                     && !platformFileFileName.endsWith(".xml")) {
                 addFieldError(PLATFORM_NAME, "Platform name is required for this platform type and annotation type.");
             }
-        } else {
-            if (getPlatformForm().getAnnotationFiles().isEmpty()) {
-                addActionError("Annotation File(s) Selected is empty.");
-            }
-            if (StringUtils.isEmpty(platformName)) {
-                addFieldError(PLATFORM_NAME, "Platform name is required for this platform type.");
-            }
+        }
+    }
+
+    private void checkDnaPlatformType() {
+        if (getPlatformForm().getAnnotationFiles().isEmpty()) {
+            addActionError("Annotation File(s) Selected is empty.");
+        }
+        if (StringUtils.isEmpty(platformName)) {
+            addFieldError(PLATFORM_NAME, "Platform name is required for this platform type.");
         }
     }
     
