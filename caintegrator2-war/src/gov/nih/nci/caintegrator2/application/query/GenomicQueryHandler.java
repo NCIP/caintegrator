@@ -109,7 +109,6 @@ import gov.nih.nci.caintegrator2.domain.genomic.Sample;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 
-import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -122,6 +121,7 @@ import java.util.Set;
  */
 class GenomicQueryHandler {
     
+    private static final float DECIMAL_100 = 100.0f;
     private final Query query;
     private final CaIntegrator2Dao dao;
     private final ArrayDataService arrayDataService;
@@ -159,8 +159,7 @@ class GenomicQueryHandler {
             value.setColumn(column);
             Float floatValue = values.getFloatValue(arrayData, reporter, ArrayDataValueType.EXPRESSION_SIGNAL);
             if (floatValue != null) {
-                value.setValue(Float.valueOf(new DecimalFormat("0.00").
-                            format((double) floatValue)));
+                value.setValue(Math.round(floatValue * DECIMAL_100) / DECIMAL_100);
             }
             row.getValues().add(value);
         }
