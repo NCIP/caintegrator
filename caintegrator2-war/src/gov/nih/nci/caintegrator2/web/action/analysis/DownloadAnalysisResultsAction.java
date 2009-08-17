@@ -97,7 +97,7 @@ public class DownloadAnalysisResultsAction  extends AbstractDeployedStudyAction 
     private static final long serialVersionUID = 1L;
 
     private StudyManagementService studyManagementService;
-    private AbstractPersistedAnalysisJob job = new AbstractPersistedAnalysisJob();
+    private AbstractPersistedAnalysisJob job;
     private Long jobId;
 
     /**
