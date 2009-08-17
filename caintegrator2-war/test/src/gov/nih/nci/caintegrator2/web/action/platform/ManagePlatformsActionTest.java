@@ -193,6 +193,7 @@ public class ManagePlatformsActionTest {
         action.validate();
         assertFalse(action.hasFieldErrors());
 
+        // Test addAnnotationFile
         action.setSelectedAction("addAnnotationFile");
         action.validate();
         assertTrue(action.hasFieldErrors());
@@ -210,33 +211,66 @@ public class ManagePlatformsActionTest {
         assertFalse(action.hasFieldErrors());
         action.clearErrorsAndMessages();
         
+        // Test createPlatform
         action.setSelectedAction("createPlatform");
         action.setPlatformFile(null);
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformName("Test");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
         action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         action.validate();
         assertFalse(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
-        action.setPlatformFileFileName("abc.xml");
+        action.setPlatformName("");
+        action.setPlatformFile(TestArrayDesignFiles.EMPTY_FILE);
+        action.setPlatformFileFileName("empt.csv");
         action.validate();
-        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
         action.setPlatformFileFileName("abc.adf");
         action.validate();
         assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformName("Test");
+        action.validate();
+        assertFalse(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.validate();
-        assertTrue(action.hasFieldErrors());
+        assertFalse(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
-        action.setPlatformName("Agilent Platform");
+        action.setPlatformName("");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFileFileName("abc.xml");
         action.validate();
         assertFalse(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
         action.validate();
@@ -252,11 +286,11 @@ public class ManagePlatformsActionTest {
 
     @Test
     public void testGetDisabled() {
-        assertEquals(action.getPlatformNameDisabled(), "true");
-        assertEquals(action.getAddButtonDisabled(), "true");
+        assertEquals(action.getPlatformNameDisabled(), "display: none;");
+        assertEquals(action.getAddButtonDisabled(), "display: none;");
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
-        assertEquals(action.getPlatformNameDisabled(), "false");
-        assertEquals(action.getAddButtonDisabled(), "false");
+        assertEquals(action.getPlatformNameDisabled(), "display: block;");
+        assertEquals(action.getAddButtonDisabled(), "display: block;");
     }
 
     @Test

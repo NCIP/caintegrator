@@ -130,11 +130,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private JmsTemplate jmsTemplate;
     private Queue queue;
     private String platformName;
-    private String platformType;
+    private String platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue();
     private String selectedAction;
 
     private static final String CREATE_PLATFORM_ACTION = "createPlatform";
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
+    private static final String PLATFORM_NAME = "platformName";
+    private static final String PLATFORM_FILE = "platformFile";
 
     /**
      * {@inheritDoc}
@@ -160,11 +162,10 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     public void validate() {
         clearErrorsAndMessages();
         if (CREATE_PLATFORM_ACTION.equalsIgnoreCase(selectedAction)) {
-            checkPlatformFile();
-            checkPlatformName();
+            checkPlatformParameters();
             prepareValueStack();
         } else if (ADD_FILE_ACTION.equalsIgnoreCase(selectedAction)) {
-            checkPlatformFile();
+            checkAddedPlatformFile();
             prepareValueStack();
         } else {
             super.validate();
@@ -185,27 +186,32 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         return SUCCESS;
     }
     
-    private void checkPlatformFile() {
-        if (platformFile == null && getPlatformForm().getAnnotationFiles().isEmpty()) {
-            setFileError("File is required");
-        } else if (platformFile != null && platformFile.length() == 0) {
-            setFileError("File is empty");
+    private boolean checkAddedPlatformFile() {
+        if (platformFile == null) {
+            addFieldError(PLATFORM_FILE, "Annotation file is required");
+            return false;
+        } else if (platformFile.length() == 0) {
+            addFieldError(PLATFORM_FILE, "Annotation file is empty");
+            return false;
         }
+        return true;
     }
     
-    private void checkPlatformName() {
-        if (PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
-                || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)
-                || PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
-            if (StringUtils.isEmpty(platformName)
+    private void checkPlatformParameters() {
+        if (!PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
+            if (checkAddedPlatformFile()
+                    && StringUtils.isEmpty(platformName)
                     && !platformFileFileName.endsWith(".xml")) {
-                addFieldError("platformName", "Platform name is required for this platform type.");
+                addFieldError(PLATFORM_NAME, "Platform name is required for this platform type and annotation type.");
+            }
+        } else {
+            if (getPlatformForm().getAnnotationFiles().isEmpty()) {
+                addActionError("Annotation File(s) Selected is empty.");
+            }
+            if (StringUtils.isEmpty(platformName)) {
+                addFieldError(PLATFORM_NAME, "Platform name is required for this platform type.");
             }
         }
-    }
-    
-    private void setFileError(String errorMessage) {
-        addFieldError("platformFile", errorMessage);
     }
     
     /**
@@ -216,7 +222,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         try {
             getPlatformForm().add(getPlatformFileCopy(), platformFileFileName);
         } catch (IOException e) {
-            addFieldError("platformFile", "Error up load file: " + platformFileFileName);
+            addFieldError(PLATFORM_FILE, "Error up load file: " + platformFileFileName);
             return ERROR;
         }
         return INPUT;
@@ -238,7 +244,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
 
             case AFFYMETRIX_DNA_ANALYSIS:
                 source = new AffymetrixDnaPlatformSource(
-                        getAnnotationFiles(), getPlatformName());
+                        getPlatformForm().getAnnotationFiles(), getPlatformName());
                 break;
                 
             case AGILENT_GENE_EXPRESSION:
@@ -257,7 +263,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
             }
             String extractedName = source.getLoader().getPlatformName();
             if (getArrayDataService().getPlatform(extractedName) != null) {
-                addFieldError("platformName", "Platform name is duplicate or the platform is already been loaded: "
+                addFieldError(PLATFORM_NAME, "Platform name is duplicate or the platform is already been loaded: "
                         + extractedName);
                 return ERROR;
             }
@@ -279,13 +285,6 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         source.setDeleteFileOnCompletion(true);
         sendPlatformMessage(source);
         getPlatformForm().clear();
-    }
-    
-    private List<File> getAnnotationFiles() throws IOException {
-        if (platformFile != null) {
-            getPlatformForm().getAnnotationFiles().add(getPlatformFileCopy());
-        }
-        return getPlatformForm().getAnnotationFiles();
     }
     
     /**
@@ -466,9 +465,9 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)
                 || PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue().equals(platformType)
                 || PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue().equals(platformType)) {
-            return "false";
+            return "display: block;";
         } else {
-            return "true";
+            return "display: none;";
         }
     }
     
@@ -478,9 +477,9 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public String getAddButtonDisabled() {
         if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
-            return "false";
+            return "display: block;";
         } else {
-            return "true";
+            return "display: none;";
         }
     }
 }

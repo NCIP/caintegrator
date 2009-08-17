@@ -14,49 +14,63 @@
 <script type="text/javascript">
     function CheckPlatformType(type) {
         if (type == "Affymetrix Gene Expression") {
+            document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
-            document.getElementById("platformName").disabled = true;
-            document.getElementById("addFileButton").disabled = true;
+            document.getElementById("addFileButtonDiv").style.display = "none";
         } else if (type == "Affymetrix SNP"){
+            document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
-            document.getElementById("platformName").disabled = false;
-            document.getElementById("addFileButton").disabled = false;
+            document.getElementById("addFileButtonDiv").style.display = "block";
         } else if (type == "Agilent Gene Expression"){
+            document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
-            document.getElementById("platformName").disabled = false;
-            document.getElementById("addFileButton").disabled = true;
+            document.getElementById("addFileButtonDiv").style.display = "none";
         } else if (type == "Agilent Copy Number"){
+            document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
-            document.getElementById("platformName").disabled = false;
-            document.getElementById("addFileButton").disabled = true;
+            document.getElementById("addFileButtonDiv").style.display = "none";
         }
     }
     
-    function setSelectedAction(selectAction) {
+    function setSelectedAction(selectAction, type) {
+        if (selectAction == "createPlatform" && type == "Affymetrix SNP" 
+            && document.getElementById("platformFile").value != "") {
+            return confirm ("The annotation file must be added to the list of file(s) selected\n"
+                + "or it will not be included in the platform creation.");
+        }
         document.managePlatformForm.selectedAction.value = selectAction;
+        return true;
     }
 </script>
 
 <h1>Manage Platforms</h1>
-<s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data">
+<s:actionerror/>
+<s:form id="managePlatformForm" name="managePlatformForm" method="post" enctype="multipart/form-data" theme="css_xhtml">
     <s:hidden name="selectedAction" />
-    <s:actionerror/>
+    <s:select name="platformType" label="Platform Type"
+        list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
+        onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
+    <s:div id="platformNameDiv" cssStyle="%{platformNameDisabled}">
+        <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
+            theme="css_xhtml" /><br>
+    </s:div>
+    <s:file id="platformFile" name="platformFile" label="Annotation File" />
+    <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisabled}">
+        <div class="wwlbl"><label class="label">&nbsp</label></div><br>
+        <div class="wwctrl">
+        <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center"
+            action="addAnnotationFile" onclick="setSelectedAction('addAnnotationFile')" theme="css_xhtml" />
+        </div><br>
+        <s:textarea label="Additional Annotation File(s) Selected" name="platformForm.fileNames"
+            rows="3" cols="50" theme="css_xhtml" /><br>
+    </s:div>
+    <div class="wwgrp">
+    <div class="wwlbl"><label class="label">&nbsp</label></div>
+    <div class="wwctrl"><s:submit value="Create Platform" align="center" action="createPlatform"
+        onclick="return setSelectedAction('createPlatform', this.form.platformType.value);" theme="css_xhtml" /></div>
+    </div><br>
+</s:form>
     <table class="data">
-        <tr>
-            <th colspan="2">
-                <s:select name="platformType" label="Platform Type"
-                    list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
-                    onchange="CheckPlatformType(this.form.platformType.value);" />
-                <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
-                    disabled="platformNameDisabled" />
-                <s:file name="platformFile" label="Annotation File" />
-                <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center" action="addAnnotationFile"
-                    onclick="setSelectedAction('addAnnotationFile')" disabled="addButtonDisabled"/>
-                <s:textarea label="Annotation File(s) Selected" name="platformForm.fileNames" rows="3" cols="50" disabled="true"/>
-                <s:submit value="Create Platform" align="center" action="createPlatform"
-                    onclick="setSelectedAction('createPlatform')"/>
-            </th>    
-        </tr>
         <tr>
             <th>Platform Name</th>
             <th>Vendor</th>
@@ -87,7 +101,7 @@
             </tr>
         </s:iterator>
     </table>
-</s:form></div>
+</div>
 
 <div class="clear"><br />
 </div>
