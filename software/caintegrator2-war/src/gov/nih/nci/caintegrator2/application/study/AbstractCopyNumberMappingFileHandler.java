@@ -265,6 +265,7 @@ public abstract class AbstractCopyNumberMappingFileHandler {
             sample.setSampleAcquisition(acquisition);
             assignment.getSampleAcquisitionCollection().add(acquisition);
             genomicSource.getSamples().add(sample);
+            dao.save(sample);
         }
         return sample;
     }

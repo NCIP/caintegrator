@@ -92,7 +92,7 @@ import java.util.Date;
 /**
  * 
  */
-public class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
+public abstract class AbstractPersistedAnalysisJob extends AbstractCaIntegrator2Object 
     implements Comparable<AbstractPersistedAnalysisJob> {
     
     private String name;
