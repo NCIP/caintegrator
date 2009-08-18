@@ -85,27 +85,22 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-
-import org.apache.log4j.Logger;
 
 /**
  * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
  */
-public class StudyDeploymentAjaxRunner implements Runnable {
-    
-    private static final Logger LOGGER = Logger.getLogger(StudyDeploymentAjaxRunner.class);
+public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
         
     private final StudyDeploymentAjaxUpdater updater;
-    private final Long studyConfigurationId;
-    private StudyConfiguration job;
+    private final StudyConfiguration job;
     private String username;
     
-    StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater,
-            Long studyConfigurationId) {
+    StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater, StudyConfiguration studyConfiguration) {
         this.updater = updater;
-        this.studyConfigurationId = studyConfigurationId;
+        job = studyConfiguration;
     }
 
     /**
@@ -113,25 +108,20 @@ public class StudyDeploymentAjaxRunner implements Runnable {
      */
     public void run() {
         setupSession();
-        updater.updateJobStatus(username, job);
-        try {
-            updater.getStudyManagementService().deployStudy(job);
-            updater.updateJobStatus(username, job);
-        } catch (Exception e) {
-            addError(e);
-        }
+        updater.getStudyManagementService().deployStudy(job, this);
     }
 
     private void setupSession() {
-        job = updater.getStudyManagementService().getRefreshedStudyConfiguration(studyConfigurationId);
         username = job.getUserWorkspace().getUsername();
     }
 
-    private void addError(Exception e) {
-        LOGGER.error("Deployment of study " + job.getStudy().getShortTitleText() + " failed.", e);
-        updater.addError(e.getMessage(), job);
-        job.setStatus(Status.ERROR);
-        job.setStatusDescription(e.getMessage());
-        updater.saveAndUpdateJobStatus(username, job);
+    /**
+     * {@inheritDoc}
+     */
+    public void statusUpdated(StudyConfiguration configuration) {
+        if (Status.ERROR.equals(configuration.getStatus())) {
+            updater.addError(configuration.getStatusDescription(), configuration);
+        }
+        updater.updateJobStatus(username, configuration);
     }
 }

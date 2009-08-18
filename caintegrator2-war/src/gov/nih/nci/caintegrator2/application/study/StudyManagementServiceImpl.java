@@ -181,13 +181,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
-        dao.save(studyConfiguration);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     public void saveGenomicDataSource(GenomicDataSourceConfiguration genomicSource) {
         dao.save(genomicSource);
     }
@@ -432,9 +425,30 @@ public class StudyManagementServiceImpl implements StudyManagementService {
     /**
      * {@inheritDoc}
      */
-    public void deployStudy(StudyConfiguration studyConfiguration) 
+    @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
+    public void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+        try {
+            studyConfiguration = getRefreshedStudyConfiguration(studyConfiguration.getId());
+            startDeployment(studyConfiguration, listener);
+            doDeployment(studyConfiguration, listener);
+        } catch (Exception e) {
+            handleDeploymentException(studyConfiguration, listener, e);
+        }
+    }
+
+    private void handleDeploymentException(StudyConfiguration studyConfiguration, DeploymentListener listener,
+            Exception e) {
+        LOGGER.error("Deployment of study " + studyConfiguration.getStudy().getShortTitleText() + " failed.", e);
+        studyConfiguration.setStatus(Status.ERROR);
+        studyConfiguration.setStatusDescription(e.getMessage());
+        if (listener != null) {
+            listener.statusUpdated(studyConfiguration);
+        }
+        dao.save(studyConfiguration);
+    }
+
+    private void doDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) 
     throws ConnectionException, DataRetrievalException, ValidationException {
-        studyConfiguration.setDeploymentStartDate(new Date());
         if (!studyConfiguration.getGenomicDataSources().isEmpty()) {
             new GenomicDataHelper(getCaArrayFacade(), 
                     getArrayDataService(), dao, bioconductorService, getCopyNumberHandlerFactory())
@@ -446,6 +460,19 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                 + DateUtil.compareDatesInMinutes(studyConfiguration.getDeploymentStartDate(), 
                                                  studyConfiguration.getDeploymentFinishDate()));
         dao.save(studyConfiguration);
+        if (listener != null) {
+            listener.statusUpdated(studyConfiguration);
+        }
+    }
+
+    private void startDeployment(StudyConfiguration studyConfiguration, DeploymentListener listener) {
+        studyConfiguration.setDeploymentStartDate(new Date());
+        studyConfiguration.setDeploymentFinishDate(null);
+        studyConfiguration.setStatusDescription(null);
+        studyConfiguration.setStatus(Status.PROCESSING);
+        if (listener != null) {
+            listener.statusUpdated(studyConfiguration);
+        }
     }
 
     /**

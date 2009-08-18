@@ -112,7 +112,6 @@ import gov.nih.nci.caintegrator2.domain.imaging.ImageSeriesAcquisition;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.domain.translational.StudySubjectAssignment;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.caintegrator2.external.cadsr.CaDSRFacadeStub;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
@@ -123,6 +122,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -212,29 +212,35 @@ public class StudyManagementServiceTest {
         assertTrue(configTest.getImageDataSources().contains(imageSourceToKeep));
         assertTrue(daoStub.deleteCalled);
     }
-    
+
     @Test
-    public void testDeployAffymetrix() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
+    public void testDeployStudyWithError() {
         StudyConfiguration studyConfiguration = new StudyConfiguration();
-        GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
-        studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
-        sourceConfig.setId(Long.valueOf(1));
-        sourceConfig.setDataType(GenomicDataSourceDataTypeEnum.EXPRESSION);
-        studyManagementService.deployStudy(studyConfiguration);
-        assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
+        TestListener listener = new TestListener();
+        studyManagementService.deployStudy(studyConfiguration, listener);
+        assertEquals(Status.ERROR, listener.configuration.getStatus());
+        assertNotNull(listener.configuration.getStatusDescription());
+        assertTrue(daoStub.saveCalled);
+    }
+    @Test
+    public void testDeployStudy() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(1L);
+        TestListener listener = new TestListener();
+        studyManagementService.deployStudy(studyConfiguration, listener);
+        assertTrue(listener.statuses.contains(Status.PROCESSING));
+        assertTrue(listener.statuses.contains(Status.DEPLOYED));
+        assertEquals(Status.DEPLOYED, listener.configuration.getStatus());
         assertTrue(daoStub.saveCalled);
     }
     
-    @Test
-    public void testDeployAgilent() throws ConnectionException, DataRetrievalException, ExperimentNotFoundException, ValidationException{
-        StudyConfiguration studyConfiguration = new StudyConfiguration();
-        GenomicDataSourceConfiguration sourceConfig = new GenomicDataSourceConfiguration();
-        studyManagementService.addGenomicSource(studyConfiguration, sourceConfig);
-        sourceConfig.setId(Long.valueOf(1));
-        sourceConfig.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
-        studyManagementService.deployStudy(studyConfiguration);
-        assertEquals(Status.DEPLOYED, studyConfiguration.getStatus());
-        assertTrue(daoStub.saveCalled);
+    private static class TestListener implements DeploymentListener {
+        private Set<Status> statuses = new HashSet<Status>();
+        private StudyConfiguration configuration;
+        public void statusUpdated(StudyConfiguration configuration) {
+            this.configuration = configuration;
+            statuses.add(configuration.getStatus());
+        }
     }
     
     @Test

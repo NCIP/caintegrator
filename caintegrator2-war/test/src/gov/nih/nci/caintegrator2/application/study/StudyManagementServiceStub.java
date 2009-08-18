@@ -135,7 +135,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public boolean throwSearchError;
     public boolean retrieveImageDataSourceCalled;
     public boolean saveCopyNumberMappingFileCalled;
-    public boolean saveAsynchronousStudyConfigurationJobCalled;
     public boolean loadGenomicSourceCalled;
     public boolean saveGenomicSourceCalled;
     public boolean throwConnectionException = false;
@@ -192,7 +191,7 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
-    public void deployStudy(StudyConfiguration studyConfiguration) {
+    public void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener) {
         deployStudyCalled = true;
     }
 
@@ -223,7 +222,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
         throwSearchError = false;
         saveCopyNumberMappingFileCalled = false;       
         retrieveImageDataSourceCalled = false;
-        saveAsynchronousStudyConfigurationJobCalled = false;
         loadGenomicSourceCalled = false;
         saveGenomicSourceCalled = false;
         throwConnectionException = false;
@@ -396,10 +394,6 @@ public class StudyManagementServiceStub implements StudyManagementService {
     public void saveCopyNumberMappingFile(GenomicDataSourceConfiguration genomicDataSourceConfiguration,
             File mappingFile, String filename) {
         saveCopyNumberMappingFileCalled = true;       
-    }
-
-    public void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration) {
-        saveAsynchronousStudyConfigurationJobCalled = true;
     }
 
     public void delete(StudyConfiguration studyConfiguration, GenomicDataSourceConfiguration genomicSource) {
