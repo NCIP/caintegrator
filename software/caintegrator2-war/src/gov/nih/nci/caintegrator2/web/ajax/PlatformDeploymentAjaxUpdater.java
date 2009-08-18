@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.directwebremoting.proxy.dwr.Util;
@@ -162,12 +161,12 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      * {@inheritDoc}
      */
     public void runJob(PlatformConfiguration platformConfiguration, String username) {
-        Thread platformConfigurationRunner = new Thread(new PlatformDeploymentAjaxRunner(this, platformConfiguration
-                .getId(), platformConfiguration.getPlatformSource(), username));
+        Thread platformConfigurationRunner = new Thread(
+                new PlatformDeploymentAjaxRunner(this, platformConfiguration, username));
         platformConfigurationRunner.start();
     }
     
-    void addError(String errorMessage, PlatformConfiguration studyConfiguration, String username) {
+    void addError(String errorMessage, String username) {
         getDwrUtil(username).setValue("errorMessages", errorMessage);
     }
 
@@ -177,12 +176,6 @@ public class PlatformDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     private Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrievePlatformConfigurationUtil(username);
-    }
-    
-    void saveAndUpdateJobStatus(String username, PlatformConfiguration platformConfiguration) {
-        platformConfiguration.setDeploymentFinishDate(new Date());
-        arrayDataService.savePlatformConfiguration(platformConfiguration);
-        updateJobStatus(username, platformConfiguration);
     }
 
     void updateJobStatus(String username, PlatformConfiguration platformConfiguration) {

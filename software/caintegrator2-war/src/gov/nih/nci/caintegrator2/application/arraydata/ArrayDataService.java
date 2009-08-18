@@ -125,9 +125,11 @@ public interface ArrayDataService {
      * Loads the given array design into the system.
      * 
      * @param platformConfiguration contains the platformSource necessary to load the design
-     * @throws PlatformLoadingException if there was a problem loading the array design from the provided resources.
+     * @param listener informed of status changes during deployment.
+     * @return updated PlatformConfiguration object.
      */
-     void loadArrayDesign(PlatformConfiguration platformConfiguration) throws PlatformLoadingException;
+     PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration,
+            PlatformDeploymentListener listener);
 
      /**
       * Returns the platform of name.

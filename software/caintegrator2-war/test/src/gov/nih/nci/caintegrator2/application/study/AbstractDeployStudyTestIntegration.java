@@ -264,9 +264,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private Platform getOrLoadDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
         Platform platform = getExistingDesign(platformSource);
         if (platform == null) {
-            PlatformConfiguration platformConfiguration = new PlatformConfiguration(platformSource);
-            arrayDataService.loadArrayDesign(platformConfiguration);
-            platform = platformConfiguration.getPlatform();
+            platform = arrayDataService.loadArrayDesign(new PlatformConfiguration(platformSource), null).getPlatform();
         }
         return platform;
     }
