@@ -147,6 +147,10 @@ public class ManagePlatformsActionTest {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
+        assertEquals(ActionSupport.ERROR, action.createPlatform());
+        assertFalse(ajaxUpdater.runJobCalled);
+        
+        action.setPlatformName("Mapping_50K");
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
         assertTrue(ajaxUpdater.runJobCalled);
         ajaxUpdater.runJobCalled = false;
@@ -195,6 +199,7 @@ public class ManagePlatformsActionTest {
 
         action.setSelectedAction("addAnnotationFile");
         action.setPlatformFile(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
+        action.setPlatformFileFileName(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_PATH);
         action.validate();
         assertFalse(action.hasFieldErrors());
         action.clearErrorsAndMessages();
@@ -230,9 +235,14 @@ public class ManagePlatformsActionTest {
         
         action.clearErrorsAndMessages();
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-        action.setPlatformFileFileName("abc.adf");
         action.validate();
         assertFalse(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
+        action.setPlatformFileFileName("abc.adf");
+        action.validate();
+        assertTrue(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
@@ -261,6 +271,11 @@ public class ManagePlatformsActionTest {
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.validate();
+        assertTrue(action.hasFieldErrors());
+        
+        action.clearErrorsAndMessages();
+        action.setPlatformFileFileName("abc.csv");
+        action.validate();
         assertFalse(action.hasFieldErrors());
         
         action.clearErrorsAndMessages();
@@ -271,7 +286,8 @@ public class ManagePlatformsActionTest {
         action.clearErrorsAndMessages();
         action.setPlatformFileFileName("abc.xml");
         action.validate();
-        assertFalse(action.hasFieldErrors());
+        assertTrue(action.hasFieldErrors());
+        
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
         action.validate();
@@ -282,11 +298,17 @@ public class ManagePlatformsActionTest {
 
     @Test
     public void testGetDisabled() {
-        assertEquals(action.getPlatformNameDisabled(), "display: none;");
-        assertEquals(action.getAddButtonDisabled(), "display: none;");
+        assertEquals(action.getPlatformNameDisplay(), "display: none;");
+        assertEquals(action.getAddButtonDisplay(), "display: none;");
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
-        assertEquals(action.getPlatformNameDisabled(), "display: block;");
-        assertEquals(action.getAddButtonDisabled(), "display: block;");
+        assertEquals(action.getPlatformNameDisplay(), "display: block;");
+        assertEquals(action.getAddButtonDisplay(), "display: block;");
+
+        assertEquals(action.getCsvlFileDisplay(), "display: block;");
+        assertEquals(action.getAdfGemlFileDisplay(), "display: none;");
+        action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
+        assertEquals(action.getCsvlFileDisplay(), "display: none;");
+        assertEquals(action.getAdfGemlFileDisplay(), "display: block;");
     }
 
     @Test

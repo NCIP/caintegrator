@@ -28,18 +28,26 @@
             document.getElementById("platformNameDiv").style.display = "none";
             document.getElementById("platformName").value = "N/A";
             document.getElementById("addFileButtonDiv").style.display = "none";
+            document.getElementById("commentCsvDiv").style.display = "block";
+            document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Affymetrix SNP"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
             document.getElementById("addFileButtonDiv").style.display = "block";
+            document.getElementById("commentCsvDiv").style.display = "block";
+            document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Gene Expression"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
             document.getElementById("addFileButtonDiv").style.display = "none";
+            document.getElementById("commentCsvDiv").style.display = "block";
+            document.getElementById("commentAdfGemlDiv").style.display = "none";
         } else if (type == "Agilent Copy Number"){
             document.getElementById("platformNameDiv").style.display = "block";
             document.getElementById("platformName").value = "";
             document.getElementById("addFileButtonDiv").style.display = "none";
+            document.getElementById("commentCsvDiv").style.display = "none";
+            document.getElementById("commentAdfGemlDiv").style.display = "block";
         }
     }
     
@@ -61,12 +69,20 @@
     <s:select name="platformType" label="Platform Type"
         list="@gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum@getValuesToDisplay()"
         onchange="CheckPlatformType(this.form.platformType.value);" theme="css_xhtml" /><br>
-    <s:div id="platformNameDiv" cssStyle="%{platformNameDisabled}">
+    <s:div id="platformNameDiv" cssStyle="%{platformNameDisplay}">
         <s:textfield id="platformName" name="platformName" label="Platform Name (For NON-GEML xml file)"
             theme="css_xhtml" /><br>
     </s:div>
     <s:file id="platformFile" name="platformFile" label="Annotation File" />
-    <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisabled}">
+    <s:div id="commentAdfGemlDiv" cssClass="inlinehelp_form_element" cssStyle="%{adfGemlFileDisplay}">
+        <span class="wwlbl">(adf & GEML xml file format)</span>
+        <span class="wwctrl"></span>
+    </s:div>
+    <s:div id="commentCsvDiv" cssClass="inlinehelp_form_element" cssStyle="%{csvlFileDisplay}">
+        <span class="wwlbl">(csv file format)</span>
+        <span class="wwctrl"></span>
+    </s:div>
+    <s:div id="addFileButtonDiv" cssStyle="%{addButtonDisplay}">
         <div class="wwlbl"><label class="label">&nbsp</label></div><br>
         <div class="wwctrl">
         <s:submit id="addFileButton" name="addFileButton" value="Add Annotation File" align="center"
@@ -80,7 +96,6 @@
     <div class="wwctrl"><s:submit value="Create Platform" align="center" action="createPlatform"
         onclick="return setSelectedAction('createPlatform', this.form.platformType.value);" theme="css_xhtml" /></div>
     </div><br>
-</s:form>
     <table class="data">
         <tr>
             <th>Platform Name</th>
@@ -91,6 +106,7 @@
         </tr>
         <tbody id="platformDeploymentJobStatusTable" />
     </table>
+</s:form>
 </div>
 
 <div class="clear"><br />
