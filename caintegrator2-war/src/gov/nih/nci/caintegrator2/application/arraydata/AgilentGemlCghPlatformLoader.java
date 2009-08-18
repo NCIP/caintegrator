@@ -200,7 +200,7 @@ class AgilentGemlCghPlatformLoader extends AbstractPlatformLoader {
          */
         String extractPlatformName(File xmlFile)
         throws PlatformLoadingException {
-            String errorMsg = null;
+            String errorMsg = "Error parsing GEML file.";
             try {
                 // get a factory
                 SAXParserFactory spf = SAXParserFactory.newInstance();
