@@ -1,7 +1,12 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script type='text/javascript' src='dwr/interface/PlatformDeploymentAjaxUpdater.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+
 <div id="content" >
+
 
 <!--Page Help-->
 
@@ -12,6 +17,12 @@
 <!--/Page Help-->
     
 <script type="text/javascript">
+    
+    function initializeJsp() {
+        dwr.engine.setActiveReverseAjax(true);
+        PlatformDeploymentAjaxUpdater.initializeJsp();
+    }
+    
     function CheckPlatformType(type) {
         if (type == "Affymetrix Gene Expression") {
             document.getElementById("platformNameDiv").style.display = "none";
@@ -75,31 +86,10 @@
             <th>Platform Name</th>
             <th>Vendor</th>
             <th>Array Name(s)</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
-        <s:iterator value="displayablePlatforms" status="status">
-            <s:if test="#status.odd == true">
-              <tr class="odd">
-            </s:if>
-            <s:else>
-              <tr class="even">
-            </s:else>            
-                <td><s:property value="platform.name" /></td>
-                <td><s:property value="platform.vendor" /></td>
-                <td><s:property value="displayableArrayNames" /></td>
-                <td>
-                    <s:if test="!inUse">
-                        <s:url id="deletePlatform" action="deletePlatform">
-                            <s:param name="platformName" value="platform.name" />
-                        </s:url> 
-                        <s:a href="%{deletePlatform}" onclick="return confirm('This platform will be permanently deleted.')">
-                            Delete
-                        </s:a>
-                    </s:if>
-                    <s:else>None</s:else>
-                </td>
-            </tr>
-        </s:iterator>
+        <tbody id="platformDeploymentJobStatusTable" />
     </table>
 </div>
 

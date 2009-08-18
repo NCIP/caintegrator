@@ -93,26 +93,19 @@ import gov.nih.nci.caintegrator2.application.arraydata.AgilentExpressionPlatform
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
 import gov.nih.nci.caintegrator2.web.SessionHelper;
 import gov.nih.nci.caintegrator2.web.action.study.management.AbstractStudyManagementAction;
+import gov.nih.nci.caintegrator2.web.ajax.IPlatformDeploymentAjaxUpdater;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.Session;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 
 /**
  * Provides functionality to list and add array designs.
@@ -127,11 +120,11 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
     private File platformFile;
     private String platformFileContentType;
     private String platformFileFileName;
-    private JmsTemplate jmsTemplate;
-    private Queue queue;
     private String platformName;
     private String platformType = PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue();
     private String selectedAction;
+    private IPlatformDeploymentAjaxUpdater ajaxUpdater;
+    private String platformConfigurationId;
 
     private static final String CREATE_PLATFORM_ACTION = "createPlatform";
     private static final String ADD_FILE_ACTION = "addAnnotationFile";
@@ -176,13 +169,15 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      * @return SUCCESS
      */
     public String deletePlatform() {
-
-        if (SessionHelper.getInstance().isAuthenticated()) {
-            getArrayDataService().deletePlatform(getPlatformName());
-        } else {
-            addActionError("User is unauthenticated");
+        if (platformConfigurationId == null) {
+            addActionError("Cannot delete platform because the id is not given.");
             return ERROR;
         }
+        if (!SessionHelper.getInstance().isAuthenticated()) {
+            addActionError("User is unauthenticated");
+            return ERROR;
+        } 
+        getArrayDataService().deletePlatform(Long.valueOf(platformConfigurationId));
         return SUCCESS;
     }
     
@@ -196,7 +191,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         }
         return true;
     }
-    
+
     private void checkPlatformParameters() {
         if (PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue().equals(platformType)) {
             checkDnaPlatformType();
@@ -272,7 +267,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
                         + extractedName);
                 return ERROR;
             }
-            submitPlatformCreation(source);
+            submitPlatformCreation(extractedName, source);
             return SUCCESS;
         } catch (IOException e) {
             LOGGER.error("Couldn't copy uploaded file", e);
@@ -286,9 +281,13 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         }
     }
     
-    private void submitPlatformCreation(AbstractPlatformSource source) {
+    private void submitPlatformCreation(String name, AbstractPlatformSource source) {
         source.setDeleteFileOnCompletion(true);
-        sendPlatformMessage(source);
+        PlatformConfiguration configuration = new PlatformConfiguration(source);
+        configuration.setName(name);
+        configuration.setStatus(Status.PROCESSING);
+        arrayDataService.savePlatformConfiguration(configuration);
+        ajaxUpdater.runJob(configuration, getWorkspace().getUsername());
         getPlatformForm().clear();
     }
     
@@ -303,24 +302,7 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         FileUtils.copyFile(getPlatformFile(), copy);
         return copy;
     }
-
-    private void sendPlatformMessage(final AbstractPlatformSource source) {
-        MessageCreator creator = new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                ObjectMessage message = session.createObjectMessage();
-                message.setObject(source);
-                return message;
-            }
-        };
-        getJmsTemplate().send(getQueue(), creator);
-    }
     
-    /**
-     * @return the list of all platforms, alphabetized
-     */
-    public List<DisplayablePlatform> getDisplayablePlatforms() {
-        return getArrayDataService().getDisplayablePlatforms();
-    }
 
     /**
      * @return the arrayDataService
@@ -376,34 +358,6 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
      */
     public void setPlatformFileFileName(String platformFileFileName) {
         this.platformFileFileName = platformFileFileName;
-    }
-
-    /**
-     * @return the jmsTemplate
-     */
-    public JmsTemplate getJmsTemplate() {
-        return jmsTemplate;
-    }
-
-    /**
-     * @param jmsTemplate the jmsTemplate to set
-     */
-    public void setJmsTemplate(JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
-    }
-
-    /**
-     * @return the queue
-     */
-    public Queue getQueue() {
-        return queue;
-    }
-
-    /**
-     * @param queue the queue to set
-     */
-    public void setQueue(Queue queue) {
-        this.queue = queue;
     }
 
     /**
@@ -486,5 +440,33 @@ public class ManagePlatformsAction extends AbstractStudyManagementAction {
         } else {
             return "display: none;";
         }
+    }
+
+    /**
+     * @return the ajaxUpdater
+     */
+    public IPlatformDeploymentAjaxUpdater getAjaxUpdater() {
+        return ajaxUpdater;
+    }
+
+    /**
+     * @param ajaxUpdater the ajaxUpdater to set
+     */
+    public void setAjaxUpdater(IPlatformDeploymentAjaxUpdater ajaxUpdater) {
+        this.ajaxUpdater = ajaxUpdater;
+    }
+
+    /**
+     * @return the platformConfigurationId
+     */
+    public String getPlatformConfigurationId() {
+        return platformConfigurationId;
+    }
+
+    /**
+     * @param platformConfigurationId the platformConfigurationId to set
+     */
+    public void setPlatformConfigurationId(String platformConfigurationId) {
+        this.platformConfigurationId = platformConfigurationId;
     }
 }

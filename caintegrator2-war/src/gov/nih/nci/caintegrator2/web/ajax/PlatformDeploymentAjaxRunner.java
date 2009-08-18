@@ -83,35 +83,63 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import static org.junit.Assert.assertEquals;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.study.Status;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 
-import java.util.Arrays;
-import java.util.List;
+import org.apache.log4j.Logger;
 
-import org.junit.Test;
-
-
-public class DisplayablePlatformTest {
+/**
+ * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
+ */
+public class PlatformDeploymentAjaxRunner implements Runnable {
     
-    @Test
-    public void testGetDisplayableArrayNames() {
-        Platform platform = new Platform();
-        platform.setName("Platform Name");
-        platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
-        platform.addReporterList("list1", ReporterTypeEnum.GENE_EXPRESSION_GENE);
-        platform.addReporterList("list1", ReporterTypeEnum.GENE_EXPRESSION_PROBE_SET);
-        platform.addReporterList("list2", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
-        DisplayablePlatform displayablePlatform = new DisplayablePlatform(platform, true);
-        String arrayNames = displayablePlatform.getDisplayableArrayNames();
-        List<String> arrayNamesList = Arrays.asList(arrayNames.split(","));
-        arrayNamesList.contains("list1");
-        arrayNamesList.contains("list2");
-        assertEquals(2, arrayNamesList.size());
+    private static final Logger LOGGER = Logger.getLogger(PlatformDeploymentAjaxRunner.class);
+        
+    private final PlatformDeploymentAjaxUpdater updater;
+    private final Long platformConfigurationId;
+    private final AbstractPlatformSource platformSource;
+    private final String username;
+    private PlatformConfiguration platformConfiguration;
+    
+    
+    PlatformDeploymentAjaxRunner(PlatformDeploymentAjaxUpdater updater,
+            Long platformConfigurationId, AbstractPlatformSource platformSource, 
+            String username) {
+        this.updater = updater;
+        this.platformConfigurationId = platformConfigurationId;
+        this.platformSource = platformSource;
+        this.username = username;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void run() {
+        setupSession();
+        updater.updateJobStatus(username, platformConfiguration);
+        try {
+            updater.getArrayDataService().loadArrayDesign(platformConfiguration);
+            updater.updateJobStatus(username, platformConfiguration);
+        } catch (PlatformLoadingException e) {
+            addError(e);
+        }
+    }
+
+    private void setupSession() {
+        platformConfiguration = updater.getArrayDataService().
+                    getRefreshedPlatformConfiguration(platformConfigurationId);
+        platformConfiguration.setPlatformSource(platformSource);
+    }
+
+    private void addError(Exception e) {
+        LOGGER.error("Deployment of study " + platformConfiguration.getPlatform().getName() + " failed.", e);
+        updater.addError(e.getMessage(), platformConfiguration, username);
+        platformConfiguration.setStatus(Status.ERROR);
+        platformConfiguration.setStatusDescription(e.getMessage());
+        updater.saveAndUpdateJobStatus(username, platformConfiguration);
+    }
 }

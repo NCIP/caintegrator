@@ -1,13 +1,13 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caIntegrator2
+ * source code form and machine readable, binary, object code form. The caArray
  * Software was developed in conjunction with the National Cancer Institute 
  * (NCI) by NCI employees, 5AM Solutions, Inc. (5AM), ScenPro, Inc. (ScenPro)
  * and Science Applications International Corporation (SAIC). To the extent 
  * government employees are authors, any rights in such works shall be subject 
  * to Title 17 of the United States Code, section 105. 
  *
- * This caIntegrator2 Software License (the License) is between NCI and You. You (or 
+ * This caArray Software License (the License) is between NCI and You. You (or 
  * Your) shall mean a person or an entity, and all other entities that control, 
  * are controlled by, or are under common control with the entity. Control for 
  * purposes of this definition means (i) the direct or indirect power to cause 
@@ -18,10 +18,10 @@
  * This License is granted provided that You agree to the conditions described 
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up, 
  * no-charge, irrevocable, transferable and royalty-free right and license in 
- * its rights in the caIntegrator2 Software to (i) use, install, access, operate, 
+ * its rights in the caArray Software to (i) use, install, access, operate, 
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caIntegrator2 Software; (ii) distribute and 
- * have distributed to and by third parties the caIntegrator2 Software and any 
+ * and prepare derivative works of the caArray Software; (ii) distribute and 
+ * have distributed to and by third parties the caIntegrator Software and any 
  * modifications and derivative works thereof; and (iii) sublicense the 
  * foregoing rights set out in (i) and (ii) to third parties, including the 
  * right to license such rights to further third parties. For sake of clarity, 
@@ -83,68 +83,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web;
+package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 /**
- * Used to display Platform information on the Manage Platform page.
+ * This interface is to allow DWR to javascript remote the methods using Spring. 
  */
-public class DisplayablePlatform {
-
-    private static final long serialVersionUID = 1L;
-    private final Platform platform;
-    private final boolean inUse;
-
-    /**
-     * @param platform the Platform
-     * @param inUse boolean
-     */
-    public DisplayablePlatform(Platform platform, boolean inUse) {
-        super();
-        this.platform = platform;
-        this.inUse = inUse;
-    }
+public interface IPlatformDeploymentAjaxUpdater {
     
     /**
-     * @return the platform
+     * Initializes the web context to this JSP so the update messages stream here.
      */
-    public Platform getPlatform() {
-        return platform;
-    }
+    void initializeJsp();
     
     /**
-     * Retrieves the displayable (comma separated) array names for the this platform.  Because
-     * some of the ReporterLists are duplicate names, have to strip those out so they are only
-     * displayed once.
-     * @return comma separated array names.
+     * Used to run the PlatformConfiguration job.
+     * @param platformConfiguration of PlatformConfiguration to run.
+     * @param username of the user to update the status to.
      */
-    public String getDisplayableArrayNames() {
-        Set<String> arrayNamesUsed = new HashSet<String>();
-        StringBuffer arrayNames = new StringBuffer();
-        int count = 0;
-        for (ReporterList reporterList : platform.getReporterLists()) {
-            count++;
-            String name = reporterList.getName();
-            if (!arrayNamesUsed.contains(name)) {
-                arrayNamesUsed.add(name);
-                if (count > 1) {
-                    arrayNames.append(", ");
-                }
-                arrayNames.append(name);
-            }
-        }
-        return arrayNames.toString();
-    }
+    void runJob(PlatformConfiguration platformConfiguration, String username);
 
-    /**
-     * @return the inUse
-     */
-    public boolean isInUse() {
-        return inUse;
-    }
 }

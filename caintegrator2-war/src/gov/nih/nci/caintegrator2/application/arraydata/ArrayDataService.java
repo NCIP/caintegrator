@@ -87,7 +87,7 @@ package gov.nih.nci.caintegrator2.application.arraydata;
 
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 
 import java.util.Collection;
 import java.util.List;
@@ -124,11 +124,10 @@ public interface ArrayDataService {
     /**
      * Loads the given array design into the system.
      * 
-     * @param platformSource contains the files or information necessary to load the design
-     * @return the loaded design.
+     * @param platformConfiguration contains the platformSource necessary to load the design
      * @throws PlatformLoadingException if there was a problem loading the array design from the provided resources.
      */
-     Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException;
+     void loadArrayDesign(PlatformConfiguration platformConfiguration) throws PlatformLoadingException;
 
      /**
       * Returns the platform of name.
@@ -146,17 +145,30 @@ public interface ArrayDataService {
      List<Platform> getPlatforms();
 
      /**
-      * Returns all platforms in alphabetical order.
+      * Returns all PlatformConfigurations.
       * 
-      * @return the displayablePlatforms.
+      * @return the platformConfigurations.
       */
-     List<DisplayablePlatform> getDisplayablePlatforms();
+     List<PlatformConfiguration> getPlatformConfigurations();
 
      /**
-      * Delete the platform of name.
+      * Delete the platform with given id.
       * 
-      * @param name the platform name
+      * @param platformConfigurationId the id of the platform configuration to delete.
       */
-     void deletePlatform(String name);
+     void deletePlatform(Long platformConfigurationId);
+     
+     /**
+      * Saves platform configuration.
+      * @param platformConfiguration to save.
+      */
+     void savePlatformConfiguration(PlatformConfiguration platformConfiguration);
+     
+     /**
+      * Gets refreshed platformConfiguration from database.
+      * @param id of platformConfiguration.
+      * @return refreshed platformConfiguration.
+      */
+     PlatformConfiguration getRefreshedPlatformConfiguration(Long id);
     
 }

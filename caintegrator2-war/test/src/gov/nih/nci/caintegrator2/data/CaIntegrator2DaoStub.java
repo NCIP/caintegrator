@@ -102,6 +102,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.Sample;
@@ -422,6 +423,10 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
 
     public boolean isPlatformInUsed(Platform platform) {
         return false;
+    }
+
+    public List<PlatformConfiguration> getPlatformConfigurations() {
+        return null;
     }
 
 }

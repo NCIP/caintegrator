@@ -9,6 +9,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.GeneExpressionReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 
@@ -22,7 +23,7 @@ public class ArrayDesignChecker {
 
     public static Platform checkLoadAffymetrixSnpArrayDesign(File[] cdfs, AffymetrixDnaPlatformSource source, ArrayDataService service) throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReaders[] = getCdfReaders(cdfs);
-        Platform platform = service.loadArrayDesign(source);
+        Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
@@ -63,7 +64,7 @@ public class ArrayDesignChecker {
     throws PlatformLoadingException, AffymetrixCdfReadException {
         AffymetrixCdfReader cdfReader = AffymetrixCdfReader.create(cdfFile);
         AffymetrixExpressionPlatformSource source = new AffymetrixExpressionPlatformSource(annotationFile);
-        Platform platform = service.loadArrayDesign(source);
+        Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
@@ -78,7 +79,7 @@ public class ArrayDesignChecker {
     throws PlatformLoadingException {
         AgilentExpressionPlatformSource source = new AgilentExpressionPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
-        Platform platform = service.loadArrayDesign(source);
+        Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
@@ -90,7 +91,7 @@ public class ArrayDesignChecker {
     throws PlatformLoadingException {
         AgilentDnaPlatformSource source = new AgilentDnaPlatformSource(annotationFile, platformName,
                 annotationFile.getName());
-        Platform platform = service.loadArrayDesign(source);
+        Platform platform = retrievePlatform(source, service);
         if (platform.getId() == null) {
             platform.setId(1L);
         }
@@ -140,6 +141,14 @@ public class ArrayDesignChecker {
         assertEquals(cdfReader.getCdfData().getChipType(), platform.getName());
         assertEquals(PlatformVendorEnum.AFFYMETRIX, platform.getVendor());
         assertEquals(2, platform.getReporterLists().size());
+    }
+    
+    private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service)
+    throws PlatformLoadingException {
+        PlatformConfiguration platformConfiguration = new PlatformConfiguration(source);
+        service.loadArrayDesign(platformConfiguration);
+        Platform platform = platformConfiguration.getPlatform();
+        return platform;
     }
 
 }

@@ -85,13 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
-import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class ArrayDataServiceStub implements ArrayDataService {
@@ -99,6 +101,8 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public boolean loadArrayDesignCalled;
     public boolean getFoldChangeValuesCalled;
     public boolean deleteCalled;
+    public boolean getPlatformConfigurationsCalled;
+    public boolean getRefreshedPlatformConfigurationCalled;
 
     /**
      * {@inheritDoc}
@@ -118,9 +122,8 @@ public class ArrayDataServiceStub implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
+    public void loadArrayDesign(PlatformConfiguration platformConfiguration) throws PlatformLoadingException {
         loadArrayDesignCalled = true;
-        return null;
     }
 
     /**
@@ -159,26 +162,17 @@ public class ArrayDataServiceStub implements ArrayDataService {
         return platforms;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<DisplayablePlatform> getDisplayablePlatforms() {
-        List<DisplayablePlatform> displayablePlatforms = new ArrayList<DisplayablePlatform>();
-        for (Platform platform : getPlatforms()) {
-            displayablePlatforms.add(new DisplayablePlatform(platform, false));
-        }
-        return displayablePlatforms;
-    }
-
     public void clear() {
         loadArrayDesignCalled = false;
         deleteCalled = false;
+        getPlatformConfigurationsCalled = false;
+        getRefreshedPlatformConfigurationCalled = false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void deletePlatform(String name) {
+    public void deletePlatform(Long id) {
         deleteCalled = true;
     }
 
@@ -187,6 +181,44 @@ public class ArrayDataServiceStub implements ArrayDataService {
      */
     public boolean isPlatformInUsed(String name) {
         return false;
+    }
+
+    public List<PlatformConfiguration> getPlatformConfigurations() {
+        getPlatformConfigurationsCalled = true;
+        List<PlatformConfiguration> platformConfigurations = new ArrayList<PlatformConfiguration>();
+        PlatformConfiguration config1 = new PlatformConfiguration();
+        config1.setId(1l);
+        config1.setName("name");
+        config1.setStatus(Status.PROCESSING);
+        config1.setDeploymentStartDate(new Date());
+        PlatformConfiguration config2 = new PlatformConfiguration();
+        config2.setId(1l);
+        config2.setName("name2");
+        config2.setStatus(Status.LOADED);
+        config2.setDeploymentStartDate(new Date());
+        Platform platform = new Platform();
+        platform.setName("name2");
+        platform.setVendor(PlatformVendorEnum.AFFYMETRIX);
+        config2.setPlatform(platform);
+        platformConfigurations.add(config1);
+        platformConfigurations.add(config2);
+        return platformConfigurations;
+    }
+
+
+    public PlatformConfiguration getRefreshedPlatformConfiguration(Long id) {
+        getRefreshedPlatformConfigurationCalled = true;
+        PlatformConfiguration config = new PlatformConfiguration();
+        config.setId(1l);
+        config.setName("name");
+        config.setStatus(Status.PROCESSING);
+        config.setDeploymentStartDate(new Date());
+        return config;
+    }
+
+
+    public void savePlatformConfiguration(PlatformConfiguration platformConfiguration) {
+        
     }
 
 }

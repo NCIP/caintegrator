@@ -14,6 +14,7 @@ import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
@@ -83,7 +84,9 @@ public class BioconductorServiceTestIntegration extends AbstractTransactionalSpr
             List<File> files = new ArrayList<File>();
             files.add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
             AffymetrixDnaPlatformSource source = new AffymetrixDnaPlatformSource(files, "Mapping50K_Hind240");
-            platform = getArrayDataService().loadArrayDesign(source);
+            PlatformConfiguration platformConfiguration = new PlatformConfiguration(source);
+            getArrayDataService().loadArrayDesign(platformConfiguration);
+            platform = platformConfiguration.getPlatform();
         }
         return platform;
     }
