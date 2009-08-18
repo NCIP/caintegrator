@@ -85,14 +85,15 @@
  */
 package gov.nih.nci.caintegrator2.application.arraydata;
 
+import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManager;
-import gov.nih.nci.caintegrator2.web.DisplayablePlatform;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -130,12 +131,24 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public Platform loadArrayDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
+    public void loadArrayDesign(PlatformConfiguration platformConfiguration) throws PlatformLoadingException {
+        AbstractPlatformSource platformSource = platformConfiguration.getPlatformSource();
         LOGGER.info("Started loading design from " + platformSource.toString());
         getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
         Platform platform = platformSource.getLoader().load(getDao());
         LOGGER.info("Completed loading design from " + platformSource.toString());
-        return platform;
+        platformConfiguration.setPlatform(platform);
+        platformConfiguration.setStatus(Status.LOADED);
+        platformConfiguration.setDeploymentFinishDate(new Date());
+        dao.save(platformConfiguration);
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void savePlatformConfiguration(PlatformConfiguration platformConfiguration) {
+        dao.save(platformConfiguration);
     }
     
     /**
@@ -155,19 +168,15 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public List<DisplayablePlatform> getDisplayablePlatforms() {
-        List<DisplayablePlatform> result = new ArrayList<DisplayablePlatform>();
-        for (Platform platform : getPlatforms()) {
-            result.add(new DisplayablePlatform(platform, dao.isPlatformInUsed(platform)));
-        }
-        return result;
+    public List<PlatformConfiguration> getPlatformConfigurations() {
+        return dao.getPlatformConfigurations();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void deletePlatform(String name) {
-        dao.delete(dao.getPlatform(name));
+    public void deletePlatform(Long platformConfigurationId) {
+        dao.delete(getRefreshedPlatformConfiguration(platformConfigurationId));
     }
 
     /**
@@ -209,6 +218,13 @@ public class ArrayDataServiceImpl implements ArrayDataService {
         controlDataRequest.addTypes(request.getTypes());
         ArrayDataValues controlValues = getData(controlDataRequest);
         return new FoldChangeCalculator(values, controlValues).calculate();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public PlatformConfiguration getRefreshedPlatformConfiguration(Long id) {
+        return dao.get(id, PlatformConfiguration.class);
     }
 
 }

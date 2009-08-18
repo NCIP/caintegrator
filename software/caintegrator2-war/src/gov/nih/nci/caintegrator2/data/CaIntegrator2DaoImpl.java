@@ -103,6 +103,7 @@ import gov.nih.nci.caintegrator2.domain.genomic.Array;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -439,6 +440,24 @@ public class CaIntegrator2DaoImpl extends HibernateDaoSupport implements CaInteg
     public List<Platform> getPlatforms() {
         Query query = getCurrentSession().createQuery("from Platform order by name");
         return query.list();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings(UNCHECKED) // Hibernate operations are untyped
+    public List<PlatformConfiguration> getPlatformConfigurations() {
+        List<PlatformConfiguration> platformConfigurationList = 
+            (List<PlatformConfiguration>) getCurrentSession().
+                createCriteria(PlatformConfiguration.class).list();
+        for (PlatformConfiguration configuration : platformConfigurationList) {
+            if (configuration.getPlatform() == null) { 
+                configuration.setInUse(false);
+            } else {
+                configuration.setInUse(isPlatformInUsed(configuration.getPlatform()));
+            }
+        }
+        return platformConfigurationList;
     }
 
     /**

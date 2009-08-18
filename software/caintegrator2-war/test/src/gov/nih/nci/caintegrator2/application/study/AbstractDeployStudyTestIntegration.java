@@ -117,6 +117,7 @@ import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
 import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
@@ -263,7 +264,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private Platform getOrLoadDesign(AbstractPlatformSource platformSource) throws PlatformLoadingException {
         Platform platform = getExistingDesign(platformSource);
         if (platform == null) {
-            platform = arrayDataService.loadArrayDesign(platformSource);
+            PlatformConfiguration platformConfiguration = new PlatformConfiguration(platformSource);
+            arrayDataService.loadArrayDesign(platformConfiguration);
+            platform = platformConfiguration.getPlatform();
         }
         return platform;
     }

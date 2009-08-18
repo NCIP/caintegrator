@@ -134,6 +134,7 @@ public class WorkspaceServiceStub implements WorkspaceService {
         workspace.setDefaultSubscription(getSubscription());
         workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
         workspace.getSubscriptionCollection().add(workspace.getDefaultSubscription());
+        workspace.setUsername("username");
         return workspace;
     }
 

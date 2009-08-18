@@ -87,25 +87,23 @@ package gov.nih.nci.caintegrator2.web.action.platform;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.TestArrayDesignFiles;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformTypeEnum;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.file.FileManagerStub;
+import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
+import gov.nih.nci.caintegrator2.web.SessionHelper;
+import gov.nih.nci.caintegrator2.web.ajax.IPlatformDeploymentAjaxUpdater;
 
 import java.util.HashMap;
-
-import javax.jms.Destination;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jms.JmsException;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -115,16 +113,22 @@ public class ManagePlatformsActionTest {
     ManagePlatformsAction action = new ManagePlatformsAction();
     ArrayDataServiceStub arrayDataServiceStub = new ArrayDataServiceStub();
     FileManagerStub fileManagerStub = new FileManagerStub();
+    PlatformDeploymentAjaxUpdaterStub ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
     
     @Before
     public void setUp() {
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
-
         WorkspaceServiceStub workspaceService = new WorkspaceServiceStub();
+        DisplayableUserWorkspace displayableWorkspace = 
+            SessionHelper.getInstance().getDisplayableUserWorkspace();
+        displayableWorkspace.refresh(workspaceService);
+        
+        ajaxUpdater = new PlatformDeploymentAjaxUpdaterStub();
         action.setWorkspaceService(workspaceService);
         action.setArrayDataService(arrayDataServiceStub);        
         action.setFileManager(fileManagerStub);
+        action.setAjaxUpdater(ajaxUpdater);
     }
     
     @Test
@@ -136,46 +140,30 @@ public class ManagePlatformsActionTest {
     public void testCreatePlatform() {
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HG_U133A_ANNOTATION_FILE);
-        action.setJmsTemplate(new JmsTemplate() {
-            @Override
-            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
-                assertNotNull(messageCreator);
-            } 
-        });
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
+        assertTrue(ajaxUpdater.runJobCalled);
+        ajaxUpdater.runJobCalled = false;
         
         action.setPlatformType(PlatformTypeEnum.AFFYMETRIX_DNA_ANALYSIS.getValue());
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_HIND_ANNOTATION_FILE);
         action.getPlatformForm().getAnnotationFiles().add(TestArrayDesignFiles.MAPPING_50K_XBA_ANNOTATION_FILE);
-        action.setJmsTemplate(new JmsTemplate() {
-            @Override
-            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
-                assertNotNull(messageCreator);
-            } 
-        });
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
+        assertTrue(ajaxUpdater.runJobCalled);
+        ajaxUpdater.runJobCalled = false;
         
         action.setPlatformType(PlatformTypeEnum.AGILENT_GENE_EXPRESSION.getValue());
         action.setPlatformFile(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_FILE);
         action.setPlatformName("CGH244A");
         action.setPlatformFileFileName(TestArrayDesignFiles.HUMAN_GENOME_CGH244A_ANNOTATION_PATH);
-        action.setJmsTemplate(new JmsTemplate() {
-            @Override
-            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
-                assertNotNull(messageCreator);
-            } 
-        });
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
+        assertTrue(ajaxUpdater.runJobCalled);
+        ajaxUpdater.runJobCalled = false;
         
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
         action.setPlatformFile(TestArrayDesignFiles.AGILENT_HG_CGH_244A_TCGA_ADF_ANNOTATION_FILE);
-        action.setJmsTemplate(new JmsTemplate() {
-            @Override
-            public void send(Destination destination, MessageCreator messageCreator) throws JmsException {
-                assertNotNull(messageCreator);
-            } 
-        });
         assertEquals(ActionSupport.SUCCESS, action.createPlatform());
+        assertTrue(ajaxUpdater.runJobCalled);
+        ajaxUpdater.runJobCalled = false;
     }
     
     @Test
@@ -284,18 +272,12 @@ public class ManagePlatformsActionTest {
         action.setPlatformFileFileName("abc.xml");
         action.validate();
         assertFalse(action.hasFieldErrors());
-        
         action.clearErrorsAndMessages();
         action.setPlatformType(PlatformTypeEnum.AGILENT_DNA_ANALYSIS.getValue());
         action.validate();
         action.setPlatformName("Agilent Copy Number Platform");
         action.validate();
         assertFalse(action.hasFieldErrors());
-    }
-
-    @Test
-    public void testGetPlatforms() {
-        assertNotNull(action.getDisplayablePlatforms());
     }
 
     @Test
@@ -309,8 +291,23 @@ public class ManagePlatformsActionTest {
 
     @Test
     public void testDeletePlatform() {
-        assertEquals(action.deletePlatform(), "success");
+        assertEquals(ActionSupport.ERROR, action.deletePlatform());
+        action.setPlatformConfigurationId("1");
+        assertEquals(ActionSupport.SUCCESS, action.deletePlatform());
     }
 
+    private static class PlatformDeploymentAjaxUpdaterStub implements IPlatformDeploymentAjaxUpdater {
+
+        public boolean runJobCalled = false;
+        
+        public void initializeJsp() {
+
+        }
+
+        public void runJob(PlatformConfiguration platformConfiguration, String username) {
+            runJobCalled = true;
+        }
+        
+    }
 }
 

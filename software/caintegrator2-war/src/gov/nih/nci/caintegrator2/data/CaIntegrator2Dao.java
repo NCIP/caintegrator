@@ -95,6 +95,7 @@ import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
 import gov.nih.nci.caintegrator2.domain.genomic.AbstractReporter;
 import gov.nih.nci.caintegrator2.domain.genomic.Gene;
 import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
 import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
 import gov.nih.nci.caintegrator2.domain.genomic.SampleAcquisition;
@@ -325,6 +326,12 @@ public interface CaIntegrator2Dao {
      * @return the platforms.
      */
     List<Platform> getPlatforms();
+    
+    /**
+     * Returns all platform configurations.
+     * @return the platformConfigurations.
+     */
+    List<PlatformConfiguration> getPlatformConfigurations();
     
     /**
      * Check if the platform is in used.
