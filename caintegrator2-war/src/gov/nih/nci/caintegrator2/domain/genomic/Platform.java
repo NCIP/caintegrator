@@ -5,7 +5,9 @@ import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -132,6 +134,30 @@ public class Platform extends AbstractCaIntegrator2Object {
     @SuppressWarnings("unused")     // required by Hibernate
     private void setReporterListsInternal(SortedSet<ReporterList> reporterListsInternal) {
         this.reporterListsInternal = reporterListsInternal;
+    }
+    
+    /**
+     * Retrieves the displayable (comma separated) array names for the this platform.  Because
+     * some of the ReporterLists are duplicate names, have to strip those out so they are only
+     * displayed once.
+     * @return comma separated array names.
+     */
+    public String getDisplayableArrayNames() {
+        Set<String> arrayNamesUsed = new HashSet<String>();
+        StringBuffer arrayNames = new StringBuffer();
+        int count = 0;
+        for (ReporterList reporterList : getReporterLists()) {
+            count++;
+            String arrayName = reporterList.getName();
+            if (!arrayNamesUsed.contains(arrayName)) {
+                arrayNamesUsed.add(arrayName);
+                if (count > 1) {
+                    arrayNames.append(", ");
+                }
+                arrayNames.append(arrayName);
+            }
+        }
+        return arrayNames.toString();
     }
 
 }

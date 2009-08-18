@@ -205,6 +205,7 @@
     
     <definition name="managePlatforms" extends="cssBaseDef">
         <put-attribute name="content" value="/WEB-INF/jsp/tiles/managePlatforms_tile.jsp" />
+        <put-attribute name="bodyTile" value="/WEB-INF/jsp/tiles/bodyDwrAjax_tile.jsp" />
     </definition>
 
 </tiles-definitions>

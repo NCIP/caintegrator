@@ -499,15 +499,12 @@
         <property name="arrayDataService">
             <ref local="arrayDataService"/>
         </property>
-        <property name="jmsTemplate">
-            <ref local="platformLoaderJmsTemplate"/>
-        </property>        
-        <property name="queue">
-            <ref local="platformLoaderQueue"/>
-        </property>        
         <property name="fileManager">
             <ref local="fileManager"/>
         </property>  
+        <property name="ajaxUpdater">
+            <ref local="platformDeploymentAjaxUpdater" />
+        </property>
     </bean>   
     
     <bean id="caBioSearchAction"
@@ -592,6 +589,20 @@
         </property>
         <property name="studyManagementService">
           <ref local="studyManagementService"/>
+        </property>
+        <property name="dwrUtilFactory">
+            <ref local="dwrUtilFactory"/>
+        </property>
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+    
+    <bean id="platformDeploymentAjaxUpdater" scope="prototype" class="gov.nih.nci.caintegrator2.web.ajax.PlatformDeploymentAjaxUpdater">
+        <dwr:remote javascript="PlatformDeploymentAjaxUpdater" />
+        <property name="workspaceService">
+          <ref local="workspaceService"/>
+        </property>
+        <property name="arrayDataService">
+          <ref local="arrayDataService"/>
         </property>
         <property name="dwrUtilFactory">
             <ref local="dwrUtilFactory"/>
@@ -742,12 +753,6 @@
         </property>
     </bean>
 
-    <bean id="platformLoaderListener" class="gov.nih.nci.caintegrator2.application.arraydata.PlatformLoaderListener">
-        <property name="arrayDataService">
-            <ref local="arrayDataService"/>
-        </property>
-    </bean>
-
     <bean id="arrayDataService" 
 
         class="gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceImpl">
@@ -846,27 +851,6 @@
     <!-- ******************************************************************* -->
     <!-- ** SERVICES                                                      ** -->
     <!-- ******************************************************************* -->
-
-    <bean id="jmsConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:ConnectionFactory" />
-    </bean>
-    
-    <bean id="platformLoaderQueue" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="queue/platformLoaderQueue" />
-    </bean>
-    
-    <bean id="platformLoaderJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="jmsConnectionFactory" />
-        <property name="defaultDestination" ref="platformLoaderQueue" />
-        <property name="receiveTimeout" value="1" />
-    </bean>
-
-    <bean id="platformLoaderListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="jmsConnectionFactory" />
-        <property name="destination" ref="platformLoaderQueue" />
-        <property name="messageListener" ref="platformLoaderListener" />
-        <property name="transactionManager" ref="transactionManager" />
-    </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory">

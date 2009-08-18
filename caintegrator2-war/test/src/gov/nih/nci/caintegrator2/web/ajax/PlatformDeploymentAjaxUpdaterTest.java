@@ -85,118 +85,78 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataServiceStub;
+import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
+import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
+import gov.nih.nci.caintegrator2.domain.application.UserWorkspace;
+import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
+
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
-import org.directwebremoting.proxy.dwr.Util;
+import javax.servlet.ServletException;
 
-/**
- * Application scope factory which will store and return Dwr Util objects for specific users on different
- * <code>PersistedJob</code>types.
- */
-public class DwrUtilFactory {
+import org.acegisecurity.context.SecurityContextHolder;
+import org.directwebremoting.WebContextFactory;
+import org.junit.Before;
+import org.junit.Test;
 
-    private final Map <String, Util> analysisUsernameUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> studyConfigurationUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> genomicDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> imagingDataSourceUtilityMap = new HashMap<String, Util>();
-    private final Map <String, Util> platformConfigurationUtilityMap = new HashMap<String, Util>();
-    
-    /**
-     * Retrieves the DWR utility object for an Analysis Job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveAnalysisJobUtil(String username) {
-        return retrieveDwrUtil(username, analysisUsernameUtilityMap);
+import com.opensymphony.xwork2.ActionContext;
+
+
+public class PlatformDeploymentAjaxUpdaterTest {
+
+    private PlatformDeploymentAjaxUpdater updater;
+    private DwrUtilFactory dwrUtilFactory;
+    private WorkspaceServicePlatformDeploymentJobStub workspaceService;
+    private ArrayDataServiceStub arrayDataService;
+
+    @Before
+    public void setUp() throws Exception {
+        updater = new PlatformDeploymentAjaxUpdater();
+        dwrUtilFactory = new DwrUtilFactory();
+        workspaceService = new WorkspaceServicePlatformDeploymentJobStub();
+        arrayDataService = new ArrayDataServiceStub();
+        arrayDataService.clear();
+        workspaceService.clear();
+        updater.setWorkspaceService(workspaceService);
+        updater.setDwrUtilFactory(dwrUtilFactory);
+        updater.setArrayDataService(arrayDataService);
+        SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
+        ActionContext.getContext().setSession(new HashMap<String, Object>());
+        WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
+    }
+
+    @Test
+    public void testInitializeJsp() throws InterruptedException, ServletException, IOException {
+        updater.initializeJsp();
+        assertNotNull(dwrUtilFactory.retrieveStudyConfigurationUtil("Test"));
     }
     
-    /**
-     * Retrieves the DWR utility object for a Study Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveStudyConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, studyConfigurationUtilityMap);
+    @Test
+    public void testRunJob() throws InterruptedException {
+        PlatformConfiguration platformConfiguration = new PlatformConfiguration();
+        platformConfiguration.setId(1l);
+        updater.runJob(platformConfiguration, "username");
+        Thread.sleep(500);
+        assertTrue(arrayDataService.getRefreshedPlatformConfigurationCalled);
+        assertTrue(arrayDataService.loadArrayDesignCalled);
     }
     
-    /**
-     * Retrieves the DWR utility object for a Platform Configuration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrievePlatformConfigurationUtil(String username) {
-        return retrieveDwrUtil(username, platformConfigurationUtilityMap);
+    private final class WorkspaceServicePlatformDeploymentJobStub extends WorkspaceServiceStub {
+        @Override
+        public UserWorkspace getWorkspace() {
+            UserWorkspace workspace = new UserWorkspace();
+            workspace.setUsername("Test");
+            workspace.setSubscriptionCollection(new HashSet<StudySubscription>());
+            workspace.getSubscriptionCollection().add(getSubscription());
+            
+            return workspace;
+        }
     }
-    
-    /**
-     * Retrieves the DWR utility object for a GenomicDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveGenomicDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, genomicDataSourceUtilityMap);
-    }
-    
-    /**
-     * Retrieves the DWR utility object for an ImageDataSourceConfiguration job.
-     * @param username to retrieve utility for.
-     * @return DWR Utility
-     */
-    public Util retrieveImagingDataSourceUtil(String username) {
-        return retrieveDwrUtil(username, imagingDataSourceUtilityMap);
-    }
-    
-    private Util retrieveDwrUtil(String username, Map<String, Util> map) {
-        return (map.get(username) == null) 
-            ? new Util() : map.get(username);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>AbstractPersistedAnalysisJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateAnalysisJobWithSession(String username, Util util) {
-        analysisUsernameUtilityMap.put(username, util);
-    }
-    
-    
-    /**
-     * Associates a username with a session for the <code>StudyDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateStudyConfigurationJobWithSession(String username, Util util) {
-        studyConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>PlatformDeploymentJob</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associatePlatformConfigurationJobWithSession(String username, Util util) {
-        platformConfigurationUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>GenomicDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateGenomicDataSourceWithSession(String username, Util util) {
-        genomicDataSourceUtilityMap.put(username, util);
-    }
-    
-    /**
-     * Associates a username with a session for the <code>ImageDataSourceConfiguration</code>. 
-     * @param username for current user.
-     * @param util dwr object.
-     */
-    public void associateImagingDataSourceWithSession(String username, Util util) {
-        imagingDataSourceUtilityMap.put(username, util);
-    }
-    
 
 }
