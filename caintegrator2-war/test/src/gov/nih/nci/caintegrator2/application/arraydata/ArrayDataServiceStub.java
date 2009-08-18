@@ -101,8 +101,19 @@ public class ArrayDataServiceStub implements ArrayDataService {
     public boolean loadArrayDesignCalled;
     public boolean getFoldChangeValuesCalled;
     public boolean deleteCalled;
+    public boolean saveCalled;
     public boolean getPlatformConfigurationsCalled;
     public boolean getRefreshedPlatformConfigurationCalled;
+    
+    
+    public void reset() {
+        loadArrayDesignCalled = false;
+        getFoldChangeValuesCalled = false;
+        deleteCalled = false;
+        saveCalled = false;
+        getPlatformConfigurationsCalled = false;
+        getRefreshedPlatformConfigurationCalled = false;
+    }
 
     /**
      * {@inheritDoc}
@@ -130,7 +141,7 @@ public class ArrayDataServiceStub implements ArrayDataService {
      * {@inheritDoc}
      */
     public void save(ArrayDataValues values) {
-        // no-op
+        saveCalled = true;
     }
 
     /**

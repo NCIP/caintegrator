@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.web.DisplayableUserWorkspace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.directwebremoting.proxy.dwr.Util;
@@ -167,8 +166,8 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
     /**
      * {@inheritDoc}
      */
-    public void runJob(Long id) {
-        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(this, id));
+    public void runJob(StudyConfiguration studyConfiguration) {
+        Thread studyConfigurationRunner = new Thread(new StudyDeploymentAjaxRunner(this, studyConfiguration));
         studyConfigurationRunner.start();
     }
     
@@ -187,17 +186,6 @@ public class StudyDeploymentAjaxUpdater extends AbstractDwrAjaxUpdater
      */
     private Util getDwrUtil(String username) {
         return getDwrUtilFactory().retrieveStudyConfigurationUtil(username);
-    }
-    
-    /**
-     * Saves studyConfiguration to database, then updates the status to JSP.
-     * @param username to update the status to.
-     * @param studyConfiguration to save and update.
-     */
-    public void saveAndUpdateJobStatus(String username, StudyConfiguration studyConfiguration) {
-        studyConfiguration.setDeploymentFinishDate(new Date());
-        getStudyManagementService().saveAsynchronousStudyConfigurationJob(studyConfiguration);
-        updateJobStatus(username, studyConfiguration);
     }
 
     /**

@@ -91,7 +91,6 @@ import gov.nih.nci.caintegrator2.domain.annotation.SurvivalValueDefinition;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
 import gov.nih.nci.caintegrator2.domain.translational.Study;
 import gov.nih.nci.caintegrator2.external.ConnectionException;
-import gov.nih.nci.caintegrator2.external.DataRetrievalException;
 import gov.nih.nci.caintegrator2.external.caarray.ExperimentNotFoundException;
 import gov.nih.nci.security.exceptions.CSException;
 
@@ -117,12 +116,6 @@ public interface StudyManagementService {
      * @throws CSException if there's a problem creating the protection element.
      */
     void createProtectionElement(StudyConfiguration studyConfiguration) throws CSException;
-    
-    /**
-     * Saves a study configuration asynchronous job.
-     * @param studyConfiguration study configuration to save.
-     */
-    void saveAsynchronousStudyConfigurationJob(StudyConfiguration studyConfiguration);
     
     /**
      * Saves a genomic source.
@@ -231,12 +224,9 @@ public interface StudyManagementService {
      * Deploys or redeploys a study.
      * 
      * @param studyConfiguration the study configuration to deploy
-     * @throws ConnectionException if underlying data sources couldn't be reached
-     * @throws DataRetrievalException if external data couldn't be retrieved
-     * @throws ValidationException if the study configuration is invalid
+     * @param listener informed of status changes during deployment.
      */
-    void deployStudy(StudyConfiguration studyConfiguration) 
-    throws ConnectionException, DataRetrievalException, ValidationException;
+    void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener);
 
     /**
      * Adds a new, initialized genomic data source to the study. Samples related to this data source are

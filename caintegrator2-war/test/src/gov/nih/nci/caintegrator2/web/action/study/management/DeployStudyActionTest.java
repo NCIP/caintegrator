@@ -87,6 +87,7 @@ package gov.nih.nci.caintegrator2.web.action.study.management;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
 
@@ -126,7 +127,7 @@ public class DeployStudyActionTest {
         public void initializeJsp() {
         }
 
-        public void runJob(Long id) {
+        public void runJob(StudyConfiguration configuration) {
             runJobCalled = true;
         }
         
