@@ -481,9 +481,9 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
 
     abstract protected String getControlSamplesFileName();
     
-    private void deploy() throws ConnectionException, DataRetrievalException, ValidationException {
+    private void deploy() {
         logStart();
-        service.deployStudy(studyConfiguration);
+        service.deployStudy(studyConfiguration, null);
         logEnd();
     }
 

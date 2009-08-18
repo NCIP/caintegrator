@@ -240,18 +240,4 @@ class GenomicDataHelper {
         return arrayData;
     }
 
-    /**
-     * @return the caArrayFacade
-     */
-    public CaArrayFacade getCaArrayFacade() {
-        return caArrayFacade;
-    }
-
-    /**
-     * @return the bioconductorService
-     */
-    public BioconductorService getBioconductorService() {
-        return bioconductorService;
-    }
-
 }

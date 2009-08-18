@@ -85,11 +85,7 @@
  */
 package gov.nih.nci.caintegrator2.web.action.study.management;
 
-import gov.nih.nci.caintegrator2.application.study.Status;
-import gov.nih.nci.caintegrator2.common.HibernateUtil;
 import gov.nih.nci.caintegrator2.web.ajax.IStudyDeploymentAjaxUpdater;
-
-import java.util.Date;
 
 /**
  * Action that deploys a study.
@@ -104,13 +100,7 @@ public class DeployStudyAction extends AbstractStudyAction {
      */
     @Override
     public String execute() {
-        getStudyConfiguration().setDeploymentStartDate(new Date());
-        getStudyConfiguration().setDeploymentFinishDate(null);
-        getStudyConfiguration().setStatusDescription(null);
-        getStudyConfiguration().setStatus(Status.PROCESSING);
-        getStudyManagementService().save(getStudyConfiguration());
-        HibernateUtil.loadCollection(getStudyConfiguration());
-        ajaxUpdater.runJob(getStudyConfiguration().getId());
+        ajaxUpdater.runJob(getStudyConfiguration());
         return SUCCESS;
     }
 

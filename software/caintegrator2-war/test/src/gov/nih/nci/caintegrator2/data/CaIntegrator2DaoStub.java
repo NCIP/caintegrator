@@ -150,6 +150,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     public boolean retrieveNumberImagesCalled;
     public boolean retrievePlatformsForGenomicSourceCalled;
     public boolean retrieveAllSubscribedWorkspacesCalled;
+    private Platform platform = new Platform();
 
     public UserWorkspace getWorkspace(String username) {
         getWorkspaceCalled = true;
@@ -410,8 +411,7 @@ public class CaIntegrator2DaoStub implements CaIntegrator2Dao {
     }
 
     public ReporterList getReporterList(String name) {
-        Platform platform = new Platform();
-        return platform.addReporterList("name", ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        return platform.addReporterList(name, ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
     }
 
     public Set<String> retrieveGeneSymbolsInStudy(Collection<String> symbols, Study study) {
