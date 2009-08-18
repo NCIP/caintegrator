@@ -143,7 +143,6 @@ public class PlatformDeploymentAjaxUpdaterTest {
         platformConfiguration.setId(1l);
         updater.runJob(platformConfiguration, "username");
         Thread.sleep(500);
-        assertTrue(arrayDataService.getRefreshedPlatformConfigurationCalled);
         assertTrue(arrayDataService.loadArrayDesignCalled);
     }
     

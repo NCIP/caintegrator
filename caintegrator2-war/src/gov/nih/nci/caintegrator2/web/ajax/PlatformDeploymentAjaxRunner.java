@@ -85,33 +85,26 @@
  */
 package gov.nih.nci.caintegrator2.web.ajax;
 
-import gov.nih.nci.caintegrator2.application.arraydata.AbstractPlatformSource;
-import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformDeploymentListener;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.domain.genomic.PlatformConfiguration;
-
-import org.apache.log4j.Logger;
 
 /**
  * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
  */
-public class PlatformDeploymentAjaxRunner implements Runnable {
+public class PlatformDeploymentAjaxRunner implements Runnable, PlatformDeploymentListener {
     
-    private static final Logger LOGGER = Logger.getLogger(PlatformDeploymentAjaxRunner.class);
-        
     private final PlatformDeploymentAjaxUpdater updater;
-    private final Long platformConfigurationId;
-    private final AbstractPlatformSource platformSource;
+    private final PlatformConfiguration platformConfiguration;
     private final String username;
-    private PlatformConfiguration platformConfiguration;
+    
     
     
     PlatformDeploymentAjaxRunner(PlatformDeploymentAjaxUpdater updater,
-            Long platformConfigurationId, AbstractPlatformSource platformSource, 
+            PlatformConfiguration platformConfiguration, 
             String username) {
         this.updater = updater;
-        this.platformConfigurationId = platformConfigurationId;
-        this.platformSource = platformSource;
+        this.platformConfiguration = platformConfiguration;
         this.username = username;
     }
 
@@ -119,27 +112,17 @@ public class PlatformDeploymentAjaxRunner implements Runnable {
      * {@inheritDoc}
      */
     public void run() {
-        setupSession();
-        updater.updateJobStatus(username, platformConfiguration);
-        try {
-            updater.getArrayDataService().loadArrayDesign(platformConfiguration);
-            updater.updateJobStatus(username, platformConfiguration);
-        } catch (PlatformLoadingException e) {
-            addError(e);
+        updater.getArrayDataService().loadArrayDesign(platformConfiguration, this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void statusUpdated(PlatformConfiguration configuration) {
+        if (Status.ERROR.equals(configuration.getStatus())) {
+            updater.addError(configuration.getStatusDescription(), username);
         }
+        updater.updateJobStatus(username, configuration);
     }
 
-    private void setupSession() {
-        platformConfiguration = updater.getArrayDataService().
-                    getRefreshedPlatformConfiguration(platformConfigurationId);
-        platformConfiguration.setPlatformSource(platformSource);
-    }
-
-    private void addError(Exception e) {
-        LOGGER.error("Deployment of study " + platformConfiguration.getPlatform().getName() + " failed.", e);
-        updater.addError(e.getMessage(), platformConfiguration, username);
-        platformConfiguration.setStatus(Status.ERROR);
-        platformConfiguration.setStatusDescription(e.getMessage());
-        updater.saveAndUpdateJobStatus(username, platformConfiguration);
-    }
 }

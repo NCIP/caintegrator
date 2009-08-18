@@ -143,12 +143,9 @@ public class ArrayDesignChecker {
         assertEquals(2, platform.getReporterLists().size());
     }
     
-    private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service)
-    throws PlatformLoadingException {
-        PlatformConfiguration platformConfiguration = new PlatformConfiguration(source);
-        service.loadArrayDesign(platformConfiguration);
-        Platform platform = platformConfiguration.getPlatform();
-        return platform;
+    private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service) {
+        return service.loadArrayDesign(new PlatformConfiguration(source), null).getPlatform();
+
     }
 
 }

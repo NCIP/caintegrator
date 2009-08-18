@@ -131,16 +131,41 @@ public class ArrayDataServiceImpl implements ArrayDataService {
     /**
      * {@inheritDoc}
      */
-    public void loadArrayDesign(PlatformConfiguration platformConfiguration) throws PlatformLoadingException {
+    @SuppressWarnings("PMD.AvoidReassigningParameters") // preferable in this instance for error handling.
+    public PlatformConfiguration loadArrayDesign(PlatformConfiguration platformConfiguration, 
+            PlatformDeploymentListener listener) {
         AbstractPlatformSource platformSource = platformConfiguration.getPlatformSource();
-        LOGGER.info("Started loading design from " + platformSource.toString());
-        getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
-        Platform platform = platformSource.getLoader().load(getDao());
-        LOGGER.info("Completed loading design from " + platformSource.toString());
-        platformConfiguration.setPlatform(platform);
-        platformConfiguration.setStatus(Status.LOADED);
-        platformConfiguration.setDeploymentFinishDate(new Date());
+        platformConfiguration = getRefreshedPlatformConfiguration(platformConfiguration.getId());
+        try {
+            LOGGER.info("Started loading design from " + platformSource.toString());
+            getDao().setFlushMode(HibernateAccessor.FLUSH_COMMIT);
+            Platform platform = platformSource.getLoader().load(getDao());
+            LOGGER.info("Completed loading design from " + platformSource.toString());
+            platformConfiguration.setPlatform(platform);
+            platformConfiguration.setStatus(Status.LOADED);
+            platformConfiguration.setDeploymentFinishDate(new Date());
+            saveAndUpdateDeploymentStatus(platformConfiguration, listener);
+        } catch (PlatformLoadingException e) {
+            handlePlatformLoadingException(platformConfiguration, listener, e);
+        }
+        return platformConfiguration;
+        
+    }
+
+    private void handlePlatformLoadingException(PlatformConfiguration platformConfiguration,
+            PlatformDeploymentListener listener, PlatformLoadingException e) {
+        LOGGER.error("Deployment of platform " + platformConfiguration.getName() + " failed.", e);
+        platformConfiguration.setStatus(Status.ERROR);
+        platformConfiguration.setStatusDescription(e.getMessage());
+        saveAndUpdateDeploymentStatus(platformConfiguration, listener);
+    }
+    
+    private void saveAndUpdateDeploymentStatus(PlatformConfiguration platformConfiguration, 
+                        PlatformDeploymentListener listener) {
         dao.save(platformConfiguration);
+        if (listener != null) {
+            listener.statusUpdated(platformConfiguration);
+        }
     }
     
     
