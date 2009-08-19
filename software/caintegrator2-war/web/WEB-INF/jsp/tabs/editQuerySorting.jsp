@@ -2,9 +2,15 @@
 
 <!--Sort Order-->
 
-    <h2>Set Sort Order for Selected Columns<div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
-   (draft)</a>
-    </div></h2>
+    <h2>Set Sort Order for Selected Columns</h2>
+    
+    
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+	       <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+	       (draft)</a>
+        </div>
+    </div>
 
     <table class="data">
         <tr>
