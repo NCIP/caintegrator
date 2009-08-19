@@ -867,8 +867,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
                                                  Study study, 
                                                  EntityTypeEnum entityType) {
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
-        annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
-        annotationDefinition.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         annotationDefinition.setDisplayName(descriptor.getName());
         annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
         annotationDefinition.setKeywords(annotationDefinition.getDisplayName());
@@ -922,9 +920,6 @@ public class StudyManagementServiceImpl implements StudyManagementService {
      */
     private void moveValuesToNewDefinition(Study study, AnnotationDefinition annotationDefinition,
             AnnotationDefinition annotationDefinitionToRemove) {
-        if (annotationDefinition.getAnnotationValueCollection() == null) {
-            annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
-        }
         if (annotationDefinitionToRemove.getAnnotationValueCollection() != null 
             && !annotationDefinitionToRemove.getAnnotationValueCollection().isEmpty()) {
             for (AbstractAnnotationValue value : annotationDefinitionToRemove.getAnnotationValueCollection()) {

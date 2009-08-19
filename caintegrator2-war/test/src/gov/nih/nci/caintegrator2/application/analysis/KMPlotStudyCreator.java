@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.application.analysis;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.DateAnnotationValue;
@@ -187,8 +186,7 @@ public class KMPlotStudyCreator {
         groupAnnotationField = new AnnotationDefinition();
         groupAnnotationField.setDisplayName("Gender");
         groupAnnotationField.setId(Long.valueOf(1));
-        groupAnnotationField.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
-        
+                
         StringAnnotationValue male1Value = new StringAnnotationValue();
         male1Value.setStringValue("M");
         male1Value.setSubjectAnnotation(male1SubjectAnnotation);
@@ -249,16 +247,13 @@ public class KMPlotStudyCreator {
         survivalValueDefinition.setId(Long.valueOf(1));
         AnnotationDefinition survivalStartDateAnnotation = new AnnotationDefinition();
         survivalStartDateAnnotation.setDisplayName("Survival Start Date");
-        survivalStartDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         survivalStartDateAnnotation.setId(Long.valueOf(2));
         survivalStartDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
         AnnotationDefinition deathDateAnnotation = new AnnotationDefinition();
-        deathDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         deathDateAnnotation.setDisplayName("Death Date");
         deathDateAnnotation.setId(Long.valueOf(3));
         deathDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());
         AnnotationDefinition lastFollowupDateAnnotation = new AnnotationDefinition();
-        lastFollowupDateAnnotation.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         lastFollowupDateAnnotation.setDisplayName("Last Followup Date");
         lastFollowupDateAnnotation.setId(Long.valueOf(4));
         lastFollowupDateAnnotation.setType(AnnotationTypeEnum.DATE.getValue());

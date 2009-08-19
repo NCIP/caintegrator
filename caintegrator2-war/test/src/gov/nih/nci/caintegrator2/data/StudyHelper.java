@@ -328,7 +328,7 @@ public class StudyHelper {
          * Add the 5 SampleAcquisitions
          */
         // Add permissible values.
-        sampleAnnotationDefinition.setPermissibleValueCollection(permissibleValueCollection);
+        sampleAnnotationDefinition.getPermissibleValueCollection().addAll(permissibleValueCollection);
         permval1.setNumericValue(100.0);
         permval2.setNumericValue(15.0);
         

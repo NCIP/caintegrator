@@ -518,7 +518,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
                     permissibleValues.add(permissibleValue);
                     dao.save(permissibleValue);
                 }
-                definition.setPermissibleValueCollection(permissibleValues);
+                definition.getPermissibleValueCollection().addAll(permissibleValues);
             }
             dao.save(definition);
         }
