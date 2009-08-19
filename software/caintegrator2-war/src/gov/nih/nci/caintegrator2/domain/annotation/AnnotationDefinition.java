@@ -2,7 +2,8 @@ package gov.nih.nci.caintegrator2.domain.annotation;
 
 import gov.nih.nci.caintegrator2.domain.AbstractCaIntegrator2Object;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -18,8 +19,8 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     private String unitsOfMeasure;
     
     private CommonDataElement cde;
-    private Collection<AbstractAnnotationValue> annotationValueCollection;
-    private Collection<AbstractPermissibleValue> permissibleValueCollection;
+    private Set<AbstractAnnotationValue> annotationValueCollection = new HashSet<AbstractAnnotationValue>();
+    private Set<AbstractPermissibleValue> permissibleValueCollection = new HashSet<AbstractPermissibleValue>();
     
     /**
      * @return the displayName
@@ -108,28 +109,30 @@ public class AnnotationDefinition extends AbstractCaIntegrator2Object {
     /**
      * @return the annotationValueCollection
      */
-    public Collection<AbstractAnnotationValue> getAnnotationValueCollection() {
+    public Set<AbstractAnnotationValue> getAnnotationValueCollection() {
         return annotationValueCollection;
     }
     
     /**
      * @param annotationValueCollection the annotationValueCollection to set
      */
-    public void setAnnotationValueCollection(Collection<AbstractAnnotationValue> annotationValueCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setAnnotationValueCollection(Set<AbstractAnnotationValue> annotationValueCollection) {
         this.annotationValueCollection = annotationValueCollection;
     }
     
     /**
      * @return the permissibleValueCollection
      */
-    public Collection<AbstractPermissibleValue> getPermissibleValueCollection() {
+    public Set<AbstractPermissibleValue> getPermissibleValueCollection() {
         return permissibleValueCollection;
     }
     
     /**
      * @param permissibleValueCollection the permissibleValueCollection to set
      */
-    public void setPermissibleValueCollection(Collection<AbstractPermissibleValue> permissibleValueCollection) {
+    @SuppressWarnings("unused")     // required by Hibernate
+    private void setPermissibleValueCollection(Set<AbstractPermissibleValue> permissibleValueCollection) {
         this.permissibleValueCollection = permissibleValueCollection;
     }
     

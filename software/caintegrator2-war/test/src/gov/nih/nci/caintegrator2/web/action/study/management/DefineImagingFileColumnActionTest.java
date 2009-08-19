@@ -94,6 +94,7 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationFile;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.FileColumn;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.CommonDataElement;
@@ -202,11 +203,13 @@ public class DefineImagingFileColumnActionTest {
     }
     
     @Test
-    public void testNewCreateDefinition() {
+    @SuppressWarnings("deprecation")
+    public void testCreateNewDefinition() throws ValidationException, ParseException {
+        action.setFileColumn(new FileColumn());
+        action.getFileColumn().setFieldDescriptor(new AnnotationFieldDescriptor());
         assertEquals(Action.SUCCESS, action.createNewDefinition());
         assertTrue(studyManagementServiceStub.createDefinitionCalled);
         assertFalse(action.isReadOnly());
-        
     }
     
     @Test
@@ -241,7 +244,7 @@ public class DefineImagingFileColumnActionTest {
         definition.setType(AnnotationTypeEnum.DATE.getValue());
         
         Collection<AbstractPermissibleValue> permissibleValueCollection =  new HashSet<AbstractPermissibleValue>();
-        definition.setPermissibleValueCollection(permissibleValueCollection);
+        definition.getPermissibleValueCollection().addAll(permissibleValueCollection);
         List<String> stringValues = new ArrayList<String>();
         action.setPermissibleUpdateList(stringValues);
         stringValues.add("10-05-2004");

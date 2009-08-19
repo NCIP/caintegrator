@@ -97,7 +97,6 @@ import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.application.EntityTypeEnum;
@@ -154,7 +153,6 @@ public class GEPlotAnnotationBasedActionTest {
         study.setStudyConfiguration(studyConfiguration);
         AnnotationDefinition subjectDef1 = new AnnotationDefinition();
         subjectDef1.setId(Long.valueOf(1));
-        subjectDef1.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         val1.setId(Long.valueOf(1));
         val1.setStringValue("M");
         val2.setId(Long.valueOf(2));
@@ -280,7 +278,6 @@ public class GEPlotAnnotationBasedActionTest {
         action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("1");
         action.getGePlotForm().getAnnotationBasedForm().getSelectedValuesIds().add("2");
         AnnotationDefinition selectedAnnotation = new AnnotationDefinition();
-        selectedAnnotation.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         selectedAnnotation.getPermissibleValueCollection().add(val1);
         selectedAnnotation.getPermissibleValueCollection().add(val2);
         selectedAnnotation.setType(AnnotationTypeEnum.STRING.getValue());

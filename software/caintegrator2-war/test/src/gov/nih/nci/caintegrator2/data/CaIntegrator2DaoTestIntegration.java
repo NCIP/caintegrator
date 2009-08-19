@@ -88,7 +88,6 @@ package gov.nih.nci.caintegrator2.data;
 import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.ImageDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.NumericAnnotationValue;
@@ -422,7 +421,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // First test is for Strings
         AnnotationDefinition annotationDefinition = new AnnotationDefinition();
         annotationDefinition.setType(AnnotationTypeEnum.STRING.getValue());
-        annotationDefinition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         
         StringAnnotationValue genderStringValue1 = new StringAnnotationValue();
         genderStringValue1.setStringValue("M");
@@ -449,7 +447,6 @@ public final class CaIntegrator2DaoTestIntegration extends AbstractTransactional
         // Next test is for numerics.
         AnnotationDefinition annotationDefinition2 = new AnnotationDefinition();
         annotationDefinition2.setType(AnnotationTypeEnum.NUMERIC.getValue());
-        annotationDefinition2.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         
         NumericAnnotationValue numericValue1 = new NumericAnnotationValue();
         numericValue1.setNumericValue(1.0);

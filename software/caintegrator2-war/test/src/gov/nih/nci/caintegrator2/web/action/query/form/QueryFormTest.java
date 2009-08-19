@@ -93,7 +93,6 @@ import gov.nih.nci.caintegrator2.application.study.AnnotationTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.domain.annotation.AbstractAnnotationValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AbstractPermissibleValue;
 import gov.nih.nci.caintegrator2.domain.annotation.AnnotationDefinition;
 import gov.nih.nci.caintegrator2.domain.annotation.StringPermissibleValue;
@@ -159,7 +158,6 @@ public class QueryFormTest {
         stringClinicalAnnotation2 = createDefinition("stringClinicalAnnotation2", AnnotationTypeEnum.STRING);
         numericClinicalAnnotation = createDefinition("numericClinicalAnnotation", AnnotationTypeEnum.NUMERIC);
         selectClinicalAnnotation1 = createDefinition("selectClinicalAnnotation1", AnnotationTypeEnum.STRING);
-        selectClinicalAnnotation1.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         value1.setStringValue("value1");
         value3.setStringValue("value3");
         value2.setStringValue("value2");
@@ -168,7 +166,6 @@ public class QueryFormTest {
         selectClinicalAnnotation1.getPermissibleValueCollection().add(value3);
 
         selectClinicalAnnotation2 = createDefinition("selectClinicalAnnotation2", AnnotationTypeEnum.STRING);
-        selectClinicalAnnotation2.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
         StringPermissibleValue value2_1 = new StringPermissibleValue();
         value2_1.setStringValue("value2_1");
         selectClinicalAnnotation2.getPermissibleValueCollection().add(value2_1);
@@ -187,8 +184,6 @@ public class QueryFormTest {
         definition.setDisplayName(name);
         definition.setId(nextId++);
         definition.setType(type.getValue());
-        definition.setPermissibleValueCollection(new HashSet<AbstractPermissibleValue>());
-        definition.setAnnotationValueCollection(new HashSet<AbstractAnnotationValue>());
         return definition;
     }
 
