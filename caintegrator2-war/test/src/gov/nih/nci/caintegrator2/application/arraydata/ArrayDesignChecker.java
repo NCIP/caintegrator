@@ -144,7 +144,9 @@ public class ArrayDesignChecker {
     }
     
     private static Platform retrievePlatform(AbstractPlatformSource source, ArrayDataService service) {
-        return service.loadArrayDesign(new PlatformConfiguration(source), null).getPlatform();
+        PlatformConfiguration configuration = new PlatformConfiguration(source);
+        service.savePlatformConfiguration(configuration);
+        return service.loadArrayDesign(configuration, null).getPlatform();
 
     }
 
