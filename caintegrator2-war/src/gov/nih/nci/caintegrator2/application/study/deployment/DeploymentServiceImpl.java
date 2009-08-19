@@ -106,7 +106,7 @@ import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 /**
  * Performs study deployments and notifies clients.
  */
-@Transactional (propagation = Propagation.REQUIRES_NEW)
+@Transactional (propagation = Propagation.REQUIRED)
 public class DeploymentServiceImpl implements DeploymentService {
     
     private static final Logger LOGGER = Logger.getLogger(DeploymentServiceImpl.class);
