@@ -672,4 +672,18 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
         return service;
     }
 
+    /**
+     * @return the deploymentService
+     */
+    public DeploymentService getDeploymentService() {
+        return deploymentService;
+    }
+
+    /**
+     * @param deploymentService the deploymentService to set
+     */
+    public void setDeploymentService(DeploymentService deploymentService) {
+        this.deploymentService = deploymentService;
+    }
+
 }
