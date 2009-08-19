@@ -19,22 +19,33 @@
         <property name="nciaFacade">
             <ref local="nciaFacadeStub"/>
         </property>
-        <property name="arrayDataService">
-            <ref local="arrayDataServiceStub"/>
-        </property>
         <property name="workspaceService">
             <ref local="workspaceServiceStub"/>
-        </property>
-        <property name="copyNumberHandlerFactory">
-            <ref local="copyNumberHandlerFactory" />
         </property>
         <property name="securityManager">
             <ref local="securityManagerStub" />
         </property>
     </bean>
 
+    <bean id="deploymentService" 
+        class="gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceImpl">
+        <property name="dao">
+            <ref local="dao"/>
+        </property>
+        <property name="caArrayFacade">
+            <ref local="caArrayFacadeStub"/>
+        </property>
+        <property name="arrayDataService">
+            <ref local="arrayDataServiceStub"/>
+        </property>
+        <property name="copyNumberHandlerFactory">
+            <ref local="copyNumberHandlerFactory" />
+        </property>
+    </bean>
+
     <bean id="copyNumberHandlerFactory" 
-        class="gov.nih.nci.caintegrator2.application.study.CopyNumberHandlerFactoryImpl" />
+        class="gov.nih.nci.caintegrator2.application.study.deployment.CopyNumberHandlerFactoryImpl" />
+
     
     <bean id="dao" class="gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub" />
     

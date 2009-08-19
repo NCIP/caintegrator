@@ -83,23 +83,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
-import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
-import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
-import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.study.deployment.AffymetrixCopyNumberChpParser;
+import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+
+import java.io.File;
 
 /**
- * Returns a local copy number handler for expedited testing.
+ * Extends parser to make functionality available to tests outside of the study package.
  */
-public class LocalCopyNumberHandlerFactoryImpl implements CopyNumberHandlerFactory {
+public class PublicAffymetrixCopyNumberChpParser extends AffymetrixCopyNumberChpParser {
 
-    /**
-     * {@inheritDoc}
-     */
-    public AbstractCopyNumberMappingFileHandler getHandler(GenomicDataSourceConfiguration genomicSource,
-            CaArrayFacade caArrayFacade, ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
-        return new LocalCopyNumberMappingFileHandler(genomicSource, caArrayFacade, arrayDataService, dao);
+    public PublicAffymetrixCopyNumberChpParser(File copyNumberChpFile) {
+        super(copyNumberChpFile);
+    }
+    
+    @Override
+    public void parse(ArrayDataValues values, ArrayData arrayData) throws DataRetrievalException {
+        super.parse(values, arrayData);
     }
 
 }

@@ -89,7 +89,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.caintegrator2.AcegiAuthenticationStub;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
-import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceStub;
+import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentServiceStub;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceServiceStub;
 import gov.nih.nci.caintegrator2.data.StudyHelper;
 import gov.nih.nci.caintegrator2.domain.application.StudySubscription;
@@ -114,7 +114,7 @@ public class StudyDeploymentAjaxUpdaterTest {
     private StudyDeploymentAjaxUpdater updater;
     private DwrUtilFactory dwrUtilFactory;
     private WorkspaceServiceStudyDeploymentJobStub workspaceService;
-    private StudyManagementServiceStub studyManagementServiceStub;
+    private DeploymentServiceStub deploymentServiceStub;
     private StudyConfiguration studyConfiguration;
 
     @Before
@@ -122,11 +122,11 @@ public class StudyDeploymentAjaxUpdaterTest {
         updater = new StudyDeploymentAjaxUpdater();
         dwrUtilFactory = new DwrUtilFactory();
         workspaceService = new WorkspaceServiceStudyDeploymentJobStub();
-        studyManagementServiceStub = new StudyManagementServiceStub();
+        deploymentServiceStub = new DeploymentServiceStub();
         workspaceService.clear();
         updater.setWorkspaceService(workspaceService);
         updater.setDwrUtilFactory(dwrUtilFactory);
-        updater.setStudyManagementService(studyManagementServiceStub);
+        updater.setDeploymentService(deploymentServiceStub);
         SecurityContextHolder.getContext().setAuthentication(new AcegiAuthenticationStub());
         ActionContext.getContext().setSession(new HashMap<String, Object>());
         WebContextFactory.setWebContextBuilder(new WebContextBuilderStub());
@@ -144,10 +144,10 @@ public class StudyDeploymentAjaxUpdaterTest {
     @Test
     public void testRunJob() throws InterruptedException {
         studyConfiguration.setUserWorkspace(workspaceService.getWorkspace());
-        studyManagementServiceStub.refreshedStudyConfiguration = studyConfiguration;
+        deploymentServiceStub.refreshedStudyConfiguration = studyConfiguration;
         updater.runJob(studyConfiguration);
         Thread.sleep(500);
-        assertTrue(studyManagementServiceStub.deployStudyCalled);
+        assertTrue(deploymentServiceStub.performDeploymentCalled);
     }
     
     private final class WorkspaceServiceStudyDeploymentJobStub extends WorkspaceServiceStub {

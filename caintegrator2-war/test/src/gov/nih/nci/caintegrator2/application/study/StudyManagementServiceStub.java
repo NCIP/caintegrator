@@ -108,7 +108,6 @@ import java.util.List;
 @SuppressWarnings("PMD")
 public class StudyManagementServiceStub implements StudyManagementService {
 
-    public boolean deployStudyCalled;
     public boolean saveCalled;
     public boolean deleteCalled;
     public boolean addGenomicSourceCalled;
@@ -191,14 +190,9 @@ public class StudyManagementServiceStub implements StudyManagementService {
         deleteCalled = true;
     }
 
-    public void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener) {
-        deployStudyCalled = true;
-    }
-
     public void clear() {
         loadClinicalAnnotationCalled = false;
         reLoadClinicalAnnotationCalled = false;
-        deployStudyCalled = false;
         saveCalled = false;
         addClinicalAnnotationFileCalled = false;
         addGenomicSourceCalled = false;

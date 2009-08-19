@@ -83,26 +83,91 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.application.study;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataService;
 import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.ValidationException;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
+import gov.nih.nci.caintegrator2.domain.genomic.Platform;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterList;
+import gov.nih.nci.caintegrator2.domain.genomic.ReporterTypeEnum;
+import gov.nih.nci.caintegrator2.domain.genomic.Sample;
+import gov.nih.nci.caintegrator2.external.ConnectionException;
 import gov.nih.nci.caintegrator2.external.DataRetrievalException;
+import gov.nih.nci.caintegrator2.external.caarray.CaArrayFacade;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
 
 /**
- * Extends parser to make functionality available to tests outside of the study package.
+ * Reads and retrieves copy number data from a caArray instance.
  */
-public class PublicAffymetrixCopyNumberChpParser extends AffymetrixCopyNumberChpParser {
+class AffymetrixCopyNumberMappingFileHandler extends AbstractCopyNumberMappingFileHandler {
 
-    public PublicAffymetrixCopyNumberChpParser(File copyNumberChpFile) {
-        super(copyNumberChpFile);
+    AffymetrixCopyNumberMappingFileHandler(GenomicDataSourceConfiguration genomicSource, CaArrayFacade caArrayFacade,
+            ArrayDataService arrayDataService, CaIntegrator2Dao dao) {
+        super(genomicSource, caArrayFacade, arrayDataService, dao);
     }
-    
+
     @Override
-    public void parse(ArrayDataValues values, ArrayData arrayData) throws DataRetrievalException {
-        super.parse(values, arrayData);
+    void doneWithFile(File cnchpFile) {
+        cnchpFile.delete();
+    }
+
+    @Override
+    File getDataFile(String copyNumberFilename) 
+    throws ConnectionException, DataRetrievalException, ValidationException {
+        try {
+            byte[] fileBytes = getCaArrayFacade().retrieveFile(getGenomicSource(), copyNumberFilename);
+            File tempFile = File.createTempFile("temp", ".cnchp");
+            FileUtils.writeByteArrayToFile(tempFile, fileBytes);
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            throw new ValidationException("Experiment " + getGenomicSource().getExperimentIdentifier() 
+                    + " doesn't contain a file named " + copyNumberFilename, e);
+        } catch (IOException e) {
+            throw new DataRetrievalException("Couldn't write CNCHP file locally", e);
+        }
+    }
+
+    @Override
+    ArrayDataValues loadArrayData(Sample sample, List<File> cnchpFiles) 
+    throws DataRetrievalException, ValidationException {
+        List<AffymetrixCopyNumberChpParser> parsers = new ArrayList<AffymetrixCopyNumberChpParser>();
+        Set<String> reporterListNames = new HashSet<String>();
+        for (File cnchpFile : cnchpFiles) {
+            AffymetrixCopyNumberChpParser parser = new AffymetrixCopyNumberChpParser(cnchpFile);
+            parsers.add(parser);
+            reporterListNames.add(parser.getArrayDesignName());
+        }
+        Platform platform = getPlatform(reporterListNames);
+        return loadArrayData(sample, platform, parsers);
+    }
+
+    private ArrayDataValues loadArrayData(Sample sample, Platform platform, 
+            List<AffymetrixCopyNumberChpParser> parsers) throws DataRetrievalException {
+        PlatformHelper helper = new PlatformHelper(platform);
+        Set<ReporterList> reporterLists = helper.getReporterLists(ReporterTypeEnum.DNA_ANALYSIS_REPORTER);
+        ArrayData arrayData = createArrayData(sample, reporterLists);
+        getDao().save(arrayData);
+        ArrayDataValues values = 
+            new ArrayDataValues(helper.getAllReportersByType(ReporterTypeEnum.DNA_ANALYSIS_REPORTER));
+        for (AffymetrixCopyNumberChpParser parser : parsers) {
+            parser.parse(values, arrayData);
+        }
+        getArrayDataService().save(values);
+        return values;
     }
 
 }

@@ -242,7 +242,13 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
         return existingDescriptors;
     }
 
-    StudySubjectAssignment getOrCreateSubjectAssignment(String identifier) {
+    /**
+     * Returns an assigment with the given identifier, creating one if necessary.
+     * 
+     * @param identifier the identifier.
+     * @return the new or existing assignment.
+     */
+    public StudySubjectAssignment getOrCreateSubjectAssignment(String identifier) {
         if (getIdentifierToSubjectAssignmentMap().containsKey(identifier)) {
             return getSubjectAssignment(identifier);
         } else {
@@ -250,7 +256,13 @@ public class StudyConfiguration extends AbstractCaIntegrator2Object {
         }
     }
 
-    StudySubjectAssignment getSubjectAssignment(String identifier) {
+    /**
+     * Returns the matching study subject assignment.
+     * 
+     * @param identifier the identifier to search for.
+     * @return the matching assignment.
+     */
+    public StudySubjectAssignment getSubjectAssignment(String identifier) {
         return getIdentifierToSubjectAssignmentMap().get(identifier);
     }
 
