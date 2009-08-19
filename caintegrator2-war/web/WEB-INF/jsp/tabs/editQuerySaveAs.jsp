@@ -2,9 +2,14 @@
 
 <!--Save Search-->
 
-    <h2>Save This Query<div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('save_query_help')" class="help">
-   (draft)</a>
-    </div></h2>
+    <h2>Save This Query</h2>
+    
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+	        <a href="javascript:openHelpWindowWithNavigation('save_query_help')" class="help">
+	        (draft)</a>
+        </div>
+    </div>
 
     <table class="form">
 

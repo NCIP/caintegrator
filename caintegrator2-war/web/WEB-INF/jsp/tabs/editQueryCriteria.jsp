@@ -8,11 +8,15 @@
         </s:if>
         <s:else>
             Unsaved Query
-        </s:else>
-        <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
-   (draft)</a>
-    </div>
+        </s:else>    
     </h2>
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+            <a href="javascript:openHelpWindowWithNavigation('search_criteria_help')" class="help">
+            (draft)</a>
+        </div>
+    </div>    
+    
 
     <s:hidden name="selectedAction" value="" />
     <s:hidden name="rowNumber" />

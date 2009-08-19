@@ -2,9 +2,13 @@
 
 <!--Columns-->
     
-    <h2 class="resultsColumnsTabHeader">Select Results Type: <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
-   (draft)</a>
-    </div></h2>
+    <h2 class="resultsColumnsTabHeader">Select Results Type:</h2>
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+            <a href="javascript:openHelpWindowWithNavigation('search_columns_help')" class="help">
+            (draft)</a>
+        </div>
+    </div>
     <div class="resultTypeSelector">
         <s:radio name="queryForm.resultConfiguration.resultType"
             onclick="this.form.selectedAction.value = 'updateColumns'; this.form.submit();"
