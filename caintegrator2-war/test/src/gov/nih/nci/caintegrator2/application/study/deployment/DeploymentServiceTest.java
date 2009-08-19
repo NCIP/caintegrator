@@ -83,45 +83,99 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.caintegrator2.web.ajax;
+package gov.nih.nci.caintegrator2.application.study.deployment;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.caintegrator2.TestDataFiles;
+import gov.nih.nci.caintegrator2.application.arraydata.PlatformVendorEnum;
+import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
 import gov.nih.nci.caintegrator2.application.study.DeploymentListener;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceConfiguration;
+import gov.nih.nci.caintegrator2.application.study.GenomicDataSourceDataTypeEnum;
 import gov.nih.nci.caintegrator2.application.study.Status;
 import gov.nih.nci.caintegrator2.application.study.StudyConfiguration;
+import gov.nih.nci.caintegrator2.application.study.StudyManagementServiceTest;
+import gov.nih.nci.caintegrator2.data.CaIntegrator2DaoStub;
 
-/**
- * Asynchronous thread that runs Study Deployment jobs and updates the status of those jobs. 
- */
-public class StudyDeploymentAjaxRunner implements Runnable, DeploymentListener {
-        
-    private final StudyDeploymentAjaxUpdater updater;
-    private final StudyConfiguration job;
-    private String username;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+@SuppressWarnings("PMD")
+public class DeploymentServiceTest {
     
-    StudyDeploymentAjaxRunner(StudyDeploymentAjaxUpdater updater, StudyConfiguration studyConfiguration) {
-        this.updater = updater;
-        job = studyConfiguration;
+    private DeploymentServiceImpl deploymentServiceImpl;
+    private DeploymentDaoStub daoStub;    
+
+    @Before
+    public void setUp() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("studymanagement-test-config.xml", StudyManagementServiceTest.class); 
+        deploymentServiceImpl = (DeploymentServiceImpl) context.getBean("deploymentService"); 
+        daoStub = new DeploymentDaoStub();
+        deploymentServiceImpl.setDao(daoStub);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run() {
-        setupSession();
-        updater.getDeploymentService().performDeployment(job, this);
+    @Test
+    public void testPrepareForDeployment() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(1L);
+        daoStub.studyConfiguration = studyConfiguration;
+        TestListener listener = new TestListener();
+        deploymentServiceImpl.prepareForDeployment(studyConfiguration, listener);
+        assertTrue(listener.statuses.contains(Status.PROCESSING));
+        assertEquals(Status.PROCESSING, listener.configuration.getStatus());
+        assertTrue(daoStub.saveCalled);
+    }
+    @Test
+    public void testPerformDeployment() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        studyConfiguration.setId(1L);
+        daoStub.studyConfiguration = studyConfiguration;
+        TestListener listener = new TestListener();
+        deploymentServiceImpl.performDeployment(studyConfiguration, listener);
+        assertTrue(listener.statuses.contains(Status.DEPLOYED));
+        assertEquals(Status.DEPLOYED, listener.configuration.getStatus());
+        assertTrue(daoStub.saveCalled);
     }
 
-    private void setupSession() {
-        username = job.getUserWorkspace().getUsername();
+    @Test
+    public void testPerformDeploymentWithError() {
+        StudyConfiguration studyConfiguration = new StudyConfiguration();
+        TestListener listener = new TestListener();
+        GenomicDataSourceConfiguration genomicSource = new GenomicDataSourceConfiguration();
+        genomicSource.setDataType(GenomicDataSourceDataTypeEnum.COPY_NUMBER);
+        genomicSource.setCopyNumberDataConfiguration(new CopyNumberDataConfiguration());
+        genomicSource.getCopyNumberDataConfiguration().setMappingFilePath(TestDataFiles.INVALID_FILE_DOESNT_EXIST_PATH);
+        genomicSource.setPlatformVendor(PlatformVendorEnum.AFFYMETRIX.getValue());
+        daoStub.studyConfiguration = studyConfiguration;
+        studyConfiguration.getGenomicDataSources().add(genomicSource);
+        deploymentServiceImpl.performDeployment(studyConfiguration, listener);
+        assertEquals(Status.ERROR, listener.configuration.getStatus());
+        assertNotNull(listener.configuration.getStatusDescription());
+        assertTrue(daoStub.saveCalled);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void statusUpdated(StudyConfiguration configuration) {
-        if (Status.ERROR.equals(configuration.getStatus())) {
-            updater.addError(configuration.getStatusDescription(), configuration);
+    public static class DeploymentDaoStub extends CaIntegrator2DaoStub {
+        private StudyConfiguration studyConfiguration;
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T get(Long id, Class<T> objectClass) {
+            return (T) studyConfiguration;
         }
-        updater.updateJobStatus(username, configuration);
     }
+    
+    private static class TestListener implements DeploymentListener {
+        private Set<Status> statuses = new HashSet<Status>();
+        private StudyConfiguration configuration;
+        public void statusUpdated(StudyConfiguration configuration) {
+            this.configuration = configuration;
+            statuses.add(configuration.getStatus());
+        }
+    }
+    
 }

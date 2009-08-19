@@ -9,7 +9,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.ArrayDataValues;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.study.CopyNumberDataConfiguration;
-import gov.nih.nci.caintegrator2.application.study.PublicAffymetrixCopyNumberChpParser;
+import gov.nih.nci.caintegrator2.application.study.deployment.PublicAffymetrixCopyNumberChpParser;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
 import gov.nih.nci.caintegrator2.domain.genomic.ArrayData;
 import gov.nih.nci.caintegrator2.domain.genomic.DnaAnalysisReporter;

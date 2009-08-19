@@ -98,6 +98,7 @@ import gov.nih.nci.caintegrator2.application.arraydata.PlatformHelper;
 import gov.nih.nci.caintegrator2.application.arraydata.PlatformLoadingException;
 import gov.nih.nci.caintegrator2.application.query.InvalidCriterionException;
 import gov.nih.nci.caintegrator2.application.query.QueryManagementService;
+import gov.nih.nci.caintegrator2.application.study.deployment.DeploymentService;
 import gov.nih.nci.caintegrator2.application.workspace.WorkspaceService;
 import gov.nih.nci.caintegrator2.common.Cai2Util;
 import gov.nih.nci.caintegrator2.data.CaIntegrator2Dao;
@@ -148,6 +149,7 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     private long startTime;
     
     private StudyManagementService service;
+    private DeploymentService deploymentService;
     private QueryManagementService queryManagementService;
     private WorkspaceService workspaceService;
     private StudyConfiguration studyConfiguration;
@@ -483,8 +485,12 @@ public abstract class AbstractDeployStudyTestIntegration extends AbstractTransac
     
     private void deploy() {
         logStart();
-        service.deployStudy(studyConfiguration, null);
+        deploymentService.prepareForDeployment(studyConfiguration, null);
+        Status status = deploymentService.performDeployment(studyConfiguration, null);
         logEnd();
+        if (status.equals(Status.ERROR)) {
+            fail(studyConfiguration.getStatusDescription());
+        }
     }
 
     private void loadClinicalData() throws IOException, ValidationException {

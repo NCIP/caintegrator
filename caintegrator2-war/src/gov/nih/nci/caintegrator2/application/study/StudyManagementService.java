@@ -221,14 +221,6 @@ public interface StudyManagementService {
         throws ValidationException;
     
     /**
-     * Deploys or redeploys a study.
-     * 
-     * @param studyConfiguration the study configuration to deploy
-     * @param listener informed of status changes during deployment.
-     */
-    void deployStudy(StudyConfiguration studyConfiguration, DeploymentListener listener);
-
-    /**
      * Adds a new, initialized genomic data source to the study. Samples related to this data source are
      * retrieved from the source and added to the study.
      * 

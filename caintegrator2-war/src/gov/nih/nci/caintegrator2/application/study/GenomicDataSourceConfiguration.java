@@ -387,8 +387,14 @@ public class GenomicDataSourceConfiguration extends AbstractCaIntegrator2Object 
         return NONE_CONFIGURED;
     }
 
+    /**
+     * Returns a sample by name.
+     * 
+     * @param sampleName name to search for.
+     * @return the matching sample.
+     */
     @SuppressWarnings("PMD.CyclomaticComplexity")   // best way to do check
-    Sample getSample(String sampleName) {
+    public Sample getSample(String sampleName) {
         for (Sample sample : getSamples()) {
             if (sampleName == null && sample.getName() == null) {
                 return sample;
