@@ -7,10 +7,14 @@
     <s:hidden name="permissibleValuesNeedUpdate" value="false" />
     
     <!-- Gene Expression Inputs -->
-    <h2>Annotation Based Gene Expression Plots <div class="tabhelp"><a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
-   (draft)</a>
-    </div></h2>
+    <h2>Annotation Based Gene Expression Plots</h2>
     
+    <div class="tableheader" style="white-space: nowrap; position: relative; width: 25em;">
+        <div class="tabhelp" style="white-space:nowrap; position: relative; margin-top: 0.4em; margin-right: 0.5em;">
+	    <a href="javascript:openHelpWindowWithNavigation('GE_plot_annotation_help')" class="help">
+	   (draft)</a>
+	    </div>
+	</div>
     
     <table class="data">
             <tr>
